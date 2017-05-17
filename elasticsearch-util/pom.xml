@@ -41,6 +41,22 @@
                     </includes>
                 </configuration>
             </plugin>
+            <plugin>
+                    <groupId>com.atlassian.maven.plugins</groupId>
+                    <artifactId>maven-clover2-plugin</artifactId>
+                    <version>4.0.5</version>
+                   <!-- <configuration>
+                        <targetPercentage>1%</targetPercentage>
+                    </configuration>-->
+                    <executions>
+                        <execution>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>instrument</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
        
