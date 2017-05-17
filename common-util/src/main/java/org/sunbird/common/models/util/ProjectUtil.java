@@ -19,7 +19,6 @@ public class ProjectUtil {
 	 * format the date in YYYY-MM-DD hh:mm:ss:SSZ
 	 */
 	 public static final SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss:SSSZ");
-	 public static final SimpleDateFormat cassandraFormat = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
 	
 	/**
 	 * This method will check incoming value is null or empty

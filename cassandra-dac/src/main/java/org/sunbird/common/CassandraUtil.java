@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.sunbird.common.models.response.Response;
+import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LogHelper;
 
 import com.datastax.driver.core.ResultSet;
@@ -61,7 +62,6 @@ public final class CassandraUtil{
 	 * @author Amit Kumar
 	 */
 	public static Response createResponse(ResultSet results){
-		System.out.println(" inside create Result");
 		Response response = new Response();
 		List<Row> rows =results.all();
 		Map<String, Object> map=null;
@@ -70,16 +70,16 @@ public final class CassandraUtil{
 		for(Row row :rows){
 			map=new HashMap<>();
 			String[] valueArray =row.toString().substring(4, row.toString().length()-1).split(",");
+			LOGGER.info(Arrays.toString(keyArray));
+			LOGGER.info(Arrays.toString(valueArray));
 			for(int i=0;i<keyArray.length;i++){
 				int pos= keyArray[i].indexOf("(");
-				map.put(keyArray[i].substring(0,pos),valueArray[i]);
+				map.put(keyArray[i].substring(0,pos).trim(),valueArray[i].trim());
 			}
 			responseList.add(map);
-			System.out.println(Arrays.toString(valueArray));
 		}
-		
 		LOGGER.debug(responseList.toString());
-		response.put("response", responseList);
+		response.put(Constants.RESPONSE, responseList);
 		return response;
 	}
 	
@@ -97,15 +97,18 @@ public final class CassandraUtil{
 		Iterator<String> itr = keySet.iterator();
 		int i=0;
 		while(itr.hasNext()){
-			query.append(itr.next() +" = ? ");
+			String key = itr.next();
+			if(!key.equalsIgnoreCase("id")){
+			query.append( key +" = ? ");
 			if ( i != keySet.size()-1){
 				query.append(", ");
 		      }
+			}
 			i++;
+			
 		}
 		query.append(" where "+Constants.IDENTIFIER +"= ? ;");
 	    LOGGER.debug(query.toString());
-	    System.out.println(query.toString());
 		return query.toString();
 		
 	}

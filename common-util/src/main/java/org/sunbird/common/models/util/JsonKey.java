@@ -11,29 +11,34 @@ package org.sunbird.common.models.util;
  */
 public class JsonKey {
 	
-	public static final String USER_ID = "userId";
-	public static final String CONTENT_ID = "contentId";
-	public static final String CONTENT_IDS = "contentIds";
-	public static final String CONTENT_LIST = "contentList";
-	public static final String COURSE_ID = "courseId";
-	public static final String RESPONSE = "response";
-	public static final String COURSE_LIST = "courseList";
-	public static final String COURSE = "course";
-	public static final String CONTENT = "content";
-	public static final String COURSE_ENROLL_DATE= "enrolledDate";
-	public static final String IS_COURSE_ACTIVE = "active";
-	public static final String COURSE_STATUS = "status";
-	public static final String ID = "id";
-	public static final String VIEW_POSITION = "viewPosition";
-	public static final String VIEW_COUNT = "viewCount";
-	public static final String LAST_ACCESS_TIME= "lastAccessTime";
-	public static final String COMPLETED_COUNT = "completedCount";
-	public static final String LAST_UPDATED_TIME = "lastUpdatedTime";
-	public static final String LAST_COMPLETED_TIME = "lastCompletedTime";
-	public static final String COURSE_NAME = "courseName";
-	public static final String DESCRIPTION = "description";
-	public static final String TOC_URL = "tocUrl";
-	public static final String CONTENTS = "contents";
-
+	public static final String USER_ID = "userid";
+    public static final String CONTENT_ID = "contentid";
+    public static final String CONTENT_IDS = "contentids";
+    public static final String CONTENT_LIST = "contentlist";
+    public static final String COURSE_ID = "courseid";
+    public static final String RESPONSE = "response";
+    public static final String COURSE_LIST = "courselist";
+    public static final String COURSE = "course";
+    public static final String CONTENT = "content";
+    public static final String COURSE_ENROLL_DATE= "enrolleddate";
+    public static final String ACTIVE = "active";
+    public static final String STATUS = "status";
+    public static final String ID = "id";
+    public static final String VIEW_POSITION = "viewposition";
+    public static final String VIEW_COUNT = "viewcount";
+    public static final String LAST_ACCESS_TIME= "lastaccesstime";
+    public static final String COMPLETED_COUNT = "completedcount";
+    public static final String LAST_UPDATED_TIME = "lastupdatedtime";
+    public static final String LAST_COMPLETED_TIME = "lastcompletedtime";
+    public static final String COURSE_NAME = "coursename";
+    public static final String DESCRIPTION = "description";
+    public static final String TOC_URL = "tocurl";
+    public static final String CONTENTS = "contents";
+    public static final String DELTA ="delta";
+    public static final String VERSION = "version";
+    public static final String DATE_TIME="dateTime";
+    public static final String PRIMARY_KEY_DELIMETER = "##";
+	public static final String NULL = "null";
+	public static final Object SUCCESS = "SUCCESS";
 
 }

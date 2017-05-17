@@ -5,9 +5,9 @@ ALTER USER cassandra WITH PASSWORD 'password';
 USE cassandraKeySpace
 
 
-CREATE TABLE IF NOT EXISTS cassandraKeySpace.content_consumption(id text, contentId text, userId text,viewPosition text,viewCount text,lastAccessTime timestamp,completedCount text,status int,lastUpdatedTime timestamp,lastCompletedTime timestamp,PRIMARY KEY (id));
+CREATE TABLE IF NOT EXISTS cassandraKeySpace.course_enrollment(id text, courseId text, courseName text,userId text,enrolledDate text,description text,tocUrl text,status text,active boolean,delta text,version text,dateTime timestamp,PRIMARY KEY (id));
 
-CREATE TABLE IF NOT EXISTS cassandraKeySpace.course_enrollment(id text, courseId text, courseName text,userId text,enrolledDate timestamp,description text,tocUrl text,status text,active boolean,delta text,PRIMARY KEY (id));
+CREATE TABLE IF NOT EXISTS cassandraKeySpace.content_consumption(id text, contentId text, userId text,viewPosition text,viewCount text,lastAccessTime text,completedCount text,status int,lastUpdatedTime text,lastCompletedTime text,dateTime timestamp,PRIMARY KEY (id));
 
 CREATE INDEX inx_ce_userId ON cassandraKeySpace.course_enrollment (userId);
 
