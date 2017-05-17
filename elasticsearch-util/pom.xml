@@ -14,16 +14,6 @@
         <scoverage.plugin.version>1.1.1</scoverage.plugin.version>
     </properties>	
      <dependencies>
-                <dependency>
-            <groupId>com.typesafe.akka</groupId>
-            <artifactId>akka-actor_2.11</artifactId>
-            <version>2.4.8</version>
-        </dependency>
-        <dependency>
-            <groupId>com.typesafe.akka</groupId>
-            <artifactId>akka-slf4j_2.11</artifactId>
-            <version>2.4.6</version>
-        </dependency>
     </dependencies>
 
    <build>
