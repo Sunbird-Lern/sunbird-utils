@@ -1,3 +1,15 @@
+open cassandra.yaml file
+
+change line
+
+authenticator: AllowAllAuthenticator
+
+with
+
+authenticator: PasswordAuthenticator.
+
+
+
 CREATE KEYSPACE IF NOT EXISTS cassandraKeySpace WITH replication = {'class':'SimpleStrategy','replication_factor':3};
 to change cluster name
 UPDATE system.local SET cluster_name = 'sunbird' where key='local';
