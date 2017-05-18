@@ -19,6 +19,16 @@
     <artifactId>transport</artifactId>
     <version>5.4.0</version>
     </dependency>
+        <dependency>
+	      <groupId>junit</groupId>
+	      <artifactId>junit</artifactId>
+	      <version>RELEASE</version>
+	    </dependency>
+	  <dependency>
+            <groupId>org.sunbird</groupId>
+  			<artifactId>common-util</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>  
     </dependencies>
 
    <build>
