@@ -7,7 +7,6 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.settings.Settings.Builder;
@@ -20,12 +19,13 @@ import org.sunbird.common.models.util.LogHelper;
  * @author Manzarul
  */
 public class ConnectionManager {
-	private static final Logger LOGGER = Logger.getLogger(ConnectionManager.class.getName());
+	private static final LogHelper LOGGER = LogHelper.getInstance(ConnectionManager.class.getName());
 	private static TransportClient client = null;
 	private static List<String> host = new ArrayList<>();
 	private static List<Integer> ports = new ArrayList<>();
 	static {
 		initialiseConnection();
+		registerShutDownHook();
 	}
 	
 	public static TransportClient getClient() {
@@ -88,7 +88,28 @@ public class ConnectionManager {
 		client.close();
 	}
 	
-	public static void main(String[] args) {
-		
+	/**
+	 * This class will be called by registerShutDownHook to 
+	 * register the call inside jvm , when jvm terminate it will call
+	 * the run method to clean up the resource.
+	 * @author Manzarul
+	 *
+	 */
+	static class ResourceCleanUp extends Thread {
+		  public void run() {
+			  LOGGER.info("started resource cleanup.");
+			  client.close(); 
+			  LOGGER.info("completed resource cleanup.");
+		  }
+	}
+	
+	/**
+	 * Register the hook for resource clean up.
+	 * this will be called when jvm shut down.
+	 */
+	public static void registerShutDownHook() {
+		Runtime runtime = Runtime.getRuntime();
+		runtime.addShutdownHook(new ResourceCleanUp());
+		LOGGER.info("ShutDownHook registered.");
 	}
 }
