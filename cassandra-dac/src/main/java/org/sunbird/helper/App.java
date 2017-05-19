@@ -19,6 +19,7 @@ public class App {
 
 	public static void main(String[] args) {
 		boolean bool= CassandraConnectionManager.createConnection("127.0.0.1", "9042", "cassandra", "password", "cassandraKeySpace");
+		System.out.println(bool);
 		Map<String,Object> coursemap = new HashMap<>();
 		if(bool){
 			CassandraOperation operation= new CassandraOperationImpl();
@@ -49,12 +50,12 @@ public class App {
 	   		coursemap.put("active", true);
 	   		coursemap.put("delta", "delta as json string");
 	   		coursemap.put("id", "courseId2##userId2");
-	    	   
+	    	 //CassandraConnectionManager.getSession("cassandraKeySpace").execute("ALTER USER cassandra WITH PASSWORD 'password';");  
 	   		//operation.insertRecord("cassandraKeySpace", "course_enrollment", coursemap);
-	   		Response response= operation.insertRecord("cassandraKeySpace", "content_consumption", contentmap);
+	   		//Response response= operation.insertRecord("cassandraKeySpace", "content_consumption", contentmap);
 	   		//operation.getRecordById("cassandraKeySpace", "course_enrollment", "courseId1##userId1");
-	   		operation.getRecordById("cassandraKeySpace", "content_consumption", "cont-2445123##userId21");
-	   		System.out.println(response.get("response"));
+	   		//operation.getRecordById("cassandraKeySpace", "content_consumption", "cont-2445123##userId21");
+	   		//System.out.println(response.get("response"));
 			//Response response=operation.getRecordById("cassandraKeySpace", "content", "contentId1##userId24");
 			//Response response=operation.getRecordsByProperty("cassandraKeySpace", "content", "courseid", "courseId 1");
 			//Response response=operation.getRecordsByProperties("cassandraKeySpace", "content", map);
