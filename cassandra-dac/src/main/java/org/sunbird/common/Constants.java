@@ -25,10 +25,21 @@ public interface Constants {
 	public static final String USER_ID="userId";
 	public static final String CONTENT_ID="contentId";
 	public static final String IDENTIFIER="id";
-	public static final String CONST_VARCHAR="(varchar)";
 	public static final String SUCCESS="SUCCESS";
 	public static final String RESPONSE="response";
 	public static final String SESSION_IS_NULL="cassandra session is null for this ";
+	public static final String QUE_MARK="?";
+	public static final String INSERT_INTO="INSERT INTO ";
+	public static final String OPEN_BRACE_WITH_SPACE=" (";
+	public static final String DOT=".";
+	public static final String VALUES_WITH_BRACE=") VALUES (";
+	public static final String COMMA_WITH_SPACE=", ";
+	public static final String CLOSING_BRACE=");";
+	public static final String OPEN_BRACE="(";
+	public static final String COMMA=",";
+	public static final String UPDATE="UPDATE ";
+	public static final String SET=" SET ";
+	public static final String WHERE=" where ";
 	
 	public enum LearnerStateOperation {
 		NOT_STARTED("notStarted"),STARTED("started"),COMPLETED("completed");

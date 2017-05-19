@@ -36,7 +36,7 @@ public class JsonKey {
     public static final String CONTENTS = "contents";
     public static final String DELTA ="delta";
     public static final String VERSION = "version";
-    public static final String DATE_TIME="dateTime";
+    public static final String DATE_TIME="datetime";
     public static final String PRIMARY_KEY_DELIMETER = "##";
 	public static final String NULL = "null";
 	public static final Object SUCCESS = "SUCCESS";

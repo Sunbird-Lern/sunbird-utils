@@ -47,6 +47,10 @@ public final class RequestValidator {
 			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.courseTocUrlError.getErrorCode(),
 					ResponseCode.courseTocUrlError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
+		}else if (courseRequestDto.getRequest().get(JsonKey.VERSION) == null) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.versionRequiredError.getErrorCode(),
+					ResponseCode.versionRequiredError.getErrorMessage(),ResponseCode.versionRequiredError.getResponseCode());
+			throw dataException;
 		}
 	}
 	
@@ -65,11 +69,36 @@ public final class RequestValidator {
 			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.sessionIdRequiredError.getErrorCode(),
 					ResponseCode.sessionIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
-		}else if (((List<Map<String,Object>>)(contentRequestDto.getRequest().get(JsonKey.CONTENTS))).size()== 0 ) {
+		}else 
+			{
+			if (((List<Map<String,Object>>)(contentRequestDto.getRequest().get(JsonKey.CONTENTS))).size()== 0 ) {
 			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.contentIdRequired.getErrorCode(),
 					ResponseCode.contentIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
+			}else{
+				List<Map<String,Object>> list= (List<Map<String,Object>>)(contentRequestDto.getRequest().get(JsonKey.CONTENTS));
+				for(Map<String,Object> map :list){
+					if(map.containsKey(JsonKey.CONTENT_ID) && map.containsKey(JsonKey.VERSION)){
+						
+						if(null == map.get(JsonKey.CONTENT_ID)){
+							ProjectCommonException dataException = new ProjectCommonException(ResponseCode.contentIdRequired.getErrorCode(),
+									ResponseCode.contentIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+							throw dataException;
+						}
+						if(null == map.get(JsonKey.VERSION)){
+							ProjectCommonException dataException = new ProjectCommonException(ResponseCode.contentIdRequired.getErrorCode(),
+									ResponseCode.contentIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+							throw dataException;
+						}
+					}else{
+						ProjectCommonException dataException = new ProjectCommonException(ResponseCode.contentIdRequired.getErrorCode(),
+								ResponseCode.contentIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+						throw dataException;
+					}
+				}
+			}
 		}
+		
 	}
 	
 	/**
