@@ -24,7 +24,7 @@ public interface CassandraOperation {
 	 * @param identifier
 	 * @return Response
 	 */
-	public Response updateRecord(String keyspaceName,String tableName,Map<String,Object> request,String identifier);
+	public Response updateRecord(String keyspaceName,String tableName,Map<String,Object> request);
 	
 	/**
 	 * used to delete record in cassandra db

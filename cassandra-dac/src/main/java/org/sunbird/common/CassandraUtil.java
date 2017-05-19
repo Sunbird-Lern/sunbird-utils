@@ -34,21 +34,18 @@ public final class CassandraUtil{
 	 */
 	public static String getPreparedStatement(String keyspaceName, String tableName, Map<String, Object> map){
 		StringBuilder query=new StringBuilder();
-		query.append("INSERT INTO "+keyspaceName+"."+tableName+" (");
+		query.append(Constants.INSERT_INTO+keyspaceName+Constants.DOT+tableName+Constants.OPEN_BRACE);
 		Set<String> keySet= map.keySet();
 		String keyStmt = String.join(",", keySet);
-		query.append(keyStmt+") VALUES (");
+		query.append(keyStmt+Constants.VALUES_WITH_BRACE);
 		StringBuilder commaSepValueBuilder = new StringBuilder();
 	    for ( int i = 0; i< keySet.size(); i++){
-	      //append the value into the builder
-	      commaSepValueBuilder.append("?");
-	      //if the value is not the last element of the list
-	      //then append the comma(,) as well
+	      commaSepValueBuilder.append(Constants.QUE_MARK);
 	      if ( i != keySet.size()-1){
-	        commaSepValueBuilder.append(", ");
+	        commaSepValueBuilder.append(Constants.COMMA);
 	      }
 	    }
-	    query.append(commaSepValueBuilder+");");
+	    query.append(commaSepValueBuilder+Constants.CLOSING_BRACE);
 	    LOGGER.debug(query.toString());
 		return query.toString();
 		
@@ -65,14 +62,14 @@ public final class CassandraUtil{
 		List<Row> rows =results.all();
 		Map<String, Object> map=null;
 		List<Map<String, Object>> responseList= new ArrayList<>();
-		String[] keyArray =results.getColumnDefinitions().toString().substring(8, results.getColumnDefinitions().toString().length()-1).split(",");
+		String[] keyArray =results.getColumnDefinitions().toString().substring(8, results.getColumnDefinitions().toString().length()-1).split(Constants.COMMA);
 		for(Row row :rows){
 			map=new HashMap<>();
-			String[] valueArray =row.toString().substring(4, row.toString().length()-1).split(",");
+			String[] valueArray =row.toString().substring(4, row.toString().length()-1).split(Constants.COMMA);
 			LOGGER.info(Arrays.toString(keyArray));
 			LOGGER.info(Arrays.toString(valueArray));
 			for(int i=0;i<keyArray.length;i++){
-				int pos= keyArray[i].indexOf("(");
+				int pos= keyArray[i].indexOf(Constants.OPEN_BRACE);
 				map.put(keyArray[i].substring(0,pos).trim(),valueArray[i].trim());
 			}
 			responseList.add(map);
@@ -91,13 +88,13 @@ public final class CassandraUtil{
 	 * @author Amit Kumar
 	 */
 	public static String getUpdateQueryStatement(String keyspaceName, String tableName, Map<String, Object> map){
-		StringBuilder query=new StringBuilder("UPDATE "+keyspaceName+"."+tableName+" SET ");
+		StringBuilder query=new StringBuilder(Constants.UPDATE+keyspaceName+Constants.DOT+tableName+Constants.SET);
 		Set<String> keySet= map.keySet();
 		Iterator<String> itr = keySet.iterator();
 		int i=0;
 		while(itr.hasNext()){
 			String key = itr.next();
-			if(!key.equalsIgnoreCase("id")){
+			if(!key.equalsIgnoreCase(Constants.IDENTIFIER)){
 			query.append( key +" = ? ");
 			if ( i != keySet.size()-1){
 				query.append(", ");
@@ -106,7 +103,7 @@ public final class CassandraUtil{
 			i++;
 			
 		}
-		query.append(" where "+Constants.IDENTIFIER +"= ? ;");
+		query.append(Constants.WHERE+Constants.IDENTIFIER +"= ? ;");
 	    LOGGER.debug(query.toString());
 		return query.toString();
 		

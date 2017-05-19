@@ -40,7 +40,6 @@ public class CassandraOperationImpl implements CassandraOperation{
 	@Override
 	public Response insertRecord(String keyspaceName, String tableName, Map<String, Object> request) throws ProjectCommonException {
 		Response response = new Response();
-		ResultSet result=null;
 		try {
 			String query = CassandraUtil.getPreparedStatement(keyspaceName,tableName,request);
 			PreparedStatement statement = CassandraConnectionManager.getSession(keyspaceName).prepare(query);
@@ -51,8 +50,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 			while (iterator.hasNext()) {
 				array[i++] = iterator.next();
 			}
-		   	result = CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement.bind(array));
-			LOGGER.debug(result.toString());
+		   	CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement.bind(array));
 			response.put(Constants.RESPONSE, Constants.SUCCESS);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
@@ -63,28 +61,28 @@ public class CassandraOperationImpl implements CassandraOperation{
 
 
 	@Override
-	public Response updateRecord(String keyspaceName, String tableName, Map<String, Object> request,
-			String identifier) throws ProjectCommonException {
+	public Response updateRecord(String keyspaceName, String tableName, Map<String, Object> request) throws ProjectCommonException {
 		Response response = new Response();
 		try{
 		String updateQuery = CassandraUtil.getUpdateQueryStatement(keyspaceName, tableName, request);
 		PreparedStatement statement = CassandraConnectionManager.getSession(keyspaceName).prepare(updateQuery);
-		Iterator<Object> iterator = request.values().iterator(); 
-		Object [] array =  new Object[request.keySet().size()+1];
+		Iterator<String> iterator = request.keySet().iterator(); 
+		Object [] array =  new Object[request.keySet().size()];
 		int i=0;
 		while (iterator.hasNext()) {
-			array[i++] = iterator.next();
+			String key = iterator.next();
+			if(!key.equalsIgnoreCase(Constants.IDENTIFIER)){
+			array[i++] = request.get(key);
+			}
 		}
-		array[i++] = identifier;
+		array[i++] = request.get(Constants.IDENTIFIER);
 		BoundStatement boundStatement = statement.bind(array);
-		ResultSet result  = CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement);
-		LOGGER.debug(result.toString());
+		CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement);
 		response.put(Constants.RESPONSE, Constants.SUCCESS);
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), e.getMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
-		
 		return response;
 	}
 
@@ -95,12 +93,10 @@ public class CassandraOperationImpl implements CassandraOperation{
 		try{
 		Delete.Where delete = QueryBuilder.delete().from(keyspaceName, tableName)
 				.where(eq(Constants.IDENTIFIER, identifier));
-		 ResultSet result  = CassandraConnectionManager.getSession(keyspaceName).execute(delete);
-		 LOGGER.debug(result.toString());
+		 CassandraConnectionManager.getSession(keyspaceName).execute(delete);
 		 response.put(Constants.RESPONSE, Constants.SUCCESS);
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e);
-			System.out.println(e.getMessage());
 			throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), e.getMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		 return response;
