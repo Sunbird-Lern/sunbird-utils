@@ -40,5 +40,7 @@ public class JsonKey {
     public static final String PRIMARY_KEY_DELIMETER = "##";
 	public static final String NULL = "null";
 	public static final Object SUCCESS = "SUCCESS";
+	public static final String NOT_AVAILABLE = "NA";
+	public static final String COURSE_IDS = "courseids";
 
 }
