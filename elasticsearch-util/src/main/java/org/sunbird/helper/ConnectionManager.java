@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.settings.Settings.Builder;
@@ -19,7 +20,7 @@ import org.sunbird.common.models.util.LogHelper;
  * @author Manzarul
  */
 public class ConnectionManager {
-	private static final LogHelper LOGGER = LogHelper.getInstance(ConnectionManager.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(ConnectionManager.class.getName());
 	private static TransportClient client = null;
 	private static List<String> host = new ArrayList<>();
 	private static List<Integer> ports = new ArrayList<>();
@@ -85,5 +86,9 @@ public class ConnectionManager {
 	
 	public static void closeClient() {
 		client.close();
+	}
+	
+	public static void main(String[] args) {
+		
 	}
 }

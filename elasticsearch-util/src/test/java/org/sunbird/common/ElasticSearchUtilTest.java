@@ -20,7 +20,7 @@ public class ElasticSearchUtilTest {
     
 	
 	@AfterClass
-	public static void destroy{
+	public static void destroy(){
 		//TODO remove all the inserted/ updated data
 	}
 }

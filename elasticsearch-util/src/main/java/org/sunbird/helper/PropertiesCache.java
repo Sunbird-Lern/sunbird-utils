@@ -9,7 +9,6 @@ import java.util.Properties;
  * this class is used for reading cassndra properties file
  */
 public class PropertiesCache {
-	
 	private final String fileName = "elasticsearch.config.properties";
 	private final Properties configProp = new Properties();
 
