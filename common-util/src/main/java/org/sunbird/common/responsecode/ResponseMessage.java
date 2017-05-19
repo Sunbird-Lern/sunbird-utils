@@ -15,7 +15,8 @@ public interface ResponseMessage {
 		public static final String COMSUMER_ID_INVALID_ERROR = "Consumer id is invalid.";
 		public static final String DEVICE_ID_MISSING_ERROR = "Device id is mandatory.";
 		public static final String CONTENT_ID_INVALID_ERROR = "Please provide a valid content id.";
-		public static final String CONTENT_ID_MISSING_ERROR = "Please provide at least one content id.";
+		public static final String CONTENT_ID_MISSING_ERROR = "Please provide content id.";
+		public static final String COURSE_ID_MISSING_ERROR = "Please provide course id.";
 		public static final String API_KEY_MISSING_ERROR = "APi key is mandatory.";
 		public static final String API_KEY_INVALID_ERROR = "APi key is invalid.";
 		public static final String INTERNAL_ERROR = "Process failed,please try after some time.";
@@ -24,6 +25,7 @@ public interface ResponseMessage {
 		public static final String SESSION_ID_MISSING = "Session id is mandatory.";
 		public static final String COURSE_ID_MISSING = "Course id is mandatory.";
 		public static final String CONTENT_ID_MISSING = "Content id is mandatory.";
+		public static final String VERSION_MISSING = "version is mandatory.";
 		public static final String COURSE_DESCRIPTION_MISSING = "Description is mandatory.";
 		public static final String COURSE_TOCURL_MISSING = "Course tocurl is mandatory.";
 	}
@@ -38,6 +40,7 @@ public interface ResponseMessage {
 		public static final String DEVICE_ID_MISSING_ERROR = "DEVICE_ID_REQUIRED_ERROR";
 		public static final String CONTENT_ID_INVALID_ERROR = "CONTENT_ID_INVALID_ERROR";
 		public static final String CONTENT_ID_MISSING_ERROR = "CONTENT_ID_REQUIRED_ERROR";
+		public static final String COURSE_ID_MISSING_ERROR = "COURSE_ID_REQUIRED_ERROR";
 		public static final String API_KEY_MISSING_ERROR = "API_KEY_REQUIRED_ERROR";
 		public static final String API_KEY_INVALID_ERROR = "API_KEY_INVALID_ERROR";
 		public static final String INTERNAL_ERROR = "API_KEY_INVALID_ERROR";
@@ -46,6 +49,7 @@ public interface ResponseMessage {
 		public static final String SESSION_ID_MISSING = "SESSION_ID_REQUIRED_ERROR";
 		public static final String COURSE_ID_MISSING = "COURSE_ID_REQUIRED_ERROR";
 		public static final String CONTENT_ID_MISSING ="CONTENT_ID_REQUIRED_ERROR";
+		public static final String VERSION_MISSING ="CONTENT_ID_REQUIRED_ERROR";
 		public static final String COURSE_DESCRIPTION_MISSING = "COURSE_DESCRIPTION_REQUIRED_ERROR";
 		public static final String COURSE_TOCURL_MISSING = "COURSE_TOCURL_REQUIRED_ERROR";
 	}

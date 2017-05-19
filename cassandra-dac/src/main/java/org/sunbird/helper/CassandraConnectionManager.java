@@ -104,7 +104,6 @@ public final class CassandraConnectionManager {
 	
 	/**
 	 * @author Amit Kumar
-	 * @param ip
 	 * @return Session
 	 */
 	public static Session getSession(String keyspaceName) {
