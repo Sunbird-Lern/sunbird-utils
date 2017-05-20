@@ -175,7 +175,8 @@ public class CassandraOperationImpl implements CassandraOperation{
 				    selectWhere.and(clause);
 		    	}
 		    }
-			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(selectQuery);
+		    System.out.println(selectQuery.toString());
+			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(selectQuery.allowFiltering());
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e);
