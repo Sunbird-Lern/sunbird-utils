@@ -26,6 +26,8 @@ public interface ResponseMessage {
 		public static final String COURSE_ID_MISSING = "Course id is mandatory.";
 		public static final String CONTENT_ID_MISSING = "Content id is mandatory.";
 		public static final String VERSION_MISSING = "version is mandatory.";
+		public static final String COURSE_VERSION_MISSING = "course version is mandatory.";
+		public static final String CONTENT_VERSION_MISSING = "content version is mandatory.";
 		public static final String COURSE_DESCRIPTION_MISSING = "Description is mandatory.";
 		public static final String COURSE_TOCURL_MISSING = "Course tocurl is mandatory.";
 		public static final String EMAIL_MISSING = "Email is mandatory.";
@@ -56,7 +58,9 @@ public interface ResponseMessage {
 		public static final String SESSION_ID_MISSING = "SESSION_ID_REQUIRED_ERROR";
 		public static final String COURSE_ID_MISSING = "COURSE_ID_REQUIRED_ERROR";
 		public static final String CONTENT_ID_MISSING ="CONTENT_ID_REQUIRED_ERROR";
-		public static final String VERSION_MISSING ="CONTENT_ID_REQUIRED_ERROR";
+		public static final String VERSION_MISSING ="VERSION_REQUIRED_ERROR";
+		public static final String COURSE_VERSION_MISSING ="COURSE_VERSION_REQUIRED_ERROR";
+		public static final String CONTENT_VERSION_MISSING ="CONTENT_VERSION_REQUIRED_ERROR";
 		public static final String COURSE_DESCRIPTION_MISSING = "COURSE_DESCRIPTION_REQUIRED_ERROR";
 		public static final String COURSE_TOCURL_MISSING = "COURSE_TOCURL_REQUIRED_ERROR";
 		public static final String EMAIL_MISSING = "EMAIL_ID_REQUIRED_ERROR";

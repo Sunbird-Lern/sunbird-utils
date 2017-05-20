@@ -69,7 +69,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 		Iterator<String> iterator = request.keySet().iterator(); 
 		Object [] array =  new Object[request.keySet().size()];
 		int i=0;
-		while (iterator.hasNext()) {
+		while (iterator.hasNext()){
 			String key = iterator.next();
 			if(!key.equalsIgnoreCase(Constants.IDENTIFIER)){
 			array[i++] = request.get(key);
@@ -175,7 +175,8 @@ public class CassandraOperationImpl implements CassandraOperation{
 				    selectWhere.and(clause);
 		    	}
 		    }
-			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(selectQuery);
+		    System.out.println(selectQuery.toString());
+			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(selectQuery.allowFiltering());
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e);

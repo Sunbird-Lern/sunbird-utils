@@ -47,9 +47,9 @@ public final class RequestValidator {
 			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.courseTocUrlError.getErrorCode(),
 					ResponseCode.courseTocUrlError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
-		}else if (courseRequestDto.getRequest().get(JsonKey.VERSION) == null) {
-			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.versionRequiredError.getErrorCode(),
-					ResponseCode.versionRequiredError.getErrorMessage(),ResponseCode.versionRequiredError.getResponseCode());
+		}else if (courseRequestDto.getRequest().get(JsonKey.COURSE_VERSION) == null) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.courseVersionRequiredError.getErrorCode(),
+					ResponseCode.courseVersionRequiredError.getErrorMessage(),ResponseCode.courseVersionRequiredError.getResponseCode());
 			throw dataException;
 		}
 	}
@@ -79,18 +79,19 @@ public final class RequestValidator {
 			}else{
 				List<Map<String,Object>> list= (List<Map<String,Object>>)(contentRequestDto.getRequest().get(JsonKey.CONTENTS));
 				for(Map<String,Object> map :list){
-					if(map.containsKey(JsonKey.CONTENT_ID) && map.containsKey(JsonKey.VERSION)){
+					if(map.containsKey(JsonKey.CONTENT_ID) && map.containsKey(JsonKey.CONTENT_VERSION)){
 						
 						if(null == map.get(JsonKey.CONTENT_ID)){
 							ProjectCommonException dataException = new ProjectCommonException(ResponseCode.contentIdRequired.getErrorCode(),
 									ResponseCode.contentIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
 							throw dataException;
 						}
-						if(null == map.get(JsonKey.VERSION)){
-							ProjectCommonException dataException = new ProjectCommonException(ResponseCode.contentIdRequired.getErrorCode(),
-									ResponseCode.contentIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+						if(null == map.get(JsonKey.CONTENT_VERSION)){
+							ProjectCommonException dataException = new ProjectCommonException(ResponseCode.contentVersionRequiredError.getErrorCode(),
+									ResponseCode.contentVersionRequiredError.getErrorMessage(),ResponseCode.contentVersionRequiredError.getResponseCode());
 							throw dataException;
 						}
+						
 					}else{
 						ProjectCommonException dataException = new ProjectCommonException(ResponseCode.contentIdRequired.getErrorCode(),
 								ResponseCode.contentIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());

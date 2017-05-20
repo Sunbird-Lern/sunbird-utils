@@ -47,4 +47,6 @@ public class JsonKey {
 	public static final String PASSWORD ="password";
 	public static final String LANGUAGE ="language";
 	public static final String NEW_PASSWORD = "newPassword";
+	public static final String COURSE_VERSION = "courseversion";
+	public static final String CONTENT_VERSION = "contentversion";
 }
