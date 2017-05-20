@@ -42,5 +42,7 @@ public class JsonKey {
 	public static final Object SUCCESS = "SUCCESS";
 	public static final String NOT_AVAILABLE = "NA";
 	public static final String COURSE_IDS = "courseids";
+	public static final String COURSE_VERSION = "courseversion";
+	public static final String CONTENT_VERSION = "contentversion";
 
 }
