@@ -28,6 +28,13 @@ public interface ResponseMessage {
 		public static final String VERSION_MISSING = "version is mandatory.";
 		public static final String COURSE_DESCRIPTION_MISSING = "Description is mandatory.";
 		public static final String COURSE_TOCURL_MISSING = "Course tocurl is mandatory.";
+		public static final String EMAIL_MISSING = "Email is mandatory.";
+		public static final String EMAIL_FORMAT = "Email is invalid.";
+		public static final String FIRST_NAME_MISSING = "First name is mandatory.";
+		public static final String LANGUAGE_MISSING = "Language is mandatory.";
+		public static final String PASSWORD_MISSING = "Password is mandatory.";
+		public static final String PASSWORD_MIN_LENGHT = "Password should have at least 8 character.";
+		public static final String PASSWORD_MAX_LENGHT = "Password should not be more than 12 character.";
 	}
 
 	public interface Key {
@@ -52,6 +59,13 @@ public interface ResponseMessage {
 		public static final String VERSION_MISSING ="CONTENT_ID_REQUIRED_ERROR";
 		public static final String COURSE_DESCRIPTION_MISSING = "COURSE_DESCRIPTION_REQUIRED_ERROR";
 		public static final String COURSE_TOCURL_MISSING = "COURSE_TOCURL_REQUIRED_ERROR";
+		public static final String EMAIL_MISSING = "EMAIL_ID_REQUIRED_ERROR";
+		public static final String EMAIL_FORMAT = "EMAIL_FORMAT_ERROR";
+		public static final String FIRST_NAME_MISSING = "FIRST_NAME_REQUIRED_ERROR";
+		public static final String LANGUAGE_MISSING = "LANGUAGE_REQUIRED_ERROR";
+		public static final String PASSWORD_MISSING = "PASSWORD_REQUIRED_ERROR";
+		public static final String PASSWORD_MIN_LENGHT = "PASSWORD_MIN_LENGHT_ERROR";
+		public static final String PASSWORD_MAX_LENGHT = "PASSWORD_MAX_LENGHT_ERROR";
 	}
 }
 

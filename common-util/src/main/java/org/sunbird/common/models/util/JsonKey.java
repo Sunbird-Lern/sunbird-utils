@@ -42,5 +42,9 @@ public class JsonKey {
 	public static final Object SUCCESS = "SUCCESS";
 	public static final String NOT_AVAILABLE = "NA";
 	public static final String COURSE_IDS = "courseids";
-
+	public static final String EMAIL = "email";
+	public static final String FIRST_NAME = "firstName";
+	public static final String PASSWORD ="password";
+	public static final String LANGUAGE ="language";
+	public static final String NEW_PASSWORD = "newPassword";
 }

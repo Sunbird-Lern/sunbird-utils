@@ -5,6 +5,8 @@ package org.sunbird.common.models.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 
@@ -40,6 +42,28 @@ public class ProjectUtil {
 	 */
 	public static String getFormattedDate() {
 		return format.format(new Date());
+	}
+    
+	
+	private static Pattern pattern;
+	private static final String EMAIL_PATTERN =
+		"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+		+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+	static {
+		pattern = Pattern.compile(EMAIL_PATTERN);
+	   }
+
+	/**
+	 * Validate email with regular expression
+	 *
+	 * @param email
+	 * @return true valid email, false invalid email
+	 */
+	public static boolean isEmailvalid(final String email) {
+		Matcher matcher = pattern.matcher(email);
+		return matcher.matches();
+
 	}
 
 }

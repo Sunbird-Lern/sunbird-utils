@@ -60,6 +60,7 @@ public final class RequestValidator {
 	 * if any mandatory data is missing then it will throw exception.
 	 * @param Request contentRequestDto
 	 */
+	@SuppressWarnings("unchecked")
 	public static void validateUpdateContent(Request contentRequestDto) {
 		if (ProjectUtil.isStringNullOREmpty(contentRequestDto.getParams().getDid())) {
 			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.deviceIdRequired.getErrorCode(),
@@ -118,4 +119,114 @@ public final class RequestValidator {
 			throw dataException;
 		}
 	}
+	
+	/**
+	 * This method will validate create user data.
+	 * @param userRequest Request
+	 */
+	public static void validateCreateUser(Request userRequest) {
+		if (userRequest.getRequest().get(JsonKey.EMAIL) == null) {
+			throw new ProjectCommonException(ResponseCode.emailRequired.getErrorCode(),
+					ResponseCode.emailRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		} else if (!ProjectUtil.isEmailvalid((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
+			throw new ProjectCommonException(ResponseCode.emailFormatError.getErrorCode(),
+					ResponseCode.emailFormatError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		} else if (userRequest.getRequest().get(JsonKey.FIRST_NAME) == null
+				|| (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.FIRST_NAME)))) {
+			throw new ProjectCommonException(ResponseCode.firstNameRequired.getErrorCode(),
+					ResponseCode.firstNameRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		} else if (userRequest.getRequest().get(JsonKey.PASSWORD) == null
+				|| (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PASSWORD)))) {
+			throw new ProjectCommonException(ResponseCode.passwordRequired.getErrorCode(),
+					ResponseCode.passwordRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		} else if (userRequest.getRequest().get(JsonKey.LANGUAGE) == null
+				|| ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.LANGUAGE))) {
+			throw new ProjectCommonException(ResponseCode.languageRequired.getErrorCode(),
+					ResponseCode.languageRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		}
+	}
+	
+	
+	
+	/**
+	 * This method will validate update user data.
+	 * @param userRequest Request
+	 */
+	public static void validateUpdateUser(Request userRequest) {
+		if (ProjectUtil.isStringNullOREmpty(userRequest.getParams().getSid())) {
+			throw new ProjectCommonException(ResponseCode.sessionIdRequiredError.getErrorCode(),
+					ResponseCode.sessionIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());		
+	}
+   }
+
+	/**
+	 * This method will validate user login data.
+	 * @param userRequest Request
+	 */
+	public static void validateUserLogin(Request userRequest) {
+		if (userRequest.getRequest().get(JsonKey.EMAIL) == null) {
+			throw new ProjectCommonException(ResponseCode.emailRequired.getErrorCode(),
+					ResponseCode.emailRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		} else if (!ProjectUtil.isEmailvalid((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
+			throw new ProjectCommonException(ResponseCode.emailFormatError.getErrorCode(),
+					ResponseCode.emailFormatError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		} else if (userRequest.getRequest().get(JsonKey.PASSWORD) == null
+				|| (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PASSWORD)))) {
+			throw new ProjectCommonException(ResponseCode.passwordRequired.getErrorCode(),
+					ResponseCode.passwordRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		}
+	}
+	
+	/**
+	 * This method will validate change password requested data.
+	 * @param userRequest Request
+	 */
+	public static void validateChangePassword(Request userRequest) {
+		if (ProjectUtil.isStringNullOREmpty(userRequest.getParams().getSid())) {
+			throw new ProjectCommonException(ResponseCode.sessionIdRequiredError.getErrorCode(),
+					ResponseCode.sessionIdRequiredError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		} else if (userRequest.getRequest().get(JsonKey.PASSWORD) == null
+				|| (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PASSWORD)))) {
+			throw new ProjectCommonException(ResponseCode.passwordRequired.getErrorCode(),
+					ResponseCode.passwordRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		} else if (userRequest.getRequest().get(JsonKey.NEW_PASSWORD) == null
+				|| (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.NEW_PASSWORD)))) {
+			throw new ProjectCommonException(ResponseCode.passwordRequired.getErrorCode(),
+					ResponseCode.passwordRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		}
+	}
+	
+	
+	/**
+	 * This method will validate add course request data.
+	 * @param userRequest Request
+	 */
+	public static void validateaddCourse(Request userRequest) {
+		
+	}
+	
+	/**
+	 * This method will validate update course request data.
+	 * @param userRequest Request
+	 */
+	public static void validateUpdateCourse(Request userRequest) {
+		
+	}
+	
+	/**
+	 * This method will validate published course request data.
+	 * @param userRequest Request
+	 */
+	public static void validatePublishCourse(Request userRequest) {
+		
+	}
+	
+	/**
+	 * This method will validate published course request data.
+	 * @param userRequest Request
+	 */
+	public static void validateSearchCourse(Request userRequest) {
+		
+	}
+	
 }
