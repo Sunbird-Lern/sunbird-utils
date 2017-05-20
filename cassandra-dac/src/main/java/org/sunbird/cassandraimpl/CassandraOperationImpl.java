@@ -69,7 +69,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 		Iterator<String> iterator = request.keySet().iterator(); 
 		Object [] array =  new Object[request.keySet().size()];
 		int i=0;
-		while (iterator.hasNext()) {
+		while (iterator.hasNext()){
 			String key = iterator.next();
 			if(!key.equalsIgnoreCase(Constants.IDENTIFIER)){
 			array[i++] = request.get(key);

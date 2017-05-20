@@ -26,6 +26,8 @@ public enum ResponseCode {
 	courseIdRequiredError (ResponseMessage.Key.COURSE_ID_MISSING, ResponseMessage.Message.COURSE_ID_MISSING),
 	contentIdRequiredError (ResponseMessage.Key.CONTENT_ID_MISSING, ResponseMessage.Message.CONTENT_ID_MISSING),
 	versionRequiredError (ResponseMessage.Key.VERSION_MISSING, ResponseMessage.Message.VERSION_MISSING),
+	courseVersionRequiredError (ResponseMessage.Key.COURSE_VERSION_MISSING, ResponseMessage.Message.COURSE_VERSION_MISSING),
+	contentVersionRequiredError (ResponseMessage.Key.CONTENT_VERSION_MISSING, ResponseMessage.Message.CONTENT_VERSION_MISSING),
 	courseDescriptionError(ResponseMessage.Key.COURSE_DESCRIPTION_MISSING, ResponseMessage.Message.COURSE_DESCRIPTION_MISSING),
 	courseTocUrlError(ResponseMessage.Key.COURSE_TOCURL_MISSING, ResponseMessage.Message.COURSE_TOCURL_MISSING),
 	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404); 

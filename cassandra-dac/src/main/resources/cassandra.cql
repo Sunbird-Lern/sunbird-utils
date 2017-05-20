@@ -17,7 +17,7 @@ ALTER USER cassandra WITH PASSWORD 'password';
 USE cassandraKeySpace;
 
 
-CREATE TABLE IF NOT EXISTS cassandraKeySpace.course_enrollment(id text, courseId text, courseName text,userId text,enrolledDate text,description text,tocUrl text,status text,active boolean,delta text,version text,grade text,progress text,dateTime timestamp,PRIMARY KEY (id));
+CREATE TABLE IF NOT EXISTS cassandraKeySpace.course_enrollment(id text, courseId text, courseName text,userId text,enrolledDate text,description text,tocUrl text,status text,active boolean,delta text,courseVersion text,grade text,progress text,lastReadContentId text,lastReadContentStatus text,lastReadContentVersion text,dateTime timestamp,PRIMARY KEY (id));
 
 
 CREATE TABLE IF NOT EXISTS cassandraKeySpace.content_consumption(id text, contentId text, courseId text, userId text,viewPosition text,viewCount text,lastAccessTime text,completedCount text,status int,position text,result text,score text,grade text,version text,lastUpdatedTime text,lastCompletedTime text,dateTime timestamp,PRIMARY KEY (id));
