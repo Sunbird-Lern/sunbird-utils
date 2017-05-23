@@ -157,7 +157,11 @@ public final class RequestValidator {
 		if (ProjectUtil.isStringNullOREmpty(userRequest.getParams().getSid())) {
 			throw new ProjectCommonException(ResponseCode.sessionIdRequiredError.getErrorCode(),
 					ResponseCode.sessionIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());		
-	}
+		}if (ProjectUtil.isStringNullOREmpty(userRequest.getParams().getDid())) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.deviceIdRequired.getErrorCode(),
+					ResponseCode.deviceIdRequired.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		}
    }
 
 	/**
@@ -175,6 +179,9 @@ public final class RequestValidator {
 				|| (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PASSWORD)))) {
 			throw new ProjectCommonException(ResponseCode.passwordRequired.getErrorCode(),
 					ResponseCode.passwordRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		}else if ((ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.LOGIN_TYPE)))) {
+			throw new ProjectCommonException(ResponseCode.loginTypeRequired.getErrorCode(),
+					ResponseCode.loginTypeRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 		}
 	}
 	
