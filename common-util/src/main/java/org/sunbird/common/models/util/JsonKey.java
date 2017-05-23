@@ -60,4 +60,6 @@ public class JsonKey {
     public static final String PUBLISH_COURSE = "publishcourse";
     public static final String USER = "user";
     public static final String LOGIN_TYPE = "type";
+    public static final String CREATED_DATE = "createddate";
+    public static final String UPDATED_DATE = "updateddate";
 }
