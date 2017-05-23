@@ -58,6 +58,8 @@ public class JsonKey {
     public static final String LAST_READ_CONTENT_STATUS = "lastreadcontentstatus";
     public static final String LAST_READ_CONTENT_VERSION = "lastreadcontentversion";
     public static final String PUBLISH_COURSE = "publishcourse";
+    public static final String COURSE_CREATED_FOR = "createdfor";
+    public static final String ENROLLMENT_END_DATE = "enrollmentenddate";
     public static final String USER = "user";
     public static final String LOGIN_TYPE = "type";
     public static final String CREATED_DATE = "createddate";
