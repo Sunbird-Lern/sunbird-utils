@@ -37,6 +37,10 @@ public enum ResponseCode {
 	passwordRequired(ResponseMessage.Key.PASSWORD_MISSING, ResponseMessage.Message.PASSWORD_MISSING),
 	passwordMinLengthError(ResponseMessage.Key.PASSWORD_MIN_LENGHT, ResponseMessage.Message.PASSWORD_MIN_LENGHT),
 	passwordMaxLengthError(ResponseMessage.Key.PASSWORD_MAX_LENGHT, ResponseMessage.Message.PASSWORD_MAX_LENGHT),
+	organisationIdRequiredError (ResponseMessage.Key.ORGANISATION_ID_MISSING, ResponseMessage.Message.ORGANISATION_ID_MISSING),
+	organisationNameRequired(ResponseMessage.Key.ORGANISATION_NAME_MISSING, ResponseMessage.Message.ORGANISATION_NAME_MISSING),
+	enrollmentStartDateRequiredError(ResponseMessage.Key.ENROLLMENT_START_DATE_MISSING, ResponseMessage.Message.ENROLLMENT_START_DATE_MISSING),
+	courseDurationRequiredError(ResponseMessage.Key.COURSE_DURATION_MISSING, ResponseMessage.Message.COURSE_DURATION_MISSING),
 	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404); 
 	
 	private int responseCode;

@@ -202,8 +202,46 @@ public final class RequestValidator {
 	 * This method will validate add course request data.
 	 * @param userRequest Request
 	 */
-	public static void validateAddCourse(Request userRequest) {
-		
+	public static void validateAddCourse(Request courseRequest) {
+
+		if (ProjectUtil.isStringNullOREmpty(courseRequest.getParams().getDid())) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.deviceIdRequired.getErrorCode(),
+					ResponseCode.deviceIdRequired.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		} else if (ProjectUtil.isStringNullOREmpty(courseRequest.getParams().getSid())) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.sessionIdRequiredError.getErrorCode(),
+					ResponseCode.sessionIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		}else if (courseRequest.getRequest().get(JsonKey.COURSE_ID) == null) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.courseIdRequiredError.getErrorCode(),
+					ResponseCode.courseIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		}else if (courseRequest.getRequest().get(JsonKey.COURSE_NAME) == null) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.courseNameRequired.getErrorCode(),
+					ResponseCode.courseNameRequired.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		}else if (courseRequest.getRequest().get(JsonKey.ORGANISATION_ID) == null) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.organisationIdRequiredError.getErrorCode(),
+					ResponseCode.organisationIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		}else if (courseRequest.getRequest().get(JsonKey.ORGANISATION_NAME) == null) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.organisationNameRequired.getErrorCode(),
+					ResponseCode.organisationNameRequired.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		}else if (courseRequest.getRequest().get(JsonKey.ENROLLMENT_START_DATE) == null) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.enrollmentStartDateRequiredError.getErrorCode(),
+					ResponseCode.enrollmentStartDateRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		}else if (courseRequest.getRequest().get(JsonKey.COURSE_DURATION) == null) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.courseDurationRequiredError.getErrorCode(),
+					ResponseCode.courseDurationRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		}else if (courseRequest.getRequest().get(JsonKey.VERSION) == null) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.versionRequiredError.getErrorCode(),
+					ResponseCode.versionRequiredError.getErrorMessage(),ResponseCode.courseVersionRequiredError.getResponseCode());
+			throw dataException;
+		}
+	
 	}
 	
 	/**

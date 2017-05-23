@@ -49,4 +49,8 @@ public class JsonKey {
 	public static final String NEW_PASSWORD = "newPassword";
 	public static final String COURSE_VERSION = "courseversion";
 	public static final String CONTENT_VERSION = "contentversion";
+	public static final String ORGANISATION_ID = "organisationid";
+	public static final String ORGANISATION_NAME = "organisationname";
+	public static final String ENROLLMENT_START_DATE = "enrollementstartdate";
+	public static final String COURSE_DURATION = "courseduration";
 }
