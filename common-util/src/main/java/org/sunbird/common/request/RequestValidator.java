@@ -12,7 +12,7 @@ import org.sunbird.common.responsecode.ResponseCode;
  * This call will do validation
  * for all incoming request data.
  * @author Manzarul
- *
+ * @author Amit Kumar
  */
 public final class RequestValidator {
     
@@ -202,7 +202,7 @@ public final class RequestValidator {
 	 * This method will validate add course request data.
 	 * @param userRequest Request
 	 */
-	public static void validateaddCourse(Request userRequest) {
+	public static void validateAddCourse(Request userRequest) {
 		
 	}
 	
