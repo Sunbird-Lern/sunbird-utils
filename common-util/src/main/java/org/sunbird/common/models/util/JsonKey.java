@@ -62,4 +62,8 @@ public class JsonKey {
     public static final String LOGIN_TYPE = "type";
     public static final String CREATED_DATE = "createddate";
     public static final String UPDATED_DATE = "updateddate";
+    public static final String UPDATED_BY = "updatedby";
+    public static final String LOGIN_GENERAL = "general";
+    public static final String SOURCE = "source";
+    public static final String TOKEN = "token";
 }

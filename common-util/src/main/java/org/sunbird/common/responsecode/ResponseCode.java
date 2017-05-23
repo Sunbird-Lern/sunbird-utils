@@ -42,6 +42,7 @@ public enum ResponseCode {
 	enrollmentStartDateRequiredError(ResponseMessage.Key.ENROLLMENT_START_DATE_MISSING, ResponseMessage.Message.ENROLLMENT_START_DATE_MISSING),
 	courseDurationRequiredError(ResponseMessage.Key.COURSE_DURATION_MISSING, ResponseMessage.Message.COURSE_DURATION_MISSING),
 	loginTypeRequired(ResponseMessage.Key.LOGIN_TYPE_MISSING, ResponseMessage.Message.LOGIN_TYPE_MISSING),
+	emailAlreadyExistError(ResponseMessage.Key.EMAIL_IN_USE, ResponseMessage.Message.EMAIL_IN_USE),
 	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404); 
 	
 	private int responseCode;
