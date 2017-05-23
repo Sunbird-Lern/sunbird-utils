@@ -5,6 +5,7 @@ package org.sunbird.common.models.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -65,5 +66,16 @@ public class ProjectUtil {
 		return matcher.matches();
 
 	}
-
+   /**
+    * This method will generate user auth token based on user name , source and timestamp	
+    * @param userName String
+    * @param source String 
+    * @return String
+    */
+	public static String createUserAuthToken(String userName,String source) {
+		String data = userName +source+System.currentTimeMillis();
+		UUID authId = UUID.nameUUIDFromBytes(data.getBytes());
+		return authId.toString();
+	}
+ 
 }
