@@ -41,6 +41,7 @@ public interface ResponseMessage {
 		public static final String ORGANISATION_NAME_MISSING = "organisation name is missing";
 		public static final String ENROLLMENT_START_DATE_MISSING = "enrollment start date is missing";
 		public static final String COURSE_DURATION_MISSING = "course duration is missing";
+		public static final String LOGIN_TYPE_MISSING = "login type is required.";
 	}
 
 	public interface Key {
@@ -78,6 +79,7 @@ public interface ResponseMessage {
 		public static final String ORGANISATION_NAME_MISSING = "ORGANISATION_NAME_MISSING";
 		public static final String ENROLLMENT_START_DATE_MISSING = "ENROLLMENT_START_DATE_MISSING";
 		public static final String COURSE_DURATION_MISSING = "COURSE_DURATION_MISSING";
+		public static final String LOGIN_TYPE_MISSING = "LOGIN_TYPE_MISSING";
 	}
 }
 
