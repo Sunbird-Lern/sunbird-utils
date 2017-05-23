@@ -57,4 +57,5 @@ public class JsonKey {
     public static final String LAST_READ_CONTENTID = "lastreadcontentid";
     public static final String LAST_READ_CONTENT_STATUS = "lastreadcontentstatus";
     public static final String LAST_READ_CONTENT_VERSION = "lastreadcontentversion";
+    public static final String PUBLISH_COURSE = "publishcourse";
 }

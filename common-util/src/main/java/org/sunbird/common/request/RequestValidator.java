@@ -256,8 +256,28 @@ public final class RequestValidator {
 	 * This method will validate published course request data.
 	 * @param userRequest Request
 	 */
-	public static void validatePublishCourse(Request userRequest) {
-		
+	public static void validatePublishCourse(Request request) {
+		if (ProjectUtil.isStringNullOREmpty(request.getParams().getDid())) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.deviceIdRequired.getErrorCode(),
+					ResponseCode.deviceIdRequired.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		} else if (ProjectUtil.isStringNullOREmpty(request.getParams().getSid())) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.sessionIdRequiredError.getErrorCode(),
+					ResponseCode.sessionIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		}else if (request.getRequest().get(JsonKey.COURSE_ID) == null) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.courseIdRequiredError.getErrorCode(),
+					ResponseCode.courseIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		}else if (request.getRequest().get(JsonKey.VERSION) == null) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.versionRequiredError.getErrorCode(),
+					ResponseCode.versionRequiredError.getErrorMessage(),ResponseCode.courseVersionRequiredError.getResponseCode());
+			throw dataException;
+		}else if (request.getRequest().get(JsonKey.ORGANISATION_ID) == null) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.organisationIdRequiredError.getErrorCode(),
+					ResponseCode.organisationIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		}
 	}
 	
 	/**
@@ -266,6 +286,34 @@ public final class RequestValidator {
 	 */
 	public static void validateSearchCourse(Request userRequest) {
 		
+	}
+	
+	/**
+	 * This method will validate Delete course request data.
+	 * @param userRequest Request
+	 */
+	public static void validateDeleteCourse(Request request) {
+		if (ProjectUtil.isStringNullOREmpty(request.getParams().getDid())) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.deviceIdRequired.getErrorCode(),
+					ResponseCode.deviceIdRequired.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		} else if (ProjectUtil.isStringNullOREmpty(request.getParams().getSid())) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.sessionIdRequiredError.getErrorCode(),
+					ResponseCode.sessionIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		}else if (request.getRequest().get(JsonKey.COURSE_ID) == null) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.courseIdRequiredError.getErrorCode(),
+					ResponseCode.courseIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		}else if (request.getRequest().get(JsonKey.VERSION) == null) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.versionRequiredError.getErrorCode(),
+					ResponseCode.versionRequiredError.getErrorMessage(),ResponseCode.courseVersionRequiredError.getResponseCode());
+			throw dataException;
+		}else if (request.getRequest().get(JsonKey.ORGANISATION_ID) == null) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.organisationIdRequiredError.getErrorCode(),
+					ResponseCode.organisationIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		}
 	}
 	
 }
