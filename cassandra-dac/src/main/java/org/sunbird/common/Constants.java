@@ -54,5 +54,32 @@ public interface Constants {
 			return this.value;
 		}
 	}
+	public enum UserStatus {
+		ACTIVE(1),INACTIVE(0);
+
+		private int value;
+
+		UserStatus(int value){
+			this.value=value;
+		}
+
+		public int getValue(){
+			return this.value;
+		}
+	}
+	
+	public enum CourseMgmtStatus {
+		DRAFT("draft"),LIVE("live"),RETIRED("retired");
+
+		private String value;
+
+		CourseMgmtStatus(String value){
+			this.value=value;
+		}
+
+		public String getValue(){
+			return this.value;
+		}
+	}
 
 }
