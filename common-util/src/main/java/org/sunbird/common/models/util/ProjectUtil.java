@@ -101,7 +101,6 @@ public class ProjectUtil {
 		UUID authId = UUID.nameUUIDFromBytes(data.getBytes());
 		return authId.toString();
 	}
-
 	
 	/**
 	 * This method will generate unique id based on current time stamp and some 
@@ -116,4 +115,13 @@ public class ProjectUtil {
 		uid = uid << 13;
 		return env + "" + uid +  "" + atomicInteger.getAndIncrement();
 	}
+
+	/**
+	 * This method will generate the unique id .
+	 * @return
+	 */
+	public synchronized static String generateUniqueId(){
+		return UUID.randomUUID().toString();
+	}
+
 }
