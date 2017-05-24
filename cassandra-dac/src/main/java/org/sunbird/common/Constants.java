@@ -37,6 +37,7 @@ public interface Constants {
 	public static final String CLOSING_BRACE=");";
 	public static final String OPEN_BRACE="(";
 	public static final String COMMA=",";
+	public static final String COMMA_BRAC= "),";
 	public static final String UPDATE="UPDATE ";
 	public static final String SET=" SET ";
 	public static final String WHERE=" where ";
