@@ -5,7 +5,9 @@ package org.sunbird.common.models.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,7 +24,29 @@ public class ProjectUtil {
 	 * format the date in YYYY-MM-DD hh:mm:ss:SSZ
 	 */
 	 public static final SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss:SSSZ");
-	
+	private static AtomicInteger atomicInteger = new AtomicInteger();
+    
+	/**
+	 * 
+	 * @author Manzarul
+	 *
+	 */
+	public enum Environment {
+		dev(1), qa(2), prod(3);
+		int value;
+
+		private Environment(int value) {
+			this.value = value;
+		}
+
+		public int getValue() {
+			return value;
+		}
+
+		public void setValue(int value) {
+			this.value = value;
+		}
+	}
 	/**
 	 * This method will check incoming value is null or empty
 	 * it will do empty check by doing trim method. in case of 
@@ -77,5 +101,18 @@ public class ProjectUtil {
 		UUID authId = UUID.nameUUIDFromBytes(data.getBytes());
 		return authId.toString();
 	}
- 
+	
+	/**
+	 * This method will generate unique id based on current time stamp and some 
+	 * random value mixed up.
+	 * @param environmentId int
+	 * @return String
+	 */
+	public static String getUniqueIdFromTimestamp(int environmentId) {
+		long env = environmentId / 10000000;
+		Random random = new Random();
+		long uid = System.currentTimeMillis()+random.nextInt(999999);
+		uid = uid << 13;
+		return env + "" + uid +  "" + atomicInteger.getAndIncrement();
+	}
 }
