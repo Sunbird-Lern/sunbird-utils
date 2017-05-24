@@ -69,4 +69,5 @@ public class JsonKey {
     public static final String SOURCE = "source";
     public static final String TOKEN = "token";
     public static final String USERNAME = "username";
+    public static final String LAST_LOGOUT_TIME ="lastlogouttime";
 }
