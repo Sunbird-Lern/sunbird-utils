@@ -23,7 +23,7 @@ CREATE INDEX inx_ce_courseId ON cassandraKeySpace.course_enrollment (courseId);
 CREATE INDEX inx_ce_course_name ON cassandraKeySpace.course_enrollment (courseName);
 CREATE INDEX inx_ce_status ON cassandraKeySpace.course_enrollment (status);
 
-CREATE TABLE IF NOT EXISTS cassandraKeySpace.content_consumption(id text, contentId text, courseId text, userId text,viewPosition text,viewCount text,lastAccessTime text,completedCount text,status int,position text,result text,score text,grade text,version text,lastUpdatedTime text,lastCompletedTime text,dateTime timestamp,PRIMARY KEY (id));
+CREATE TABLE IF NOT EXISTS cassandraKeySpace.content_consumption(id text, contentId text, courseId text, userId text,viewPosition text,viewCount text,lastAccessTime text,completedCount text,status int,position text,result text,score text,grade text,ContentVersion text,CourseVersion text,lastUpdatedTime text,lastCompletedTime text,dateTime timestamp,PRIMARY KEY (id));
 CREATE INDEX inx_cc_userId ON cassandraKeySpace.content_consumption (userId);
 CREATE INDEX inx_cc_contentId ON cassandraKeySpace.content_consumption (contentId);
 CREATE INDEX inx_cc_status ON cassandraKeySpace.content_consumption (status);
