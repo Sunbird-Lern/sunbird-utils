@@ -73,9 +73,12 @@ public class ProjectUtil {
     * @return String
     */
 	public static String createUserAuthToken(String userName,String source) {
-		String data = userName +source+System.currentTimeMillis();
+		String data = userName +source;
 		UUID authId = UUID.nameUUIDFromBytes(data.getBytes());
 		return authId.toString();
+	}
+	public static void main(String[] args) {
+		System.out.println(createUserAuthToken("manzarul07@gmail.com", "app"));
 	}
  
 }
