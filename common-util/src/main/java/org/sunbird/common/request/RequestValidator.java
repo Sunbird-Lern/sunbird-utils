@@ -22,7 +22,7 @@ public final class RequestValidator {
 	 * if any mandatory data is missing then it will throw exception.
 	 * @param courseRequestDto CourseRequestDto
 	 */
-	public static void validateCreateCourse(Request courseRequestDto) {
+	public static void validateEnrollCourse(Request courseRequestDto) {
 		if (ProjectUtil.isStringNullOREmpty(courseRequestDto.getParams().getDid())) {
 			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.deviceIdRequired.getErrorCode(),
 					ResponseCode.deviceIdRequired.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
@@ -39,17 +39,9 @@ public final class RequestValidator {
 			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.courseIdRequiredError.getErrorCode(),
 					ResponseCode.courseIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
-		}else if (courseRequestDto.getRequest().get(JsonKey.COURSE_NAME) == null) {
-			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.courseNameRequired.getErrorCode(),
-					ResponseCode.courseNameRequired.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
-			throw dataException;
-		}else if (courseRequestDto.getRequest().get(JsonKey.DESCRIPTION) == null) {
-			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.courseDescriptionError.getErrorCode(),
-					ResponseCode.courseDescriptionError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
-			throw dataException;
-		}else if (courseRequestDto.getRequest().get(JsonKey.TOC_URL) == null) {
-			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.courseTocUrlError.getErrorCode(),
-					ResponseCode.courseTocUrlError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+		}if (ProjectUtil.isStringNullOREmpty(courseRequestDto.getParams().getAuthToken())) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.userIdRequired.getErrorCode(),
+					ResponseCode.userIdRequired.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
 		}
 	}
@@ -73,6 +65,10 @@ public final class RequestValidator {
 		}else if (ProjectUtil.isStringNullOREmpty(contentRequestDto.getParams().getMsgid())) {
 			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.msgIdRequiredError.getErrorCode(),
 					ResponseCode.msgIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		}if (ProjectUtil.isStringNullOREmpty(contentRequestDto.getParams().getAuthToken())) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.userIdRequired.getErrorCode(),
+					ResponseCode.userIdRequired.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
 		}else 
 			{
@@ -125,6 +121,10 @@ public final class RequestValidator {
 		}else if (ProjectUtil.isStringNullOREmpty(contentRequestDto.getParams().getMsgid())) {
 			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.msgIdRequiredError.getErrorCode(),
 					ResponseCode.msgIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		}if (ProjectUtil.isStringNullOREmpty(contentRequestDto.getParams().getAuthToken())) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.userIdRequired.getErrorCode(),
+					ResponseCode.userIdRequired.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
 		}
 	}
