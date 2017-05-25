@@ -184,7 +184,7 @@ public class CassandraTest {
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> result =  (List<Map<String, Object>>)response.getResult().get("response");
 		Map<String, Object> map = result.get(0);
-		assertTrue(((String)map.get("viewposition")).equalsIgnoreCase("viewPosition 1 updated"));
+		assertTrue(((String)map.get("viewPosition")).equalsIgnoreCase("viewPosition 1 updated"));
 	}
 	@Test
 	public void testDeleteContent() {

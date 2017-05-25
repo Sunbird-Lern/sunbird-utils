@@ -2,6 +2,7 @@ package org.sunbird.cassandraimpl;
 
 import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -66,17 +67,28 @@ public class CassandraOperationImpl implements CassandraOperation{
 		try{
 		String updateQuery = CassandraUtil.getUpdateQueryStatement(keyspaceName, tableName, request);
 		PreparedStatement statement = CassandraConnectionManager.getSession(keyspaceName).prepare(updateQuery);
-		Iterator<String> iterator = request.keySet().iterator(); 
-		Object [] array =  new Object[request.keySet().size()];
+		//Iterator<String> iterator = request.keySet().iterator(); 
+		//need to refactor this code
+		Object [] array =  new Object[request.size()];
 		int i=0;
-		while (iterator.hasNext()){
+		String str= updateQuery.substring(34);
+		str= str.replace("=", "");
+		str = str.replace("?", "");
+		str=str.replace("where id", "");
+		str=str.replace(";", "");
+		String [] arr = str.split(",");
+		/*while (iterator.hasNext()){
 			String key = iterator.next();
 			if(!key.equalsIgnoreCase(Constants.IDENTIFIER)){
 			array[i++] = request.get(key);
 			}
+		}*/
+		for(String key : arr){
+			array[i++] = request.get(key.trim());
 		}
 		array[i++] = request.get(Constants.IDENTIFIER);
 		BoundStatement boundStatement = statement.bind(array);
+		System.out.println(Arrays.toString(array));
 		CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement);
 		response.put(Constants.RESPONSE, Constants.SUCCESS);
 		}catch(Exception e){

@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.LogHelper;
+import org.sunbird.common.models.util.PropertiesCache;
 
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
@@ -22,6 +23,7 @@ import com.datastax.driver.core.Row;
 public final class CassandraUtil{
 
 	private final static LogHelper LOGGER = LogHelper.getInstance(CassandraUtil.class.getName());
+	private final static PropertiesCache instance = PropertiesCache.getInstance();
 	
 	/**
 	 * this method is used to create prepared statement based on table name and column name provided
@@ -66,7 +68,7 @@ public final class CassandraUtil{
 			map=new HashMap<>();
 			for(int i=0;i<keyArray.length;i++){
 				int pos= keyArray[i].indexOf(Constants.OPEN_BRACE);
-				String column = keyArray[i].substring(0,pos).trim();
+				String column = instance.getProperty(keyArray[i].substring(0,pos).trim());
 				map.put(column,row.getObject(column));
 			}
 			responseList.add(map);
