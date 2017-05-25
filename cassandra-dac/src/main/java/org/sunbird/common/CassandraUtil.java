@@ -94,5 +94,4 @@ public final class CassandraUtil{
 	    System.out.println(query.toString());
 		return query.toString();
 	}
-
 }

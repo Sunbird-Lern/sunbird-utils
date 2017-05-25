@@ -69,5 +69,10 @@ public class JsonKey {
     public static final String SOURCE = "source";
     public static final String TOKEN = "token";
     public static final String USERNAME = "username";
+    public static final String MESSAGE_ID = "X-msgid";
+    public static final String REQUEST_MESSAGE_ID = "msgid";
+    public static final String PARAMS = "params";
+    public static final String AUTH_TOKEN = "authToken";
+    public static final String COURSES = "courses";
     public static final String LAST_LOGOUT_TIME ="lastlogouttime";
 }
