@@ -34,7 +34,7 @@ public class PropertiesCache {
 	   }
 	    
 	   public String getProperty(String key){
-	      return configProp.getProperty(key);
+	      return configProp.getProperty(key)!=null?configProp.getProperty(key):key;
 	   }
 	    
 	   public static void main(String[] args) {
