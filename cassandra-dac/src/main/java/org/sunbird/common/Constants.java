@@ -43,7 +43,7 @@ public interface Constants {
 	public static final String WHERE=" where ";
 	
 	public enum LearnerStateOperation {
-		NOT_STARTED("notStarted"),STARTED("started"),COMPLETED("completed");
+		NOT_STARTED("default"),STARTED("inProgress"),COMPLETED("completed");
 
 		private String value;
 

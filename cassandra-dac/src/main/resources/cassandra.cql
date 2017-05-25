@@ -37,7 +37,7 @@ CREATE INDEX inx_cm_courseId ON cassandraKeySpace.course_management (courseId);
 CREATE INDEX inx_cm_course_name ON cassandraKeySpace.course_management (courseName);
 CREATE INDEX inx_cm_status ON cassandraKeySpace.course_management (status);
 		
-CREATE TABLE IF NOT EXISTS cassandraKeySpace.user(id text,userId text, email text,phone text,aadhaarNo text,createdDate text,updatedDate text,updatedBy text,lastLoginTime text,status text,firstName text,lastName text,password text,avatar text,gender text,language text,state text,city text,zipcode text,PRIMARY KEY (id));
+CREATE TABLE IF NOT EXISTS cassandraKeySpace.user(id text,userId text,userName text, email text,phone text,aadhaarNo text,createdDate text,updatedDate text,updatedBy text,lastLoginTime text,status text,firstName text,lastName text,password text,avatar text,gender text,language text,state text,city text,zipcode text,PRIMARY KEY (id));
 CREATE INDEX inx_u_email ON cassandraKeySpace.user (email);
 CREATE INDEX inx_u_phone ON cassandraKeySpace.user (phone);
 CREATE INDEX inx_u_status ON cassandraKeySpace.user (status);

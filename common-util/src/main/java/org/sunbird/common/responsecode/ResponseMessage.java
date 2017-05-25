@@ -45,6 +45,9 @@ public interface ResponseMessage {
 		public static final String EMAIL_IN_USE = "Email already exists.";
 		public static final String INVALID_CREDENTIAL = "invalid credential.";
 		public static final String USERNAME_MISSING = "username is mandatory.";
+		public static final String USERNAME_IN_USE = "Username already exists.";
+		public static final String USERID_MISSING = "userId is mandatory.";
+		public static final String MESSAGE_ID_MISSING = "message id is mandatory.";
 	}
 
 	public interface Key {
@@ -86,6 +89,9 @@ public interface ResponseMessage {
 		public static final String EMAIL_IN_USE = "EMAIL_IN_USE";
 		public static final String INVALID_CREDENTIAL = "INVALID_CREDENTIAL";
 		public static final String USERNAME_MISSING = "USERNAME_MISSING";
+		public static final String USERNAME_IN_USE = "USERNAME_IN_USE";
+		public static final String USERID_MISSING = "USERID_MISSING";
+		public static final String MESSAGE_ID_MISSING = "MESSAGE_ID_MISSING";
 	}
 }
 

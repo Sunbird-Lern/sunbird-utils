@@ -17,8 +17,24 @@ public class RequestParams implements Serializable {
     private String uid;
     private String cid;
     private String sid;
+    private String authToken;
 
-    public String getUid() {
+    
+    /**
+	 * @return the authToken
+	 */
+	public String getAuthToken() {
+		return authToken;
+	}
+
+	/**
+	 * @param authToken the authToken to set
+	 */
+	public void setAuthToken(String authToken) {
+		this.authToken = authToken;
+	}
+
+	public String getUid() {
 		return uid;
 	}
 
