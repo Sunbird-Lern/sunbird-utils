@@ -30,14 +30,14 @@ CREATE INDEX inx_cc_status ON cassandraKeySpace.content_consumption (status);
 CREATE INDEX inx_cc_courseId ON cassandraKeySpace.content_consumption (courseId);
 
 
-CREATE TABLE IF NOT EXISTS cassandraKeySpace.course_management(id text, courseId text, courseName text,facultyId text,facultyName text,organisationId text,organisationName text,enrollementStartDate text,enrollementEndDate text,courseDuration float,description text,status text,addedById text,addedByName text,publishedById text,publishedByName text,createdDate text,publishedDate text,updatedDate text,updatedById text,updatedByName text,version text,createdfor list<text>,tutor map<text,text>,PRIMARY KEY (id));
+CREATE TABLE IF NOT EXISTS cassandraKeySpace.course_management(id text, courseId text, courseName text,contentId text,facultyId text,facultyName text,organisationId text,organisationName text,enrollementStartDate text,enrollementEndDate text,courseDuration float,description text,status text,addedById text,addedByName text,publishedById text,publishedByName text,createdDate text,publishedDate text,updatedDate text,updatedById text,updatedByName text,version text,createdfor list<text>,tutor map<text,text>,PRIMARY KEY (id));
 CREATE INDEX inx_cm_facultyId ON cassandraKeySpace.course_management (facultyId);
 CREATE INDEX inx_cm_organisationId ON cassandraKeySpace.course_management (organisationId);
 CREATE INDEX inx_cm_courseId ON cassandraKeySpace.course_management (courseId);
 CREATE INDEX inx_cm_course_name ON cassandraKeySpace.course_management (courseName);
 CREATE INDEX inx_cm_status ON cassandraKeySpace.course_management (status);
 		
-CREATE TABLE IF NOT EXISTS cassandraKeySpace.user(id text, email text,phone text,aadhaarNo text,createdDate text,updatedDate text,updatedBy text,lastLoginTime text,status text,firstName text,lastName text,password text,avatar text,gender text,language text,state text,city text,zipcode text,PRIMARY KEY (id));
+CREATE TABLE IF NOT EXISTS cassandraKeySpace.user(id text,userId text, email text,phone text,aadhaarNo text,createdDate text,updatedDate text,updatedBy text,lastLoginTime text,status text,firstName text,lastName text,password text,avatar text,gender text,language text,state text,city text,zipcode text,PRIMARY KEY (id));
 CREATE INDEX inx_u_email ON cassandraKeySpace.user (email);
 CREATE INDEX inx_u_phone ON cassandraKeySpace.user (phone);
 CREATE INDEX inx_u_status ON cassandraKeySpace.user (status);

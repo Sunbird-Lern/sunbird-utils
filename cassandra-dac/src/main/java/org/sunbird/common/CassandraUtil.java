@@ -2,10 +2,9 @@ package org.sunbird.common;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.sunbird.common.models.response.Response;
@@ -36,8 +35,7 @@ public final class CassandraUtil{
 		StringBuilder query=new StringBuilder();
 		query.append(Constants.INSERT_INTO+keyspaceName+Constants.DOT+tableName+Constants.OPEN_BRACE);
 		Set<String> keySet= map.keySet();
-		String keyStmt = String.join(",", keySet);
-		query.append(keyStmt+Constants.VALUES_WITH_BRACE);
+		query.append(String.join(",", keySet)+Constants.VALUES_WITH_BRACE);
 		StringBuilder commaSepValueBuilder = new StringBuilder();
 	    for ( int i = 0; i< keySet.size(); i++){
 	      commaSepValueBuilder.append(Constants.QUE_MARK);
@@ -63,17 +61,13 @@ public final class CassandraUtil{
 		Map<String, Object> map=null;
 		List<Map<String, Object>> responseList= new ArrayList<>();
 		String str =results.getColumnDefinitions().toString().substring(8, results.getColumnDefinitions().toString().length()-1);
-		 String[] keyArray = str.split("\\), ");
-			for(int i=0;i<keyArray.length;i++){
-				int pos= keyArray[i].indexOf("(");
-				System.out.println((keyArray[i].substring(0,pos).trim()));
-			}
-		
+		String[] keyArray = str.split("\\), ");
 		for(Row row :rows){
 			map=new HashMap<>();
 			for(int i=0;i<keyArray.length;i++){
 				int pos= keyArray[i].indexOf(Constants.OPEN_BRACE);
-				map.put(keyArray[i].substring(0,pos).trim(),row.getObject(i));
+				String column = keyArray[i].substring(0,pos).trim();
+				map.put(column,row.getObject(column));
 			}
 			responseList.add(map);
 		}
@@ -91,37 +85,13 @@ public final class CassandraUtil{
 	 * @author Amit Kumar
 	 */
 	public static String getUpdateQueryStatement(String keyspaceName, String tableName, Map<String, Object> map){
-		StringBuilder query=new StringBuilder(Constants.UPDATE+keyspaceName+Constants.DOT+tableName+Constants.SET);
-		Iterator<Entry<String, Object>> itr1 = map.entrySet().iterator();
-		  int i=0;
-		  boolean found = false;
-		  while (itr1.hasNext()) {
-		   String key = itr1.next().getKey();
-		   if(!key.equalsIgnoreCase(Constants.IDENTIFIER)) {
-		    if(i<map.size()-1 || found) {
-		     if(found){
-		      if(i<map.size()-1 ) { 
-		          query.append( key +" = ? , ");
-		          } else {
-		           query.append( key +" = ? ");  
-		          } 
-		     }else{
-		       if(i<map.size()-2 ) { 
-		       query.append( key +" = ? , ");
-		       } else {
-		        query.append( key +" = ? ");  
-		       }
-		    }
-		    } 
-		   }else {
-		    found = true;
-		   }
-		   i++;  
-		  }
-		query.append(Constants.WHERE+Constants.IDENTIFIER +"= ? ;");
+		StringBuilder query=new StringBuilder(Constants.UPDATE + keyspaceName + Constants.DOT + tableName + Constants.SET);
+		Set<String> key =  new HashSet<>(map.keySet());
+		key.remove(Constants.IDENTIFIER);
+		query.append(String.join(" = ? ,", key));
+		query.append(" = ? "+ Constants.WHERE + Constants.IDENTIFIER +" = ? ;");
 	    LOGGER.debug(query.toString());
 	    System.out.println(query.toString());
 		return query.toString();
-		
 	}
 }
