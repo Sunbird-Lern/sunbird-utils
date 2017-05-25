@@ -26,6 +26,7 @@ public class Request implements Serializable {
     private String managerName;
     private String operation;
     private String request_id;
+    private int env;
 
     {
         // Set the context here.
@@ -159,4 +160,19 @@ public class Request implements Serializable {
 
     }
 
+	/**
+	 * @return the env
+	 */
+	public int getEnv() {
+		return env;
+	}
+
+	/**
+	 * @param env the env to set
+	 */
+	public void setEnv(int env) {
+		this.env = env;
+	}
+
+    
 }
