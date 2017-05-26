@@ -49,6 +49,8 @@ public interface ResponseMessage {
 		public static final String USERID_MISSING = "userId is mandatory.";
 		public static final String MESSAGE_ID_MISSING = "message id is mandatory.";
 		public static final String USERNAME_CANNOT_BE_UPDATED = "userName cann't be updated.";
+		public static final String AUTH_TOKEN_MISSING = "Auth token is mandatory.";
+		public static final String INVALID_AUTH_TOKEN = "Auth token is invalid.Please login again.";
 	}
 
 	public interface Key {
@@ -94,6 +96,8 @@ public interface ResponseMessage {
 		public static final String USERID_MISSING = "USERID_MISSING";
 		public static final String MESSAGE_ID_MISSING = "MESSAGE_ID_MISSING";
 		public static final String USERNAME_CANNOT_BE_UPDATED = "USERNAME_CANNOT_BE_UPDATED";
+		public static final String AUTH_TOKEN_MISSING = "X_Authenticated_Userid_MISSING";
+		public static final String INVALID_AUTH_TOKEN = "INVALID_AUTH_TOKEN";
 	}
 }
 
