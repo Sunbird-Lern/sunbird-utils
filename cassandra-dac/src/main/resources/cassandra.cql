@@ -30,7 +30,7 @@ CREATE INDEX inx_cc_status ON cassandraKeySpace.content_consumption (status);
 CREATE INDEX inx_cc_courseId ON cassandraKeySpace.content_consumption (courseId);
 
 
-CREATE TABLE IF NOT EXISTS cassandraKeySpace.course_management(id text, courseId text, courseName text,courseType text,contentId text,facultyId text,facultyName text,organisationId text,organisationName text,enrollementStartDate text,enrollementEndDate text,courseDuration float,description text,status text,addedById text,addedByName text,publishedById text,publishedByName text,createdDate text,publishedDate text,updatedDate text,updatedBy text,updatedByName text,contentType text,noOfLecture text,createdfor list<text>,tutor map<text,text>,PRIMARY KEY (id));
+CREATE TABLE IF NOT EXISTS cassandraKeySpace.course_management(id text, courseId text, courseName text,courseType text,contentId text,facultyId text,facultyName text,organisationId text,organisationName text,enrollementStartDate text,enrollementEndDate text,courseDuration float,description text,status text,addedBy text,addedByName text,publishedBy text,publishedByName text,createdDate text,publishedDate text,updatedDate text,updatedBy text,updatedByName text,contentType text,noOfLecture text,createdfor list<text>,tutor map<text,text>,PRIMARY KEY (id));
 CREATE INDEX inx_cm_facultyId ON cassandraKeySpace.course_management (facultyId);
 CREATE INDEX inx_cm_organisationId ON cassandraKeySpace.course_management (organisationId);
 CREATE INDEX inx_cm_courseId ON cassandraKeySpace.course_management (courseId);
