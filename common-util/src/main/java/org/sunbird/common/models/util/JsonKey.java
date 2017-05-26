@@ -78,4 +78,6 @@ public class JsonKey {
     public static final String ORGANISATION = "organisation";
     public static final String REQUESTED_BY = "requestedBy";
     public static final String ADDED_BY="addedBy";
+    public static final String UPDATED_BY_NAME = "updatedByName";
+    public static final String ADDED_BY_NAME="addedByName";
 }
