@@ -53,6 +53,25 @@ public class ProjectUtil {
 	 * @author Amit Kumar
 	 *
 	 */
+	public enum Status {
+		ACTIVE(0),INACTIVE(1);
+
+		private int value;
+
+		Status(int value){
+			this.value=value;
+		}
+
+		public int getValue(){
+			return this.value;
+		}
+	}
+	
+	/**
+	 * 
+	 * @author Amit Kumar
+	 *
+	 */
 	public enum ProgressStatus {
 		NOT_STARTED(0),STARTED(1),COMPLETED(2);
 
@@ -72,12 +91,12 @@ public class ProjectUtil {
 	 * @author Amit Kumar
 	 *
 	 */
-	public enum Status {
+	public enum ActiveStatus {
 		ACTIVE(true),INACTIVE(false);
 
 		private boolean value;
 
-		Status(boolean value){
+		ActiveStatus(boolean value){
 			this.value=value;
 		}
 

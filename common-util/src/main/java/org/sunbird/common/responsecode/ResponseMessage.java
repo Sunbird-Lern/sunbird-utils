@@ -51,6 +51,7 @@ public interface ResponseMessage {
 		public static final String USERNAME_CANNOT_BE_UPDATED = "userName cann't be updated.";
 		public static final String AUTH_TOKEN_MISSING = "Auth token is mandatory.";
 		public static final String INVALID_AUTH_TOKEN = "Auth token is invalid.Please login again.";
+		public static final String TIMESTAMP_REQUIRED = "TimeStamp is required.";
 	}
 
 	public interface Key {
@@ -98,6 +99,7 @@ public interface ResponseMessage {
 		public static final String USERNAME_CANNOT_BE_UPDATED = "USERNAME_CANNOT_BE_UPDATED";
 		public static final String AUTH_TOKEN_MISSING = "X_Authenticated_Userid_MISSING";
 		public static final String INVALID_AUTH_TOKEN = "INVALID_AUTH_TOKEN";
+		public static final String TIMESTAMP_REQUIRED = "TIMESTAMP_REQUIRED";
 	}
 }
 
