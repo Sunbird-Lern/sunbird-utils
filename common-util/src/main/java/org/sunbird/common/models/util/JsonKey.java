@@ -77,4 +77,5 @@ public class JsonKey {
     public static final String LAST_LOGOUT_TIME ="lastLogoutTime";
     public static final String ORGANISATION = "organisation";
     public static final String REQUESTED_BY = "requestedBy";
+    public static final String ADDED_BY="addedBy";
 }
