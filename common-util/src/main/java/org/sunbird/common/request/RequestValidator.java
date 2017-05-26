@@ -12,6 +12,7 @@ import org.sunbird.common.responsecode.ResponseCode;
  * This call will do validation
  * for all incoming request data.
  * @author Manzarul
+ * @author Amit Kumar
  */
 public final class RequestValidator {
     
@@ -156,7 +157,7 @@ public final class RequestValidator {
 	 */
 	public static void validateAddCourse(Request courseRequest) {
 
-		 if (courseRequest.getRequest().get(JsonKey.COURSE_ID) == null) {
+		 if (courseRequest.getRequest().get(JsonKey.CONTENT_ID) == null) {
 			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.courseIdRequiredError.getErrorCode(),
 					ResponseCode.courseIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
@@ -185,7 +186,13 @@ public final class RequestValidator {
 	 * @param userRequest Request
 	 */
 	public static void validateUpdateCourse(Request request) {
-		
+
+		if (request.getRequest().get(JsonKey.COURSE_ID) == null) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.courseIdRequired.getErrorCode(),
+					ResponseCode.courseIdRequired.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		}
+
 	}
 	
 	/**
@@ -214,10 +221,10 @@ public final class RequestValidator {
 	 */
 	public static void validateDeleteCourse(Request request) {
 		 if (request.getRequest().get(JsonKey.COURSE_ID) == null) {
-			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.courseIdRequiredError.getErrorCode(),
-					ResponseCode.courseIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
-			throw dataException;
-		}
+			 ProjectCommonException dataException = new ProjectCommonException(ResponseCode.courseIdRequiredError.getErrorCode(),
+					 ResponseCode.courseIdRequiredError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+			 throw dataException;
+		 }
 	}
 	
 }
