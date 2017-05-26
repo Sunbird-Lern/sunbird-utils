@@ -48,3 +48,7 @@ CREATE INDEX inx_u_userName ON cassandraKeySpace.user (userName);
 CREATE TABLE IF NOT EXISTS cassandraKeySpace.user_auth(id text, userId text,createdDate text,updatedDate text,source text,PRIMARY KEY (id));	
 CREATE INDEX inx_ua_userId ON cassandraKeySpace.user_auth (userId);
 CREATE INDEX inx_ua_source ON cassandraKeySpace.user_auth (source);
+
+CREATE TABLE IF NOT EXISTS cassandraKeySpace.organisation(id text, orgName text, description text,communityId text,createdById text,createdByName text,createdDate text,updatedDate text,updatedById text,status int,relation text,orgType text,state text,city text,zipcode text,dateTime timestamp,PRIMARY KEY (id));
+CREATE INDEX inx_org_orgName ON cassandraKeySpace.organisation (orgName);
+CREATE INDEX inx_org_status ON cassandraKeySpace.organisation (status);

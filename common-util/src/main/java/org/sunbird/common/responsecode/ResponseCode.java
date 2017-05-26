@@ -48,6 +48,7 @@ public enum ResponseCode {
 	userNameAlreadyExistError(ResponseMessage.Key.USERNAME_IN_USE, ResponseMessage.Message.USERNAME_IN_USE),
 	userIdRequired(ResponseMessage.Key.USERID_MISSING, ResponseMessage.Message.USERID_MISSING),
 	msgIdRequiredError (ResponseMessage.Key.MESSAGE_ID_MISSING, ResponseMessage.Message.MESSAGE_ID_MISSING),
+	userNameCanntBeUpdated(ResponseMessage.Key.USERNAME_CANNOT_BE_UPDATED, ResponseMessage.Message.USERNAME_CANNOT_BE_UPDATED),
 	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404); 
 	
 	private int responseCode;
