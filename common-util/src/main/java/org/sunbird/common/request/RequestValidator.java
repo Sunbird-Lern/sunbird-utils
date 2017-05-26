@@ -46,16 +46,11 @@ public final class RequestValidator {
 			}else{
 				List<Map<String,Object>> list= (List<Map<String,Object>>)(contentRequestDto.getRequest().get(JsonKey.CONTENTS));
 				for(Map<String,Object> map :list){
-					if(map.containsKey(JsonKey.CONTENT_ID) && map.containsKey(JsonKey.CONTENT_VERSION)){
+					if(map.containsKey(JsonKey.CONTENT_ID)){
 						
 						if(null == map.get(JsonKey.CONTENT_ID)){
 							ProjectCommonException dataException = new ProjectCommonException(ResponseCode.contentIdRequired.getErrorCode(),
 									ResponseCode.contentIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
-							throw dataException;
-						}
-						if(null == map.get(JsonKey.CONTENT_VERSION)){
-							ProjectCommonException dataException = new ProjectCommonException(ResponseCode.contentVersionRequiredError.getErrorCode(),
-									ResponseCode.contentVersionRequiredError.getErrorMessage(),ResponseCode.contentVersionRequiredError.getResponseCode());
 							throw dataException;
 						}
 						
