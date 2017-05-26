@@ -9,7 +9,7 @@ public enum ActorOperations {
 	ENROLL_COURSE("enrollCourse"),GET_COURSE("getCourse"),ADD_CONTENT("addContent"),
 	GET_CONTENT("getContent"),CREATE_COURSE("createCourse"),UPDATE_COURSE("updateCourse"),PUBLISH_COURSE("publishCourse"),SEARCH_COURSE("searchCourse")
 	,DELETE_COURSE("deleteCourse"),CREATE_USER("createUser"),UPDATE_USER("updateUser"),LOGIN("login"),LOGOUT("logout"),CHANGE_PASSWORD("changePassword"),
-	USER_AUTH("userAuth"),GET_PROFILE("getUserProfile");
+	USER_AUTH("userAuth"),GET_PROFILE("getUserProfile"),CREATE_ORG("createOrg"),UPDATE_ORG("updateOrg"),GET_ORG_DETAILS("getOrgDetails");
 
 	private String value;
 
