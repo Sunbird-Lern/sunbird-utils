@@ -109,20 +109,20 @@ public final class RequestValidator {
 	 * if any mandatory data is missing then it will throw exception.
 	 * @param Request contentRequestDto
 	 */
-	public static void validateGetData(Request contentRequestDto) {
-		if (ProjectUtil.isStringNullOREmpty(contentRequestDto.getParams().getDid())) {
+	public static void validateGetData(Request request) {
+		if (ProjectUtil.isStringNullOREmpty(request.getParams().getDid())) {
 			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.deviceIdRequired.getErrorCode(),
 					ResponseCode.deviceIdRequired.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
-		} else if (ProjectUtil.isStringNullOREmpty(contentRequestDto.getParams().getSid())) {
+		} else if (ProjectUtil.isStringNullOREmpty(request.getParams().getSid())) {
 			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.sessionIdRequiredError.getErrorCode(),
 					ResponseCode.sessionIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
-		}else if (ProjectUtil.isStringNullOREmpty(contentRequestDto.getParams().getMsgid())) {
+		}else if (ProjectUtil.isStringNullOREmpty(request.getParams().getMsgid())) {
 			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.msgIdRequiredError.getErrorCode(),
 					ResponseCode.msgIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
-		}if (ProjectUtil.isStringNullOREmpty(contentRequestDto.getParams().getAuthToken())) {
+		}if (ProjectUtil.isStringNullOREmpty(request.getParams().getAuthToken())) {
 			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.userIdRequired.getErrorCode(),
 					ResponseCode.userIdRequired.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;

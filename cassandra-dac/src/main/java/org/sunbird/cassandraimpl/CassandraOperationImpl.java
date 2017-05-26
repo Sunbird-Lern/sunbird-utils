@@ -72,10 +72,10 @@ public class CassandraOperationImpl implements CassandraOperation{
 		Object [] array =  new Object[request.size()];
 		int i=0;
 		String str= updateQuery.substring(34);
-		str= str.replace("=", "");
+		str = str.replace("=", "");
 		str = str.replace("?", "");
-		str=str.replace("where id", "");
-		str=str.replace(";", "");
+		str = str.replace("where id", "");
+		str = str.replace(";", "");
 		String [] arr = str.split(",");
 		/*while (iterator.hasNext()){
 			String key = iterator.next();
@@ -88,7 +88,6 @@ public class CassandraOperationImpl implements CassandraOperation{
 		}
 		array[i++] = request.get(Constants.IDENTIFIER);
 		BoundStatement boundStatement = statement.bind(array);
-		System.out.println(Arrays.toString(array));
 		CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement);
 		response.put(Constants.RESPONSE, Constants.SUCCESS);
 		}catch(Exception e){

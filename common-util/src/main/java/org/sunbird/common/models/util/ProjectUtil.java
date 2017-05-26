@@ -47,6 +47,64 @@ public class ProjectUtil {
 			this.value = value;
 		}
 	}
+	
+	/**
+	 * 
+	 * @author Amit Kumar
+	 *
+	 */
+	public enum ProgressStatus {
+		NOT_STARTED(0),STARTED(1),COMPLETED(2);
+
+		private int value;
+
+		ProgressStatus(int value){
+			this.value=value;
+		}
+
+		public int getValue(){
+			return this.value;
+		}
+	}
+	
+	/**
+	 * 
+	 * @author Amit Kumar
+	 *
+	 */
+	public enum Status {
+		ACTIVE(true),INACTIVE(false);
+
+		private boolean value;
+
+		Status(boolean value){
+			this.value=value;
+		}
+
+		public boolean getValue(){
+			return this.value;
+		}
+	}
+	
+	/**
+	 * 
+	 * @author Amit Kumar
+	 *
+	 */
+	public enum CourseMgmtStatus {
+		DRAFT("draft"),LIVE("live"),RETIRED("retired");
+
+		private String value;
+
+		CourseMgmtStatus(String value){
+			this.value=value;
+		}
+
+		public String getValue(){
+			return this.value;
+		}
+	}
+	
 	/**
 	 * This method will check incoming value is null or empty
 	 * it will do empty check by doing trim method. in case of 

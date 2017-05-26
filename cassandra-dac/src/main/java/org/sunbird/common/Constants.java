@@ -42,45 +42,4 @@ public interface Constants {
 	public static final String SET=" SET ";
 	public static final String WHERE=" where ";
 	
-	public enum LearnerStateOperation {
-		NOT_STARTED(0),STARTED(1),COMPLETED(2);
-
-		private int value;
-
-		LearnerStateOperation(int value){
-			this.value=value;
-		}
-
-		public int getValue(){
-			return this.value;
-		}
-	}
-	public enum Status {
-		ACTIVE(true),INACTIVE(false);
-
-		private boolean value;
-
-		Status(boolean value){
-			this.value=value;
-		}
-
-		public boolean getValue(){
-			return this.value;
-		}
-	}
-	
-	public enum CourseMgmtStatus {
-		DRAFT("draft"),LIVE("live"),RETIRED("retired");
-
-		private String value;
-
-		CourseMgmtStatus(String value){
-			this.value=value;
-		}
-
-		public String getValue(){
-			return this.value;
-		}
-	}
-
 }

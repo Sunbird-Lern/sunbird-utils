@@ -93,7 +93,6 @@ public final class CassandraUtil{
 		query.append(String.join(" = ? ,", key));
 		query.append(" = ? "+ Constants.WHERE + Constants.IDENTIFIER +" = ? ;");
 	    LOGGER.debug(query.toString());
-	    System.out.println(query.toString());
 		return query.toString();
 	}
 }
