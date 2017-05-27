@@ -31,8 +31,8 @@ CREATE INDEX inx_ce_status ON cassandraKeySpace.course_enrollment (status);
 
 //creation of id = one way hash of (userId##contentId##courseId) 
 //status is (default(0),inProgress(1),completed(2))
-CREATE TABLE IF NOT EXISTS cassandraKeySpace.content_consumption(id text, contentId text, courseId text, userId text,viewPosition text,viewCount text,lastAccessTime text,
-contentVersion text,completedCount text,status int,result text,score text,grade text,lastUpdatedTime text,lastCompletedTime text,dateTime timestamp,PRIMARY KEY (id));
+CREATE TABLE IF NOT EXISTS cassandraKeySpace.content_consumption(id text, contentId text, courseId text, userId text,viewPosition text,viewCount int,lastAccessTime text,
+contentVersion text,completedCount int,status int,result text,score text,grade text,lastUpdatedTime text,lastCompletedTime text,dateTime timestamp,PRIMARY KEY (id));
 
 CREATE INDEX inx_cc_userId ON cassandraKeySpace.content_consumption (userId);
 CREATE INDEX inx_cc_contentId ON cassandraKeySpace.content_consumption (contentId);
