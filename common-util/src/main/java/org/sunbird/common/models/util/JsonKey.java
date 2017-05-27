@@ -80,4 +80,5 @@ public class JsonKey {
     public static final String ADDED_BY="addedBy";
     public static final String UPDATED_BY_NAME = "updatedByName";
     public static final String ADDED_BY_NAME="addedByName";
+    public static final String LAST_LOGIN_TIME ="lastLoginTime";
 }
