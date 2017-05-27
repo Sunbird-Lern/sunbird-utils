@@ -112,4 +112,5 @@ public class ConnectionManager {
 		runtime.addShutdownHook(new ResourceCleanUp());
 		LOGGER.info("ShutDownHook registered.");
 	}
+	
 }

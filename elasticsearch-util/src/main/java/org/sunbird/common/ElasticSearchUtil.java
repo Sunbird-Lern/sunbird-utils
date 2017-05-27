@@ -3,7 +3,11 @@
  */
 package org.sunbird.common;
 
+import java.util.Date;
 import java.util.Map;
+
+import org.elasticsearch.action.index.IndexResponse;
+import org.sunbird.helper.ConnectionManager;
 
 /**
  * This class will provide all required operation
@@ -19,6 +23,8 @@ public class ElasticSearchUtil{
 	 * @param data Map<String,Object> 
 	 */
 	public static void createData(String index,String type, Map<String,Object> data) {
+		IndexResponse response = ConnectionManager.getClient().prepareIndex(index, type, (String)data.get("courseId")).setSource(data).get();
+		System.out.println(response.getId() +" "+ response.status());
 		
 	}
     
