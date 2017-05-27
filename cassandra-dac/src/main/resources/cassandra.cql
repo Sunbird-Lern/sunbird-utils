@@ -21,7 +21,7 @@ USE cassandraKeySpace;
 //here status is (default(0),inProgress(1),completed(2))
 //progress is no of content completed
 CREATE TABLE IF NOT EXISTS cassandraKeySpace.course_enrollment(id text, courseId text, courseName text,userId text,enrolledDate text,description text,tocUrl text,status int,
-active boolean,delta text,grade text,progress text,lastReadContentId text,lastReadContentStatus int,dateTime timestamp,addedBy text,PRIMARY KEY (id));
+active boolean,delta text,grade text,progress int,lastReadContentId text,lastReadContentStatus int,dateTime timestamp,addedBy text,PRIMARY KEY (id));
 
 CREATE INDEX inx_ce_userId ON cassandraKeySpace.course_enrollment (userId);
 CREATE INDEX inx_ce_courseId ON cassandraKeySpace.course_enrollment (courseId);
@@ -62,7 +62,7 @@ CREATE INDEX inx_cm_contentId ON cassandraKeySpace.course_management (contentId)
 //here id and userId both are same
 // currently username and email is same
 //email and username is unique
-CREATE TABLE IF NOT EXISTS cassandraKeySpace.user(id text,userId text,userName text, email text,phone text,aadhaarNo text,createdDate text,updatedDate text,updatedBy text,
+CREATE TABLE IF NOT EXISTS  cassandraKeySpace.user(id text,userId text,userName text, email text,phone text,aadhaarNo text,createdDate text,updatedDate text,updatedBy text,
 lastLoginTime text,status int,firstName text,lastName text,password text,avatar text,gender text,language text,state text,city text,zipcode text,PRIMARY KEY (id));
 
 CREATE INDEX inx_u_email ON cassandraKeySpace.user (email);

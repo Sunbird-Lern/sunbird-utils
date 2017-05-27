@@ -95,9 +95,6 @@ public final class RequestValidator {
 				|| ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.LANGUAGE))) {
 			throw new ProjectCommonException(ResponseCode.languageRequired.getErrorCode(),
 					ResponseCode.languageRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-		}if (userRequest.getRequest().get(JsonKey.USERNAME) == null) {
-			throw new ProjectCommonException(ResponseCode.userNameRequired.getErrorCode(),
-					ResponseCode.userNameRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 		}else if (ProjectUtil.isStringNullOREmpty(userRequest.getParams().getMsgid())) {
 			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.msgIdRequiredError.getErrorCode(),
 					ResponseCode.msgIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
@@ -126,6 +123,10 @@ public final class RequestValidator {
 				|| (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PASSWORD)))) {
 			throw new ProjectCommonException(ResponseCode.passwordRequired.getErrorCode(),
 					ResponseCode.passwordRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		}else if (userRequest.getRequest().get(JsonKey.SOURCE) == null
+				|| (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PASSWORD)))) {
+			throw new ProjectCommonException(ResponseCode.passwordRequired.getErrorCode(),
+					ResponseCode.passwordRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 		}
 	}
 	
@@ -140,8 +141,8 @@ public final class RequestValidator {
 					ResponseCode.passwordRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 		} else if (userRequest.getRequest().get(JsonKey.NEW_PASSWORD) == null
 				|| (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.NEW_PASSWORD)))) {
-			throw new ProjectCommonException(ResponseCode.passwordRequired.getErrorCode(),
-					ResponseCode.passwordRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw new ProjectCommonException(ResponseCode.sourceRequired.getErrorCode(),
+					ResponseCode.sourceRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 		}
 	}
 	

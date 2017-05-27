@@ -52,6 +52,8 @@ public interface ResponseMessage {
 		public static final String AUTH_TOKEN_MISSING = "Auth token is mandatory.";
 		public static final String INVALID_AUTH_TOKEN = "Auth token is invalid.Please login again.";
 		public static final String TIMESTAMP_REQUIRED = "TimeStamp is required.";
+		public static final String PUBLISHED_COURSE_CAN_NOT_UPDATED ="Published course can't be updated";
+		public static final String SOURCE_MISSING = "source is required.";
 	}
 
 	public interface Key {
@@ -100,6 +102,8 @@ public interface ResponseMessage {
 		public static final String AUTH_TOKEN_MISSING = "X_Authenticated_Userid_MISSING";
 		public static final String INVALID_AUTH_TOKEN = "INVALID_AUTH_TOKEN";
 		public static final String TIMESTAMP_REQUIRED = "TIMESTAMP_REQUIRED";
+		public static final String PUBLISHED_COURSE_CAN_NOT_UPDATED = "PUBLISHED_COURSE_CAN_NOT_UPDATED";
+		public static final String SOURCE_MISSING = "SOURCE_MISSING";
 	}
 }
 
