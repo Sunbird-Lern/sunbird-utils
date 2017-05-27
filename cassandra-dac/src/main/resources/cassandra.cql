@@ -44,7 +44,8 @@ CREATE INDEX inx_cc_courseId ON cassandraKeySpace.content_consumption (courseId)
 //content id is from ekstep 
 //status DRAFT("draft"), LIVE("live"), RETIRED("retired")
 //contentType (pdf,video,word doc etc)
-//tutor map<id,name>
+//tutor   map<id,name>
+        
 CREATE TABLE IF NOT EXISTS cassandraKeySpace.course_management(id text, courseId text, courseName text,courseType text,contentId text,facultyId text,facultyName text,
 organisationId text,organisationName text,enrollementStartDate text,enrollementEndDate text,courseDuration text,description text,status text,
 addedBy text,addedByName text,publishedBy text,publishedByName text,createdDate text,publishedDate text,updatedDate text,updatedBy text,
