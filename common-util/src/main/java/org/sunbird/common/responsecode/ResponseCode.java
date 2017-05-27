@@ -52,6 +52,7 @@ public enum ResponseCode {
 	authTokenRequired(ResponseMessage.Key.AUTH_TOKEN_MISSING, ResponseMessage.Message.AUTH_TOKEN_MISSING),
 	invalidAuthToken(ResponseMessage.Key.INVALID_AUTH_TOKEN, ResponseMessage.Message.INVALID_AUTH_TOKEN),
 	timeStampRequired(ResponseMessage.Key.TIMESTAMP_REQUIRED, ResponseMessage.Message.TIMESTAMP_REQUIRED),
+	publishedCourseCanNotBeUpdated(ResponseMessage.Key.PUBLISHED_COURSE_CAN_NOT_UPDATED, ResponseMessage.Message.PUBLISHED_COURSE_CAN_NOT_UPDATED),
 	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404); 
 	
 	private int responseCode;
