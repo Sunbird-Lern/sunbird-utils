@@ -11,6 +11,7 @@ import org.sunbird.cassandraimpl.CassandraOperationImpl;
 import org.sunbird.common.Constants;
 import org.sunbird.common.PropertiesCache;
 import org.sunbird.common.exception.ProjectCommonException;
+import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.responsecode.ResponseCode;
 
 import com.datastax.driver.core.AtomicMonotonicTimestampGenerator;
@@ -50,47 +51,48 @@ public final class CassandraConnectionManager {
 		Cluster cluster= null;
 		Session session = null;
 		try{
-			if(null == cassandraSessionMap.get(keyspace)){
-			   PropertiesCache cache = PropertiesCache.getInstance();
-			   PoolingOptions poolingOptions = new PoolingOptions();
-			   poolingOptions.setCoreConnectionsPerHost(HostDistance.LOCAL,  Integer.parseInt(cache.getProperty(Constants.CORE_CONNECTIONS_PER_HOST_FOR_LOCAL)));
-			   poolingOptions.setMaxConnectionsPerHost( HostDistance.LOCAL, Integer.parseInt(cache.getProperty(Constants.MAX_CONNECTIONS_PER_HOST_FOR_LOCAl)));
-			   poolingOptions.setCoreConnectionsPerHost(HostDistance.REMOTE, Integer.parseInt(cache.getProperty(Constants.CORE_CONNECTIONS_PER_HOST_FOR_REMOTE)));
-			   poolingOptions.setMaxConnectionsPerHost( HostDistance.REMOTE, Integer.parseInt(cache.getProperty(Constants.MAX_CONNECTIONS_PER_HOST_FOR_REMOTE)));
-			   poolingOptions.setMaxRequestsPerConnection(HostDistance.LOCAL, Integer.parseInt(cache.getProperty(Constants.MAX_REQUEST_PER_CONNECTION)));
-			   poolingOptions.setHeartbeatIntervalSeconds(Integer.parseInt(cache.getProperty(Constants.HEARTBEAT_INTERVAL)));
-			   poolingOptions.setPoolTimeoutMillis(Integer.parseInt(cache.getProperty(Constants.POOL_TIMEOUT)));
-			   cluster = Cluster
-		        		.builder()
-		        		.addContactPoint(ip)
-		        		.withPort(Integer.parseInt(port))
-		        		.withProtocolVersion(ProtocolVersion.V3)
-		        		.withRetryPolicy(DefaultRetryPolicy.INSTANCE)
-		        		.withTimestampGenerator(new AtomicMonotonicTimestampGenerator())
-		        		.withPoolingOptions(poolingOptions)
-		        		.withCredentials(userName,password)
-		        		.build();
-		        QueryLogger queryLogger = QueryLogger.builder().withConstantThreshold(Integer.parseInt(cache.getProperty(Constants.QUERY_LOGGER_THRESHOLD))).build();
-		        cluster.register(queryLogger);
-		        session = cluster.connect(keyspace);
-		        
-		        if(null != session){
-		        	connection = true;
-		        	cassandraSessionMap.put(keyspace, session);
-		        	cassandraclusterMap.put(keyspace, cluster);
-		        }
-		        final Metadata metadata = cluster.getMetadata();
-		        String msg = String.format("Connected to cluster: %s", metadata.getClusterName());
-		        LOGGER.debug(msg);
-		         
-		        for (final Host host : metadata.getAllHosts()){
-			        msg = String.format("Datacenter: %s; Host: %s; Rack: %s",
-			        host.getDatacenter(),
-			        host.getAddress(),
-			        host.getRack());
-			        LOGGER.debug(msg);
-		        }
+			if (null == cassandraSessionMap.get(keyspace)) {
+				PropertiesCache cache = PropertiesCache.getInstance();
+				PoolingOptions poolingOptions = new PoolingOptions();
+				poolingOptions.setCoreConnectionsPerHost(HostDistance.LOCAL,
+						Integer.parseInt(cache.getProperty(Constants.CORE_CONNECTIONS_PER_HOST_FOR_LOCAL)));
+				poolingOptions.setMaxConnectionsPerHost(HostDistance.LOCAL,
+						Integer.parseInt(cache.getProperty(Constants.MAX_CONNECTIONS_PER_HOST_FOR_LOCAl)));
+				poolingOptions.setCoreConnectionsPerHost(HostDistance.REMOTE,
+						Integer.parseInt(cache.getProperty(Constants.CORE_CONNECTIONS_PER_HOST_FOR_REMOTE)));
+				poolingOptions.setMaxConnectionsPerHost(HostDistance.REMOTE,
+						Integer.parseInt(cache.getProperty(Constants.MAX_CONNECTIONS_PER_HOST_FOR_REMOTE)));
+				poolingOptions.setMaxRequestsPerConnection(HostDistance.LOCAL,
+						Integer.parseInt(cache.getProperty(Constants.MAX_REQUEST_PER_CONNECTION)));
+				poolingOptions
+						.setHeartbeatIntervalSeconds(Integer.parseInt(cache.getProperty(Constants.HEARTBEAT_INTERVAL)));
+				poolingOptions.setPoolTimeoutMillis(Integer.parseInt(cache.getProperty(Constants.POOL_TIMEOUT)));
+				if (!ProjectUtil.isStringNullOREmpty(userName) && !ProjectUtil.isStringNullOREmpty(password)) {
+					cluster = createCluster(ip, port, userName, password, poolingOptions);
+				} else {
+					cluster = createClusterd(ip, port, poolingOptions);
 				}
+				QueryLogger queryLogger = QueryLogger.builder()
+						.withConstantThreshold(Integer.parseInt(cache.getProperty(Constants.QUERY_LOGGER_THRESHOLD)))
+						.build();
+				cluster.register(queryLogger);
+				session = cluster.connect(keyspace);
+
+				if (null != session) {
+					connection = true;
+					cassandraSessionMap.put(keyspace, session);
+					cassandraclusterMap.put(keyspace, cluster);
+				}
+				final Metadata metadata = cluster.getMetadata();
+				String msg = String.format("Connected to cluster: %s", metadata.getClusterName());
+				LOGGER.debug(msg);
+
+				for (final Host host : metadata.getAllHosts()) {
+					msg = String.format("Datacenter: %s; Host: %s; Rack: %s", host.getDatacenter(), host.getAddress(),
+							host.getRack());
+					LOGGER.debug(msg);
+				}
+			}
 			   }catch(Exception e){
 				   LOGGER.error(e);
 				   throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), e.getMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
@@ -126,5 +128,45 @@ public final class CassandraConnectionManager {
 		cassandraSessionMap=null;
 		cassandraclusterMap=null;
     }
+   
+	/**
+	 * 
+	 * @param ip
+	 * @param port
+	 * @param userName
+	 * @param password
+	 * @param poolingOptions
+	 * @return
+	 */
+	private static Cluster createCluster(String ip,String port,String userName, String password,PoolingOptions poolingOptions){
+		return Cluster
+				.builder()
+				.addContactPoint(ip)
+				.withPort(Integer.parseInt(port))
+				.withProtocolVersion(ProtocolVersion.V3)
+				.withRetryPolicy(DefaultRetryPolicy.INSTANCE)
+				.withTimestampGenerator(new AtomicMonotonicTimestampGenerator())
+				.withPoolingOptions(poolingOptions).withCredentials(userName,password).build();	
+	}
+	
+	/**
+	 * 
+	 * @param ip
+	 * @param port
+	 * @param poolingOptions
+	 * @return
+	 */
+	private static Cluster createClusterd(String ip,String port, PoolingOptions poolingOptions){
+		return Cluster
+		.builder()
+		.addContactPoint(ip)
+		.withPort(Integer.parseInt(port))
+		.withProtocolVersion(ProtocolVersion.V3)
+		.withRetryPolicy(DefaultRetryPolicy.INSTANCE)
+		.withTimestampGenerator(new AtomicMonotonicTimestampGenerator())
+		.withPoolingOptions(poolingOptions).build();
+	}
 
+	
+	
 }
