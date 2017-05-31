@@ -51,7 +51,10 @@ public enum ResponseCode {
 	userNameCanntBeUpdated(ResponseMessage.Key.USERNAME_CANNOT_BE_UPDATED, ResponseMessage.Message.USERNAME_CANNOT_BE_UPDATED),
 	authTokenRequired(ResponseMessage.Key.AUTH_TOKEN_MISSING, ResponseMessage.Message.AUTH_TOKEN_MISSING),
 	invalidAuthToken(ResponseMessage.Key.INVALID_AUTH_TOKEN, ResponseMessage.Message.INVALID_AUTH_TOKEN),
-	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404); 
+	timeStampRequired(ResponseMessage.Key.TIMESTAMP_REQUIRED, ResponseMessage.Message.TIMESTAMP_REQUIRED),
+	publishedCourseCanNotBeUpdated(ResponseMessage.Key.PUBLISHED_COURSE_CAN_NOT_UPDATED, ResponseMessage.Message.PUBLISHED_COURSE_CAN_NOT_UPDATED),
+	sourceRequired(ResponseMessage.Key.SOURCE_MISSING, ResponseMessage.Message.SOURCE_MISSING),
+	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404);
 	
 	private int responseCode;
 	/**

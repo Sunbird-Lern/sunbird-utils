@@ -69,12 +69,11 @@ public class CassandraOperationImpl implements CassandraOperation{
 		PreparedStatement statement = CassandraConnectionManager.getSession(keyspaceName).prepare(updateQuery);
 		//Iterator<String> iterator = request.keySet().iterator(); 
 		//need to refactor this code
-
 		Object [] array =  new Object[request.size()];
 		int i=0;
-		String str= updateQuery;
-			int index = str.lastIndexOf("SET");
-			str= str.substring(index+4);
+		String str= "";
+		int index = updateQuery.lastIndexOf("SET");
+		str= updateQuery.substring(index+4);
 		str = str.replace("=", "");
 		str = str.replace("?", "");
 		str = str.replace("where id", "");

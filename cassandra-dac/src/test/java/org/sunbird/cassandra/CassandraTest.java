@@ -39,8 +39,8 @@ public class CassandraTest {
 		contentmap1 = new HashMap<>();
 		
 		contentmap.put("contentId", "contentId1");
-   		contentmap.put("viewCount", "viewCount 1");
-   		contentmap.put("completedCount", "completedCount1");
+   		contentmap.put("viewCount", 1);
+   		contentmap.put("completedCount", 1);
    		contentmap.put("status", 1);
    		contentmap.put("userId", "userId2");
    		contentmap.put("lastUpdatedTime", "2017-05-15 10:58:07:509+0530" );
@@ -55,7 +55,7 @@ public class CassandraTest {
    		coursemap.put("enrolledDate", "2017-05-15 10:58:07:509+0530");
    		coursemap.put("description", "description");
    		coursemap.put("tocUrl", "tocUrl");
-   		coursemap.put("status", "1");
+   		coursemap.put("status", 1);
    		coursemap.put("active", true);
    		coursemap.put("delta", "delta as json string");
    		coursemap.put("id", "courseId2##userId2");
@@ -65,7 +65,7 @@ public class CassandraTest {
    		coursemap1.put("userId", "userId2");
    		
    		contentmap1.put("contentId", "contentId1");
-   		contentmap1.put("status", "1");
+   		contentmap1.put("status", 1);
    		contentmap1.put("userId", "userId2");
    		
    	}
