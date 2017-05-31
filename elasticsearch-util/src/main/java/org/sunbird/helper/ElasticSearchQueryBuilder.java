@@ -27,7 +27,6 @@ public class ElasticSearchQueryBuilder {
 	  Map<String,Object> mapping = new HashMap<>();
 	  mapping.put("courseId", String.class);mapping.put("courseDuration", Integer.class);
 	  mapping.put("noOfLecture", Integer.class);mapping.put("enrollementStartDate", Date.class);
-	  //  prepareCreate
 	 PutMappingResponse response  = client.admin().indices().preparePutMapping(indexName.toLowerCase()).setType(typeName).setSource(createMapping()).get();
 	 System.out.println(response.isAcknowledged());
 	}
