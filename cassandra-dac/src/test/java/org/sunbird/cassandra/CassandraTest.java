@@ -39,8 +39,8 @@ public class CassandraTest {
 		contentmap1 = new HashMap<>();
 		
 		contentmap.put("contentId", "contentId1");
-   		contentmap.put("viewCount", "viewCount 1");
-   		contentmap.put("completedCount", "completedCount1");
+   		contentmap.put("viewCount", 1);
+   		contentmap.put("completedCount", 1);
    		contentmap.put("status", 1);
    		contentmap.put("userId", "userId2");
    		contentmap.put("lastUpdatedTime", "2017-05-15 10:58:07:509+0530" );
