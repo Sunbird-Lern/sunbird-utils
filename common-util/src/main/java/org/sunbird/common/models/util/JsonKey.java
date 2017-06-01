@@ -88,4 +88,11 @@ public class JsonKey {
     public static final String USER_DB = "user_db";
     public static final String USER_AUTH_DB = "userAuth_db";
     public static final String ORG_DB = "org_db";
+
+    public static final String DB_IP="db.ip";
+    public static final String DB_PORT="db.port";
+    public static final String DB_USERNAME="db.username";
+    public static final String DB_PASSWORD="db.password";
+    public static final String DB_KEYSPACE="db.keyspace";
+
 }
