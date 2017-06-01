@@ -7,9 +7,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.elasticsearch.Build;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.Setting;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.xcontent.XContent;
+import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.sunbird.common.ElasticSearchUtil;
 
 import io.netty.handler.codec.json.JsonObjectDecoder;
@@ -24,23 +29,33 @@ public class ElasticSearchQueryBuilder {
 	
 	public static void createIndex(String indexName,String typeName) {
 	  TransportClient client	= ConnectionManager.getClient();
-	  Map<String,Object> mapping = new HashMap<>();
-	  mapping.put("courseId", String.class);mapping.put("courseDuration", Integer.class);
-	  mapping.put("noOfLecture", Integer.class);mapping.put("enrollementStartDate", Date.class);
-	 PutMappingResponse response  = client.admin().indices().preparePutMapping(indexName.toLowerCase()).setType(typeName).setSource(createMapping()).get();
+	  CreateIndexResponse response = client.admin().indices().prepareCreate(indexName).setSettings(createSettingsForIndex()).addMapping(typeName, createMapping()).get();
+	 
+	  //PutMappingResponse response  = client.admin().indices().preparePutMapping(indexName).setType(typeName).setSource(createMapping()).get();
 	 System.out.println(response.isAcknowledged());
 	}
 	
 	
 	public static void main(String[] args) {
-		createIndex("SunBird", "course");
-		ElasticSearchUtil.createData("sunbird", "course", "NTP course id_2",createMapData());
+		createIndex("sunbird-inx2", "course");
+		//ElasticSearchUtil.createData("sunbird", "course", "NTP course id_2",createMapData());
 	}
+	
 	public static String createMapping () {
-		String mapping = "{\"properties\": {\"courseId\": {\"type\": \"string\",\"index\": \"analyzed\",\"store\": \"yes\"},\"courseDuration\": {\"type\": \"integer\",\"index\": \"analyzed\",\"store\": \"yes\"},\"enrollementStartDate\": {\"type\": \"date\",\"index\": \"analyzed\",\"store\": \"yes\"},\"enrollementEndDate\": {\"type\": \"date\",\"index\": \"analyzed\",\"store\": \"yes\"},\"publishedDate\": {\"type\": \"date\",\"index\": \"analyzed\",\"store\": \"yes\"},\"createdOn\": {\"type\": \"date\",\"index\": \"analyzed\",\"store\": \"yes\"},\"lastUpdatedOn\": {\"type\": \"date\",\"index\": \"analyzed\",\"store\": \"yes\"}}}";
+		String mapping = 
+				//"{ \"cs\" : { \"dynamic_templates\": [{\"longs\": { \"match_mapping_type\": \"long\",\"mapping\": {\"type\": \"long\",\"fields\": { \"raw\": {\"type\": \"long\" }}}} },{\"booleans\": {\"match_mapping_type\": \"boolean\",\"mapping\": {\"type\": \"boolean\",\"fields\": {\"raw\": {\"type\": \"boolean\"}}}}},{\"doubles\": {\"match_mapping_type\": \"double\",\"mapping\": {\"type\": \"double\",\"fields\": {\"raw\": { \"type\": \"double\"}}}}},{\"dates\": {\"match_mapping_type\": \"date\",\"mapping\": {\"type\": \"date\",\"fields\": {\"raw\": {\"type\": \"date\"}}}} },{\"strings\": {\"match_mapping_type\": \"string\",\"mapping\": {\"type\": \"string\",\"copy_to\": \"all_fields\",\"analyzer\": \"cs_index_analyzer\",\"search_analyzer\": \"cs_search_analyzer\",\"fields\": {\"raw\": {\"type\": \"string\",\"analyzer\": \"keylower\"}}}}}],\"properties\": {\"all_fields\": {\"type\": \"string\",\"analyzer\": \"cs_index_analyzer\",\"search_analyzer\": \"cs_search_analyzer\",\"fields\": {\"raw\": {\"type\": \"string\",\"analyzer\": \"keylower\"}}}}}}";
+				
+				"{\"properties\": {\"courseId\": {\"type\": \"string\",\"index\": \"analyzed\",\"store\": \"yes\"},\"courseDuration\": {\"type\": \"integer\",\"index\": \"analyzed\",\"store\": \"yes\"},\"enrollementStartDate\": {\"type\": \"date\",\"index\": \"analyzed\",\"store\": \"yes\"},\"enrollementEndDate\": {\"type\": \"date\",\"index\": \"analyzed\",\"store\": \"yes\"},\"publishedDate\": {\"type\": \"date\",\"index\": \"analyzed\",\"store\": \"yes\"},\"createdOn\": {\"type\": \"date\",\"index\": \"analyzed\",\"store\": \"yes\"},\"lastUpdatedOn\": {\"type\": \"date\",\"index\": \"analyzed\",\"store\": \"yes\"}}}";
 		return mapping;
 	}
 	
+	
+	public static String createSettingsForIndex () {
+		String settings = "{\"settings\": {\"analysis\": {\"analyzer\": {\"sb_index_analyzer\": {\"tokenizer\": \"my_tokenizer\"}},\"tokenizer\": {\"my_tokenizer\": {\"type\": \"edge_ngram\",\"min_gram\": 2,\"max_gram\": 10,\"token_chars\": [\"letter\",\"digit\",\"whitespace\",\"punctuation\",\"symbol\"]}}}}}";
+				
+		//"{\"settings\": {\"index\": {\"index\": \"composite_search_index_type\",\"type\": \"composite_search_index_type\",\"analysis\": {\"analyzer\": {\"cs_index_analyzer\": {\"type\": \"custom\",\"tokenizer\": \"standard\",\"filter\": [\"lowercase\",\"mynGram\"]},\"cs_search_analyzer\": {\"type\": \"custom\",\"tokenizer\": \"standard\",\"filter\": [\"standard\",\"lowercase\"]},\"keylower\": {\"tokenizer\": \"keyword\",\"filter\": \"lowercase\"}},\"filter\": {\"mynGram\": {\"type\": \"ngram\",\"min_gram\": 1,\"max_gram\": 20,\"token_chars\": [\"letter\", \"digit\",\"whitespace\",\"punctuation\",\"symbol\"]} }}} }}";
+		return settings;
+	}
 	
 	/**
 	 * 
