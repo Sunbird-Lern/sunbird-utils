@@ -19,7 +19,6 @@ import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.sunbird.common.models.util.LogHelper;
@@ -165,8 +164,8 @@ public class ElasticSearchUtil{
 		@SuppressWarnings("deprecation")
 		CreateIndexRequestBuilder createIndexBuilder = client.admin().indices().prepareCreate(index);
 		if (!ProjectUtil.isStringNullOREmpty(settings)) {
-			//createIndexResponse = createIndexBuilder.setSettings(Settings.builder().put(settings).build()).get();
-			createIndexResponse = createIndexBuilder.get();
+			createIndexResponse = createIndexBuilder.setSettings(settings).get();
+			//createIndexResponse = createIndexBuilder.get();
 		} else {
 			createIndexResponse = createIndexBuilder.get();
 		}
