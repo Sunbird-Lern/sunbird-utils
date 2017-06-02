@@ -103,6 +103,7 @@ public class ElasticSearchUtil{
 			LOGGER.error(e);
 		}
 		sr.getHits().getAt(0).getSource();
+		
 		return  sr.getAggregations().asList().get(0).getMetaData();
 	}
     
@@ -154,6 +155,7 @@ public class ElasticSearchUtil{
 	 * @param settings String
 	 * @return boolean
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean createIndex(String index, String type, String mappings, String settings) {
 		boolean response = false;
 		if(ProjectUtil.isStringNullOREmpty(index)) {
@@ -165,7 +167,6 @@ public class ElasticSearchUtil{
 		CreateIndexRequestBuilder createIndexBuilder = client.admin().indices().prepareCreate(index);
 		if (!ProjectUtil.isStringNullOREmpty(settings)) {
 			createIndexResponse = createIndexBuilder.setSettings(settings).get();
-			//createIndexResponse = createIndexBuilder.get();
 		} else {
 			createIndexResponse = createIndexBuilder.get();
 		}
