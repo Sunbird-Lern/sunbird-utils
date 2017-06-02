@@ -19,13 +19,10 @@ import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.sunbird.common.models.util.LogHelper;
 import org.sunbird.common.models.util.ProjectUtil;
-import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
 
 /**
@@ -106,6 +103,7 @@ public class ElasticSearchUtil{
 			LOGGER.error(e);
 		}
 		sr.getHits().getAt(0).getSource();
+
 		return  sr.getAggregations().asList().get(0).getMetaData();
 	}
     
@@ -227,42 +225,6 @@ public class ElasticSearchUtil{
 			 response = true;
 		 }
 		return response;
-	}
-
-	public static Map<String, Object> compoundSearch(String index, String type, String mappings, String settings, SearchDTO searchDTO){
-
-
-
-		SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
-		sourceBuilder.query(QueryBuilders.queryStringQuery(searchDTO.getOperation()));
-
-		Iterator<Entry<String, Object>> itr = searchDTO.getAdditionalProperties().entrySet().iterator();
-		while (itr.hasNext()) {
-			Entry<String,Object> entry =itr.next();
-			sourceBuilder.query(QueryBuilders.commonTermsQuery(entry.getKey(),entry.getValue()));
-		}
-
-
-
-
-		SearchResponse sr = null;
-		try {
-			sr = ConnectionManager.getClient().search(new SearchRequest(index).types(type).source(sourceBuilder)).get();
-		} catch (InterruptedException e) {
-			LOGGER.error(e);
-		} catch (ExecutionException e) {
-			LOGGER.error(e);
-		}
-
-		Iterator<Entry<String, String>> sortByIterator = searchDTO.getSortBy().entrySet().iterator();
-		while (sortByIterator.hasNext()) {
-			Entry<String,String> entry =sortByIterator.next();
-			//sourceBuilder.query(QueryBuilders.(entry.getKey(),entry.getValue()));
-		}
-
-
-
-		return null;
 	}
 }
 
