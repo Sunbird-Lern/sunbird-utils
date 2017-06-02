@@ -17,7 +17,7 @@ import org.sunbird.cassandraimpl.CassandraOperationImpl;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.helper.CassandraConnectionManager;
-
+import org.sunbird.common.PropertiesCache;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CassandraTest {
@@ -27,11 +27,11 @@ public class CassandraTest {
 	static Map<String,Object> coursemap = null;
 	static Map<String,Object> contentmap1 = null;
 	static Map<String,Object> coursemap1 = null;
-	
+	static PropertiesCache cach = PropertiesCache.getInstance();
 	@BeforeClass
 	public static void init(){
 		
-		CassandraConnectionManager.createConnection("127.0.0.1", "9042", "cassandra", "password", "cassandraKeySpace");
+		CassandraConnectionManager.createConnection(cach.getProperty("contactPoint"), cach.getProperty("port"), cach.getProperty("userName"), cach.getProperty("password"), cach.getProperty("keyspace"));
 		
 		contentmap = new HashMap<>();
 		coursemap = new HashMap<>();
@@ -72,7 +72,7 @@ public class CassandraTest {
 	
 	@Test
 	public void testConnection() {
-		boolean bool= CassandraConnectionManager.createConnection("127.0.0.1", "9042", "cassandra", "password", "cassandraKeySpace");
+		boolean bool= CassandraConnectionManager.createConnection(cach.getProperty("contactPoint"), cach.getProperty("port"), cach.getProperty("userName"), cach.getProperty("password"), cach.getProperty("keyspace"));
 		assertEquals(true,bool);
 	}
 	
@@ -88,12 +88,12 @@ public class CassandraTest {
 	
 	@Test
 	public void testACourseInsertion() {
-		Response response=operation.insertRecord("cassandraKeySpace", "course_enrollment", coursemap);
+		Response response=operation.insertRecord(cach.getProperty("keyspace"), "course_enrollment", coursemap);
     	assertEquals("SUCCESS", response.get("response"));
 	}
 	@Test
 	public void testAContentInsertion() {
-		Response response=operation.insertRecord("cassandraKeySpace", "content_consumption", contentmap);
+		Response response=operation.insertRecord(cach.getProperty("keyspace"), "content_consumption", contentmap);
     	assertEquals("SUCCESS", response.get("response"));
 	}
 	
@@ -109,21 +109,21 @@ public class CassandraTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testBGetCourseById() {
-		Response response=operation.getRecordById("cassandraKeySpace", "course_enrollment", "courseId2##userId2");
+		Response response=operation.getRecordById(cach.getProperty("keyspace"), "course_enrollment", "courseId2##userId2");
 		assertEquals(1,((List<Map<String, Object>>)(response.getResult().get("response"))).size());
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testBGetContentById() {
-		Response response=operation.getRecordById("cassandraKeySpace", "content_consumption", "contentId1##userId2");
+		Response response=operation.getRecordById(cach.getProperty("keyspace"), "content_consumption", "contentId1##userId2");
 		assertEquals(1,((List<Map<String, Object>>)(response.getResult().get("response"))).size());
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testCgetCourseByProperty() {
-		Response response=operation.getRecordsByProperty("cassandraKeySpace", "course_enrollment", "userId", "userId2");
+		Response response=operation.getRecordsByProperty(cach.getProperty("keyspace"), "course_enrollment", "userId", "userId2");
 		assertTrue(((List<Map<String, Object>>)(response.getResult().get("response"))).size()>0);
 	}
 	
@@ -135,7 +135,7 @@ public class CassandraTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testCgetContentByProperty() {
-		Response response=operation.getRecordsByProperty("cassandraKeySpace", "content_consumption", "userId", "userId2");
+		Response response=operation.getRecordsByProperty(cach.getProperty("keyspace"), "content_consumption", "userId", "userId2");
 		assertTrue(((List<Map<String, Object>>)(response.getResult().get("response"))).size()>0);
 	}
 	
@@ -146,7 +146,7 @@ public class CassandraTest {
 		list.add("courseId2##userId2");
 		list.add("courseId2##userId2");
 		list.add("courseId2##userId2");
-		Response response=operation.getRecordsByProperty("cassandraKeySpace", "course_enrollment", "id", list);
+		Response response=operation.getRecordsByProperty(cach.getProperty("keyspace"), "course_enrollment", "id", list);
 		assertTrue(((List<Map<String, Object>>)(response.getResult().get("response"))).size()>0);
 	}
 	
@@ -162,8 +162,8 @@ public class CassandraTest {
 	@Test
 	public void testCUpdateCourseById() {
 		coursemap.put("delta", "delta as json string updated");
-		operation.updateRecord("cassandraKeySpace", "course_enrollment", coursemap);
-		Response response=operation.getRecordById("cassandraKeySpace", "course_enrollment", "courseId2##userId2");
+		operation.updateRecord(cach.getProperty("keyspace"), "course_enrollment", coursemap);
+		Response response=operation.getRecordById(cach.getProperty("keyspace"), "course_enrollment", "courseId2##userId2");
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> result =  (List<Map<String, Object>>)response.getResult().get("response");
 		Map<String, Object> map = result.get(0);
@@ -179,8 +179,8 @@ public class CassandraTest {
 	@Test
 	public void testCUpdateContentById() {
 		contentmap.put("viewPosition", "viewPosition 1 updated");
-		operation.updateRecord("cassandraKeySpace", "content_consumption", contentmap);
-		Response response=operation.getRecordById("cassandraKeySpace", "content_consumption", "contentId1##userId2");
+		operation.updateRecord(cach.getProperty("keyspace"), "content_consumption", contentmap);
+		Response response=operation.getRecordById(cach.getProperty("keyspace"), "content_consumption", "contentId1##userId2");
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> result =  (List<Map<String, Object>>)response.getResult().get("response");
 		Map<String, Object> map = result.get(0);
@@ -188,7 +188,7 @@ public class CassandraTest {
 	}
 	@Test
 	public void testDeleteContent() {
-		Response response=operation.deleteRecord("cassandraKeySpace", "content_consumption", "contentId1##userId2");
+		Response response=operation.deleteRecord(cach.getProperty("keyspace"), "content_consumption", "contentId1##userId2");
 		assertEquals("SUCCESS", response.get("response"));
 	}
 	@Test(expected=ProjectCommonException.class)
@@ -199,7 +199,7 @@ public class CassandraTest {
 	
 	@Test
 	public void testDeleteCourse() {
-		Response response=operation.deleteRecord("cassandraKeySpace", "course_enrollment", "courseId2##userId2");
+		Response response=operation.deleteRecord(cach.getProperty("keyspace"), "course_enrollment", "courseId2##userId2");
 		assertEquals("SUCCESS", response.get("response"));
 	}
 
