@@ -7,17 +7,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.elasticsearch.Build;
-import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.Setting;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.xcontent.XContent;
-import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.sunbird.common.ElasticSearchUtil;
-
-import io.netty.handler.codec.json.JsonObjectDecoder;
 
 /**
  * This class will create elastic search query
@@ -36,8 +27,8 @@ public class ElasticSearchQueryBuilder {
 	
 	
 	public static void main(String[] args) {
-		//ElasticSearchUtil.createIndex("sunbird-inx4", "course", createMapping(), createSettingsForIndex());
-		ElasticSearchUtil.deleteIndex("sunbird-inx4");
+		 //ElasticSearchUtil.createIndex("sunbird-inx5", "course", createMapping(), createSettingsForIndex());
+		//ElasticSearchUtil.deleteIndex("sunbird-inx4");
 		//createIndex("sunbird-inx3", "course");
 		//for (int i=51;i<100;i++) 
 		//ElasticSearchUtil.createData("sunbird-inx3", "course", "NTP course id_"+i,createMapData(i));
@@ -48,19 +39,16 @@ public class ElasticSearchQueryBuilder {
 		 //ElasticSearchUtil.searchData("sunbird-inx3", "course", createMapData(30));
 	}
 	
+	
 	public static String createMapping () {
 		String mapping = 
 				" { \"dynamic_templates\": [{\"longs\": { \"match_mapping_type\": \"long\",\"mapping\": {\"type\": \"long\",\"fields\": { \"raw\": {\"type\": \"long\" }}}} },{\"booleans\": {\"match_mapping_type\": \"boolean\",\"mapping\": {\"type\": \"boolean\",\"fields\": {\"raw\": {\"type\": \"boolean\"}}}}},{\"doubles\": {\"match_mapping_type\": \"double\",\"mapping\": {\"type\": \"double\",\"fields\": {\"raw\": { \"type\": \"double\"}}}}},{\"dates\": {\"match_mapping_type\": \"date\",\"mapping\": {\"type\": \"date\",\"fields\": {\"raw\": {\"type\": \"date\"}}}} },{\"strings\": {\"match_mapping_type\": \"string\",\"mapping\": {\"type\": \"string\",\"copy_to\": \"all_fields\",\"fields\": {\"raw\": {\"type\": \"string\",\"analyzer\": \"standard\"}}}}}],\"properties\": {\"all_fields\": {\"type\": \"string\",\"fields\": {\"raw\": {\"type\": \"string\",\"analyzer\": \"standard\"}}}}}";
-				
-				//"{\"properties\": {\"courseId\": {\"type\": \"string\",\"index\": \"analyzed\",\"store\": \"yes\"},\"courseDuration\": {\"type\": \"integer\",\"index\": \"analyzed\",\"store\": \"yes\"},\"enrollementStartDate\": {\"type\": \"date\",\"index\": \"analyzed\",\"store\": \"yes\"},\"enrollementEndDate\": {\"type\": \"date\",\"index\": \"analyzed\",\"store\": \"yes\"},\"publishedDate\": {\"type\": \"date\",\"index\": \"analyzed\",\"store\": \"yes\"},\"createdOn\": {\"type\": \"date\",\"index\": \"analyzed\",\"store\": \"yes\"},\"lastUpdatedOn\": {\"type\": \"date\",\"index\": \"analyzed\",\"store\": \"yes\"}}}";
 		return mapping;
 	}
 	
 	
 	public static String createSettingsForIndex () {
-		String settings = //"{\"settings\": {\"analysis\": {\"analyzer\": {\"my_analyzer\": {\"tokenizer\": \"my_tokenizer\"}},\"tokenizer\": {\"my_tokenizer\": {\"type\": \"edge_ngram\",\"min_gram\": 2,\"max_gram\": 10,\"token_chars\": [\"letter\",\"digit\",\"whitespace\",\"punctuation\",\"symbol\"]}}}}}";
-				
-		"{\"settings\": {\"index\": {\"index\": \"cs\",\"type\": \"cs\",\"analysis\": {\"analyzer\": {\"cs_index_analyzer\": {\"type\": \"custom\",\"tokenizer\": \"standard\",\"filter\": [\"lowercase\",\"mynGram\"]},\"cs_search_analyzer\": {\"type\": \"custom\",\"tokenizer\": \"standard\",\"filter\": [\"standard\",\"lowercase\"]},\"keylower\": {\"tokenizer\": \"keyword\",\"filter\": \"lowercase\"}},\"filter\": {\"mynGram\": {\"type\": \"ngram\",\"min_gram\": 1,\"max_gram\": 20,\"token_chars\": [\"letter\", \"digit\",\"whitespace\",\"punctuation\",\"symbol\"]} }}} }}";
+		String settings = "{\"analysis\": {\"analyzer\": {\"cs_index_analyzer\": {\"type\": \"custom\",\"tokenizer\": \"standard\",\"filter\": [\"lowercase\",\"mynGram\"]},\"cs_search_analyzer\": {\"type\": \"custom\",\"tokenizer\": \"standard\",\"filter\": [\"standard\",\"lowercase\"]},\"keylower\": {\"tokenizer\": \"keyword\",\"filter\": \"lowercase\"}},\"filter\": {\"mynGram\": {\"type\": \"ngram\",\"min_gram\": 1,\"max_gram\": 20,\"token_chars\": [\"letter\", \"digit\",\"whitespace\",\"punctuation\",\"symbol\"]} }}}";
 		return settings;
 	}
 	
@@ -74,7 +62,7 @@ public class ElasticSearchQueryBuilder {
 		map.put("objectType","course");
 		map.put("courseId","course id_"+val);
 		map.put( "courseName","NTP course_"+val);
-		/*map.put(  "courseDuration",val);
+		map.put(  "courseDuration",val);
 		map.put(  "noOfLecture",30+val);
 		map.put(   "organisationId","org id");
 		map.put(   "orgName","Name of the organisation");
@@ -115,7 +103,7 @@ public class ElasticSearchQueryBuilder {
 		map.put("artifactUrl","https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/do_112228048362078208130/artifact/advancedenglishassessment1_1533_1489654074_1489653812104_1492681721669.zip");
 		map.put( "lastUpdatedOn", "2017-05-24T17:26:49.112+0000");
 		map.put("contentType","Story");
-		map.put("status","Live");*/
+		map.put("status","Live");
 		return map;
 	} 
 	

@@ -157,6 +157,7 @@ public class ElasticSearchUtil{
 	 * @param settings String
 	 * @return boolean
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean createIndex(String index, String type, String mappings, String settings) {
 		boolean response = false;
 		if(ProjectUtil.isStringNullOREmpty(index)) {
@@ -167,8 +168,7 @@ public class ElasticSearchUtil{
 		@SuppressWarnings("deprecation")
 		CreateIndexRequestBuilder createIndexBuilder = client.admin().indices().prepareCreate(index);
 		if (!ProjectUtil.isStringNullOREmpty(settings)) {
-			//createIndexResponse = createIndexBuilder.setSettings(Settings.builder().put(settings).build()).get();
-			createIndexResponse = createIndexBuilder.get();
+			createIndexResponse = createIndexBuilder.setSettings(settings).get();
 		} else {
 			createIndexResponse = createIndexBuilder.get();
 		}
