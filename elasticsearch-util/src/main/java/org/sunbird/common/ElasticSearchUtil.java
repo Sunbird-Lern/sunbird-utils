@@ -95,7 +95,6 @@ public class ElasticSearchUtil{
 			  Entry<String,Object> entry =itr.next();
 			 sourceBuilder.query(QueryBuilders.commonTermsQuery(entry.getKey(),entry.getValue()));
 		 }
-		 
 		 SearchResponse sr = null;
 		try {
 			sr = ConnectionManager.getClient().search(new SearchRequest(index).types(type).source(sourceBuilder)).get();
@@ -105,7 +104,6 @@ public class ElasticSearchUtil{
 			LOGGER.error(e);
 		}
 		sr.getHits().getAt(0).getSource();
-		//{courseType=type of the course. all , private, organisationId=org id, downloadUrl=https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_112228048362078208130/test-content-1_1493905653021_do_112228048362078208130_5.0.ecar, description=Test Content 1, language=["Hindi"], updatedDate=2017-06-01T10:45:17.270Z, variants={"spine": {"ecarUrl": "https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_112228048362078208130/test-content-1_1493905655272_do_112228048362078208130_5.0_spine.ecar","size": 863}}, mimeType=application/vnd.ekstep.html-archive, createdOn=2017-05-04T13:47:32.676+0000, objectType=course, courseAddedByName=Name of the person who added the course under sunbird, artifactUrl=https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/do_112228048362078208130/artifact/advancedenglishassessment1_1533_1489654074_1489653812104_1492681721669.zip, lastUpdatedOn=2017-05-24T17:26:49.112+0000, courseId=course id_0, contentType=Story, courseAddedById=who added the course in NTP, owner=EkStep, identifier=NTP course id_0, orgName=Name of the organisation, visibility=Default, enrollementStartDate=2017-06-01T10:45:17.270Z, updatedByName=last updated person name, noOfLecture=30, mediaType=content, osId=org.ekstep.quiz.app, updatedById=last updated by id, languageCode=hi, coursePublishedByName=who published the course, pkgVersion=5, tutor=[{"id":"name"},{"id":"name"}], versionKey=1495646809112, facultyId=faculty for this course, courseName=Name of the course added in NTP, size=2699766, lastPublishedOn=2017-05-04T13:47:33.000+0000, courseDuration=50, coursePublishedById=who published the course, availableFor=["C.B.S.C","I.C.S.C","all"], CoursecontentType=list of course content type as comma separated , pdf, video, wordDoc, name=Test Content 1, operationType=add/updated/delete, publishedDate=2017-06-01T10:45:17.270Z, facultyName=name of the faculty, status=Live}
 		return  sr.getAggregations().asList().get(0).getMetaData();
 	}
     
