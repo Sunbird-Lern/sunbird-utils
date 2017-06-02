@@ -36,13 +36,16 @@ public class ElasticSearchQueryBuilder {
 	
 	
 	public static void main(String[] args) {
+		//ElasticSearchUtil.createIndex("sunbird-inx4", "course", createMapping(), createSettingsForIndex());
+		ElasticSearchUtil.deleteIndex("sunbird-inx4");
 		//createIndex("sunbird-inx3", "course");
 		//for (int i=51;i<100;i++) 
 		//ElasticSearchUtil.createData("sunbird-inx3", "course", "NTP course id_"+i,createMapData(i));
-		  Map<String, Object> map = ElasticSearchUtil.getDataByIdentifier("sunbird-inx3", "course", "NTP course id_71");
-		 System.out.println(map!=null?map.get("courseName"):"Not found");
+		 // Map<String, Object> map = ElasticSearchUtil.getDataByIdentifier("sunbird-inx3", "course", "NTP course id_71");
+		 //System.out.println(map!=null?map.get("courseName"):"Not found");
 		 //ElasticSearchUtil.removeData("sunbird-inx3", "course", "NTP course id_70");
 		//ElasticSearchUtil.updateData("sunbird-inx3", "course", "NTP course id_71", createMapData(30));
+		 //ElasticSearchUtil.searchData("sunbird-inx3", "course", createMapData(30));
 	}
 	
 	public static String createMapping () {
@@ -71,7 +74,7 @@ public class ElasticSearchQueryBuilder {
 		map.put("objectType","course");
 		map.put("courseId","course id_"+val);
 		map.put( "courseName","NTP course_"+val);
-		map.put(  "courseDuration",val);
+		/*map.put(  "courseDuration",val);
 		map.put(  "noOfLecture",30+val);
 		map.put(   "organisationId","org id");
 		map.put(   "orgName","Name of the organisation");
@@ -112,7 +115,7 @@ public class ElasticSearchQueryBuilder {
 		map.put("artifactUrl","https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/do_112228048362078208130/artifact/advancedenglishassessment1_1533_1489654074_1489653812104_1492681721669.zip");
 		map.put( "lastUpdatedOn", "2017-05-24T17:26:49.112+0000");
 		map.put("contentType","Story");
-		map.put("status","Live");
+		map.put("status","Live");*/
 		return map;
 	} 
 	
