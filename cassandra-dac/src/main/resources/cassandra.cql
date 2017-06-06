@@ -40,7 +40,8 @@ CREATE INDEX inx_cc_status ON sunbird.content_consumption (status);
 CREATE INDEX inx_cc_courseId ON sunbird.content_consumption (courseId);
 
 
-//creation of id = using timestamp and env , id and courseId both are same
+//creation of id = using timestamp and env 
+// id and courseId both are same
 //content id is from ekstep 
 //status DRAFT("draft"), LIVE("live"), RETIRED("retired")
 //contentType (pdf,video,word doc etc)
@@ -81,3 +82,9 @@ updatedDate text,updatedBy text,status int,relation text,parentOrgId text,orgTyp
 
 CREATE INDEX inx_org_orgName ON sunbird.organisation (orgName);
 CREATE INDEX inx_org_status ON sunbird.organisation (status);
+
+id=  using timestamp and env 
+CREATE TABLE IF NOT EXISTS cassandraKeySpace.view_management(id text, pageName text, pageSectionName text,sectionOrder text,mobileSearchQuery text,portalSearchQuery text,mobileSearchUrl text,portalSearchUrl text,method text,data text,createdDate text,createdBy text,updatedDate text,updatedById text,status int,dateTime timestamp,PRIMARY KEY (id));
+CREATE INDEX inx_vm_pageName ON cassandraKeySpace.view_management (pageName);
+CREATE INDEX inx_vm_pageSectionName ON cassandraKeySpace.view_management (pageSectionName);
+
