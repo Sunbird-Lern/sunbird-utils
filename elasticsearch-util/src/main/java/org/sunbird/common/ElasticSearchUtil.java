@@ -3,11 +3,6 @@
  */
 package org.sunbird.common;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.ExecutionException;
-
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
@@ -16,14 +11,30 @@ import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
+import org.elasticsearch.search.sort.SortOrder;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.sunbird.common.models.util.LogHelper;
 import org.sunbird.common.models.util.ProjectUtil;
+import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.ExecutionException;
 
 /**
  * This class will provide all required operation
@@ -225,6 +236,80 @@ public class ElasticSearchUtil{
 			 response = true;
 		 }
 		return response;
+	}
+
+	public static void searchQuery(String index, String type, SearchDTO searchDTO){
+
+		Settings settings = Settings.builder()
+				.put("cluster.name", "elasticsearch").build();
+		TransportClient client = null;
+		try {
+			client = new PreBuiltTransportClient(settings)
+					.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
+
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+
+		searchDTO = new SearchDTO();
+		searchDTO.setOperation("guide");
+
+		//searchDTO.getAdditionalProperties().put("title" , "action");
+
+		SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+
+		if(!(ProjectUtil.isStringNullOREmpty(searchDTO.getOperation()))) {
+			sourceBuilder.query(QueryBuilders.simpleQueryStringQuery(searchDTO.getOperation()));
+		}
+
+		for (Map.Entry<String, Object> entry : searchDTO.getAdditionalProperties().entrySet())
+		{
+			sourceBuilder.query(QueryBuilders.commonTermsQuery(entry.getKey() , entry.getValue()));
+		}
+		//apply the sorting
+		searchDTO.getSortBy().put("summary" , "desc");
+			for (Map.Entry<String, String> entry : searchDTO.getSortBy().entrySet()) {
+				sourceBuilder.sort(entry.getKey(), getSortOrder(entry.getValue()));
+				//System.out.println("KEY  "+entry.getKey());
+			}
+
+		//apply the fields filter
+		List<String> fields = new ArrayList<>();
+		//fields.add("summary");
+		searchDTO.setFields(fields);
+		sourceBuilder.fetchSource(searchDTO.getFields().stream().toArray(String[]::new), null);
+		SearchResponse sr = null;
+		sr = getSearchResponse(index, type, sourceBuilder, client);
+		sr.getHits().getAt(0).getSource();
+		for(int i=0;i<sr.getHits().getTotalHits();i++){
+			System.out.println(sr.getHits().getAt(i).getSource());
+		}
+		System.out.println(sr.getHits().getTotalHits());
+
+	}
+
+	private static SortOrder getSortOrder(String value) {
+		return value.equalsIgnoreCase("ASC")?SortOrder.ASC : SortOrder.DESC;
+	}
+
+	public static void main(String[] args) {
+		searchQuery("bookdb_index" , "book",null);
+	}
+
+	private static SearchResponse getSearchResponse(String index, String type, SearchSourceBuilder sourceBuilder, TransportClient client) {
+		SearchResponse searchResponse = null;
+		try {
+			if (ProjectUtil.isStringNullOREmpty(type)) {
+				searchResponse = client.search(new SearchRequest(index).source(sourceBuilder)).get();
+			} else {
+				searchResponse = client.search(new SearchRequest(index).types(type).source(sourceBuilder)).get();
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+		return searchResponse;
 	}
 }
 

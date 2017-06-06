@@ -13,7 +13,7 @@ public class SearchDTO {
 	private List<Map> properties;
 	private List<String> facets;
 	private List<String> fields;
-	private Map<String, String> sortBy;
+	private Map<String, String> sortBy = new HashMap<String, String>();
 	private String operation;
 	private int limit;
 	private int offset;
