@@ -169,6 +169,15 @@ public class CassandraTest {
 		Map<String, Object> map = result.get(0);
 		assertTrue(((String)map.get("delta")).equalsIgnoreCase("delta as json string updated"));
 	}
+
+	@Test(expected=ProjectCommonException.class)
+	public void testCUpdateCourseByIdWithIncorrectId() {
+		coursemap.put("delta", "delta as json string updated");
+		HashMap<String, Object> map = new HashMap<>();
+		map.putAll(coursemap);
+		map.put("id", "courseId2");
+		operation.updateRecord(cach.getProperty("keyspace"), "course_enrollment", map);
+	}
 	
 	@Test(expected=ProjectCommonException.class)
 	public void testCFailedUpdateById() {

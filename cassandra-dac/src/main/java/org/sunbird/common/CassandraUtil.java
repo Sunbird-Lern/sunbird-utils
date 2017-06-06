@@ -91,7 +91,7 @@ public final class CassandraUtil{
 		Set<String> key =  new HashSet<>(map.keySet());
 		key.remove(Constants.IDENTIFIER);
 		query.append(String.join(" = ? ,", key));
-		query.append(" = ? "+ Constants.WHERE + Constants.IDENTIFIER +" = ? ;");
+		query.append(" = ? "+ Constants.WHERE + Constants.IDENTIFIER +" = ? ");
 	    LOGGER.debug(query.toString());
 		return query.toString();
 	}

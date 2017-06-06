@@ -1,3 +1,5 @@
+cassandra version 3.9.0
+
 open cassandra.yaml file
 
 change line
@@ -84,7 +86,7 @@ CREATE INDEX inx_org_orgName ON sunbird.organisation (orgName);
 CREATE INDEX inx_org_status ON sunbird.organisation (status);
 
 id=  using timestamp and env 
-CREATE TABLE IF NOT EXISTS cassandraKeySpace.view_management(id text, pageName text, pageSectionName text,sectionOrder text,mobileSearchQuery text,portalSearchQuery text,mobileSearchUrl text,portalSearchUrl text,method text,data text,createdDate text,createdBy text,updatedDate text,updatedById text,status int,dateTime timestamp,PRIMARY KEY (id));
-CREATE INDEX inx_vm_pageName ON cassandraKeySpace.view_management (pageName);
-CREATE INDEX inx_vm_pageSectionName ON cassandraKeySpace.view_management (pageSectionName);
+CREATE TABLE IF NOT EXISTS sunbird.view_management(id text, pageName text, pageSectionName text,sectionOrder text,mobileSearchQuery text,portalSearchQuery text,mobileSearchUrl text,portalSearchUrl text,method text,data text,createdDate text,createdBy text,updatedDate text,updatedById text,status int,dateTime timestamp,PRIMARY KEY (id));
+CREATE INDEX inx_vm_pageName ON sunbird.view_management (pageName);
+CREATE INDEX inx_vm_pageSectionName ON sunbird.view_management (pageSectionName);
 
