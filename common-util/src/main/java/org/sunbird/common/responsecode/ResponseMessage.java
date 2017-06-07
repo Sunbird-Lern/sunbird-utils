@@ -9,7 +9,7 @@ public interface ResponseMessage {
 	public interface Message {
 		public static final String UNAUTHORISE_USER = "You are not authorise.";
 		public static final String INVALID_USER_CREDENTIALS = "Please check your credentials";
-		public static final String INVALID_OPERATION_NAME = "OPeration name is invalid.Please provide a valid operation name";
+		public static final String INVALID_OPERATION_NAME = "Operation name is invalid.Please provide a valid operation name";
 		public static final String INVALID_REQUESTED_DATA = "Requested data for this operation is not valid.";
 		public static final String COMSUMER_ID_MISSING_ERROR = "Consumer id is mandatory.";
 		public static final String COMSUMER_ID_INVALID_ERROR = "Consumer id is invalid.";
@@ -54,8 +54,10 @@ public interface ResponseMessage {
 		public static final String TIMESTAMP_REQUIRED = "TimeStamp is required.";
 		public static final String PUBLISHED_COURSE_CAN_NOT_UPDATED ="Published course can't be updated";
 		public static final String SOURCE_MISSING = "source is required.";
-		public static final String PAGE_NAME_MISSING = "page name is required.";
-		public static final String PAGE_ID_MISSING = "page id is required.";
+		public static final String SECTION_NAME_MISSING = "section name is required.";
+		public static final String SECTION_ID_REQUIRED = "section id is required.";
+		public static final String PAGE_NAME_REQUIRED = "page name is required.";
+		public static final String PAGE_ID_REQUIRED = "page id is required.";
 	}
 
 	public interface Key {
@@ -106,8 +108,10 @@ public interface ResponseMessage {
 		public static final String TIMESTAMP_REQUIRED = "TIMESTAMP_REQUIRED";
 		public static final String PUBLISHED_COURSE_CAN_NOT_UPDATED = "PUBLISHED_COURSE_CAN_NOT_UPDATED";
 		public static final String SOURCE_MISSING = "SOURCE_MISSING";
-		public static final String PAGE_NAME_MISSING = "PAGE_NAME_MISSING";
-		public static final String PAGE_ID_MISSING = "PAGE_ID_MISSING";
+		public static final String SECTION_NAME_MISSING = "SECTION_NAME_MISSING";
+		public static final String SECTION_ID_REQUIRED = "SECTION_ID_REQUIRED";
+		public static final String PAGE_NAME_REQUIRED = "PAGE_NAME_REQUIRED";
+		public static final String PAGE_ID_REQUIRED = "PAGE_ID_REQUIRED";
 	}
 }
 

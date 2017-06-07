@@ -223,32 +223,71 @@ public final class RequestValidator {
 		 }
 	}
 	
-	/**
-	 * This method will validate Page creation request data.
-	 * @param Request Request
+	
+	/* This method will validate create section data
+	 * @param userRequest Request
 	 */
-	public static void validateCreatePage(Request request) {
-		 if (ProjectUtil.isStringNullOREmpty((String)request.getRequest().get(JsonKey.PAGE_NAME))) {
-			 ProjectCommonException dataException = new ProjectCommonException(ResponseCode.pageNameRequiredError.getErrorCode(),
-					 ResponseCode.pageNameRequiredError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-			 throw dataException;
-		 }
+	public static void validateCreateSection(Request request) {
+		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.SECTION_NAME) != null
+				? request.getRequest().get(JsonKey.SECTION_NAME) : ""))) {
+			ProjectCommonException dataException = new ProjectCommonException(
+					ResponseCode.sectionNmaeRequired.getErrorCode(), ResponseCode.sectionNmaeRequired.getErrorMessage(),
+					ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		}
 	}
 	
 	/**
-	 * This method will validate Page updation request data.
-	 * @param Request Request
+	 * This method will validate update section request data
+	 * @param userRequest Request
 	 */
-	public static void validateUpdatePage(Request request) {
-		 if (ProjectUtil.isStringNullOREmpty((String)request.getRequest().get(JsonKey.PAGE_NAME))) {
-			 ProjectCommonException dataException = new ProjectCommonException(ResponseCode.pageNameRequiredError.getErrorCode(),
-					 ResponseCode.pageNameRequiredError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-			 throw dataException;
-		 }else if (ProjectUtil.isStringNullOREmpty((String)request.getRequest().get(JsonKey.ID))) {
-			 ProjectCommonException dataException = new ProjectCommonException(ResponseCode.pageIdRequiredError.getErrorCode(),
-					 ResponseCode.pageIdRequiredError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-			 throw dataException;
-		 }
+	public static void validateUpdateSection(Request request) {
+		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.SECTION_NAME) != null
+				? request.getRequest().get(JsonKey.SECTION_NAME) : ""))) {
+			ProjectCommonException dataException = new ProjectCommonException(
+					ResponseCode.sectionNmaeRequired.getErrorCode(), ResponseCode.sectionNmaeRequired.getErrorMessage(),
+					ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		}else if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ID) != null
+				? request.getRequest().get(JsonKey.ID) : ""))) {
+			 throw new ProjectCommonException(
+					ResponseCode.sectionIdRequired.getErrorCode(), ResponseCode.sectionIdRequired.getErrorMessage(),
+					ResponseCode.CLIENT_ERROR.getResponseCode());	
+		}
+	}
+	
+	
+	/**
+	 * This method will validate create page data
+	 * @param userRequest Request
+	 */
+	public static void validateCreatePage(Request request) {
+		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.PAGE_NAME) != null
+				? request.getRequest().get(JsonKey.PAGE_NAME) : ""))) {
+			ProjectCommonException dataException = new ProjectCommonException(
+					ResponseCode.pageNameRequired.getErrorCode(), ResponseCode.pageNameRequired.getErrorMessage(),
+					ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		}
+	}
+	
+	/**
+	 * This method will validate update page request data
+	 * @param userRequest Request
+	 */
+	public static void validateUpdatepage(Request request) {
+		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.PAGE_NAME) != null
+				? request.getRequest().get(JsonKey.PAGE_NAME) : ""))) {
+			ProjectCommonException dataException = new ProjectCommonException(
+					ResponseCode.pageNameRequired.getErrorCode(), ResponseCode.pageNameRequired.getErrorMessage(),
+					ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		}else if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ID) != null
+				? request.getRequest().get(JsonKey.ID) : ""))) {
+			 throw new ProjectCommonException(
+					ResponseCode.pageIdRequired.getErrorCode(), ResponseCode.pageIdRequired.getErrorMessage(),
+					ResponseCode.CLIENT_ERROR.getResponseCode());	
+		}
 	}
 	
 }
