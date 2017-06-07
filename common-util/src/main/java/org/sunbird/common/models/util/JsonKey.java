@@ -81,6 +81,8 @@ public class JsonKey {
     public static final String UPDATED_BY_NAME = "updatedByName";
     public static final String ADDED_BY_NAME="addedByName";
     public static final String LAST_LOGIN_TIME ="lastLoginTime";
+    public static final String PAGE = "page";
+    public static final String COURSE_LOGO_URL = "courseLogoUrl";
 
     public static final String LEARNER_COURSE_DB = "learnerCourse_db";
     public static final String LEARNER_CONTENT_DB = "learnerContent_db";
