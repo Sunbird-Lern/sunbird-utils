@@ -192,7 +192,6 @@ public class CassandraOperationImpl implements CassandraOperation{
 				    selectWhere.and(clause);
 		    	}
 		    }
-		    System.out.println(selectQuery.toString());
 			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(selectQuery.allowFiltering());
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
@@ -200,6 +199,38 @@ public class CassandraOperationImpl implements CassandraOperation{
 			throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), e.getMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		 return response;
+	}
+
+
+	@Override
+	public Response getPropertiesValueById(String keyspaceName, String tableName, String id, String... properties) {
+		Response response = new Response();
+		try{
+			String selectQuery = CassandraUtil.getSelectStatement(keyspaceName, tableName, properties);
+			PreparedStatement statement = CassandraConnectionManager.getSession(keyspaceName).prepare(selectQuery);
+			BoundStatement boundStatement = new BoundStatement(statement);
+			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement.bind(id));
+			response = CassandraUtil.createResponse(results);
+		}catch(Exception e){
+			LOGGER.error(e.getMessage(), e);
+			throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), e.getMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
+		}
+		return response;
+	}
+
+
+	@Override
+	public Response getAllRecords(String keyspaceName, String tableName) {
+		Response response = new Response();
+		try{
+			Select selectQuery = QueryBuilder.select().all().from(keyspaceName, tableName);
+			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(selectQuery);
+			response = CassandraUtil.createResponse(results);
+		}catch(Exception e){
+			LOGGER.error(e.getMessage(), e);
+			throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), e.getMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
+		}
+		return response;
 	}
 
 }

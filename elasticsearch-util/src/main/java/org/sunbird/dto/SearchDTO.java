@@ -13,10 +13,11 @@ public class SearchDTO {
 	private List<Map> properties;
 	private List<String> facets;
 	private List<String> fields;
-	private Map<String, String> sortBy;
+	private Map<String, String> sortBy = new HashMap<String, String>();
 	private String operation;
-	private int limit;
-	private int offset;
+	private String sampleStringQuery;
+	private Integer limit;
+	private Integer offset;
 	boolean fuzzySearch = false;
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 	private Map<String, Object> softConstraints = new HashMap<String, Object>();
@@ -46,10 +47,10 @@ public class SearchDTO {
 	public void setOperation(String operation) {
 		this.operation = operation;
 	}
-	public int getLimit() {
+	public Integer getLimit() {
 		return limit;
 	}
-	public void setLimit(int limit) {
+	public void setLimit(Integer limit) {
 		this.limit = limit;
 	}
 	public List<String> getFacets() {
@@ -91,10 +92,10 @@ public class SearchDTO {
 		this.fields = fields;
 	}
 	
-	public int getOffset() {
+	public Integer getOffset() {
 		return offset;
 	}
-	public void setOffset(int offset) {
+	public void setOffset(Integer offset) {
 		this.offset = offset;
 	}
 	public Map<String, Object> getSoftConstraints() {
@@ -104,4 +105,11 @@ public class SearchDTO {
 		this.softConstraints = softConstraints;
 	}
 
+	public String getSampleStringQuery() {
+		return sampleStringQuery;
+	}
+
+	public void setSampleStringQuery(String sampleStringQuery) {
+		this.sampleStringQuery = sampleStringQuery;
+	}
 }

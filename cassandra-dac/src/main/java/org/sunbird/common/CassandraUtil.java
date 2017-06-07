@@ -95,4 +95,21 @@ public final class CassandraUtil{
 	    LOGGER.debug(query.toString());
 		return query.toString();
 	}
+	
+	/**
+	 * this method is used to create prepared statement based on table name and column name provided
+	 * @param keyspaceName
+	 * @param tableName
+	 * @param properties(list of property)
+	 * @return String
+	 * @author Amit Kumar
+	 */
+	public static String getSelectStatement(String keyspaceName, String tableName, String... properties){
+		StringBuilder query=new StringBuilder(Constants.SELECT);
+		query.append(String.join(",", properties));
+		query.append(Constants.FROM + keyspaceName + Constants.DOT + tableName +Constants.WHERE +Constants.IDENTIFIER +Constants.EQUAL +" ?; ");
+	    LOGGER.debug(query.toString());
+		return query.toString();
+		
+	}
 }

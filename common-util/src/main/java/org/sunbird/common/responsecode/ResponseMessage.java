@@ -55,6 +55,7 @@ public interface ResponseMessage {
 		public static final String PUBLISHED_COURSE_CAN_NOT_UPDATED ="Published course can't be updated";
 		public static final String SOURCE_MISSING = "source is required.";
 		public static final String SECTION_NAME_MISSING = "section name is required.";
+		public static final String SECTION_DATA_TYPE_MISSING = "section data type missing.";
 		public static final String SECTION_ID_REQUIRED = "section id is required.";
 		public static final String PAGE_NAME_REQUIRED = "page name is required.";
 		public static final String PAGE_ID_REQUIRED = "page id is required.";
@@ -109,6 +110,7 @@ public interface ResponseMessage {
 		public static final String PUBLISHED_COURSE_CAN_NOT_UPDATED = "PUBLISHED_COURSE_CAN_NOT_UPDATED";
 		public static final String SOURCE_MISSING = "SOURCE_MISSING";
 		public static final String SECTION_NAME_MISSING = "SECTION_NAME_MISSING";
+		public static final String SECTION_DATA_TYPE_MISSING = "SECTION_DATA_TYPE_MISSING";
 		public static final String SECTION_ID_REQUIRED = "SECTION_ID_REQUIRED";
 		public static final String PAGE_NAME_REQUIRED = "PAGE_NAME_REQUIRED";
 		public static final String PAGE_ID_REQUIRED = "PAGE_ID_REQUIRED";
