@@ -223,4 +223,32 @@ public final class RequestValidator {
 		 }
 	}
 	
+	/**
+	 * This method will validate Page creation request data.
+	 * @param Request Request
+	 */
+	public static void validateCreatePage(Request request) {
+		 if (ProjectUtil.isStringNullOREmpty((String)request.getRequest().get(JsonKey.PAGE_NAME))) {
+			 ProjectCommonException dataException = new ProjectCommonException(ResponseCode.pageNameRequiredError.getErrorCode(),
+					 ResponseCode.pageNameRequiredError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+			 throw dataException;
+		 }
+	}
+	
+	/**
+	 * This method will validate Page updation request data.
+	 * @param Request Request
+	 */
+	public static void validateUpdatePage(Request request) {
+		 if (ProjectUtil.isStringNullOREmpty((String)request.getRequest().get(JsonKey.PAGE_NAME))) {
+			 ProjectCommonException dataException = new ProjectCommonException(ResponseCode.pageNameRequiredError.getErrorCode(),
+					 ResponseCode.pageNameRequiredError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+			 throw dataException;
+		 }else if (ProjectUtil.isStringNullOREmpty((String)request.getRequest().get(JsonKey.ID))) {
+			 ProjectCommonException dataException = new ProjectCommonException(ResponseCode.pageIdRequiredError.getErrorCode(),
+					 ResponseCode.pageIdRequiredError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+			 throw dataException;
+		 }
+	}
+	
 }

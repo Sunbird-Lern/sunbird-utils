@@ -54,6 +54,8 @@ public interface ResponseMessage {
 		public static final String TIMESTAMP_REQUIRED = "TimeStamp is required.";
 		public static final String PUBLISHED_COURSE_CAN_NOT_UPDATED ="Published course can't be updated";
 		public static final String SOURCE_MISSING = "source is required.";
+		public static final String PAGE_NAME_MISSING = "page name is required.";
+		public static final String PAGE_ID_MISSING = "page id is required.";
 	}
 
 	public interface Key {
@@ -104,6 +106,8 @@ public interface ResponseMessage {
 		public static final String TIMESTAMP_REQUIRED = "TIMESTAMP_REQUIRED";
 		public static final String PUBLISHED_COURSE_CAN_NOT_UPDATED = "PUBLISHED_COURSE_CAN_NOT_UPDATED";
 		public static final String SOURCE_MISSING = "SOURCE_MISSING";
+		public static final String PAGE_NAME_MISSING = "PAGE_NAME_MISSING";
+		public static final String PAGE_ID_MISSING = "PAGE_ID_MISSING";
 	}
 }
 

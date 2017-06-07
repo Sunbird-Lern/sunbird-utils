@@ -54,7 +54,9 @@ public enum ResponseCode {
 	timeStampRequired(ResponseMessage.Key.TIMESTAMP_REQUIRED, ResponseMessage.Message.TIMESTAMP_REQUIRED),
 	publishedCourseCanNotBeUpdated(ResponseMessage.Key.PUBLISHED_COURSE_CAN_NOT_UPDATED, ResponseMessage.Message.PUBLISHED_COURSE_CAN_NOT_UPDATED),
 	sourceRequired(ResponseMessage.Key.SOURCE_MISSING, ResponseMessage.Message.SOURCE_MISSING),
-	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404);
+	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404),
+	pageNameRequiredError (ResponseMessage.Key.PAGE_NAME_MISSING, ResponseMessage.Message.PAGE_NAME_MISSING),
+	pageIdRequiredError (ResponseMessage.Key.PAGE_ID_MISSING, ResponseMessage.Message.PAGE_ID_MISSING);
 	
 	private int responseCode;
 	/**

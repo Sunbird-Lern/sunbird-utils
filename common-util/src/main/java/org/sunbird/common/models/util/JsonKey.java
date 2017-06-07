@@ -97,5 +97,7 @@ public class JsonKey {
     public static final String DB_USERNAME="db.username";
     public static final String DB_PASSWORD="db.password";
     public static final String DB_KEYSPACE="db.keyspace";
+    
+    public static final String PAGE_NAME="pageName";
 
 }
