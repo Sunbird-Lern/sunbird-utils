@@ -231,7 +231,13 @@ public final class RequestValidator {
 		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.SECTION_NAME) != null
 				? request.getRequest().get(JsonKey.SECTION_NAME) : ""))) {
 			ProjectCommonException dataException = new ProjectCommonException(
-					ResponseCode.sectionNmaeRequired.getErrorCode(), ResponseCode.sectionNmaeRequired.getErrorMessage(),
+					ResponseCode.sectionNameRequired.getErrorCode(), ResponseCode.sectionNameRequired.getErrorMessage(),
+					ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		}else if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.SECTION_DATA_TYPE) != null
+				? request.getRequest().get(JsonKey.SECTION_DATA_TYPE) : ""))) {
+			ProjectCommonException dataException = new ProjectCommonException(
+					ResponseCode.sectionNameRequired.getErrorCode(), ResponseCode.sectionNameRequired.getErrorMessage(),
 					ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
 		}
@@ -245,7 +251,7 @@ public final class RequestValidator {
 		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.SECTION_NAME) != null
 				? request.getRequest().get(JsonKey.SECTION_NAME) : ""))) {
 			ProjectCommonException dataException = new ProjectCommonException(
-					ResponseCode.sectionNmaeRequired.getErrorCode(), ResponseCode.sectionNmaeRequired.getErrorMessage(),
+					ResponseCode.sectionNameRequired.getErrorCode(), ResponseCode.sectionNameRequired.getErrorMessage(),
 					ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
 		}else if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ID) != null
@@ -253,6 +259,12 @@ public final class RequestValidator {
 			 throw new ProjectCommonException(
 					ResponseCode.sectionIdRequired.getErrorCode(), ResponseCode.sectionIdRequired.getErrorMessage(),
 					ResponseCode.CLIENT_ERROR.getResponseCode());	
+		}else if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.SECTION_DATA_TYPE) != null
+				? request.getRequest().get(JsonKey.SECTION_DATA_TYPE) : ""))) {
+			ProjectCommonException dataException = new ProjectCommonException(
+					ResponseCode.sectionNameRequired.getErrorCode(), ResponseCode.sectionNameRequired.getErrorMessage(),
+					ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
 		}
 	}
 	

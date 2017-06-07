@@ -72,4 +72,22 @@ public interface CassandraOperation {
 	 * @return Response
 	 */
 	public Response  getRecordsByProperties(String keyspaceName,String tableName,Map<String,Object> propertyMap);
+	
+	/**
+	 * used to fetch properties value based on id 
+	 * @param keyspaceName
+	 * @param tableName
+	 * @param id
+	 * @param properties
+	 * @return Response
+	 */
+	public Response  getPropertiesValueById(String keyspaceName,String tableName,String id,String... properties);
+	
+	/**
+	 * used to fetch all records for table
+	 * @param keyspaceName
+	 * @param tableName
+	 * @return Response
+	 */
+	public Response  getAllRecords(String keyspaceName,String tableName);
 }
