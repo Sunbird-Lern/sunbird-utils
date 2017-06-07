@@ -103,5 +103,6 @@ public class JsonKey {
 	public static final String SECTION_DATA_TYPE = "sectionDataType";
 	public static final String SECTION_DISPLAY = "display";
 	public static final String PAGE_NAME = "pageName";
+	public static final String SECTION ="section";
 
 }
