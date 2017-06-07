@@ -1,3 +1,5 @@
+cassandra version 3.9.0
+
 open cassandra.yaml file
 
 change line
@@ -20,8 +22,9 @@ USE sunbird;
 //toc url we have to generate through json of content id from ekStep 
 //here status is (default(0),inProgress(1),completed(2))
 //progress is no of content completed
-CREATE TABLE IF NOT EXISTS sunbird.course_enrollment(id text, courseId text, courseName text,userId text,enrolledDate text,description text,tocUrl text,status int,
-active boolean,delta text,grade text,progress int,lastReadContentId text,lastReadContentStatus int,dateTime timestamp,addedBy text,PRIMARY KEY (id));
+CREATE TABLE IF NOT EXISTS sunbird.course_enrollment(id text, courseId text, courseName text,userId text,enrolledDate text,
+description text,tocUrl text,status int,active boolean,delta text,grade text,progress int,lastReadContentId text,
+lastReadContentStatus int,addedBy text,courseLogoUrl text,dateTime timestamp,PRIMARY KEY (id));
 
 CREATE INDEX inx_ce_userId ON sunbird.course_enrollment (userId);
 CREATE INDEX inx_ce_courseId ON sunbird.course_enrollment (courseId);
@@ -47,10 +50,11 @@ CREATE INDEX inx_cc_courseId ON sunbird.content_consumption (courseId);
 //contentType (pdf,video,word doc etc)
 //tutor   map<id,name>
         
-CREATE TABLE IF NOT EXISTS sunbird.course_management(id text, courseId text, courseName text,courseType text,contentId text,facultyId text,facultyName text,
-organisationId text,organisationName text,enrollementStartDate text,enrollementEndDate text,courseDuration text,description text,status text,
-addedBy text,addedByName text,publishedBy text,publishedByName text,createdDate text,publishedDate text,updatedDate text,updatedBy text,
-updatedByName text,contentType text,noOfLectures text,createdfor list<text>,tutor map<text,text>,PRIMARY KEY (id));
+CREATE TABLE IF NOT EXISTS sunbird.course_management(id text, courseId text, contentId text, courseName text,courseType text,
+facultyId text,facultyName text,organisationId text,organisationName text,enrollementStartDate text,enrollementEndDate text,
+courseDuration text,description text,status text,addedBy text,addedByName text,publishedBy text,publishedByName text,createdDate text,
+publishedDate text,updatedDate text,updatedBy text,updatedByName text,contentType text,createdfor list<text>,noOfLectures text,
+tutor map<text,text>,courseLogoUrl text,PRIMARY KEY (id));
 
 CREATE INDEX inx_cm_facultyId ON sunbird.course_management (facultyId);
 CREATE INDEX inx_cm_organisationId ON sunbird.course_management (organisationId);
@@ -84,7 +88,14 @@ CREATE INDEX inx_org_orgName ON sunbird.organisation (orgName);
 CREATE INDEX inx_org_status ON sunbird.organisation (status);
 
 id=  using timestamp and env 
-CREATE TABLE IF NOT EXISTS cassandraKeySpace.view_management(id text, pageName text, pageSectionName text,sectionOrder text,mobileSearchQuery text,portalSearchQuery text,mobileSearchUrl text,portalSearchUrl text,method text,data text,createdDate text,createdBy text,updatedDate text,updatedById text,status int,dateTime timestamp,PRIMARY KEY (id));
-CREATE INDEX inx_vm_pageName ON cassandraKeySpace.view_management (pageName);
-CREATE INDEX inx_vm_pageSectionName ON cassandraKeySpace.view_management (pageSectionName);
+CREATE TABLE IF NOT EXISTS sunbird.page_management(id text, pageName text, appMap Map<text,int>,portalMap Map<text,int>,PRIMARY KEY (id));
+CREATE INDEX inx_pm_pageName ON sunbird.page_management (pageName);
+
+id=  using timestamp and env 
+CREATE TABLE IF NOT EXISTS sunbird.page_section(id text, sectionName text, sectionDataType text,description text,display text,
+searchQuery text,createdDate text,createdBy text,updatedDate text,updatedById text,imgUrl text,alt text,status int,PRIMARY KEY (id));
+CREATE INDEX inx_ps_sectionDataType ON sunbird.page_section (sectionDataType);
+CREATE INDEX inx_ps_sectionName ON sunbird.page_section (sectionName);
+
+
 

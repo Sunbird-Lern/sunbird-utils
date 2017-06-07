@@ -81,6 +81,8 @@ public class JsonKey {
     public static final String UPDATED_BY_NAME = "updatedByName";
     public static final String ADDED_BY_NAME="addedByName";
     public static final String LAST_LOGIN_TIME ="lastLoginTime";
+    public static final String PAGE = "page";
+    public static final String COURSE_LOGO_URL = "courseLogoUrl";
 
     public static final String LEARNER_COURSE_DB = "learnerCourse_db";
     public static final String LEARNER_CONTENT_DB = "learnerContent_db";
@@ -95,5 +97,13 @@ public class JsonKey {
     public static final String DB_USERNAME="db.username";
     public static final String DB_PASSWORD="db.password";
     public static final String DB_KEYSPACE="db.keyspace";
+
+	public static final String SECTION_NAME = "sectionName";
+	public static final String SEARCH_QUERY = "searchQuery";
+	public static final String SECTION_DATA_TYPE = "sectionDataType";
+	public static final String SECTION_DISPLAY = "display";
+	public static final String PAGE_NAME = "pageName";
+	public static final String CREATED_BY = "createdBy";
+	public static final String SECTION ="section";
 
 }

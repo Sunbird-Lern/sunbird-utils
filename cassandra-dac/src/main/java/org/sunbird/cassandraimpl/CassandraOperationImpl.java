@@ -2,7 +2,6 @@ package org.sunbird.cassandraimpl;
 
 import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -65,14 +64,15 @@ public class CassandraOperationImpl implements CassandraOperation{
 	public Response updateRecord(String keyspaceName, String tableName, Map<String, Object> request) throws ProjectCommonException {
 		Response response = new Response();
 		try{
-		String updateQuery = CassandraUtil.getUpdateQueryStatement(keyspaceName, tableName, request);
+		String query = CassandraUtil.getUpdateQueryStatement(keyspaceName, tableName, request);
+		String updateQuery =query+" IF EXISTS;";
 		PreparedStatement statement = CassandraConnectionManager.getSession(keyspaceName).prepare(updateQuery);
 		//Iterator<String> iterator = request.keySet().iterator(); 
 		//need to refactor this code
 		Object [] array =  new Object[request.size()];
 		int i=0;
 		String str= "";
-		int index = updateQuery.lastIndexOf("SET");
+		int index = query.lastIndexOf("SET");
 		str= updateQuery.substring(index+4);
 		str = str.replace("=", "");
 		str = str.replace("?", "");
@@ -90,8 +90,12 @@ public class CassandraOperationImpl implements CassandraOperation{
 		}
 		array[i++] = request.get(Constants.IDENTIFIER);
 		BoundStatement boundStatement = statement.bind(array);
-		CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement);
-		response.put(Constants.RESPONSE, Constants.SUCCESS);
+		ResultSet result= CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement);
+			if(result.wasApplied()){
+				response.put(Constants.RESPONSE, Constants.SUCCESS);
+			}else{
+				throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), Constants.INCORRECT_DATA, ResponseCode.SERVER_ERROR.getResponseCode());
+			}
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), e.getMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
