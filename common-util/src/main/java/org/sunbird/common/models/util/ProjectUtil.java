@@ -195,5 +195,6 @@ public class ProjectUtil {
     public synchronized static String generateUniqueId() {
         return UUID.randomUUID().toString();
     }
-
+     
+    public enum Method {GET,POST,PUT,DELETE}
 }
