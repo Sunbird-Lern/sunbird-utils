@@ -17,22 +17,23 @@ import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.ExistsQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.RangeQueryBuilder;
+import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
 import org.elasticsearch.search.sort.SortOrder;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.sunbird.common.models.util.LogHelper;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
+import org.sunbird.util.ESOperation;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ExecutionException;
 
@@ -238,62 +239,46 @@ public class ElasticSearchUtil{
 		return response;
 	}
 
-	public static void searchQuery(String index, String type, SearchDTO searchDTO){
-
-		Settings settings = Settings.builder()
-				.put("cluster.name", "elasticsearch").build();
-		TransportClient client = null;
-		try {
-			client = new PreBuiltTransportClient(settings)
-					.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
-
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-
-		searchDTO = new SearchDTO();
-		searchDTO.setOperation("guide");
-
-		//searchDTO.getAdditionalProperties().put("title" , "action");
-
-		SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
-
-		if(!(ProjectUtil.isStringNullOREmpty(searchDTO.getOperation()))) {
-			sourceBuilder.query(QueryBuilders.simpleQueryStringQuery(searchDTO.getOperation()));
-		}
-
-		for (Map.Entry<String, Object> entry : searchDTO.getAdditionalProperties().entrySet())
-		{
-			sourceBuilder.query(QueryBuilders.commonTermsQuery(entry.getKey() , entry.getValue()));
-		}
-		//apply the sorting
-		searchDTO.getSortBy().put("summary" , "desc");
-			for (Map.Entry<String, String> entry : searchDTO.getSortBy().entrySet()) {
-				sourceBuilder.sort(entry.getKey(), getSortOrder(entry.getValue()));
-				//System.out.println("KEY  "+entry.getKey());
-			}
-
-		//apply the fields filter
-		List<String> fields = new ArrayList<>();
-		//fields.add("summary");
-		searchDTO.setFields(fields);
-		sourceBuilder.fetchSource(searchDTO.getFields().stream().toArray(String[]::new), null);
-		SearchResponse sr = null;
-		sr = getSearchResponse(index, type, sourceBuilder, client);
-		sr.getHits().getAt(0).getSource();
-		for(int i=0;i<sr.getHits().getTotalHits();i++){
-			System.out.println(sr.getHits().getAt(i).getSource());
-		}
-		System.out.println(sr.getHits().getTotalHits());
-
-	}
-
-	private static SortOrder getSortOrder(String value) {
-		return value.equalsIgnoreCase("ASC")?SortOrder.ASC : SortOrder.DESC;
-	}
-
 	public static void main(String[] args) {
-		searchQuery("bookdb_index" , "book",null);
+		//searchQuery("bookdb_index" , "book",null);
+		SearchDTO searchDTO = new SearchDTO();
+		//searchDTO.setSampleStringQuery("guide");
+		//TODO:delete
+		searchDTO.getSortBy().put("courseDuration" , "asc");
+		//searchDTO.getSortBy().put("publish_date" , "desc");
+		//TODO:delete
+		List<String> fields = new ArrayList<>();
+		fields.add("lastPublishedOn");
+		fields.add("size");
+		fields.add("courseDuration");
+		//fields.add("publish_date");
+		fields.add("courseAddedByName");
+		searchDTO.setFields(fields);
+		//searchDTO.setOffset(1);
+		//searchDTO.setLimit(2);
+		ESOperation operation1 = new ESOperation();
+		operation1.setType(ESOperation.Operations.RANGE_QUERY.getValue());
+		Map<String , Integer> rangeMap = new HashMap<String , Integer>();
+		rangeMap.put("from",5);
+		rangeMap.put("to" , 7);
+		operation1.setValue(rangeMap);
+		searchDTO.getAdditionalProperties().put("courseDuration",operation1);
+
+		ESOperation dateOperation = new ESOperation();
+		dateOperation.setType(ESOperation.Operations.RANGE_QUERY.getValue());
+		Map<String , String> daterangeMap = new HashMap<String , String>();
+		daterangeMap.put("from","36");
+		dateOperation.setValue(daterangeMap);
+		searchDTO.getAdditionalProperties().put("noOfLecture",dateOperation);
+
+		ESOperation existsOperation = new ESOperation();
+		existsOperation.setType(ESOperation.Operations.SHOULD_EXISTS_FIELD.getValue());
+		searchDTO.getAdditionalProperties().put("owner" , existsOperation);
+
+		complexSearch(searchDTO , "sunbird-inx5" , "course");
+		complexSearch(searchDTO , "sunbird-inx5" , "course");
+		complexSearch(searchDTO , "sunbird-inx5" , "course");
+
 	}
 
 	private static SearchResponse getSearchResponse(String index, String type, SearchSourceBuilder sourceBuilder, TransportClient client) {
@@ -310,6 +295,93 @@ public class ElasticSearchUtil{
 			e.printStackTrace();
 		}
 		return searchResponse;
+	}
+
+	public static SearchResponse complexSearch(SearchDTO searchDTO,String index, String type){
+
+		SearchRequestBuilder searchRequestBuilder = getSearchBuilder(ConnectionManager.getClient(), index , type);
+
+		BoolQueryBuilder query = new BoolQueryBuilder();
+
+		//apply simple query string
+		if(null != searchDTO.getSampleStringQuery()) {
+			query.should(QueryBuilders.simpleQueryStringQuery(searchDTO.getSampleStringQuery()));
+		}
+		//apply the sorting
+		for (Map.Entry<String, String> entry : searchDTO.getSortBy().entrySet()) {
+			searchRequestBuilder.addSort(entry.getKey(), getSortOrder(entry.getValue()));
+		}
+
+		//apply the fields filter
+		searchRequestBuilder.setFetchSource(searchDTO.getFields().stream().toArray(String[]::new), null);
+
+		// setting the offset
+		if(searchDTO.getOffset()!=null) {
+			searchRequestBuilder.setFrom(searchDTO.getOffset());
+		}
+
+		//setting the limit
+		if(searchDTO.getLimit()!=null) {
+			searchRequestBuilder.setSize(searchDTO.getLimit());
+		}
+		//apply additional properties
+		for (Map.Entry<String, Object> entry : searchDTO.getAdditionalProperties().entrySet()) {
+			addAdditionalProperties(query , entry);
+		}
+
+		//set final query to search request builder
+		searchRequestBuilder.setQuery(query);
+
+		SearchResponse response = searchRequestBuilder.execute().actionGet();
+
+		// print response
+		for (SearchHit hit : response.getHits()) {
+			//Long id = hit.field("id").<Long>getValue();
+			System.out.println(hit.getSourceAsString());
+		}
+		System.out.println(response.getHits().getTotalHits());
+		return response;
+
+	}
+
+	private static SearchRequestBuilder getSearchBuilder(TransportClient client, String index, String type) {
+
+		if (ProjectUtil.isStringNullOREmpty(type)) {
+			return client.prepareSearch()
+					.setIndices(index);
+		} else {
+			return client.prepareSearch()
+					.setIndices(index)
+					.setTypes(type);
+		}
+	}
+
+	private static void addAdditionalProperties(BoolQueryBuilder query, Map.Entry<String, Object> entry) {
+
+		String key = entry.getKey();
+		ESOperation operation =(ESOperation) entry.getValue();
+
+		if(operation.getType().equalsIgnoreCase(ESOperation.Operations.RANGE_QUERY.getValue())){
+
+			RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key);
+			Map<String , Object> range = (Map<String, Object>) operation.getValue();
+			if(range.containsKey("from")){
+				rangeQueryBuilder.gte(range.get("from"));
+			}if(range.containsKey("to")){
+				rangeQueryBuilder.lte(range.get("to"));
+			}
+			query.must(rangeQueryBuilder);
+		}else if(operation.getType().equalsIgnoreCase(ESOperation.Operations.SIMPLE_FIELD_QUERY.getValue())){
+			query.should(QueryBuilders.commonTermsQuery(key , operation.getValue()));
+		}else if(operation.getType().equalsIgnoreCase(ESOperation.Operations.SHOULD_EXISTS_FIELD.getValue())){
+			ExistsQueryBuilder existsQuery = QueryBuilders.existsQuery(key);
+			query.must(existsQuery);
+		}
+
+	}
+
+	private static SortOrder getSortOrder(String value) {
+		return value.equalsIgnoreCase("ASC")?SortOrder.ASC : SortOrder.DESC;
 	}
 }
 
