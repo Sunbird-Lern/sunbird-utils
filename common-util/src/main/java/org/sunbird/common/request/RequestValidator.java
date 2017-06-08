@@ -125,8 +125,8 @@ public final class RequestValidator {
 					ResponseCode.passwordRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 		}else if (userRequest.getRequest().get(JsonKey.SOURCE) == null
 				|| (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PASSWORD)))) {
-			throw new ProjectCommonException(ResponseCode.passwordRequired.getErrorCode(),
-					ResponseCode.passwordRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw new ProjectCommonException(ResponseCode.sourceRequired.getErrorCode(),
+					ResponseCode.sourceRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 		}
 	}
 	
