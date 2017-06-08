@@ -98,12 +98,13 @@ public class JsonKey {
     public static final String DB_PASSWORD="db.password";
     public static final String DB_KEYSPACE="db.keyspace";
 
-	public static final String SECTION_NAME = "sectionName";
+	public static final String SECTION_NAME = "name";
 	public static final String SEARCH_QUERY = "searchQuery";
 	public static final String SECTION_DATA_TYPE = "sectionDataType";
 	public static final String SECTION_DISPLAY = "display";
-	public static final String PAGE_NAME = "pageName";
+	public static final String PAGE_NAME = "name";
 	public static final String CREATED_BY = "createdBy";
 	public static final String SECTION ="section";
+	public static final String NAME="name";
 
 }
