@@ -40,7 +40,8 @@ import java.util.concurrent.ExecutionException;
  */
 public class ElasticSearchUtil {
     private static final LogHelper LOGGER = LogHelper.getInstance(ElasticSearchUtil.class.getName());
-
+    public static final String INDEX_NAME = "sunbird";
+    public enum IndexType {course,content,user}
     /**
      * This method will put a new data entry inside Elastic search. identifier
      * value becomes _id inside ES, so every time provide a unique value while
