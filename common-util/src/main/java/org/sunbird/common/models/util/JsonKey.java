@@ -110,5 +110,6 @@ public class JsonKey {
 	public static final String PORTAL_MAP = "portalMap";
 	public static final String APP_MAP = "appMap";
 	public static final String SECTIONS = "sections";
+	public static final String RESULT = "result";
 
 }
