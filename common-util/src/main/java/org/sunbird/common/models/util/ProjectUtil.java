@@ -114,6 +114,23 @@ public class ProjectUtil {
     }
 
     /**
+     * @author Amit Kumar
+     */
+    public enum Source {
+        WEB("web"), ANDROID("android"), IOS("ios");
+
+        private String value;
+
+        Source(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return this.value;
+        }
+    }
+    
+    /**
      * This method will check incoming value is null or empty
      * it will do empty check by doing trim method. in case of
      * null or empty it will return true else false.

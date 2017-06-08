@@ -114,4 +114,8 @@ public class JsonKey {
 	public static final String NO_OF_LECTURES= "noOfLectures";
 	public static final String APPLICABLE_FOR = "applicableFor";
 	public static final String OBJECT_TYPE = "objectType";
+	public static final String AUTH_USER_HEADER = "X-Authenticated-Userid";
+	public static final String PORTAL_MAP = "portalMap";
+	public static final String APP_MAP = "appMap";
+	public static final String SECTIONS = "sections";
 }
