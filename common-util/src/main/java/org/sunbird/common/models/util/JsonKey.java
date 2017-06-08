@@ -106,5 +106,9 @@ public class JsonKey {
 	public static final String CREATED_BY = "createdBy";
 	public static final String SECTION ="section";
 	public static final String NAME="name";
+	public static final String AUTH_USER_HEADER = "X-Authenticated-Userid";
+	public static final String PORTAL_MAP = "portalMap";
+	public static final String APP_MAP = "appMap";
+	public static final String SECTIONS = "sections";
 
 }
