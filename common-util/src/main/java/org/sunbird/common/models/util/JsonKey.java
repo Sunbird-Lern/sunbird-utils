@@ -91,6 +91,7 @@ public class JsonKey {
     public static final String USER_AUTH_DB = "userAuth_db";
     public static final String ORG_DB = "org_db";
     public static final String PAGE_MGMT_DB = "page_mgmt_db";
+    public static final String PAGE_SECTION_DB = "page_section_db";
 
     public static final String DB_IP="db.ip";
     public static final String DB_PORT="db.port";
@@ -111,5 +112,7 @@ public class JsonKey {
 	public static final String APP_MAP = "appMap";
 	public static final String SECTIONS = "sections";
 	public static final String RESULT = "result";
+	public static final String APP_SECTIONS ="appSections";
+	public static final String PORTAL_SECTIONS="portalSections";
 
 }
