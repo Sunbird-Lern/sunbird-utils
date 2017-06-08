@@ -11,12 +11,9 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.json.JSONObject;
 
 /**
  * This utility method will handle external 
@@ -137,19 +134,20 @@ public class HttpUtil {
 				builder.append(line);
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.error(e);
 		} finally {
 			if (reader != null) {
 				try {
 					reader.close();
 				} catch (IOException e) {
+					LOGGER.error(e);
 				}
 			}
 			if (inStream != null) {
 				try {
 					inStream.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					LOGGER.error(e);
 				}
 			}
 			if (httpURLConnection != null) {
