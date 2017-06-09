@@ -12,7 +12,7 @@ import org.sunbird.common.responsecode.ResponseCode;
  * @author Manzarul
  *
  */
-public class Response implements Serializable {
+public class Response implements Serializable,Cloneable {
 
     private static final long serialVersionUID = -3773253896160786443L;
 
@@ -116,5 +116,12 @@ public class Response implements Serializable {
     public ResponseCode getResponseCode() {
         return this.responseCode;
     }
-
+   
+	public Response clone(Response response) {
+		try {
+			return (Response) response.clone();
+		} catch (CloneNotSupportedException e) {
+		}
+		return null;
+	}
 }

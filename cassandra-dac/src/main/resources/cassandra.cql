@@ -97,5 +97,6 @@ searchQuery text,createdDate text,createdBy text,updatedDate text,updatedBy text
 CREATE INDEX inx_ps_sectionDataType ON sunbird.page_section (sectionDataType);
 CREATE INDEX inx_ps_sectionName ON sunbird.page_section (name);
 
-
+alter table sunbird.course_management add  courselogourl text;
+alter table sunbird.course_management add  tocUrl text;
 

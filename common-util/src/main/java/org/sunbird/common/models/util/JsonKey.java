@@ -107,10 +107,16 @@ public class JsonKey {
 	public static final String CREATED_BY = "createdBy";
 	public static final String SECTION ="section";
 	public static final String NAME="name";
+	public static final String OPERATION = "operation";
+	public static final String RESULT = "result";
+	public static final String  APPICON = "appIcon";
+	public static final String CHILDREN = "children";
+	public static final String COUNT = "count";
+	public static final String NO_OF_LECTURES= "noOfLectures";
+	public static final String APPLICABLE_FOR = "applicableFor";
+	public static final String OBJECT_TYPE = "objectType";
 	public static final String AUTH_USER_HEADER = "X-Authenticated-Userid";
 	public static final String PORTAL_MAP = "portalMap";
 	public static final String APP_MAP = "appMap";
 	public static final String SECTIONS = "sections";
-	public static final String RESULT = "result";
-
 }
