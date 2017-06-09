@@ -73,7 +73,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 		int i=0;
 		String str= "";
 		int index = query.lastIndexOf("SET");
-		str= updateQuery.substring(index+4);
+		str= query.substring(index+4);
 		str = str.replace("=", "");
 		str = str.replace("?", "");
 		str = str.replace("where id", "");
