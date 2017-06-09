@@ -13,6 +13,7 @@ import org.elasticsearch.common.settings.Settings.Builder;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.sunbird.common.models.util.LogHelper;
+import org.sunbird.common.models.util.PropertiesCache;
 
 /**
  * This class will manage connection.

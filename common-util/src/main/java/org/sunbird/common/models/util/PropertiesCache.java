@@ -10,17 +10,19 @@ import java.util.Properties;
  * it with java standard name.
  */
 public class PropertiesCache {
-	private final String fileName = "cassandratablecolumn.properties";
+	private final String[] fileName = {"cassandratablecolumn.properties","elasticsearch.config.properties","cassandra.config.properties","dbconfig.properties"};
 	private final Properties configProp = new Properties();
 
 	private PropertiesCache()
 	   {
-	      InputStream in = this.getClass().getClassLoader().getResourceAsStream(fileName);
+		 for (String file : fileName){
+	      InputStream in = this.getClass().getClassLoader().getResourceAsStream(file);
 	      try {
 	          configProp.load(in);
 	      } catch (IOException e) {
 	          e.printStackTrace();
 	      }
+		 }
 	   }
 	 
 	   private static class LazyHolder
