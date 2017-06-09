@@ -10,7 +10,7 @@ import java.util.Properties;
  * it with java standard name.
  */
 public class PropertiesCache {
-	private final String[] fileName = {"cassandratablecolumn.properties","elasticsearch.config.properties","cassandra.config.properties","dbconfig.properties"};
+	private final String[] fileName = ProjectUtil.FILE_NAME;
 	private final Properties configProp = new Properties();
 
 	private PropertiesCache()
