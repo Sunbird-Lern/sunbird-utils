@@ -17,7 +17,7 @@ import org.sunbird.cassandraimpl.CassandraOperationImpl;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.helper.CassandraConnectionManager;
-import org.sunbird.common.PropertiesCache;
+import org.sunbird.common.models.util.PropertiesCache;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CassandraTest {
@@ -196,7 +196,7 @@ public class CassandraTest {
 		assertTrue(((String)map.get("viewPosition")).equalsIgnoreCase("viewPosition 1 updated"));
 	}
 	@Test
-	public void testDeleteContent() {
+	public void testZDeleteContent() {
 		Response response=operation.deleteRecord(cach.getProperty("keyspace"), "content_consumption", "contentId1##userId2");
 		assertEquals("SUCCESS", response.get("response"));
 	}
@@ -207,23 +207,29 @@ public class CassandraTest {
 	}
 	
 	@Test
-	public void testDeleteCourse() {
+	public void testZDeleteCourse() {
 		Response response=operation.deleteRecord(cach.getProperty("keyspace"), "course_enrollment", "courseId2##userId2");
 		assertEquals("SUCCESS", response.get("response"));
 	}
 
-	/*//@Test
+	@Test
 	@SuppressWarnings("unchecked")
 	public void testCgetRecordContentByProperties() {
-		Response response=operation.getRecordsByProperties("cassandraKeySpace", "content_consumption",contentmap1);
+		Response response=operation.getRecordsByProperties(cach.getProperty("keyspace"), "content_consumption",contentmap1);
 		assertTrue(((List<Map<String, Object>>)(response.get("response"))).size()>0);
 	}
-	//@Test
+	@Test
 	@SuppressWarnings("unchecked")
 	public void testCgetRecordCourseByProperties() {
-		Response response=operation.getRecordsByProperties("cassandraKeySpace", "course_enrollment", coursemap1);
+		Response response=operation.getRecordsByProperties(cach.getProperty("keyspace"), "course_enrollment", coursemap1);
 		assertTrue(((List<Map<String, Object>>)(response.get("response"))).size()>0);
-	}*/
+	}
+	@Test(expected=ProjectCommonException.class)
+	@SuppressWarnings("unchecked")
+	public void testCgetRecordCourseByPropertiesFailureCase() {
+		Response response=operation.getRecordsByProperties("keySpace", "course_enrollment", coursemap1);
+		assertTrue(((List<Map<String, Object>>)(response.get("response"))).size()>0);
+	}
 	
 	@AfterClass
 	public static void shutdownhook() {

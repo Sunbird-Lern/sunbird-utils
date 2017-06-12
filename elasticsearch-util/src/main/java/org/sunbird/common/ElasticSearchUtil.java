@@ -6,6 +6,7 @@ package org.sunbird.common;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
+import org.elasticsearch.action.admin.indices.exists.types.TypesExistsRequest;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
@@ -14,6 +15,7 @@ import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateResponse;
+import org.elasticsearch.client.Requests;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.ExistsQueryBuilder;
@@ -28,10 +30,12 @@ import org.sunbird.common.models.util.LogHelper;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
+import org.sunbird.helper.ElasticSearchQueryBuilder;
 import org.sunbird.util.ESOperation;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -44,6 +48,8 @@ public class ElasticSearchUtil {
     private static final LogHelper LOGGER = LogHelper.getInstance(ElasticSearchUtil.class.getName());
     public static final String INDEX_NAME = "sunbird";
     public enum IndexType {course,content,user}
+    private static ConcurrentHashMap<String, Boolean> indexMap = new ConcurrentHashMap<String, Boolean>();
+    private static ConcurrentHashMap<String, Boolean> typeMap = new ConcurrentHashMap<String, Boolean>();
     /**
      * This method will put a new data entry inside Elastic search. identifier
      * value becomes _id inside ES, so every time provide a unique value while
@@ -61,6 +67,7 @@ public class ElasticSearchUtil {
             LOGGER.info("Identifier value is null or empty ,not able to save data.");
             return "ERROR";
         }
+        verifyOrCreateIndexAndType(index, type);
         data.put("identifier", identifier);
         IndexResponse response = ConnectionManager.getClient().prepareIndex(index, type, identifier).setSource(data)
                 .get();
@@ -84,8 +91,10 @@ public class ElasticSearchUtil {
         } else if (ProjectUtil.isStringNullOREmpty(index)) {
             LOGGER.info("Please provide index value.");
         } else if (ProjectUtil.isStringNullOREmpty(type)) {
+        	verifyOrCreateIndexAndType(index, type);
             response = ConnectionManager.getClient().prepareGet().setIndex(index).setId(identifier).get();
         } else {
+        	 verifyOrCreateIndexAndType(index, type);
             response = ConnectionManager.getClient().prepareGet(index, type, identifier).get();
         }
         if (response == null) {
@@ -111,6 +120,7 @@ public class ElasticSearchUtil {
         }
         SearchResponse sr = null;
         try {
+        	verifyOrCreateIndexAndType(index, type);
             sr = ConnectionManager.getClient().search(new SearchRequest(index).types(type).source(sourceBuilder)).get();
         } catch (InterruptedException e) {
             LOGGER.error(e);
@@ -135,6 +145,7 @@ public class ElasticSearchUtil {
     public static boolean updateData(String index, String type, String identifier, Map<String, Object> data) {
         if (!ProjectUtil.isStringNullOREmpty(index) && !ProjectUtil.isStringNullOREmpty(type)
                 && !ProjectUtil.isStringNullOREmpty(identifier) && data != null) {
+        	verifyOrCreateIndexAndType(index, type);
             UpdateResponse response = ConnectionManager.getClient().prepareUpdate(index, type, identifier).setDoc(data)
                     .get();
             LOGGER.info("updated response==" + response.getResult().name());
@@ -157,6 +168,7 @@ public class ElasticSearchUtil {
     public static void removeData(String index, String type, String identifier) {
         if (!ProjectUtil.isStringNullOREmpty(index) && !ProjectUtil.isStringNullOREmpty(type)
                 && !ProjectUtil.isStringNullOREmpty(identifier)) {
+        	verifyOrCreateIndexAndType(index, type);
             DeleteResponse response = ConnectionManager.getClient().prepareDelete(index, type, identifier).get();
             LOGGER.info("delete info ==" + response.getResult().name() + " " + response.getId());
         } else {
@@ -393,6 +405,83 @@ public class ElasticSearchUtil {
     private static SortOrder getSortOrder(String value) {
         return value.equalsIgnoreCase("ASC") ? SortOrder.ASC : SortOrder.DESC;
     }
+
+    /**
+     * This method will check indices is already created or not.
+     * @param indices String
+     */
+	private static void verifyOrCreateIndex(String... indices) {
+		for (String index : indices) {
+			if (!indexMap.containsKey(index)) {
+				try {
+					boolean indexResponse = ConnectionManager.getClient().admin().indices()
+							.exists(Requests.indicesExistsRequest(index)).get().isExists();
+					if (indexResponse) {
+						indexMap.put(index, true);
+					} else {
+						boolean createIndexResp = createIndex(index, null, null,
+								ElasticSearchQueryBuilder.createSettingsForIndex());
+						if (createIndexResp) {
+							indexMap.put(index, true);
+						}
+					}
+				} catch (InterruptedException | ExecutionException e) {
+					boolean createIndexResp = createIndex(index, null, null,
+							ElasticSearchQueryBuilder.createSettingsForIndex());
+					if (createIndexResp) {
+						indexMap.put(index, true);
+					}
+				}
+			}
+		}
+	}
+
+    /**
+     * This method will check types are created or not.
+     * @param indices String []
+     * @param types String var arg
+     */
+	private static void verifyOrCreatType(String indices, String... types) {
+		for (String type : types) {
+			if (!typeMap.containsKey(type)) {
+				TypesExistsRequest typesExistsRequest = new TypesExistsRequest(new String[] { indices }, type);
+				try {
+					boolean typeResponse = ConnectionManager.getClient().admin().indices()
+							.typesExists(typesExistsRequest).get().isExists();
+					if (typeResponse) {
+						typeMap.put(type, true);
+					} else {
+						boolean response = addOrUpdateMapping(indices, type, ElasticSearchQueryBuilder.createMapping());
+						if (response) {
+							typeMap.put(type, true);
+						}
+					}
+				} catch (InterruptedException | ExecutionException e) {
+					boolean response = addOrUpdateMapping(indices, type, ElasticSearchQueryBuilder.createMapping());
+					if (response) {
+						typeMap.put(type, true);
+					}
+				}
+			}
+		}
+	}
+
+
+	private static boolean verifyOrCreateIndexAndType(String index, String type) {
+		if (indexMap.containsKey(index)) {
+			if (typeMap.containsKey(type)) {
+				return true;
+			}
+			verifyOrCreatType(index, type);
+			return true;
+		} else {
+			verifyOrCreateIndex(index);
+			verifyOrCreatType(index, type);
+			return true;
+		}
+	}
+
+
 }
 
 
