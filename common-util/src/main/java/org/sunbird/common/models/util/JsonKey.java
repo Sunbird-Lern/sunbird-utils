@@ -125,4 +125,5 @@ public class JsonKey {
 
 	public static final String POSITION = "position";
 	public static final String PAGE_SECTION = "page_section";
+	public static final String EKSTEP_CONTNET_URL = "content.url";
 }
