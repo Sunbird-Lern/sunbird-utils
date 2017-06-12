@@ -126,4 +126,16 @@ public class JsonKey {
 	public static final String POSITION = "position";
 	public static final String PAGE_SECTION = "page_section";
 	public static final String EKSTEP_CONTNET_URL = "content.url";
+	public static final String SUNBIRD_ACTOR_IP ="sunbird_actor_host";
+	public static final String SUNBIRD_ACTOR_PORT ="sunbird_actor_port";
+	public static final String SUNBIRD_CASSANDRA_IP = "sunbird_cassandra_host";
+	public static final String SUNBIRD_CASSANDRA_PORT = "sunbird_cassandra_port";
+	public static final String SUNBIRD_CASSANDRA_KEYSPACE = "sunbird_cassandra_keyspace";
+	public static final String SUNBIRD_ES_IP ="sunbird_es_host";
+	public static final String SUNBIRD_ES_CLUSTER ="sunbird_es_cluster";
+	public static final String SUNBIRD_ES_PORT = "sunbird_es_port";
+	public static final String SUNBIRD_NETTY_HOST ="sunbird_netty_host";
+	public static final String SUNBIRD_NETTY_PORT = "sunbird_netty_port";
+	public static final String SUNBIRD_CASSANDRA_USER_NAME = "sunbird_cassandra_username";
+	public static final String SUNBIRD_CASSANDRA_PASSWORD = "sunbird_cassandra_password";
 }

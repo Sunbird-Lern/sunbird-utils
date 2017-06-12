@@ -59,6 +59,7 @@ public interface ResponseMessage {
 		public static final String SECTION_ID_REQUIRED = "section id is required.";
 		public static final String PAGE_NAME_REQUIRED = "page name is required.";
 		public static final String PAGE_ID_REQUIRED = "page id is required.";
+		public static final String INVALID_CONFIGURATION ="Invalid configuration data.";
 	}
 
 	public interface Key {
@@ -114,6 +115,7 @@ public interface ResponseMessage {
 		public static final String SECTION_ID_REQUIRED = "SECTION_ID_REQUIRED";
 		public static final String PAGE_NAME_REQUIRED = "PAGE_NAME_REQUIRED";
 		public static final String PAGE_ID_REQUIRED = "PAGE_ID_REQUIRED";
+		public static final String INVALID_CONFIGURATION ="INVALID_CONFIGURATION";
 	}
 }
 
