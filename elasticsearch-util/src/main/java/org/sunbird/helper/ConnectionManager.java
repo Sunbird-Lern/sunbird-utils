@@ -12,7 +12,9 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.settings.Settings.Builder;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
+import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LogHelper;
+import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 
 /**
@@ -64,10 +66,44 @@ public class ConnectionManager {
     */
 	private static boolean initialiseConnection() {
 		try {
+			if(initialiseConnectionFromEnv()) {
+				LOGGER.info("value found under system variable.");
+				return true;
+			}
 			PropertiesCache propertiesCache = PropertiesCache.getInstance();
 			String cluster = propertiesCache.getProperty("es.cluster.name");
 			String hostName = propertiesCache.getProperty("es.host.name");
 			String port = propertiesCache.getProperty("es.host.port");
+			String splitedHost[] = hostName.split(",");
+			for (String val : splitedHost) {
+				host.add(val);
+			}
+			String splitedPort[] = port.split(",");
+			for (String val : splitedPort) {
+				ports.add(Integer.parseInt(val));
+			}
+			boolean response = createClient(cluster, host, ports);
+			LOGGER.info("ELASTIC SEARCH CONNECTION ESTABLISHED " + response);
+		} catch (Exception e) {
+			LOGGER.error(e);
+			return false;
+		}
+		return true;
+	}
+	
+	
+	/**
+	    * This method will read configuration data form System environment variable.
+	    * @return boolean
+	    */
+	private static boolean initialiseConnectionFromEnv() {
+		try {
+			String cluster = System.getenv(JsonKey.SUNBIRD_ES_CLUSTER);
+			String hostName = System.getenv(JsonKey.SUNBIRD_ES_IP);
+			String port = System.getenv(JsonKey.SUNBIRD_ES_PORT);
+			if(ProjectUtil.isStringNullOREmpty(hostName) || ProjectUtil.isStringNullOREmpty(port)) {
+				return false;
+			}
 			String splitedHost[] = hostName.split(",");
 			for (String val : splitedHost) {
 				host.add(val);
