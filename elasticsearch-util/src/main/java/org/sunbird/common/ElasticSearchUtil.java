@@ -3,6 +3,15 @@
  */
 package org.sunbird.common;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
+
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
@@ -33,11 +42,6 @@ import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
 import org.sunbird.helper.ElasticSearchQueryBuilder;
 import org.sunbird.util.ESOperation;
-
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
 
 /**
  * This class will provide all required operation
