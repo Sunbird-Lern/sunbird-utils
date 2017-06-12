@@ -7,6 +7,7 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.HttpUtil;
 
 /**
@@ -36,13 +37,14 @@ public class AppTest
 		Assert.assertNotNull(response);
 	}
 	
-	@Test
+	@Test()
 	public void testPostFailureResourceMethod() {
 		//passing wrong url
 		String response=null;
 		try {
 			response = HttpUtil.sendPostRequest("https://dev.ekstep.in/api/learning/v/content/list", data, headers);
 		} catch (IOException e) {
+			
 		}
 		System.out.println(response);
 		Assert.assertEquals("", response);
