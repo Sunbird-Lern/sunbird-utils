@@ -215,4 +215,48 @@ public class ProjectUtil {
      
     public enum Method {GET,POST,PUT,DELETE}
     public static final String FILE_NAME [] = {"cassandratablecolumn.properties","elasticsearch.config.properties","cassandra.config.properties","dbconfig.properties"};
+    
+    /**
+     * Enum to hold the index name for Elastic search.
+     * @author Manzarul
+     *
+     */
+	public enum EsIndex {
+		sunbird("sunbird");
+		private String indexName;
+
+		private EsIndex(String name) {
+			this.indexName = name;
+		}
+
+		public String getIndexName() {
+			return indexName;
+		}
+
+		public void setIndexName(String indexName) {
+			this.indexName = indexName;
+		}
+	}
+	
+	/**
+	 * This enum will hold all the ES type name.
+	 * @author Manzarul
+	 *
+	 */
+	public enum EsType {
+		course("course"), content("content");
+		private String typeName;
+
+		private EsType(String name) {
+			this.typeName = name;
+		}
+
+		public String getTypeName() {
+			return typeName;
+		}
+
+		public void setTypeName(String typeName) {
+			this.typeName = typeName;
+		}
+	}
 }

@@ -15,10 +15,11 @@ public class SearchDTO {
 	private List<String> fields;
 	private Map<String, String> sortBy = new HashMap<String, String>();
 	private String operation;
-	private String sampleStringQuery;
-	private Integer limit;
-	private Integer offset;
+	private String query;
+	private Integer limit=20;
+	private Integer offset=0;
 	boolean fuzzySearch = false;
+	//additional properties will hold , filters, exist , not exist
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 	private Map<String, Object> softConstraints = new HashMap<String, Object>();
 	
@@ -104,12 +105,10 @@ public class SearchDTO {
 	public void setSoftConstraints(Map<String, Object> softConstraints) {
 		this.softConstraints = softConstraints;
 	}
-
-	public String getSampleStringQuery() {
-		return sampleStringQuery;
+	public String getQuery() {
+		return query;
 	}
-
-	public void setSampleStringQuery(String sampleStringQuery) {
-		this.sampleStringQuery = sampleStringQuery;
+	public void setQuery(String query) {
+		this.query = query;
 	}
 }

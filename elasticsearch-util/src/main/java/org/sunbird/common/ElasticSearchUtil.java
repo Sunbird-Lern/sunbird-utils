@@ -21,8 +21,11 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.ExistsQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
+import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LogHelper;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.dto.SearchDTO;
@@ -43,8 +46,6 @@ import java.util.concurrent.ExecutionException;
  */
 public class ElasticSearchUtil {
     private static final LogHelper LOGGER = LogHelper.getInstance(ElasticSearchUtil.class.getName());
-    public static final String INDEX_NAME = "sunbird";
-    public enum IndexType {course,content,user}
     private static ConcurrentHashMap<String, Boolean> indexMap = new ConcurrentHashMap<String, Boolean>();
     private static ConcurrentHashMap<String, Boolean> typeMap = new ConcurrentHashMap<String, Boolean>();
     /**
@@ -190,7 +191,6 @@ public class ElasticSearchUtil {
         }
         CreateIndexResponse createIndexResponse = null;
         TransportClient client = ConnectionManager.getClient();
-        @SuppressWarnings("deprecation")
         CreateIndexRequestBuilder createIndexBuilder = client.admin().indices().prepareCreate(index);
         if (!ProjectUtil.isStringNullOREmpty(settings)) {
             createIndexResponse = createIndexBuilder.setSettings(settings).get();
@@ -261,14 +261,14 @@ public class ElasticSearchUtil {
         SearchDTO searchDTO = new SearchDTO();
         //searchDTO.setSampleStringQuery("guide");
         //TODO:delete
-       // searchDTO.getSortBy().put("courseDuration", "asc");
-        //searchDTO.getSortBy().put("publish_date" , "desc");
+        searchDTO.getSortBy().put("courseDuration", "desc");
+        searchDTO.getSortBy().put("createdOn" , "desc");
         //TODO:delete
         List<String> fields = new ArrayList<>();
         fields.add("lastPublishedOn");
         fields.add("size");
         fields.add("courseDuration");
-        //fields.add("publish_date");
+        fields.add("createdOn");
         fields.add("courseAddedByName");
         fields.add("courseDuration");
         searchDTO.setFields(fields);
@@ -293,39 +293,23 @@ public class ElasticSearchUtil {
         existsOperation.setType(ESOperation.Operations.SHOULD_EXISTS_FIELD.getValue());
         searchDTO.getAdditionalProperties().put("owner", existsOperation);
 
-        SearchResponse response = complexSearch(searchDTO, "sunbird-inx3", "course");
-        System.out.println(response);
+        Map<String,List<Map<String,Object>>> response = complexSearch(searchDTO, "sunbird-inx3", "course");
+        System.out.println(response.get(JsonKey.RESPONSE));
         //response.getHits().getAt(0).getSource()
         //complexSearch(searchDTO, "sunbird-inx5", "course");
         //complexSearch(searchDTO, "sunbird-inx5", "course");
 
     }
 
-    private static SearchResponse getSearchResponse(String index, String type, SearchSourceBuilder sourceBuilder, TransportClient client) {
-        SearchResponse searchResponse = null;
-        try {
-            if (ProjectUtil.isStringNullOREmpty(type)) {
-                searchResponse = client.search(new SearchRequest(index).source(sourceBuilder)).get();
-            } else {
-                searchResponse = client.search(new SearchRequest(index).types(type).source(sourceBuilder)).get();
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return searchResponse;
-    }
-
-    public static SearchResponse complexSearch(SearchDTO searchDTO, String index, String type) {
+    public static Map<String,List<Map<String,Object>>>  complexSearch(SearchDTO searchDTO, String index, String type) {
 
         SearchRequestBuilder searchRequestBuilder = getSearchBuilder(ConnectionManager.getClient(), index, type);
 
         BoolQueryBuilder query = new BoolQueryBuilder();
 
         //apply simple query string
-        if (null != searchDTO.getSampleStringQuery()) {
-            query.should(QueryBuilders.simpleQueryStringQuery(searchDTO.getSampleStringQuery()));
+        if (null != searchDTO.getQuery()) {
+            query.should(QueryBuilders.simpleQueryStringQuery(searchDTO.getQuery()));
         }
         //apply the sorting
         for (Map.Entry<String, String> entry : searchDTO.getSortBy().entrySet()) {
@@ -353,7 +337,16 @@ public class ElasticSearchUtil {
         searchRequestBuilder.setQuery(query);
 
         SearchResponse response = searchRequestBuilder.execute().actionGet();
-        return response;
+        List<Map<String,Object>> esResponse = new ArrayList<Map<String,Object>>();
+        Map<String,List<Map<String,Object>>> responsemap = new HashMap<>();
+        if (response != null) {
+        	SearchHits hits = response.getHits();
+        	for (SearchHit hit :  hits) {
+        		esResponse.add(hit.getSource());
+        	}
+        }
+        responsemap.put(JsonKey.RESPONSE, esResponse);
+        return responsemap;
 
     }
 
@@ -377,7 +370,8 @@ public class ElasticSearchUtil {
         if (operation.getType().equalsIgnoreCase(ESOperation.Operations.RANGE_QUERY.getValue())) {
 
             RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key);
-            Map<String, Object> range = (Map<String, Object>) operation.getValue();
+            @SuppressWarnings("unchecked")
+			Map<String, Object> range = (Map<String, Object>) operation.getValue();
             if (range.containsKey("from")) {
                 rangeQueryBuilder.gte(range.get("from"));
             }
@@ -390,6 +384,9 @@ public class ElasticSearchUtil {
         } else if (operation.getType().equalsIgnoreCase(ESOperation.Operations.SHOULD_EXISTS_FIELD.getValue())) {
             ExistsQueryBuilder existsQuery = QueryBuilders.existsQuery(key);
             query.must(existsQuery);
+        }else if (operation.getType().equalsIgnoreCase(ESOperation.Operations.SHOULD_NOT_EXISTS.getValue())) {
+        	 ExistsQueryBuilder notExistsQuery = QueryBuilders.existsQuery(key);
+        	 query.mustNot(notExistsQuery);
         }
 
     }

@@ -26,7 +26,7 @@ public class ESOperation {
 
     public enum Operations{
         STARTS_WITH("startsWith"),RANGE_QUERY("rangeQuery"),
-        SIMPLE_FIELD_QUERY("simpleFieldQuery"),SHOULD_EXISTS_FIELD("shouldExistsField");
+        SIMPLE_FIELD_QUERY("filter"),SHOULD_EXISTS_FIELD("exists"),SHOULD_NOT_EXISTS("not_exists");
         String op;
 
          Operations(String op){
