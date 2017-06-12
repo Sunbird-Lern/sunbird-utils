@@ -136,4 +136,5 @@ public class JsonKey {
 	public static final String OFFSET = "offset";
 	public static final String LIMIT = "limit";
 	
+	public static final String EKSTEP_CONTNET_URL = "content.url";
 }
