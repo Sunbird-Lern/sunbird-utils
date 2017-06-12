@@ -214,7 +214,7 @@ public class ProjectUtil {
     }
      
     public enum Method {GET,POST,PUT,DELETE}
-    public static final String FILE_NAME [] = {"cassandratablecolumn.properties","elasticsearch.config.properties","cassandra.config.properties","dbconfig.properties"};
+    public static final String FILE_NAME [] = {"cassandratablecolumn.properties","elasticsearch.config.properties","cassandra.config.properties","dbconfig.properties","externalresource.properties"};
     
     /**
      * Enum to hold the index name for Elastic search.
