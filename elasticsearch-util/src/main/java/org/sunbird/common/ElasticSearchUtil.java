@@ -261,7 +261,7 @@ public class ElasticSearchUtil {
         SearchDTO searchDTO = new SearchDTO();
         //searchDTO.setSampleStringQuery("guide");
         //TODO:delete
-        searchDTO.getSortBy().put("courseDuration", "asc");
+       // searchDTO.getSortBy().put("courseDuration", "asc");
         //searchDTO.getSortBy().put("publish_date" , "desc");
         //TODO:delete
         List<String> fields = new ArrayList<>();
@@ -270,31 +270,34 @@ public class ElasticSearchUtil {
         fields.add("courseDuration");
         //fields.add("publish_date");
         fields.add("courseAddedByName");
+        fields.add("courseDuration");
         searchDTO.setFields(fields);
-        //searchDTO.setOffset(1);
-        //searchDTO.setLimit(2);
+        searchDTO.setOffset(1);
+        searchDTO.setLimit(30);
         ESOperation operation1 = new ESOperation();
         operation1.setType(ESOperation.Operations.RANGE_QUERY.getValue());
         Map<String, Integer> rangeMap = new HashMap<String, Integer>();
-        rangeMap.put("from", 5);
-        rangeMap.put("to", 7);
+        rangeMap.put("from", 54);
+        rangeMap.put("to", 70);
         operation1.setValue(rangeMap);
         searchDTO.getAdditionalProperties().put("courseDuration", operation1);
 
-        ESOperation dateOperation = new ESOperation();
+       /* ESOperation dateOperation = new ESOperation();
         dateOperation.setType(ESOperation.Operations.RANGE_QUERY.getValue());
         Map<String, String> daterangeMap = new HashMap<String, String>();
         daterangeMap.put("from", "36");
         dateOperation.setValue(daterangeMap);
-        searchDTO.getAdditionalProperties().put("noOfLecture", dateOperation);
+        searchDTO.getAdditionalProperties().put("noOfLecture", dateOperation);*/
 
         ESOperation existsOperation = new ESOperation();
         existsOperation.setType(ESOperation.Operations.SHOULD_EXISTS_FIELD.getValue());
         searchDTO.getAdditionalProperties().put("owner", existsOperation);
 
-        complexSearch(searchDTO, "sunbird-inx5", "course");
-        complexSearch(searchDTO, "sunbird-inx5", "course");
-        complexSearch(searchDTO, "sunbird-inx5", "course");
+        SearchResponse response = complexSearch(searchDTO, "sunbird-inx3", "course");
+        System.out.println(response);
+        //response.getHits().getAt(0).getSource()
+        //complexSearch(searchDTO, "sunbird-inx5", "course");
+        //complexSearch(searchDTO, "sunbird-inx5", "course");
 
     }
 
