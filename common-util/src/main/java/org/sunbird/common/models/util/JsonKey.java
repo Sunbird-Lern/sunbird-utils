@@ -91,6 +91,7 @@ public class JsonKey {
     public static final String USER_AUTH_DB = "userAuth_db";
     public static final String ORG_DB = "org_db";
     public static final String PAGE_MGMT_DB = "page_mgmt_db";
+    public static final String PAGE_SECTION_DB = "page_section_db";
     public static final String SECTION_MGMT_DB = "section_mgmt_db";
 
     public static final String DB_IP="db.ip";
@@ -108,7 +109,6 @@ public class JsonKey {
 	public static final String SECTION ="section";
 	public static final String NAME="name";
 	public static final String OPERATION = "operation";
-	public static final String RESULT = "result";
 	public static final String  APPICON = "appIcon";
 	public static final String CHILDREN = "children";
 	public static final String COUNT = "count";
@@ -119,6 +119,10 @@ public class JsonKey {
 	public static final String PORTAL_MAP = "portalMap";
 	public static final String APP_MAP = "appMap";
 	public static final String SECTIONS = "sections";
+	public static final String RESULT = "result";
+	public static final String APP_SECTIONS ="appSections";
+	public static final String PORTAL_SECTIONS="portalSections";
+
 	public static final String POSITION = "position";
 	public static final String PAGE_SECTION = "page_section";
 }

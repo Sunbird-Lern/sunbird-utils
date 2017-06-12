@@ -23,6 +23,8 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.sunbird.common.models.util.JsonKey;
@@ -298,6 +300,12 @@ public class ElasticSearchUtil {
         //response.getHits().getAt(0).getSource()
         //complexSearch(searchDTO, "sunbird-inx5", "course");
         //complexSearch(searchDTO, "sunbird-inx5", "course");
+        List<String> facetList = new ArrayList<String>();
+        facetList.add("noOfLecture");
+        facetList.add("pkgVersion");
+        searchDTO.setFacets(facetList);
+
+        complexSearch(searchDTO, "sunbird-inx5", "course");
 
     }
 
@@ -336,6 +344,10 @@ public class ElasticSearchUtil {
         //set final query to search request builder
         searchRequestBuilder.setQuery(query);
 
+        for(String facets : searchDTO.getFacets()){
+            searchRequestBuilder.addAggregation(AggregationBuilders.terms(facets).field(facets));
+        }
+
         SearchResponse response = searchRequestBuilder.execute().actionGet();
         List<Map<String,Object>> esResponse = new ArrayList<Map<String,Object>>();
         Map<String,List<Map<String,Object>>> responsemap = new HashMap<>();
@@ -347,7 +359,6 @@ public class ElasticSearchUtil {
         }
         responsemap.put(JsonKey.RESPONSE, esResponse);
         return responsemap;
-
     }
 
     private static SearchRequestBuilder getSearchBuilder(TransportClient client, String index, String type) {
@@ -394,7 +405,7 @@ public class ElasticSearchUtil {
     private static SortOrder getSortOrder(String value) {
         return value.equalsIgnoreCase("ASC") ? SortOrder.ASC : SortOrder.DESC;
     }
-    
+
     /**
      * This method will check indices is already created or not.
      * @param indices String
@@ -424,7 +435,7 @@ public class ElasticSearchUtil {
 			}
 		}
 	}
-    
+
     /**
      * This method will check types are created or not.
      * @param indices String []
@@ -454,8 +465,8 @@ public class ElasticSearchUtil {
 			}
 		}
 	}
-    
-   
+
+
 	private static boolean verifyOrCreateIndexAndType(String index, String type) {
 		if (indexMap.containsKey(index)) {
 			if (typeMap.containsKey(type)) {
@@ -469,8 +480,8 @@ public class ElasticSearchUtil {
 			return true;
 		}
 	}
-	
-	
+
+
 }
 
 
