@@ -125,6 +125,17 @@ public class JsonKey {
 
 	public static final String POSITION = "position";
 	public static final String PAGE_SECTION = "page_section";
+	public static final String SEARCH = "search";
+	public static final String QUERY = "query";
+	public static final String FILTERS = "filters";
+	public static final String EXISTS = "exists";
+	public static final String NOT_EXISTS = "not_exists";
+	public static final String FACETS = "facets";
+	public static final String FIELDS = "fields";
+	public static final String SORT_BY = "sort_by";
+	public static final String OFFSET = "offset";
+	public static final String LIMIT = "limit";
+	
 	public static final String EKSTEP_CONTNET_URL = "content.url";
 	public static final String SUNBIRD_ACTOR_IP ="sunbird_actor_host";
 	public static final String SUNBIRD_ACTOR_PORT ="sunbird_actor_port";
