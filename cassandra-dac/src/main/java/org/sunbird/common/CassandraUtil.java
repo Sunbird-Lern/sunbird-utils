@@ -17,7 +17,6 @@ import com.datastax.driver.core.Row;
 /**
  * This class will provide all required operation
  * for cassandra db. 
- * @author Manzarul
  * @author Amit Kumar
  */
 public final class CassandraUtil{
