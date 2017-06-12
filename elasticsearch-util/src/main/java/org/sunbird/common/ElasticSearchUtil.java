@@ -20,6 +20,8 @@ import org.elasticsearch.index.query.ExistsQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.sunbird.common.models.util.LogHelper;
@@ -281,8 +283,11 @@ public class ElasticSearchUtil {
         existsOperation.setType(ESOperation.Operations.SHOULD_EXISTS_FIELD.getValue());
         searchDTO.getAdditionalProperties().put("owner", existsOperation);
 
-        complexSearch(searchDTO, "sunbird-inx5", "course");
-        complexSearch(searchDTO, "sunbird-inx5", "course");
+        List<String> facetList = new ArrayList<String>();
+        facetList.add("noOfLecture");
+        facetList.add("pkgVersion");
+        searchDTO.setFacets(facetList);
+
         complexSearch(searchDTO, "sunbird-inx5", "course");
 
     }
@@ -338,7 +343,12 @@ public class ElasticSearchUtil {
         //set final query to search request builder
         searchRequestBuilder.setQuery(query);
 
+        for(String facets : searchDTO.getFacets()){
+            searchRequestBuilder.addAggregation(AggregationBuilders.terms(facets).field(facets));
+        }
+
         SearchResponse response = searchRequestBuilder.execute().actionGet();
+
         return response;
 
     }
