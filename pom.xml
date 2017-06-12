@@ -5,9 +5,9 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>sunbird_common_module</name>
-    <modules>
-        <module>cassandra-dac</module>
-		<module>common-util</module>
-		<module>elasticsearch-util</module>
-    </modules>
+  <modules>
+      <module>cassandra-dac</module>
+		  <module>common-util</module>
+		  <module>elasticsearch-util</module>
+  </modules>
 </project>

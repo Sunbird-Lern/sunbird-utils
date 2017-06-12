@@ -12,7 +12,7 @@ authenticator: PasswordAuthenticator.
 
 
 
-CREATE KEYSPACE IF NOT EXISTS sunbird WITH replication = {'class':'SimpleStrategy','replication_factor':3};
+CREATE KEYSPACE IF NOT EXISTS sunbird WITH replication = {'class':'SimpleStrategy','replication_factor':1};
 to change cluster name
 UPDATE system.local SET cluster_name = 'sunbird' where key='local';
 ALTER USER cassandra WITH PASSWORD 'password';
