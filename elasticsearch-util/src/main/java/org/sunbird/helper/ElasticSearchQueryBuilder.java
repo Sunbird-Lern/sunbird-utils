@@ -8,13 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-import org.elasticsearch.action.admin.cluster.snapshots.status.TransportNodesSnapshotsStatus.Request;
 import org.elasticsearch.action.admin.indices.exists.types.TypesExistsRequest;
-import org.elasticsearch.action.admin.indices.exists.types.TypesExistsRequestBuilder;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.client.transport.TransportClient;
-import org.sunbird.common.ElasticSearchUtil;
 
 /**
  * This class will create elastic search query
@@ -39,7 +36,8 @@ public class ElasticSearchQueryBuilder {
 			e.printStackTrace();
 		}
 	   //CreateIndexResponse response = client.admin().indices().prepareCreate(indexName).get();
-	   PutMappingResponse response  = client.admin().indices().preparePutMapping(indexName).setType(typeName).setSource(createMapping()).get();
+	   @SuppressWarnings("deprecation")
+	PutMappingResponse response  = client.admin().indices().preparePutMapping(indexName).setType(typeName).setSource(createMapping()).get();
 	   System.out.println(response.isAcknowledged());
 	}
 	
@@ -51,8 +49,9 @@ public class ElasticSearchQueryBuilder {
 		//createIndex("sunbird-inx3", "course");
 		//for (int i=5;i<10;i++)
 		//ElasticSearchUtil.createData("sunbird-inx5", "course", "NTP course id_"+i,createMapData(i));
-		  Map<String, Object> map = ElasticSearchUtil.getDataByIdentifier("sunbird", "course", "0122636962555002880");
-		 System.out.println(map!=null?map.get("courseName"):"Not found");
+		
+		 // Map<String, Object> map = ElasticSearchUtil.getDataByIdentifier("sunbird-inx3", "course", "NTP course id_71");
+		 //System.out.println(map!=null?map.get("courseName"):"Not found");
 		 //ElasticSearchUtil.removeData("sunbird-inx3", "course", "NTP course id_70");
 		//ElasticSearchUtil.updateData("sunbird-inx3", "course", "NTP course id_71", createMapData(30));
 		 //ElasticSearchUtil.searchData("sunbird-inx3", "course", createMapData(30));
