@@ -51,7 +51,7 @@ public class ElasticSearchQueryBuilder {
 		//for (int i=5;i<10;i++)
 		//ElasticSearchUtil.createData("sunbird-inx5", "course", "NTP course id_"+i,createMapData(i));
 		
-		  Map<String, Object> map = ElasticSearchUtil.getDataByIdentifier("sunbird", "course", "0122662021057167361");
+		  Map<String, Object> map = ElasticSearchUtil.getDataByIdentifier("sunbird", "course", "course id");
 		 System.out.println(map!=null?map.get("courseName"):"Not found");
 		// ElasticSearchUtil.removeData("sunbird-inx3", "course", "0122661344368312321");
 		//ElasticSearchUtil.updateData("sunbird-inx3", "course", "NTP course id_71", createMapData(30));
