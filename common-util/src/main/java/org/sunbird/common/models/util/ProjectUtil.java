@@ -259,4 +259,26 @@ public class ProjectUtil {
 			this.typeName = typeName;
 		}
 	}
+	
+	/**
+	 * This enum will hold all the Section data type name.
+	 * @author Amit Kumar
+	 *
+	 */
+	public enum SectionDataType {
+		course("course"), content("content");
+		private String typeName;
+
+		private SectionDataType(String name) {
+			this.typeName = name;
+		}
+
+		public String getTypeName() {
+			return typeName;
+		}
+
+		public void setTypeName(String typeName) {
+			this.typeName = typeName;
+		}
+	}
 }
