@@ -347,9 +347,10 @@ public class ElasticSearchUtil {
         //set final query to search request builder
         searchRequestBuilder.setQuery(query);
 
-        for(String facets : searchDTO.getFacets()){
-            searchRequestBuilder.addAggregation(AggregationBuilders.terms(facets).field(facets));
-        }
+        if(null != searchDTO.getFacets() && searchDTO.getFacets().size()>0)
+	        for(String facets : searchDTO.getFacets()){
+	            searchRequestBuilder.addAggregation(AggregationBuilders.terms(facets).field(facets));
+	        }
 
         SearchResponse response = searchRequestBuilder.execute().actionGet();
         List<Map<String,Object>> esResponse = new ArrayList<Map<String,Object>>();
