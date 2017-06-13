@@ -1,5 +1,7 @@
 package org.sunbird.util;
 
+import org.sunbird.common.models.util.JsonKey;
+
 /**
  * Created by arvind on 6/6/17.
  */
@@ -26,7 +28,8 @@ public class ESOperation {
 
     public enum Operations{
         STARTS_WITH("startsWith"),RANGE_QUERY("rangeQuery"),
-        SIMPLE_FIELD_QUERY("filter"),SHOULD_EXISTS_FIELD("exists"),SHOULD_NOT_EXISTS("not_exists");
+        SIMPLE_FIELD_QUERY(JsonKey.FILTERS),SHOULD_EXISTS(JsonKey.EXISTS),SHOULD_NOT_EXISTS(JsonKey.NOT_EXISTS),
+        MULTI_VALUE_QUERY("MULTI_VALUE_QUERY"),FILTERS(JsonKey.FILTERS);
         String op;
 
          Operations(String op){

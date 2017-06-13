@@ -17,10 +17,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.ExistsQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.RangeQueryBuilder;
+import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -292,10 +289,10 @@ public class ElasticSearchUtil {
         searchDTO.getAdditionalProperties().put("noOfLecture", dateOperation);*/
 
         ESOperation existsOperation = new ESOperation();
-        existsOperation.setType(ESOperation.Operations.SHOULD_EXISTS_FIELD.getValue());
+        existsOperation.setType(ESOperation.Operations.SHOULD_EXISTS.getValue());
         searchDTO.getAdditionalProperties().put("owner", existsOperation);
 
-        Map<String,List<Map<String,Object>>> response = complexSearch(searchDTO, "sunbird-inx3", "course");
+        Map<String,List<Map<String,Object>>> response = complexSearch(searchDTO, "sunbird-inx5", "course");
         System.out.println(response.get(JsonKey.RESPONSE));
         //response.getHits().getAt(0).getSource()
         //complexSearch(searchDTO, "sunbird-inx5", "course");
@@ -376,29 +373,111 @@ public class ElasticSearchUtil {
     private static void addAdditionalProperties(BoolQueryBuilder query, Map.Entry<String, Object> entry) {
 
         String key = entry.getKey();
-        ESOperation operation = (ESOperation) entry.getValue();
 
-        if (operation.getType().equalsIgnoreCase(ESOperation.Operations.RANGE_QUERY.getValue())) {
 
-            RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key);
-            @SuppressWarnings("unchecked")
-			Map<String, Object> range = (Map<String, Object>) operation.getValue();
-            if (range.containsKey("from")) {
-                rangeQueryBuilder.gte(range.get("from"));
+        //need to replace by FILTERS type
+        if (key.equalsIgnoreCase(ESOperation.Operations.FILTERS.getValue())) {
+            Map<String, Object> filters = (Map<String, Object>) entry.getValue();
+            for (Map.Entry<String, Object> en : filters.entrySet()) {
+
+                ESOperation operation = createFilterESOpperation(en , query);
+                /*if (key.equalsIgnoreCase(ESOperation.Operations.SIMPLE_FIELD_QUERY.getValue())) {
+                    operation = createFilterESOpperation(en);
+                    query.should(QueryBuilders.commonTermsQuery(key, operation.getValue()));
+                }
+                if (key.equalsIgnoreCase(ESOperation.Operations.MULTI_VALUE_QUERY.getValue())) {
+                    operation = createFilterESOpperation(en);
+                    query.should(QueryBuilders.multiMatchQuery(key, ((List<String>)operation.getValue()).stream().toArray(String[]::new)));
+                }*/
             }
-            if (range.containsKey("to")) {
-                rangeQueryBuilder.lte(range.get("to"));
-            }
-            query.must(rangeQueryBuilder);
-        } else if (operation.getType().equalsIgnoreCase(ESOperation.Operations.SIMPLE_FIELD_QUERY.getValue())) {
-            query.should(QueryBuilders.commonTermsQuery(key, operation.getValue()));
-        } else if (operation.getType().equalsIgnoreCase(ESOperation.Operations.SHOULD_EXISTS_FIELD.getValue())) {
-            ExistsQueryBuilder existsQuery = QueryBuilders.existsQuery(key);
+        }else if (key.equalsIgnoreCase(ESOperation.Operations.SHOULD_EXISTS.getValue())) {
+            createESOpperation(entry ,query);
+           /* ESOperation operation = createESOpperation(entry ,query);
             query.must(existsQuery);
-        }else if (operation.getType().equalsIgnoreCase(ESOperation.Operations.SHOULD_NOT_EXISTS.getValue())) {
-        	 ExistsQueryBuilder notExistsQuery = QueryBuilders.existsQuery(key);
-        	 query.mustNot(notExistsQuery);
+            ExistsQueryBuilder existsQuery1 =  QueryBuilders.existsQuery("courseId");
+            query.must(existsQuery1);*/
+        }else if (key.equalsIgnoreCase(ESOperation.Operations.SHOULD_NOT_EXISTS.getValue())) {
+            createESOpperation(entry ,query);
+            /*ESOperation operation = createESOpperation(entry, query);
+        	 query.mustNot(notExistsQuery);*/
         }
+
+    }
+
+    private static ESOperation createFilterESOpperation(Entry<String, Object> entry, BoolQueryBuilder query) {
+
+        String key = entry.getKey();
+        Object val = entry.getValue();
+        ESOperation esOperation = new ESOperation();
+
+        if(val instanceof String){
+            /*esOperation.setType(ESOperation.Operations.SIMPLE_FIELD_QUERY.getValue());
+            esOperation.setValue(val);
+            return esOperation;*/
+            query.should(QueryBuilders.commonTermsQuery(key, val));
+        }else if(val instanceof List){
+            /*List list =(List) val;
+            esOperation.setType(ESOperation.Operations.MULTI_VALUE_QUERY.getValue());
+            esOperation.setValue(list);
+            return esOperation;*/
+            query.should(QueryBuilders.multiMatchQuery(key, ((List<String>)val).stream().toArray(String[]::new)));
+        }else if(val instanceof Map){
+            Map<String , Object> value = (Map<String , Object>) val;
+            Map<String , Object> rangeOperation = new HashMap<String, Object>();
+            for(Map.Entry<String , Object> it:value.entrySet()){
+                String operation = it.getKey();
+                if(operation.startsWith("<") || operation.startsWith(">")){
+                    rangeOperation.put(operation , it.getValue());
+                }
+            }
+
+            for(Map.Entry<String , Object> it : rangeOperation.entrySet()){
+                if(it.getKey().equalsIgnoreCase("<=")){
+                    RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key).lte(it.getValue());
+                    query.must(rangeQueryBuilder);
+                }else if(it.getKey().equalsIgnoreCase("<")){
+                    RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key).lt(it.getValue());
+                    query.must(rangeQueryBuilder);
+                }
+                else if(it.getKey().equalsIgnoreCase(">=")){
+                    RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key).gte(it.getValue());
+                    query.must(rangeQueryBuilder);
+                }else if(it.getKey().equalsIgnoreCase(">")){
+                    RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key).gt(it.getValue());
+                    query.must(rangeQueryBuilder);
+                }
+            }
+
+        }
+        return null;
+    }
+
+    private static ESOperation createESOpperation(Entry<String, Object> entry, BoolQueryBuilder query) {
+
+        String operation = entry.getKey();
+        //Map<String , Object> obj = (Map<String , Object>)entry.getValue();
+        ESOperation esOperation = new ESOperation();
+
+        if(operation.equalsIgnoreCase(JsonKey.EXISTS)){
+            List<String> existsList = new ArrayList<String>();
+            for(String str : existsList){
+                ExistsQueryBuilder existsQuery1 =  QueryBuilders.existsQuery(str);
+                query.must(existsQuery1);
+            }
+
+            return esOperation;
+
+        }else if(operation.equalsIgnoreCase(JsonKey.NOT_EXISTS)){
+            List<String> existsList = new ArrayList<String>();
+            for(String str : existsList){
+                ExistsQueryBuilder existsQuery1 =  QueryBuilders.existsQuery(str);
+                query.mustNot(existsQuery1);
+            }
+            return esOperation;
+
+        }
+
+        return null;
 
     }
 
