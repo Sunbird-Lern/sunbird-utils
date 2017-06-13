@@ -320,11 +320,13 @@ public class ElasticSearchUtil {
             query.should(QueryBuilders.simpleQueryStringQuery(searchDTO.getQuery()));
         }
         //apply the sorting
+        if(searchDTO.getSortBy() !=null && searchDTO.getSortBy().size()>0)
         for (Map.Entry<String, String> entry : searchDTO.getSortBy().entrySet()) {
             searchRequestBuilder.addSort(entry.getKey(), getSortOrder(entry.getValue()));
         }
 
         //apply the fields filter
+        if(searchDTO.getFields() !=null && searchDTO.getFields().size()>0)
         searchRequestBuilder.setFetchSource(searchDTO.getFields().stream().toArray(String[]::new), null);
 
         // setting the offset
@@ -337,6 +339,7 @@ public class ElasticSearchUtil {
             searchRequestBuilder.setSize(searchDTO.getLimit());
         }
         //apply additional properties
+        if(searchDTO.getAdditionalProperties() !=null && searchDTO.getAdditionalProperties().size()>0)
         for (Map.Entry<String, Object> entry : searchDTO.getAdditionalProperties().entrySet()) {
             addAdditionalProperties(query, entry);
         }
@@ -382,27 +385,12 @@ public class ElasticSearchUtil {
         if (key.equalsIgnoreCase(ESOperation.Operations.FILTERS.getValue())) {
             Map<String, Object> filters = (Map<String, Object>) entry.getValue();
             for (Map.Entry<String, Object> en : filters.entrySet()) {
-
-                ESOperation operation = createFilterESOpperation(en , query);
-                /*if (key.equalsIgnoreCase(ESOperation.Operations.SIMPLE_FIELD_QUERY.getValue())) {
-                    operation = createFilterESOpperation(en);
-                    query.should(QueryBuilders.commonTermsQuery(key, operation.getValue()));
-                }
-                if (key.equalsIgnoreCase(ESOperation.Operations.MULTI_VALUE_QUERY.getValue())) {
-                    operation = createFilterESOpperation(en);
-                    query.should(QueryBuilders.multiMatchQuery(key, ((List<String>)operation.getValue()).stream().toArray(String[]::new)));
-                }*/
+               createFilterESOpperation(en , query);
             }
         }else if (key.equalsIgnoreCase(ESOperation.Operations.SHOULD_EXISTS.getValue())) {
             createESOpperation(entry ,query);
-           /* ESOperation operation = createESOpperation(entry ,query);
-            query.must(existsQuery);
-            ExistsQueryBuilder existsQuery1 =  QueryBuilders.existsQuery("courseId");
-            query.must(existsQuery1);*/
         }else if (key.equalsIgnoreCase(ESOperation.Operations.SHOULD_NOT_EXISTS.getValue())) {
             createESOpperation(entry ,query);
-            /*ESOperation operation = createESOpperation(entry, query);
-        	 query.mustNot(notExistsQuery);*/
         }
 
     }
@@ -411,18 +399,9 @@ public class ElasticSearchUtil {
 
         String key = entry.getKey();
         Object val = entry.getValue();
-        ESOperation esOperation = new ESOperation();
-
         if(val instanceof String){
-            /*esOperation.setType(ESOperation.Operations.SIMPLE_FIELD_QUERY.getValue());
-            esOperation.setValue(val);
-            return esOperation;*/
             query.should(QueryBuilders.commonTermsQuery(key, val));
         }else if(val instanceof List){
-            /*List list =(List) val;
-            esOperation.setType(ESOperation.Operations.MULTI_VALUE_QUERY.getValue());
-            esOperation.setValue(list);
-            return esOperation;*/
             query.should(QueryBuilders.multiMatchQuery(key, ((List<String>)val).stream().toArray(String[]::new)));
         }else if(val instanceof Map){
             Map<String , Object> value = (Map<String , Object>) val;
