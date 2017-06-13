@@ -137,8 +137,8 @@ public class JsonKey {
 	public static final String LIMIT = "limit";
 	
 	public static final String EKSTEP_CONTNET_URL = "content.url";
-	public static final String SUNBIRD_ACTOR_IP ="sunbird_actor_host";
-	public static final String SUNBIRD_ACTOR_PORT ="sunbird_actor_port";
+	public static final String SUNBIRD_ACTOR_IP ="sunbird_learnerstate_actor_host";
+	public static final String SUNBIRD_ACTOR_PORT ="sunbird_learnerstate_actor_port";
 	public static final String SUNBIRD_CASSANDRA_IP = "sunbird_cassandra_host";
 	public static final String SUNBIRD_CASSANDRA_PORT = "sunbird_cassandra_port";
 	public static final String SUNBIRD_CASSANDRA_KEYSPACE = "sunbird_cassandra_keyspace";
@@ -150,4 +150,5 @@ public class JsonKey {
 	public static final String SUNBIRD_CASSANDRA_USER_NAME = "sunbird_cassandra_username";
 	public static final String SUNBIRD_CASSANDRA_PASSWORD = "sunbird_cassandra_password";
 	public static final String REQUEST = "request";
+	public static final String SUNBIRD_ACTOR_FILE_PATH = "sunbird_actor_file_path";
 }
