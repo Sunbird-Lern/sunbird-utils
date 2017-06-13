@@ -149,4 +149,5 @@ public class JsonKey {
 	public static final String SUNBIRD_NETTY_PORT = "sunbird_netty_port";
 	public static final String SUNBIRD_CASSANDRA_USER_NAME = "sunbird_cassandra_username";
 	public static final String SUNBIRD_CASSANDRA_PASSWORD = "sunbird_cassandra_password";
+	public static final String REQUEST = "request";
 }
