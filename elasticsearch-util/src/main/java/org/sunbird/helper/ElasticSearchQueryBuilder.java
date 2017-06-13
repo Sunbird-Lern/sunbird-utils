@@ -12,6 +12,7 @@ import org.elasticsearch.action.admin.indices.exists.types.TypesExistsRequest;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.client.transport.TransportClient;
+import org.sunbird.common.ElasticSearchUtil;
 
 /**
  * This class will create elastic search query
@@ -50,9 +51,9 @@ public class ElasticSearchQueryBuilder {
 		//for (int i=5;i<10;i++)
 		//ElasticSearchUtil.createData("sunbird-inx5", "course", "NTP course id_"+i,createMapData(i));
 		
-		 // Map<String, Object> map = ElasticSearchUtil.getDataByIdentifier("sunbird-inx3", "course", "NTP course id_71");
-		 //System.out.println(map!=null?map.get("courseName"):"Not found");
-		 //ElasticSearchUtil.removeData("sunbird-inx3", "course", "NTP course id_70");
+		  Map<String, Object> map = ElasticSearchUtil.getDataByIdentifier("sunbird", "course", "0122662021057167361");
+		 System.out.println(map!=null?map.get("courseName"):"Not found");
+		// ElasticSearchUtil.removeData("sunbird-inx3", "course", "0122661344368312321");
 		//ElasticSearchUtil.updateData("sunbird-inx3", "course", "NTP course id_71", createMapData(30));
 		 //ElasticSearchUtil.searchData("sunbird-inx3", "course", createMapData(30));
 	}
