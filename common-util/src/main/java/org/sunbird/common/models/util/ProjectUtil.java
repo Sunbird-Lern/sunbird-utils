@@ -197,8 +197,8 @@ public class ProjectUtil {
      * @return String
      */
     public static String getUniqueIdFromTimestamp(int environmentId) {
-        long env = environmentId / 10000000;
-        Random random = new Random();
+    	Random random = new Random();
+        long env = (environmentId+random.nextInt(99999))/ 10000000;
         long uid = System.currentTimeMillis() + random.nextInt(999999);
         uid = uid << 13;
         return env + "" + uid + "" + atomicInteger.getAndIncrement();
