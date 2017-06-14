@@ -11,7 +11,7 @@ public enum ActorOperations {
 	,DELETE_COURSE("deleteCourse"),CREATE_USER("createUser"),UPDATE_USER("updateUser"),LOGIN("login"),LOGOUT("logout"),CHANGE_PASSWORD("changePassword"),
 	USER_AUTH("userAuth"),GET_PROFILE("getUserProfile"),CREATE_ORG("createOrg"),UPDATE_ORG("updateOrg"),GET_ORG_DETAILS("getOrgDetails"),
 	CREATE_PAGE("createPage"),UPDATE_PAGE("updatePage"),DELETE_PAGE("deletePage"),GET_PAGE_SETTINGS("getPageSettings"),GET_PAGE_SETTING("getPageSetting"),GET_PAGE_DATA("getPageData"),
-	CREATE_SECTION("createSection"),UPDATE_SECTION("updateSection"),GET_ALL_SECTION("getAllSection"),GET_SECTION("getSection"),GET_COURSE_BY_ID("getCourseById");
+	CREATE_SECTION("createSection"),UPDATE_SECTION("updateSection"),GET_ALL_SECTION("getAllSection"),GET_SECTION("getSection"),GET_COURSE_BY_ID("getCourseById"),UPDATE_USER_COUNT("updateUserCount");
 
 	private String value;
 
