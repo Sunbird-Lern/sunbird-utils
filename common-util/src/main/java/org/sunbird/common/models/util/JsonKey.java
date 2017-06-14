@@ -151,4 +151,5 @@ public class JsonKey {
 	public static final String SUNBIRD_CASSANDRA_PASSWORD = "sunbird_cassandra_password";
 	public static final String REQUEST = "request";
 	public static final String SUNBIRD_ACTOR_FILE_PATH = "sunbird_actor_file_path";
+	public static final String USER_COUNT = "userCount";
 }
