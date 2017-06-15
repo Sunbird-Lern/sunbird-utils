@@ -308,17 +308,38 @@ public final class RequestValidator {
 	 * @param userRequest Request
 	 */
 	public static void validateSaveAssessment(Request request) {
-		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.PAGE_NAME) != null
-				? request.getRequest().get(JsonKey.PAGE_NAME) : ""))) {
+		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.COURSE_ID) != null
+				? request.getRequest().get(JsonKey.COURSE_ID) : ""))) {
 			ProjectCommonException dataException = new ProjectCommonException(
-					ResponseCode.pageNameRequired.getErrorCode(), ResponseCode.pageNameRequired.getErrorMessage(),
+					ResponseCode.courseIdRequired.getErrorCode(), ResponseCode.courseIdRequired.getErrorMessage(),
 					ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
-		}else if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ID) != null
-				? request.getRequest().get(JsonKey.ID) : ""))) {
-			 throw new ProjectCommonException(
-					ResponseCode.pageIdRequired.getErrorCode(), ResponseCode.pageIdRequired.getErrorMessage(),
-					ResponseCode.CLIENT_ERROR.getResponseCode());	
+		} else if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.CONTENT_ID) != null
+				? request.getRequest().get(JsonKey.CONTENT_ID) : ""))) {
+			throw new ProjectCommonException(ResponseCode.contentIdRequired.getErrorCode(),
+					ResponseCode.contentIdRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		} else if (ProjectUtil
+				.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ASSESSMENT_ITEM_ID) != null
+						? request.getRequest().get(JsonKey.ASSESSMENT_ITEM_ID) : ""))) {
+			throw new ProjectCommonException(ResponseCode.assessmentItemIdRequired.getErrorCode(),
+					ResponseCode.assessmentItemIdRequired.getErrorMessage(),
+					ResponseCode.CLIENT_ERROR.getResponseCode());
+		} else if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ASSESSMENT_TYPE) != null
+				? request.getRequest().get(JsonKey.ASSESSMENT_TYPE) : ""))) {
+			throw new ProjectCommonException(ResponseCode.assessmentTypeRequired.getErrorCode(),
+					ResponseCode.assessmentTypeRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		} else if (ProjectUtil
+				.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ASSESSMENT_ANSWERS) != null
+						? request.getRequest().get(JsonKey.ASSESSMENT_ANSWERS) : ""))) {
+			throw new ProjectCommonException(ResponseCode.assessmentAnswersRequired.getErrorCode(),
+					ResponseCode.assessmentAnswersRequired.getErrorMessage(),
+					ResponseCode.CLIENT_ERROR.getResponseCode());
+		} else if (ProjectUtil
+				.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ASSESSMENT_MAX_SCORE) != null
+						? request.getRequest().get(JsonKey.ASSESSMENT_ANSWERS) : ""))) {
+			throw new ProjectCommonException(ResponseCode.assessmentmaxScoreRequired.getErrorCode(),
+					ResponseCode.assessmentmaxScoreRequired.getErrorMessage(),
+					ResponseCode.CLIENT_ERROR.getResponseCode());
 		}
 	}
 	
@@ -328,17 +349,12 @@ public final class RequestValidator {
 	 * @param userRequest Request
 	 */
 	public static void validateGetAssessment(Request request) {
-		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.PAGE_NAME) != null
-				? request.getRequest().get(JsonKey.PAGE_NAME) : ""))) {
+		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.COURSE_ID) != null
+				? request.getRequest().get(JsonKey.COURSE_ID) : ""))) {
 			ProjectCommonException dataException = new ProjectCommonException(
-					ResponseCode.pageNameRequired.getErrorCode(), ResponseCode.pageNameRequired.getErrorMessage(),
-					ResponseCode.CLIENT_ERROR.getResponseCode());
+					ResponseCode.courseIdRequiredError.getErrorCode(),
+					ResponseCode.courseIdRequiredError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
-		}else if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ID) != null
-				? request.getRequest().get(JsonKey.ID) : ""))) {
-			 throw new ProjectCommonException(
-					ResponseCode.pageIdRequired.getErrorCode(), ResponseCode.pageIdRequired.getErrorMessage(),
-					ResponseCode.CLIENT_ERROR.getResponseCode());	
 		}
 	}
 	
