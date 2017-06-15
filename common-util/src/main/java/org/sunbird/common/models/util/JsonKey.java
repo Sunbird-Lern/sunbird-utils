@@ -153,4 +153,9 @@ public class JsonKey {
 	public static final String SUNBIRD_ACTOR_FILE_PATH = "sunbird_actor_file_path";
 	public static final String USER_COUNT = "userCount";
 	public static final String ASSESSMENT = "assessment";
+	public static final String ASSESSMENT_ITEM_ID = "assessmentItemId";
+	public static final String ASSESSMENT_ATTEMPT_DATE = "attemptedDate";
+	public static final String ASSESSMENT_TYPE= "assessmentType";
+	public static final String ASSESSMENT_MAX_SCORE = "maxScore";
+	public static final String ASSESSMENT_ANSWERS = "answers";
 }
