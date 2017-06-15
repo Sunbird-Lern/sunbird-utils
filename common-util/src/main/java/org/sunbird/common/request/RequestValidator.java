@@ -302,4 +302,44 @@ public final class RequestValidator {
 		}
 	}
 	
+	
+	/**
+	 * This method will validate save Assessment data.
+	 * @param userRequest Request
+	 */
+	public static void validateSaveAssessment(Request request) {
+		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.PAGE_NAME) != null
+				? request.getRequest().get(JsonKey.PAGE_NAME) : ""))) {
+			ProjectCommonException dataException = new ProjectCommonException(
+					ResponseCode.pageNameRequired.getErrorCode(), ResponseCode.pageNameRequired.getErrorMessage(),
+					ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		}else if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ID) != null
+				? request.getRequest().get(JsonKey.ID) : ""))) {
+			 throw new ProjectCommonException(
+					ResponseCode.pageIdRequired.getErrorCode(), ResponseCode.pageIdRequired.getErrorMessage(),
+					ResponseCode.CLIENT_ERROR.getResponseCode());	
+		}
+	}
+	
+	
+	/**
+	 * This method will validate get Assessment data.
+	 * @param userRequest Request
+	 */
+	public static void validateGetAssessment(Request request) {
+		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.PAGE_NAME) != null
+				? request.getRequest().get(JsonKey.PAGE_NAME) : ""))) {
+			ProjectCommonException dataException = new ProjectCommonException(
+					ResponseCode.pageNameRequired.getErrorCode(), ResponseCode.pageNameRequired.getErrorMessage(),
+					ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		}else if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ID) != null
+				? request.getRequest().get(JsonKey.ID) : ""))) {
+			 throw new ProjectCommonException(
+					ResponseCode.pageIdRequired.getErrorCode(), ResponseCode.pageIdRequired.getErrorMessage(),
+					ResponseCode.CLIENT_ERROR.getResponseCode());	
+		}
+	}
+	
 }
