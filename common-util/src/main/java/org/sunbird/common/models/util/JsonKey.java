@@ -153,14 +153,14 @@ public class JsonKey {
 	public static final String SUNBIRD_ACTOR_FILE_PATH = "sunbird_actor_file_path";
 	public static final String USER_COUNT = "userCount";
 	
-	public static final String ASSESMENT_ITEM_DB = "assesment_item_db";
-    public static final String ASSESMENT_EVAL_DB = "assesment_eval_db";
+	public static final String ASSESSMENT_ITEM_DB = "assessment_item_db";
+    public static final String ASSESSMENT_EVAL_DB = "assessment_eval_db";
 	public static final String ASSESSMENT = "assessment";
 	public static final String USERIDS = "userIds";
 	public static final String  TIME_TAKEN = "timeTaken";
-	public static final String ASSESSMENT_ITEM_ID = "assesmentItemId";
+	public static final String ASSESSMENT_ITEM_ID = "assessmentItemId";
 	public static final String ASSESSMENT_ATTEMPT_DATE = "attemptedDate";
-	public static final String ASSESSMENT_TYPE= "assesmentType";
+	public static final String ASSESSMENT_TYPE= "assessmentType";
 	public static final String ASSESSMENT_MAX_SCORE = "maxScore";
 	public static final String ASSESSMENT_ANSWERS = "answers";
 }
