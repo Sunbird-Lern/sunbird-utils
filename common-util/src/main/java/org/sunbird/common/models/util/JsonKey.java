@@ -155,4 +155,7 @@ public class JsonKey {
 	
 	public static final String ASSESMENT_ITEM_DB = "assesment_item_db";
     public static final String ASSESMENT_EVAL_DB = "assesment_eval_db";
+	public static final String ASSESSMENT = "assessment";
+	public static final String USERIDS = "userIds";
+	public static final String  TIME_TAKEN = "timeTaken";
 }
