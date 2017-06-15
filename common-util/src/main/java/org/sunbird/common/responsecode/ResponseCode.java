@@ -65,7 +65,7 @@ public enum ResponseCode {
 	assessmentAttemptDateRequired(ResponseMessage.Key.ATTEMPTED_DATE_REQUIRED, ResponseMessage.Message.ATTEMPTED_DATE_REQUIRED),
 	assessmentAnswersRequired(ResponseMessage.Key.ATTEMPTED_ANSWERS_REQUIRED, ResponseMessage.Message.ATTEMPTED_ANSWERS_REQUIRED),
 	assessmentmaxScoreRequired(ResponseMessage.Key.MAX_SCORE_REQUIRED, ResponseMessage.Message.MAX_SCORE_REQUIRED),
-	
+	statusCanntBeUpdated(ResponseMessage.Key.STATUS_CANNOT_BE_UPDATED, ResponseMessage.Message.STATUS_CANNOT_BE_UPDATED),
 	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404);
 	
 	private int responseCode;

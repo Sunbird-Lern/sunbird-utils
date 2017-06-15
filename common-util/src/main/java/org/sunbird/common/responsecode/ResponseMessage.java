@@ -65,6 +65,7 @@ public interface ResponseMessage {
 		public static final String ATTEMPTED_DATE_REQUIRED = "Attempted data is required.";
 		public static final String ATTEMPTED_ANSWERS_REQUIRED = "Attempted answers is required.";
 		public static final String MAX_SCORE_REQUIRED = "Max score is required.";
+		public static final String STATUS_CANNOT_BE_UPDATED = "status cann't be updated.";
 	}
 
 	public interface Key {
@@ -126,6 +127,7 @@ public interface ResponseMessage {
 		public static final String ATTEMPTED_DATE_REQUIRED = "ATTEMPTED_DATE_REQUIRED";
 		public static final String ATTEMPTED_ANSWERS_REQUIRED = "ATTEMPTED_ANSWERS_REQUIRED";
 		public static final String MAX_SCORE_REQUIRED = "MAX_SCORE_REQUIRED";
+		public static final String STATUS_CANNOT_BE_UPDATED = "STATUS_CANNOT_BE_UPDATED";
 	}
 }
 
