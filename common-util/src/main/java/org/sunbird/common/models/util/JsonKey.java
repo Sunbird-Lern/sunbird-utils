@@ -158,4 +158,9 @@ public class JsonKey {
 	public static final String ASSESSMENT = "assessment";
 	public static final String USERIDS = "userIds";
 	public static final String  TIME_TAKEN = "timeTaken";
+	public static final String ASSESSMENT_ITEM_ID = "assesmentItemId";
+	public static final String ASSESSMENT_ATTEMPT_DATE = "attemptedDate";
+	public static final String ASSESSMENT_TYPE= "assesmentType";
+	public static final String ASSESSMENT_MAX_SCORE = "maxScore";
+	public static final String ASSESSMENT_ANSWERS = "answers";
 }
