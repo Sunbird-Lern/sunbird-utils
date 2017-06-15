@@ -60,6 +60,12 @@ public enum ResponseCode {
 	pageNameRequired(ResponseMessage.Key.PAGE_NAME_REQUIRED, ResponseMessage.Message.PAGE_NAME_REQUIRED),
 	pageIdRequired(ResponseMessage.Key.PAGE_ID_REQUIRED, ResponseMessage.Message.PAGE_ID_REQUIRED),
 	invaidConfiguration(ResponseMessage.Key.INVALID_CONFIGURATION, ResponseMessage.Message.INVALID_CONFIGURATION),
+	assessmentItemIdRequired(ResponseMessage.Key.ASSESSMENT_ITEM_ID_REQUIRED, ResponseMessage.Message.ASSESSMENT_ITEM_ID_REQUIRED),
+	assessmentTypeRequired (ResponseMessage.Key.ASSESSMENT_TYPE_REQUIRED, ResponseMessage.Message.ASSESSMENT_TYPE_REQUIRED),
+	assessmentAttemptDateRequired(ResponseMessage.Key.ATTEMPTED_DATE_REQUIRED, ResponseMessage.Message.ATTEMPTED_DATE_REQUIRED),
+	assessmentAnswersRequired(ResponseMessage.Key.ATTEMPTED_ANSWERS_REQUIRED, ResponseMessage.Message.ATTEMPTED_ANSWERS_REQUIRED),
+	assessmentmaxScoreRequired(ResponseMessage.Key.MAX_SCORE_REQUIRED, ResponseMessage.Message.MAX_SCORE_REQUIRED),
+	
 	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404);
 	
 	private int responseCode;

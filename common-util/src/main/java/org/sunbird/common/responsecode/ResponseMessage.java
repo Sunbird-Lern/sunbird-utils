@@ -60,6 +60,11 @@ public interface ResponseMessage {
 		public static final String PAGE_NAME_REQUIRED = "Page name is required.";
 		public static final String PAGE_ID_REQUIRED = "Page id is required.";
 		public static final String INVALID_CONFIGURATION ="Invalid configuration data.";
+		public static final String ASSESSMENT_ITEM_ID_REQUIRED = "Assessment item id is required.";
+		public static final String ASSESSMENT_TYPE_REQUIRED = "Assessment type is required.";
+		public static final String ATTEMPTED_DATE_REQUIRED = "Attempted data is required.";
+		public static final String ATTEMPTED_ANSWERS_REQUIRED = "Attempted answers is required.";
+		public static final String MAX_SCORE_REQUIRED = "Max score is required.";
 	}
 
 	public interface Key {
@@ -116,6 +121,11 @@ public interface ResponseMessage {
 		public static final String PAGE_NAME_REQUIRED = "PAGE_NAME_REQUIRED";
 		public static final String PAGE_ID_REQUIRED = "PAGE_ID_REQUIRED";
 		public static final String INVALID_CONFIGURATION ="INVALID_CONFIGURATION";
+		public static final String ASSESSMENT_ITEM_ID_REQUIRED = "ASSESSMENT_ITEM_ID_REQUIRED";
+		public static final String ASSESSMENT_TYPE_REQUIRED = "ASSESSMENT_TYPE_REQUIRED";
+		public static final String ATTEMPTED_DATE_REQUIRED = "ATTEMPTED_DATE_REQUIRED";
+		public static final String ATTEMPTED_ANSWERS_REQUIRED = "ATTEMPTED_ANSWERS_REQUIRED";
+		public static final String MAX_SCORE_REQUIRED = "MAX_SCORE_REQUIRED";
 	}
 }
 
