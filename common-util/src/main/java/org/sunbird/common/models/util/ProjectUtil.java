@@ -282,4 +282,62 @@ public class ProjectUtil {
 			this.typeName = typeName;
 		}
 	}
+	
+	public enum AssessmentResult {
+		gradeA("A", "Pass"), gradeB("B", "Pass"), gradeC("C", "Pass"), gradeD("D", "Pass"), gradeF("F", "Fail");
+		private String grade;
+		private String result;
+
+		private AssessmentResult(String grade, String result) {
+			this.grade = grade;
+			this.result = result;
+		}
+
+		public String getGrade() {
+			return grade;
+		}
+
+		public void setGrade(String grade) {
+			this.grade = grade;
+		}
+
+		public String getResult() {
+			return result;
+		}
+
+		public void setResult(String result) {
+			this.result = result;
+		}
+	}
+	
+	/**
+	 * This method will calculate the percentage 
+	 * @param score int 
+	 * @param maxScore int
+	 * @return int
+	 */
+	public static int calculatePercentage(int score, int maxScore) {
+		double percentage = (score * 100) / (maxScore * 1.0);
+		return (int) Math.round(percentage);
+	}
+	
+	/**
+	 * This method will calculate grade based on percentage marks.
+	 * @param percentage int
+	 * @return AssessmentResult
+	 */
+	public static AssessmentResult calcualteAssessmentResult(int percentage) {
+		switch (percentage) {
+		case 90:
+			return AssessmentResult.gradeA;
+		case 80:
+			return AssessmentResult.gradeB;
+		case 60:
+			return AssessmentResult.gradeC;
+		case 50:
+			return AssessmentResult.gradeD;
+		default:
+			return AssessmentResult.gradeF;
+		}
+	}
 }
