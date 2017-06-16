@@ -26,8 +26,8 @@ public interface AssessmentEvaluator {
 	 * This  method will take user assessment item id as a key and value as score , max score and some other
 	 * details for that assessment item id. 
 	 * @param evaluatedData Map<String, List<Map<String, Object>>>
-	 * @return Map<String,Object> 
+	 * @return List<Map<String,Object>> 
 	 */
-	public Map<String,Object> evaluateResult (Map<String, List<Map<String, Object>>> evaluatedData);
+	public List<Map<String,Object>> evaluateResult (Map<String, List<Map<String, Object>>> evaluatedData);
 
 }
