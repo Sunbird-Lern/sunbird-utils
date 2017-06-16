@@ -163,4 +163,6 @@ public class JsonKey {
 	public static final String ASSESSMENT_TYPE= "assessmentType";
 	public static final String ASSESSMENT_MAX_SCORE = "maxScore";
 	public static final String ASSESSMENT_ANSWERS = "answers";
+	public static final String ASSESSMENT_SCORE = "score";
+	public static final String ASSESSMENT_GRADE = "grade";
 }
