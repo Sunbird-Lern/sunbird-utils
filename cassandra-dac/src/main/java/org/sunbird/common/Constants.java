@@ -45,5 +45,9 @@ public interface Constants {
 	public static final String FROM=" FROM ";
 	public static final String INCORRECT_DATA = "Incorrect Data";
 	public static final String EQUAL=" = ";
+	public static final String WHERE_ID = "where id";
+	public static final String EQUAL_WITH_QUE_MARK= " = ? ";
+	public static final String SEMICOLON = ";";
+	public static final String IF_EXISTS = " IF EXISTS;";
 	
 }

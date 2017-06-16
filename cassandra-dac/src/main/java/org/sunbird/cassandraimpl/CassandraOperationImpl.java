@@ -65,26 +65,17 @@ public class CassandraOperationImpl implements CassandraOperation{
 		Response response = new Response();
 		try{
 		String query = CassandraUtil.getUpdateQueryStatement(keyspaceName, tableName, request);
-		String updateQuery =query+" IF EXISTS;";
+		String updateQuery =query+Constants.IF_EXISTS;
 		PreparedStatement statement = CassandraConnectionManager.getSession(keyspaceName).prepare(updateQuery);
-		//Iterator<String> iterator = request.keySet().iterator(); 
-		//need to refactor this code
 		Object [] array =  new Object[request.size()];
 		int i=0;
 		String str= "";
-		int index = query.lastIndexOf("SET");
+		int index = query.lastIndexOf(Constants.SET.trim());
 		str= query.substring(index+4);
-		str = str.replace("=", "");
-		str = str.replace("?", "");
-		str = str.replace("where id", "");
-		str = str.replace(";", "");
+		str = str.replace(Constants.EQUAL_WITH_QUE_MARK, "");
+		str = str.replace(Constants.WHERE_ID, "");
+		str = str.replace(Constants.SEMICOLON, "");
 		String [] arr = str.split(",");
-		/*while (iterator.hasNext()){
-			String key = iterator.next();
-			if(!key.equalsIgnoreCase(Constants.IDENTIFIER)){
-			array[i++] = request.get(key);
-			}
-		}*/
 		for(String key : arr){
 			array[i++] = request.get(key.trim());
 		}
