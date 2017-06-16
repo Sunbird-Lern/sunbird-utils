@@ -90,7 +90,7 @@ public final class CassandraUtil{
 		Set<String> key =  new HashSet<>(map.keySet());
 		key.remove(Constants.IDENTIFIER);
 		query.append(String.join(" = ? ,", key));
-		query.append(" = ? "+ Constants.WHERE + Constants.IDENTIFIER +" = ? ");
+		query.append(Constants.EQUAL_WITH_QUE_MARK+ Constants.WHERE_ID +Constants.EQUAL_WITH_QUE_MARK);
 	    LOGGER.debug(query.toString());
 		return query.toString();
 	}
