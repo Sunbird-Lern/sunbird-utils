@@ -15,8 +15,15 @@ import org.sunbird.common.services.AssessmentEvaluator;
 public class DefaultAssessmentEvaluator implements AssessmentEvaluator {
 
 	@Override
-	public Map<String, Map<String, Object>> evaluateAssessment(Map<String, List<Map<String, Object>>> data) {
+	public Map<String, List<Map<String, Object>>> evaluateAssessment(Map<String, List<Map<String, Object>>> data) {
 		return null;
 	}
+
+	@Override
+	public Map<String, Object> evaluateResult(Map<String, List<Map<String, Object>>> evaluatedData) {
+		return null;
+	}
+	
+	
 
 }
