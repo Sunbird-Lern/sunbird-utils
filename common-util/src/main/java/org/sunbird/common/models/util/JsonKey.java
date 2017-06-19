@@ -165,4 +165,5 @@ public class JsonKey {
 	public static final String ASSESSMENT_ANSWERS = "answers";
 	public static final String ASSESSMENT_SCORE = "score";
 	public static final String ASSESSMENT_GRADE = "grade";
+	public static final String ATTEMPTED_COUNT = "attemptedCount";
 }
