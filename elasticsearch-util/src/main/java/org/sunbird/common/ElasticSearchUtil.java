@@ -3,15 +3,6 @@
  */
 package org.sunbird.common;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
-
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
@@ -26,7 +17,10 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.index.query.*;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.ExistsQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -39,6 +33,11 @@ import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
 import org.sunbird.helper.ElasticSearchQueryBuilder;
 import org.sunbird.util.ESOperation;
+
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 
 /**
  * This class will provide all required operation
@@ -258,56 +257,7 @@ public class ElasticSearchUtil {
         return response;
     }
 
-    public static void main(String[] args) {
-        //searchQuery("bookdb_index" , "book",null);
-        SearchDTO searchDTO = new SearchDTO();
-        //searchDTO.setSampleStringQuery("guide");
-        //TODO:delete
-        searchDTO.getSortBy().put("courseDuration", "desc");
-        searchDTO.getSortBy().put("createdOn" , "desc");
-        //TODO:delete
-        List<String> fields = new ArrayList<>();
-        fields.add("lastPublishedOn");
-        fields.add("size");
-        fields.add("courseDuration");
-        fields.add("createdOn");
-        fields.add("courseAddedByName");
-        fields.add("courseDuration");
-        searchDTO.setFields(fields);
-        searchDTO.setOffset(1);
-        searchDTO.setLimit(30);
-        ESOperation operation1 = new ESOperation();
-        operation1.setType(ESOperation.Operations.RANGE_QUERY.getValue());
-        Map<String, Integer> rangeMap = new HashMap<String, Integer>();
-        rangeMap.put("from", 54);
-        rangeMap.put("to", 70);
-        operation1.setValue(rangeMap);
-        searchDTO.getAdditionalProperties().put("courseDuration", operation1);
-
-       /* ESOperation dateOperation = new ESOperation();
-        dateOperation.setType(ESOperation.Operations.RANGE_QUERY.getValue());
-        Map<String, String> daterangeMap = new HashMap<String, String>();
-        daterangeMap.put("from", "36");
-        dateOperation.setValue(daterangeMap);
-        searchDTO.getAdditionalProperties().put("noOfLecture", dateOperation);*/
-
-        ESOperation existsOperation = new ESOperation();
-        existsOperation.setType(ESOperation.Operations.SHOULD_EXISTS.getValue());
-        searchDTO.getAdditionalProperties().put("owner", existsOperation);
-
-        Map<String,List<Map<String,Object>>> response = complexSearch(searchDTO, "sunbird-inx5", "course");
-        System.out.println(response.get(JsonKey.RESPONSE));
-        //response.getHits().getAt(0).getSource()
-        //complexSearch(searchDTO, "sunbird-inx5", "course");
-        //complexSearch(searchDTO, "sunbird-inx5", "course");
-        List<String> facetList = new ArrayList<String>();
-        facetList.add("noOfLecture");
-        facetList.add("pkgVersion");
-        searchDTO.setFacets(facetList);
-
-        complexSearch(searchDTO, "sunbird-inx5", "course");
-
-    }
+    public static void main1(String[] args) {}
 
     public static Map<String,List<Map<String,Object>>>  complexSearch(SearchDTO searchDTO, String index, String type) {
 
@@ -381,8 +331,6 @@ public class ElasticSearchUtil {
 
         String key = entry.getKey();
 
-
-        //need to replace by FILTERS type
         if (key.equalsIgnoreCase(ESOperation.Operations.FILTERS.getValue())) {
             Map<String, Object> filters = (Map<String, Object>) entry.getValue();
             for (Map.Entry<String, Object> en : filters.entrySet()) {
@@ -400,68 +348,54 @@ public class ElasticSearchUtil {
 
         String key = entry.getKey();
         Object val = entry.getValue();
-        if(val instanceof String){
+        if (val instanceof String) {
             query.should(QueryBuilders.commonTermsQuery(key, val));
-        }else if(val instanceof List){
-            query.should(QueryBuilders.multiMatchQuery(key, ((List<String>)val).stream().toArray(String[]::new)));
-        }else if(val instanceof Map){
-            Map<String , Object> value = (Map<String , Object>) val;
-            Map<String , Object> rangeOperation = new HashMap<String, Object>();
-            for(Map.Entry<String , Object> it:value.entrySet()){
+        } else if (val instanceof List) {
+            query.should(QueryBuilders.multiMatchQuery(key, ((List<String>) val).stream().toArray(String[]::new)));
+        } else if (val instanceof Map) {
+            Map<String, Object> value = (Map<String, Object>) val;
+            Map<String, Object> rangeOperation = new HashMap<String, Object>();
+            for (Map.Entry<String, Object> it : value.entrySet()) {
                 String operation = it.getKey();
-                if(operation.startsWith("<") || operation.startsWith(">")){
-                    rangeOperation.put(operation , it.getValue());
+                if (operation.startsWith("<") || operation.startsWith(">")) {
+                    rangeOperation.put(operation, it.getValue());
                 }
             }
-
-            for(Map.Entry<String , Object> it : rangeOperation.entrySet()){
-                if(it.getKey().equalsIgnoreCase("<=")){
+            for (Map.Entry<String, Object> it : rangeOperation.entrySet()) {
+                if (it.getKey().equalsIgnoreCase("<=")) {
                     RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key).lte(it.getValue());
                     query.must(rangeQueryBuilder);
-                }else if(it.getKey().equalsIgnoreCase("<")){
+                } else if (it.getKey().equalsIgnoreCase("<")) {
                     RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key).lt(it.getValue());
                     query.must(rangeQueryBuilder);
-                }
-                else if(it.getKey().equalsIgnoreCase(">=")){
+                } else if (it.getKey().equalsIgnoreCase(">=")) {
                     RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key).gte(it.getValue());
                     query.must(rangeQueryBuilder);
-                }else if(it.getKey().equalsIgnoreCase(">")){
+                } else if (it.getKey().equalsIgnoreCase(">")) {
                     RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key).gt(it.getValue());
                     query.must(rangeQueryBuilder);
                 }
             }
-
         }
         return null;
     }
 
-    private static ESOperation createESOpperation(Entry<String, Object> entry, BoolQueryBuilder query) {
+    private static void createESOpperation(Entry<String, Object> entry, BoolQueryBuilder query) {
 
         String operation = entry.getKey();
-        //Map<String , Object> obj = (Map<String , Object>)entry.getValue();
-        ESOperation esOperation = new ESOperation();
+        List<String> existsList = (List<String>) entry.getValue();
 
-        if(operation.equalsIgnoreCase(JsonKey.EXISTS)){
-            List<String> existsList = new ArrayList<String>();
-            for(String str : existsList){
-                ExistsQueryBuilder existsQuery1 =  QueryBuilders.existsQuery(str);
+        if (operation.equalsIgnoreCase(JsonKey.EXISTS)) {
+            for (String str : existsList) {
+                ExistsQueryBuilder existsQuery1 = QueryBuilders.existsQuery(str);
                 query.must(existsQuery1);
             }
-
-            return esOperation;
-
-        }else if(operation.equalsIgnoreCase(JsonKey.NOT_EXISTS)){
-            List<String> existsList = new ArrayList<String>();
-            for(String str : existsList){
-                ExistsQueryBuilder existsQuery1 =  QueryBuilders.existsQuery(str);
+        } else if (operation.equalsIgnoreCase(JsonKey.NOT_EXISTS)) {
+            for (String str : existsList) {
+                ExistsQueryBuilder existsQuery1 = QueryBuilders.existsQuery(str);
                 query.mustNot(existsQuery1);
             }
-            return esOperation;
-
         }
-
-        return null;
-
     }
 
     private static SortOrder getSortOrder(String value) {
@@ -542,8 +476,6 @@ public class ElasticSearchUtil {
 			return true;
 		}
 	}
-
-
 }
 
 
