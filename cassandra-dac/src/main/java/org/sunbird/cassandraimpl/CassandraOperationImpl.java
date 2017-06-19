@@ -50,8 +50,12 @@ public class CassandraOperationImpl implements CassandraOperation{
 			while (iterator.hasNext()) {
 				array[i++] = iterator.next();
 			}
-		   	CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement.bind(array));
-			response.put(Constants.RESPONSE, Constants.SUCCESS);
+		   ResultSet result =	CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement.bind(array));
+		   if(result.wasApplied()){
+				response.put(Constants.RESPONSE, Constants.SUCCESS);
+			}else{
+				throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), Constants.ALREADY_EXIST, ResponseCode.SERVER_ERROR.getResponseCode());
+			}
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), e.getMessage(), ResponseCode.SERVER_ERROR.getResponseCode());

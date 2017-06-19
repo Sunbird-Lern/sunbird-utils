@@ -49,5 +49,7 @@ public interface Constants {
 	public static final String EQUAL_WITH_QUE_MARK= " = ? ";
 	public static final String SEMICOLON = ";";
 	public static final String IF_EXISTS = " IF EXISTS;";
+	public static final String ALREADY_EXIST = "Record with this primary key already exist.";
+	public static final String IF_NOT_EXISTS = " IF NOT EXISTS;";
 	
 }

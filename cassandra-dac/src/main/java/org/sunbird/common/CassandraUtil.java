@@ -44,7 +44,7 @@ public final class CassandraUtil{
 	        commaSepValueBuilder.append(Constants.COMMA);
 	      }
 	    }
-	    query.append(commaSepValueBuilder+Constants.CLOSING_BRACE);
+	    query.append(commaSepValueBuilder+")"+Constants.IF_NOT_EXISTS);
 	    LOGGER.debug(query.toString());
 		return query.toString();
 		
