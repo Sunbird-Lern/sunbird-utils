@@ -145,6 +145,7 @@ public class JsonKey {
 	public static final String SUNBIRD_ES_IP ="sunbird_es_host";
 	public static final String SUNBIRD_ES_CLUSTER ="sunbird_es_cluster";
 	public static final String SUNBIRD_ES_PORT = "sunbird_es_port";
+	public static final String SUNBIRD_ES_CHANNEL = "es.channel.name";
 	public static final String SUNBIRD_NETTY_HOST ="sunbird_netty_host";
 	public static final String SUNBIRD_NETTY_PORT = "sunbird_netty_port";
 	public static final String SUNBIRD_CASSANDRA_USER_NAME = "sunbird_cassandra_username";
@@ -165,4 +166,5 @@ public class JsonKey {
 	public static final String ASSESSMENT_ANSWERS = "answers";
 	public static final String ASSESSMENT_SCORE = "score";
 	public static final String ASSESSMENT_GRADE = "grade";
+	public static final String CHANNEL = "channel";
 }
