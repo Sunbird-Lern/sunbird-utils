@@ -29,6 +29,7 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LogHelper;
 import org.sunbird.common.models.util.ProjectUtil;
+import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
 import org.sunbird.helper.ElasticSearchQueryBuilder;
@@ -259,11 +260,24 @@ public class ElasticSearchUtil {
 
     public static void main1(String[] args) {}
 
+    /**
+     * Method to perform the elastic search on the basis of SearchDTO . SearchDTO contains the search criteria like fields, facets, sort by , filters etc.
+     * @param searchDTO
+     * @param index
+     * @param type
+     * @return search result as Map.
+     */
     public static Map<String,List<Map<String,Object>>>  complexSearch(SearchDTO searchDTO, String index, String type) {
 
         SearchRequestBuilder searchRequestBuilder = getSearchBuilder(ConnectionManager.getClient(), index, type);
 
         BoolQueryBuilder query = new BoolQueryBuilder();
+
+        //add channel field as mandatory
+        String channel = PropertiesCache.getInstance().getProperty(JsonKey.SUNBIRD_ES_CHANNEL);
+        if(!(ProjectUtil.isStringNullOREmpty(channel) || JsonKey.SUNBIRD_ES_CHANNEL.equals(channel))) {
+            query.must(QueryBuilders.matchQuery(JsonKey.CHANNEL, channel));
+        }
 
         //apply simple query string
         if (null != searchDTO.getQuery()) {
