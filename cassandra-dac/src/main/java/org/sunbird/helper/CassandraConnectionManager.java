@@ -36,14 +36,16 @@ public final class CassandraConnectionManager {
 	//Map<keySpaceName,Session>
     private static Map<String,Session> cassandraSessionMap = new HashMap<>();
     private static Map<String,Cluster> cassandraclusterMap = new HashMap<>();
-    
+    static{
+    	registerShutDownHook();
+    }
     /**
-     * @author Amit Kumar
-     * @param ip
-     * @param port
-     * @param userName
-     * @param password
-     * @return boolean
+     * This method create connection for given keyspace 
+     * @param ip String
+     * @param port String
+     * @param userName String
+     * @param password String
+     * @return boolean Boolean
      * 
      */
 	public static boolean createConnection(String ip,String port,String userName,String password,String keyspace){
@@ -70,7 +72,7 @@ public final class CassandraConnectionManager {
 				if (!ProjectUtil.isStringNullOREmpty(userName) && !ProjectUtil.isStringNullOREmpty(password)) {
 					cluster = createCluster(ip, port, userName, password, poolingOptions);
 				} else {
-					cluster = createClusterd(ip, port, poolingOptions);
+					cluster = createCluster(ip, port, poolingOptions);
 				}
 				QueryLogger queryLogger = QueryLogger.builder()
 						.withConstantThreshold(Integer.parseInt(cache.getProperty(Constants.QUERY_LOGGER_THRESHOLD)))
@@ -105,8 +107,9 @@ public final class CassandraConnectionManager {
 	}
 	
 	/**
-	 * @author Amit Kumar
-	 * @return Session
+	 * This method provide session for given keyspace
+	 * @param  keyspaceName String
+	 * @return Session Session
 	 */
 	public static Session getSession(String keyspaceName) {
 		if(null == cassandraSessionMap.get(keyspaceName)){
@@ -115,28 +118,15 @@ public final class CassandraConnectionManager {
         return cassandraSessionMap.get(keyspaceName);
     }
  
-	/**
-	 * @author Amit Kumar
-	 * 
-	 * this method will close all the session and cluster
-	 */
-	public static void  shutdownhook() {
-		for(String key: cassandraSessionMap.keySet()){
-			cassandraSessionMap.get(key).close();
-			cassandraclusterMap.get(key).close();
-		}
-		cassandraSessionMap=null;
-		cassandraclusterMap=null;
-    }
    
 	/**
 	 * 
-	 * @param ip
-	 * @param port
-	 * @param userName
-	 * @param password
-	 * @param poolingOptions
-	 * @return
+	 * @param ip String
+	 * @param port String
+	 * @param userName String
+	 * @param password String
+	 * @param poolingOptions PoolingOptions
+	 * @return Cluster Cluster
 	 */
 	private static Cluster createCluster(String ip,String port,String userName, String password,PoolingOptions poolingOptions){
 		return Cluster
@@ -151,12 +141,12 @@ public final class CassandraConnectionManager {
 	
 	/**
 	 * 
-	 * @param ip
-	 * @param port
-	 * @param poolingOptions
-	 * @return
+	 * @param ip String
+	 * @param port String
+	 * @param poolingOptions PoolingOptions
+	 * @return Cluster Cluster
 	 */
-	private static Cluster createClusterd(String ip,String port, PoolingOptions poolingOptions){
+	private static Cluster createCluster(String ip,String port, PoolingOptions poolingOptions){
 		return Cluster
 		.builder()
 		.addContactPoint(ip)
@@ -166,7 +156,33 @@ public final class CassandraConnectionManager {
 		.withTimestampGenerator(new AtomicMonotonicTimestampGenerator())
 		.withPoolingOptions(poolingOptions).build();
 	}
-
 	
+	/**
+	 * This class will be called by registerShutDownHook to 
+	 * register the call inside jvm , when jvm terminate it will call
+	 * the run method to clean up the resource.
+	 */
+	static class ResourceCleanUp extends Thread {
+		  public void run() {
+			  LOGGER.info("started resource cleanup Cassandra.");
+			  for(String key: cassandraSessionMap.keySet()){
+					cassandraSessionMap.get(key).close();
+					cassandraclusterMap.get(key).close();
+				}
+				cassandraSessionMap=null;
+				cassandraclusterMap=null;
+			  LOGGER.info("completed resource cleanup Cassandra.");
+		  }
+	}
+
+	/**
+	 * Register the hook for resource clean up.
+	 * this will be called when jvm shut down.
+	 */
+	public static void registerShutDownHook() {
+		Runtime runtime = Runtime.getRuntime();
+		runtime.addShutdownHook(new ResourceCleanUp());
+		LOGGER.info("Cassandra ShutDownHook registered.");
+	}
 	
 }

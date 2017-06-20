@@ -6,8 +6,7 @@ import java.util.Properties;
 
 /*
  * @author Amit Kumar
- * this class is used for reading cassndra table column name and will map
- * it with java standard name.
+ * this class is used for reading properties file 
  */
 public class PropertiesCache {
 	private final String[] fileName = ProjectUtil.FILE_NAME;

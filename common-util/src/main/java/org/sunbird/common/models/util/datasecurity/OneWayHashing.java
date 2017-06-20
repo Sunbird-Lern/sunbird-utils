@@ -15,8 +15,7 @@ public class OneWayHashing {
     /**
      * This method will encrypt value using SHA-256 . it is one way encryption.
      * 
-     * @param val
-     *            String
+     * @param val String
      * @return String encrypted value or empty in case of exception
      */
 	public static String encryptVal(String val) {
