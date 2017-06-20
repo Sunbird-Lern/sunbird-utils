@@ -162,7 +162,7 @@ public class CassandraTest {
 	@Test
 	public void testCUpdateCourseById() {
 		coursemap.put("delta", "delta as json string updated");
-		operation.updateRecord(cach.getProperty("keyspace"), "course_enrollment", coursemap);
+		operation.upsertRecord(cach.getProperty("keyspace"), "course_enrollment", coursemap);
 		Response response=operation.getRecordById(cach.getProperty("keyspace"), "course_enrollment", "courseId2##userId2");
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> result =  (List<Map<String, Object>>)response.getResult().get("response");
@@ -233,7 +233,7 @@ public class CassandraTest {
 	
 	@AfterClass
 	public static void shutdownhook() {
-		CassandraConnectionManager.shutdownhook();
+		CassandraConnectionManager.registerShutDownHook();
 		contentmap = null;
 		coursemap = null;
 		contentmap1 = null;
