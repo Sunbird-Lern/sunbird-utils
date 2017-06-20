@@ -3,91 +3,114 @@ package org.sunbird.cassandra;
 import java.util.List;
 import java.util.Map;
 
+import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
 
+/**
+ * This interface provides method to interact with cassandra database
+ * @author Amit Kumar
+ *
+ */
 public interface CassandraOperation {
-	
 	/**
-	 * used to insert record in cassandra db 
-	 * @param keyspaceName
-	 * @param tableName
-	 * @param request
-	 * @return Response
+	 * This method is used to insert/update record in cassandra db 
+	 * @param keyspaceName String (data base keyspace name)
+	 * @param tableName String
+	 * @param request Map<String,Object>(i.e map of column name and their value)
+	 * @return Response Response
+	 * @throws ProjectCommonException 
 	 */
-	public Response insertRecord(String keyspaceName,String tableName,Map<String,Object> request);
+	public Response upsertRecord(String keyspaceName,String tableName,Map<String,Object> request) throws ProjectCommonException;
 
 	/**
-	 * used to update record in cassandra db 
-	 * @param keyspaceName
-	 * @param tableName
-	 * @param request
-	 * @param identifier
-	 * @return Response
+	 * This method is used to insert record in cassandra db 
+	 * @param keyspaceName String (data base keyspace name)
+	 * @param tableName String
+	 * @param request Map<String,Object>(i.e map of column name and their value)
+	 * @return Response Response
+	 * @throws ProjectCommonException 
 	 */
-	public Response updateRecord(String keyspaceName,String tableName,Map<String,Object> request);
+	public Response insertRecord(String keyspaceName,String tableName,Map<String,Object> request) throws ProjectCommonException;
+
+	/**
+	 * This method is used to update record in cassandra db 
+	 * @param keyspaceName String (data base keyspace name)
+	 * @param tableName String
+	 * @param request Map<String,Object>(i.e map of column name and their value)
+	 * @return Response Response
+	 * @throws ProjectCommonException 
+	 */
+	public Response updateRecord(String keyspaceName,String tableName,Map<String,Object> request) throws ProjectCommonException;
 	
 	/**
-	 * used to delete record in cassandra db
-	 * @param keyspaceName
-	 * @param tableName
-	 * @param identifier
-	 * @return Response
+	 * This method is used to delete record in cassandra db
+	 * @param keyspaceName String (data base keyspace name)
+	 * @param tableName String
+	 * @param identifier String
+	 * @return Response Response
+	 * @throws ProjectCommonException 
 	 */
-	public Response deleteRecord(String keyspaceName,String tableName,String identifier);
+	public Response deleteRecord(String keyspaceName,String tableName,String identifier) throws ProjectCommonException;
 	
 	/**
-	 * used to fetch record based on primary key
-	 * @param keyspaceName
-	 * @param tableName
-	 * @param identifier
-	 * @return Response 
+	 * This method is used to fetch record based on primary key
+	 * @param keyspaceName String (data base keyspace name)
+	 * @param tableName String
+	 * @param identifier String
+	 * @return Response  Response
+	 * @throws ProjectCommonException 
 	 */
-	public Response  getRecordById(String keyspaceName,String tableName,String identifier);
+	public Response  getRecordById(String keyspaceName,String tableName,String identifier) throws ProjectCommonException;
+	
+	/**
+	 * This method is used to fetch record based on given parameter and it's value
+	 * @param keyspaceName String (data base keyspace name)
+	 * @param tableName String
+	 * @param propertyName String
+	 * @param propertyValue Object
+	 * @return Response Response
+	 * @throws ProjectCommonException 
+	 */
+	public Response  getRecordsByProperty(String keyspaceName,String tableName,String propertyName,Object propertyValue) throws ProjectCommonException;
 	
 	/**
 	 * used to fetch record based on given parameter and it's value
-	 * @param keyspaceName
-	 * @param tableName
-	 * @param propertyName
-	 * @param propertyValue
-	 * @return Response
+	 * @param keyspaceName String (data base keyspace name)
+	 * @param tableName String
+	 * @param propertyName String
+	 * @param propertyValueList List<Object> 
+	 * @return Response Response
+	 * @throws ProjectCommonException 
 	 */
-	public Response  getRecordsByProperty(String keyspaceName,String tableName,String propertyName,String propertyValue);
+	public Response  getRecordsByProperty(String keyspaceName,String tableName,String propertyName,List<Object> propertyValueList) throws ProjectCommonException;
 	
 	/**
-	 * used to fetch record based on given parameter and it's value
-	 * @param keyspaceName
-	 * @param tableName
-	 * @param propertyName
-	 * @param propertyValueList
-	 * @return Response
+	 * This method is used to fetch record based on given parameter list and their values
+	 * @param keyspaceName String (data base keyspace name)
+	 * @param tableName String
+	 * @param propertyMap Map<String,Object> propertyMap)(i.e map of column name and their value)
+	 * @return Response Response
+	 * @throws ProjectCommonException 
 	 */
-	public Response  getRecordsByProperty(String keyspaceName,String tableName,String propertyName,List<Object> propertyValueList);
+	public Response  getRecordsByProperties(String keyspaceName,String tableName,Map<String,Object> propertyMap) throws ProjectCommonException;
 	
 	/**
-	 * used to fetch record based on given parameter list and their values
-	 * @param keyspaceName
-	 * @param tableName
-	 * @param propertyMap
-	 * @return Response
+	 * This method is used to fetch properties value based on id 
+	 * @param keyspaceName String (data base keyspace name)
+	 * @param tableName String
+	 * @param id  String
+	 * @param properties String varargs
+	 * @return Response Response
+	 * @throws ProjectCommonException 
 	 */
-	public Response  getRecordsByProperties(String keyspaceName,String tableName,Map<String,Object> propertyMap);
+	public Response  getPropertiesValueById(String keyspaceName,String tableName,String id,String... properties) throws ProjectCommonException;
 	
 	/**
-	 * used to fetch properties value based on id 
-	 * @param keyspaceName
-	 * @param tableName
-	 * @param id
-	 * @param properties
-	 * @return Response
+	 * This method is used to fetch all records for table
+	 * @param keyspaceName String (data base keyspace name)
+	 * @param tableName String
+	 * @return Response Response
+	 * @throws ProjectCommonException 
 	 */
-	public Response  getPropertiesValueById(String keyspaceName,String tableName,String id,String... properties);
-	
-	/**
-	 * used to fetch all records for table
-	 * @param keyspaceName
-	 * @param tableName
-	 * @return Response
-	 */
-	public Response  getAllRecords(String keyspaceName,String tableName);
+	public Response  getAllRecords(String keyspaceName,String tableName) throws ProjectCommonException;
 }

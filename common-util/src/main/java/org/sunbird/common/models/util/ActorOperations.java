@@ -18,7 +18,7 @@ public enum ActorOperations {
 
 	/**
 	 * constructor
-	 * @param value
+	 * @param value String
 	 */
 	ActorOperations(String value){
 		this.value=value;
@@ -26,7 +26,7 @@ public enum ActorOperations {
 
 	/**
 	 * returns the enum value
-	 * @return
+	 * @return String
 	 */
 	public String getValue(){
 		return this.value;

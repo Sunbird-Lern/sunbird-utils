@@ -134,7 +134,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 
 
 	@Override
-	public Response getRecordsByProperty(String keyspaceName, String tableName, String propertyName, String propertyValue) throws ProjectCommonException{
+	public Response getRecordsByProperty(String keyspaceName, String tableName, String propertyName, Object propertyValue) throws ProjectCommonException{
 		Response response = new Response();
 		try{
 			Select selectQuery = QueryBuilder.select().all().from(keyspaceName, tableName);
@@ -198,7 +198,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 
 
 	@Override
-	public Response getPropertiesValueById(String keyspaceName, String tableName, String id, String... properties) {
+	public Response getPropertiesValueById(String keyspaceName, String tableName, String id, String... properties)  throws ProjectCommonException{
 		Response response = new Response();
 		try{
 			String selectQuery = CassandraUtil.getSelectStatement(keyspaceName, tableName, properties);
@@ -215,7 +215,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 
 
 	@Override
-	public Response getAllRecords(String keyspaceName, String tableName) {
+	public Response getAllRecords(String keyspaceName, String tableName)  throws ProjectCommonException{
 		Response response = new Response();
 		try{
 			Select selectQuery = QueryBuilder.select().all().from(keyspaceName, tableName);
@@ -226,6 +226,37 @@ public class CassandraOperationImpl implements CassandraOperation{
 			throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), e.getMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		return response;
+	}
+
+
+	
+	@Override
+	public Response upsertRecord(String keyspaceName, String tableName, Map<String, Object> request)
+			throws ProjectCommonException {
+
+		Response response = new Response();
+		try {
+			String query = CassandraUtil.getPreparedStatementFrUpsert(keyspaceName,tableName,request);
+			PreparedStatement statement = CassandraConnectionManager.getSession(keyspaceName).prepare(query);
+			BoundStatement boundStatement = new BoundStatement(statement);
+			Iterator<Object> iterator = request.values().iterator(); 
+			Object [] array =  new Object[request.keySet().size()];
+			int i=0;
+			while (iterator.hasNext()) {
+				array[i++] = iterator.next();
+			}
+		   ResultSet result =	CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement.bind(array));
+		   if(result.wasApplied()){
+				response.put(Constants.RESPONSE, Constants.SUCCESS);
+			}else{
+				throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), Constants.ALREADY_EXIST, ResponseCode.SERVER_ERROR.getResponseCode());
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), e.getMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
+		}
+		return response;
+	
 	}
 
 }
