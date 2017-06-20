@@ -30,7 +30,7 @@ import com.datastax.driver.core.querybuilder.Select.Where;
  * 
  * @author Amit Kumar
  * 
- * this class contains methods to interact with cassandra DB
+ * @desc this class will hold functions for cassandra db interaction
  * 
  */
 public class CassandraOperationImpl implements CassandraOperation{
