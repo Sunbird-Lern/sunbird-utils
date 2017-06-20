@@ -26,11 +26,10 @@ public final class CassandraUtil{
 	
 	/**
 	 * this method is used to create prepared statement based on table name and column name provided
-	 * @param keyspaceName
-	 * @param tableName
+	 * @param keyspaceName String (data base keyspace name)
+	 * @param tableName String
 	 * @param map is key value pair (key is column name and value is value of column)
-	 * @return String
-	 * @author Amit Kumar
+	 * @return String String
 	 */
 	public static String getPreparedStatement(String keyspaceName, String tableName, Map<String, Object> map){
 		StringBuilder query=new StringBuilder();
@@ -51,10 +50,9 @@ public final class CassandraUtil{
 	}
 	/**
 	 * this method is used for creating response from the resultset
-	 * i.e creating map<String,Object> or map<columnName,columnValue>
-	 * @param results
-	 * @return Response
-	 * @author Amit Kumar
+	 * i.e return map<String,Object> or map<columnName,columnValue>
+	 * @param results ResultSet
+	 * @return Response Response
 	 */
 	public static Response createResponse(ResultSet results){
 		Response response = new Response();
@@ -79,11 +77,10 @@ public final class CassandraUtil{
 	
 	/**
 	 * this method is used to create update query statement based on table name and column name provided
-	 * @param keyspaceName
-	 * @param tableName
-	 * @param map
-	 * @return String
-	 * @author Amit Kumar
+	 * @param keyspaceName String (data base keyspace name)
+	 * @param tableName String
+	 * @param map Map<String, Object>
+	 * @return String String
 	 */
 	public static String getUpdateQueryStatement(String keyspaceName, String tableName, Map<String, Object> map){
 		StringBuilder query=new StringBuilder(Constants.UPDATE + keyspaceName + Constants.DOT + tableName + Constants.SET);
@@ -96,17 +93,41 @@ public final class CassandraUtil{
 	}
 	
 	/**
-	 * this method is used to create prepared statement based on table name and column name provided
-	 * @param keyspaceName
-	 * @param tableName
-	 * @param properties(list of property)
-	 * @return String
-	 * @author Amit Kumar
+	 * this method is used to create prepared statement based on table name and column name provided as varargs
+	 * @param keyspaceName String (data base keyspace name)
+	 * @param tableName String
+	 * @param properties(String varargs)
+	 * @return String String
 	 */
 	public static String getSelectStatement(String keyspaceName, String tableName, String... properties){
 		StringBuilder query=new StringBuilder(Constants.SELECT);
 		query.append(String.join(",", properties));
 		query.append(Constants.FROM + keyspaceName + Constants.DOT + tableName +Constants.WHERE +Constants.IDENTIFIER +Constants.EQUAL +" ?; ");
+	    LOGGER.debug(query.toString());
+		return query.toString();
+		
+	}
+	
+	/**
+	 * this method is used to create prepared statement based on table name and column name provided
+	 * @param keyspaceName String (data base keyspace name)
+	 * @param tableName String
+	 * @param map is key value pair (key is column name and value is value of column)
+	 * @return String String
+	 */
+	public static String getPreparedStatementFrUpsert(String keyspaceName, String tableName, Map<String, Object> map){
+		StringBuilder query=new StringBuilder();
+		query.append(Constants.INSERT_INTO+keyspaceName+Constants.DOT+tableName+Constants.OPEN_BRACE);
+		Set<String> keySet= map.keySet();
+		query.append(String.join(",", keySet)+Constants.VALUES_WITH_BRACE);
+		StringBuilder commaSepValueBuilder = new StringBuilder();
+	    for ( int i = 0; i< keySet.size(); i++){
+	      commaSepValueBuilder.append(Constants.QUE_MARK);
+	      if ( i != keySet.size()-1){
+	        commaSepValueBuilder.append(Constants.COMMA);
+	      }
+	    }
+	    query.append(commaSepValueBuilder+Constants.CLOSING_BRACE);
 	    LOGGER.debug(query.toString());
 		return query.toString();
 		
