@@ -15,8 +15,7 @@ import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 
 /**
- * This class will provide all required operation
- * for cassandra db. 
+ * @desc This class will provide all required helper method for cassandra db operation. 
  * @author Amit Kumar
  */
 public final class CassandraUtil{
@@ -25,7 +24,7 @@ public final class CassandraUtil{
 	private final static PropertiesCache instance = PropertiesCache.getInstance();
 	
 	/**
-	 * this method is used to create prepared statement based on table name and column name provided
+	 * @desc This method is used to create prepared statement based on table name and column name provided in request
 	 * @param keyspaceName String (data base keyspace name)
 	 * @param tableName String
 	 * @param map is key value pair (key is column name and value is value of column)
@@ -49,7 +48,7 @@ public final class CassandraUtil{
 		
 	}
 	/**
-	 * this method is used for creating response from the resultset
+	 * @desc This method is used for creating response from the resultset
 	 * i.e return map<String,Object> or map<columnName,columnValue>
 	 * @param results ResultSet
 	 * @return Response Response
@@ -76,7 +75,7 @@ public final class CassandraUtil{
 	}
 	
 	/**
-	 * this method is used to create update query statement based on table name and column name provided
+	 * @desc This method is used to create update query statement based on table name and column name provided
 	 * @param keyspaceName String (data base keyspace name)
 	 * @param tableName String
 	 * @param map Map<String, Object>
@@ -93,7 +92,7 @@ public final class CassandraUtil{
 	}
 	
 	/**
-	 * this method is used to create prepared statement based on table name and column name provided as varargs
+	 * @desc This method is used to create prepared statement based on table name and column name provided as varargs
 	 * @param keyspaceName String (data base keyspace name)
 	 * @param tableName String
 	 * @param properties(String varargs)
@@ -109,7 +108,7 @@ public final class CassandraUtil{
 	}
 	
 	/**
-	 * this method is used to create prepared statement based on table name and column name provided
+	 * @desc This method is used to create prepared statement based on table name and column name provided
 	 * @param keyspaceName String (data base keyspace name)
 	 * @param tableName String
 	 * @param map is key value pair (key is column name and value is value of column)
