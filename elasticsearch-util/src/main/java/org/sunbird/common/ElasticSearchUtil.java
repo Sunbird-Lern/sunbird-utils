@@ -59,7 +59,7 @@ public class ElasticSearchUtil {
      * @param type       String  ES type name
      * @param identifier ES column identifier as an String
      * @param data       Map<String,Object>
-     * @param
+     * @return String identifier for created data
      */
     public static String createData(String index, String type, String identifier, Map<String, Object> data) {
         if (ProjectUtil.isStringNullOREmpty(identifier) || ProjectUtil.isStringNullOREmpty(type)
@@ -78,10 +78,9 @@ public class ElasticSearchUtil {
     /**
      * This method will provide data form ES based on incoming identifier.
      * we can get data by passing index and  identifier values , or all the three
-     *
      * @param type       String
      * @param identifier String
-     * @return Map<String,Object>
+     * @return Map<String,Object> or null 
      */
     public static Map<String, Object> getDataByIdentifier(String index, String type, String identifier) {
         GetResponse response = null;
@@ -340,13 +339,20 @@ public class ElasticSearchUtil {
                     .setTypes(type);
         }
     }
-
+    
+    /**
+     * 
+     * @param query
+     * @param entry
+     */
+    @SuppressWarnings("unchecked")
     private static void addAdditionalProperties(BoolQueryBuilder query, Map.Entry<String, Object> entry) {
 
         String key = entry.getKey();
 
         if (key.equalsIgnoreCase(ESOperation.Operations.FILTERS.getValue())) {
-            Map<String, Object> filters = (Map<String, Object>) entry.getValue();
+           
+			Map<String, Object> filters = (Map<String, Object>) entry.getValue();
             for (Map.Entry<String, Object> en : filters.entrySet()) {
                createFilterESOpperation(en , query);
             }
@@ -357,7 +363,8 @@ public class ElasticSearchUtil {
         }
 
     }
-
+   
+    @SuppressWarnings("unchecked")
     private static ESOperation createFilterESOpperation(Entry<String, Object> entry, BoolQueryBuilder query) {
 
         String key = entry.getKey();
@@ -394,6 +401,7 @@ public class ElasticSearchUtil {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     private static void createESOpperation(Entry<String, Object> entry, BoolQueryBuilder query) {
 
         String operation = entry.getKey();
