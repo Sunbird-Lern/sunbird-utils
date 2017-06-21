@@ -63,15 +63,7 @@ public final class RequestValidator {
 			}
 	}
 	
-	/**
-	 * This method will do get course request data
-	 * validation. if all mandatory data is coming then it won't do any thing
-	 * if any mandatory data is missing then it will throw exception.
-	 * @param Request contentRequestDto
-	 */
-	public static void validateGetData(Request request) {
-	}
-	
+
 	/**
 	 * This method will validate create user data.
 	 * @param userRequest Request
@@ -80,22 +72,27 @@ public final class RequestValidator {
 		if (userRequest.getRequest().get(JsonKey.EMAIL) == null) {
 			throw new ProjectCommonException(ResponseCode.emailRequired.getErrorCode(),
 					ResponseCode.emailRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-		} else if (!ProjectUtil.isEmailvalid((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
+		}
+		if (!ProjectUtil.isEmailvalid((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
 			throw new ProjectCommonException(ResponseCode.emailFormatError.getErrorCode(),
 					ResponseCode.emailFormatError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-		} else if (userRequest.getRequest().get(JsonKey.FIRST_NAME) == null
+		}
+		if (userRequest.getRequest().get(JsonKey.FIRST_NAME) == null
 				|| (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.FIRST_NAME)))) {
 			throw new ProjectCommonException(ResponseCode.firstNameRequired.getErrorCode(),
 					ResponseCode.firstNameRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-		} else if (userRequest.getRequest().get(JsonKey.PASSWORD) == null
+		} 
+		if (userRequest.getRequest().get(JsonKey.PASSWORD) == null
 				|| (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PASSWORD)))) {
 			throw new ProjectCommonException(ResponseCode.passwordRequired.getErrorCode(),
 					ResponseCode.passwordRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-		} else if (userRequest.getRequest().get(JsonKey.LANGUAGE) == null
+		} 
+		if (userRequest.getRequest().get(JsonKey.LANGUAGE) == null
 				|| ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.LANGUAGE))) {
 			throw new ProjectCommonException(ResponseCode.languageRequired.getErrorCode(),
 					ResponseCode.languageRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-		}else if (ProjectUtil.isStringNullOREmpty(userRequest.getParams().getMsgid())) {
+		}
+		if (ProjectUtil.isStringNullOREmpty(userRequest.getParams().getMsgid())) {
 			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.msgIdRequiredError.getErrorCode(),
 					ResponseCode.msgIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
@@ -109,6 +106,29 @@ public final class RequestValidator {
 	 * @param userRequest Request
 	 */
 	public static void validateUpdateUser(Request userRequest) {
+		if (userRequest.getRequest().containsKey(JsonKey.EMAIL) && userRequest.getRequest().get(JsonKey.EMAIL) == null) {
+			throw new ProjectCommonException(ResponseCode.emailRequired.getErrorCode(),
+					ResponseCode.emailRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		}
+		if (userRequest.getRequest().containsKey(JsonKey.EMAIL) && !ProjectUtil.isEmailvalid((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
+			throw new ProjectCommonException(ResponseCode.emailFormatError.getErrorCode(),
+					ResponseCode.emailFormatError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		}
+		if (userRequest.getRequest().containsKey(JsonKey.FIRST_NAME) && userRequest.getRequest().get(JsonKey.FIRST_NAME) == null
+				|| (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.FIRST_NAME)))) {
+			throw new ProjectCommonException(ResponseCode.firstNameRequired.getErrorCode(),
+					ResponseCode.firstNameRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		}
+		if (userRequest.getRequest().containsKey(JsonKey.LANGUAGE) && userRequest.getRequest().get(JsonKey.LANGUAGE) == null
+				|| ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.LANGUAGE))) {
+			throw new ProjectCommonException(ResponseCode.languageRequired.getErrorCode(),
+					ResponseCode.languageRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		}
+		if (ProjectUtil.isStringNullOREmpty(userRequest.getParams().getMsgid())) {
+			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.msgIdRequiredError.getErrorCode(),
+					ResponseCode.msgIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+			throw dataException;
+		}
    }
 
 	/**
@@ -119,11 +139,13 @@ public final class RequestValidator {
 		if (userRequest.getRequest().get(JsonKey.USERNAME) == null) {
 			throw new ProjectCommonException(ResponseCode.userNameRequired.getErrorCode(),
 					ResponseCode.userNameRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-		} else if (userRequest.getRequest().get(JsonKey.PASSWORD) == null
+		} 
+		if (userRequest.getRequest().get(JsonKey.PASSWORD) == null
 				|| (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PASSWORD)))) {
 			throw new ProjectCommonException(ResponseCode.passwordRequired.getErrorCode(),
 					ResponseCode.passwordRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-		}else if (userRequest.getRequest().get(JsonKey.SOURCE) == null
+		}
+		if (userRequest.getRequest().get(JsonKey.SOURCE) == null
 				|| (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PASSWORD)))) {
 			throw new ProjectCommonException(ResponseCode.sourceRequired.getErrorCode(),
 					ResponseCode.sourceRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
@@ -139,7 +161,8 @@ public final class RequestValidator {
 				|| (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PASSWORD)))) {
 			throw new ProjectCommonException(ResponseCode.passwordRequired.getErrorCode(),
 					ResponseCode.passwordRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-		} else if (userRequest.getRequest().get(JsonKey.NEW_PASSWORD) == null
+		} 
+	    if (userRequest.getRequest().get(JsonKey.NEW_PASSWORD) == null
 				|| (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.NEW_PASSWORD)))) {
 			throw new ProjectCommonException(ResponseCode.sourceRequired.getErrorCode(),
 					ResponseCode.sourceRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
@@ -157,19 +180,23 @@ public final class RequestValidator {
 			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.courseIdRequiredError.getErrorCode(),
 					ResponseCode.courseIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
-		}else if (courseRequest.getRequest().get(JsonKey.COURSE_NAME) == null) {
+		}
+		 if (courseRequest.getRequest().get(JsonKey.COURSE_NAME) == null) {
 			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.courseNameRequired.getErrorCode(),
 					ResponseCode.courseNameRequired.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
-		}else if (courseRequest.getRequest().get(JsonKey.ORGANISATION_ID) == null) {
+		}
+		 if (courseRequest.getRequest().get(JsonKey.ORGANISATION_ID) == null) {
 			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.organisationIdRequiredError.getErrorCode(),
 					ResponseCode.organisationIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
-		}else if (courseRequest.getRequest().get(JsonKey.ENROLLMENT_START_DATE) == null) {
+		}
+		 if (courseRequest.getRequest().get(JsonKey.ENROLLMENT_START_DATE) == null) {
 			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.enrollmentStartDateRequiredError.getErrorCode(),
 					ResponseCode.enrollmentStartDateRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
-		}else if (courseRequest.getRequest().get(JsonKey.COURSE_DURATION) == null) {
+		}
+		 if (courseRequest.getRequest().get(JsonKey.COURSE_DURATION) == null) {
 			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.courseDurationRequiredError.getErrorCode(),
 					ResponseCode.courseDurationRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
@@ -203,13 +230,6 @@ public final class RequestValidator {
 		}
 	}
 	
-	/**
-	 * This method will validate published course request data.
-	 * @param userRequest Request
-	 */
-	public static void validateSearchCourse(Request userRequest) {
-		
-	}
 	
 	/**
 	 * This method will validate Delete course request data.
@@ -234,7 +254,8 @@ public final class RequestValidator {
 					ResponseCode.sectionNameRequired.getErrorCode(), ResponseCode.sectionNameRequired.getErrorMessage(),
 					ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
-		}else if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.SECTION_DATA_TYPE) != null
+		}
+		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.SECTION_DATA_TYPE) != null
 				? request.getRequest().get(JsonKey.SECTION_DATA_TYPE) : ""))) {
 			ProjectCommonException dataException = new ProjectCommonException(
 					ResponseCode.sectionDataTypeRequired.getErrorCode(), ResponseCode.sectionDataTypeRequired.getErrorMessage(),
@@ -254,12 +275,14 @@ public final class RequestValidator {
 					ResponseCode.sectionNameRequired.getErrorCode(), ResponseCode.sectionNameRequired.getErrorMessage(),
 					ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
-		}else if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ID) != null
+		}
+		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ID) != null
 				? request.getRequest().get(JsonKey.ID) : ""))) {
 			 throw new ProjectCommonException(
 					ResponseCode.sectionIdRequired.getErrorCode(), ResponseCode.sectionIdRequired.getErrorMessage(),
 					ResponseCode.CLIENT_ERROR.getResponseCode());	
-		}else if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.SECTION_DATA_TYPE) != null
+		}
+		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.SECTION_DATA_TYPE) != null
 				? request.getRequest().get(JsonKey.SECTION_DATA_TYPE) : ""))) {
 			ProjectCommonException dataException = new ProjectCommonException(
 					ResponseCode.sectionDataTypeRequired.getErrorCode(), ResponseCode.sectionDataTypeRequired.getErrorMessage(),
@@ -294,7 +317,8 @@ public final class RequestValidator {
 					ResponseCode.pageNameRequired.getErrorCode(), ResponseCode.pageNameRequired.getErrorMessage(),
 					ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
-		}else if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ID) != null
+		}
+		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ID) != null
 				? request.getRequest().get(JsonKey.ID) : ""))) {
 			 throw new ProjectCommonException(
 					ResponseCode.pageIdRequired.getErrorCode(), ResponseCode.pageIdRequired.getErrorMessage(),
@@ -314,27 +338,32 @@ public final class RequestValidator {
 					ResponseCode.courseIdRequired.getErrorCode(), ResponseCode.courseIdRequired.getErrorMessage(),
 					ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
-		} else if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.CONTENT_ID) != null
+		} 
+		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.CONTENT_ID) != null
 				? request.getRequest().get(JsonKey.CONTENT_ID) : ""))) {
 			throw new ProjectCommonException(ResponseCode.contentIdRequired.getErrorCode(),
 					ResponseCode.contentIdRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-		} else if (ProjectUtil
+		}
+		if (ProjectUtil
 				.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ASSESSMENT_ITEM_ID) != null
 						? request.getRequest().get(JsonKey.ASSESSMENT_ITEM_ID) : ""))) {
 			throw new ProjectCommonException(ResponseCode.assessmentItemIdRequired.getErrorCode(),
 					ResponseCode.assessmentItemIdRequired.getErrorMessage(),
 					ResponseCode.CLIENT_ERROR.getResponseCode());
-		} else if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ASSESSMENT_TYPE) != null
+		}
+		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ASSESSMENT_TYPE) != null
 				? request.getRequest().get(JsonKey.ASSESSMENT_TYPE) : ""))) {
 			throw new ProjectCommonException(ResponseCode.assessmentTypeRequired.getErrorCode(),
 					ResponseCode.assessmentTypeRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-		} else if (ProjectUtil
+		}
+		if (ProjectUtil
 				.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ASSESSMENT_ANSWERS) != null
 						? request.getRequest().get(JsonKey.ASSESSMENT_ANSWERS) : ""))) {
 			throw new ProjectCommonException(ResponseCode.assessmentAnswersRequired.getErrorCode(),
 					ResponseCode.assessmentAnswersRequired.getErrorMessage(),
 					ResponseCode.CLIENT_ERROR.getResponseCode());
-		} else if (ProjectUtil
+		}
+		if (ProjectUtil
 				.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ASSESSMENT_MAX_SCORE) != null
 						? request.getRequest().get(JsonKey.ASSESSMENT_ANSWERS) : ""))) {
 			throw new ProjectCommonException(ResponseCode.assessmentmaxScoreRequired.getErrorCode(),
