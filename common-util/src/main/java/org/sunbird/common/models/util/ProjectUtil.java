@@ -312,22 +312,22 @@ public class ProjectUtil {
 	
 	/**
 	 * This method will calculate the percentage 
-	 * @param score int 
-	 * @param maxScore int
-	 * @return int
+	 * @param score double 
+	 * @param maxScore double
+	 * @return double
 	 */
-	public static int calculatePercentage(int score, int maxScore) {
+	public static double calculatePercentage(double score, double maxScore) {
 		double percentage = (score * 100) / (maxScore * 1.0);
-		return (int) Math.round(percentage);
+		return (double) Math.round(percentage);
 	}
 	
 	/**
 	 * This method will calculate grade based on percentage marks.
-	 * @param percentage int
+	 * @param percentage double
 	 * @return AssessmentResult
 	 */
-	public static AssessmentResult calcualteAssessmentResult(int percentage) {
-		switch (percentage) {
+	public static AssessmentResult calcualteAssessmentResult(double percentage) {
+		switch (Math.round(Float.valueOf(String.valueOf(percentage)))) {
 		case 90:
 			return AssessmentResult.gradeA;
 		case 80:

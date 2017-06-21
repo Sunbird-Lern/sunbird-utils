@@ -12,6 +12,7 @@ public class PropertiesCache {
 	private final String[] fileName = ProjectUtil.FILE_NAME;
 	private final Properties configProp = new Properties();
 
+	
 	private PropertiesCache()
 	   {
 		 for (String file : fileName){
@@ -23,7 +24,7 @@ public class PropertiesCache {
 	      }
 		 }
 	   }
-	 
+	//Bill Pugh Solution for singleton pattern
 	   private static class LazyHolder
 	   {
 	      private static final PropertiesCache INSTANCE = new PropertiesCache();
