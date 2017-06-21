@@ -51,7 +51,6 @@ public class AppTest
 		} catch (IOException e) {
 			
 		}
-		System.out.println(response);
 		Assert.assertEquals("", response);
 	}
 	
@@ -82,6 +81,12 @@ public class AppTest
 	public void testEmailValidation(){
 		boolean bool = ProjectUtil.isEmailvalid("amit.kumar@tarento.com");
 		Assert.assertTrue(bool);
+	}
+	
+	@Test
+	public void testEmailFailureValidation(){
+		boolean bool = ProjectUtil.isEmailvalid("amit.kumartarento.com");
+		Assert.assertFalse(bool);
 	}
 	
 	private Map<String, List<Map<String, Object>>> createEvaluateAssessmentRequest() {
