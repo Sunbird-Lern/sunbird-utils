@@ -17,6 +17,7 @@ import org.sunbird.cassandraimpl.CassandraOperationImpl;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.helper.CassandraConnectionManager;
+import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.PropertiesCache;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -91,6 +92,13 @@ public class CassandraTest {
 		Response response=operation.insertRecord(cach.getProperty("keyspace"), "course_enrollment", coursemap);
     	assertEquals("SUCCESS", response.get("response"));
 	}
+	
+	@Test(expected=ProjectCommonException.class)
+	public void testACourseInsertionWithSameId() {
+		operation.insertRecord(cach.getProperty("keyspace"), "course_enrollment", coursemap);
+	}
+	
+	
 	@Test
 	public void testAContentInsertion() {
 		Response response=operation.insertRecord(cach.getProperty("keyspace"), "content_consumption", contentmap);
@@ -111,6 +119,27 @@ public class CassandraTest {
 	public void testBGetCourseById() {
 		Response response=operation.getRecordById(cach.getProperty("keyspace"), "course_enrollment", "courseId2##userId2");
 		assertEquals(1,((List<Map<String, Object>>)(response.getResult().get("response"))).size());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testBGetAllCourse() {
+		Response response=operation.getAllRecords(cach.getProperty("keyspace"), "course_enrollment");
+		assertTrue(((List<Map<String, Object>>)(response.getResult().get("response"))).size() > 0);
+	}
+	@Test(expected=ProjectCommonException.class)
+	public void testBGetAllCourseWithException() {
+		operation.getAllRecords(cach.getProperty("keyspace"), "course");
+	}
+	
+	@Test
+	public void testBgetPropertiesValueById() {
+		Response response=operation.getPropertiesValueById(cach.getProperty("keyspace"), "course_enrollment", "courseId2##userId2","courseId","delta");
+		assertTrue(response!=null);
+	}
+	@Test(expected=ProjectCommonException.class)
+	public void testBgetPropertiesValueByIdWithException() {
+		operation.getPropertiesValueById(cach.getProperty("keyspace"), "course_enrollment", "courseId2##userId2","unknownColumn");
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -168,6 +197,13 @@ public class CassandraTest {
 		List<Map<String, Object>> result =  (List<Map<String, Object>>)response.getResult().get("response");
 		Map<String, Object> map = result.get(0);
 		assertTrue(((String)map.get("delta")).equalsIgnoreCase("delta as json string updated"));
+	}
+	
+	
+	@Test(expected=ProjectCommonException.class)
+	public void testCUpdateCourseByIdWithException() {
+		coursemap.put("delta", "delta as json string updated");
+		operation.upsertRecord(cach.getProperty("keyspace"), "course", coursemap);
 	}
 
 	@Test(expected=ProjectCommonException.class)
