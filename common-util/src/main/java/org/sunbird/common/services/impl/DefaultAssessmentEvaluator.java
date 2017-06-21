@@ -39,8 +39,8 @@ public class DefaultAssessmentEvaluator implements AssessmentEvaluator {
 
 	@Override
 	public List<Map<String, Object>> evaluateResult(Map<String, List<Map<String, Object>>> evaluatedData) {
-		int score = 0;
-		int maxScore = 0;
+		double score = 0;
+		double maxScore = 0;
 		String userId = "";
 		String courseId = "";
 		String contnetId = "";
@@ -49,17 +49,18 @@ public class DefaultAssessmentEvaluator implements AssessmentEvaluator {
 		if (evaluatedData != null && evaluatedData.size() > 0) {
 			Iterator<Entry<String, List<Map<String, Object>>>> itr = evaluatedData.entrySet().iterator();
 			while (itr.hasNext()) {
-				userId = itr.next().getKey();
-				List<Map<String, Object>> list = itr.next().getValue();
+				Entry<String, List<Map<String, Object>>> entry = itr.next(); 
+				userId = entry.getKey();
+				List<Map<String, Object>> list = entry.getValue();
 				for (Map<String, Object> map : list) {
 					courseId = (String) map.get(JsonKey.COURSE_ID);
 					contnetId = (String) map.get(JsonKey.CONTENT_ID);
 					score = score
-							+ (int) (map.get(JsonKey.ASSESSMENT_SCORE) != null ? map.get(JsonKey.ASSESSMENT_SCORE) : 0);
-					maxScore = maxScore + (int) (map.get(JsonKey.ASSESSMENT_MAX_SCORE) != null
-							? map.get(JsonKey.ASSESSMENT_MAX_SCORE) : 0);
+							+ ((String)map.get(JsonKey.ASSESSMENT_SCORE)) != null ? Double.parseDouble((String) map.get(JsonKey.ASSESSMENT_SCORE)) : 0 ;
+					maxScore = maxScore + ((String)map.get(JsonKey.ASSESSMENT_MAX_SCORE)) != null
+							? Double.parseDouble((String) map.get(JsonKey.ASSESSMENT_MAX_SCORE)) : 0 ;
 				}
-				int percentage = ProjectUtil.calculatePercentage(score, maxScore);
+				double percentage = ProjectUtil.calculatePercentage(score, maxScore);
 				ProjectUtil.AssessmentResult result = ProjectUtil.calcualteAssessmentResult(percentage);
 				resultMap.put(JsonKey.USER_ID, userId);
 				resultMap.put(JsonKey.COURSE_ID, courseId);
@@ -88,10 +89,10 @@ public class DefaultAssessmentEvaluator implements AssessmentEvaluator {
 		if(request.size() > 1){
 			for(int i=1;i<request.size();i++){
 				assessmentId = (String) request.get(i).get(JsonKey.ASSESSMENT_ITEM_ID);
-				score = (request.get(i).get(JsonKey.ASSESSMENT_SCORE)) != null ? Double.parseDouble((String) request.get(i).get(JsonKey.ASSESSMENT_SCORE)) : 0d ;
+				score = (request.get(i).get(JsonKey.ASSESSMENT_SCORE)) != null ? Double.parseDouble((String) request.get(i).get(JsonKey.ASSESSMENT_SCORE)) : 0 ;
 				if(assessmentWithMaxScore.containsKey(assessmentId)){
 					Map<String,Object> tempMap = (Map<String, Object>) assessmentWithMaxScore.get(assessmentId);
-					if(null!= tempMap.get(JsonKey.ASSESSMENT_SCORE) && score.compareTo(Double.parseDouble((String)tempMap.get(JsonKey.ASSESSMENT_SCORE))) < 0){
+					if(null!= tempMap.get(JsonKey.ASSESSMENT_SCORE) && score.compareTo(Double.parseDouble((String)tempMap.get(JsonKey.ASSESSMENT_SCORE))) > 0){
 						assessmentWithMaxScore.put(assessmentId, request.get(i));
 					}
 				}else{
@@ -99,7 +100,7 @@ public class DefaultAssessmentEvaluator implements AssessmentEvaluator {
 				}
 			}
 		}
-		return (List<Map<String, Object>>) assessmentWithMaxScore.values();
+		return new ArrayList<Map<String,Object>> (assessmentWithMaxScore.values());
 	}
 	
 
