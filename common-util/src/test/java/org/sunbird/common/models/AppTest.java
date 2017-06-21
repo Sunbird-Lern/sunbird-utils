@@ -63,7 +63,6 @@ public class AppTest
 		List<Map<String, Object>> list = response.get("USR1");
 		String score = null;
 		for(int i =0 ; i< list.size();i++){
-			System.out.println(list.get(i).get(JsonKey.ASSESSMENT_ITEM_ID)+"  "+list.get(i).get(JsonKey.ASSESSMENT_SCORE));
 			if(((String)list.get(i).get(JsonKey.ASSESSMENT_ITEM_ID)).equalsIgnoreCase("assmntItemId1")){
 				score = ((String)list.get(i).get(JsonKey.ASSESSMENT_SCORE));
 			}
@@ -76,7 +75,7 @@ public class AppTest
 		Map<String, List<Map<String, Object>>> data = createEvaluateResultRequest();
 		AssessmentEvaluator evaluator = new  DefaultAssessmentEvaluator();
 		List<Map<String, Object>> response = evaluator.evaluateResult(data);
-		Assert.assertEquals(response.size(),"3");
+		Assert.assertEquals(response.size(),1);
 	}
 	
 	@Test
