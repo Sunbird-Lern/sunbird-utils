@@ -28,7 +28,6 @@ public class ElasticSearchQueryBuilder {
 			boolean response = client.admin().indices().exists(Requests.indicesExistsRequest(indexName)).get().isExists();
 			TypesExistsRequest typesExistsRequest = new TypesExistsRequest(new String[]{indexName},typeName);
 			boolean typeResponse = client.admin().indices().typesExists(typesExistsRequest).get().isExists();
-			System.out.println("found==" + response +"  "+typeResponse);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
