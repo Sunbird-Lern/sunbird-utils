@@ -2,9 +2,7 @@ package org.sunbird.common;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.elasticsearch.client.transport.TransportClient;
 import org.junit.AfterClass;
@@ -12,9 +10,10 @@ import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
 import org.sunbird.helper.ElasticSearchQueryBuilder;
-import org.sunbird.common.ElasticSearchUtil;
 import static org.junit.Assert.*;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ElasticSearchUtilTest {
@@ -69,6 +68,29 @@ public class ElasticSearchUtilTest {
         Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(indexName, typeName,
                 (String) map.get("courseId"));
         assertEquals(responseMap.get("courseName"), "updatedCourese name");
+    }
+
+    @Test
+    public void testComplexSearch(){
+        SearchDTO searchDTO = new SearchDTO();
+        List<String> fields = new ArrayList<String>();
+        fields.add("courseId");
+
+        Map<String , Object> additionalProperties = new HashMap<String , Object>();
+
+        List<String> existsList = new ArrayList<String>();
+        existsList.add("pkgVersion");
+        existsList.add("size");
+
+        additionalProperties.put(JsonKey.EXISTS , existsList);
+        Map<String, Object> rangeMap = new HashMap<String , Object>();
+        rangeMap.put(">",0);
+        additionalProperties.put("pkgVersion" , rangeMap);
+
+        searchDTO.setAdditionalProperties(additionalProperties);
+        searchDTO.setFields(fields);
+        Map map = ElasticSearchUtil.complexSearch(searchDTO,indexName , typeName);
+        assertNotNull(map);
     }
 
     @AfterClass
@@ -127,6 +149,7 @@ public class ElasticSearchUtilTest {
         map.put( "lastUpdatedOn", "2017-05-24T17:26:49.112+0000");
         map.put("contentType","Story");
         map.put("status","Live");
+        map.put("channel" , "NTP");
         return map;
     }
 }

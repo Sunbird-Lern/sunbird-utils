@@ -33,7 +33,6 @@ import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
 import org.sunbird.helper.ElasticSearchQueryBuilder;
-import org.sunbird.util.ESOperation;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -50,6 +49,11 @@ public class ElasticSearchUtil {
     private static final LogHelper LOGGER = LogHelper.getInstance(ElasticSearchUtil.class.getName());
     private static ConcurrentHashMap<String, Boolean> indexMap = new ConcurrentHashMap<String, Boolean>();
     private static ConcurrentHashMap<String, Boolean> typeMap = new ConcurrentHashMap<String, Boolean>();
+    private static final String LTE = "<=";
+    private static final String LT = "<";
+    private static final String GTE = ">=";
+    private static final String GT = ">";
+    private static final String ASC_ORDER="ASC";
     /**
      * This method will put a new data entry inside Elastic search. identifier
      * value becomes _id inside ES, so every time provide a unique value while
@@ -341,7 +345,7 @@ public class ElasticSearchUtil {
     }
     
     /**
-     * 
+     * Method to add the additional search query like range query , exists - not exist filter etc.
      * @param query
      * @param entry
      */
@@ -350,22 +354,28 @@ public class ElasticSearchUtil {
 
         String key = entry.getKey();
 
-        if (key.equalsIgnoreCase(ESOperation.Operations.FILTERS.getValue())) {
+        if (key.equalsIgnoreCase(JsonKey.FILTERS)) {
            
 			Map<String, Object> filters = (Map<String, Object>) entry.getValue();
             for (Map.Entry<String, Object> en : filters.entrySet()) {
                createFilterESOpperation(en , query);
             }
-        }else if (key.equalsIgnoreCase(ESOperation.Operations.SHOULD_EXISTS.getValue())) {
+        }else if (key.equalsIgnoreCase(JsonKey.EXISTS)) {
             createESOpperation(entry ,query);
-        }else if (key.equalsIgnoreCase(ESOperation.Operations.SHOULD_NOT_EXISTS.getValue())) {
+        }else if (key.equalsIgnoreCase(JsonKey.NOT_EXISTS)) {
             createESOpperation(entry ,query);
         }
 
     }
-   
+
+    /**
+     * Method to create CommonTermQuery , multimatch  and Range Query.
+     * @param entry
+     * @param query
+     * @return
+     */
     @SuppressWarnings("unchecked")
-    private static ESOperation createFilterESOpperation(Entry<String, Object> entry, BoolQueryBuilder query) {
+    private static void createFilterESOpperation(Entry<String, Object> entry, BoolQueryBuilder query) {
 
         String key = entry.getKey();
         Object val = entry.getValue();
@@ -378,29 +388,33 @@ public class ElasticSearchUtil {
             Map<String, Object> rangeOperation = new HashMap<String, Object>();
             for (Map.Entry<String, Object> it : value.entrySet()) {
                 String operation = it.getKey();
-                if (operation.startsWith("<") || operation.startsWith(">")) {
+                if (operation.startsWith(LT) || operation.startsWith(GT)) {
                     rangeOperation.put(operation, it.getValue());
                 }
             }
             for (Map.Entry<String, Object> it : rangeOperation.entrySet()) {
-                if (it.getKey().equalsIgnoreCase("<=")) {
+                if (it.getKey().equalsIgnoreCase(LTE)) {
                     RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key).lte(it.getValue());
                     query.must(rangeQueryBuilder);
-                } else if (it.getKey().equalsIgnoreCase("<")) {
+                } else if (it.getKey().equalsIgnoreCase(LT)) {
                     RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key).lt(it.getValue());
                     query.must(rangeQueryBuilder);
-                } else if (it.getKey().equalsIgnoreCase(">=")) {
+                } else if (it.getKey().equalsIgnoreCase(GTE)) {
                     RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key).gte(it.getValue());
                     query.must(rangeQueryBuilder);
-                } else if (it.getKey().equalsIgnoreCase(">")) {
+                } else if (it.getKey().equalsIgnoreCase(GT)) {
                     RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key).gt(it.getValue());
                     query.must(rangeQueryBuilder);
                 }
             }
         }
-        return null;
     }
 
+    /**
+     * Method to create EXISTS and NOT EXIST FILTER QUERY .
+     * @param entry
+     * @param query
+     */
     @SuppressWarnings("unchecked")
     private static void createESOpperation(Entry<String, Object> entry, BoolQueryBuilder query) {
 
@@ -420,8 +434,13 @@ public class ElasticSearchUtil {
         }
     }
 
+    /**
+     * Method to return the sorting order on basis of string param .
+     * @param value
+     * @return
+     */
     private static SortOrder getSortOrder(String value) {
-        return value.equalsIgnoreCase("ASC") ? SortOrder.ASC : SortOrder.DESC;
+        return value.equalsIgnoreCase(ASC_ORDER) ? SortOrder.ASC : SortOrder.DESC;
     }
 
     /**
@@ -485,6 +504,12 @@ public class ElasticSearchUtil {
 	}
 
 
+    /**
+     * Method to create the index and type.
+     * @param index
+     * @param type
+     * @return
+     */
 	private static boolean verifyOrCreateIndexAndType(String index, String type) {
 		if (indexMap.containsKey(index)) {
 			if (typeMap.containsKey(type)) {

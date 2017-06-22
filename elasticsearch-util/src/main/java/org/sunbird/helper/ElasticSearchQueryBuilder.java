@@ -35,26 +35,8 @@ public class ElasticSearchQueryBuilder {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	   //CreateIndexResponse response = client.admin().indices().prepareCreate(indexName).get();
-	   @SuppressWarnings("deprecation")
 	PutMappingResponse response  = client.admin().indices().preparePutMapping(indexName).setType(typeName).setSource(createMapping()).get();
 	   System.out.println(response.isAcknowledged());
-	}
-	
-	
-	public static void main(String[] args) {
-		//createIndex("sunbird", "course");
-		 //ElasticSearchUtil.createIndex("sunbird-inx5", "course", createMapping(), createSettingsForIndex());
-		//ElasticSearchUtil.deleteIndex("sunbird-inx4");
-		//createIndex("sunbird-inx3", "course");
-		//for (int i=5;i<10;i++)
-		//ElasticSearchUtil.createData("sunbird-inx5", "course", "NTP course id_"+i,createMapData(i));
-		
-		  Map<String, Object> map = ElasticSearchUtil.getDataByIdentifier("sunbird", "course", "course id");
-		 System.out.println(map!=null?map.get("courseName"):"Not found");
-		// ElasticSearchUtil.removeData("sunbird-inx3", "course", "0122661344368312321");
-		//ElasticSearchUtil.updateData("sunbird-inx3", "course", "NTP course id_71", createMapData(30));
-		 //ElasticSearchUtil.searchData("sunbird-inx3", "course", createMapData(30));
 	}
 	
 	
@@ -76,7 +58,6 @@ public class ElasticSearchQueryBuilder {
 	 */
 	private static Map<String,Object> createMapData(int val) {
 		Map<String,Object> map = new HashMap<>();
-		//objectType,identifier, changes createdFor to availableFor
 		map.put("objectType","course");
 		map.put("courseId","course id_"+val);
 		map.put( "courseName","NTP course_"+val);
@@ -122,9 +103,7 @@ public class ElasticSearchQueryBuilder {
 		map.put( "lastUpdatedOn", "2017-05-24T17:26:49.112+0000");
 		map.put("contentType","Story");
 		map.put("status","Live");
+		map.put("channel","NTP");
 		return map;
-	} 
-	
-	
-	
+	}
 }
