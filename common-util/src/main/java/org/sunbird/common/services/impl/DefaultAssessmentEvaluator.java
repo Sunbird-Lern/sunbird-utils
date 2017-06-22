@@ -72,7 +72,7 @@ public class DefaultAssessmentEvaluator implements AssessmentEvaluator {
 				userId = "";
 				contnetId = "";
 				score = 0;
-				maxScore = 0;
+				maxScore = 0; 
 			}
 		}
 

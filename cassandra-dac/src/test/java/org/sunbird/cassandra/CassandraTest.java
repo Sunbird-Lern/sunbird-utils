@@ -16,9 +16,8 @@ import org.junit.runners.MethodSorters;
 import org.sunbird.cassandraimpl.CassandraOperationImpl;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
-import org.sunbird.helper.CassandraConnectionManager;
-import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.PropertiesCache;
+import org.sunbird.helper.CassandraConnectionManager;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CassandraTest {
