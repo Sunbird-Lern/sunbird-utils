@@ -60,21 +60,18 @@ public class AppTest
 		AssessmentEvaluator evaluator = new  DefaultAssessmentEvaluator();
 		Map<String, List<Map<String, Object>>> response = evaluator.evaluateAssessment(data);
 		List<Map<String, Object>> list = response.get("USR1");
-		String score = null;
-		for(int i =0 ; i< list.size();i++){
-			if(((String)list.get(i).get(JsonKey.ASSESSMENT_ITEM_ID)).equalsIgnoreCase("assmntItemId1")){
-				score = ((String)list.get(i).get(JsonKey.ASSESSMENT_SCORE));
-			}
-		}
-		Assert.assertEquals(score,"3");
+		Assert.assertEquals(list.size(),6);
 	}
 
 	@Test
 	public void testEvaluateResult(){
-		Map<String, List<Map<String, Object>>> data = createEvaluateResultRequest();
+		Map<String, List<Map<String, Object>>> data1 = createEvaluateAssessmentRequest();
 		AssessmentEvaluator evaluator = new  DefaultAssessmentEvaluator();
-		List<Map<String, Object>> response = evaluator.evaluateResult(data);
-		Assert.assertEquals(response.size(),1);
+		Map<String, List<Map<String, Object>>> response1 = evaluator.evaluateAssessment(data1);
+		Map<String, List<Map<String, Object>>> req= new HashMap<>();
+		req.put("USR1", response1.get("USR1"));
+		List<Map<String, Object>> response = evaluator.evaluateResult(req);
+		Assert.assertEquals(response.size(),2);
 	}
 	
 	@Test
@@ -90,70 +87,87 @@ public class AppTest
 	}
 	
 	private Map<String, List<Map<String, Object>>> createEvaluateAssessmentRequest() {
-		Map<String, List<Map<String, Object>>> map = new HashMap<>();
-		List<Map<String, Object>> list1 = new ArrayList<Map<String, Object>>();
-		List<Map<String, Object>> list2 = new ArrayList<Map<String, Object>>();
-		List<Map<String, Object>> list3 = new ArrayList<Map<String, Object>>();
-		Map<String, Object> assmntItem1 = new HashMap<>();
-		Map<String, Object> assmntItem2 = new HashMap<>();
-		Map<String, Object> assmntItem3 = new HashMap<>();
-		Map<String, Object> assmntItem4 = new HashMap<>();
-		Map<String, Object> assmntItem5 = new HashMap<>();
-		Map<String, Object> assmntItem6 = new HashMap<>();
-		Map<String, Object> assmntItem7 = new HashMap<>();
-		Map<String, Object> assmntItem8 = new HashMap<>();
 		
-		list1.add(assmntItem1);
-		list1.add(assmntItem2);
-		list1.add(assmntItem3);
-		list1.add(assmntItem4);
-		list1.add(assmntItem5);
-		list1.add(assmntItem6);
-		list1.add(assmntItem7);
-		list1.add(assmntItem8);
-		list2.add(assmntItem1);
-		list2.add(assmntItem2);
-		list2.add(assmntItem3);
-		list2.add(assmntItem4);
-		list2.add(assmntItem5);
-		list2.add(assmntItem6);
-		list2.add(assmntItem7);
-		list2.add(assmntItem8);
+		Map<String,Object> assmntMap1 = new HashMap<>();
+		assmntMap1.put(JsonKey.ASSESSMENT_SCORE, "4");
+		assmntMap1.put(JsonKey.ASSESSMENT_MAX_SCORE, "10");
+		assmntMap1.put(JsonKey.ASSESSMENT_ITEM_ID, "1");
+		assmntMap1.put(JsonKey.COURSE_ID, "CSR1");
+		assmntMap1.put(JsonKey.CONTENT_ID, "CON1");
+		assmntMap1.put(JsonKey.USER_ID, "USR1");
 		
-		list3.add(assmntItem2);
-		list3.add(assmntItem4);
-		list3.add(assmntItem6);
-		list3.add(assmntItem8);
+		Map<String,Object> assmntMap2 = new HashMap<>();
+		assmntMap2.put(JsonKey.ASSESSMENT_SCORE, "8");
+		assmntMap2.put(JsonKey.ASSESSMENT_MAX_SCORE, "10");
+		assmntMap2.put(JsonKey.ASSESSMENT_ITEM_ID, "1");
+		assmntMap2.put(JsonKey.COURSE_ID, "CSR1");
+		assmntMap2.put(JsonKey.CONTENT_ID, "CON1");
+		assmntMap2.put(JsonKey.USER_ID, "USR1");
 		
-		assmntItem1.put(JsonKey.ASSESSMENT_ITEM_ID, "assmntItemId1");
-		assmntItem1.put(JsonKey.ASSESSMENT_SCORE, "2");
-		assmntItem1.put(JsonKey.ASSESSMENT_MAX_SCORE, "10");
-		assmntItem2.put(JsonKey.ASSESSMENT_ITEM_ID, "assmntItemId1");
-		assmntItem2.put(JsonKey.ASSESSMENT_SCORE, "3");
-		assmntItem2.put(JsonKey.ASSESSMENT_MAX_SCORE, "10");
-		assmntItem3.put(JsonKey.ASSESSMENT_ITEM_ID, "assmntItemId2");
-		assmntItem3.put(JsonKey.ASSESSMENT_SCORE, "4");
-		assmntItem3.put(JsonKey.ASSESSMENT_MAX_SCORE, "10");
-		assmntItem4.put(JsonKey.ASSESSMENT_ITEM_ID, "assmntItemId2");
-		assmntItem4.put(JsonKey.ASSESSMENT_SCORE, "5");
-		assmntItem4.put(JsonKey.ASSESSMENT_MAX_SCORE, "10");
-		assmntItem5.put(JsonKey.ASSESSMENT_ITEM_ID, "assmntItemId3");
-		assmntItem5.put(JsonKey.ASSESSMENT_SCORE, "6");
-		assmntItem5.put(JsonKey.ASSESSMENT_MAX_SCORE, "10");
-		assmntItem6.put(JsonKey.ASSESSMENT_ITEM_ID, "assmntItemId3");
-		assmntItem6.put(JsonKey.ASSESSMENT_SCORE, "7");
-		assmntItem6.put(JsonKey.ASSESSMENT_MAX_SCORE, "10");
-		assmntItem7.put(JsonKey.ASSESSMENT_ITEM_ID, "assmntItemId4");
-		assmntItem7.put(JsonKey.ASSESSMENT_SCORE, "8");
-		assmntItem7.put(JsonKey.ASSESSMENT_MAX_SCORE, "10");
-		assmntItem8.put(JsonKey.ASSESSMENT_ITEM_ID, "assmntItemId4");
-		assmntItem8.put(JsonKey.ASSESSMENT_SCORE, "9");
-		assmntItem8.put(JsonKey.ASSESSMENT_MAX_SCORE, "10");
+		Map<String,Object> assmntMap3 = new HashMap<>();
+		assmntMap3.put(JsonKey.ASSESSMENT_SCORE, "8");
+		assmntMap3.put(JsonKey.ASSESSMENT_MAX_SCORE, "10");
+		assmntMap3.put(JsonKey.ASSESSMENT_ITEM_ID, "2");
+		assmntMap3.put(JsonKey.COURSE_ID, "CSR1");
+		assmntMap3.put(JsonKey.CONTENT_ID, "CON1");
+		assmntMap3.put(JsonKey.USER_ID, "USR1");
 		
-		map.put("USR1", list1);
-		map.put("USR2", list2);
-		map.put("USR3", list3);
+		Map<String,Object> assmntMap4 = new HashMap<>();
+		assmntMap4.put(JsonKey.ASSESSMENT_SCORE, "5");
+		assmntMap4.put(JsonKey.ASSESSMENT_MAX_SCORE, "10");
+		assmntMap4.put(JsonKey.ASSESSMENT_ITEM_ID, "3");
+		assmntMap4.put(JsonKey.COURSE_ID, "CSR1");
+		assmntMap4.put(JsonKey.CONTENT_ID, "CON1");
+		assmntMap4.put(JsonKey.USER_ID, "USR1");
+		
+		Map<String,Object> assmntMap5 = new HashMap<>();
+		assmntMap5.put(JsonKey.ASSESSMENT_SCORE, "5");
+		assmntMap5.put(JsonKey.ASSESSMENT_MAX_SCORE, "10");
+		assmntMap5.put(JsonKey.ASSESSMENT_ITEM_ID, "1");
+		assmntMap5.put(JsonKey.COURSE_ID, "CSR1");
+		assmntMap5.put(JsonKey.CONTENT_ID, "CON2");
+		assmntMap5.put(JsonKey.USER_ID, "USR1");
+		
+		Map<String,Object> assmntMap6 = new HashMap<>();
+		assmntMap6.put(JsonKey.ASSESSMENT_SCORE, "6");
+		assmntMap6.put(JsonKey.ASSESSMENT_MAX_SCORE, "10");
+		assmntMap6.put(JsonKey.ASSESSMENT_ITEM_ID, "1");
+		assmntMap6.put(JsonKey.COURSE_ID, "CSR1");
+		assmntMap6.put(JsonKey.CONTENT_ID, "CON2");
+		assmntMap6.put(JsonKey.USER_ID, "USR1");
+		
+		Map<String,Object> assmntMap7 = new HashMap<>();
+		assmntMap7.put(JsonKey.ASSESSMENT_SCORE, "8");
+		assmntMap7.put(JsonKey.ASSESSMENT_MAX_SCORE, "10");
+		assmntMap7.put(JsonKey.ASSESSMENT_ITEM_ID, "2");
+		assmntMap7.put(JsonKey.COURSE_ID, "CSR1");
+		assmntMap7.put(JsonKey.CONTENT_ID, "CON2");
+		assmntMap7.put(JsonKey.USER_ID, "USR1");
+		
+		Map<String,Object> assmntMap8 = new HashMap<>();
+		assmntMap8.put(JsonKey.ASSESSMENT_SCORE, "9");
+		assmntMap8.put(JsonKey.ASSESSMENT_MAX_SCORE, "10");
+		assmntMap8.put(JsonKey.ASSESSMENT_ITEM_ID, "3");
+		assmntMap8.put(JsonKey.COURSE_ID, "CSR1");
+		assmntMap8.put(JsonKey.CONTENT_ID, "CON2");
+		assmntMap8.put(JsonKey.USER_ID, "USR1");
+		
+		Map<String,List<Map<String,Object>>> map = new HashMap<>();
+		
+		List<Map<String,Object>> list = new ArrayList<>();
+		list.add(assmntMap1);
+		list.add(assmntMap2);
+		list.add(assmntMap3);
+		list.add(assmntMap4);
+		list.add(assmntMap5);
+		list.add(assmntMap6);
+		list.add(assmntMap7);
+		list.add(assmntMap8);
+		
+		map.put("USR1", list);
+		
 		return map;
+		
 	}
 	
 	private Map<String, List<Map<String, Object>>> createEvaluateResultRequest() {

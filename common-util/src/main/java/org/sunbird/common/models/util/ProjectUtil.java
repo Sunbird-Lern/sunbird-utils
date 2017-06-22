@@ -284,7 +284,7 @@ public class ProjectUtil {
 	}
 	
 	public enum AssessmentResult {
-		gradeA("A", "Pass"), gradeB("B", "Pass"), gradeC("C", "Pass"), gradeD("D", "Pass"), gradeF("F", "Fail");
+		gradeA("A", "Pass"), gradeB("B", "Pass"), gradeC("C", "Pass"), gradeD("D", "Pass"), gradeE("E", "Pass"), gradeF("F", "Fail");
 		private String grade;
 		private String result;
 
@@ -327,15 +327,19 @@ public class ProjectUtil {
 	 * @return AssessmentResult
 	 */
 	public static AssessmentResult calcualteAssessmentResult(double percentage) {
-		switch (Math.round(Float.valueOf(String.valueOf(percentage)))) {
-		case 90:
+		switch ((int)(Math.round(Float.valueOf(String.valueOf(percentage)))/10)) {
+		case 10:
 			return AssessmentResult.gradeA;
-		case 80:
+		case 9:
+			return AssessmentResult.gradeA;
+		case 8:
 			return AssessmentResult.gradeB;
-		case 60:
+		case 7:
 			return AssessmentResult.gradeC;
-		case 50:
+		case 6:
 			return AssessmentResult.gradeD;
+		case 5:
+			return AssessmentResult.gradeE;
 		default:
 			return AssessmentResult.gradeF;
 		}
