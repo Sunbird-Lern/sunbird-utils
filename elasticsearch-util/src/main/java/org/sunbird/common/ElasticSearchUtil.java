@@ -319,6 +319,7 @@ public class ElasticSearchUtil {
 	        for(String facets : searchDTO.getFacets()){
 	            searchRequestBuilder.addAggregation(AggregationBuilders.terms(facets).field(facets));
 	        }
+        System.out.println(searchRequestBuilder.toString());
         LOGGER.info("calling search builder======" + searchRequestBuilder.toString());
         SearchResponse response = searchRequestBuilder.execute().actionGet();
         LOGGER.info("getting response for es======" + response);
