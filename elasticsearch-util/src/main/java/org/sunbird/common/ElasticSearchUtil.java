@@ -99,6 +99,7 @@ public class ElasticSearchUtil {
         } else {
         	 verifyOrCreateIndexAndType(index, type);
             response = ConnectionManager.getClient().prepareGet(index, type, identifier).get();
+            System.out.println(response);
         }
         if (response == null) {
             return null;
@@ -318,8 +319,9 @@ public class ElasticSearchUtil {
 	        for(String facets : searchDTO.getFacets()){
 	            searchRequestBuilder.addAggregation(AggregationBuilders.terms(facets).field(facets));
 	        }
-
+        LOGGER.info("calling search builder======" + searchRequestBuilder.toString());
         SearchResponse response = searchRequestBuilder.execute().actionGet();
+        LOGGER.info("getting response for es======" + response);
         List<Map<String,Object>> esResponse = new ArrayList<Map<String,Object>>();
         Map<String,List<Map<String,Object>>> responsemap = new HashMap<>();
         if (response != null) {

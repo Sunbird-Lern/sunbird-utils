@@ -3,8 +3,10 @@
  */
 package org.sunbird.helper;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -13,6 +15,9 @@ import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.client.transport.TransportClient;
 import org.sunbird.common.ElasticSearchUtil;
+import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.ProjectUtil;
+import org.sunbird.dto.SearchDTO;
 
 /**
  * This class will create elastic search query
@@ -37,6 +42,30 @@ public class ElasticSearchQueryBuilder {
 		}
 	PutMappingResponse response  = client.admin().indices().preparePutMapping(indexName).setType(typeName).setSource(createMapping()).get();
 	   System.out.println(response.isAcknowledged());
+	}
+	
+	
+	public static void main(String[] args) {
+		  SearchDTO searchDTO = new SearchDTO();
+	        List<String> fields = new ArrayList<String>();
+	        fields.add("courseId");
+
+	        Map<String , Object> additionalProperties = new HashMap<String , Object>();
+
+	       /* List<String> existsList = new ArrayList<String>();
+	        existsList.add("pkgVersion");
+	        existsList.add("size");
+
+	        additionalProperties.put(JsonKey.EXISTS , existsList);
+	        Map<String, Object> rangeMap = new HashMap<String , Object>();
+	        rangeMap.put(">",0);
+	        additionalProperties.put("pkgVersion" , rangeMap);*/
+            additionalProperties.put("createdBy", "1234567");
+	        searchDTO.setAdditionalProperties(additionalProperties);
+	        searchDTO.setQuery("Engg collg");
+	       // searchDTO.setFields(fields);
+	        Map map = ElasticSearchUtil.complexSearch(searchDTO,"sunbird" , "course");
+	        //Map map =  ElasticSearchUtil.getDataByIdentifier( ProjectUtil.EsIndex.sunbird.name(), ProjectUtil.EsType.course.getTypeName(),"01227322180525260810");
 	}
 	
 	
