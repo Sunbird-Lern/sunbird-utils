@@ -66,6 +66,7 @@ public interface ResponseMessage {
 		public static final String ATTEMPTED_ANSWERS_REQUIRED = "Attempted answers is required.";
 		public static final String MAX_SCORE_REQUIRED = "Max score is required.";
 		public static final String STATUS_CANNOT_BE_UPDATED = "status cann't be updated.";
+		public static final String ATTEMPT_ID_MISSING_ERROR = "Please provide attempt id.";
 	}
 
 	public interface Key {
@@ -128,6 +129,7 @@ public interface ResponseMessage {
 		public static final String ATTEMPTED_ANSWERS_REQUIRED = "ATTEMPTED_ANSWERS_REQUIRED";
 		public static final String MAX_SCORE_REQUIRED = "MAX_SCORE_REQUIRED";
 		public static final String STATUS_CANNOT_BE_UPDATED = "STATUS_CANNOT_BE_UPDATED";
+		public static final String ATTEMPT_ID_MISSING_ERROR = "ATTEMPT_ID_REQUIRED_ERROR";
 	}
 }
 
