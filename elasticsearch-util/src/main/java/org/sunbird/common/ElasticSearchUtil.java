@@ -312,6 +312,13 @@ public class ElasticSearchUtil {
             addAdditionalProperties(query, entry);
         }
 
+        //apply group query
+        if(searchDTO.getGroupQuery() != null && searchDTO.getGroupQuery().size()>0){
+            for(Map<String , Object> gq : searchDTO.getGroupQuery()){
+                groupQueryExecutor(query , gq);
+            }
+        }
+
         //set final query to search request builder
         searchRequestBuilder.setQuery(query);
 
@@ -319,7 +326,6 @@ public class ElasticSearchUtil {
 	        for(String facets : searchDTO.getFacets()){
 	            searchRequestBuilder.addAggregation(AggregationBuilders.terms(facets).field(facets));
 	        }
-        System.out.println(searchRequestBuilder.toString());
         LOGGER.info("calling search builder======" + searchRequestBuilder.toString());
         SearchResponse response = searchRequestBuilder.execute().actionGet();
         LOGGER.info("getting response for es======" + response);
@@ -333,6 +339,51 @@ public class ElasticSearchUtil {
         }
         responsemap.put(JsonKey.RESPONSE, esResponse);
         return responsemap;
+    }
+
+    /**
+     * Method to perform group query
+     * @param query
+     * @param gq
+     */
+    private static void groupQueryExecutor(BoolQueryBuilder query, Map<String, Object> gq) {
+
+        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+        for(Map.Entry<String , Object> entry : gq.entrySet()){
+            String key = entry.getKey();
+            Object val = entry.getValue();
+
+            if (val instanceof String) {
+                boolQueryBuilder.must(QueryBuilders.commonTermsQuery(key, val));
+            } else if (val instanceof List) {
+                boolQueryBuilder.must(QueryBuilders.multiMatchQuery(key, ((List<String>) val).stream().toArray(String[]::new)));
+            } else if (val instanceof Map) {
+                Map<String, Object> value = (Map<String, Object>) val;
+                Map<String, Object> rangeOperation = new HashMap<String, Object>();
+                for (Map.Entry<String, Object> it : value.entrySet()) {
+                    String operation = it.getKey();
+                    if (operation.startsWith(LT) || operation.startsWith(GT)) {
+                        rangeOperation.put(operation, it.getValue());
+                    }
+                }
+                for (Map.Entry<String, Object> it : rangeOperation.entrySet()) {
+                    if (it.getKey().equalsIgnoreCase(LTE)) {
+                        RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key).lte(it.getValue());
+                        boolQueryBuilder.must(rangeQueryBuilder);
+                    } else if (it.getKey().equalsIgnoreCase(LT)) {
+                        RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key).lt(it.getValue());
+                        boolQueryBuilder.must(rangeQueryBuilder);
+                    } else if (it.getKey().equalsIgnoreCase(GTE)) {
+                        RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key).gte(it.getValue());
+                        boolQueryBuilder.must(rangeQueryBuilder);
+                    } else if (it.getKey().equalsIgnoreCase(GT)) {
+                        RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key).gt(it.getValue());
+                        boolQueryBuilder.must(rangeQueryBuilder);
+                    }
+                }
+            }
+        }
+        query.should(boolQueryBuilder);
     }
 
     private static SearchRequestBuilder getSearchBuilder(TransportClient client, String index, String type) {
@@ -383,9 +434,9 @@ public class ElasticSearchUtil {
         String key = entry.getKey();
         Object val = entry.getValue();
         if (val instanceof String) {
-            query.should(QueryBuilders.commonTermsQuery(key, val));
+            query.must(QueryBuilders.commonTermsQuery(key, val));
         } else if (val instanceof List) {
-            query.should(QueryBuilders.multiMatchQuery(key, ((List<String>) val).stream().toArray(String[]::new)));
+            query.must(QueryBuilders.multiMatchQuery(key, ((List<String>) val).stream().toArray(String[]::new)));
         } else if (val instanceof Map) {
             Map<String, Object> value = (Map<String, Object>) val;
             Map<String, Object> rangeOperation = new HashMap<String, Object>();

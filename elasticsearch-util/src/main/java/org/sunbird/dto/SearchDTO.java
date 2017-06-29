@@ -1,4 +1,5 @@
 package org.sunbird.dto;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +23,16 @@ public class SearchDTO {
 	//additional properties will hold , filters, exist , not exist
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 	private Map<String, Object> softConstraints = new HashMap<String, Object>();
-	
-	
+	private List<Map<String , Object>> groupQuery = new ArrayList<Map<String , Object>>();
+
+	public List<Map<String, Object>> getGroupQuery() {
+		return groupQuery;
+	}
+
+	public void setGroupQuery(List<Map<String, Object>> groupQuery) {
+		this.groupQuery = groupQuery;
+	}
+
 	public SearchDTO() {
 		super();
 	}

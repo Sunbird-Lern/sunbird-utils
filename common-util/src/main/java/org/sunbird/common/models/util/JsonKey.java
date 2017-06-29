@@ -174,4 +174,10 @@ public class JsonKey {
 	public static final String PROCESSING_STATUS = "processingStatus";
 	public static final String ASSESSMENT_STATUS = "assessmentStatus";
 	public static final String ORDER = "order";
+	public static final String GROUP_QUERY = "groupQuery";
+	public static final String GRADE = "grade";
+	public static final String SUBJECT = "subject";
+	public static final String CONTENT_TYPE = "contentType";
+	public static final String GRADE_LEVEL = "gradeLevel";
+	public static final String RECOMMEND_TYPE ="recommendType";
 }
