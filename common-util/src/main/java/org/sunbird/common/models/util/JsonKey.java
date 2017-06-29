@@ -116,6 +116,8 @@ public class JsonKey {
 	public static final String APPLICABLE_FOR = "applicableFor";
 	public static final String OBJECT_TYPE = "objectType";
 	public static final String AUTH_USER_HEADER = "X-Authenticated-Userid";
+	public static final String SOURCE_HEADER = "X-Source";
+	public static final String ORG_CODE_HEADER = "X-Org-code";
 	public static final String PORTAL_MAP = "portalMap";
 	public static final String APP_MAP = "appMap";
 	public static final String SECTIONS = "sections";
@@ -180,4 +182,5 @@ public class JsonKey {
 	public static final String CONTENT_TYPE = "contentType";
 	public static final String GRADE_LEVEL = "gradeLevel";
 	public static final String RECOMMEND_TYPE ="recommendType";
+	public static final String ORG_CODE = "orgCode";
 }

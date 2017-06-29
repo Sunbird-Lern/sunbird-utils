@@ -169,6 +169,18 @@ public final class RequestValidator {
 		}
 	}
 	
+	/**
+	 * This method will validate get page data api.
+	 * @param userRequest Request
+	 */
+	public static void validateGetPageData(String request) {
+	    if (request == null
+				|| (ProjectUtil.isStringNullOREmpty(request))) {
+			throw new ProjectCommonException(ResponseCode.sourceRequired.getErrorCode(),
+					ResponseCode.sourceRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		} 
+	    
+	}
 	
 	/**
 	 * This method will validate add course request data.
