@@ -169,4 +169,10 @@ public class JsonKey {
 	public static final String ASSESSMENT_GRADE = "grade";
 	public static final String CHANNEL = "channel";
 	public static final String ATTEMPTED_COUNT = "attemptedCount";
+	public static final String GROUP_QUERY = "groupQuery";
+	public static final String GRADE = "grade";
+	public static final String SUBJECT = "subject";
+	public static final String CONTENT_TYPE = "contentType";
+	public static final String GRADE_LEVEL = "gradeLevel";
+	public static final String RECOMMEND_TYPE ="recommendType";
 }
