@@ -16,6 +16,7 @@ import org.junit.runners.MethodSorters;
 import org.sunbird.cassandraimpl.CassandraOperationImpl;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
+import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.helper.CassandraConnectionManager;
 
@@ -247,10 +248,13 @@ public class CassandraTest {
 		assertEquals("SUCCESS", response.get("response"));
 	}
 
-	@Test
+	//@Test
 	@SuppressWarnings("unchecked")
 	public void testCgetRecordContentByProperties() {
-		Response response=operation.getRecordsByProperties(cach.getProperty("keyspace"), "content_consumption",contentmap1);
+		Map<String,Object> map = new HashMap<>();
+		map.put(JsonKey.USER_ID, "f660ab912ec121d1b1e928a0bb4bc61b15f5ad44d5efdc4e1c92a25e99b8e44a");
+		map.put(JsonKey.COURSE_ID, "0122739033854443521");
+		Response response=operation.getRecordsByProperties(cach.getProperty("keyspace"), "content_consumption",map);
 		assertTrue(((List<Map<String, Object>>)(response.get("response"))).size()>0);
 	}
 	@Test

@@ -49,31 +49,31 @@ public class DefaultAssessmentEvaluator implements AssessmentEvaluator {
 	public List<Map<String, Object>> evaluateResult(Map<String, List<Map<String, Object>>> evaluatedData) {
 		List<List<Map<String, Object>>> assmntList = new ArrayList<List<Map<String, Object>>>(evaluatedData.values());
 		List<Map<String, Object>> request = assmntList.get(0);
-		Map<String,List<Map<String,Object>>> mapWithSameCourseIdAndContentId = new HashMap<>();
+		Map<String,List<Map<String,Object>>> assmntMap = new HashMap<>();
 		String tempKey = (String)request.get(0).get(JsonKey.COURSE_ID)+"#"+(String)request.get(0).get(JsonKey.CONTENT_ID);
 		List<Map<String,Object>> list = new ArrayList<>();
 		list.add(request.get(0));
-		mapWithSameCourseIdAndContentId.put(tempKey, list);
+		assmntMap.put(tempKey, list);
 		String contentId = null;
 		String courseId = null;
 		for(int i=1;i<request.size();i++){
 			contentId = (String) request.get(i).get(JsonKey.CONTENT_ID);
 			courseId = (String) request.get(i).get(JsonKey.COURSE_ID);
 			tempKey = courseId+"#"+contentId;
-			if(mapWithSameCourseIdAndContentId.containsKey(tempKey)){
-				mapWithSameCourseIdAndContentId.get(tempKey).add(request.get(i));
+			if(assmntMap.containsKey(tempKey)){
+				assmntMap.get(tempKey).add(request.get(i));
 			}else{
-				list = new ArrayList<>();
+				list = new ArrayList<>(); 
 				list.add(request.get(i));
-				mapWithSameCourseIdAndContentId.put(tempKey, list);
+				assmntMap.put(tempKey, list);
 			}
 		}
 		
-		return evaluateResultAndGrade(mapWithSameCourseIdAndContentId);
+		return evaluateResultAndGrade(assmntMap);
 	}
 	
 
-	private List<Map<String, Object>> evaluateResultAndGrade(Map<String, List<Map<String, Object>>> mapWithSameCourseIdAndContentId) {
+	private List<Map<String, Object>> evaluateResultAndGrade(Map<String, List<Map<String, Object>>> assmntMap) {
 		double score = 0;
 		double maxScore = 0;
 		String userId = "";
@@ -81,8 +81,8 @@ public class DefaultAssessmentEvaluator implements AssessmentEvaluator {
 		String contnetId = "";
 		Map<String, Object> resultMap = null;
 		List<Map<String, Object>> listMap = new ArrayList<>();
-		if (mapWithSameCourseIdAndContentId != null && mapWithSameCourseIdAndContentId.size() > 0) {
-			Iterator<Entry<String, List<Map<String, Object>>>> itr = mapWithSameCourseIdAndContentId.entrySet().iterator();
+		if (assmntMap != null && assmntMap.size() > 0) {
+			Iterator<Entry<String, List<Map<String, Object>>>> itr = assmntMap.entrySet().iterator();
 			while (itr.hasNext()) {
 				Entry<String, List<Map<String, Object>>> entry = itr.next(); 
 				List<Map<String, Object>> list = entry.getValue();
@@ -102,12 +102,13 @@ public class DefaultAssessmentEvaluator implements AssessmentEvaluator {
 				resultMap.put(JsonKey.CONTENT_ID, contnetId);
 				resultMap.put(JsonKey.RESULT, result.getResult());
 				resultMap.put(JsonKey.ASSESSMENT_GRADE, result.getGrade());
+				resultMap.put(JsonKey.ASSESSMENT_SCORE, String.valueOf(score));
 				listMap.add(resultMap);
 				contnetId = "";
 				userId = "";
 				contnetId = "";
 				score = 0;
-				maxScore = 0; 
+				maxScore = 0;  
 			} 
 		}
 
