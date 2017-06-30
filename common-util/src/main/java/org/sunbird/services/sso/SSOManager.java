@@ -21,17 +21,23 @@ public interface SSOManager {
 	public String verifyToken(Map<String,String> request );
 	
 	/**
-	 * This method will do user creation inside Single sign out server.
+	 * This method will do user creation inside Single sign on server.
 	 * @param request Map<String,Object>
 	 * @return String
 	 */
 	public String createUser(Map<String,Object> request);
 	
 	/**
-	 * 
+	 * Method to update user account in keycloak on basis of userId.
 	 * @param request
 	 * @return
 	 */
 	public String updateUser (Map<String,Object> request);
 
+	/**
+	 *Method to remove user from keycloak account on basis of userId .
+	 * @param request
+	 * @return
+	 */
+	public String removeUser (Map<String,Object> request);
 }
