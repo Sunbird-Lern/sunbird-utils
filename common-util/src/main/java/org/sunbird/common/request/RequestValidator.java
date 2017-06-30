@@ -69,11 +69,15 @@ public final class RequestValidator {
 	 * @param userRequest Request
 	 */
 	public static void validateCreateUser(Request userRequest) {
-		if (userRequest.getRequest().get(JsonKey.EMAIL) == null) {
+		if (userRequest.getRequest().get(JsonKey.USERNAME) == null) {
+			throw new ProjectCommonException(ResponseCode.userNameRequired.getErrorCode(),
+					ResponseCode.userNameRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		}
+		/*if (userRequest.getRequest().get(JsonKey.EMAIL) == null) {
 			throw new ProjectCommonException(ResponseCode.emailRequired.getErrorCode(),
 					ResponseCode.emailRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-		}
-		if (!ProjectUtil.isEmailvalid((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
+		}*/
+		if (null != userRequest.getRequest().get(JsonKey.EMAIL) && !ProjectUtil.isEmailvalid((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
 			throw new ProjectCommonException(ResponseCode.emailFormatError.getErrorCode(),
 					ResponseCode.emailFormatError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 		}
@@ -169,6 +173,18 @@ public final class RequestValidator {
 		}
 	}
 	
+	/**
+	 * This method will validate get page data api.
+	 * @param userRequest Request
+	 */
+	public static void validateGetPageData(String request) {
+	    if (request == null
+				|| (ProjectUtil.isStringNullOREmpty(request))) {
+			throw new ProjectCommonException(ResponseCode.sourceRequired.getErrorCode(),
+					ResponseCode.sourceRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		} 
+	    
+	}
 	
 	/**
 	 * This method will validate add course request data.
@@ -344,32 +360,44 @@ public final class RequestValidator {
 			throw new ProjectCommonException(ResponseCode.contentIdRequired.getErrorCode(),
 					ResponseCode.contentIdRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 		}
-		if (ProjectUtil
-				.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ASSESSMENT_ITEM_ID) != null
-						? request.getRequest().get(JsonKey.ASSESSMENT_ITEM_ID) : ""))) {
-			throw new ProjectCommonException(ResponseCode.assessmentItemIdRequired.getErrorCode(),
-					ResponseCode.assessmentItemIdRequired.getErrorMessage(),
-					ResponseCode.CLIENT_ERROR.getResponseCode());
+		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ATTEMPT_ID) != null
+				? request.getRequest().get(JsonKey.ATTEMPT_ID) : ""))) {
+			throw new ProjectCommonException(ResponseCode.attemptIdRequired.getErrorCode(),
+					ResponseCode.attemptIdRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 		}
-		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ASSESSMENT_TYPE) != null
-				? request.getRequest().get(JsonKey.ASSESSMENT_TYPE) : ""))) {
-			throw new ProjectCommonException(ResponseCode.assessmentTypeRequired.getErrorCode(),
-					ResponseCode.assessmentTypeRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		if( request.getRequest().get(JsonKey.ASSESSMENT) != null ){
+			@SuppressWarnings("unchecked")
+			List<Map<String,Object>> list = (List<Map<String, Object>>) request.getRequest().get(JsonKey.ASSESSMENT);
+			for(Map<String,Object> map :list){
+				if (ProjectUtil
+						.isStringNullOREmpty((String) (map.get(JsonKey.ASSESSMENT_ITEM_ID) != null
+								? map.get(JsonKey.ASSESSMENT_ITEM_ID) : ""))) {
+					throw new ProjectCommonException(ResponseCode.assessmentItemIdRequired.getErrorCode(),
+							ResponseCode.assessmentItemIdRequired.getErrorMessage(),
+							ResponseCode.CLIENT_ERROR.getResponseCode());
+				}
+				if (ProjectUtil.isStringNullOREmpty((String) (map.get(JsonKey.ASSESSMENT_TYPE) != null
+						? map.get(JsonKey.ASSESSMENT_TYPE) : ""))) {
+					throw new ProjectCommonException(ResponseCode.assessmentTypeRequired.getErrorCode(),
+							ResponseCode.assessmentTypeRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+				}
+				if (ProjectUtil
+						.isStringNullOREmpty((String) (map.get(JsonKey.ASSESSMENT_ANSWERS) != null
+								? map.get(JsonKey.ASSESSMENT_ANSWERS) : ""))) {
+					throw new ProjectCommonException(ResponseCode.assessmentAnswersRequired.getErrorCode(),
+							ResponseCode.assessmentAnswersRequired.getErrorMessage(), 
+							ResponseCode.CLIENT_ERROR.getResponseCode());
+				}
+				if (ProjectUtil
+						.isStringNullOREmpty((String) (map.get(JsonKey.ASSESSMENT_MAX_SCORE) != null
+								? map.get(JsonKey.ASSESSMENT_ANSWERS) : ""))) {
+					throw new ProjectCommonException(ResponseCode.assessmentmaxScoreRequired.getErrorCode(),
+							ResponseCode.assessmentmaxScoreRequired.getErrorMessage(),
+							ResponseCode.CLIENT_ERROR.getResponseCode());
+				}
+			}
 		}
-		if (ProjectUtil
-				.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ASSESSMENT_ANSWERS) != null
-						? request.getRequest().get(JsonKey.ASSESSMENT_ANSWERS) : ""))) {
-			throw new ProjectCommonException(ResponseCode.assessmentAnswersRequired.getErrorCode(),
-					ResponseCode.assessmentAnswersRequired.getErrorMessage(),
-					ResponseCode.CLIENT_ERROR.getResponseCode());
-		}
-		if (ProjectUtil
-				.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ASSESSMENT_MAX_SCORE) != null
-						? request.getRequest().get(JsonKey.ASSESSMENT_ANSWERS) : ""))) {
-			throw new ProjectCommonException(ResponseCode.assessmentmaxScoreRequired.getErrorCode(),
-					ResponseCode.assessmentmaxScoreRequired.getErrorMessage(),
-					ResponseCode.CLIENT_ERROR.getResponseCode());
-		}
+		
 	}
 	
 	

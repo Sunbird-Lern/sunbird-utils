@@ -116,6 +116,8 @@ public class JsonKey {
 	public static final String APPLICABLE_FOR = "applicableFor";
 	public static final String OBJECT_TYPE = "objectType";
 	public static final String AUTH_USER_HEADER = "X-Authenticated-Userid";
+	public static final String SOURCE_HEADER = "X-Source";
+	public static final String ORG_CODE_HEADER = "X-Org-code";
 	public static final String PORTAL_MAP = "portalMap";
 	public static final String APP_MAP = "appMap";
 	public static final String SECTIONS = "sections";
@@ -169,6 +171,11 @@ public class JsonKey {
 	public static final String ASSESSMENT_GRADE = "grade";
 	public static final String CHANNEL = "channel";
 	public static final String ATTEMPTED_COUNT = "attemptedCount";
+	public static final String ATTEMPT_ID = "attemptId";
+	public static final String FAILURE = "failure";
+	public static final String PROCESSING_STATUS = "processingStatus";
+	public static final String ASSESSMENT_STATUS = "assessmentStatus";
+	public static final String ORDER = "order";
 	public static final String GROUP_QUERY = "groupQuery";
 	public static final String GRADE = "grade";
 	public static final String SUBJECT = "subject";
@@ -184,4 +191,6 @@ public class JsonKey {
 	public static final String SSO_CLIENT_SECRET = "sso.client.secret";
 	public static final String LAST_NAME ="lastName";
 
+	public static final String ORG_CODE = "orgCode";
+	public static final String IS_SSO_ENABLED = "sso.enabled";
 }
