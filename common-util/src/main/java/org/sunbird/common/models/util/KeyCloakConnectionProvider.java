@@ -20,22 +20,24 @@ public class KeyCloakConnectionProvider {
 		initialiseConnection();
 		registerShutDownHook();
 	}
-   
-   /**
-    * TODO add the comment
-    */
+
+	/**
+	 * Method to initializate the Keycloak connection
+	 * @return Keycloak connection
+	 */
    public static Keycloak initialiseConnection() {
 	   LOGGER.info("key cloak instance is creation started.");
 	    keycloak = KeycloakBuilder.builder() 
-		.serverUrl("http://localhost:8081/auth") 
-		.realm("rest-example")
-		.username("rest-user-admin") 
-		.password("password")
-		.clientId("admin-cli").clientSecret("")
-		.resteasyClient(new ResteasyClientBuilder().connectionPoolSize(10).build())
+		.serverUrl(cache.getProperty(JsonKey.SSO_URL))
+		.realm(cache.getProperty(JsonKey.SSO_REALM))
+		.username(cache.getProperty(JsonKey.SSO_USERNAME))
+		.password(cache.getProperty(JsonKey.SSO_PASSWORD))
+		.clientId(cache.getProperty(JsonKey.SSO_CLIENT_ID)).clientSecret(JsonKey.SSO_CLIENT_SECRET)
+		.resteasyClient(new ResteasyClientBuilder().connectionPoolSize(Integer.parseInt(cache.getProperty(JsonKey.SSO_POOL_SIZE))).build())
 		.build();
 	    LOGGER.info("key cloak instance is created successfully.");
-	    return keycloak;
+	   System.out.println("SUCCESS");
+	   return keycloak;
    }
    
    /**

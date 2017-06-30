@@ -175,4 +175,13 @@ public class JsonKey {
 	public static final String CONTENT_TYPE = "contentType";
 	public static final String GRADE_LEVEL = "gradeLevel";
 	public static final String RECOMMEND_TYPE ="recommendType";
+	public static final String SSO_REALM = "sso.realm";
+	public static final String SSO_URL = "sso.url";
+	public static final String SSO_USERNAME = "sso.username";
+	public static final String SSO_PASSWORD = "sso.password";
+	public static final String SSO_POOL_SIZE = "sso.connection.pool.size";
+	public static final String SSO_CLIENT_ID = "sso.client.id";
+	public static final String SSO_CLIENT_SECRET = "sso.client.secret";
+	public static final String LAST_NAME ="lastName";
+
 }
