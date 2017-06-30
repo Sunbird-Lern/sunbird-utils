@@ -69,11 +69,15 @@ public final class RequestValidator {
 	 * @param userRequest Request
 	 */
 	public static void validateCreateUser(Request userRequest) {
-		if (userRequest.getRequest().get(JsonKey.EMAIL) == null) {
+		if (userRequest.getRequest().get(JsonKey.USERNAME) == null) {
+			throw new ProjectCommonException(ResponseCode.userNameRequired.getErrorCode(),
+					ResponseCode.userNameRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		}
+		/*if (userRequest.getRequest().get(JsonKey.EMAIL) == null) {
 			throw new ProjectCommonException(ResponseCode.emailRequired.getErrorCode(),
 					ResponseCode.emailRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-		}
-		if (!ProjectUtil.isEmailvalid((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
+		}*/
+		if (null != userRequest.getRequest().get(JsonKey.EMAIL) && !ProjectUtil.isEmailvalid((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
 			throw new ProjectCommonException(ResponseCode.emailFormatError.getErrorCode(),
 					ResponseCode.emailFormatError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 		}

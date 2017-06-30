@@ -183,4 +183,5 @@ public class JsonKey {
 	public static final String GRADE_LEVEL = "gradeLevel";
 	public static final String RECOMMEND_TYPE ="recommendType";
 	public static final String ORG_CODE = "orgCode";
+	public static final String IS_SSO_ENABLED = "sso.enabled";
 }
