@@ -70,6 +70,8 @@ public enum ResponseCode {
 	emailANDUserNameAlreadyExistError(ResponseMessage.Key.USERNAME_EMAIL_IN_USE, ResponseMessage.Message.USERNAME_EMAIL_IN_USE),
 	keyCloakDefaultError(ResponseMessage.Key.KEY_CLOAK_DEFAULT_ERROR, ResponseMessage.Message.KEY_CLOAK_DEFAULT_ERROR),
 	userRegUnSuccessfull(ResponseMessage.Key.USER_REG_UNSUCCESSFULL, ResponseMessage.Message.USER_REG_UNSUCCESSFULL),
+	userUpdationUnSuccessfull(ResponseMessage.Key.USER_UPDATE_UNSUCCESSFULL, ResponseMessage.Message.USER_UPDATE_UNSUCCESSFULL),
+	loginTypeError(ResponseMessage.Key.LOGIN_TYPE_ERROR, ResponseMessage.Message.LOGIN_TYPE_ERROR),
 	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404);
 	
 	private int responseCode;
