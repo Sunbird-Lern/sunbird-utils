@@ -67,6 +67,9 @@ public enum ResponseCode {
 	assessmentmaxScoreRequired(ResponseMessage.Key.MAX_SCORE_REQUIRED, ResponseMessage.Message.MAX_SCORE_REQUIRED),
 	statusCanntBeUpdated(ResponseMessage.Key.STATUS_CANNOT_BE_UPDATED, ResponseMessage.Message.STATUS_CANNOT_BE_UPDATED),
 	attemptIdRequired(ResponseMessage.Key.ATTEMPT_ID_MISSING_ERROR, ResponseMessage.Message.ATTEMPT_ID_MISSING_ERROR),
+	emailANDUserNameAlreadyExistError(ResponseMessage.Key.USERNAME_EMAIL_IN_USE, ResponseMessage.Message.USERNAME_EMAIL_IN_USE),
+	keyCloakDefaultError(ResponseMessage.Key.KEY_CLOAK_DEFAULT_ERROR, ResponseMessage.Message.KEY_CLOAK_DEFAULT_ERROR),
+	userRegUnSuccessfull(ResponseMessage.Key.USER_REG_UNSUCCESSFULL, ResponseMessage.Message.USER_REG_UNSUCCESSFULL),
 	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404);
 	
 	private int responseCode;
