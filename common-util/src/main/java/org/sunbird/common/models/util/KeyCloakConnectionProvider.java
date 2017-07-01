@@ -27,16 +27,20 @@ public class KeyCloakConnectionProvider {
 	 */
    public static Keycloak initialiseConnection() {
 	   LOGGER.info("key cloak instance is creation started.");
-	    keycloak = KeycloakBuilder.builder() 
-		.serverUrl(cache.getProperty(JsonKey.SSO_URL))
-		.realm(cache.getProperty(JsonKey.SSO_REALM))
-		.username(cache.getProperty(JsonKey.SSO_USERNAME))
-		.password(cache.getProperty(JsonKey.SSO_PASSWORD))
-		.clientId(cache.getProperty(JsonKey.SSO_CLIENT_ID)).clientSecret(JsonKey.SSO_CLIENT_SECRET)
-		.resteasyClient(new ResteasyClientBuilder().connectionPoolSize(Integer.parseInt(cache.getProperty(JsonKey.SSO_POOL_SIZE))).build())
-		.build();
-	    LOGGER.info("key cloak instance is created successfully.");
-	   System.out.println("SUCCESS");
+	   KeycloakBuilder keycloakBuilder = KeycloakBuilder.builder()
+			   .serverUrl(cache.getProperty(JsonKey.SSO_URL))
+			   .realm(cache.getProperty(JsonKey.SSO_REALM))
+			   .username(cache.getProperty(JsonKey.SSO_USERNAME))
+			   .password(cache.getProperty(JsonKey.SSO_PASSWORD))
+			   .clientId(cache.getProperty(JsonKey.SSO_CLIENT_ID))
+			   .resteasyClient(new ResteasyClientBuilder().connectionPoolSize(Integer.parseInt(cache.getProperty(JsonKey.SSO_POOL_SIZE))).build());
+
+	   if (cache.getProperty(JsonKey.SSO_CLIENT_SECRET) != null && !(cache.getProperty(JsonKey.SSO_CLIENT_SECRET).equals(JsonKey.SSO_CLIENT_SECRET))) {
+		   keycloakBuilder.clientSecret(cache.getProperty(JsonKey.SSO_CLIENT_SECRET));
+	   }
+	   keycloak = keycloakBuilder.build();
+
+	   LOGGER.info("key cloak instance is created successfully.");
 	   return keycloak;
    }
    
