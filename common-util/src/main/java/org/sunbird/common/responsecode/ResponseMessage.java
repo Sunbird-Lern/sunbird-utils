@@ -43,6 +43,10 @@ public interface ResponseMessage {
 		public static final String COURSE_DURATION_MISSING = "Course duration is mandatory.";
 		public static final String LOGIN_TYPE_MISSING = "Login type is required.";
 		public static final String EMAIL_IN_USE = "Email already exists.";
+		public static final String USERNAME_EMAIL_IN_USE = "Username or Email already exists.";
+		public static final String KEY_CLOAK_DEFAULT_ERROR = "server error at sso.";
+		public static final String USER_REG_UNSUCCESSFULL = "User Registration unsuccessfull.";
+		public static final String USER_UPDATE_UNSUCCESSFULL = "User update operation is unsuccessfull.";
 		public static final String INVALID_CREDENTIAL = "Invalid credential.";
 		public static final String USERNAME_MISSING = "Username is mandatory.";
 		public static final String USERNAME_IN_USE = "Username already exists.";
@@ -67,6 +71,7 @@ public interface ResponseMessage {
 		public static final String MAX_SCORE_REQUIRED = "Max score is required.";
 		public static final String STATUS_CANNOT_BE_UPDATED = "status cann't be updated.";
 		public static final String ATTEMPT_ID_MISSING_ERROR = "Please provide attempt id.";
+		public static final String LOGIN_TYPE_ERROR = "provide login type as null.";
 	}
 
 	public interface Key {
@@ -106,6 +111,10 @@ public interface ResponseMessage {
 		public static final String COURSE_DURATION_MISSING = "COURSE_DURATION_MISSING";
 		public static final String LOGIN_TYPE_MISSING = "LOGIN_TYPE_MISSING";
 		public static final String EMAIL_IN_USE = "EMAIL_IN_USE";
+		public static final String USERNAME_EMAIL_IN_USE = "USERNAME_EMAIL_IN_USE";
+		public static final String KEY_CLOAK_DEFAULT_ERROR = "KEY_CLOAK_DEFAULT_ERROR";
+		public static final String USER_REG_UNSUCCESSFULL = "USER_REG_UNSUCCESSFULL";
+		public static final String USER_UPDATE_UNSUCCESSFULL = "USER_UPDATE_UNSUCCESSFULL";
 		public static final String INVALID_CREDENTIAL = "INVALID_CREDENTIAL";
 		public static final String USERNAME_MISSING = "USERNAME_MISSING";
 		public static final String USERNAME_IN_USE = "USERNAME_IN_USE";
@@ -130,6 +139,7 @@ public interface ResponseMessage {
 		public static final String MAX_SCORE_REQUIRED = "MAX_SCORE_REQUIRED";
 		public static final String STATUS_CANNOT_BE_UPDATED = "STATUS_CANNOT_BE_UPDATED";
 		public static final String ATTEMPT_ID_MISSING_ERROR = "ATTEMPT_ID_REQUIRED_ERROR";
+		public static final String LOGIN_TYPE_ERROR = "LOGIN_TYPE_ERROR";
 	}
 }
 

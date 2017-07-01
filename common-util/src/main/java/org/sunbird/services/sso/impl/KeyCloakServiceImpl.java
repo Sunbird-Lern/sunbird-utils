@@ -65,10 +65,10 @@ public class KeyCloakServiceImpl implements SSOManager {
 
             logger.error("Couldn't create user." + result.getStatus() + " " + result.toString(), new RuntimeException());
             if (result.getStatus() == 409) {
-                ProjectCommonException projectCommonException = new ProjectCommonException("HttpStatus " + result.getStatus(), "UserName or Email already exist", ResponseCode.CLIENT_ERROR.getResponseCode());
+                ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.emailANDUserNameAlreadyExistError.getErrorCode(), ResponseCode.emailANDUserNameAlreadyExistError.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
                 throw projectCommonException;
             } else {
-                ProjectCommonException projectCommonException = new ProjectCommonException("HttpStatus " + result.getStatus(), "KeyLoak Exceptin", ResponseCode.CLIENT_ERROR.getResponseCode());
+                ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.keyCloakDefaultError.getErrorCode(), ResponseCode.keyCloakDefaultError.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
                 throw projectCommonException;
             }
         } else {
