@@ -192,5 +192,6 @@ public class JsonKey {
 	public static final String LAST_NAME ="lastName";
 
 	public static final String ORG_CODE = "orgCode";
+	public static final String ORG_NAME = "orgName";
 	public static final String IS_SSO_ENABLED = "sso.enabled";
 }

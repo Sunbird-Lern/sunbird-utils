@@ -103,6 +103,12 @@ public final class RequestValidator {
 		}
 	}
 	
+	public static void validateCreateOrganisation(Request request) {
+		if (request.getRequest().get(JsonKey.ORG_NAME) == null) {
+			throw new ProjectCommonException(ResponseCode.organisationNameRequired.getErrorCode(),
+					ResponseCode.organisationNameRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		}
+	}
 	
 	
 	/**
