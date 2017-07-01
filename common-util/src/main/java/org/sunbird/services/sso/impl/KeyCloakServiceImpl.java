@@ -44,7 +44,7 @@ public class KeyCloakServiceImpl implements SSOManager {
         if (null != request.get(JsonKey.PASSWORD)) {
             credential.setValue((String) request.get(JsonKey.PASSWORD));
         }
-        credential.setTemporary(false);
+        credential.setTemporary(true);
 
         UserRepresentation user = new UserRepresentation();
         user.setUsername((String) request.get(JsonKey.USERNAME));
@@ -84,7 +84,7 @@ public class KeyCloakServiceImpl implements SSOManager {
             if (null != request.get(JsonKey.PASSWORD)) {
                 newCredential.setValue((String) request.get(JsonKey.PASSWORD));
             }
-            newCredential.setTemporary(false);
+            newCredential.setTemporary(true);
             resource.resetPassword(newCredential);
             UserRepresentation ur = resource.toRepresentation();
             try {
