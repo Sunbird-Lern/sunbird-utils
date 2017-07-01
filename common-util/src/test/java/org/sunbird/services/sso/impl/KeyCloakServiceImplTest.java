@@ -30,8 +30,6 @@ public class KeyCloakServiceImplTest {
     @Test
     public void createUserTest(){
 
-        System.out.println("UN : "+userName);
-
         Map<String , Object> request = new HashMap<String , Object>();
         request.put(JsonKey.USERNAME , userName);
         request.put(JsonKey.PASSWORD , "password");
@@ -39,7 +37,6 @@ public class KeyCloakServiceImplTest {
         request.put(JsonKey.LAST_NAME , "B");
 
         userId = keyCloakService.createUser(request);
-        System.out.println("USER ID "+userId);
         Assert.assertNotNull(userId);
     }
 
