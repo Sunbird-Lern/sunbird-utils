@@ -195,4 +195,5 @@ public class JsonKey {
 	public static final String ORG_NAME = "orgName";
 	public static final String IS_SSO_ENABLED = "sso.enabled";
 	public static final String LEAF_NODE_COUNT = "leafNodesCount";
+	public static final String SUB_SECTIONS = "subSections";
 }
