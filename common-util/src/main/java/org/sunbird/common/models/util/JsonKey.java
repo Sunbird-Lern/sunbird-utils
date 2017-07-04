@@ -39,7 +39,7 @@ public class JsonKey {
     public static final String DATE_TIME="dateTime";
     public static final String PRIMARY_KEY_DELIMETER = "##";
 	public static final String NULL = "null";
-	public static final Object SUCCESS = "SUCCESS";
+	public static final String SUCCESS = "SUCCESS";
 	public static final String NOT_AVAILABLE = "NA";
 	public static final String COURSE_IDS = "courseIds";
 	public static final String EMAIL = "email";
@@ -93,6 +93,9 @@ public class JsonKey {
     public static final String PAGE_MGMT_DB = "page_mgmt_db";
     public static final String PAGE_SECTION_DB = "page_section_db";
     public static final String SECTION_MGMT_DB = "section_mgmt_db";
+    public static final String ADDRESS_DB = "address";
+    public static final String EDUCATION_DB = "user_education";
+    public static final String JOB_PROFILE_DB = "user_job_profile";
 
     public static final String DB_IP="db.ip";
     public static final String DB_PORT="db.port";
@@ -196,4 +199,11 @@ public class JsonKey {
 	public static final String IS_SSO_ENABLED = "sso.enabled";
 	public static final String LEAF_NODE_COUNT = "leafNodesCount";
 	public static final String SUB_SECTIONS = "subSections";
+	
+	public static final String ADDRESS = "address";
+	public static final String EDUCATION = "education";
+	public static final String JOB_PROFILE = "jobProfile";
+	public static final String YEAR_OF_PASSING = "yearOfPassing";
+	public static final String PERCENTAGE = "percentage";
+	public static final String ADDRESS_ID = "addressId";
 }
