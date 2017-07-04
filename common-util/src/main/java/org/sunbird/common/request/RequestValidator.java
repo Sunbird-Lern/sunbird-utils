@@ -129,8 +129,8 @@ public final class RequestValidator {
 			throw new ProjectCommonException(ResponseCode.firstNameRequired.getErrorCode(),
 					ResponseCode.firstNameRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 		}
-		if (userRequest.getRequest().containsKey(JsonKey.LANGUAGE) && userRequest.getRequest().get(JsonKey.LANGUAGE) == null
-				|| ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.LANGUAGE))) {
+		if (userRequest.getRequest().get(JsonKey.LANGUAGE) == null
+				|| ((List) userRequest.getRequest().get(JsonKey.LANGUAGE)).isEmpty()) {
 			throw new ProjectCommonException(ResponseCode.languageRequired.getErrorCode(),
 					ResponseCode.languageRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 		}
