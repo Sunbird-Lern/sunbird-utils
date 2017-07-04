@@ -327,8 +327,10 @@ public class ElasticSearchUtil {
 	            searchRequestBuilder.addAggregation(AggregationBuilders.terms(facets).field(facets));
 	        }
         LOGGER.info("calling search builder======" + searchRequestBuilder.toString());
+        System.out.println("calling search builder======" + searchRequestBuilder.toString());
         SearchResponse response = searchRequestBuilder.execute().actionGet();
         LOGGER.info("getting response for es======" + response);
+        System.out.println("getting response for es======" + response);
         List<Map<String,Object>> esResponse = new ArrayList<Map<String,Object>>();
         Map<String,List<Map<String,Object>>> responsemap = new HashMap<>();
         if (response != null) {
@@ -356,7 +358,7 @@ public class ElasticSearchUtil {
             if (val instanceof String) {
                 boolQueryBuilder.must(QueryBuilders.commonTermsQuery(key, val));
             } else if (val instanceof List) {
-                boolQueryBuilder.must(QueryBuilders.multiMatchQuery(key, ((List<String>) val).stream().toArray(String[]::new)));
+                boolQueryBuilder.must(QueryBuilders.termsQuery(key, ((List<String>) val).stream().toArray(String[]::new)));
             } else if (val instanceof Map) {
                 Map<String, Object> value = (Map<String, Object>) val;
                 Map<String, Object> rangeOperation = new HashMap<String, Object>();

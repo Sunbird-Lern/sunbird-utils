@@ -92,7 +92,7 @@ public final class RequestValidator {
 					ResponseCode.passwordRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 		} 
 		if (userRequest.getRequest().get(JsonKey.LANGUAGE) == null
-				|| ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.LANGUAGE))) {
+				|| ((List) userRequest.getRequest().get(JsonKey.LANGUAGE)).isEmpty()) {
 			throw new ProjectCommonException(ResponseCode.languageRequired.getErrorCode(),
 					ResponseCode.languageRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 		}
