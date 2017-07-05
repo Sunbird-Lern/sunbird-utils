@@ -93,7 +93,6 @@ public class JsonKey {
     public static final String PAGE_MGMT_DB = "page_mgmt_db";
     public static final String PAGE_SECTION_DB = "page_section_db";
     public static final String SECTION_MGMT_DB = "section_mgmt_db";
-    public static final String ADDRESS_DB = "address";
     public static final String EDUCATION_DB = "user_education";
     public static final String JOB_PROFILE_DB = "user_job_profile";
 
@@ -199,8 +198,14 @@ public class JsonKey {
 	public static final String IS_SSO_ENABLED = "sso.enabled";
 	public static final String LEAF_NODE_COUNT = "leafNodesCount";
 	public static final String SUB_SECTIONS = "subSections";
-	
+	public static final String IS_APPROVED = "isApproved";
+	public static final String INACTIVE = "inactive";
+	public static final String BLOCKED = "blocked";
+	public static final String RETIRED = "retired";
+	public static final String IS_REJECTED = "isRejected";
+	public static final String ADDRESS_DB = "address";
 	public static final String ADDRESS = "address";
+
 	public static final String EDUCATION = "education";
 	public static final String JOB_PROFILE = "jobProfile";
 	public static final String YEAR_OF_PASSING = "yearOfPassing";
