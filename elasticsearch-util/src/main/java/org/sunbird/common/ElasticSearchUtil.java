@@ -438,7 +438,8 @@ public class ElasticSearchUtil {
         if (val instanceof String) {
             query.must(QueryBuilders.commonTermsQuery(key, val));
         } else if (val instanceof List) {
-            query.must(QueryBuilders.termsQuery(key, ((List<String>) val).stream().toArray(String[]::new)));
+        	query.must(QueryBuilders.matchQuery(key , String.join(" " , ((List<String>) val))));
+            //query.must(QueryBuilders.termsQuery(key, ((List<String>) val).stream().toArray(String[]::new)));
         } else if (val instanceof Map) {
             Map<String, Object> value = (Map<String, Object>) val;
             Map<String, Object> rangeOperation = new HashMap<String, Object>();
