@@ -196,4 +196,12 @@ public class JsonKey {
 	public static final String IS_SSO_ENABLED = "sso.enabled";
 	public static final String LEAF_NODE_COUNT = "leafNodesCount";
 	public static final String SUB_SECTIONS = "subSections";
+	public static final String IS_APPROVED = "isApproved";
+	public static final String INACTIVE = "inactive";
+	public static final String BLOCKED = "blocked";
+	public static final String RETIRED = "retired";
+	public static final String IS_REJECTED = "isRejected";
+	public static final String ADDRESS_ID = "addId";
+	public static final String ADDRESS_DB = "address_db";
+	public static final String ADDRESS = "address";
 }
