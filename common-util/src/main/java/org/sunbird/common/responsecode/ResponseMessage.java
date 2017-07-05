@@ -72,6 +72,9 @@ public interface ResponseMessage {
 		public static final String STATUS_CANNOT_BE_UPDATED = "status cann't be updated.";
 		public static final String ATTEMPT_ID_MISSING_ERROR = "Please provide attempt id.";
 		public static final String LOGIN_TYPE_ERROR = "provide login type as null.";
+		public static final String ADDRESS_REQUIRED_ERROR = "Please provide address.";
+		public static final String EDUCATION_REQUIRED_ERROR = "Please provide education details.";
+		public static final String JOBDETAILS_REQUIRED_ERROR = "Please provide job details.";
 	}
 
 	public interface Key {
@@ -140,6 +143,9 @@ public interface ResponseMessage {
 		public static final String STATUS_CANNOT_BE_UPDATED = "STATUS_CANNOT_BE_UPDATED";
 		public static final String ATTEMPT_ID_MISSING_ERROR = "ATTEMPT_ID_REQUIRED_ERROR";
 		public static final String LOGIN_TYPE_ERROR = "LOGIN_TYPE_ERROR";
+		public static final String ADDRESS_REQUIRED_ERROR = "ADDRESS_REQUIRED_ERROR";
+		public static final String EDUCATION_REQUIRED_ERROR = "EDUCATION_REQUIRED_ERROR";
+		public static final String JOBDETAILS_REQUIRED_ERROR = "JOBDETAILS_REQUIRED_ERROR";
 	}
 }
 

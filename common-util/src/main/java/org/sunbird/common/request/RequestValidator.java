@@ -116,29 +116,30 @@ public final class RequestValidator {
 	 * @param userRequest Request
 	 */
 	public static void validateUpdateUser(Request userRequest) {
-		if (userRequest.getRequest().containsKey(JsonKey.EMAIL) && userRequest.getRequest().get(JsonKey.EMAIL) == null) {
-			throw new ProjectCommonException(ResponseCode.emailRequired.getErrorCode(),
-					ResponseCode.emailRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-		}
-		if (userRequest.getRequest().containsKey(JsonKey.EMAIL) && !ProjectUtil.isEmailvalid((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
+		if (userRequest.getRequest().containsKey(JsonKey.EMAIL) && userRequest.getRequest().get(JsonKey.EMAIL) != null) {
+		  if(!ProjectUtil.isEmailvalid((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
 			throw new ProjectCommonException(ResponseCode.emailFormatError.getErrorCode(),
 					ResponseCode.emailFormatError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		  }
 		}
-		if (userRequest.getRequest().containsKey(JsonKey.FIRST_NAME) && userRequest.getRequest().get(JsonKey.FIRST_NAME) == null
-				|| (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.FIRST_NAME)))) {
-			throw new ProjectCommonException(ResponseCode.firstNameRequired.getErrorCode(),
-					ResponseCode.firstNameRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-		}
-		if (userRequest.getRequest().get(JsonKey.LANGUAGE) == null
-				|| ((List) userRequest.getRequest().get(JsonKey.LANGUAGE)).isEmpty()) {
+		if (userRequest.getRequest().get(JsonKey.LANGUAGE) != null
+				&&((List) userRequest.getRequest().get(JsonKey.LANGUAGE)).isEmpty()) {
 			throw new ProjectCommonException(ResponseCode.languageRequired.getErrorCode(),
 					ResponseCode.languageRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 		}
-		if (ProjectUtil.isStringNullOREmpty(userRequest.getParams().getMsgid())) {
-			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.msgIdRequiredError.getErrorCode(),
-					ResponseCode.msgIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
-			throw dataException;
-		}
+		if (userRequest.getRequest().get(JsonKey.ADDRESS) != null
+            && ((List) userRequest.getRequest().get(JsonKey.ADDRESS)).isEmpty()) {
+        throw new ProjectCommonException(ResponseCode.addressRequired.getErrorCode(),
+                ResponseCode.addressRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+       }if (userRequest.getRequest().get(JsonKey.EDUCATION) != null
+           && ((List) userRequest.getRequest().get(JsonKey.EDUCATION)).isEmpty()) {
+       throw new ProjectCommonException(ResponseCode.educationRequired.getErrorCode(),
+               ResponseCode.educationRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+        }if (userRequest.getRequest().get(JsonKey.JOB_PROFILE) != null
+           && ((List) userRequest.getRequest().get(JsonKey.JOB_PROFILE)).isEmpty()) {
+         throw new ProjectCommonException(ResponseCode.jobDetailsRequired.getErrorCode(),
+           ResponseCode.jobDetailsRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+        }
    }
 
 	/**
