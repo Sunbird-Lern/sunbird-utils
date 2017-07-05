@@ -93,7 +93,6 @@ public class JsonKey {
     public static final String PAGE_MGMT_DB = "page_mgmt_db";
     public static final String PAGE_SECTION_DB = "page_section_db";
     public static final String SECTION_MGMT_DB = "section_mgmt_db";
-    public static final String ADDRESS_DB = "address";
     public static final String EDUCATION_DB = "user_education";
     public static final String JOB_PROFILE_DB = "user_job_profile";
 
@@ -205,13 +204,11 @@ public class JsonKey {
 	public static final String RETIRED = "retired";
 	public static final String IS_REJECTED = "isRejected";
 	public static final String ADDRESS_ID = "addId";
-	public static final String ADDRESS_DB = "address_db";
+	public static final String ADDRESS_DB = "address";
 	public static final String ADDRESS = "address";
 
-	public static final String ADDRESS = "address";
 	public static final String EDUCATION = "education";
 	public static final String JOB_PROFILE = "jobProfile";
 	public static final String YEAR_OF_PASSING = "yearOfPassing";
 	public static final String PERCENTAGE = "percentage";
-	public static final String ADDRESS_ID = "addressId";
 }
