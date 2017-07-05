@@ -206,4 +206,6 @@ public class JsonKey {
 	public static final String YEAR_OF_PASSING = "yearOfPassing";
 	public static final String PERCENTAGE = "percentage";
 	public static final String ADDRESS_ID = "addressId";
+	public static final String GROUP = "group";
+	public static final String INDEX = "index";
 }
