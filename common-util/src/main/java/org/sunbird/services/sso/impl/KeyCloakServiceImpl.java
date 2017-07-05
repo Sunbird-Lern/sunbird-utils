@@ -27,7 +27,7 @@ public class KeyCloakServiceImpl implements SSOManager {
     private static final LogHelper logger = LogHelper.getInstance(KeyCloakServiceImpl.class.getName());
     private static PropertiesCache cache = PropertiesCache.getInstance();
     Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
-
+    private static final boolean IS_EMAIL_SETUP_COMPLETE = false;
     @Override
     public String verifyToken(Map<String, String> request) {
         // TODO Auto-generated method stub
@@ -89,6 +89,9 @@ public class KeyCloakServiceImpl implements SSOManager {
             UserRepresentation ur = resource.toRepresentation();
             try {
                 resource.update(ur);
+                if(IS_EMAIL_SETUP_COMPLETE) {
+                  verifyEmail(userId);
+                }
             } catch (Exception ex) {
                 ProjectCommonException projectCommonException = new ProjectCommonException(ex.getMessage() + result.getStatus(), ex.getMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
                 throw projectCommonException;
@@ -114,6 +117,9 @@ public class KeyCloakServiceImpl implements SSOManager {
         }
         if (null != request.get(JsonKey.EMAIL)) {
             ur.setEmail((String) request.get(JsonKey.EMAIL));
+        }
+        if(request.get(JsonKey.USERNAME)!= null) {
+          ur.setUsername((String)request.get(JsonKey.USERNAME));
         }
         try {
             resource.update(ur);
@@ -147,5 +153,25 @@ public class KeyCloakServiceImpl implements SSOManager {
         }
         return (String) JsonKey.SUCCESS;
     }
+    
+    /**
+     * This method will send email verification link to registered user email
+     * @param userId key claok id.
+     */
+    private void verifyEmail(String userId) {
+      keycloak.realm(cache.getProperty(JsonKey.SSO_REALM)).users().get(userId).sendVerifyEmail();
+    }
 
-}
+
+    @Override
+  public boolean isEmailVerified(String userId) {
+    UserResource resource =
+        keycloak.realm(cache.getProperty(JsonKey.SSO_REALM)).users().get(userId);
+    if (resource == null) {
+      return false;
+    }
+    return resource.toRepresentation().isEmailVerified();
+
+  }
+    
+ }
