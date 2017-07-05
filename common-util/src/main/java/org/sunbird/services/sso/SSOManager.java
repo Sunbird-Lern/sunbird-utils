@@ -40,4 +40,11 @@ public interface SSOManager {
 	 * @return
 	 */
 	public String removeUser (Map<String,Object> request);
+	
+	/**
+	 * This method will check email is verified by user or not.
+	 * @param userId String
+	 * @return boolean
+	 */
+	public boolean isEmailVerified(String userId);
 }
