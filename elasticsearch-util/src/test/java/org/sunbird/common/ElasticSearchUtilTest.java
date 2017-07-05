@@ -72,17 +72,17 @@ public class ElasticSearchUtilTest {
 
     @Test
     public void testComplexSearch(){
-    	SearchDTO searchDTO = new SearchDTO();
+        SearchDTO searchDTO = new SearchDTO();
         List<String> fields = new ArrayList<String>();
         fields.add("courseId");
 
-       Map<String , Object> additionalProperties = new HashMap<String , Object>();
+        Map<String , Object> additionalProperties = new HashMap<String , Object>();
 
-       List<String> existsList = new ArrayList<String>();
+        List<String> existsList = new ArrayList<String>();
         existsList.add("pkgVersion");
         existsList.add("size");
 
-       additionalProperties.put(JsonKey.EXISTS , existsList);
+        additionalProperties.put(JsonKey.EXISTS , existsList);
         List<String> languages = new ArrayList<String>();
         languages.add("English");
         languages.add("Hindi");
@@ -93,7 +93,7 @@ public class ElasticSearchUtilTest {
         rangeMap.put(">",0);
         additionalProperties.put("pkgVersion" , rangeMap);
 
-       searchDTO.setAdditionalProperties(additionalProperties);
+        searchDTO.setAdditionalProperties(additionalProperties);
         searchDTO.setFields(fields);
         Map map = ElasticSearchUtil.complexSearch(searchDTO,indexName , typeName);
         assertNotNull(map);
