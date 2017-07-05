@@ -83,6 +83,12 @@ public class ElasticSearchUtilTest {
         existsList.add("size");
 
         additionalProperties.put(JsonKey.EXISTS , existsList);
+        List<String> languages = new ArrayList<String>();
+        languages.add("English");
+        languages.add("Hindi");
+        Map<String , Object> filterMap = new HashMap<String , Object>();
+        filterMap.put("language" , languages);
+        additionalProperties.put(JsonKey.FILTERS,filterMap);
         Map<String, Object> rangeMap = new HashMap<String , Object>();
         rangeMap.put(">",0);
         additionalProperties.put("pkgVersion" , rangeMap);

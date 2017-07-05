@@ -63,6 +63,20 @@ public class ProjectUtil {
         }
     }
 
+    public enum OrgStatus{
+        INACTIVE(JsonKey.INACTIVE), ACTIVE(JsonKey.ACTIVE), BLOCKED(JsonKey.BLOCKED), RETIRED(JsonKey.RETIRED);
+
+        private String value;
+
+        OrgStatus(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return this.value;
+        }
+    }
+
     /**
      * @author Amit Kumar
      */
