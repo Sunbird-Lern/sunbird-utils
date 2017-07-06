@@ -95,6 +95,8 @@ public class JsonKey {
     public static final String SECTION_MGMT_DB = "section_mgmt_db";
     public static final String EDUCATION_DB = "user_education";
     public static final String JOB_PROFILE_DB = "user_job_profile";
+    public static final String USR_ORG_DB = "user_org";
+    public static final String USR_EXT_ID_DB = "user_org";
 
     public static final String DB_IP="db.ip";
     public static final String DB_PORT="db.port";
@@ -213,4 +215,12 @@ public class JsonKey {
 	public static final String ADDRESS_ID = "addressId";
 	public static final String GROUP = "group";
 	public static final String INDEX = "index";
+	public static final String ROLES = "roles";
+	public static final String PUBLIC = "public";
+	public static final String EXTERNAL_ID = "externalId";
+	public static final String IS_VERIFIED = "isVerified";
+	public static final String PHONE = "phone";
+	public static final String AADHAAR_NO = "aadhaarNo";
+	public static final String INSERT = "insert";
+	public static final String UPDATE = "update";
 }
