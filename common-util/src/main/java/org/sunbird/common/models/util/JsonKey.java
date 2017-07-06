@@ -96,8 +96,13 @@ public class JsonKey {
     public static final String EDUCATION_DB = "user_education";
     public static final String JOB_PROFILE_DB = "user_job_profile";
     public static final String USR_ORG_DB = "user_org";
-    public static final String USR_EXT_ID_DB = "user_org";
-
+    public static final String USR_EXT_ID_DB = "user_external_identity";
+    public static final String ROLE = "role";
+    public static final String MASTER_ACTION = "master_action";
+    public static final String URL_ACTION = "url_action";
+    public static final String ACTION_GROUP = "action_group";
+    public static final String USER_ACTION_ROLE = "user_action_role";
+    public static final String ROLE_GROUP = "role_group";
     public static final String DB_IP="db.ip";
     public static final String DB_PORT="db.port";
     public static final String DB_USERNAME="db.username";
