@@ -75,6 +75,10 @@ public interface ResponseMessage {
 		public static final String ADDRESS_REQUIRED_ERROR = "Please provide address.";
 		public static final String EDUCATION_REQUIRED_ERROR = "Please provide education details.";
 		public static final String JOBDETAILS_REQUIRED_ERROR = "Please provide job details.";
+		public static final String DB_INSERTION_FAIL = "DB insert operation failed.";
+		public static final String DB_UPDATE_FAIL = "Db update operation failed.";
+		public static final String DATA_ALREADY_EXIST = "data already exist.";
+		public static final String INVALID_DATA = "INcorrect data.";
 	}
 
 	public interface Key {
@@ -146,6 +150,10 @@ public interface ResponseMessage {
 		public static final String ADDRESS_REQUIRED_ERROR = "ADDRESS_REQUIRED_ERROR";
 		public static final String EDUCATION_REQUIRED_ERROR = "EDUCATION_REQUIRED_ERROR";
 		public static final String JOBDETAILS_REQUIRED_ERROR = "JOBDETAILS_REQUIRED_ERROR";
+		public static final String DB_INSERTION_FAIL = "DB_INSERTION_FAIL";
+		public static final String DB_UPDATE_FAIL = "DB_UPDATE_FAIL";
+		public static final String DATA_ALREADY_EXIST = "DATA_ALREADY_EXIST";
+		public static final String INVALID_DATA = "INVALID_DATA";
 	}
 }
 
