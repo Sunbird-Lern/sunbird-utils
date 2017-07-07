@@ -72,6 +72,9 @@ public enum ResponseCode {
 	userRegUnSuccessfull(ResponseMessage.Key.USER_REG_UNSUCCESSFULL, ResponseMessage.Message.USER_REG_UNSUCCESSFULL),
 	userUpdationUnSuccessfull(ResponseMessage.Key.USER_UPDATE_UNSUCCESSFULL, ResponseMessage.Message.USER_UPDATE_UNSUCCESSFULL),
 	loginTypeError(ResponseMessage.Key.LOGIN_TYPE_ERROR, ResponseMessage.Message.LOGIN_TYPE_ERROR),
+	invalidOrgId(ResponseMessage.Key.INVALID_ORG_ID , ResponseMessage.Key.INVALID_ORG_ID),
+	invalidOrgStatus(ResponseMessage.Key.INVALID_ORG_STATUS ,ResponseMessage.Key.INVALID_ORG_STATUS ),
+	invalidOrgStatusTransition(ResponseMessage.Key.INVALID_ORG_STATUS_TRANSITION , ResponseMessage.Key.INVALID_ORG_STATUS_TRANSITION),
 	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404);
 	
 	private int responseCode;
