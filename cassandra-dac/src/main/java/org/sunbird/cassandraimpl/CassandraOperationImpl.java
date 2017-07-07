@@ -54,11 +54,11 @@ public class CassandraOperationImpl implements CassandraOperation{
 		   if(result.wasApplied()){
 				response.put(Constants.RESPONSE, Constants.SUCCESS);
 			}else{
-				throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), Constants.ALREADY_EXIST, ResponseCode.SERVER_ERROR.getResponseCode());
+				throw new ProjectCommonException(ResponseCode.dataAlreadyExist.getErrorCode(), ResponseCode.dataAlreadyExist.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 			}
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), e.getMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
+			 throw new ProjectCommonException(ResponseCode.dbInsertionError.getErrorCode(), ResponseCode.dbInsertionError.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		return response;
 	}
@@ -89,11 +89,11 @@ public class CassandraOperationImpl implements CassandraOperation{
 			if(result.wasApplied()){
 				response.put(Constants.RESPONSE, Constants.SUCCESS);
 			}else{
-				throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), Constants.INCORRECT_DATA, ResponseCode.SERVER_ERROR.getResponseCode());
+				throw new ProjectCommonException(ResponseCode.invalidData.getErrorCode(), ResponseCode.invalidData.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 			}
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e);
-			throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), e.getMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
+			throw new ProjectCommonException(ResponseCode.dbUpdateError.getErrorCode(), ResponseCode.dbUpdateError.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		return response;
 	}
@@ -109,7 +109,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 		 response.put(Constants.RESPONSE, Constants.SUCCESS);
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e);
-			throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), e.getMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
+			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		 return response;
 	}
@@ -127,7 +127,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e);
-			throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), e.getMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
+			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		 return response;
 	}
@@ -147,7 +147,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e);
-			throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), e.getMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
+			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		 return response;
 	}
@@ -165,7 +165,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e);
-			throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), e.getMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
+			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		 return response;
 	}
@@ -191,7 +191,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e);
-			throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), e.getMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
+			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		 return response;
 	}
@@ -208,7 +208,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e);
-			throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), e.getMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
+			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		return response;
 	}
@@ -223,7 +223,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e);
-			throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), e.getMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
+			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		return response;
 	}
@@ -249,11 +249,11 @@ public class CassandraOperationImpl implements CassandraOperation{
 		   if(result.wasApplied()){
 				response.put(Constants.RESPONSE, Constants.SUCCESS);
 			}else{
-				throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), Constants.ALREADY_EXIST, ResponseCode.SERVER_ERROR.getResponseCode());
+				throw new ProjectCommonException(ResponseCode.dataAlreadyExist.getErrorCode(), ResponseCode.dataAlreadyExist.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 			}
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), e.getMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
+			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		return response;
 	
