@@ -228,4 +228,9 @@ public class JsonKey {
 	public static final String AADHAAR_NO = "aadhaarNo";
 	public static final String INSERT = "insert";
 	public static final String UPDATE = "update";
+	public static final String USER_ORG = "user_org";
+	public static final String APPROVED_BY = "approvedBy";
+	public static final String APPROOVE_DATE = "approvalDate";
+	public static final String ORG_JOIN_DATE = "orgJoinDate";
+	public static final String USER_ORG_DB = "user_org_db";
 }
