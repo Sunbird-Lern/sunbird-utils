@@ -68,6 +68,7 @@ public final class RequestValidator {
 	 * This method will validate create user data.
 	 * @param userRequest Request
 	 */
+	@SuppressWarnings("rawtypes")
 	public static void validateCreateUser(Request userRequest) {
 		if (userRequest.getRequest().get(JsonKey.USERNAME) == null) {
 			throw new ProjectCommonException(ResponseCode.userNameRequired.getErrorCode(),
@@ -115,7 +116,13 @@ public final class RequestValidator {
 	 * This method will validate update user data.
 	 * @param userRequest Request
 	 */
+	@SuppressWarnings("rawtypes")
 	public static void validateUpdateUser(Request userRequest) {
+		if (userRequest.getRequest().containsKey(JsonKey.FIRST_NAME) && (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.FIRST_NAME)))) {
+			throw new ProjectCommonException(ResponseCode.firstNameRequired.getErrorCode(),
+					ResponseCode.firstNameRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		} 
+		
 		if (userRequest.getRequest().containsKey(JsonKey.EMAIL) && userRequest.getRequest().get(JsonKey.EMAIL) != null) {
 		  if(!ProjectUtil.isEmailvalid((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
 			throw new ProjectCommonException(ResponseCode.emailFormatError.getErrorCode(),
