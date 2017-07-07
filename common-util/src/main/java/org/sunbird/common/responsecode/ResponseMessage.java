@@ -72,6 +72,9 @@ public interface ResponseMessage {
 		public static final String STATUS_CANNOT_BE_UPDATED = "status cann't be updated.";
 		public static final String ATTEMPT_ID_MISSING_ERROR = "Please provide attempt id.";
 		public static final String LOGIN_TYPE_ERROR = "provide login type as null.";
+		public static final String INVALID_ORG_ID ="Org id does not exist .";
+		public static final String INVALID_ORG_STATUS = "Invalid org status for approve .";
+		public static final String INVALID_ORG_STATUS_TRANSITION = "Can not change state of Org to requeted state .";
 	}
 
 	public interface Key {
@@ -140,6 +143,9 @@ public interface ResponseMessage {
 		public static final String STATUS_CANNOT_BE_UPDATED = "STATUS_CANNOT_BE_UPDATED";
 		public static final String ATTEMPT_ID_MISSING_ERROR = "ATTEMPT_ID_REQUIRED_ERROR";
 		public static final String LOGIN_TYPE_ERROR = "LOGIN_TYPE_ERROR";
+		public static final String INVALID_ORG_ID = "INVALID_ORG_ID";
+		public static final String INVALID_ORG_STATUS = "INVALID_ORG_STATUS";
+		public static final String INVALID_ORG_STATUS_TRANSITION = "INVALID_ORG_STATUS_TRANSITION";
 	}
 }
 
