@@ -11,6 +11,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -169,5 +170,4 @@ public class HttpUtil {
     	     httpURLConnection.setRequestProperty(entry.getKey(),entry.getValue());
     	 }
     }
-
 }
