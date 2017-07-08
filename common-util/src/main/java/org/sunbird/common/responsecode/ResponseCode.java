@@ -79,6 +79,7 @@ public enum ResponseCode {
 	invalidOrgStatusTransition(ResponseMessage.Key.INVALID_ORG_STATUS_TRANSITION , ResponseMessage.Key.INVALID_ORG_STATUS_TRANSITION),
 	addressRequired(ResponseMessage.Key.ADDRESS_REQUIRED_ERROR, ResponseMessage.Message.ADDRESS_REQUIRED_ERROR),
 	educationRequired(ResponseMessage.Key.EDUCATION_REQUIRED_ERROR, ResponseMessage.Message.EDUCATION_REQUIRED_ERROR),
+	phoneNoRequired(ResponseMessage.Key.PHONE_NO_REQUIRED_ERROR, ResponseMessage.Message.PHONE_NO_REQUIRED_ERROR),
 	jobDetailsRequired(ResponseMessage.Key.JOBDETAILS_REQUIRED_ERROR, ResponseMessage.Message.JOBDETAILS_REQUIRED_ERROR),
 	dataAlreadyExist(ResponseMessage.Key.DATA_ALREADY_EXIST, ResponseMessage.Message.DATA_ALREADY_EXIST),
 	invalidData(ResponseMessage.Key.INVALID_DATA, ResponseMessage.Message.INVALID_DATA),

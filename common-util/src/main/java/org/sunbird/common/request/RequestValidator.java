@@ -70,16 +70,15 @@ public final class RequestValidator {
 	 * This method will validate create user data.
 	 * @param userRequest Request
 	 */
-	@SuppressWarnings("rawtypes")
 	public static void validateCreateUser(Request userRequest) {
 		if (userRequest.getRequest().get(JsonKey.USERNAME) == null) {
 			throw new ProjectCommonException(ResponseCode.userNameRequired.getErrorCode(),
 					ResponseCode.userNameRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 		}
-		/*if (userRequest.getRequest().get(JsonKey.EMAIL) == null) {
+		if (userRequest.getRequest().get(JsonKey.EMAIL) == null) {
 			throw new ProjectCommonException(ResponseCode.emailRequired.getErrorCode(),
 					ResponseCode.emailRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-		}*/
+		}
 		if (null != userRequest.getRequest().get(JsonKey.EMAIL) && !ProjectUtil.isEmailvalid((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
 			throw new ProjectCommonException(ResponseCode.emailFormatError.getErrorCode(),
 					ResponseCode.emailFormatError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
@@ -89,21 +88,11 @@ public final class RequestValidator {
 			throw new ProjectCommonException(ResponseCode.firstNameRequired.getErrorCode(),
 					ResponseCode.firstNameRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 		} 
-		if (userRequest.getRequest().get(JsonKey.PASSWORD) == null
-				|| (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PASSWORD)))) {
-			throw new ProjectCommonException(ResponseCode.passwordRequired.getErrorCode(),
-					ResponseCode.passwordRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		if (userRequest.getRequest().get(JsonKey.PHONE) == null
+				|| (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PHONE)))) {
+			throw new ProjectCommonException(ResponseCode.phoneNoRequired.getErrorCode(),
+					ResponseCode.phoneNoRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 		} 
-		if (userRequest.getRequest().get(JsonKey.LANGUAGE) == null
-				|| ((List) userRequest.getRequest().get(JsonKey.LANGUAGE)).isEmpty()) {
-			throw new ProjectCommonException(ResponseCode.languageRequired.getErrorCode(),
-					ResponseCode.languageRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-		}
-		if (ProjectUtil.isStringNullOREmpty(userRequest.getParams().getMsgid())) {
-			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.msgIdRequiredError.getErrorCode(),
-					ResponseCode.msgIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
-			throw dataException;
-		}
 	}
 	
 	public static void validateCreateOrganisation(Request request) {
