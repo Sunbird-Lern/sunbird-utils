@@ -13,7 +13,8 @@ public enum ActorOperations {
 	CREATE_PAGE("createPage"),UPDATE_PAGE("updatePage"),DELETE_PAGE("deletePage"),GET_PAGE_SETTINGS("getPageSettings"),GET_PAGE_SETTING("getPageSetting"),GET_PAGE_DATA("getPageData"),
 	CREATE_SECTION("createSection"),UPDATE_SECTION("updateSection"),GET_ALL_SECTION("getAllSection"),GET_SECTION("getSection"),GET_COURSE_BY_ID("getCourseById"),UPDATE_USER_COUNT("updateUserCount"),
 	SAVE_ASSESSMENT("saveAssessment"),GET_ASSESSMENT("getAssessment"),GET_RECOMMENDED_COURSES("getRecommendedCourses"),UPDATE_USER_INFO_ELASTIC("updateUserInfoToElastic"),GET_ROLES("getRoles"),
-	UPDATE_ORG_STATUS("updateOrgStatus") , APPROVE_ORGANISATION("approveOrganisation"), JOIN_USER_ORGANISATION("joinUserOrganisation") , APPROVE_USER_ORGANISATION("approveUserOrganisation");
+	UPDATE_ORG_STATUS("updateOrgStatus") , APPROVE_ORGANISATION("approveOrganisation"), JOIN_USER_ORGANISATION("joinUserOrganisation") , APPROVE_USER_ORGANISATION("approveUserOrganisation"),
+	COMPOSITE_SEARCH("compositeSearch");
 
 	private String value;
 
