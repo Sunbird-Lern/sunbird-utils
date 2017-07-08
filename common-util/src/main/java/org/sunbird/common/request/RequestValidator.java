@@ -8,7 +8,6 @@ import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.responsecode.ResponseCode;
 import static org.sunbird.common.models.util.ProjectUtil.isNull;
-import static org.sunbird.common.models.util.ProjectUtil.isNotNull;
 
 
 /**
@@ -448,5 +447,14 @@ public final class RequestValidator {
 					ResponseCode.userIdRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 		}
 	}
+
+	
+	/**
+     * This method will validate composite search request data.
+     * @param searchRequest Request
+     */
+    public static void validateCompositeSearch(Request searchRequest) {
+    }
+	
 	
 }
