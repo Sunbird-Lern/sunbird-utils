@@ -16,6 +16,8 @@ import javax.ws.rs.core.Response;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
+import static org.sunbird.common.models.util.ProjectUtil.isNull;
+import static org.sunbird.common.models.util.ProjectUtil.isNotNull;
 
 /**
  * Single sign out service implementation with Key Cloak.
@@ -43,20 +45,23 @@ public class KeyCloakServiceImpl implements SSOManager {
 
         UserRepresentation user = new UserRepresentation();
         user.setUsername((String) request.get(JsonKey.USERNAME));
-        if (null != request.get(JsonKey.FIRST_NAME)) {
+        if (isNotNull(request.get(JsonKey.FIRST_NAME))) {
             user.setFirstName((String) request.get(JsonKey.FIRST_NAME));
         }
-        if (null != request.get(JsonKey.LAST_NAME)) {
+        if (isNotNull(request.get(JsonKey.LAST_NAME))) {
             user.setLastName((String) request.get(JsonKey.LAST_NAME));
         }
-        if (null != request.get(JsonKey.EMAIL)) {
+        if (isNotNull(request.get(JsonKey.EMAIL))) {
             user.setEmail((String) request.get(JsonKey.EMAIL));
         }
-        if (null != request.get(JsonKey.PASSWORD)) {
+        if (isNotNull(request.get(JsonKey.PASSWORD))) {
             credential.setValue((String) request.get(JsonKey.PASSWORD));
             credential.setType(CredentialRepresentation.PASSWORD);
             credential.setTemporary(true);
             user.setCredentials(asList(credential));
+        }
+        if(isNotNull(request.get(JsonKey.EMAIL_VERIFIED))){
+            user.setEmailVerified((Boolean)request.get(JsonKey.EMAIL_VERIFIED));
         }
 
         user.setEnabled(true);
@@ -83,7 +88,7 @@ public class KeyCloakServiceImpl implements SSOManager {
             CredentialRepresentation newCredential = new CredentialRepresentation();
             UserRepresentation ur = resource.toRepresentation();
 
-            if (null != request.get(JsonKey.PASSWORD)) {
+            if (isNotNull(request.get(JsonKey.PASSWORD))) {
                 newCredential.setValue((String) request.get(JsonKey.PASSWORD));
                 newCredential.setType(CredentialRepresentation.PASSWORD);
                 newCredential.setTemporary(true);
@@ -112,16 +117,16 @@ public class KeyCloakServiceImpl implements SSOManager {
         UserResource resource = keycloak.realm(cache.getProperty(JsonKey.SSO_REALM)).users().get(userId);
         UserRepresentation ur = resource.toRepresentation();
         // set the UserRepresantation with the map value...
-        if (null != request.get(JsonKey.FIRST_NAME)) {
+        if (isNotNull(request.get(JsonKey.FIRST_NAME))) {
             ur.setFirstName((String) request.get(JsonKey.FIRST_NAME));
         }
-        if (null != request.get(JsonKey.LAST_NAME)) {
+        if (isNotNull(request.get(JsonKey.LAST_NAME))) {
             ur.setLastName((String) request.get(JsonKey.LAST_NAME));
         }
-        if (null != request.get(JsonKey.EMAIL)) {
+        if (isNotNull(request.get(JsonKey.EMAIL))) {
             ur.setEmail((String) request.get(JsonKey.EMAIL));
         }
-        if(request.get(JsonKey.USERNAME)!= null) {
+        if(isNotNull(request.get(JsonKey.USERNAME))) {
           ur.setUsername((String)request.get(JsonKey.USERNAME));
         }
         try {
@@ -145,7 +150,7 @@ public class KeyCloakServiceImpl implements SSOManager {
         String userId = (String) request.get(JsonKey.USER_ID);
         UserResource resource = keycloak.realm(cache.getProperty(JsonKey.SSO_REALM)).users().get(userId);
 
-        if (resource != null) {
+        if (isNotNull(resource)) {
             try {
                 resource.remove();
             } catch (Exception ex) {
@@ -170,7 +175,7 @@ public class KeyCloakServiceImpl implements SSOManager {
   public boolean isEmailVerified(String userId) {
     UserResource resource =
         keycloak.realm(cache.getProperty(JsonKey.SSO_REALM)).users().get(userId);
-    if (resource == null) {
+    if (isNull(resource)) {
       return false;
     }
     return resource.toRepresentation().isEmailVerified();

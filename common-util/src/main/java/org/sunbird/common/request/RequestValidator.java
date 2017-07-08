@@ -7,6 +7,9 @@ import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.responsecode.ResponseCode;
+import static org.sunbird.common.models.util.ProjectUtil.isNull;
+import static org.sunbird.common.models.util.ProjectUtil.isNotNull;
+
 
 /**
  * This call will do validation
@@ -35,7 +38,7 @@ public final class RequestValidator {
 	 * This method will do content state request data
 	 * validation. if all mandatory data is coming then it won't do any thing
 	 * if any mandatory data is missing then it will throw exception.
-	 * @param Request contentRequestDto
+	 * @param  contentRequestDto Request
 	 */
 	@SuppressWarnings("unchecked")
 	public static void validateUpdateContent(Request contentRequestDto) {
@@ -178,7 +181,7 @@ public final class RequestValidator {
 	
 	/**
 	 * This method will validate get page data api.
-	 * @param userRequest Request
+	 * @param request Request
 	 */
 	public static void validateGetPageData(String request) {
 	    if (request == null
@@ -191,7 +194,7 @@ public final class RequestValidator {
 	
 	/**
 	 * This method will validate add course request data.
-	 * @param userRequest Request
+	 * @param courseRequest Request
 	 */
 	public static void validateAddCourse(Request courseRequest) {
 
@@ -225,7 +228,7 @@ public final class RequestValidator {
 	
 	/**
 	 * This method will validate update course request data.
-	 * @param userRequest Request
+	 * @param request Request
 	 */
 	public static void validateUpdateCourse(Request request) {
 
@@ -239,7 +242,7 @@ public final class RequestValidator {
 	
 	/**
 	 * This method will validate published course request data.
-	 * @param userRequest Request
+	 * @param request Request
 	 */
 	public static void validatePublishCourse(Request request) {
 		 if (request.getRequest().get(JsonKey.COURSE_ID) == null) {
@@ -252,7 +255,7 @@ public final class RequestValidator {
 	
 	/**
 	 * This method will validate Delete course request data.
-	 * @param userRequest Request
+	 * @param request Request
 	 */
 	public static void validateDeleteCourse(Request request) {
 		 if (request.getRequest().get(JsonKey.COURSE_ID) == null) {
@@ -285,7 +288,7 @@ public final class RequestValidator {
 	
 	/**
 	 * This method will validate update section request data
-	 * @param userRequest Request
+	 * @param request Request
 	 */
 	public static void validateUpdateSection(Request request) {
 		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.SECTION_NAME) != null
@@ -313,7 +316,7 @@ public final class RequestValidator {
 	
 	/**
 	 * This method will validate create page data
-	 * @param userRequest Request
+	 * @param request Request
 	 */
 	public static void validateCreatePage(Request request) {
 		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.PAGE_NAME) != null
@@ -327,7 +330,7 @@ public final class RequestValidator {
 	
 	/**
 	 * This method will validate update page request data
-	 * @param userRequest Request
+	 * @param request Request
 	 */
 	public static void validateUpdatepage(Request request) {
 		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.PAGE_NAME) != null
@@ -348,7 +351,7 @@ public final class RequestValidator {
 	
 	/**
 	 * This method will validate save Assessment data.
-	 * @param userRequest Request
+	 * @param request Request
 	 */
 	public static void validateSaveAssessment(Request request) {
 		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.COURSE_ID) != null
@@ -406,7 +409,7 @@ public final class RequestValidator {
 	
 	/**
 	 * This method will validate get Assessment data.
-	 * @param userRequest Request
+	 * @param request Request
 	 */
 	public static void validateGetAssessment(Request request) {
 		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.COURSE_ID) != null
@@ -415,6 +418,23 @@ public final class RequestValidator {
 					ResponseCode.courseIdRequiredError.getErrorCode(),
 					ResponseCode.courseIdRequiredError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 			throw dataException;
+		}
+	}
+
+	/**
+	 * This method will validate user org requested data.
+	 * @param userRequest Request
+	 */
+	public static void validateUserOrg(Request userRequest) {
+		if (isNull(userRequest.getRequest().get(JsonKey.ORGANISATION_ID))
+				|| (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.ORGANISATION_ID)))) {
+			throw new ProjectCommonException(ResponseCode.orgIdRequired.getErrorCode(),
+					ResponseCode.orgIdRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+		}
+		if (isNull(userRequest.getRequest().get(JsonKey.USER_ID))
+				|| (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USER_ID)))) {
+			throw new ProjectCommonException(ResponseCode.userIdRequired.getErrorCode(),
+					ResponseCode.userIdRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 		}
 	}
 	

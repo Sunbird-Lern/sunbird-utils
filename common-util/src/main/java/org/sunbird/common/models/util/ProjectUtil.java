@@ -358,4 +358,13 @@ public class ProjectUtil {
 			return AssessmentResult.gradeF;
 		}
 	}
+
+    public static boolean isNull(Object obj){
+        return null == obj ? true:false;
+    }
+
+    public static boolean isNotNull(Object obj){
+        return null != obj? true:false;
+    }
+
 }
