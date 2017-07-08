@@ -82,6 +82,7 @@ public interface ResponseMessage {
 		public static final String DB_UPDATE_FAIL = "Db update operation failed.";
 		public static final String DATA_ALREADY_EXIST = "data already exist.";
 		public static final String INVALID_DATA = "INcorrect data.";
+		public static final String INVALID_COURSE_ID = "Course doesnot exist. Please provide a valid course identifier";
 	}
 
 	public interface Key {
@@ -160,6 +161,7 @@ public interface ResponseMessage {
 		public static final String DB_UPDATE_FAIL = "DB_UPDATE_FAIL";
 		public static final String DATA_ALREADY_EXIST = "DATA_ALREADY_EXIST";
 		public static final String INVALID_DATA = "INVALID_DATA";
+		public static final String INVALID_COURSE_ID = "INVALID_COURSE_ID";
 	}
 }
 

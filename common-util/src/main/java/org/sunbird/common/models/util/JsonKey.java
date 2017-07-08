@@ -16,6 +16,7 @@ public class JsonKey {
     public static final String CONTENT_IDS = "contentIds";
     public static final String CONTENT_LIST = "contentList";
     public static final String COURSE_ID = "courseId";
+    public static final String BATCH_ID = "batchId";
     public static final String RESPONSE = "response";
     public static final String COURSE_LIST = "courseList";
     public static final String COURSE = "course";
@@ -83,6 +84,7 @@ public class JsonKey {
     public static final String LAST_LOGIN_TIME ="lastLoginTime";
     public static final String PAGE = "page";
     public static final String COURSE_LOGO_URL = "courseLogoUrl";
+    public static final String APP_ICON = "appIcon";
 
     public static final String LEARNER_COURSE_DB = "learnerCourse_db";
     public static final String LEARNER_CONTENT_DB = "learnerContent_db";
@@ -234,4 +236,9 @@ public class JsonKey {
 	public static final String AADHAAR_NO = "aadhaarNo";
 	public static final String INSERT = "insert";
 	public static final String UPDATE = "update";
+	public static final String USER_ORG = "user_org";
+	public static final String APPROVED_BY = "approvedBy";
+	public static final String APPROOVE_DATE = "approvalDate";
+	public static final String ORG_JOIN_DATE = "orgJoinDate";
+	public static final String USER_ORG_DB = "user_org_db";
 }
