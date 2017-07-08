@@ -53,6 +53,7 @@ public class CassandraTest {
    		coursemap.put("courseName", "courseName1");
    		coursemap.put("userId", "userId2");
    		coursemap.put("courseId", "courseId2");
+   		coursemap.put("batchId", "1");
    		coursemap.put("enrolledDate", "2017-05-15 10:58:07:509+0530");
    		coursemap.put("description", "description");
    		coursemap.put("tocUrl", "tocUrl");
@@ -64,6 +65,7 @@ public class CassandraTest {
    		coursemap1.put("courseName", "courseName1");
    		coursemap1.put("courseId", "courseId2"); 
    		coursemap1.put("userId", "userId2");
+   		coursemap1.put("batchId", "1");
    		
    		contentmap1.put("contentId", "contentId1");
    		contentmap1.put("status", 1);
@@ -89,13 +91,13 @@ public class CassandraTest {
 	
 	@Test
 	public void testACourseInsertion() {
-		Response response=operation.insertRecord(cach.getProperty("keyspace"), "course_enrollment", coursemap);
+		Response response=operation.insertRecord(cach.getProperty("keyspace"), "user_courses", coursemap);
     	assertEquals("SUCCESS", response.get("response"));
 	}
 	
 	@Test(expected=ProjectCommonException.class)
 	public void testACourseInsertionWithSameId() {
-		operation.insertRecord(cach.getProperty("keyspace"), "course_enrollment", coursemap);
+		operation.insertRecord(cach.getProperty("keyspace"), "user_courses", coursemap);
 	}
 	
 	
@@ -111,20 +113,20 @@ public class CassandraTest {
 	}
 	@Test(expected=ProjectCommonException.class)
 	public void testFailedGetRecordById() {
-		operation.getRecordById("keySpace", "course_enrollment", "courseId2##userId2");
+		operation.getRecordById("keySpace", "user_courses", "courseId2##userId2");
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testBGetCourseById() {
-		Response response=operation.getRecordById(cach.getProperty("keyspace"), "course_enrollment", "courseId2##userId2");
+		Response response=operation.getRecordById(cach.getProperty("keyspace"), "user_courses", "courseId2##userId2");
 		assertEquals(1,((List<Map<String, Object>>)(response.getResult().get("response"))).size());
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testBGetAllCourse() {
-		Response response=operation.getAllRecords(cach.getProperty("keyspace"), "course_enrollment");
+		Response response=operation.getAllRecords(cach.getProperty("keyspace"), "user_courses");
 		assertTrue(((List<Map<String, Object>>)(response.getResult().get("response"))).size() > 0);
 	}
 	@Test(expected=ProjectCommonException.class)
@@ -134,12 +136,12 @@ public class CassandraTest {
 	
 	@Test
 	public void testBgetPropertiesValueById() {
-		Response response=operation.getPropertiesValueById(cach.getProperty("keyspace"), "course_enrollment", "courseId2##userId2","courseId","delta");
+		Response response=operation.getPropertiesValueById(cach.getProperty("keyspace"), "user_courses", "courseId2##userId2","courseId","delta");
 		assertTrue(response!=null);
 	}
 	@Test(expected=ProjectCommonException.class)
 	public void testBgetPropertiesValueByIdWithException() {
-		operation.getPropertiesValueById(cach.getProperty("keyspace"), "course_enrollment", "courseId2##userId2","unknownColumn");
+		operation.getPropertiesValueById(cach.getProperty("keyspace"), "user_courses", "courseId2##userId2","unknownColumn");
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -152,7 +154,7 @@ public class CassandraTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testCgetCourseByProperty() {
-		Response response=operation.getRecordsByProperty(cach.getProperty("keyspace"), "course_enrollment", "userId", "userId2");
+		Response response=operation.getRecordsByProperty(cach.getProperty("keyspace"), "user_courses", "userId", "userId2");
 		assertTrue(((List<Map<String, Object>>)(response.getResult().get("response"))).size()>0);
 	}
 	
@@ -175,7 +177,7 @@ public class CassandraTest {
 		list.add("courseId2##userId2");
 		list.add("courseId2##userId2");
 		list.add("courseId2##userId2");
-		Response response=operation.getRecordsByProperty(cach.getProperty("keyspace"), "course_enrollment", "id", list);
+		Response response=operation.getRecordsByProperty(cach.getProperty("keyspace"), "user_courses", "id", list);
 		assertTrue(((List<Map<String, Object>>)(response.getResult().get("response"))).size()>0);
 	}
 	
@@ -185,14 +187,14 @@ public class CassandraTest {
 		list.add("courseId2##userId2");
 		list.add("courseId2##userId2");
 		list.add("courseId2##userId2");
-		operation.getRecordsByProperty("eySpace", "course_enrollment", "id", list);
+		operation.getRecordsByProperty("eySpace", "user_courses", "id", list);
 	}
 	
 	@Test
 	public void testCUpdateCourseById() {
 		coursemap.put("delta", "delta as json string updated");
-		operation.upsertRecord(cach.getProperty("keyspace"), "course_enrollment", coursemap);
-		Response response=operation.getRecordById(cach.getProperty("keyspace"), "course_enrollment", "courseId2##userId2");
+		operation.upsertRecord(cach.getProperty("keyspace"), "user_courses", coursemap);
+		Response response=operation.getRecordById(cach.getProperty("keyspace"), "user_courses", "courseId2##userId2");
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> result =  (List<Map<String, Object>>)response.getResult().get("response");
 		Map<String, Object> map = result.get(0);
@@ -212,13 +214,13 @@ public class CassandraTest {
 		HashMap<String, Object> map = new HashMap<>();
 		map.putAll(coursemap);
 		map.put("id", "courseId2");
-		operation.updateRecord(cach.getProperty("keyspace"), "course_enrollment", map);
+		operation.updateRecord(cach.getProperty("keyspace"), "user_courses", map);
 	}
 	
 	@Test(expected=ProjectCommonException.class)
 	public void testCFailedUpdateById() {
 		coursemap.put("delta", "delta as json string updated");
-		operation.updateRecord("eySpace", "course_enrollment", coursemap);
+		operation.updateRecord("eySpace", "user_courses", coursemap);
 	}
 	
 	@Test
@@ -244,7 +246,7 @@ public class CassandraTest {
 	
 	@Test
 	public void testZDeleteCourse() {
-		Response response=operation.deleteRecord(cach.getProperty("keyspace"), "course_enrollment", "courseId2##userId2");
+		Response response=operation.deleteRecord(cach.getProperty("keyspace"), "user_courses", "courseId2##userId2");
 		assertEquals("SUCCESS", response.get("response"));
 	}
 
@@ -260,13 +262,13 @@ public class CassandraTest {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testCgetRecordCourseByProperties() {
-		Response response=operation.getRecordsByProperties(cach.getProperty("keyspace"), "course_enrollment", coursemap1);
+		Response response=operation.getRecordsByProperties(cach.getProperty("keyspace"), "user_courses", coursemap1);
 		assertTrue(((List<Map<String, Object>>)(response.get("response"))).size()>0);
 	}
 	@Test(expected=ProjectCommonException.class)
 	@SuppressWarnings("unchecked")
 	public void testCgetRecordCourseByPropertiesFailureCase() {
-		Response response=operation.getRecordsByProperties("keySpace", "course_enrollment", coursemap1);
+		Response response=operation.getRecordsByProperties("keySpace", "user_courses", coursemap1);
 		assertTrue(((List<Map<String, Object>>)(response.get("response"))).size()>0);
 	}
 	
