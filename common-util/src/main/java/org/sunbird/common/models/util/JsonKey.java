@@ -101,6 +101,7 @@ public class JsonKey {
     public static final String MASTER_ACTION = "master_action";
     public static final String URL_ACTION = "url_action";
     public static final String ACTION_GROUP = "action_group";
+    public static final String ACTION_GROUPS = "actionGroups";
     public static final String USER_ACTION_ROLE = "user_action_role";
     public static final String ROLE_GROUP = "role_group";
     public static final String DB_IP="db.ip";
@@ -108,7 +109,7 @@ public class JsonKey {
     public static final String DB_USERNAME="db.username";
     public static final String DB_PASSWORD="db.password";
     public static final String DB_KEYSPACE="db.keyspace";
-
+   //
 	public static final String SECTION_NAME = "name";
 	public static final String SEARCH_QUERY = "searchQuery";
 	public static final String SECTION_DATA_TYPE = "sectionDataType";
@@ -217,6 +218,11 @@ public class JsonKey {
 	public static final String JOB_PROFILE = "jobProfile";
 	public static final String YEAR_OF_PASSING = "yearOfPassing";
 	public static final String PERCENTAGE = "percentage";
+	public static final String ROLE_GROUP_ID = "rolegroupid";
+    public static final String  URL_ACTION_ID = "url_action_ids";
+    public static final String ACTIONS = "actions";
+    public static  final String URLS = "urls";
+    public static final String URL = "url";
 	public static final String ADDRESS_ID = "addressId";
 	public static final String GROUP = "group";
 	public static final String INDEX = "index";
