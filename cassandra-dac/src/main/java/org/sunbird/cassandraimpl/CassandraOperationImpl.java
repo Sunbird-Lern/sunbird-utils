@@ -57,7 +57,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 				throw new ProjectCommonException(ResponseCode.dataAlreadyExist.getErrorCode(), ResponseCode.dataAlreadyExist.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 			}
 		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
+			LOGGER.error("Exception occured while inserting record to "+ tableName +" : "+e.getMessage(), e);
 			 throw new ProjectCommonException(ResponseCode.dbInsertionError.getErrorCode(), ResponseCode.dbInsertionError.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		return response;
@@ -92,7 +92,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 				throw new ProjectCommonException(ResponseCode.invalidData.getErrorCode(), ResponseCode.invalidData.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 			}
 		}catch(Exception e){
-			LOGGER.error(e.getMessage(), e);
+			LOGGER.error("Exception occured while updating record to "+ tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.dbUpdateError.getErrorCode(), ResponseCode.dbUpdateError.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		return response;
@@ -108,7 +108,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 		 CassandraConnectionManager.getSession(keyspaceName).execute(delete);
 		 response.put(Constants.RESPONSE, Constants.SUCCESS);
 		}catch(Exception e){
-			LOGGER.error(e.getMessage(), e);
+			LOGGER.error("Exception occured while deleting record from "+ tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		 return response;
@@ -126,7 +126,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(selectQuery);
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
-			LOGGER.error(e.getMessage(), e);
+			LOGGER.error("Exception occured while fetching record from "+ tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		 return response;
@@ -146,7 +146,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 			results  = session.execute(selectQuery);
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
-			LOGGER.error(e.getMessage(), e);
+			LOGGER.error("Exception occured while fetching record from "+ tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		 return response;
@@ -164,7 +164,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(selectQuery);
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
-			LOGGER.error(e.getMessage(), e);
+			LOGGER.error("Exception occured while fetching record from "+ tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		 return response;
@@ -190,7 +190,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(selectQuery.allowFiltering());
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
-			LOGGER.error(e.getMessage(), e);
+			LOGGER.error("Exception occured while fetching record from "+ tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		 return response;
@@ -207,7 +207,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement.bind(id));
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
-			LOGGER.error(e.getMessage(), e);
+			LOGGER.error("Exception occured while fetching record from "+ tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		return response;
@@ -222,7 +222,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(selectQuery);
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
-			LOGGER.error(e.getMessage(), e);
+			LOGGER.error("Exception occured while fetching record from "+ tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		return response;
@@ -252,7 +252,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 				throw new ProjectCommonException(ResponseCode.dataAlreadyExist.getErrorCode(), ResponseCode.dataAlreadyExist.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 			}
 		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
+			LOGGER.error("Exception occured while upserting record from "+ tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		return response;
