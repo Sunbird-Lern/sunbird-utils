@@ -95,16 +95,66 @@ public final class RequestValidator {
 		} 
 	}
 	
-	public static void validateCreateOrganisation(Request request) {
-		if (request.getRequest().get(JsonKey.ORG_NAME) == null) {
-			throw new ProjectCommonException(ResponseCode.organisationNameRequired.getErrorCode(),
-					ResponseCode.organisationNameRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-		}
-	}
-	
-	
-	/**
-	 * This method will validate update user data.
+
+  public static void validateCreateOrg(Request request) {
+    if (request.getRequest().get(JsonKey.ORG_NAME) == null) {
+      throw new ProjectCommonException(ResponseCode.organisationNameRequired.getErrorCode(),
+          ResponseCode.organisationNameRequired.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+  }
+
+  public static void validateApproveOrg(Request request) {
+    if (request.getRequest().get(JsonKey.ORGANISATION_ID) == null) {
+      throw new ProjectCommonException(ResponseCode.organisationIdRequiredError.getErrorCode(),
+          ResponseCode.organisationIdRequiredError.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    if (request.getRequest().get(JsonKey.IS_APPROVED) == null) {
+      if (!(request.getRequest().get(JsonKey.IS_APPROVED) instanceof Boolean)) {
+        throw new ProjectCommonException(ResponseCode.invalidRequestData.getErrorCode(),
+            ResponseCode.invalidRequestData.getErrorMessage(),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
+    }
+  }
+
+  public static void validateUpdateOrg(Request request) {
+    if (request.getRequest().get(JsonKey.ORGANISATION_ID) == null) {
+      throw new ProjectCommonException(ResponseCode.organisationIdRequiredError.getErrorCode(),
+          ResponseCode.organisationIdRequiredError.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    if (request.getRequest().get(JsonKey.STATUS) != null) {
+      throw new ProjectCommonException(ResponseCode.invalidRequestData.getErrorCode(),
+          ResponseCode.invalidRequestData.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+  }
+
+  public static void validateUpdateOrgStatus(Request request) {
+    if (request.getRequest().get(JsonKey.ORGANISATION_ID) == null) {
+      throw new ProjectCommonException(ResponseCode.organisationIdRequiredError.getErrorCode(),
+          ResponseCode.organisationIdRequiredError.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    if (request.getRequest().get(JsonKey.STATUS) == null) {
+      throw new ProjectCommonException(ResponseCode.invalidRequestData.getErrorCode(),
+          ResponseCode.invalidRequestData.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+  }
+
+  public static void validateGetOrg(Request request) {
+    if (request.getRequest().get(JsonKey.ORGANISATION_ID) == null) {
+      throw new ProjectCommonException(ResponseCode.organisationIdRequiredError.getErrorCode(),
+          ResponseCode.organisationIdRequiredError.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+  }
+
+  /**
+   * This method will validate update user data.
 	 * @param userRequest Request
 	 */
 	@SuppressWarnings("rawtypes")
