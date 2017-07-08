@@ -231,6 +231,7 @@ public class JsonKey {
 	public static final String ROLES = "roles";
 	public static final String PUBLIC = "public";
 	public static final String EXTERNAL_ID = "externalId";
+	public static final String EXTERNAL_ID_VALUE = "externalIdValue";
 	public static final String IS_VERIFIED = "isVerified";
 	public static final String PHONE = "phone";
 	public static final String AADHAAR_NO = "aadhaarNo";
@@ -241,4 +242,8 @@ public class JsonKey {
 	public static final String APPROOVE_DATE = "approvalDate";
 	public static final String ORG_JOIN_DATE = "orgJoinDate";
 	public static final String USER_ORG_DB = "user_org_db";
+	public static final String EMAIL_VERIFIED = "email_verified";
+    public static final String PHONE_NUMBER_VERIFIED = "phone_number_verified";
+    public static final String PROVIDER = "provider";
+    public static final String LOGIN_ID = "loginId";
 }
