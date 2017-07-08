@@ -32,10 +32,12 @@ import com.datastax.driver.core.policies.DefaultRetryPolicy;
  * @author Amit Kumar
  */
 public final class CassandraConnectionManager {
-	private final static Logger LOGGER = Logger.getLogger(CassandraOperationImpl.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(CassandraOperationImpl.class.getName());
 	//Map<keySpaceName,Session>
     private static Map<String,Session> cassandraSessionMap = new HashMap<>();
     private static Map<String,Cluster> cassandraclusterMap = new HashMap<>();
+    
+    private CassandraConnectionManager(){}
     static{
     	registerShutDownHook();
     }
@@ -163,14 +165,13 @@ public final class CassandraConnectionManager {
 	 * the run method to clean up the resource.
 	 */
 	static class ResourceCleanUp extends Thread {
+	      @Override
 		  public void run() {
 			  LOGGER.info("started resource cleanup Cassandra.");
-			  for(String key: cassandraSessionMap.keySet()){
-					cassandraSessionMap.get(key).close();
-					cassandraclusterMap.get(key).close();
+			  for(Map.Entry<String,Session> entry: cassandraSessionMap.entrySet()){
+					cassandraSessionMap.get(entry.getKey()).close();
+					cassandraclusterMap.get(entry.getKey()).close();
 				}
-				cassandraSessionMap=null;
-				cassandraclusterMap=null;
 			  LOGGER.info("completed resource cleanup Cassandra.");
 		  }
 	}
