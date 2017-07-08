@@ -35,7 +35,8 @@ public class KeyCloakServiceImplTest {
         request.put(JsonKey.PASSWORD , "password");
         request.put(JsonKey.FIRST_NAME , "A");
         request.put(JsonKey.LAST_NAME , "B");
-
+        request.put(JsonKey.EMAIL_VERIFIED , true);
+        request.put(JsonKey.EMAIL , userName.substring(0,10));
         userId = keyCloakService.createUser(request);
         Assert.assertNotNull(userId);
     }
