@@ -85,6 +85,7 @@ public interface ResponseMessage {
 		public static final String INVALID_COURSE_ID = "Course doesnot exist. Please provide a valid course identifier";
 		public static final String PHONE_NO_REQUIRED_ERROR = "Phone number is required.";
 		public static final String ORG_ID_MISSING ="Organisation Id required .";
+		public static final String ACTOR_CONNECTION_ERROR = "Service is not able to connect with actor.";
 	}
 
 	public interface Key {
@@ -100,7 +101,7 @@ public interface ResponseMessage {
 		public static final String COURSE_ID_MISSING_ERROR = "COURSE_ID_REQUIRED_ERROR";
 		public static final String API_KEY_MISSING_ERROR = "API_KEY_REQUIRED_ERROR";
 		public static final String API_KEY_INVALID_ERROR = "API_KEY_INVALID_ERROR";
-		public static final String INTERNAL_ERROR = "API_KEY_INVALID_ERROR";
+		public static final String INTERNAL_ERROR = "INTERNAL_ERROR";
 		public static final String COURSE_NAME_MISSING = "COURSE_NAME_REQUIRED_ERROR";
 		public static final String SUCCESS_MESSAGE = "SUCCESS";
 		public static final String SESSION_ID_MISSING = "SESSION_ID_REQUIRED_ERROR";
@@ -166,6 +167,7 @@ public interface ResponseMessage {
 		public static final String INVALID_COURSE_ID = "INVALID_COURSE_ID";
 		public static final String PHONE_NO_REQUIRED_ERROR = "PHONE_NO_REQUIRED_ERROR";
 		public static final String ORG_ID_MISSING = "ORG_ID_MISSING";
+		public static final String ACTOR_CONNECTION_ERROR = "ACTOR_CONNECTION_ERROR";
 	}
 }
 
