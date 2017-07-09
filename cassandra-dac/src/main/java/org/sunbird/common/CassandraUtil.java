@@ -20,8 +20,10 @@ import com.datastax.driver.core.Row;
  */
 public final class CassandraUtil{
 
-	private final static LogHelper LOGGER = LogHelper.getInstance(CassandraUtil.class.getName());
-	private final static PropertiesCache instance = PropertiesCache.getInstance();
+	private static final LogHelper LOGGER = LogHelper.getInstance(CassandraUtil.class.getName());
+	private static final PropertiesCache instance = PropertiesCache.getInstance();
+	
+	private CassandraUtil(){}
 	
 	/**
 	 * @desc This method is used to create prepared statement based on table name and column name provided in request

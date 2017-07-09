@@ -35,10 +35,10 @@ import com.datastax.driver.core.querybuilder.Select.Where;
  */
 public class CassandraOperationImpl implements CassandraOperation{
 
-	private final static LogHelper LOGGER = LogHelper.getInstance(CassandraOperationImpl.class.getName());
+	private static final LogHelper LOGGER = LogHelper.getInstance(CassandraOperationImpl.class.getName());
 	
 	@Override
-	public Response insertRecord(String keyspaceName, String tableName, Map<String, Object> request) throws ProjectCommonException {
+	public Response insertRecord(String keyspaceName, String tableName, Map<String, Object> request){
 		Response response = new Response();
 		try {
 			String query = CassandraUtil.getPreparedStatement(keyspaceName,tableName,request);
@@ -65,7 +65,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 
 
 	@Override
-	public Response updateRecord(String keyspaceName, String tableName, Map<String, Object> request) throws ProjectCommonException {
+	public Response updateRecord(String keyspaceName, String tableName, Map<String, Object> request){
 		Response response = new Response();
 		try{
 		String query = CassandraUtil.getUpdateQueryStatement(keyspaceName, tableName, request);
@@ -83,7 +83,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 		for(String key : arr){
 			array[i++] = request.get(key.trim());
 		}
-		array[i++] = request.get(Constants.IDENTIFIER);
+		array[i] = request.get(Constants.IDENTIFIER);
 		BoundStatement boundStatement = statement.bind(array);
 		ResultSet result= CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement);
 			if(result.wasApplied()){
@@ -92,7 +92,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 				throw new ProjectCommonException(ResponseCode.invalidData.getErrorCode(), ResponseCode.invalidData.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 			}
 		}catch(Exception e){
-			LOGGER.error("Exception occured while updating record to "+ tableName +" : "+e.getMessage(), e);
+			LOGGER.error(Constants.EXCEPTION_MSG_UPDATE + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.dbUpdateError.getErrorCode(), ResponseCode.dbUpdateError.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		return response;
@@ -100,7 +100,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 
 
 	@Override
-	public Response deleteRecord(String keyspaceName, String tableName, String identifier) throws ProjectCommonException{
+	public Response deleteRecord(String keyspaceName, String tableName, String identifier){
 		Response response = new Response();
 		try{
 		Delete.Where delete = QueryBuilder.delete().from(keyspaceName, tableName)
@@ -108,7 +108,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 		 CassandraConnectionManager.getSession(keyspaceName).execute(delete);
 		 response.put(Constants.RESPONSE, Constants.SUCCESS);
 		}catch(Exception e){
-			LOGGER.error("Exception occured while deleting record from "+ tableName +" : "+e.getMessage(), e);
+			LOGGER.error(Constants.EXCEPTION_MSG_DELETE + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		 return response;
@@ -116,7 +116,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 
 
 	@Override
-	public Response getRecordById(String keyspaceName, String tableName, String identifier) throws ProjectCommonException{
+	public Response getRecordById(String keyspaceName, String tableName, String identifier){
 		Response response = new Response();
 		try{
 			Select selectQuery = QueryBuilder.select().all().from(keyspaceName, tableName);
@@ -126,7 +126,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(selectQuery);
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
-			LOGGER.error("Exception occured while fetching record from "+ tableName +" : "+e.getMessage(), e);
+			LOGGER.error(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		 return response;
@@ -134,7 +134,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 
 
 	@Override
-	public Response getRecordsByProperty(String keyspaceName, String tableName, String propertyName, Object propertyValue) throws ProjectCommonException{
+	public Response getRecordsByProperty(String keyspaceName, String tableName, String propertyName, Object propertyValue){
 		Response response = new Response();
 		try{
 			Select selectQuery = QueryBuilder.select().all().from(keyspaceName, tableName);
@@ -146,7 +146,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 			results  = session.execute(selectQuery);
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
-			LOGGER.error("Exception occured while fetching record from "+ tableName +" : "+e.getMessage(), e);
+			LOGGER.error(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		 return response;
@@ -154,7 +154,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 
 	@Override
 	public Response getRecordsByProperty(String keyspaceName, String tableName, String propertyName,
-			List<Object> propertyValueList) throws ProjectCommonException{
+			List<Object> propertyValueList){
 		Response response = new Response();
 		try{
 			Select selectQuery = QueryBuilder.select().all().from(keyspaceName, tableName);
@@ -164,7 +164,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(selectQuery);
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
-			LOGGER.error("Exception occured while fetching record from "+ tableName +" : "+e.getMessage(), e);
+			LOGGER.error(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		 return response;
@@ -172,7 +172,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 
 
 	@Override
-	public Response getRecordsByProperties(String keyspaceName, String tableName, Map<String, Object> propertyMap) throws ProjectCommonException{
+	public Response getRecordsByProperties(String keyspaceName, String tableName, Map<String, Object> propertyMap){
 		Response response = new Response();
 		try{
 			Select selectQuery = QueryBuilder.select().all().from(keyspaceName, tableName);
@@ -190,7 +190,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(selectQuery.allowFiltering());
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
-			LOGGER.error("Exception occured while fetching record from "+ tableName +" : "+e.getMessage(), e);
+			LOGGER.error(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		 return response;
@@ -198,7 +198,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 
 
 	@Override
-	public Response getPropertiesValueById(String keyspaceName, String tableName, String id, String... properties)  throws ProjectCommonException{
+	public Response getPropertiesValueById(String keyspaceName, String tableName, String id, String... properties){
 		Response response = new Response();
 		try{
 			String selectQuery = CassandraUtil.getSelectStatement(keyspaceName, tableName, properties);
@@ -207,7 +207,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement.bind(id));
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
-			LOGGER.error("Exception occured while fetching record from "+ tableName +" : "+e.getMessage(), e);
+			LOGGER.error(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		return response;
@@ -215,14 +215,14 @@ public class CassandraOperationImpl implements CassandraOperation{
 
 
 	@Override
-	public Response getAllRecords(String keyspaceName, String tableName)  throws ProjectCommonException{
+	public Response getAllRecords(String keyspaceName, String tableName){
 		Response response = new Response();
 		try{
 			Select selectQuery = QueryBuilder.select().all().from(keyspaceName, tableName);
 			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(selectQuery);
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
-			LOGGER.error("Exception occured while fetching record from "+ tableName +" : "+e.getMessage(), e);
+			LOGGER.error(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		return response;
@@ -231,8 +231,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 
 	
 	@Override
-	public Response upsertRecord(String keyspaceName, String tableName, Map<String, Object> request)
-			throws ProjectCommonException {
+	public Response upsertRecord(String keyspaceName, String tableName, Map<String, Object> request){
 
 		Response response = new Response();
 		try {
@@ -252,7 +251,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 				throw new ProjectCommonException(ResponseCode.dataAlreadyExist.getErrorCode(), ResponseCode.dataAlreadyExist.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 			}
 		} catch (Exception e) {
-			LOGGER.error("Exception occured while upserting record from "+ tableName +" : "+e.getMessage(), e);
+			LOGGER.error(Constants.EXCEPTION_MSG_UPSERT + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		return response;
