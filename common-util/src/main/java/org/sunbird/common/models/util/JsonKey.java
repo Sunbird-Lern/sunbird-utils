@@ -250,4 +250,5 @@ public class JsonKey {
     public static final String PHONE_NUMBER_VERIFIED = "phone_number_verified";
     public static final String PROVIDER = "provider";
     public static final String LOGIN_ID = "loginId";
+    public static final String LOGIN_ID_DELIMETER = "@";
 }
