@@ -92,6 +92,7 @@ public enum ResponseCode {
 	actorConnectionError(ResponseMessage.Key.ACTOR_CONNECTION_ERROR, ResponseMessage.Message.ACTOR_CONNECTION_ERROR),
 	userAlreadyExist(ResponseMessage.Key.USER_ALREADY_EXIST, ResponseMessage.Message.USER_ALREADY_EXIST),
 	loginIdRequired(ResponseMessage.Key.LOGIN_ID_MISSING, ResponseMessage.Message.LOGIN_ID_MISSING),
+	userNotFound(ResponseMessage.Key.USER_NOT_FOUND, ResponseMessage.Message.USER_NOT_FOUND),
 	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404);
 	
 	private int responseCode;
