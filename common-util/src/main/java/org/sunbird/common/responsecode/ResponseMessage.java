@@ -90,6 +90,8 @@ public interface ResponseMessage {
 		public static final String PHONE_NO_REQUIRED_ERROR = "Phone number is required.";
 		public static final String ORG_ID_MISSING ="Organisation Id required.";
 		public static final String ACTOR_CONNECTION_ERROR = "Service is not able to connect with actor.";
+		public static final String USER_ALREADY_EXIST = "user already exist.";
+		public static final String LOGIN_ID_MISSING = "loginId is required.";
 	}
     public interface Key {
         public static final String UNAUTHORISE_USER = "UNAUTHORISE_USER";
@@ -175,5 +177,7 @@ public interface ResponseMessage {
 		public static final String PHONE_NO_REQUIRED_ERROR = "PHONE_NO_REQUIRED_ERROR";
 		public static final String ORG_ID_MISSING = "ORG_ID_MISSING";
 		public static final String ACTOR_CONNECTION_ERROR = "ACTOR_CONNECTION_ERROR";
+		public static final String USER_ALREADY_EXIST = "USER_ALREADY_EXIST";
+		public static final String LOGIN_ID_MISSING = "LOGIN_ID_MISSING";
     }
 }

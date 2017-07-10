@@ -23,7 +23,8 @@ public enum ActorOperations {
     GET_RECOMMENDED_COURSES("getRecommendedCourses"),
     UPDATE_USER_INFO_ELASTIC("updateUserInfoToElastic"),GET_ROLES("getRoles"),
 	APPROVE_ORGANISATION("approveOrganisation"), JOIN_USER_ORGANISATION("joinUserOrganisation"),
-	APPROVE_USER_ORGANISATION("approveUserOrganisation"),COMPOSITE_SEARCH("compositeSearch");
+	APPROVE_USER_ORGANISATION("approveUserOrganisation"),COMPOSITE_SEARCH("compositeSearch"),
+	VERIFY_USER_EXISTENCE("verifyUserExistence");
 
     private String value;
 
