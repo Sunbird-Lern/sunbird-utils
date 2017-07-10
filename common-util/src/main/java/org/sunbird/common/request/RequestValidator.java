@@ -486,7 +486,16 @@ public final class RequestValidator {
 					ResponseCode.userIdRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 		}
 	}
-
+	/**
+     * This method will validate verifyUser requested data.
+     * @param userRequest Request
+     */
+    public static void validateVerifyUser(Request userRequest) {
+        if(ProjectUtil.isStringNullOREmpty((String)userRequest.getRequest().get(JsonKey.LOGIN_ID))){
+          throw new ProjectCommonException(ResponseCode.loginIdRequired.getErrorCode(),
+              ResponseCode.loginIdRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+        }
+    }
 	
 	/**
      * This method will validate composite search request data.
