@@ -44,7 +44,12 @@ public class KeyCloakServiceImpl implements SSOManager {
         CredentialRepresentation credential = new CredentialRepresentation();
 
         UserRepresentation user = new UserRepresentation();
-        user.setUsername((String) request.get(JsonKey.USERNAME));
+    if (isNotNull(request.get(JsonKey.PROVIDER))) {
+      user.setUsername((String) request.get(JsonKey.USERNAME) + JsonKey.LOGIN_ID_DELIMETER
+          + (String) request.get(JsonKey.PROVIDER));
+    }else{
+         user.setUsername((String) request.get(JsonKey.USERNAME));
+        }
         if (isNotNull(request.get(JsonKey.FIRST_NAME))) {
             user.setFirstName((String) request.get(JsonKey.FIRST_NAME));
         }
@@ -127,7 +132,12 @@ public class KeyCloakServiceImpl implements SSOManager {
             ur.setEmail((String) request.get(JsonKey.EMAIL));
         }
         if(isNotNull(request.get(JsonKey.USERNAME))) {
-          ur.setUsername((String)request.get(JsonKey.USERNAME));
+      if (isNotNull(request.get(JsonKey.PROVIDER))) {
+        ur.setUsername((String) request.get(JsonKey.USERNAME) + JsonKey.LOGIN_ID_DELIMETER
+            + (String) request.get(JsonKey.PROVIDER));
+      }else{
+          ur.setUsername((String) request.get(JsonKey.USERNAME));
+        }
         }
         try {
             resource.update(ur);
