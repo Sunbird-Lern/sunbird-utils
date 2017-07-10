@@ -266,12 +266,13 @@ public class ElasticSearchUtil {
 
     /**
      * Method to perform the elastic search on the basis of SearchDTO . SearchDTO contains the search criteria like fields, facets, sort by , filters etc.
+     * here user can pass single type to search or multiple type or null
      * @param searchDTO
      * @param index
-     * @param type
+     * @param type var arg of String
      * @return search result as Map.
      */
-    public static Map<String,List<Map<String,Object>>>  complexSearch(SearchDTO searchDTO, String index, String type) {
+    public static Map<String,List<Map<String,Object>>>  complexSearch(SearchDTO searchDTO, String index, String ... type) {
 
         SearchRequestBuilder searchRequestBuilder = getSearchBuilder(ConnectionManager.getClient(), index, type);
 
@@ -386,9 +387,9 @@ public class ElasticSearchUtil {
         query.should(boolQueryBuilder);
     }
 
-    private static SearchRequestBuilder getSearchBuilder(TransportClient client, String index, String type) {
+    private static SearchRequestBuilder getSearchBuilder(TransportClient client, String index, String ... type) {
 
-        if (ProjectUtil.isStringNullOREmpty(type)) {
+        if (type == null || type.length==0) {
             return client.prepareSearch()
                     .setIndices(index);
         } else {
