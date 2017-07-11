@@ -55,6 +55,11 @@ public final class RequestValidator {
 									ResponseCode.contentIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
 							throw dataException;
 						}
+						if(ProjectUtil.isNull(map.get(JsonKey.STATUS))){
+							ProjectCommonException dataException = new ProjectCommonException(ResponseCode.contentStatusRequired.getErrorCode(),
+									ResponseCode.contentStatusRequired.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+							throw dataException;
+						}
 						
 					}else{
 						ProjectCommonException dataException = new ProjectCommonException(ResponseCode.contentIdRequired.getErrorCode(),
