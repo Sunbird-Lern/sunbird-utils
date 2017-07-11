@@ -253,4 +253,5 @@ public class JsonKey {
     public static final String USER_FOUND = "user exist with this login Id.";
     public static final String USER_NOT_FOUND = "user does not exist with this login Id.";
     public static final String LOGIN_ID_DELIMETER = "@";
+    public static final String CONTENT_PROGRESS = "progress";
 }
