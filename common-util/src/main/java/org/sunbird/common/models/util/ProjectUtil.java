@@ -22,7 +22,7 @@ public class ProjectUtil {
     /**
      * format the date in YYYY-MM-DD hh:mm:ss:SSZ
      */
-    public static final SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss:SSSZ");
+    public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss:SSSZ");
     private static AtomicInteger atomicInteger = new AtomicInteger();
 
     public static final long BACKGROUND_ACTOR_WAIT_TIME = 30;
@@ -259,7 +259,7 @@ public class ProjectUtil {
 	 *
 	 */
 	public enum EsType {
-		course("course"), content("content"), user("user"), education("org");
+		course("course"), content("content"), user("user"), organisation("org");
 		private String typeName;
 
 		private EsType(String name) {
