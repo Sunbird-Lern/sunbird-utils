@@ -1,5 +1,6 @@
 package org.sunbird.cassandra;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -47,7 +48,6 @@ public class CassandraTest {
    		contentmap.put("lastUpdatedTime", "2017-05-15 10:58:07:509+0530" );
    		contentmap.put("lastAccessTime", "2017-05-15 10:58:07:509+0530");
    		contentmap.put("lastCompletedTime", "2017-05-15 10:58:07:509+0530");
-   		contentmap.put("viewPosition", "viewPosition 1");
    		contentmap.put("id", "contentId1##userId2");
    		
    		coursemap.put("courseName", "courseName1");
@@ -225,13 +225,13 @@ public class CassandraTest {
 	
 	@Test
 	public void testCUpdateContentById() {
-		contentmap.put("viewPosition", "viewPosition 1 updated");
+		contentmap.put(JsonKey.CONTENT_PROGRESS, 80);
 		operation.updateRecord(cach.getProperty("keyspace"), "content_consumption", contentmap);
 		Response response=operation.getRecordById(cach.getProperty("keyspace"), "content_consumption", "contentId1##userId2");
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> result =  (List<Map<String, Object>>)response.getResult().get("response");
 		Map<String, Object> map = result.get(0);
-		assertTrue(((String)map.get("viewPosition")).equalsIgnoreCase("viewPosition 1 updated"));
+		assertEquals(80 , (int)map.get(JsonKey.CONTENT_PROGRESS));
 	}
 	@Test
 	public void testZDeleteContent() {
