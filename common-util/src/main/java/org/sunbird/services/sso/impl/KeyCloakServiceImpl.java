@@ -169,7 +169,7 @@ public class KeyCloakServiceImpl implements SSOManager {
             }
 
         }
-        return (String) JsonKey.SUCCESS;
+        return JsonKey.SUCCESS;
     }
     
     /**

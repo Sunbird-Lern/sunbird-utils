@@ -93,6 +93,7 @@ public interface ResponseMessage {
 		public static final String USER_ALREADY_EXIST = "user already exist.";
 		public static final String LOGIN_ID_MISSING = "loginId is required.";
 		public static final String CONTENT_STATUS_MISSING_ERROR = "content status is required .";
+		public static final String USER_NOT_FOUND = "user not found.";
 	}
     public interface Key {
         public static final String UNAUTHORISE_USER = "UNAUTHORISE_USER";
@@ -181,5 +182,6 @@ public interface ResponseMessage {
 		public static final String USER_ALREADY_EXIST = "USER_ALREADY_EXIST";
 		public static final String LOGIN_ID_MISSING = "LOGIN_ID_MISSING";
 		public static final String CONTENT_STATUS_MISSING_ERROR = "CONTENT_STATUS_MISSING_ERROR";
+		public static final String USER_NOT_FOUND = "USER_NOT_FOUND";
     }
 }
