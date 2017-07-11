@@ -266,5 +266,6 @@ public class JsonKey {
   public static final String ROOT_ORG = "rootOrg";
   public static final String APPROVED_DATE = "approvedDate";
   public static final String APPROVED_BY_NAME = "approvedByName";
-  
+
+    public static final String CONTENT_PROGRESS = "progress";
 }
