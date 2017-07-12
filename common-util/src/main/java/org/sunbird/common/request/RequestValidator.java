@@ -200,11 +200,9 @@ public final class RequestValidator {
           for(int i = 0 ; i < reqList.size() ;i++ ){
               Map<String,Object> reqMap = reqList.get(i);
               if(reqMap.containsKey(JsonKey.IS_DELETED) && null != reqMap.get(JsonKey.IS_DELETED) && ((boolean)reqMap.get(JsonKey.IS_DELETED)) 
-                  && !ProjectUtil.isStringNullOREmpty((String)reqMap.get(JsonKey.ID))){
-                  continue;
-              }else{
+                  && ProjectUtil.isStringNullOREmpty((String)reqMap.get(JsonKey.ID))){
                 throw new ProjectCommonException(ResponseCode.idRequired.getErrorCode(),
-                    ResponseCode.idRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+                    ResponseCode.idRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());  
               }
           }
        } 
@@ -216,9 +214,7 @@ public final class RequestValidator {
           for(int i = 0 ; i < reqList.size() ;i++ ){
               Map<String,Object> reqMap = reqList.get(i);
               if(reqMap.containsKey(JsonKey.IS_DELETED) && null != reqMap.get(JsonKey.IS_DELETED) && ((boolean)reqMap.get(JsonKey.IS_DELETED)) 
-                  && !ProjectUtil.isStringNullOREmpty((String)reqMap.get(JsonKey.ID))){
-                  continue;
-              }else{
+                  && ProjectUtil.isStringNullOREmpty((String)reqMap.get(JsonKey.ID))){
                 throw new ProjectCommonException(ResponseCode.idRequired.getErrorCode(),
                     ResponseCode.idRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
               }
@@ -231,9 +227,7 @@ public final class RequestValidator {
           for(int i = 0 ; i < reqList.size() ;i++ ){
               Map<String,Object> reqMap = reqList.get(i);
               if(reqMap.containsKey(JsonKey.IS_DELETED) && null != reqMap.get(JsonKey.IS_DELETED) && ((boolean)reqMap.get(JsonKey.IS_DELETED)) 
-                  && !ProjectUtil.isStringNullOREmpty((String)reqMap.get(JsonKey.ID))){
-                  continue;
-              }else{
+                  && ProjectUtil.isStringNullOREmpty((String)reqMap.get(JsonKey.ID))){
                 throw new ProjectCommonException(ResponseCode.idRequired.getErrorCode(),
                     ResponseCode.idRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
               }
@@ -247,9 +241,7 @@ public final class RequestValidator {
           for(int i = 0 ; i < reqList.size() ;i++ ){
               Map<String,Object> reqMap = reqList.get(i);
               if(reqMap.containsKey(JsonKey.IS_DELETED) && null != reqMap.get(JsonKey.IS_DELETED) && ((boolean)reqMap.get(JsonKey.IS_DELETED)) 
-                  && !ProjectUtil.isStringNullOREmpty((String)reqMap.get(JsonKey.ID))){
-                  continue;
-              }else{
+                  && ProjectUtil.isStringNullOREmpty((String)reqMap.get(JsonKey.ID))){
                 throw new ProjectCommonException(ResponseCode.idRequired.getErrorCode(),
                     ResponseCode.idRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
               }
