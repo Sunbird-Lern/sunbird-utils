@@ -51,7 +51,7 @@ public class ConnectionManager {
 		if (clusterName != null && !"".equals(clusterName)) {
 			builder.put("cluster.name", clusterName);
 		}
-		//builder.put("client.transport.sniff", true);
+		builder.put("client.transport.sniff", true);
 		client = new PreBuiltTransportClient(Settings.builder().build());
 		for (int i = 0; i < host.size(); i++) {
 			client.addTransportAddress(
