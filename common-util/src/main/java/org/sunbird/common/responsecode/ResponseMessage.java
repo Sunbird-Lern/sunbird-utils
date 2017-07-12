@@ -47,7 +47,7 @@ public interface ResponseMessage {
         public static final String COURSE_DURATION_MISSING = "Course duration is mandatory.";
         public static final String LOGIN_TYPE_MISSING = "Login type is required.";
         public static final String EMAIL_IN_USE = "Email already exists.";
-        public static final String USERNAME_EMAIL_IN_USE = "Username or Email already exists.";
+        public static final String USERNAME_EMAIL_IN_USE = "Username is already in use. Please try with a different username.";
         public static final String KEY_CLOAK_DEFAULT_ERROR = "server error at sso.";
         public static final String USER_REG_UNSUCCESSFULL = "User Registration unsuccessfull.";
         public static final String USER_UPDATE_UNSUCCESSFULL = "User update operation is unsuccessfull.";
@@ -94,6 +94,7 @@ public interface ResponseMessage {
 		public static final String LOGIN_ID_MISSING = "loginId is required.";
 		public static final String CONTENT_STATUS_MISSING_ERROR = "content status is required .";
 		public static final String USER_NOT_FOUND = "user not found.";
+		public static final String ID_REQUIRED_ERROR = "For deleting a record, Id is required.";
 	}
     public interface Key {
         public static final String UNAUTHORISE_USER = "UNAUTHORISE_USER";
@@ -183,5 +184,6 @@ public interface ResponseMessage {
 		public static final String LOGIN_ID_MISSING = "LOGIN_ID_MISSING";
 		public static final String CONTENT_STATUS_MISSING_ERROR = "CONTENT_STATUS_MISSING_ERROR";
 		public static final String USER_NOT_FOUND = "USER_NOT_FOUND";
+		public static final String ID_REQUIRED_ERROR = "ID_REQUIRED_ERROR";
     }
 }
