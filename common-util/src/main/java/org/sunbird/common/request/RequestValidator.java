@@ -193,6 +193,68 @@ public final class RequestValidator {
          throw new ProjectCommonException(ResponseCode.jobDetailsRequired.getErrorCode(),
            ResponseCode.jobDetailsRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
         }
+        if (userRequest.getRequest().get(JsonKey.ADDRESS) != null
+            && (!((List) userRequest.getRequest().get(JsonKey.ADDRESS)).isEmpty())) {
+        
+          List<Map<String,Object>> reqList = (List<Map<String,Object>>)userRequest.get(JsonKey.ADDRESS);
+          for(int i = 0 ; i < reqList.size() ;i++ ){
+              Map<String,Object> reqMap = reqList.get(i);
+              if(reqMap.containsKey(JsonKey.IS_DELETED) && null != reqMap.get(JsonKey.IS_DELETED) && ((boolean)reqMap.get(JsonKey.IS_DELETED)) 
+                  && !ProjectUtil.isStringNullOREmpty((String)reqMap.get(JsonKey.ID))){
+                  continue;
+              }else{
+                throw new ProjectCommonException(ResponseCode.idRequired.getErrorCode(),
+                    ResponseCode.idRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+              }
+          }
+       } 
+        
+        if (userRequest.getRequest().get(JsonKey.JOB_PROFILE) != null
+            && (!((List) userRequest.getRequest().get(JsonKey.JOB_PROFILE)).isEmpty())) {
+        
+          List<Map<String,Object>> reqList = (List<Map<String,Object>>)userRequest.get(JsonKey.JOB_PROFILE);
+          for(int i = 0 ; i < reqList.size() ;i++ ){
+              Map<String,Object> reqMap = reqList.get(i);
+              if(reqMap.containsKey(JsonKey.IS_DELETED) && null != reqMap.get(JsonKey.IS_DELETED) && ((boolean)reqMap.get(JsonKey.IS_DELETED)) 
+                  && !ProjectUtil.isStringNullOREmpty((String)reqMap.get(JsonKey.ID))){
+                  continue;
+              }else{
+                throw new ProjectCommonException(ResponseCode.idRequired.getErrorCode(),
+                    ResponseCode.idRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+              }
+          }
+       } 
+        if (userRequest.getRequest().get(JsonKey.EDUCATION) != null
+            && (!((List) userRequest.getRequest().get(JsonKey.EDUCATION)).isEmpty())) {
+        
+          List<Map<String,Object>> reqList = (List<Map<String,Object>>)userRequest.get(JsonKey.EDUCATION);
+          for(int i = 0 ; i < reqList.size() ;i++ ){
+              Map<String,Object> reqMap = reqList.get(i);
+              if(reqMap.containsKey(JsonKey.IS_DELETED) && null != reqMap.get(JsonKey.IS_DELETED) && ((boolean)reqMap.get(JsonKey.IS_DELETED)) 
+                  && !ProjectUtil.isStringNullOREmpty((String)reqMap.get(JsonKey.ID))){
+                  continue;
+              }else{
+                throw new ProjectCommonException(ResponseCode.idRequired.getErrorCode(),
+                    ResponseCode.idRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+              }
+          }
+       } 
+        
+        if (userRequest.getRequest().get(JsonKey.ORGANISATION) != null
+            && (!((List) userRequest.getRequest().get(JsonKey.ORGANISATION)).isEmpty())) {
+        
+          List<Map<String,Object>> reqList = (List<Map<String,Object>>)userRequest.get(JsonKey.ORGANISATION);
+          for(int i = 0 ; i < reqList.size() ;i++ ){
+              Map<String,Object> reqMap = reqList.get(i);
+              if(reqMap.containsKey(JsonKey.IS_DELETED) && null != reqMap.get(JsonKey.IS_DELETED) && ((boolean)reqMap.get(JsonKey.IS_DELETED)) 
+                  && !ProjectUtil.isStringNullOREmpty((String)reqMap.get(JsonKey.ID))){
+                  continue;
+              }else{
+                throw new ProjectCommonException(ResponseCode.idRequired.getErrorCode(),
+                    ResponseCode.idRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+              }
+          }
+       } 
    }
 
 	/**
