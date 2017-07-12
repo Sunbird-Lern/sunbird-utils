@@ -49,10 +49,11 @@ public class ConnectionManager {
 	private static boolean createClient(String clusterName, List<String> host, List<Integer> port) throws Exception {
 		Builder builder = Settings.builder();
 		if (clusterName != null && !"".equals(clusterName)) {
-			builder.put("cluster.name", clusterName);
+			builder = builder.put("cluster.name", clusterName);
 		}
-		builder.put("client.transport.sniff", true);
-		client = new PreBuiltTransportClient(Settings.builder().build());
+		builder = builder.put("client.transport.sniff", true);
+		builder = builder.put("client.transport.ignore_cluster_name", true);
+		client = new PreBuiltTransportClient(builder.build());
 		for (int i = 0; i < host.size(); i++) {
 			client.addTransportAddress(
 					new InetSocketTransportAddress(InetAddress.getByName(host.get(i)), ports.get(i)));
