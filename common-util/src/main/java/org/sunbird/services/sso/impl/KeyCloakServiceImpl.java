@@ -79,7 +79,7 @@ public class KeyCloakServiceImpl implements SSOManager {
                 ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.emailANDUserNameAlreadyExistError.getErrorCode(), ResponseCode.emailANDUserNameAlreadyExistError.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
                 throw projectCommonException;
             } else {
-                ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.keyCloakDefaultError.getErrorCode(), ResponseCode.keyCloakDefaultError.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
+                ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
                 throw projectCommonException;
             }
         } else {
