@@ -50,12 +50,8 @@ public class CassandraOperationImpl implements CassandraOperation{
 			while (iterator.hasNext()) {
 				array[i++] = iterator.next();
 			}
-		   ResultSet result =	CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement.bind(array));
-		   if(result.wasApplied()){
+		        CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement.bind(array));
 				response.put(Constants.RESPONSE, Constants.SUCCESS);
-			}else{
-				throw new ProjectCommonException(ResponseCode.dataAlreadyExist.getErrorCode(), ResponseCode.dataAlreadyExist.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-			}
 		} catch (Exception e) {
 			LOGGER.error("Exception occured while inserting record to "+ tableName +" : "+e.getMessage(), e);
 			 throw new ProjectCommonException(ResponseCode.dbInsertionError.getErrorCode(), ResponseCode.dbInsertionError.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
@@ -68,29 +64,25 @@ public class CassandraOperationImpl implements CassandraOperation{
 	public Response updateRecord(String keyspaceName, String tableName, Map<String, Object> request){
 		Response response = new Response();
 		try{
-		String query = CassandraUtil.getUpdateQueryStatement(keyspaceName, tableName, request);
-		String updateQuery =query+Constants.IF_EXISTS;
-		PreparedStatement statement = CassandraConnectionManager.getSession(keyspaceName).prepare(updateQuery);
-		Object [] array =  new Object[request.size()];
-		int i=0;
-		String str= "";
-		int index = query.lastIndexOf(Constants.SET.trim());
-		str= query.substring(index+4);
-		str = str.replace(Constants.EQUAL_WITH_QUE_MARK, "");
-		str = str.replace(Constants.WHERE_ID, "");
-		str = str.replace(Constants.SEMICOLON, "");
-		String [] arr = str.split(",");
-		for(String key : arr){
-			array[i++] = request.get(key.trim());
-		}
-		array[i] = request.get(Constants.IDENTIFIER);
-		BoundStatement boundStatement = statement.bind(array);
-		ResultSet result= CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement);
-			if(result.wasApplied()){
-				response.put(Constants.RESPONSE, Constants.SUCCESS);
-			}else{
-				throw new ProjectCommonException(ResponseCode.invalidData.getErrorCode(), ResponseCode.invalidData.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-			}
+    		String query = CassandraUtil.getUpdateQueryStatement(keyspaceName, tableName, request);
+    		String updateQuery =query+Constants.IF_EXISTS;
+    		PreparedStatement statement = CassandraConnectionManager.getSession(keyspaceName).prepare(updateQuery);
+    		Object [] array =  new Object[request.size()];
+    		int i=0;
+    		String str= "";
+    		int index = query.lastIndexOf(Constants.SET.trim());
+    		str= query.substring(index+4);
+    		str = str.replace(Constants.EQUAL_WITH_QUE_MARK, "");
+    		str = str.replace(Constants.WHERE_ID, "");
+    		str = str.replace(Constants.SEMICOLON, "");
+    		String [] arr = str.split(",");
+    		for(String key : arr){
+    			array[i++] = request.get(key.trim());
+    		}
+    		array[i] = request.get(Constants.IDENTIFIER);
+    		BoundStatement boundStatement = statement.bind(array);
+    		CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement);
+    		response.put(Constants.RESPONSE, Constants.SUCCESS);
 		}catch(Exception e){
 			LOGGER.error(Constants.EXCEPTION_MSG_UPDATE + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.dbUpdateError.getErrorCode(), ResponseCode.dbUpdateError.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
@@ -244,12 +236,9 @@ public class CassandraOperationImpl implements CassandraOperation{
 			while (iterator.hasNext()) {
 				array[i++] = iterator.next();
 			}
-		   ResultSet result =	CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement.bind(array));
-		   if(result.wasApplied()){
-				response.put(Constants.RESPONSE, Constants.SUCCESS);
-			}else{
-				throw new ProjectCommonException(ResponseCode.dataAlreadyExist.getErrorCode(), ResponseCode.dataAlreadyExist.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-			}
+		   CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement.bind(array));
+		   response.put(Constants.RESPONSE, Constants.SUCCESS);
+			
 		} catch (Exception e) {
 			LOGGER.error(Constants.EXCEPTION_MSG_UPSERT + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
