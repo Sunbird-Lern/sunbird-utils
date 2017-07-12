@@ -268,4 +268,7 @@ public class JsonKey {
   public static final String APPROVED_BY_NAME = "approvedByName";
 
     public static final String CONTENT_PROGRESS = "progress";
+    public static final String IS_DELETED = "isDeleted";
+    public static final String PROFILE_SUMMARY = "profileSummary";
+    
 }

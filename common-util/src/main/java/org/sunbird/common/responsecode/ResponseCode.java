@@ -94,6 +94,7 @@ public enum ResponseCode {
 	loginIdRequired(ResponseMessage.Key.LOGIN_ID_MISSING, ResponseMessage.Message.LOGIN_ID_MISSING),
     contentStatusRequired(ResponseMessage.Key.CONTENT_STATUS_MISSING_ERROR, ResponseMessage.Message.CONTENT_STATUS_MISSING_ERROR),
 	userNotFound(ResponseMessage.Key.USER_NOT_FOUND, ResponseMessage.Message.USER_NOT_FOUND),
+	idRequired(ResponseMessage.Key.ID_REQUIRED_ERROR, ResponseMessage.Message.ID_REQUIRED_ERROR),
 	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404);
 	
 	private int responseCode;
