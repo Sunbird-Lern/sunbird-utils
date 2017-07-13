@@ -24,7 +24,8 @@ public enum ActorOperations {
     UPDATE_USER_INFO_ELASTIC("updateUserInfoToElastic"),GET_ROLES("getRoles"),
 	APPROVE_ORGANISATION("approveOrganisation"), JOIN_USER_ORGANISATION("joinUserOrganisation"),
 	APPROVE_USER_ORGANISATION("approveUserOrganisation"),COMPOSITE_SEARCH("compositeSearch"),
-	GET_USER_DETAILS_BY_LOGINID("getUserDetailsByLoginId"),UPDATE_ORG_INFO_ELASTIC("updateOrgInfoToElastic");
+	GET_USER_DETAILS_BY_LOGINID("getUserDetailsByLoginId"),UPDATE_ORG_INFO_ELASTIC("updateOrgInfoToElastic"),
+    REJECT_USER_ORGANISATION("rejectUserOrganisation"),INSERT_ORG_INFO_ELASTIC("insertOrgInfoToElastic");
 
     private String value;
 
