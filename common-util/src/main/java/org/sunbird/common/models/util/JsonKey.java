@@ -268,9 +268,12 @@ public class JsonKey {
   public static final String ROOT_ORG = "rootOrg";
   public static final String APPROVED_DATE = "approvedDate";
   public static final String APPROVED_BY_NAME = "approvedByName";
+  public static final String REGISTERED_ORG_ID = "regOrgId";
+  public static final String REGISTERED_ORG = "registeredOrg";
 
     public static final String CONTENT_PROGRESS = "progress";
     public static final String IS_DELETED = "isDeleted";
     public static final String PROFILE_SUMMARY = "profileSummary";
+    public static final String EKSTEP_TELEMETRY_API_URL = "ekstep.telemetry.api.url";
     
 }
