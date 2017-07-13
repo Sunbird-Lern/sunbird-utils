@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.LogHelper;
+import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.PropertiesCache;
 
 import com.datastax.driver.core.ResultSet;
@@ -46,6 +47,7 @@ public final class CassandraUtil{
 	    }
 	    query.append(commaSepValueBuilder+")"+Constants.IF_NOT_EXISTS);
 	    LOGGER.debug(query.toString());
+	    ProjectLogger.log(query.toString());
 		return query.toString();
 		
 	}
@@ -72,6 +74,7 @@ public final class CassandraUtil{
 			responseList.add(map);
 		}
 		LOGGER.debug(responseList.toString());
+		ProjectLogger.log(responseList.toString());
 		response.put(Constants.RESPONSE, responseList);
 		return response;
 	}
@@ -90,6 +93,7 @@ public final class CassandraUtil{
 		query.append(String.join(" = ? ,", key));
 		query.append(Constants.EQUAL_WITH_QUE_MARK+ Constants.WHERE_ID +Constants.EQUAL_WITH_QUE_MARK);
 	    LOGGER.debug(query.toString());
+        ProjectLogger.log(query.toString());
 		return query.toString();
 	}
 	
@@ -105,6 +109,7 @@ public final class CassandraUtil{
 		query.append(String.join(",", properties));
 		query.append(Constants.FROM + keyspaceName + Constants.DOT + tableName +Constants.WHERE +Constants.IDENTIFIER +Constants.EQUAL +" ?; ");
 	    LOGGER.debug(query.toString());
+	    ProjectLogger.log(query.toString());
 		return query.toString();
 		
 	}
@@ -130,6 +135,7 @@ public final class CassandraUtil{
 	    }
 	    query.append(commaSepValueBuilder+Constants.CLOSING_BRACE);
 	    LOGGER.debug(query.toString());
+	    ProjectLogger.log(query.toString());
 		return query.toString();
 		
 	}

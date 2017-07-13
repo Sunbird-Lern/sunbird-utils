@@ -27,6 +27,7 @@ public class KeyCloakConnectionProvider {
 	 */
    public static Keycloak initialiseConnection() {
 	   LOGGER.info("key cloak instance is creation started.");
+	   ProjectLogger.log("key cloak instance is creation started.");
 	   KeycloakBuilder keycloakBuilder = KeycloakBuilder.builder()
 			   .serverUrl(cache.getProperty(JsonKey.SSO_URL))
 			   .realm(cache.getProperty(JsonKey.SSO_REALM))
@@ -41,6 +42,7 @@ public class KeyCloakConnectionProvider {
 	   keycloak = keycloakBuilder.build();
 
 	   LOGGER.info("key cloak instance is created successfully.");
+	   ProjectLogger.log("key cloak instance is created successfully.");
 	   return keycloak;
    }
    
@@ -68,8 +70,10 @@ public class KeyCloakConnectionProvider {
 	static class ResourceCleanUp extends Thread {
 		  public void run() {
 			  LOGGER.info("started resource cleanup.");
+		      ProjectLogger.log("started resource cleanup.");
 			  keycloak.close(); 
 			  LOGGER.info("completed resource cleanup.");
+			  ProjectLogger.log("completed resource cleanup.");
 		  }
 	}
 	
@@ -81,6 +85,7 @@ public class KeyCloakConnectionProvider {
 		Runtime runtime = Runtime.getRuntime();
 		runtime.addShutdownHook(new ResourceCleanUp());
 		LOGGER.info("ShutDownHook registered.");
+		ProjectLogger.log("ShutDownHook registered.");
 	}
 	
 }
