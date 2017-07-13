@@ -11,7 +11,7 @@ package org.sunbird.common.models.util;
  *
  */
 public class JsonKey {
-	
+
   public static final String USER_ID = "userId";
   public static final String CONTENT_ID = "contentId";
   public static final String CONTENT_IDS = "contentIds";
@@ -227,9 +227,9 @@ public class JsonKey {
   public static final String YEAR_OF_PASSING = "yearOfPassing";
   public static final String PERCENTAGE = "percentage";
   public static final String ROLE_GROUP_ID = "rolegroupid";
-  public static final String  URL_ACTION_ID = "url_action_ids";
+  public static final String URL_ACTION_ID = "url_action_ids";
   public static final String ACTIONS = "actions";
-  public static  final String URLS = "urls";
+  public static final String URLS = "urls";
   public static final String URL = "url";
   public static final String ADDRESS_ID = "addressId";
   public static final String GROUP = "group";
@@ -255,7 +255,7 @@ public class JsonKey {
   public static final String USER_FOUND = "user exist with this login Id.";
   public static final String USER_NOT_FOUND = "user does not exist with this login Id.";
   public static final String LOGIN_ID_DELIMETER = "@";
-  
+
   public static final String PARENT_ORG_ID = "parentOrgId";
   public static final String IS_ROOT_ORG = "isRootOrg";
   public static final String ORG_ID_ONE = "orgIdOne";
@@ -269,8 +269,9 @@ public class JsonKey {
   public static final String APPROVED_DATE = "approvedDate";
   public static final String APPROVED_BY_NAME = "approvedByName";
 
-    public static final String CONTENT_PROGRESS = "progress";
-    public static final String IS_DELETED = "isDeleted";
-    public static final String PROFILE_SUMMARY = "profileSummary";
-    
+  public static final String CONTENT_PROGRESS = "progress";
+  public static final String IS_DELETED = "isDeleted";
+  public static final String PROFILE_SUMMARY = "profileSummary";
+  public static final String EKSTEP_TELEMETRY_API_URL = "ekstep.telemetry.api.url";
+
 }

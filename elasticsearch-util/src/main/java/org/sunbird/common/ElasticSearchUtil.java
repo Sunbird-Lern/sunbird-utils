@@ -27,7 +27,9 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.LogHelper;
+import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.dto.SearchDTO;
@@ -69,6 +71,7 @@ public class ElasticSearchUtil {
         if (ProjectUtil.isStringNullOREmpty(identifier) || ProjectUtil.isStringNullOREmpty(type)
                 || ProjectUtil.isStringNullOREmpty(index)) {
             LOGGER.info("Identifier value is null or empty ,not able to save data.");
+            ProjectLogger.log("Identifier value is null or empty ,not able to save data.", LoggerEnum.INFO.name());
             return "ERROR";
         }
         verifyOrCreateIndexAndType(index, type);
@@ -76,6 +79,7 @@ public class ElasticSearchUtil {
         IndexResponse response = ConnectionManager.getClient().prepareIndex(index, type, identifier).setSource(data)
                 .get();
         LOGGER.info("Save value==" + response.getId() + " " + response.status());
+        ProjectLogger.log("Save value==" + response.getId() + " " + response.status());
         return response.getId();
     }
 
@@ -91,8 +95,10 @@ public class ElasticSearchUtil {
         if (ProjectUtil.isStringNullOREmpty(index) && ProjectUtil.isStringNullOREmpty(type)
                 && ProjectUtil.isStringNullOREmpty(identifier)) {
             LOGGER.info("Invalid request is coming.");
+            ProjectLogger.log("Invalid request is coming.");
         } else if (ProjectUtil.isStringNullOREmpty(index)) {
             LOGGER.info("Please provide index value.");
+            ProjectLogger.log("Please provide index value.");
         } else if (ProjectUtil.isStringNullOREmpty(type)) {
         	verifyOrCreateIndexAndType(index, type);
             response = ConnectionManager.getClient().prepareGet().setIndex(index).setId(identifier).get();
@@ -128,8 +134,10 @@ public class ElasticSearchUtil {
             sr = ConnectionManager.getClient().search(new SearchRequest(index).types(type).source(sourceBuilder)).get();
         } catch (InterruptedException e) {
             LOGGER.error(e);
+            ProjectLogger.log("Error, interrupted while connecting to Elasticsearch",e);
         } catch (ExecutionException e) {
             LOGGER.error(e);
+            ProjectLogger.log("Error while execution in Elasticsearch",e);
         }
         sr.getHits().getAt(0).getSource();
 
@@ -153,11 +161,13 @@ public class ElasticSearchUtil {
             UpdateResponse response = ConnectionManager.getClient().prepareUpdate(index, type, identifier).setDoc(data)
                     .get();
             LOGGER.info("updated response==" + response.getResult().name());
+            ProjectLogger.log("updated response==" + response.getResult().name());
             if (response.getResult().name().equals("UPDATED")) {
                 return true;
             }
         } else {
             LOGGER.info("Requested data is invalid.");
+          ProjectLogger.log("Requested data is invalid.");
         }
         return false;
     }
@@ -175,8 +185,10 @@ public class ElasticSearchUtil {
         	verifyOrCreateIndexAndType(index, type);
             DeleteResponse response = ConnectionManager.getClient().prepareDelete(index, type, identifier).get();
             LOGGER.info("delete info ==" + response.getResult().name() + " " + response.getId());
+            ProjectLogger.log("delete info ==" + response.getResult().name() + " " + response.getId());
         } else {
             LOGGER.info("Data can not be deleted due to invalid input.");
+          ProjectLogger.log("Data can not be deleted due to invalid input.");
         }
     }
 
@@ -224,6 +236,7 @@ public class ElasticSearchUtil {
             }
         }
         LOGGER.info("Index creation status==" + response);
+        ProjectLogger.log("Index creation status==" + response);
         return response;
     }
 
@@ -328,8 +341,10 @@ public class ElasticSearchUtil {
 	            searchRequestBuilder.addAggregation(AggregationBuilders.terms(facets).field(facets));
 	        }
         LOGGER.info("calling search builder======" + searchRequestBuilder.toString());
+        ProjectLogger.log("calling search builder======" + searchRequestBuilder.toString());
         SearchResponse response = searchRequestBuilder.execute().actionGet();
         LOGGER.info("getting response for es======" + response);
+        ProjectLogger.log("getting response for es======" + response);
         List<Map<String,Object>> esResponse = new ArrayList<Map<String,Object>>();
         Map<String,List<Map<String,Object>>> responsemap = new HashMap<>();
         if (response != null) {
@@ -347,6 +362,7 @@ public class ElasticSearchUtil {
      * @param query
      * @param gq
      */
+    @SuppressWarnings("unchecked")
     private static void groupQueryExecutor(BoolQueryBuilder query, Map<String, Object> gq) {
 
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
