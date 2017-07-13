@@ -136,12 +136,14 @@ public class HttpUtil {
 			}
 		} catch (IOException e) {
 			LOGGER.error(e);
+			ProjectLogger.log("Error in getResponse HttpUtil:",e);
 		} finally {
 			if (reader != null) {
 				try {
 					reader.close();
 				} catch (IOException e) {
 					LOGGER.error(e);
+				  ProjectLogger.log("Error while closing the reader:",e);
 				}
 			}
 			if (inStream != null) {
@@ -149,6 +151,7 @@ public class HttpUtil {
 					inStream.close();
 				} catch (IOException e) {
 					LOGGER.error(e);
+				  ProjectLogger.log("Error while closing the stream:",e);
 				}
 			}
 			if (httpURLConnection != null) {

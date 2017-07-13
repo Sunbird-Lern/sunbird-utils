@@ -75,6 +75,7 @@ public class KeyCloakServiceImpl implements SSOManager {
         if (result.getStatus() != 201) {
 
             logger.error("Couldn't create user." + result.getStatus() + " " + result.toString(), new RuntimeException());
+            ProjectLogger.log("Couldn't create user." + result.getStatus() + " " + result.toString(), new RuntimeException());
             if (result.getStatus() == 409) {
                 ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.emailANDUserNameAlreadyExistError.getErrorCode(), ResponseCode.emailANDUserNameAlreadyExistError.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
                 throw projectCommonException;
