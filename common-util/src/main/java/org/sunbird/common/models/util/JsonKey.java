@@ -271,11 +271,6 @@ public class JsonKey {
   public static final String REGISTERED_ORG_ID = "regOrgId";
   public static final String REGISTERED_ORG = "registeredOrg";
 
-  public static final String CONTENT_PROGRESS = "progress";
-  public static final String IS_DELETED = "isDeleted";
-  public static final String PROFILE_SUMMARY = "profileSummary";
-  public static final String EKSTEP_TELEMETRY_API_URL = "ekstep.telemetry.api.url";
-
     public static final String CONTENT_PROGRESS = "progress";
     public static final String IS_DELETED = "isDeleted";
     public static final String PROFILE_SUMMARY = "profileSummary";
