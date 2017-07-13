@@ -14,6 +14,7 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LogHelper;
+import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 
@@ -49,10 +50,11 @@ public class ConnectionManager {
 	private static boolean createClient(String clusterName, List<String> host, List<Integer> port) throws Exception {
 		Builder builder = Settings.builder();
 		if (clusterName != null && !"".equals(clusterName)) {
-			builder.put("cluster.name", clusterName);
+			builder = builder.put("cluster.name", clusterName);
 		}
-		builder.put("client.transport.sniff", true);
-		client = new PreBuiltTransportClient(Settings.builder().build());
+		builder = builder.put("client.transport.sniff", true);
+		builder = builder.put("client.transport.ignore_cluster_name", true);
+		client = new PreBuiltTransportClient(builder.build());
 		for (int i = 0; i < host.size(); i++) {
 			client.addTransportAddress(
 					new InetSocketTransportAddress(InetAddress.getByName(host.get(i)), ports.get(i)));
@@ -68,6 +70,7 @@ public class ConnectionManager {
 		try {
 			if(initialiseConnectionFromEnv()) {
 				LOGGER.info("value found under system variable.");
+				ProjectLogger.log("value found under system variable.");
 				return true;
 			}
 			PropertiesCache propertiesCache = PropertiesCache.getInstance();
@@ -84,8 +87,10 @@ public class ConnectionManager {
 			}
 			boolean response = createClient(cluster, host, ports);
 			LOGGER.info("ELASTIC SEARCH CONNECTION ESTABLISHED " + response);
+			ProjectLogger.log("ELASTIC SEARCH CONNECTION ESTABLISHED " + response);
 		} catch (Exception e) {
 			LOGGER.error(e);
+			ProjectLogger.log("Error while initialising connection"+e);
 			return false;
 		}
 		return true;
@@ -114,8 +119,10 @@ public class ConnectionManager {
 			}
 			boolean response = createClient(cluster, host, ports);
 			LOGGER.info("ELASTIC SEARCH CONNECTION ESTABLISHED " + response);
+			ProjectLogger.log("ELASTIC SEARCH CONNECTION ESTABLISHED " + response);
 		} catch (Exception e) {
 			LOGGER.error(e);
+		    ProjectLogger.log("Error while initialising connection from the Env",e);
 			return false;
 		}
 		return true;
@@ -135,8 +142,10 @@ public class ConnectionManager {
 	static class ResourceCleanUp extends Thread {
 		  public void run() {
 			  LOGGER.info("started resource cleanup.");
+			  ProjectLogger.log("started resource cleanup.");
 			  client.close(); 
 			  LOGGER.info("completed resource cleanup.");
+			  ProjectLogger.log("completed resource cleanup.");
 		  }
 	}
 	
@@ -148,6 +157,7 @@ public class ConnectionManager {
 		Runtime runtime = Runtime.getRuntime();
 		runtime.addShutdownHook(new ResourceCleanUp());
 		LOGGER.info("ShutDownHook registered.");
+		ProjectLogger.log("ShutDownHook registered.");
 	}
 
 }
