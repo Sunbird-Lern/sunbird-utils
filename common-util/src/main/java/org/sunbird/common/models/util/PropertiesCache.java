@@ -22,6 +22,7 @@ public class PropertiesCache {
 	          configProp.load(in);
 	      } catch (IOException e) {
 	        LOGGER.error(e);
+	        ProjectLogger.log("Error in properties cache",e);
 	      }
 		 }
 	   }

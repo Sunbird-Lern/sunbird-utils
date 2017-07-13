@@ -291,12 +291,17 @@ public final class RequestValidator {
 	 * This method will validate get page data api.
 	 * @param request Request
 	 */
-	public static void validateGetPageData(String request) {
+	public static void validateGetPageData(Request request) {
 	    if (request == null
-				|| (ProjectUtil.isStringNullOREmpty(request))) {
+				|| (ProjectUtil.isStringNullOREmpty((String)request.get(JsonKey.SOURCE)))) {
 			throw new ProjectCommonException(ResponseCode.sourceRequired.getErrorCode(),
 					ResponseCode.sourceRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 		} 
+	    if (request == null
+            || (ProjectUtil.isStringNullOREmpty((String)request.get(JsonKey.PAGE_NAME)))) {
+        throw new ProjectCommonException(ResponseCode.pageNameRequired.getErrorCode(),
+                ResponseCode.pageNameRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
 	    
 	}
 	
