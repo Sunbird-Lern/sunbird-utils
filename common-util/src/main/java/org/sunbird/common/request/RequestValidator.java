@@ -106,62 +106,68 @@ public final class RequestValidator {
 	}
 	
 
-  public static void validateCreateOrg(Request request) {
-    if (request.getRequest().get(JsonKey.ORG_NAME) == null) {
-      throw new ProjectCommonException(ResponseCode.organisationNameRequired.getErrorCode(),
-          ResponseCode.organisationNameRequired.getErrorMessage(),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
-    }
-  }
+	public static void validateCreateOrg(Request request) {
+	    if (request.getRequest().get(JsonKey.ORG_NAME) == null || (ProjectUtil
+	        .isStringNullOREmpty((String) request.getRequest().get(JsonKey.ORG_NAME)))) {
+	      throw new ProjectCommonException(ResponseCode.organisationNameRequired.getErrorCode(),
+	          ResponseCode.organisationNameRequired.getErrorMessage(),
+	          ResponseCode.CLIENT_ERROR.getResponseCode());
+	    }
+	  }
 
-  public static void validateApproveOrg(Request request) {
-    if (request.getRequest().get(JsonKey.ORGANISATION_ID) == null) {
-      throw new ProjectCommonException(ResponseCode.organisationIdRequiredError.getErrorCode(),
-          ResponseCode.organisationIdRequiredError.getErrorMessage(),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
-    }
-    if (request.getRequest().get(JsonKey.IS_APPROVED) == null) {
-      if (!(request.getRequest().get(JsonKey.IS_APPROVED) instanceof Boolean)) {
-        throw new ProjectCommonException(ResponseCode.invalidRequestData.getErrorCode(),
-            ResponseCode.invalidRequestData.getErrorMessage(),
-            ResponseCode.CLIENT_ERROR.getResponseCode());
-      }
-    }
-  }
+	  public static void validateApproveOrg(Request request) {
+	    if (request.getRequest().get(JsonKey.ORGANISATION_ID) == null || (ProjectUtil
+	        .isStringNullOREmpty((String) request.getRequest().get(JsonKey.ORGANISATION_ID)))) {
+	      throw new ProjectCommonException(ResponseCode.organisationIdRequiredError.getErrorCode(),
+	          ResponseCode.organisationIdRequiredError.getErrorMessage(),
+	          ResponseCode.CLIENT_ERROR.getResponseCode());
+	    }
+	    if (request.getRequest().get(JsonKey.IS_APPROVED) == null) {
+	      if (!(request.getRequest().get(JsonKey.IS_APPROVED) instanceof Boolean)) {
+	        throw new ProjectCommonException(ResponseCode.invalidRequestData.getErrorCode(),
+	            ResponseCode.invalidRequestData.getErrorMessage(),
+	            ResponseCode.CLIENT_ERROR.getResponseCode());
+	      }
+	    }
+	  }
 
-  public static void validateUpdateOrg(Request request) {
-    if (request.getRequest().get(JsonKey.ORGANISATION_ID) == null) {
-      throw new ProjectCommonException(ResponseCode.organisationIdRequiredError.getErrorCode(),
-          ResponseCode.organisationIdRequiredError.getErrorMessage(),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
-    }
-    if (request.getRequest().get(JsonKey.STATUS) != null) {
-      throw new ProjectCommonException(ResponseCode.invalidRequestData.getErrorCode(),
-          ResponseCode.invalidRequestData.getErrorMessage(),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
-    }
-  }
+	  public static void validateUpdateOrg(Request request) {
+	    if (request.getRequest().get(JsonKey.ORGANISATION_ID) == null || (ProjectUtil
+	        .isStringNullOREmpty((String) request.getRequest().get(JsonKey.ORGANISATION_ID)))) {
+	      throw new ProjectCommonException(ResponseCode.organisationIdRequiredError.getErrorCode(),
+	          ResponseCode.organisationIdRequiredError.getErrorMessage(),
+	          ResponseCode.CLIENT_ERROR.getResponseCode());
+	    }
+	    if (request.getRequest().get(JsonKey.STATUS) != null || !(ProjectUtil
+	        .isStringNullOREmpty((String) request.getRequest().get(JsonKey.STATUS)))) {
+	      throw new ProjectCommonException(ResponseCode.invalidRequestData.getErrorCode(),
+	          ResponseCode.invalidRequestData.getErrorMessage(),
+	          ResponseCode.CLIENT_ERROR.getResponseCode());
+	    }
+	  }
 
-  public static void validateUpdateOrgStatus(Request request) {
-    if (request.getRequest().get(JsonKey.ORGANISATION_ID) == null) {
-      throw new ProjectCommonException(ResponseCode.organisationIdRequiredError.getErrorCode(),
-          ResponseCode.organisationIdRequiredError.getErrorMessage(),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
-    }
-    if (request.getRequest().get(JsonKey.STATUS) == null) {
-      throw new ProjectCommonException(ResponseCode.invalidRequestData.getErrorCode(),
-          ResponseCode.invalidRequestData.getErrorMessage(),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
-    }
-  }
+	  public static void validateUpdateOrgStatus(Request request) {
+	    if (request.getRequest().get(JsonKey.ORGANISATION_ID) == null) {
+	      throw new ProjectCommonException(ResponseCode.organisationIdRequiredError.getErrorCode(),
+	          ResponseCode.organisationIdRequiredError.getErrorMessage(),
+	          ResponseCode.CLIENT_ERROR.getResponseCode());
+	    }
+	    if (request.getRequest().get(JsonKey.STATUS) == null || (ProjectUtil
+	        .isStringNullOREmpty((String) request.getRequest().get(JsonKey.STATUS)))) {
+	      throw new ProjectCommonException(ResponseCode.invalidRequestData.getErrorCode(),
+	          ResponseCode.invalidRequestData.getErrorMessage(),
+	          ResponseCode.CLIENT_ERROR.getResponseCode());
+	    }
+	  }
 
-  public static void validateGetOrg(Request request) {
-    if (request.getRequest().get(JsonKey.ORGANISATION_ID) == null) {
-      throw new ProjectCommonException(ResponseCode.organisationIdRequiredError.getErrorCode(),
-          ResponseCode.organisationIdRequiredError.getErrorMessage(),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
-    }
-  }
+	  public static void validateGetOrg(Request request) {
+	    if (request.getRequest().get(JsonKey.ORGANISATION_ID) == null || (ProjectUtil
+	        .isStringNullOREmpty((String) request.getRequest().get(JsonKey.ORGANISATION_ID)))) {
+	      throw new ProjectCommonException(ResponseCode.organisationIdRequiredError.getErrorCode(),
+	          ResponseCode.organisationIdRequiredError.getErrorMessage(),
+	          ResponseCode.CLIENT_ERROR.getResponseCode());
+	    }
+	  }
 
   /**
    * This method will validate update user data.
@@ -571,6 +577,32 @@ public final class RequestValidator {
      * @param searchRequest Request
      */
     public static void validateCompositeSearch(Request searchRequest) {
+    }
+    
+    /**
+     * This method will validate user org requested data.
+     * 
+     * @param userRequest Request
+     */
+    @SuppressWarnings("rawtypes")
+    public static void validateAddMember(Request userRequest) {
+      if (isNull(userRequest.getRequest().get(JsonKey.ORGANISATION_ID)) || (ProjectUtil
+          .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.ORGANISATION_ID)))) {
+        throw new ProjectCommonException(ResponseCode.orgIdRequired.getErrorCode(),
+            ResponseCode.orgIdRequired.getErrorMessage(),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
+      if (isNull(userRequest.getRequest().get(JsonKey.USER_ID)) || (ProjectUtil
+          .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USER_ID)))) {
+        throw new ProjectCommonException(ResponseCode.userIdRequired.getErrorCode(),
+            ResponseCode.userIdRequired.getErrorMessage(),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
+      if (isNull(userRequest.getRequest().get(JsonKey.ROLES))
+          || ((List) userRequest.getRequest().get(JsonKey.ROLES)).isEmpty()) {
+        throw new ProjectCommonException(ResponseCode.roleRequired.getErrorCode(),
+            ResponseCode.roleRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
     }
 	
 	
