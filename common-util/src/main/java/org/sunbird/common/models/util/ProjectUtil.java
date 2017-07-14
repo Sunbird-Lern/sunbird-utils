@@ -297,6 +297,28 @@ public class ProjectUtil {
 		}
 	}
 	
+
+    /**
+     * This enum will hold all the Address type name.
+     * @author Amit Kumar
+     *
+     */
+    public enum AddressType {
+        permanent("permanent"), current("current"), office("office"), home("home");
+        private String typeName;
+
+        private AddressType(String name) {
+            this.typeName = name;
+        }
+
+        public String getTypeName() {
+            return typeName;
+        }
+
+        public void setTypeName(String typeName) {
+            this.typeName = typeName;
+        }
+    }
 	public enum AssessmentResult {
 		gradeA("A", "Pass"), gradeB("B", "Pass"), gradeC("C", "Pass"), gradeD("D", "Pass"), gradeE("E", "Pass"), gradeF("F", "Fail");
 		private String grade;

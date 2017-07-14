@@ -98,6 +98,11 @@ public final class RequestValidator {
 			throw new ProjectCommonException(ResponseCode.phoneNoRequired.getErrorCode(),
 					ResponseCode.phoneNoRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 		} 
+		if (userRequest.getRequest().containsKey(JsonKey.ROLES) && null != userRequest.getRequest().get(JsonKey.ROLES) 
+		    && !(userRequest.getRequest().get(JsonKey.ROLES) instanceof List)) {
+        throw new ProjectCommonException(ResponseCode.rolesTypeError.getErrorCode(),
+                ResponseCode.rolesTypeError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+        }
 	}
 	
 
