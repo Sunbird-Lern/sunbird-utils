@@ -271,9 +271,17 @@ public class JsonKey {
   public static final String REGISTERED_ORG_ID = "regOrgId";
   public static final String REGISTERED_ORG = "registeredOrg";
 
-    public static final String CONTENT_PROGRESS = "progress";
-    public static final String IS_DELETED = "isDeleted";
-    public static final String PROFILE_SUMMARY = "profileSummary";
-    public static final String EKSTEP_TELEMETRY_API_URL = "ekstep.telemetry.api.url";
+  public static final String CONTENT_PROGRESS = "progress";
+  public static final String IS_DELETED = "isDeleted";
+  public static final String PROFILE_SUMMARY = "profileSummary";
+  public static final String EKSTEP_TELEMETRY_API_URL = "ekstep.telemetry.api.url";
+  public static final String ADDRESS_LINE1 = "addressLine1";
+  public static final String CITY = "city";  
+  public static final String LIST = "List";  
+  public static final String ADD_TYPE = "addType"; 
+  public static final String ADDRESS_TYPE = "address type"; 
+  public static final String DEGREE = "degree";
+  public static final String JOB_NAME = "jobName";
+  public static final String TYPE = "type";
 
 }

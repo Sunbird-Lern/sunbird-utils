@@ -3,6 +3,7 @@
  */
 package org.sunbird.common.models.util;
 
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -389,4 +390,7 @@ public class ProjectUtil {
         return null != obj? true:false;
     }
 
+    public static String formatMessage(String exceptionMsg,Object ...  fieldValue){
+      return MessageFormat.format(exceptionMsg,fieldValue);
+    }
 }

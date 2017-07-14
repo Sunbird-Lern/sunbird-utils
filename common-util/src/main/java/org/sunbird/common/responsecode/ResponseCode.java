@@ -95,7 +95,14 @@ public enum ResponseCode {
     contentStatusRequired(ResponseMessage.Key.CONTENT_STATUS_MISSING_ERROR, ResponseMessage.Message.CONTENT_STATUS_MISSING_ERROR),
 	userNotFound(ResponseMessage.Key.USER_NOT_FOUND, ResponseMessage.Message.USER_NOT_FOUND),
 	idRequired(ResponseMessage.Key.ID_REQUIRED_ERROR, ResponseMessage.Message.ID_REQUIRED_ERROR),
-	rolesTypeError(ResponseMessage.Key.ROLES_TYPE_ERROR, ResponseMessage.Message.ROLES_TYPE_ERROR),
+	dataTypeError(ResponseMessage.Key.DATA_TYPE_ERROR, ResponseMessage.Message.DATA_TYPE_ERROR),
+	addressError(ResponseMessage.Key.ADDRESS_ERROR, ResponseMessage.Message.ADDRESS_ERROR),
+	addressTypeError(ResponseMessage.Key.ADDRESS_TYPE_ERROR, ResponseMessage.Message.ADDRESS_TYPE_ERROR),
+	educationNameError(ResponseMessage.Key.NAME_OF_INSTITUTION_ERROR, ResponseMessage.Message.NAME_OF_INSTITUTION_ERROR),
+	jobNameError(ResponseMessage.Key.JOB_NAME_ERROR, ResponseMessage.Message.JOB_NAME_ERROR),
+	educationDegreeError(ResponseMessage.Key.EDUCATION_DEGREE_ERROR, ResponseMessage.Message.EDUCATION_DEGREE_ERROR),
+	organisationNameError(ResponseMessage.Key.NAME_OF_ORGANISATION_ERROR, ResponseMessage.Message.NAME_OF_ORGANISATION_ERROR),
+	rolesRequired(ResponseMessage.Key.ROLES_MISSING, ResponseMessage.Message.ROLES_MISSING),
 	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404);
 	
 	private int responseCode;
