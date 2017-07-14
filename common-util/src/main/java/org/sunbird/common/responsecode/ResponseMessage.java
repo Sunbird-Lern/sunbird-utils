@@ -38,6 +38,7 @@ public interface ResponseMessage {
         public static final String PASSWORD_MIN_LENGHT = "Password should have at least 8 character.";
         public static final String PASSWORD_MAX_LENGHT = "Password should not be more than 12 character.";
         public static final String ORGANISATION_ID_MISSING = "Organisation id is mandatory.";
+        public static final String REQUIRED_DATA_ORG_MISSING = "Organisation Id or Source with External Id is required for the operation";
         public static final String ORGANISATION_NAME_MISSING = "organisation name is mandatory.";
         public static final String INVALID_ROOT_ORGANIZATION = "Root organization id is invalid";
         public static final String INVALID_PARENT_ORGANIZATION_ID = "Parent organization id is invalid";
@@ -55,6 +56,7 @@ public interface ResponseMessage {
         public static final String USERNAME_MISSING = "Username is mandatory.";
         public static final String USERNAME_IN_USE = "Username already exists.";
         public static final String USERID_MISSING = "UserId is mandatory.";
+        public static final String ROLE_MISSING = "Role of the user is required";
         public static final String MESSAGE_ID_MISSING = "Message id is mandatory.";
         public static final String USERNAME_CANNOT_BE_UPDATED = "UserName cann't be updated.";
         public static final String AUTH_TOKEN_MISSING = "Auth token is mandatory.";
@@ -91,6 +93,7 @@ public interface ResponseMessage {
 		public static final String ORG_ID_MISSING ="Organisation Id required.";
 		public static final String ACTOR_CONNECTION_ERROR = "Service is not able to connect with actor.";
 		public static final String USER_ALREADY_EXIST = "user already exist.";
+		public static final String INVALID_USER_ID = "User Id does not exists in our records";
 		public static final String LOGIN_ID_MISSING = "loginId is required.";
 		public static final String CONTENT_STATUS_MISSING_ERROR = "content status is required .";
 		public static final String USER_NOT_FOUND = "user not found.";
@@ -129,6 +132,7 @@ public interface ResponseMessage {
         public static final String PASSWORD_MIN_LENGHT = "PASSWORD_MIN_LENGHT_ERROR";
         public static final String PASSWORD_MAX_LENGHT = "PASSWORD_MAX_LENGHT_ERROR";
         public static final String ORGANISATION_ID_MISSING = "ORGANISATION_ID_MISSING";
+        public static final String REQUIRED_DATA_ORG_MISSING = "REQUIRED_DATA_MISSING";
         public static final String ORGANISATION_NAME_MISSING = "ORGANISATION_NAME_MISSING";
         public static final String INVALID_ROOT_ORGANIZATION = "INVALID ROOT ORGANIZATION";
         public static final String INVALID_PARENT_ORGANIZATION_ID = "INVALID_PARENT_ORGANIZATION_ID";
@@ -146,6 +150,7 @@ public interface ResponseMessage {
         public static final String USERNAME_MISSING = "USERNAME_MISSING";
         public static final String USERNAME_IN_USE = "USERNAME_IN_USE";
         public static final String USERID_MISSING = "USERID_MISSING";
+        public static final String ROLE_MISSING = "ROLE_MISSING";
         public static final String MESSAGE_ID_MISSING = "MESSAGE_ID_MISSING";
         public static final String USERNAME_CANNOT_BE_UPDATED = "USERNAME_CANNOT_BE_UPDATED";
         public static final String AUTH_TOKEN_MISSING = "X_Authenticated_Userid_MISSING";
@@ -182,6 +187,7 @@ public interface ResponseMessage {
 		public static final String ORG_ID_MISSING = "ORG_ID_MISSING";
 		public static final String ACTOR_CONNECTION_ERROR = "ACTOR_CONNECTION_ERROR";
 		public static final String USER_ALREADY_EXIST = "USER_ALREADY_EXIST";
+		public static final String INVALID_USER_ID = "INVALID_USER_ID";
 		public static final String LOGIN_ID_MISSING = "LOGIN_ID_MISSING";
 		public static final String CONTENT_STATUS_MISSING_ERROR = "CONTENT_STATUS_MISSING_ERROR";
 		public static final String USER_NOT_FOUND = "USER_NOT_FOUND";
