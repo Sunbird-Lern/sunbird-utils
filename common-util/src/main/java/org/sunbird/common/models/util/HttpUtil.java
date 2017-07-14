@@ -11,7 +11,6 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -23,7 +22,7 @@ import java.util.Map.Entry;
  *
  */
 public class HttpUtil {
-	private static HttpURLConnection httpURLConnection;
+	//private static HttpURLConnection httpURLConnection;
 	private static final LogHelper LOGGER = LogHelper.getInstance(HttpUtil.class.getName());
 	/**
      * Makes an HTTP request using GET method to the specified URL.
@@ -39,7 +38,7 @@ public class HttpUtil {
     public static String sendGetRequest(String requestURL,Map<String,String> headers)
 			throws IOException {
 		URL url = new URL(requestURL);
-		httpURLConnection = (HttpURLConnection) url.openConnection();
+		HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 		httpURLConnection.setUseCaches(false);
 		httpURLConnection.setDoInput(true);
 		httpURLConnection.setDoOutput(false);
@@ -67,7 +66,7 @@ public class HttpUtil {
     public static String sendPostRequest(String requestURL,
 			Map<String, String> params,Map<String,String> headers) throws IOException {
 		URL url = new URL(requestURL);
-		httpURLConnection = (HttpURLConnection) url.openConnection();
+		HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 		httpURLConnection.setUseCaches(false);
 		httpURLConnection.setDoInput(true);
         httpURLConnection.setRequestMethod(ProjectUtil.Method.POST.name());
@@ -109,7 +108,7 @@ public class HttpUtil {
     public static String sendPostRequest(String requestURL,
 			String params,Map<String,String> headers) throws IOException {
 		URL url = new URL(requestURL);
-		httpURLConnection = (HttpURLConnection) url.openConnection();
+		HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 		httpURLConnection.setUseCaches(false);
 		httpURLConnection.setDoInput(true);
         httpURLConnection.setRequestMethod(ProjectUtil.Method.POST.name());
