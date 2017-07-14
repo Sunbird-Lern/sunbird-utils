@@ -95,6 +95,7 @@ public interface ResponseMessage {
 		public static final String CONTENT_STATUS_MISSING_ERROR = "content status is required .";
 		public static final String USER_NOT_FOUND = "user not found.";
 		public static final String ID_REQUIRED_ERROR = "For deleting a record, Id is required.";
+		public static final String ROLES_TYPE_ERROR = "Roles type should be of List.";
 	}
     public interface Key {
         public static final String UNAUTHORISE_USER = "UNAUTHORISE_USER";
@@ -185,5 +186,6 @@ public interface ResponseMessage {
 		public static final String CONTENT_STATUS_MISSING_ERROR = "CONTENT_STATUS_MISSING_ERROR";
 		public static final String USER_NOT_FOUND = "USER_NOT_FOUND";
 		public static final String ID_REQUIRED_ERROR = "ID_REQUIRED_ERROR";
+		public static final String ROLES_TYPE_ERROR = "ROLES_TYPE_ERROR";
     }
 }
