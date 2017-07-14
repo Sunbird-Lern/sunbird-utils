@@ -1,16 +1,14 @@
 package org.sunbird.common.request;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import static org.sunbird.common.models.util.ProjectUtil.isNull;
+
 import java.util.List;
 import java.util.Map;
-
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.ProjectUtil.AddressType;
 import org.sunbird.common.responsecode.ResponseCode;
-import static org.sunbird.common.models.util.ProjectUtil.isNull;
 
 
 /**
@@ -29,10 +27,9 @@ public final class RequestValidator {
 	 */
 	public static void validateEnrollCourse(Request courseRequestDto) {
 		if (courseRequestDto.getRequest().get(JsonKey.COURSE_ID) == null) {
-			ProjectCommonException dataException = new ProjectCommonException(
+		  throw new ProjectCommonException(
 					ResponseCode.courseIdRequiredError.getErrorCode(),
 					ResponseCode.courseIdRequiredError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-			throw dataException;
 		}
 	}
 	
@@ -45,29 +42,25 @@ public final class RequestValidator {
 	@SuppressWarnings("unchecked")
 	public static void validateUpdateContent(Request contentRequestDto) {
 			if (((List<Map<String,Object>>)(contentRequestDto.getRequest().get(JsonKey.CONTENTS))).size()== 0 ) {
-			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.contentIdRequired.getErrorCode(),
+			  throw new ProjectCommonException(ResponseCode.contentIdRequired.getErrorCode(),
 					ResponseCode.contentIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
-			throw dataException;
 			}else{
 				List<Map<String,Object>> list= (List<Map<String,Object>>)(contentRequestDto.getRequest().get(JsonKey.CONTENTS));
 				for(Map<String,Object> map :list){
 					if(map.containsKey(JsonKey.CONTENT_ID)){
 						
 						if(null == map.get(JsonKey.CONTENT_ID)){
-							ProjectCommonException dataException = new ProjectCommonException(ResponseCode.contentIdRequired.getErrorCode(),
+						  throw new ProjectCommonException(ResponseCode.contentIdRequired.getErrorCode(),
 									ResponseCode.contentIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
-							throw dataException;
 						}
 						if(ProjectUtil.isNull(map.get(JsonKey.STATUS))){
-							ProjectCommonException dataException = new ProjectCommonException(ResponseCode.contentStatusRequired.getErrorCode(),
+						  throw new ProjectCommonException(ResponseCode.contentStatusRequired.getErrorCode(),
 									ResponseCode.contentStatusRequired.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
-							throw dataException;
 						}
 						
 					}else{
-						ProjectCommonException dataException = new ProjectCommonException(ResponseCode.contentIdRequired.getErrorCode(),
+					  throw new ProjectCommonException(ResponseCode.contentIdRequired.getErrorCode(),
 								ResponseCode.contentIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
-						throw dataException;
 					}
 				}
 			}
@@ -408,29 +401,24 @@ public final class RequestValidator {
 	public static void validateAddCourse(Request courseRequest) {
 
 		 if (courseRequest.getRequest().get(JsonKey.CONTENT_ID) == null) {
-			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.courseIdRequiredError.getErrorCode(),
+		   throw new ProjectCommonException(ResponseCode.courseIdRequiredError.getErrorCode(),
 					ResponseCode.courseIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
-			throw dataException;
 		}
 		 if (courseRequest.getRequest().get(JsonKey.COURSE_NAME) == null) {
-			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.courseNameRequired.getErrorCode(),
+		   throw new ProjectCommonException(ResponseCode.courseNameRequired.getErrorCode(),
 					ResponseCode.courseNameRequired.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
-			throw dataException;
 		}
 		 if (courseRequest.getRequest().get(JsonKey.ORGANISATION_ID) == null) {
-			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.organisationIdRequiredError.getErrorCode(),
+		   throw new ProjectCommonException(ResponseCode.organisationIdRequiredError.getErrorCode(),
 					ResponseCode.organisationIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
-			throw dataException;
 		}
 		 if (courseRequest.getRequest().get(JsonKey.ENROLLMENT_START_DATE) == null) {
-			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.enrollmentStartDateRequiredError.getErrorCode(),
+		   throw new ProjectCommonException(ResponseCode.enrollmentStartDateRequiredError.getErrorCode(),
 					ResponseCode.enrollmentStartDateRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
-			throw dataException;
 		}
 		 if (courseRequest.getRequest().get(JsonKey.COURSE_DURATION) == null) {
-			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.courseDurationRequiredError.getErrorCode(),
+		   throw new ProjectCommonException(ResponseCode.courseDurationRequiredError.getErrorCode(),
 					ResponseCode.courseDurationRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
-			throw dataException;
 		}
 	
 	}
@@ -442,9 +430,8 @@ public final class RequestValidator {
 	public static void validateUpdateCourse(Request request) {
 
 		if (request.getRequest().get(JsonKey.COURSE_ID) == null) {
-			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.courseIdRequired.getErrorCode(),
+		  throw new ProjectCommonException(ResponseCode.courseIdRequired.getErrorCode(),
 					ResponseCode.courseIdRequired.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
-			throw dataException;
 		}
 
 	}
@@ -455,9 +442,8 @@ public final class RequestValidator {
 	 */
 	public static void validatePublishCourse(Request request) {
 		 if (request.getRequest().get(JsonKey.COURSE_ID) == null) {
-			ProjectCommonException dataException = new ProjectCommonException(ResponseCode.courseIdRequiredError.getErrorCode(),
+		   throw new ProjectCommonException(ResponseCode.courseIdRequiredError.getErrorCode(),
 					ResponseCode.courseIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
-			throw dataException;
 		}
 	}
 	
@@ -468,9 +454,8 @@ public final class RequestValidator {
 	 */
 	public static void validateDeleteCourse(Request request) {
 		 if (request.getRequest().get(JsonKey.COURSE_ID) == null) {
-			 ProjectCommonException dataException = new ProjectCommonException(ResponseCode.courseIdRequiredError.getErrorCode(),
+		   throw new ProjectCommonException(ResponseCode.courseIdRequiredError.getErrorCode(),
 					 ResponseCode.courseIdRequiredError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-			 throw dataException;
 		 }
 	}
 	
@@ -481,17 +466,15 @@ public final class RequestValidator {
 	public static void validateCreateSection(Request request) {
 		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.SECTION_NAME) != null
 				? request.getRequest().get(JsonKey.SECTION_NAME) : ""))) {
-			ProjectCommonException dataException = new ProjectCommonException(
+		  throw new ProjectCommonException(
 					ResponseCode.sectionNameRequired.getErrorCode(), ResponseCode.sectionNameRequired.getErrorMessage(),
 					ResponseCode.CLIENT_ERROR.getResponseCode());
-			throw dataException;
 		}
 		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.SECTION_DATA_TYPE) != null
 				? request.getRequest().get(JsonKey.SECTION_DATA_TYPE) : ""))) {
-			ProjectCommonException dataException = new ProjectCommonException(
+		  throw new ProjectCommonException(
 					ResponseCode.sectionDataTypeRequired.getErrorCode(), ResponseCode.sectionDataTypeRequired.getErrorMessage(),
 					ResponseCode.CLIENT_ERROR.getResponseCode());
-			throw dataException;
 		}
 	}
 	
@@ -502,10 +485,9 @@ public final class RequestValidator {
 	public static void validateUpdateSection(Request request) {
 		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.SECTION_NAME) != null
 				? request.getRequest().get(JsonKey.SECTION_NAME) : ""))) {
-			ProjectCommonException dataException = new ProjectCommonException(
+		  throw new ProjectCommonException(
 					ResponseCode.sectionNameRequired.getErrorCode(), ResponseCode.sectionNameRequired.getErrorMessage(),
 					ResponseCode.CLIENT_ERROR.getResponseCode());
-			throw dataException;
 		}
 		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ID) != null
 				? request.getRequest().get(JsonKey.ID) : ""))) {
@@ -515,10 +497,9 @@ public final class RequestValidator {
 		}
 		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.SECTION_DATA_TYPE) != null
 				? request.getRequest().get(JsonKey.SECTION_DATA_TYPE) : ""))) {
-			ProjectCommonException dataException = new ProjectCommonException(
+		  throw new ProjectCommonException(
 					ResponseCode.sectionDataTypeRequired.getErrorCode(), ResponseCode.sectionDataTypeRequired.getErrorMessage(),
 					ResponseCode.CLIENT_ERROR.getResponseCode());
-			throw dataException;
 		}
 	}
 	
@@ -530,10 +511,9 @@ public final class RequestValidator {
 	public static void validateCreatePage(Request request) {
 		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.PAGE_NAME) != null
 				? request.getRequest().get(JsonKey.PAGE_NAME) : ""))) {
-			ProjectCommonException dataException = new ProjectCommonException(
+		  throw new ProjectCommonException(
 					ResponseCode.pageNameRequired.getErrorCode(), ResponseCode.pageNameRequired.getErrorMessage(),
 					ResponseCode.CLIENT_ERROR.getResponseCode());
-			throw dataException;
 		}
 	}
 	
@@ -544,10 +524,9 @@ public final class RequestValidator {
 	public static void validateUpdatepage(Request request) {
 		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.PAGE_NAME) != null
 				? request.getRequest().get(JsonKey.PAGE_NAME) : ""))) {
-			ProjectCommonException dataException = new ProjectCommonException(
+		  throw new ProjectCommonException(
 					ResponseCode.pageNameRequired.getErrorCode(), ResponseCode.pageNameRequired.getErrorMessage(),
 					ResponseCode.CLIENT_ERROR.getResponseCode());
-			throw dataException;
 		}
 		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ID) != null
 				? request.getRequest().get(JsonKey.ID) : ""))) {
@@ -565,10 +544,9 @@ public final class RequestValidator {
 	public static void validateSaveAssessment(Request request) {
 		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.COURSE_ID) != null
 				? request.getRequest().get(JsonKey.COURSE_ID) : ""))) {
-			ProjectCommonException dataException = new ProjectCommonException(
+		  throw new ProjectCommonException(
 					ResponseCode.courseIdRequired.getErrorCode(), ResponseCode.courseIdRequired.getErrorMessage(),
 					ResponseCode.CLIENT_ERROR.getResponseCode());
-			throw dataException;
 		} 
 		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.CONTENT_ID) != null
 				? request.getRequest().get(JsonKey.CONTENT_ID) : ""))) {
@@ -623,10 +601,9 @@ public final class RequestValidator {
 	public static void validateGetAssessment(Request request) {
 		if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.COURSE_ID) != null
 				? request.getRequest().get(JsonKey.COURSE_ID) : ""))) {
-			ProjectCommonException dataException = new ProjectCommonException(
+		  throw new ProjectCommonException(
 					ResponseCode.courseIdRequiredError.getErrorCode(),
 					ResponseCode.courseIdRequiredError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-			throw dataException;
 		}
 	}
 
