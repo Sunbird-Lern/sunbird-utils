@@ -38,6 +38,7 @@ public interface ResponseMessage {
         public static final String PASSWORD_MIN_LENGHT = "Password should have at least 8 character.";
         public static final String PASSWORD_MAX_LENGHT = "Password should not be more than 12 character.";
         public static final String ORGANISATION_ID_MISSING = "Organisation id is mandatory.";
+        public static final String REQUIRED_DATA_ORG_MISSING = "Organisation Id or Source with External Id is required for the operation";
         public static final String ORGANISATION_NAME_MISSING = "organisation name is mandatory.";
         public static final String INVALID_ROOT_ORGANIZATION = "Root organization id is invalid";
         public static final String INVALID_PARENT_ORGANIZATION_ID = "Parent organization id is invalid";
@@ -131,6 +132,7 @@ public interface ResponseMessage {
         public static final String PASSWORD_MIN_LENGHT = "PASSWORD_MIN_LENGHT_ERROR";
         public static final String PASSWORD_MAX_LENGHT = "PASSWORD_MAX_LENGHT_ERROR";
         public static final String ORGANISATION_ID_MISSING = "ORGANISATION_ID_MISSING";
+        public static final String REQUIRED_DATA_ORG_MISSING = "REQUIRED_DATA_MISSING";
         public static final String ORGANISATION_NAME_MISSING = "ORGANISATION_NAME_MISSING";
         public static final String INVALID_ROOT_ORGANIZATION = "INVALID ROOT ORGANIZATION";
         public static final String INVALID_PARENT_ORGANIZATION_ID = "INVALID_PARENT_ORGANIZATION_ID";

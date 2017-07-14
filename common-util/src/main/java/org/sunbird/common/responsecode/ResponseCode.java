@@ -40,6 +40,7 @@ public enum ResponseCode {
     passwordMinLengthError(ResponseMessage.Key.PASSWORD_MIN_LENGHT, ResponseMessage.Message.PASSWORD_MIN_LENGHT),
     passwordMaxLengthError(ResponseMessage.Key.PASSWORD_MAX_LENGHT, ResponseMessage.Message.PASSWORD_MAX_LENGHT),
     organisationIdRequiredError (ResponseMessage.Key.ORGANISATION_ID_MISSING, ResponseMessage.Message.ORGANISATION_ID_MISSING),
+    sourceAndExternalIdValidationError(ResponseMessage.Key.REQUIRED_DATA_ORG_MISSING, ResponseMessage.Message.REQUIRED_DATA_ORG_MISSING),
     organisationNameRequired(ResponseMessage.Key.ORGANISATION_NAME_MISSING, ResponseMessage.Message.ORGANISATION_NAME_MISSING),
     invalidRootOrganisationId(ResponseMessage.Key.INVALID_ROOT_ORGANIZATION, ResponseMessage.Message.INVALID_ROOT_ORGANIZATION),
     invalidParentId(ResponseMessage.Key.INVALID_PARENT_ORGANIZATION_ID, ResponseMessage.Message.INVALID_PARENT_ORGANIZATION_ID),
