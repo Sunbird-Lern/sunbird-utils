@@ -247,6 +247,7 @@ public class JsonKey {
   public static final String APPROVED_BY = "approvedBy";
   public static final String APPROOVE_DATE = "approvalDate";
   public static final String ORG_JOIN_DATE = "orgJoinDate";
+  public static final String ORG_LEFT_DATE = "orgLeftDate";
   public static final String USER_ORG_DB = "user_org_db";
   public static final String EMAIL_VERIFIED = "emailVerified";
   public static final String PHONE_NUMBER_VERIFIED = "phoneNumberVerified";
