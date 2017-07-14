@@ -95,7 +95,14 @@ public interface ResponseMessage {
 		public static final String CONTENT_STATUS_MISSING_ERROR = "content status is required .";
 		public static final String USER_NOT_FOUND = "user not found.";
 		public static final String ID_REQUIRED_ERROR = "For deleting a record, Id is required.";
-		public static final String ROLES_TYPE_ERROR = "Roles type should be of List.";
+		public static final String DATA_TYPE_ERROR = "{0} data type should be of {1}.";
+		public static final String ADDRESS_ERROR = "In {0}, {1} is mandatory.";
+		public static final String ADDRESS_TYPE_ERROR = "Please provide correct address Type.";
+		public static final String NAME_OF_INSTITUTION_ERROR = "Please provide name of Institution.";
+		public static final String EDUCATION_DEGREE_ERROR = "Education degree is required.";
+		public static final String JOB_NAME_ERROR = "Job Name is required.";
+		public static final String NAME_OF_ORGANISATION_ERROR = "Organisation Name is required.";
+		public static final String ROLES_MISSING = "user role is required.";
 	}
     public interface Key {
         public static final String UNAUTHORISE_USER = "UNAUTHORISE_USER";
@@ -186,6 +193,13 @@ public interface ResponseMessage {
 		public static final String CONTENT_STATUS_MISSING_ERROR = "CONTENT_STATUS_MISSING_ERROR";
 		public static final String USER_NOT_FOUND = "USER_NOT_FOUND";
 		public static final String ID_REQUIRED_ERROR = "ID_REQUIRED_ERROR";
-		public static final String ROLES_TYPE_ERROR = "ROLES_TYPE_ERROR";
+		public static final String DATA_TYPE_ERROR = "DATA_TYPE_ERROR";
+		public static final String ADDRESS_ERROR = "ADDRESS_ERROR";
+		public static final String ADDRESS_TYPE_ERROR = "ADDRESS_TYPE_ERROR";
+		public static final String NAME_OF_INSTITUTION_ERROR = "NAME_OF_INSTITUTION_ERROR";
+		public static final String EDUCATION_DEGREE_ERROR = "EDUCATION_DEGREE_ERROR";
+		public static final String JOB_NAME_ERROR = "JOB_NAME_ERROR";
+		public static final String NAME_OF_ORGANISATION_ERROR = "NAME_OF_ORGANISATION_ERROR";
+		public static final String ROLES_MISSING = "ROLES_REQUIRED_ERROR";
     }
 }
