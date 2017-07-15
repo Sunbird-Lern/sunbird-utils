@@ -15,7 +15,6 @@ import org.sunbird.common.responsecode.ResponseCode;
  * This call will do validation
  * for all incoming request data.
  * @author Manzarul
- * @author Amit Kumar
  */
 public final class RequestValidator {
     
@@ -268,6 +267,7 @@ public final class RequestValidator {
          throw new ProjectCommonException(ResponseCode.jobDetailsRequired.getErrorCode(),
            ResponseCode.jobDetailsRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
         }
+	   
         if (userRequest.getRequest().get(JsonKey.ADDRESS) != null
             && (!((List) userRequest.getRequest().get(JsonKey.ADDRESS)).isEmpty())) {
         
@@ -280,7 +280,10 @@ public final class RequestValidator {
                 throw new ProjectCommonException(ResponseCode.idRequired.getErrorCode(),
                     ResponseCode.idRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());  
               }
+              if(!reqMap.containsKey(JsonKey.IS_DELETED) || (reqMap.containsKey(JsonKey.IS_DELETED) && (null == reqMap.get(JsonKey.IS_DELETED) ||
+                  !(boolean)reqMap.get(JsonKey.IS_DELETED)))){
                 validateAddress(reqMap, JsonKey.ADDRESS);
+              }
           }
        } 
         
@@ -295,7 +298,8 @@ public final class RequestValidator {
                 throw new ProjectCommonException(ResponseCode.idRequired.getErrorCode(),
                     ResponseCode.idRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
               }
-              
+              if(!reqMap.containsKey(JsonKey.IS_DELETED) || (reqMap.containsKey(JsonKey.IS_DELETED) && (null == reqMap.get(JsonKey.IS_DELETED) ||
+                  !(boolean)reqMap.get(JsonKey.IS_DELETED)))){
               if(ProjectUtil.isStringNullOREmpty((String)reqMap.get(JsonKey.JOB_NAME))){
                 throw new ProjectCommonException(ResponseCode.jobNameError.getErrorCode(),
                 ResponseCode.jobNameError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
@@ -308,6 +312,7 @@ public final class RequestValidator {
               if(reqMap.containsKey(JsonKey.ADDRESS) && null != reqMap.get(JsonKey.ADDRESS)){
                validateAddress((Map<String,Object>)reqMap.get(JsonKey.ADDRESS), JsonKey.JOB_PROFILE);
               }
+             }
           }
        } 
         if (userRequest.getRequest().get(JsonKey.EDUCATION) != null
@@ -321,6 +326,8 @@ public final class RequestValidator {
                 throw new ProjectCommonException(ResponseCode.idRequired.getErrorCode(),
                     ResponseCode.idRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
               }
+              if(!reqMap.containsKey(JsonKey.IS_DELETED) || (reqMap.containsKey(JsonKey.IS_DELETED) && (null == reqMap.get(JsonKey.IS_DELETED) ||
+                  !(boolean)reqMap.get(JsonKey.IS_DELETED)))){
               if(ProjectUtil.isStringNullOREmpty((String)reqMap.get(JsonKey.NAME))){
                 throw new ProjectCommonException(ResponseCode.educationNameError.getErrorCode(),
                 ResponseCode.educationNameError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
@@ -332,6 +339,7 @@ public final class RequestValidator {
               if(reqMap.containsKey(JsonKey.ADDRESS) && null != reqMap.get(JsonKey.ADDRESS)){
                 validateAddress((Map<String,Object>)reqMap.get(JsonKey.ADDRESS), JsonKey.EDUCATION);
                }
+             }
           }
        } 
         
