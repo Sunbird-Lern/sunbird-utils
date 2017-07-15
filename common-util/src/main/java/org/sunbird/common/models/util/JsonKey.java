@@ -285,6 +285,6 @@ public class JsonKey {
   public static final String JOB_NAME = "jobName";
   public static final String TYPE = "type";
   public static final String DEFAULT_ROOT_ORG_ID = "ORG_001";
-  public static final String DEFAULT = "default";
+  public static final String IS_DEFAULT = "isDefault";
   public static final String IDENTIFIER = "identifier";
 }
