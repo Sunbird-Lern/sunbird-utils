@@ -195,6 +195,11 @@ public final class RequestValidator {
 
 	  public static void validateUpdateOrg(Request request) {
 	   validateOrg(request);
+	   if(ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.ROOT_ORG_ID))){
+	     throw new ProjectCommonException(ResponseCode.invalidRootOrganisationId.getErrorCode(),
+             ResponseCode.invalidRootOrganisationId.getErrorMessage(),
+             ResponseCode.CLIENT_ERROR.getResponseCode());
+	   }
 	    if (request.getRequest().get(JsonKey.STATUS) != null || !(ProjectUtil
 	        .isStringNullOREmpty((String) request.getRequest().get(JsonKey.STATUS)))) {
 	      throw new ProjectCommonException(ResponseCode.invalidRequestData.getErrorCode(),
@@ -343,6 +348,11 @@ public final class RequestValidator {
           }
        } 
         
+        if(ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.ROOT_ORG_ID))){
+          throw new ProjectCommonException(ResponseCode.invalidRootOrganisationId.getErrorCode(),
+              ResponseCode.invalidRootOrganisationId.getErrorMessage(),
+              ResponseCode.CLIENT_ERROR.getResponseCode());
+        } 
         
    }
 
