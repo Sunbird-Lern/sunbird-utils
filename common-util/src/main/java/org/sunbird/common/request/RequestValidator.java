@@ -349,13 +349,13 @@ public final class RequestValidator {
              }
           }
        } 
-        if(userRequest.getRequest().containsKey(JsonKey.ROOT_ORG_ID)){
+       /* if(userRequest.getRequest().containsKey(JsonKey.ROOT_ORG_ID)){
           if(ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.ROOT_ORG_ID))){
             throw new ProjectCommonException(ResponseCode.invalidRootOrganisationId.getErrorCode(),
                 ResponseCode.invalidRootOrganisationId.getErrorMessage(),
                 ResponseCode.CLIENT_ERROR.getResponseCode());
           } 
-        }
+        }*/
         
    }
 
