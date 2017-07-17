@@ -221,6 +221,7 @@ public class JsonKey {
   public static final String ORG_MAP_DB = "org_mapping";
   public static final String RELATIONS = "relations";
   public static final String ORG_TYPE_DB = "org_type";
+  public static final String NO_OF_MEMBERS = "noOfMembers";
 
   public static final String EDUCATION = "education";
   public static final String JOB_PROFILE = "jobProfile";
