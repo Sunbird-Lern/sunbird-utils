@@ -221,6 +221,7 @@ public class JsonKey {
   public static final String ORG_MAP_DB = "org_mapping";
   public static final String RELATIONS = "relations";
   public static final String ORG_TYPE_DB = "org_type";
+  public static final String NO_OF_MEMBERS = "noOfMembers";
 
   public static final String EDUCATION = "education";
   public static final String JOB_PROFILE = "jobProfile";
@@ -290,4 +291,10 @@ public class JsonKey {
   public static final String EKSTEP_CONTENT_SEARCH_BASE_URL = "ekstep_content_search_base_url";
   public static final String EKSTEP_TELEMETRY_BASE_URL = "ekstep_telemetry_api_base_url";
   public static final String HEADER = "header";
+  public static final String SUNBIRD_SSO_URL = "sunbird_sso_url";
+  public static final String SUNBIRD_SSO_RELAM = "sunbird_sso_realm";
+  public static final String SUNBIRD_SSO_USERNAME = "sunbird_sso_username";
+  public static final String SUNBIRD_SSO_PASSWORD = "sunbird_sso_password";
+  public static final String SUNBIRD_SSO_CLIENT_ID = "sunbird_sso_client_id";
+  public static final String SUNBIRD_SSO_CLIENT_SECRET = "sunbird_sso_client_secret";
 }

@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.sunbird.common.models.response.Response;
-import org.sunbird.common.models.util.LogHelper;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.PropertiesCache;
 
@@ -21,7 +20,6 @@ import com.datastax.driver.core.Row;
  */
 public final class CassandraUtil{
 
-	private static final LogHelper LOGGER = LogHelper.getInstance(CassandraUtil.class.getName());
 	private static final PropertiesCache instance = PropertiesCache.getInstance();
 	
 	private CassandraUtil(){}
@@ -46,7 +44,6 @@ public final class CassandraUtil{
 	      }
 	    }
 	    query.append(commaSepValueBuilder+")"+Constants.IF_NOT_EXISTS);
-	    LOGGER.debug(query.toString());
 	    ProjectLogger.log(query.toString());
 		return query.toString();
 		
@@ -73,7 +70,6 @@ public final class CassandraUtil{
 			}
 			responseList.add(map);
 		}
-		LOGGER.debug(responseList.toString());
 		ProjectLogger.log(responseList.toString());
 		response.put(Constants.RESPONSE, responseList);
 		return response;
@@ -92,7 +88,6 @@ public final class CassandraUtil{
 		key.remove(Constants.IDENTIFIER);
 		query.append(String.join(" = ? ,", key));
 		query.append(Constants.EQUAL_WITH_QUE_MARK+ Constants.WHERE_ID +Constants.EQUAL_WITH_QUE_MARK);
-	    LOGGER.debug(query.toString());
         ProjectLogger.log(query.toString());
 		return query.toString();
 	}
@@ -108,7 +103,6 @@ public final class CassandraUtil{
 		StringBuilder query=new StringBuilder(Constants.SELECT);
 		query.append(String.join(",", properties));
 		query.append(Constants.FROM + keyspaceName + Constants.DOT + tableName +Constants.WHERE +Constants.IDENTIFIER +Constants.EQUAL +" ?; ");
-	    LOGGER.debug(query.toString());
 	    ProjectLogger.log(query.toString());
 		return query.toString();
 		
@@ -134,7 +128,6 @@ public final class CassandraUtil{
 	      }
 	    }
 	    query.append(commaSepValueBuilder+Constants.CLOSING_BRACE);
-	    LOGGER.debug(query.toString());
 	    ProjectLogger.log(query.toString());
 		return query.toString();
 		
