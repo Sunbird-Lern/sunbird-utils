@@ -23,14 +23,20 @@ import org.sunbird.common.models.util.PropertiesCache;
  * @author Manzarul
  */
 public class ConnectionManager {
+  
 	private static TransportClient client = null;
 	private static List<String> host = new ArrayList<>();
 	private static List<Integer> ports = new ArrayList<>();
+	
 	static {
 		initialiseConnection();
 		registerShutDownHook();
 	}
 	
+	/**
+	 * This method will provide ES transport client.
+	 * @return TransportClient
+	 */
 	public static TransportClient getClient() {
 		if (client == null) {
 			initialiseConnection();

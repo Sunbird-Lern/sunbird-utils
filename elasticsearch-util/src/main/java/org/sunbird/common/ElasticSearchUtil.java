@@ -35,6 +35,7 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
+
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
@@ -42,7 +43,8 @@ import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
-import org.sunbird.helper.ElasticSearchQueryBuilder;
+import org.sunbird.helper.ElasticSearchMapping;
+import org.sunbird.helper.ElasticSearchSettings;
 
 /**
  * This class will provide all required operation
@@ -58,6 +60,7 @@ public class ElasticSearchUtil {
     private static final String GTE = ">=";
     private static final String GT = ">";
     private static final String ASC_ORDER="ASC";
+    
     /**
      * This method will put a new data entry inside Elastic search. identifier
      * value becomes _id inside ES, so every time provide a unique value while
@@ -265,8 +268,6 @@ public class ElasticSearchUtil {
         }
         return response;
     }
-
-    public static void main1(String[] args) {}
 
     /**
      * Method to perform the elastic search on the basis of SearchDTO . SearchDTO contains the search criteria like fields, facets, sort by , filters etc.
@@ -517,14 +518,14 @@ public class ElasticSearchUtil {
 						indexMap.put(index, true);
 					} else {
 						boolean createIndexResp = createIndex(index, null, null,
-								ElasticSearchQueryBuilder.createSettingsForIndex());
+								ElasticSearchSettings.createSettingsForIndex());
 						if (createIndexResp) {
 							indexMap.put(index, true);
 						}
 					}
 				} catch (InterruptedException | ExecutionException e) {
 					boolean createIndexResp = createIndex(index, null, null,
-							ElasticSearchQueryBuilder.createSettingsForIndex());
+					    ElasticSearchSettings.createSettingsForIndex());
 					if (createIndexResp) {
 						indexMap.put(index, true);
 					}
@@ -535,7 +536,7 @@ public class ElasticSearchUtil {
 
     /**
      * This method will check types are created or not.
-     * @param indices String []
+     * @param indices String 
      * @param types String var arg
      */
 	private static void verifyOrCreatType(String indices, String... types) {
@@ -548,13 +549,13 @@ public class ElasticSearchUtil {
 					if (typeResponse) {
 						typeMap.put(type, true);
 					} else {
-						boolean response = addOrUpdateMapping(indices, type, ElasticSearchQueryBuilder.createMapping());
+						boolean response = addOrUpdateMapping(indices, type, ElasticSearchMapping.createMapping());
 						if (response) {
 							typeMap.put(type, true);
 						}
 					}
 				} catch (InterruptedException | ExecutionException e) {
-					boolean response = addOrUpdateMapping(indices, type, ElasticSearchQueryBuilder.createMapping());
+					boolean response = addOrUpdateMapping(indices, type, ElasticSearchMapping.createMapping());
 					if (response) {
 						typeMap.put(type, true);
 					}
@@ -566,9 +567,9 @@ public class ElasticSearchUtil {
 
     /**
      * Method to create the index and type.
-     * @param index
-     * @param type
-     * @return
+     * @param index String
+     * @param type String
+     * @return boolean
      */
 	private static boolean verifyOrCreateIndexAndType(String index, String type) {
 		if (indexMap.containsKey(index)) {
