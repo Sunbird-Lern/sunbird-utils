@@ -3,6 +3,15 @@
  */
 package org.sunbird.common;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
+
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
@@ -28,18 +37,12 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
-import org.sunbird.common.models.util.LogHelper;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
 import org.sunbird.helper.ElasticSearchQueryBuilder;
-
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
 
 /**
  * This class will provide all required operation
@@ -48,7 +51,6 @@ import java.util.concurrent.ExecutionException;
  * @author Manzarul
  */
 public class ElasticSearchUtil {
-    private static final LogHelper LOGGER = LogHelper.getInstance(ElasticSearchUtil.class.getName());
     private static ConcurrentHashMap<String, Boolean> indexMap = new ConcurrentHashMap<String, Boolean>();
     private static ConcurrentHashMap<String, Boolean> typeMap = new ConcurrentHashMap<String, Boolean>();
     private static final String LTE = "<=";
@@ -70,16 +72,14 @@ public class ElasticSearchUtil {
     public static String createData(String index, String type, String identifier, Map<String, Object> data) {
         if (ProjectUtil.isStringNullOREmpty(identifier) || ProjectUtil.isStringNullOREmpty(type)
                 || ProjectUtil.isStringNullOREmpty(index)) {
-            LOGGER.info("Identifier value is null or empty ,not able to save data.");
-            ProjectLogger.log("Identifier value is null or empty ,not able to save data.", LoggerEnum.INFO.name());
+            ProjectLogger.log("Identifier value is null or empty ,not able to save data.");
             return "ERROR";
         }
         verifyOrCreateIndexAndType(index, type);
         data.put("identifier", identifier);
         IndexResponse response = ConnectionManager.getClient().prepareIndex(index, type, identifier).setSource(data)
                 .get();
-        LOGGER.info("Save value==" + response.getId() + " " + response.status());
-        ProjectLogger.log("Save value==" + response.getId() + " " + response.status());
+        ProjectLogger.log("Save value==" + response.getId() + " " + response.status(), LoggerEnum.INFO.name());
         return response.getId();
     }
 
@@ -94,10 +94,8 @@ public class ElasticSearchUtil {
         GetResponse response = null;
         if (ProjectUtil.isStringNullOREmpty(index) && ProjectUtil.isStringNullOREmpty(type)
                 && ProjectUtil.isStringNullOREmpty(identifier)) {
-            LOGGER.info("Invalid request is coming.");
             ProjectLogger.log("Invalid request is coming.");
         } else if (ProjectUtil.isStringNullOREmpty(index)) {
-            LOGGER.info("Please provide index value.");
             ProjectLogger.log("Please provide index value.");
         } else if (ProjectUtil.isStringNullOREmpty(type)) {
         	verifyOrCreateIndexAndType(index, type);
@@ -133,10 +131,8 @@ public class ElasticSearchUtil {
         	verifyOrCreateIndexAndType(index, type);
             sr = ConnectionManager.getClient().search(new SearchRequest(index).types(type).source(sourceBuilder)).get();
         } catch (InterruptedException e) {
-            LOGGER.error(e);
             ProjectLogger.log("Error, interrupted while connecting to Elasticsearch",e);
         } catch (ExecutionException e) {
-            LOGGER.error(e);
             ProjectLogger.log("Error while execution in Elasticsearch",e);
         }
         sr.getHits().getAt(0).getSource();
@@ -160,14 +156,12 @@ public class ElasticSearchUtil {
         	verifyOrCreateIndexAndType(index, type);
             UpdateResponse response = ConnectionManager.getClient().prepareUpdate(index, type, identifier).setDoc(data)
                     .get();
-            LOGGER.info("updated response==" + response.getResult().name());
-            ProjectLogger.log("updated response==" + response.getResult().name());
+            ProjectLogger.log("updated response==" + response.getResult().name(), LoggerEnum.INFO.name());
             if (response.getResult().name().equals("UPDATED")) {
                 return true;
             }
         } else {
-            LOGGER.info("Requested data is invalid.");
-          ProjectLogger.log("Requested data is invalid.");
+             ProjectLogger.log("Requested data is invalid.");
         }
         return false;
     }
@@ -184,10 +178,8 @@ public class ElasticSearchUtil {
                 && !ProjectUtil.isStringNullOREmpty(identifier)) {
         	verifyOrCreateIndexAndType(index, type);
             DeleteResponse response = ConnectionManager.getClient().prepareDelete(index, type, identifier).get();
-            LOGGER.info("delete info ==" + response.getResult().name() + " " + response.getId());
             ProjectLogger.log("delete info ==" + response.getResult().name() + " " + response.getId());
         } else {
-            LOGGER.info("Data can not be deleted due to invalid input.");
           ProjectLogger.log("Data can not be deleted due to invalid input.");
         }
     }
@@ -235,8 +227,7 @@ public class ElasticSearchUtil {
                 }
             }
         }
-        LOGGER.info("Index creation status==" + response);
-        ProjectLogger.log("Index creation status==" + response);
+        ProjectLogger.log("Index creation status==" + response, LoggerEnum.INFO.name());
         return response;
     }
 
@@ -340,10 +331,8 @@ public class ElasticSearchUtil {
 	        for(String facets : searchDTO.getFacets()){
 	            searchRequestBuilder.addAggregation(AggregationBuilders.terms(facets).field(facets));
 	        }
-        LOGGER.info("calling search builder======" + searchRequestBuilder.toString());
         ProjectLogger.log("calling search builder======" + searchRequestBuilder.toString());
         SearchResponse response = searchRequestBuilder.execute().actionGet();
-        LOGGER.info("getting response for es======" + response);
         ProjectLogger.log("getting response for es======" + response);
         List<Map<String,Object>> esResponse = new ArrayList<Map<String,Object>>();
         Map<String,List<Map<String,Object>>> responsemap = new HashMap<>();

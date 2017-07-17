@@ -26,7 +26,6 @@ import static org.sunbird.common.models.util.ProjectUtil.isNotNull;
  */
 public class KeyCloakServiceImpl implements SSOManager {
 
-    private static final LogHelper logger = LogHelper.getInstance(KeyCloakServiceImpl.class.getName());
     private static PropertiesCache cache = PropertiesCache.getInstance();
     Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
     private static final boolean IS_EMAIL_SETUP_COMPLETE = false;
@@ -74,7 +73,6 @@ public class KeyCloakServiceImpl implements SSOManager {
         Response result = keycloak.realm(cache.getProperty(JsonKey.SSO_REALM)).users().create(user);
         if (result.getStatus() != 201) {
 
-            logger.error("Couldn't create user." + result.getStatus() + " " + result.toString(), new RuntimeException());
             ProjectLogger.log("Couldn't create user." + result.getStatus() + " " + result.toString(), new RuntimeException());
             if (result.getStatus() == 409) {
                 ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.emailANDUserNameAlreadyExistError.getErrorCode(), ResponseCode.emailANDUserNameAlreadyExistError.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());

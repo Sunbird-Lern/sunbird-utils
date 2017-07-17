@@ -13,7 +13,6 @@ import org.keycloak.admin.client.KeycloakBuilder;
  * and provide the connection to do other operations.
  */
 public class KeyCloakConnectionProvider {
-   private static final LogHelper LOGGER = LogHelper.getInstance(KeyCloakConnectionProvider.class.getName()); 
    private static Keycloak keycloak; 
    private static PropertiesCache cache = PropertiesCache.getInstance();
    static {
@@ -26,7 +25,6 @@ public class KeyCloakConnectionProvider {
 	 * @return Keycloak connection
 	 */
    public static Keycloak initialiseConnection() {
-	   LOGGER.info("key cloak instance is creation started.");
 	   ProjectLogger.log("key cloak instance is creation started.");
 	   KeycloakBuilder keycloakBuilder = KeycloakBuilder.builder()
 			   .serverUrl(cache.getProperty(JsonKey.SSO_URL))
@@ -41,7 +39,6 @@ public class KeyCloakConnectionProvider {
 	   }
 	   keycloak = keycloakBuilder.build();
 
-	   LOGGER.info("key cloak instance is created successfully.");
 	   ProjectLogger.log("key cloak instance is created successfully.");
 	   return keycloak;
    }
@@ -69,10 +66,8 @@ public class KeyCloakConnectionProvider {
 	 */
 	static class ResourceCleanUp extends Thread {
 		  public void run() {
-			  LOGGER.info("started resource cleanup.");
 		      ProjectLogger.log("started resource cleanup.");
 			  keycloak.close(); 
-			  LOGGER.info("completed resource cleanup.");
 			  ProjectLogger.log("completed resource cleanup.");
 		  }
 	}
@@ -84,7 +79,6 @@ public class KeyCloakConnectionProvider {
 	public static void registerShutDownHook() {
 		Runtime runtime = Runtime.getRuntime();
 		runtime.addShutdownHook(new ResourceCleanUp());
-		LOGGER.info("ShutDownHook registered.");
 		ProjectLogger.log("ShutDownHook registered.");
 	}
 	

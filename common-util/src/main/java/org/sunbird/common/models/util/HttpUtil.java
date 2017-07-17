@@ -23,7 +23,6 @@ import java.util.Map.Entry;
  */
 public class HttpUtil {
 	//private static HttpURLConnection httpURLConnection;
-	private static final LogHelper LOGGER = LogHelper.getInstance(HttpUtil.class.getName());
 	/**
      * Makes an HTTP request using GET method to the specified URL.
      *
@@ -134,14 +133,12 @@ public class HttpUtil {
 				builder.append(line);
 			}
 		} catch (IOException e) {
-			LOGGER.error(e);
 			ProjectLogger.log("Error in getResponse HttpUtil:",e);
 		} finally {
 			if (reader != null) {
 				try {
 					reader.close();
 				} catch (IOException e) {
-					LOGGER.error(e);
 				  ProjectLogger.log("Error while closing the reader:",e);
 				}
 			}
@@ -149,7 +146,6 @@ public class HttpUtil {
 				try {
 					inStream.close();
 				} catch (IOException e) {
-					LOGGER.error(e);
 				  ProjectLogger.log("Error while closing the stream:",e);
 				}
 			}
