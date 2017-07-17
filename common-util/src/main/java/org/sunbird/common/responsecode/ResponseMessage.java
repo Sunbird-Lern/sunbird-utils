@@ -106,6 +106,8 @@ public interface ResponseMessage {
 		public static final String JOB_NAME_ERROR = "Job Name is required.";
 		public static final String NAME_OF_ORGANISATION_ERROR = "Organisation Name is required.";
 		public static final String ROLES_MISSING = "user role is required.";
+        public static final String INVALID_DATE_FORMAT = "Invalid Date format . Date format should be : yyyy-MM-dd hh:mm:ss:SSSZ";
+        public static final String SRC_EXTERNAL_ID_ALREADY_EXIST = "SOURCE WITH EXTERNAL ID ALREADY EXIST .";
 	}
     public interface Key {
         public static final String UNAUTHORISE_USER = "UNAUTHORISE_USER";
@@ -207,5 +209,7 @@ public interface ResponseMessage {
 		public static final String JOB_NAME_ERROR = "JOB_NAME_ERROR";
 		public static final String NAME_OF_ORGANISATION_ERROR = "NAME_OF_ORGANISATION_ERROR";
 		public static final String ROLES_MISSING = "ROLES_REQUIRED_ERROR";
+		public static final String INVALID_DATE_FORMAT = "INVALID_DATE_FORMAT";
+		public static final String SRC_EXTERNAL_ID_ALREADY_EXIST = "SRC_EXTERNAL_ID_ALREADY_EXIST";
     }
 }
