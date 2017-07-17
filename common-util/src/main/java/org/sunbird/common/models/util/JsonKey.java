@@ -288,4 +288,11 @@ public class JsonKey {
   public static final String DEFAULT_ROOT_ORG_ID = "ORG_001";
   public static final String IS_DEFAULT = "isDefault";
   public static final String IDENTIFIER = "identifier";
+  public static final String SUNBIRD_SSO_URL = "sunbird_sso_url";
+  public static final String SUNBIRD_SSO_RELAM = "sunbird_sso_realm";
+  public static final String SUNBIRD_SSO_USERNAME = "sunbird_sso_username";
+  public static final String SUNBIRD_SSO_PASSWORD = "sunbird_sso_password";
+  public static final String SUNBIRD_SSO_CLIENT_ID = "sunbird_sso_client_id";
+  public static final String SUNBIRD_SSO_CLIENT_SECRET = "sunbird_sso_client_secret";
+  
 }
