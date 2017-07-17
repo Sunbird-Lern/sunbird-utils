@@ -106,6 +106,8 @@ public enum ResponseCode {
 	educationDegreeError(ResponseMessage.Key.EDUCATION_DEGREE_ERROR, ResponseMessage.Message.EDUCATION_DEGREE_ERROR),
 	organisationNameError(ResponseMessage.Key.NAME_OF_ORGANISATION_ERROR, ResponseMessage.Message.NAME_OF_ORGANISATION_ERROR),
 	rolesRequired(ResponseMessage.Key.ROLES_MISSING, ResponseMessage.Message.ROLES_MISSING),
+    invalidDateFormat(ResponseMessage.Key.INVALID_DATE_FORMAT, ResponseMessage.Message.INVALID_DATE_FORMAT),
+    sourceAndExternalIdAlreadyExist(ResponseMessage.Key.SRC_EXTERNAL_ID_ALREADY_EXIST, ResponseMessage.Message.SRC_EXTERNAL_ID_ALREADY_EXIST),
 	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404);
 	
 	private int responseCode;
