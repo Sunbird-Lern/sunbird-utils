@@ -7,12 +7,14 @@ import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.*;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.services.sso.SSOManager;
 
 import javax.ws.rs.core.Response;
+
 import java.util.Map;
 
 import static java.util.Arrays.asList;
@@ -29,6 +31,7 @@ public class KeyCloakServiceImpl implements SSOManager {
     private static PropertiesCache cache = PropertiesCache.getInstance();
     Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
     private static final boolean IS_EMAIL_SETUP_COMPLETE = false;
+    
     @Override
     public String verifyToken(Map<String, String> request) {
         // TODO Auto-generated method stub
@@ -39,37 +42,7 @@ public class KeyCloakServiceImpl implements SSOManager {
     @Override
     public String createUser(Map<String, Object> request) {
         String userId = null;
-
-        CredentialRepresentation credential = new CredentialRepresentation();
-
-        UserRepresentation user = new UserRepresentation();
-    if (isNotNull(request.get(JsonKey.PROVIDER))) {
-      user.setUsername((String) request.get(JsonKey.USERNAME) + JsonKey.LOGIN_ID_DELIMETER
-          + (String) request.get(JsonKey.PROVIDER));
-    }else{
-         user.setUsername((String) request.get(JsonKey.USERNAME));
-        }
-        if (isNotNull(request.get(JsonKey.FIRST_NAME))) {
-            user.setFirstName((String) request.get(JsonKey.FIRST_NAME));
-        }
-        if (isNotNull(request.get(JsonKey.LAST_NAME))) {
-            user.setLastName((String) request.get(JsonKey.LAST_NAME));
-        }
-        if (isNotNull(request.get(JsonKey.EMAIL))) {
-            user.setEmail((String) request.get(JsonKey.EMAIL));
-        }
-        if (isNotNull(request.get(JsonKey.PASSWORD))) {
-            credential.setValue((String) request.get(JsonKey.PASSWORD));
-            credential.setType(CredentialRepresentation.PASSWORD);
-            credential.setTemporary(true);
-            user.setCredentials(asList(credential));
-        }
-        if(isNotNull(request.get(JsonKey.EMAIL_VERIFIED))){
-            user.setEmailVerified((Boolean)request.get(JsonKey.EMAIL_VERIFIED));
-        }
-
-        user.setEnabled(true);
-
+        UserRepresentation user = createUserReqObj(request);
         Response result = keycloak.realm(cache.getProperty(JsonKey.SSO_REALM)).users().create(user);
         if (result.getStatus() != 201) {
 
@@ -86,28 +59,8 @@ public class KeyCloakServiceImpl implements SSOManager {
         }
 
         //reset the password with same password
-        if (!(ProjectUtil.isStringNullOREmpty(userId))) {
-            UserResource resource = keycloak.realm(cache.getProperty(JsonKey.SSO_REALM)).users().get(userId);
-
-            CredentialRepresentation newCredential = new CredentialRepresentation();
-            UserRepresentation ur = resource.toRepresentation();
-
-            if (isNotNull(request.get(JsonKey.PASSWORD))) {
-                newCredential.setValue((String) request.get(JsonKey.PASSWORD));
-                newCredential.setType(CredentialRepresentation.PASSWORD);
-                newCredential.setTemporary(true);
-                resource.resetPassword(newCredential);
-                try {
-                    resource.update(ur);
-                    if(IS_EMAIL_SETUP_COMPLETE) {
-                        verifyEmail(userId);
-                    }
-                } catch (Exception ex) {
-                    ProjectCommonException projectCommonException = new ProjectCommonException(ex.getMessage() + result.getStatus(), ex.getMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-                    throw projectCommonException;
-                }
-            }
-
+        if (!(ProjectUtil.isStringNullOREmpty(userId) && isNotNull(request.get(JsonKey.PASSWORD)))) {
+          doPasswordUpdate(userId, (String) request.get(JsonKey.PASSWORD));
         }
 
         return userId;
@@ -190,5 +143,64 @@ public class KeyCloakServiceImpl implements SSOManager {
     return resource.toRepresentation().isEmailVerified();
 
   }
-    
+ 
+    /**
+     * 
+     * @param request
+     * @return
+     */
+  private UserRepresentation createUserReqObj(Map<String, Object> request) {
+    CredentialRepresentation credential = new CredentialRepresentation();
+    UserRepresentation user = new UserRepresentation();
+    if (isNotNull(request.get(JsonKey.PROVIDER))) {
+      user.setUsername((String) request.get(JsonKey.USERNAME) + JsonKey.LOGIN_ID_DELIMETER
+          + (String) request.get(JsonKey.PROVIDER));
+    } else {
+      user.setUsername((String) request.get(JsonKey.USERNAME));
+    }
+    if (isNotNull(request.get(JsonKey.FIRST_NAME))) {
+      user.setFirstName((String) request.get(JsonKey.FIRST_NAME));
+    }
+    if (isNotNull(request.get(JsonKey.LAST_NAME))) {
+      user.setLastName((String) request.get(JsonKey.LAST_NAME));
+    }
+    if (isNotNull(request.get(JsonKey.EMAIL))) {
+      user.setEmail((String) request.get(JsonKey.EMAIL));
+    }
+    if (isNotNull(request.get(JsonKey.PASSWORD))) {
+      credential.setValue((String) request.get(JsonKey.PASSWORD));
+      credential.setType(CredentialRepresentation.PASSWORD);
+      credential.setTemporary(true);
+      user.setCredentials(asList(credential));
+    }
+    if (isNotNull(request.get(JsonKey.EMAIL_VERIFIED))) {
+      user.setEmailVerified((Boolean) request.get(JsonKey.EMAIL_VERIFIED));
+    }
+
+    user.setEnabled(true);
+    return user;
+  }
+  
+  private void doPasswordUpdate(String userId, String password) {
+    UserResource resource =
+        keycloak.realm(cache.getProperty(JsonKey.SSO_REALM)).users().get(userId);
+    CredentialRepresentation newCredential = new CredentialRepresentation();
+    UserRepresentation ur = resource.toRepresentation();
+    newCredential.setValue(password);
+    newCredential.setType(CredentialRepresentation.PASSWORD);
+    newCredential.setTemporary(true);
+    resource.resetPassword(newCredential);
+    try {
+      resource.update(ur);
+      if (IS_EMAIL_SETUP_COMPLETE) {
+        verifyEmail(userId);
+      }
+    } catch (Exception ex) {
+      ProjectCommonException projectCommonException = new ProjectCommonException(ex.getMessage(),
+          ex.getMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+      throw projectCommonException;
+    }
+  }
+  
+  
  }

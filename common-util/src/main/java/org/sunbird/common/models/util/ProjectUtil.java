@@ -5,6 +5,7 @@ package org.sunbird.common.models.util;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
+
 import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
@@ -27,6 +28,7 @@ public class ProjectUtil {
     private static AtomicInteger atomicInteger = new AtomicInteger();
 
     public static final long BACKGROUND_ACTOR_WAIT_TIME = 30;
+    
     /**
      * @author Manzarul
      */

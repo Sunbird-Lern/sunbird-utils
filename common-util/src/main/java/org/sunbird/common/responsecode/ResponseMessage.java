@@ -6,7 +6,9 @@ package org.sunbird.common.responsecode;
  *
  */
 public interface ResponseMessage {
+  
     public interface Message {
+      
         public static final String UNAUTHORISE_USER = "You are not authorise.";
         public static final String INVALID_USER_CREDENTIALS = "Please check your credentials";
         public static final String INVALID_OPERATION_NAME = "Operation name is invalid.Please provide a valid operation name";
@@ -109,7 +111,9 @@ public interface ResponseMessage {
         public static final String INVALID_DATE_FORMAT = "Invalid Date format . Date format should be : yyyy-MM-dd hh:mm:ss:SSSZ";
         public static final String SRC_EXTERNAL_ID_ALREADY_EXIST = "SOURCE WITH EXTERNAL ID ALREADY EXIST .";
 	}
+    
     public interface Key {
+      
         public static final String UNAUTHORISE_USER = "UNAUTHORISE_USER";
         public static final String INVALID_USER_CREDENTIALS = "INVALID_USER_CREDENTIALS";
         public static final String INVALID_OPERATION_NAME = "INVALID_OPERATION_NAME";

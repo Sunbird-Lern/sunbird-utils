@@ -8,7 +8,6 @@ import java.util.Map;
 
 /**
  * @author Manzarul
- * @author Amit Kumar
  * This will have method to evaluate the assessment.
  *
  */
