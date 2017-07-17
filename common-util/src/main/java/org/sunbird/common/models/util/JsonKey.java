@@ -287,4 +287,7 @@ public class JsonKey {
   public static final String DEFAULT_ROOT_ORG_ID = "ORG_001";
   public static final String IS_DEFAULT = "isDefault";
   public static final String IDENTIFIER = "identifier";
+  public static final String EKSTEP_CONTENT_SEARCH_BASE_URL = "ekstep_content_search_base_url";
+  public static final String EKSTEP_TELEMETRY_BASE_URL = "ekstep_telemetry_api_base_url";
+  public static final String HEADER = "header";
 }
