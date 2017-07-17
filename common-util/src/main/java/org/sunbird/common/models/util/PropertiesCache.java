@@ -9,7 +9,6 @@ import java.util.Properties;
  * this class is used for reading properties file 
  */
 public class PropertiesCache {
-    private static final LogHelper LOGGER = LogHelper.getInstance(PropertiesCache.class.getName()); 
 	private static final String[] fileName = ProjectUtil.FILE_NAME;
 	private final Properties configProp = new Properties();
 
@@ -21,7 +20,6 @@ public class PropertiesCache {
 	      try {
 	          configProp.load(in);
 	      } catch (IOException e) {
-	        LOGGER.error(e);
 	        ProjectLogger.log("Error in properties cache",e);
 	      }
 		 }

@@ -13,7 +13,7 @@ import org.elasticsearch.common.settings.Settings.Builder;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.sunbird.common.models.util.JsonKey;
-import org.sunbird.common.models.util.LogHelper;
+import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
@@ -23,7 +23,6 @@ import org.sunbird.common.models.util.PropertiesCache;
  * @author Manzarul
  */
 public class ConnectionManager {
-	private static final LogHelper LOGGER = LogHelper.getInstance(ConnectionManager.class.getName());
 	private static TransportClient client = null;
 	private static List<String> host = new ArrayList<>();
 	private static List<Integer> ports = new ArrayList<>();
@@ -69,7 +68,6 @@ public class ConnectionManager {
 	private static boolean initialiseConnection() {
 		try {
 			if(initialiseConnectionFromEnv()) {
-				LOGGER.info("value found under system variable.");
 				ProjectLogger.log("value found under system variable.");
 				return true;
 			}
@@ -86,11 +84,9 @@ public class ConnectionManager {
 				ports.add(Integer.parseInt(val));
 			}
 			boolean response = createClient(cluster, host, ports);
-			LOGGER.info("ELASTIC SEARCH CONNECTION ESTABLISHED " + response);
-			ProjectLogger.log("ELASTIC SEARCH CONNECTION ESTABLISHED " + response);
+			ProjectLogger.log("ELASTIC SEARCH CONNECTION ESTABLISHED " + response, LoggerEnum.INFO.name());
 		} catch (Exception e) {
-			LOGGER.error(e);
-			ProjectLogger.log("Error while initialising connection"+e);
+			ProjectLogger.log("Error while initialising connection", e);
 			return false;
 		}
 		return true;
@@ -118,10 +114,8 @@ public class ConnectionManager {
 				ports.add(Integer.parseInt(val));
 			}
 			boolean response = createClient(cluster, host, ports);
-			LOGGER.info("ELASTIC SEARCH CONNECTION ESTABLISHED " + response);
-			ProjectLogger.log("ELASTIC SEARCH CONNECTION ESTABLISHED " + response);
+			ProjectLogger.log("ELASTIC SEARCH CONNECTION ESTABLISHED " + response, LoggerEnum.INFO.name());
 		} catch (Exception e) {
-			LOGGER.error(e);
 		    ProjectLogger.log("Error while initialising connection from the Env",e);
 			return false;
 		}
@@ -141,10 +135,8 @@ public class ConnectionManager {
 	 */
 	static class ResourceCleanUp extends Thread {
 		  public void run() {
-			  LOGGER.info("started resource cleanup.");
 			  ProjectLogger.log("started resource cleanup.");
 			  client.close(); 
-			  LOGGER.info("completed resource cleanup.");
 			  ProjectLogger.log("completed resource cleanup.");
 		  }
 	}
@@ -156,7 +148,6 @@ public class ConnectionManager {
 	public static void registerShutDownHook() {
 		Runtime runtime = Runtime.getRuntime();
 		runtime.addShutdownHook(new ResourceCleanUp());
-		LOGGER.info("ShutDownHook registered.");
 		ProjectLogger.log("ShutDownHook registered.");
 	}
 

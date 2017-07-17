@@ -12,7 +12,6 @@ import org.sunbird.common.CassandraUtil;
 import org.sunbird.common.Constants;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
-import org.sunbird.common.models.util.LogHelper;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.helper.CassandraConnectionManager;
@@ -36,7 +35,6 @@ import com.datastax.driver.core.querybuilder.Select.Where;
  */
 public class CassandraOperationImpl implements CassandraOperation{
 
-	private static final LogHelper LOGGER = LogHelper.getInstance(CassandraOperationImpl.class.getName());
 	
 	@Override
 	public Response insertRecord(String keyspaceName, String tableName, Map<String, Object> request){
@@ -54,8 +52,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 		        CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement.bind(array));
 				response.put(Constants.RESPONSE, Constants.SUCCESS);
 		} catch (Exception e) {
-			LOGGER.error("Exception occured while inserting record to "+ tableName +" : "+e.getMessage(), e);
-			ProjectLogger.log("Exception occured while inserting record to "+ tableName +" : "+e.getMessage(), e);
+			 ProjectLogger.log("Exception occured while inserting record to "+ tableName +" : "+e.getMessage(), e);
 			 throw new ProjectCommonException(ResponseCode.dbInsertionError.getErrorCode(), ResponseCode.dbInsertionError.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
 		return response;
@@ -86,7 +83,6 @@ public class CassandraOperationImpl implements CassandraOperation{
     		CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement);
     		response.put(Constants.RESPONSE, Constants.SUCCESS);
 		}catch(Exception e){
-			LOGGER.error(Constants.EXCEPTION_MSG_UPDATE + tableName +" : "+e.getMessage(), e);
 			ProjectLogger.log(Constants.EXCEPTION_MSG_UPDATE + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.dbUpdateError.getErrorCode(), ResponseCode.dbUpdateError.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
@@ -103,7 +99,6 @@ public class CassandraOperationImpl implements CassandraOperation{
 		 CassandraConnectionManager.getSession(keyspaceName).execute(delete);
 		 response.put(Constants.RESPONSE, Constants.SUCCESS);
 		}catch(Exception e){
-			LOGGER.error(Constants.EXCEPTION_MSG_DELETE + tableName +" : "+e.getMessage(), e);
 			ProjectLogger.log(Constants.EXCEPTION_MSG_DELETE + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
@@ -122,7 +117,6 @@ public class CassandraOperationImpl implements CassandraOperation{
 			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(selectQuery);
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
-			LOGGER.error(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
 			ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
@@ -143,7 +137,6 @@ public class CassandraOperationImpl implements CassandraOperation{
 			results  = session.execute(selectQuery);
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
-			LOGGER.error(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
 			ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
@@ -162,7 +155,6 @@ public class CassandraOperationImpl implements CassandraOperation{
 			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(selectQuery);
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
-			LOGGER.error(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
 			ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
@@ -189,7 +181,6 @@ public class CassandraOperationImpl implements CassandraOperation{
 			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(selectQuery.allowFiltering());
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
-			LOGGER.error(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
 		    ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
@@ -207,7 +198,6 @@ public class CassandraOperationImpl implements CassandraOperation{
 			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement.bind(id));
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
-			LOGGER.error(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
 		    ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
@@ -223,7 +213,6 @@ public class CassandraOperationImpl implements CassandraOperation{
 			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(selectQuery);
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
-			LOGGER.error(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
 		    ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
@@ -250,7 +239,6 @@ public class CassandraOperationImpl implements CassandraOperation{
 		   response.put(Constants.RESPONSE, Constants.SUCCESS);
 			
 		} catch (Exception e) {
-			LOGGER.error(Constants.EXCEPTION_MSG_UPSERT + tableName +" : "+e.getMessage(), e);
 		    ProjectLogger.log(Constants.EXCEPTION_MSG_UPSERT + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
