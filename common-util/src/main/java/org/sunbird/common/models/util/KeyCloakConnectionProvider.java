@@ -4,6 +4,7 @@
 package org.sunbird.common.models.util;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
 
@@ -12,9 +13,12 @@ import org.keycloak.admin.client.KeycloakBuilder;
  * This class will connect to key cloak server 
  * and provide the connection to do other operations.
  */
+
 public class KeyCloakConnectionProvider {
+  
    private static Keycloak keycloak; 
    private static PropertiesCache cache = PropertiesCache.getInstance();
+   
    static {
 		initialiseConnection();
 		registerShutDownHook();
@@ -48,6 +52,12 @@ public class KeyCloakConnectionProvider {
 	   return keycloak;
    }
    
+  /**
+   * This method will provide the keycloak connection from 
+   * environment variable. if environment variable is not set
+   * then it will return null.
+   * @return Keycloak
+   */
   private static Keycloak initialiseEnvConnection() {
     String url = System.getenv(JsonKey.SUNBIRD_SSO_URL);
     String username = System.getenv(JsonKey.SUNBIRD_SSO_USERNAME);

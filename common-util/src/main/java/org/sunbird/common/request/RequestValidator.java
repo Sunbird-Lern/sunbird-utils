@@ -4,6 +4,7 @@ import static org.sunbird.common.models.util.ProjectUtil.isNull;
 
 import java.util.List;
 import java.util.Map;
+
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectUtil;
@@ -225,7 +226,7 @@ public final class RequestValidator {
    * This method will validate update user data.
 	 * @param userRequest Request
 	 */
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	public static void validateUpdateUser(Request userRequest) {
 		if (userRequest.getRequest().containsKey(JsonKey.FIRST_NAME) && (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.FIRST_NAME)))) {
 			throw new ProjectCommonException(ResponseCode.firstNameRequired.getErrorCode(),
