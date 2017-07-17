@@ -1,7 +1,11 @@
+/**
+ * 
+ */
 package org.sunbird.cassandra;
 
 import java.util.List;
 import java.util.Map;
+
 import org.sunbird.common.models.response.Response;
 
 /**
@@ -11,6 +15,7 @@ import org.sunbird.common.models.response.Response;
  *
  */
 public interface CassandraOperation {
+  
 	/**
 	 * @desc This method is used to insert/update record in cassandra db (if primary key exist in request ,it will update  
 	 * else will insert the record in cassandra db.
