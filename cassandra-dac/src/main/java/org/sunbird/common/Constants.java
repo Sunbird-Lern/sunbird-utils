@@ -4,6 +4,7 @@ package org.sunbird.common;
  * @author Amit Kumar
  */
 public interface Constants {
+  
 	//CASSANDRA CONFIG PROPERTIES
 	public static final String CORE_CONNECTIONS_PER_HOST_FOR_LOCAL="coreConnectionsPerHostForLocal";
 	public static final String CORE_CONNECTIONS_PER_HOST_FOR_REMOTE="coreConnectionsPerHostForRemote";
