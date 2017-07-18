@@ -10,6 +10,7 @@ package org.sunbird.common.models.util;
  * @author Manzarul
  *
  */
+
 public class JsonKey {
 
   public static final String USER_ID = "userId";
@@ -297,4 +298,13 @@ public class JsonKey {
   public static final String SUNBIRD_SSO_PASSWORD = "sunbird_sso_password";
   public static final String SUNBIRD_SSO_CLIENT_ID = "sunbird_sso_client_id";
   public static final String SUNBIRD_SSO_CLIENT_SECRET = "sunbird_sso_client_secret";
+  public static final String VER = "ver";
+  public static final String PDATA = "pdata";
+  public static final String EKS = "eks";
+  public static final String LEVEL = "level";
+  public static final String CLASS = "class";
+  public static final String METHOD = "method";
+  public static final String DATA = "data";
+  public static final String STACKTRACE = "stacktrace";
+  public static final String MESSAGE = "message";
 }
