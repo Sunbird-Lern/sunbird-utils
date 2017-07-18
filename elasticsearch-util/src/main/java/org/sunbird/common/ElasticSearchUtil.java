@@ -106,7 +106,6 @@ public class ElasticSearchUtil {
         } else {
         	 verifyOrCreateIndexAndType(index, type);
             response = ConnectionManager.getClient().prepareGet(index, type, identifier).get();
-            System.out.println(response);
         }
         if (response == null) {
             return null;
