@@ -78,12 +78,18 @@ public class ElasticSearchUtil {
             ProjectLogger.log("Identifier value is null or empty ,not able to save data.");
             return "ERROR";
         }
+        try {
         verifyOrCreateIndexAndType(index, type);
         data.put("identifier", identifier);
         IndexResponse response = ConnectionManager.getClient().prepareIndex(index, type, identifier).setSource(data)
                 .get();
         ProjectLogger.log("Save value==" + response.getId() + " " + response.status(), LoggerEnum.INFO.name());
         return response.getId();
+        } catch (Exception e) {
+          e.printStackTrace();
+          ProjectLogger.log(e.getMessage(),e);
+        }
+       return ""; 
     }
 
     /**
