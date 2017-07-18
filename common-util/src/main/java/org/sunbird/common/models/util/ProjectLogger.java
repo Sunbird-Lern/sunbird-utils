@@ -1,3 +1,6 @@
+/**
+ *
+ */
 package org.sunbird.common.models.util;
 
 import java.util.HashMap;
@@ -10,6 +13,12 @@ import org.apache.logging.log4j.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * This class will used to log the project
+ * message in any level.
+ * @author Manzarul
+ *
+ */
 public class ProjectLogger {
 
   private static String eVersion = "1.0";
@@ -72,6 +81,7 @@ public class ProjectLogger {
 
   private static void backendLog(String message, Object data, Throwable e, String logLevel) {
     if (!ProjectUtil.isStringNullOREmpty(logLevel)) {
+      
       switch (logLevel) {
         case "INFO":
           info(message, data);
@@ -105,13 +115,13 @@ public class ProjectLogger {
     long unixTime = System.currentTimeMillis();
     LogEvent te = new LogEvent();
     Map<String, Object> eks = new HashMap<String, Object>();
-    eks.put("level", logLevel);
-    eks.put("message", message);
+    eks.put(JsonKey.LEVEL, logLevel);
+    eks.put(JsonKey.MESSAGE, message);
     if (data != null) {
-      eks.put("data", data);
+      eks.put(JsonKey.DATA, data);
     }
     if (exception != null) {
-      eks.put("stacktrace", ExceptionUtils.getStackTrace(exception));
+      eks.put(JsonKey.STACKTRACE, ExceptionUtils.getStackTrace(exception));
     }
     te.setEid(LoggerEnum.BE_LOG.name());
     te.setEts(unixTime);

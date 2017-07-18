@@ -2,7 +2,12 @@ package org.sunbird.common.models.util;
 
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * This class will log the api request , response ,
+ * and error message insdie log file .in predefine structure.
+ * @author Manzarul
+ *
+ */
 public class LogEvent {
   
   private String eid;
@@ -58,27 +63,36 @@ public class LogEvent {
 
   public void setEdata(Map<String, Object> eks) {
     this.edata = new HashMap<String, Object>();
-    edata.put("eks", eks);
+    edata.put(JsonKey.EKS, eks);
   }
 
   public void setContext(String id, String ver) {
     this.context = new HashMap<String, Object>();
     Map<String, String> pdata = new HashMap<String, String>();
-    pdata.put("id", id);
-    pdata.put("ver", ver);
-    this.context.put("pdata", pdata);
+    pdata.put(JsonKey.ID, id);
+    pdata.put(JsonKey.VER, ver);
+    this.context.put(JsonKey.PDATA, pdata);
   }
 
+  /**
+   * Set the error data with this method
+   * @param level String 
+   * @param className String 
+   * @param method String
+   * @param data  Object
+   * @param stackTrace Object
+   * @param exception Object
+   */
   public void setEdata(String level, String className, String method, Object data,
       Object stackTrace, Object exception) {
     this.edata = new HashMap<String, Object>();
     Map<String, Object> eks = new HashMap<String, Object>();
-    eks.put("level", level);
-    eks.put("class", className);
-    eks.put("method", method);
-    eks.put("data", data);
-    eks.put("stacktrace", stackTrace);
-    edata.put("eks", eks);
+    eks.put(JsonKey.LEVEL, level);
+    eks.put(JsonKey.CLASS, className);
+    eks.put(JsonKey.METHOD, method);
+    eks.put(JsonKey.DATA, data);
+    eks.put(JsonKey.STACKTRACE, stackTrace);
+    edata.put(JsonKey.EKS, eks);
   }
 
 }

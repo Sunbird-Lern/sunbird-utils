@@ -13,7 +13,9 @@ import org.junit.runners.MethodSorters;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
-import org.sunbird.helper.ElasticSearchQueryBuilder;
+import org.sunbird.helper.ElasticSearchMapping;
+import org.sunbird.helper.ElasticSearchSettings;
+
 import static org.junit.Assert.*;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ElasticSearchUtilTest {
@@ -35,8 +37,8 @@ public class ElasticSearchUtilTest {
 
     @Test
     public void CreateIndex() {
-        boolean response = ElasticSearchUtil.createIndex(indexName, typeName, ElasticSearchQueryBuilder.createMapping(),
-                ElasticSearchQueryBuilder.createSettingsForIndex());
+        boolean response = ElasticSearchUtil.createIndex(indexName, typeName, ElasticSearchMapping.createMapping(),
+                ElasticSearchSettings.createSettingsForIndex());
         assertTrue(response);
     }
 

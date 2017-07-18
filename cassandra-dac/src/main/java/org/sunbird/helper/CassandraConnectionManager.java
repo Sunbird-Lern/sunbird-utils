@@ -6,8 +6,6 @@ package org.sunbird.helper;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.sunbird.cassandraimpl.CassandraOperationImpl;
 import org.sunbird.common.Constants;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.exception.ProjectCommonException;
@@ -29,19 +27,20 @@ import com.datastax.driver.core.policies.DefaultRetryPolicy;
 /**
  * This class will handle cassandra database 
  * connection and session.
- * @author Manzarul
  * @author Amit Kumar
  */
 public final class CassandraConnectionManager {
-	private static final Logger LOGGER = Logger.getLogger(CassandraOperationImpl.class.getName());
-	//Map<keySpaceName,Session>
-    private static Map<String,Session> cassandraSessionMap = new HashMap<>();
+
+  private static Map<String,Session> cassandraSessionMap = new HashMap<>();
     private static Map<String,Cluster> cassandraclusterMap = new HashMap<>();
     
-    private CassandraConnectionManager(){}
     static{
-    	registerShutDownHook();
-    }
+      registerShutDownHook();
+     }
+    
+    private CassandraConnectionManager(){}
+    
+    
     /**
      * This method create connection for given keyspace 
      * @param ip String
@@ -90,18 +89,15 @@ public final class CassandraConnectionManager {
 				}
 				final Metadata metadata = cluster.getMetadata();
 				String msg = String.format("Connected to cluster: %s", metadata.getClusterName());
-				LOGGER.debug(msg);
 				ProjectLogger.log(msg);
 
 				for (final Host host : metadata.getAllHosts()) {
 					msg = String.format("Datacenter: %s; Host: %s; Rack: %s", host.getDatacenter(), host.getAddress(),
 							host.getRack());
-					LOGGER.debug(msg);
 					ProjectLogger.log(msg);
 				}
 			}
 			   }catch(Exception e){
-				   LOGGER.error(e);
 			       ProjectLogger.log("Error occured while creating connection :",e);
 				   throw new ProjectCommonException(ResponseCode.internalError.getErrorCode(), e.getMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 			   }
@@ -171,13 +167,11 @@ public final class CassandraConnectionManager {
 	static class ResourceCleanUp extends Thread {
 	      @Override
 		  public void run() {
-			  LOGGER.info("started resource cleanup Cassandra.");
 			  ProjectLogger.log("started resource cleanup Cassandra.");
 			  for(Map.Entry<String,Session> entry: cassandraSessionMap.entrySet()){
 					cassandraSessionMap.get(entry.getKey()).close();
 					cassandraclusterMap.get(entry.getKey()).close();
 				}
-			  LOGGER.info("completed resource cleanup Cassandra.");
 			  ProjectLogger.log("completed resource cleanup Cassandra.");
 		  }
 	}
@@ -189,7 +183,6 @@ public final class CassandraConnectionManager {
 	public static void registerShutDownHook() {
 		Runtime runtime = Runtime.getRuntime();
 		runtime.addShutdownHook(new ResourceCleanUp());
-		LOGGER.info("Cassandra ShutDownHook registered.");
 		ProjectLogger.log("Cassandra ShutDownHook registered.");
 	}
 	

@@ -1,11 +1,14 @@
 package org.sunbird.common.models.util;
+
 /**
  * This enum will contains different operation
  *  for a learner {addCourse, getCourse, update , getContent}
  * @author Manzarul
  *
  */
+
 public enum ActorOperations {
+  
     ENROLL_COURSE("enrollCourse"), GET_COURSE("getCourse"), ADD_CONTENT("addContent"),
     GET_CONTENT("getContent"), CREATE_COURSE("createCourse"), UPDATE_COURSE("updateCourse"),
     PUBLISH_COURSE("publishCourse"), SEARCH_COURSE("searchCourse"), DELETE_COURSE("deleteCourse"),
