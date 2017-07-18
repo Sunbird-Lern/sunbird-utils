@@ -307,4 +307,5 @@ public class JsonKey {
   public static final String DATA = "data";
   public static final String STACKTRACE = "stacktrace";
   public static final String MESSAGE = "message";
+  public static final String PROGRESS = "progress";
 }
