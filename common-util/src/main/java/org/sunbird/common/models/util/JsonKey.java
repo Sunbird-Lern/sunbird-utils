@@ -308,4 +308,6 @@ public class JsonKey {
   public static final String STACKTRACE = "stacktrace";
   public static final String MESSAGE = "message";
   public static final String PROGRESS = "progress";
+  public static final String SECTION_ID = "sectionId";
+  public static final String PAGE_ID = "pageId";
 }
