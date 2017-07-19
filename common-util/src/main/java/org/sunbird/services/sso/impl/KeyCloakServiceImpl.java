@@ -43,9 +43,14 @@ public class KeyCloakServiceImpl implements SSOManager {
     public String createUser(Map<String, Object> request) {
         String userId = null;
         UserRepresentation user = createUserReqObj(request);
-        Response result = keycloak.realm(cache.getProperty(JsonKey.SSO_REALM)).users().create(user);
+        Response result = null;
+        try {
+          result = keycloak.realm(cache.getProperty(JsonKey.SSO_REALM)).users().create(user);
+        } catch (Exception e) {
+          ProjectLogger.log(e.getMessage(), e);
+        }
+         if(request != null) {
         if (result.getStatus() != 201) {
-
             ProjectLogger.log("Couldn't create user." + result.getStatus() + " " + result.toString(), new RuntimeException());
             if (result.getStatus() == 409) {
                 ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.emailANDUserNameAlreadyExistError.getErrorCode(), ResponseCode.emailANDUserNameAlreadyExistError.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
@@ -57,6 +62,10 @@ public class KeyCloakServiceImpl implements SSOManager {
         } else {
             userId = result.getHeaderString("Location").replaceAll(".*/(.*)$", "$1");
         }
+         }else {
+           ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
+           throw projectCommonException;
+         }
 
         //reset the password with same password
         if (!(ProjectUtil.isStringNullOREmpty(userId) && isNotNull(request.get(JsonKey.PASSWORD)))) {

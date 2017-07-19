@@ -67,15 +67,15 @@ public class ProjectUtil {
     }
 
     public enum OrgStatus{
-        INACTIVE(JsonKey.INACTIVE), ACTIVE(JsonKey.ACTIVE), BLOCKED(JsonKey.BLOCKED), RETIRED(JsonKey.RETIRED);
+        INACTIVE(0), ACTIVE(1), BLOCKED(2), RETIRED(3);
 
-        private String value;
+        private Integer value;
 
-        OrgStatus(String value) {
+        OrgStatus(Integer value) {
             this.value = value;
         }
 
-        public String getValue() {
+        public Integer getValue() {
             return this.value;
         }
     }

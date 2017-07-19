@@ -203,8 +203,7 @@ public final class RequestValidator {
                ResponseCode.CLIENT_ERROR.getResponseCode());
          } 
        }
-	    if (request.getRequest().get(JsonKey.STATUS) != null || !(ProjectUtil
-	        .isStringNullOREmpty((String) request.getRequest().get(JsonKey.STATUS)))) {
+	    if (request.getRequest().get(JsonKey.STATUS) != null) {
 	      throw new ProjectCommonException(ResponseCode.invalidRequestData.getErrorCode(),
 	          ResponseCode.invalidRequestData.getErrorMessage(),
 	          ResponseCode.CLIENT_ERROR.getResponseCode());
@@ -213,8 +212,7 @@ public final class RequestValidator {
 
 	  public static void validateUpdateOrgStatus(Request request) {
 	    validateOrg(request);
-	    if (request.getRequest().get(JsonKey.STATUS) == null || (ProjectUtil
-	        .isStringNullOREmpty((String) request.getRequest().get(JsonKey.STATUS)))) {
+	    if (!request.getRequest().containsKey(JsonKey.STATUS)) {
 	      throw new ProjectCommonException(ResponseCode.invalidRequestData.getErrorCode(),
 	          ResponseCode.invalidRequestData.getErrorMessage(),
 	          ResponseCode.CLIENT_ERROR.getResponseCode());

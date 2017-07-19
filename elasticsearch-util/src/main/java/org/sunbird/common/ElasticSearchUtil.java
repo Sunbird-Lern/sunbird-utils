@@ -4,6 +4,7 @@
 package org.sunbird.common;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -19,10 +20,12 @@ import org.elasticsearch.action.admin.indices.exists.types.TypesExistsRequest;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.client.transport.TransportClient;
@@ -60,6 +63,8 @@ public class ElasticSearchUtil {
     private static final String GTE = ">=";
     private static final String GT = ">";
     private static final String ASC_ORDER="ASC";
+    private static List<String> upsertResults = new ArrayList<String>(
+        Arrays.asList("CREATED", "UPDATED", "NOOP"));
     
     /**
      * This method will put a new data entry inside Elastic search. identifier
@@ -79,11 +84,16 @@ public class ElasticSearchUtil {
             return "ERROR";
         }
         verifyOrCreateIndexAndType(index, type);
+        try {
         data.put("identifier", identifier);
         IndexResponse response = ConnectionManager.getClient().prepareIndex(index, type, identifier).setSource(data)
                 .get();
         ProjectLogger.log("Save value==" + response.getId() + " " + response.status(), LoggerEnum.INFO.name());
         return response.getId();
+        } catch (Exception e) {
+          ProjectLogger.log(e.getMessage(),e);
+        }
+       return ""; 
     }
 
     /**
@@ -152,18 +162,59 @@ public class ElasticSearchUtil {
      * @param data       Map<String,Object>
      * @return boolean
      */
-    public static boolean updateData(String index, String type, String identifier, Map<String, Object> data) {
+  public static boolean updateData(String index, String type, String identifier,
+      Map<String, Object> data) {
+    if (!ProjectUtil.isStringNullOREmpty(index)
+        && !ProjectUtil.isStringNullOREmpty(type)
+        && !ProjectUtil.isStringNullOREmpty(identifier) && data != null) {
+      verifyOrCreateIndexAndType(index, type);
+      try {
+        UpdateResponse response = ConnectionManager.getClient()
+            .prepareUpdate(index, type, identifier).setDoc(data).get();
+        ProjectLogger.log("updated response==" + response.getResult().name(),
+            LoggerEnum.INFO.name());
+        if (response.getResult().name().equals("UPDATED")) {
+          return true;
+        }
+      } catch (Exception e) {
+        ProjectLogger.log(e.getMessage(), e);
+      }
+    } else {
+      ProjectLogger.log("Requested data is invalid.");
+    }
+    return false;
+  }
+
+    /**
+     * This method will upser data based on identifier.take the data based on identifier and merge with
+     * incoming data then update it and if identifier does not exist , it will insert data .
+     *
+     * @param index      String
+     * @param type       String
+     * @param identifier String
+     * @param data       Map<String,Object>
+     * @return boolean
+     */
+    public static boolean upsertData(String index, String type, String identifier, Map<String, Object> data) {
         if (!ProjectUtil.isStringNullOREmpty(index) && !ProjectUtil.isStringNullOREmpty(type)
-                && !ProjectUtil.isStringNullOREmpty(identifier) && data != null) {
-        	verifyOrCreateIndexAndType(index, type);
-            UpdateResponse response = ConnectionManager.getClient().prepareUpdate(index, type, identifier).setDoc(data)
-                    .get();
-            ProjectLogger.log("updated response==" + response.getResult().name(), LoggerEnum.INFO.name());
-            if (response.getResult().name().equals("UPDATED")) {
+            && !ProjectUtil.isStringNullOREmpty(identifier) && data != null) {
+            verifyOrCreateIndexAndType(index, type);
+            IndexRequest indexRequest = new IndexRequest(index, type, identifier).source(data);
+            UpdateRequest updateRequest = new UpdateRequest(index, type, identifier).doc(data).upsert(indexRequest);
+            UpdateResponse response = null;
+            try {
+                response = ConnectionManager.getClient().update(updateRequest).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            ProjectLogger.log("updated response==" + response.getResult().name());
+            if (upsertResults.contains(response.getResult().name())) {
                 return true;
             }
         } else {
-             ProjectLogger.log("Requested data is invalid.");
+            ProjectLogger.log("Requested data is invalid.");
         }
         return false;
     }
@@ -179,8 +230,12 @@ public class ElasticSearchUtil {
         if (!ProjectUtil.isStringNullOREmpty(index) && !ProjectUtil.isStringNullOREmpty(type)
                 && !ProjectUtil.isStringNullOREmpty(identifier)) {
         	verifyOrCreateIndexAndType(index, type);
+        	try {
             DeleteResponse response = ConnectionManager.getClient().prepareDelete(index, type, identifier).get();
             ProjectLogger.log("delete info ==" + response.getResult().name() + " " + response.getId());
+        	} catch (Exception e) {
+        	  ProjectLogger.log(e.getMessage(), e);
+        	}
         } else {
           ProjectLogger.log("Data can not be deleted due to invalid input.");
         }
@@ -235,19 +290,23 @@ public class ElasticSearchUtil {
 
 
     /**
-     * This method will type and mapping under already created index.
+     * This method will update type and mapping under already created index.
      *
      * @param indexName String
      * @param typeName  String
      * @param mapping   String
      * @return boolean
      */
+    @SuppressWarnings("deprecation")
     public static boolean addOrUpdateMapping(String indexName, String typeName, String mapping) {
-        @SuppressWarnings("deprecation")
+        try {
         PutMappingResponse response = ConnectionManager.getClient().admin().indices().preparePutMapping(indexName)
                 .setType(typeName).setSource(mapping).get();
         if (response.isAcknowledged()) {
             return true;
+        }
+        } catch (Exception e) {
+          ProjectLogger.log(e.getMessage(), e);
         }
         return false;
 
@@ -554,7 +613,9 @@ public class ElasticSearchUtil {
 						}
 					}
 				} catch (InterruptedException | ExecutionException e) {
+				  ProjectLogger.log(e.getMessage(), e);
 					boolean response = addOrUpdateMapping(indices, type, ElasticSearchMapping.createMapping());
+					ProjectLogger.log("addOrUpdateMapping method call response ==" + response);
 					if (response) {
 						typeMap.put(type, true);
 					}
