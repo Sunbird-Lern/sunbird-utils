@@ -110,6 +110,7 @@ public enum ResponseCode {
     invalidDateFormat(ResponseMessage.Key.INVALID_DATE_FORMAT, ResponseMessage.Message.INVALID_DATE_FORMAT),
     sourceAndExternalIdAlreadyExist(ResponseMessage.Key.SRC_EXTERNAL_ID_ALREADY_EXIST, ResponseMessage.Message.SRC_EXTERNAL_ID_ALREADY_EXIST),
     userAlreadyEnrolledThisCourse(ResponseMessage.Key.ALREADY_ENROLLED_COURSE, ResponseMessage.Message.ALREADY_ENROLLED_COURSE),
+    contentTypeRequiredError(ResponseMessage.Key.CONTNET_TYPE_ERROR, ResponseMessage.Message.CONTNET_TYPE_ERROR),
 	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404);
 	
 	private int responseCode;
