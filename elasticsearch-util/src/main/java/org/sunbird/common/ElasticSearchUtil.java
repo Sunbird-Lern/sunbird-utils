@@ -84,11 +84,16 @@ public class ElasticSearchUtil {
             return "ERROR";
         }
         verifyOrCreateIndexAndType(index, type);
+        try {
         data.put("identifier", identifier);
         IndexResponse response = ConnectionManager.getClient().prepareIndex(index, type, identifier).setSource(data)
                 .get();
         ProjectLogger.log("Save value==" + response.getId() + " " + response.status(), LoggerEnum.INFO.name());
         return response.getId();
+        } catch (Exception e) {
+          ProjectLogger.log(e.getMessage(),e);
+        }
+       return ""; 
     }
 
     /**
@@ -157,21 +162,28 @@ public class ElasticSearchUtil {
      * @param data       Map<String,Object>
      * @return boolean
      */
-    public static boolean updateData(String index, String type, String identifier, Map<String, Object> data) {
-        if (!ProjectUtil.isStringNullOREmpty(index) && !ProjectUtil.isStringNullOREmpty(type)
-                && !ProjectUtil.isStringNullOREmpty(identifier) && data != null) {
-        	verifyOrCreateIndexAndType(index, type);
-            UpdateResponse response = ConnectionManager.getClient().prepareUpdate(index, type, identifier).setDoc(data)
-                    .get();
-            ProjectLogger.log("updated response==" + response.getResult().name(), LoggerEnum.INFO.name());
-            if (response.getResult().name().equals("UPDATED")) {
-                return true;
-            }
-        } else {
-             ProjectLogger.log("Requested data is invalid.");
+  public static boolean updateData(String index, String type, String identifier,
+      Map<String, Object> data) {
+    if (!ProjectUtil.isStringNullOREmpty(index)
+        && !ProjectUtil.isStringNullOREmpty(type)
+        && !ProjectUtil.isStringNullOREmpty(identifier) && data != null) {
+      verifyOrCreateIndexAndType(index, type);
+      try {
+        UpdateResponse response = ConnectionManager.getClient()
+            .prepareUpdate(index, type, identifier).setDoc(data).get();
+        ProjectLogger.log("updated response==" + response.getResult().name(),
+            LoggerEnum.INFO.name());
+        if (response.getResult().name().equals("UPDATED")) {
+          return true;
         }
-        return false;
+      } catch (Exception e) {
+        ProjectLogger.log(e.getMessage(), e);
+      }
+    } else {
+      ProjectLogger.log("Requested data is invalid.");
     }
+    return false;
+  }
 
     /**
      * This method will upser data based on identifier.take the data based on identifier and merge with
@@ -218,8 +230,12 @@ public class ElasticSearchUtil {
         if (!ProjectUtil.isStringNullOREmpty(index) && !ProjectUtil.isStringNullOREmpty(type)
                 && !ProjectUtil.isStringNullOREmpty(identifier)) {
         	verifyOrCreateIndexAndType(index, type);
+        	try {
             DeleteResponse response = ConnectionManager.getClient().prepareDelete(index, type, identifier).get();
             ProjectLogger.log("delete info ==" + response.getResult().name() + " " + response.getId());
+        	} catch (Exception e) {
+        	  ProjectLogger.log(e.getMessage(), e);
+        	}
         } else {
           ProjectLogger.log("Data can not be deleted due to invalid input.");
         }
@@ -274,19 +290,23 @@ public class ElasticSearchUtil {
 
 
     /**
-     * This method will type and mapping under already created index.
+     * This method will update type and mapping under already created index.
      *
      * @param indexName String
      * @param typeName  String
      * @param mapping   String
      * @return boolean
      */
+    @SuppressWarnings("deprecation")
     public static boolean addOrUpdateMapping(String indexName, String typeName, String mapping) {
-        @SuppressWarnings("deprecation")
+        try {
         PutMappingResponse response = ConnectionManager.getClient().admin().indices().preparePutMapping(indexName)
                 .setType(typeName).setSource(mapping).get();
         if (response.isAcknowledged()) {
             return true;
+        }
+        } catch (Exception e) {
+          ProjectLogger.log(e.getMessage(), e);
         }
         return false;
 
@@ -593,7 +613,9 @@ public class ElasticSearchUtil {
 						}
 					}
 				} catch (InterruptedException | ExecutionException e) {
+				  ProjectLogger.log(e.getMessage(), e);
 					boolean response = addOrUpdateMapping(indices, type, ElasticSearchMapping.createMapping());
+					ProjectLogger.log("addOrUpdateMapping method call response ==" + response);
 					if (response) {
 						typeMap.put(type, true);
 					}
