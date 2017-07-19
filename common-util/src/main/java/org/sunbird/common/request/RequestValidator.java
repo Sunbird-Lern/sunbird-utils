@@ -243,7 +243,7 @@ public final class RequestValidator {
               throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
                 ProjectUtil.formatMessage(ResponseCode.dataTypeError.getErrorMessage(), JsonKey.ROLES,JsonKey.LIST), ResponseCode.CLIENT_ERROR.getResponseCode());
             }
-            if(userRequest.getRequest().get(JsonKey.ROLES) instanceof List && ((List)userRequest.getRequest().get(JsonKey.LANGUAGE)).isEmpty()){
+            if(userRequest.getRequest().get(JsonKey.ROLES) instanceof List && ((List)userRequest.getRequest().get(JsonKey.ROLES)).isEmpty()){
               throw new ProjectCommonException(ResponseCode.rolesRequired.getErrorCode(),
                   ResponseCode.rolesRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
             }
