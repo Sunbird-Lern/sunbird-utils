@@ -310,4 +310,5 @@ public class JsonKey {
   public static final String PROGRESS = "progress";
   public static final String SECTION_ID = "sectionId";
   public static final String PAGE_ID = "pageId";
+  public static final String CONTENT_CREATOR = "CONTENT_CREATOR";
 }
