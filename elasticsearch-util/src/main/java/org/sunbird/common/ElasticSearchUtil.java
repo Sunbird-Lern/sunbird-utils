@@ -4,6 +4,7 @@
 package org.sunbird.common;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -19,10 +20,12 @@ import org.elasticsearch.action.admin.indices.exists.types.TypesExistsRequest;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.client.transport.TransportClient;
@@ -60,6 +63,8 @@ public class ElasticSearchUtil {
     private static final String GTE = ">=";
     private static final String GT = ">";
     private static final String ASC_ORDER="ASC";
+    private static List<String> upsertResults = new ArrayList<String>(
+        Arrays.asList("CREATED", "UPDATED", "NOOP"));
     
     /**
      * This method will put a new data entry inside Elastic search. identifier
@@ -164,6 +169,40 @@ public class ElasticSearchUtil {
             }
         } else {
              ProjectLogger.log("Requested data is invalid.");
+        }
+        return false;
+    }
+
+    /**
+     * This method will upser data based on identifier.take the data based on identifier and merge with
+     * incoming data then update it and if identifier does not exist , it will insert data .
+     *
+     * @param index      String
+     * @param type       String
+     * @param identifier String
+     * @param data       Map<String,Object>
+     * @return boolean
+     */
+    public static boolean upsertData(String index, String type, String identifier, Map<String, Object> data) {
+        if (!ProjectUtil.isStringNullOREmpty(index) && !ProjectUtil.isStringNullOREmpty(type)
+            && !ProjectUtil.isStringNullOREmpty(identifier) && data != null) {
+            verifyOrCreateIndexAndType(index, type);
+            IndexRequest indexRequest = new IndexRequest(index, type, identifier).source(data);
+            UpdateRequest updateRequest = new UpdateRequest(index, type, identifier).doc(data).upsert(indexRequest);
+            UpdateResponse response = null;
+            try {
+                response = ConnectionManager.getClient().update(updateRequest).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            ProjectLogger.log("updated response==" + response.getResult().name());
+            if (upsertResults.contains(response.getResult().name())) {
+                return true;
+            }
+        } else {
+            ProjectLogger.log("Requested data is invalid.");
         }
         return false;
     }
