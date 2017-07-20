@@ -149,6 +149,23 @@ public class ProjectUtil {
     }
     
     /**
+     * @author Amit Kumar
+     */
+    public enum UserRole {
+        PUBLIC("PUBLIC"), CONTENT_CREATOR("CONTENT_CREATOR");
+
+        private String value;
+
+        UserRole(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return this.value;
+        }
+    }
+    
+    /**
      * This method will check incoming value is null or empty
      * it will do empty check by doing trim method. in case of
      * null or empty it will return true else false.
