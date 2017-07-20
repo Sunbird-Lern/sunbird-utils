@@ -314,4 +314,5 @@ public class JsonKey {
   public static final String AUTHORIZATION = "Authorization";
   public static final String EKSTEP_AUTHORIZATION = "ekstep_authorization";
   public static final String CONTENT_CREATOR = "CONTENT_CREATOR";
+  public static final String BEARER = "Bearer ";
 }
