@@ -42,6 +42,7 @@ public interface ResponseMessage {
         public static final String ORGANISATION_ID_MISSING = "Organisation id is mandatory.";
         public static final String REQUIRED_DATA_ORG_MISSING = "Organisation Id or Source with External Id is required for the operation";
         public static final String ORGANISATION_NAME_MISSING = "organisation name is mandatory.";
+        public static final String CHANNEL_SHOULD_BE_UNIQUE = "Channel value already used by another organisation. Provide different value for channel";
         public static final String INVALID_ROOT_ORGANIZATION = "Root organization id is invalid";
         public static final String INVALID_PARENT_ORGANIZATION_ID = "Parent organization id is invalid";
         public static final String CYCLIC_VALIDATION_FAILURE = "The relation cannot be as it is cyclic";
@@ -151,6 +152,7 @@ public interface ResponseMessage {
         public static final String ORGANISATION_ID_MISSING = "ORGANISATION_ID_MISSING";
         public static final String REQUIRED_DATA_ORG_MISSING = "REQUIRED_DATA_MISSING";
         public static final String ORGANISATION_NAME_MISSING = "ORGANISATION_NAME_MISSING";
+        public static final String CHANNEL_SHOULD_BE_UNIQUE = "CHANNEL_SHOULD_BE_UNIQUE";
         public static final String INVALID_ROOT_ORGANIZATION = "INVALID ROOT ORGANIZATION";
         public static final String INVALID_PARENT_ORGANIZATION_ID = "INVALID_PARENT_ORGANIZATION_ID";
         public static final String CYCLIC_VALIDATION_FAILURE = "CYCLIC_VALIDATION_FAILURE";
