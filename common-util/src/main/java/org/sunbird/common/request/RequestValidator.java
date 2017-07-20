@@ -665,8 +665,8 @@ public final class RequestValidator {
   @SuppressWarnings("rawtypes")
   public static void validateAddMember(Request userRequest) {
     validateUserOrg(userRequest);
-    if (isNull(userRequest.getRequest().get(JsonKey.ROLES))
-        || ((List) userRequest.getRequest().get(JsonKey.ROLES)).isEmpty()) {
+    if (userRequest.getRequest().containsKey(JsonKey.ROLES)
+        && ((List) userRequest.getRequest().get(JsonKey.ROLES)).isEmpty()) {
       throw new ProjectCommonException(ResponseCode.roleRequired.getErrorCode(),
           ResponseCode.roleRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
     }
