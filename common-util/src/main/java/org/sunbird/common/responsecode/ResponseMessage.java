@@ -95,6 +95,7 @@ public interface ResponseMessage {
 		public static final String ORG_ID_MISSING ="Organisation Id required.";
 		public static final String ACTOR_CONNECTION_ERROR = "Service is not able to connect with actor.";
 		public static final String USER_ALREADY_EXIST = "user already exist.";
+		public static final String PAGE_ALREADY_EXIST = "page already exist with this Page Name and Org Code.";
 		public static final String INVALID_USER_ID = "User Id does not exists in our records";
 		public static final String LOGIN_ID_MISSING = "loginId is required.";
 		public static final String CONTENT_STATUS_MISSING_ERROR = "content status is required .";
@@ -202,6 +203,7 @@ public interface ResponseMessage {
 		public static final String ORG_ID_MISSING = "ORG_ID_MISSING";
 		public static final String ACTOR_CONNECTION_ERROR = "ACTOR_CONNECTION_ERROR";
 		public static final String USER_ALREADY_EXIST = "USER_ALREADY_EXIST";
+		public static final String PAGE_ALREADY_EXIST = "PAGE_ALREADY_EXIST";
 		public static final String INVALID_USER_ID = "INVALID_USER_ID";
 		public static final String LOGIN_ID_MISSING = "LOGIN_ID_MISSING";
 		public static final String CONTENT_STATUS_MISSING_ERROR = "CONTENT_STATUS_MISSING_ERROR";
