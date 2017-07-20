@@ -113,6 +113,7 @@ public interface ResponseMessage {
         public static final String SRC_EXTERNAL_ID_ALREADY_EXIST = "SOURCE WITH EXTERNAL ID ALREADY EXIST .";
         public static final String ALREADY_ENROLLED_COURSE = "User has already Enrolled this course .";
         public static final String EXISTING_ORG_MEMBER ="You already have a membership of this organization.";
+        public static final String CONTNET_TYPE_ERROR = "Please add Content-Type header with value application/json";
 	}
     
     public interface Key {
@@ -220,5 +221,6 @@ public interface ResponseMessage {
 		public static final String INVALID_DATE_FORMAT = "INVALID_DATE_FORMAT";
 		public static final String SRC_EXTERNAL_ID_ALREADY_EXIST = "SRC_EXTERNAL_ID_ALREADY_EXIST";
 		public static final String ALREADY_ENROLLED_COURSE = "ALREADY_ENROLLED_COURSE";
+		public static final String CONTNET_TYPE_ERROR = "CONTNET_TYPE_ERROR";
     }
 }
