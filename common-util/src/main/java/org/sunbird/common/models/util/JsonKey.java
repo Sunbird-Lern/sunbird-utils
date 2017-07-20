@@ -312,4 +312,5 @@ public class JsonKey {
   public static final String PAGE_ID = "pageId";
   public static final String AUTHORIZATION = "Authorization";
   public static final String EKSTEP_AUTHORIZATION = "ekstep_authorization";
+  public static final String CONTENT_CREATOR = "CONTENT_CREATOR";
 }
