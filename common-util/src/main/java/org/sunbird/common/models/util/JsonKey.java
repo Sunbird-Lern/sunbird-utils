@@ -316,5 +316,6 @@ public class JsonKey {
   public static final String CONTENT_CREATOR = "CONTENT_CREATOR";
   public static final String BEARER = "Bearer ";
   public static final String UNKNOWN_IDENTIFIER = "Unknown identifier ";
+  public static final String UNDEFINED_IDENTIFIER = "Undefined column name ";
   public static final String FAILED = "FAILED";
 }
