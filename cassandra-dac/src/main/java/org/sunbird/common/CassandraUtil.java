@@ -137,6 +137,7 @@ public final class CassandraUtil{
 	
 	public static String processExceptionForUnknownIdentifier(Exception e){
 	//Unknown identifier
-	  return ProjectUtil.formatMessage(ResponseCode.invalidPropertyError.getErrorMessage(), e.getMessage().replace(JsonKey.UNKNOWN_IDENTIFIER, "")).trim();
+	  return ProjectUtil.formatMessage(ResponseCode.invalidPropertyError.getErrorMessage(), e.getMessage().replace(JsonKey.UNKNOWN_IDENTIFIER, "")
+	      .replace(JsonKey.UNDEFINED_IDENTIFIER, "")).trim();
 	}
 }

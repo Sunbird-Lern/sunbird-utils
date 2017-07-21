@@ -54,7 +54,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 		        CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement.bind(array));
 				response.put(Constants.RESPONSE, Constants.SUCCESS);
 		} catch (Exception e) {
-		      if(e.getMessage().contains(JsonKey.UNKNOWN_IDENTIFIER)){
+		      if(e.getMessage().contains(JsonKey.UNKNOWN_IDENTIFIER) || e.getMessage().contains(JsonKey.UNDEFINED_IDENTIFIER)){
 		        ProjectLogger.log("Exception occured while inserting record to "+ tableName +" : "+e.getMessage(), e);
 		        throw new ProjectCommonException(ResponseCode.invalidPropertyError.getErrorCode(), CassandraUtil.processExceptionForUnknownIdentifier(e), ResponseCode.CLIENT_ERROR.getResponseCode());
 		      }
