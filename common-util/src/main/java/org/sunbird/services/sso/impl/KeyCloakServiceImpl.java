@@ -68,9 +68,11 @@ public class KeyCloakServiceImpl implements SSOManager {
          }
 
         //reset the password with same password
-        if (!(ProjectUtil.isStringNullOREmpty(userId) && isNotNull(request.get(JsonKey.PASSWORD)))) {
-          doPasswordUpdate(userId, (String) request.get(JsonKey.PASSWORD));
-        }
+    if (!(ProjectUtil.isStringNullOREmpty(userId))
+        && ((request.get(JsonKey.PASSWORD) != null) && !ProjectUtil
+            .isStringNullOREmpty((String) request.get(JsonKey.PASSWORD)))) {
+      doPasswordUpdate(userId, (String) request.get(JsonKey.PASSWORD));
+    }
 
         return userId;
     }
