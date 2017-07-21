@@ -90,7 +90,7 @@ public interface ResponseMessage {
 		public static final String DB_INSERTION_FAIL = "DB insert operation failed.";
 		public static final String DB_UPDATE_FAIL = "Db update operation failed.";
 		public static final String DATA_ALREADY_EXIST = "data already exist.";
-		public static final String INVALID_DATA = "INcorrect data.";
+		public static final String INVALID_DATA = "Incorrect data.";
 		public static final String INVALID_COURSE_ID = "Course doesnot exist. Please provide a valid course identifier";
 		public static final String PHONE_NO_REQUIRED_ERROR = "Phone number is required.";
 		public static final String ORG_ID_MISSING ="Organisation Id required.";
