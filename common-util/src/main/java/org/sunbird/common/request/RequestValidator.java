@@ -664,11 +664,14 @@ public final class RequestValidator {
    */
   @SuppressWarnings("rawtypes")
   public static void validateAddMember(Request userRequest) {
-    validateUserOrg(userRequest);
+    validateOrg(userRequest);
     if (userRequest.getRequest().containsKey(JsonKey.ROLES)
         && ((List) userRequest.getRequest().get(JsonKey.ROLES)).isEmpty()) {
       throw new ProjectCommonException(ResponseCode.roleRequired.getErrorCode(),
           ResponseCode.roleRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+    } if(userRequest.getRequest().get(JsonKey.USER_ID) == null && userRequest.getRequest().get(JsonKey.USER_NAME) == null) {
+      throw new ProjectCommonException(ResponseCode.usernameOrUserIdError.getErrorCode(),
+          ResponseCode.usernameOrUserIdError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
     }
   }
 	

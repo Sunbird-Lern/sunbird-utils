@@ -318,4 +318,5 @@ public class JsonKey {
   public static final String UNKNOWN_IDENTIFIER = "Unknown identifier ";
   public static final String UNDEFINED_IDENTIFIER = "Undefined column name ";
   public static final String FAILED = "FAILED";
+  public static final String USER_NAME = "username";
 }
