@@ -152,7 +152,7 @@ public class ProjectUtil {
      * @author Amit Kumar
      */
     public enum UserRole {
-        PUBLIC("PUBLIC"), CONTENT_CREATOR("CONTENT_CREATOR");
+        PUBLIC("PUBLIC"), CONTENT_CREATOR("CONTENT_CREATOR"), CONTENT_REVIEWER("CONTENT_REVIEWER"), ORG_ADMIN("ORG_ADMIN"), ORG_MEMBER("ORG_MEMBER");
 
         private String value;
 
