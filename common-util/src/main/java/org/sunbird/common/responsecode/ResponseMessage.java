@@ -116,6 +116,7 @@ public interface ResponseMessage {
         public static final String EXISTING_ORG_MEMBER ="You already have a membership of this organization.";
         public static final String CONTNET_TYPE_ERROR = "Please add Content-Type header with value application/json";
         public static final String INVALID_PROPERTY_ERROR = "invalid property {0}.";
+        public static final String USER_NAME_OR_ID_ERROR = "Please provide either username or userId.";
 	}
     
     public interface Key {
@@ -226,5 +227,6 @@ public interface ResponseMessage {
 		public static final String ALREADY_ENROLLED_COURSE = "ALREADY_ENROLLED_COURSE";
 		public static final String CONTNET_TYPE_ERROR = "CONTNET_TYPE_ERROR";
 		public static final String INVALID_PROPERTY_ERROR = "INVALID_PROPERTY_ERROR";
+		public static final String USER_NAME_OR_ID_ERROR = "USER_NAME_OR_ID_ERROR";
     }
 }
