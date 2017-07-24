@@ -6,11 +6,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
+import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
+import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
-
+import org.sunbird.common.responsecode.ResponseCode;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 
@@ -131,5 +133,11 @@ public final class CassandraUtil{
 	    ProjectLogger.log(query.toString());
 		return query.toString();
 		
+	}
+	
+	public static String processExceptionForUnknownIdentifier(Exception e){
+	//Unknown identifier
+	  return ProjectUtil.formatMessage(ResponseCode.invalidPropertyError.getErrorMessage(), e.getMessage().replace(JsonKey.UNKNOWN_IDENTIFIER, "")
+	      .replace(JsonKey.UNDEFINED_IDENTIFIER, "")).trim();
 	}
 }
