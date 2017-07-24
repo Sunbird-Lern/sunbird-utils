@@ -44,6 +44,8 @@ public interface ResponseMessage {
         public static final String ORGANISATION_NAME_MISSING = "organisation name is mandatory.";
         public static final String CHANNEL_SHOULD_BE_UNIQUE = "Channel value already used by another organisation. Provide different value for channel";
         public static final String INVALID_ORG_DATA = "Given Organisation Data doesn't exist in our records. Please provide a valid one";
+        public static final String INVALID_USR_DATA = "Given User Data doesn't exist in our records. Please provide a valid one";
+        public static final String USR_DATA_VALIDATION_ERROR = "Please provide valid userId or userName";
         public static final String INVALID_ROOT_ORGANIZATION = "Root organization id is invalid";
         public static final String INVALID_PARENT_ORGANIZATION_ID = "Parent organization id is invalid";
         public static final String CYCLIC_VALIDATION_FAILURE = "The relation cannot be created as it is cyclic";
@@ -156,7 +158,9 @@ public interface ResponseMessage {
         public static final String REQUIRED_DATA_ORG_MISSING = "REQUIRED_DATA_MISSING";
         public static final String ORGANISATION_NAME_MISSING = "ORGANISATION_NAME_MISSING";
         public static final String CHANNEL_SHOULD_BE_UNIQUE = "CHANNEL_SHOULD_BE_UNIQUE";
-        public static final String INVALID_ORG_DATA = "INVALID_ORG_DATA";
+        public static final String INVALID_ORG_DATA = "INVALID_ORGANISATION_DATA";
+        public static final String INVALID_USR_DATA = "INVALID_USER_DATA";
+        public static final String USR_DATA_VALIDATION_ERROR = "USER_DATA_VALIDATION_ERROR";
         public static final String INVALID_ROOT_ORGANIZATION = "INVALID ROOT ORGANIZATION";
         public static final String INVALID_PARENT_ORGANIZATION_ID = "INVALID_PARENT_ORGANIZATION_ID";
         public static final String CYCLIC_VALIDATION_FAILURE = "CYCLIC_VALIDATION_FAILURE";
