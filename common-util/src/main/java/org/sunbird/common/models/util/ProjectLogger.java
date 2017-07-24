@@ -10,6 +10,7 @@ import java.util.UUID;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.sunbird.common.request.ExecutionContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -117,10 +118,14 @@ public class ProjectLogger {
     Map<String, Object> eks = new HashMap<String, Object>();
     eks.put(JsonKey.LEVEL, logLevel);
     eks.put(JsonKey.MESSAGE, message);
-    if (data != null) {
+    String msgId = ExecutionContext.getRequestId();
+    if(null != msgId) {
+      eks.put(JsonKey.REQUEST_MESSAGE_ID, msgId);
+    }
+    if (null != data) {
       eks.put(JsonKey.DATA, data);
     }
-    if (exception != null) {
+    if (null != exception) {
       eks.put(JsonKey.STACKTRACE, ExceptionUtils.getStackTrace(exception));
     }
     te.setEid(LoggerEnum.BE_LOG.name());

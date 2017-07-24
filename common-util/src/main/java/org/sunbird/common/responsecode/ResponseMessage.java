@@ -90,7 +90,7 @@ public interface ResponseMessage {
 		public static final String DB_INSERTION_FAIL = "DB insert operation failed.";
 		public static final String DB_UPDATE_FAIL = "Db update operation failed.";
 		public static final String DATA_ALREADY_EXIST = "data already exist.";
-		public static final String INVALID_DATA = "INcorrect data.";
+		public static final String INVALID_DATA = "Incorrect data.";
 		public static final String INVALID_COURSE_ID = "Course doesnot exist. Please provide a valid course identifier";
 		public static final String PHONE_NO_REQUIRED_ERROR = "Phone number is required.";
 		public static final String ORG_ID_MISSING ="Organisation Id required.";
@@ -115,6 +115,8 @@ public interface ResponseMessage {
         public static final String ALREADY_ENROLLED_COURSE = "User has already Enrolled this course .";
         public static final String EXISTING_ORG_MEMBER ="You already have a membership of this organization.";
         public static final String CONTNET_TYPE_ERROR = "Please add Content-Type header with value application/json";
+        public static final String INVALID_PROPERTY_ERROR = "invalid property {0}.";
+        public static final String USER_NAME_OR_ID_ERROR = "Please provide either username or userId.";
 	}
     
     public interface Key {
@@ -224,5 +226,7 @@ public interface ResponseMessage {
 		public static final String SRC_EXTERNAL_ID_ALREADY_EXIST = "SRC_EXTERNAL_ID_ALREADY_EXIST";
 		public static final String ALREADY_ENROLLED_COURSE = "ALREADY_ENROLLED_COURSE";
 		public static final String CONTNET_TYPE_ERROR = "CONTNET_TYPE_ERROR";
+		public static final String INVALID_PROPERTY_ERROR = "INVALID_PROPERTY_ERROR";
+		public static final String USER_NAME_OR_ID_ERROR = "USER_NAME_OR_ID_ERROR";
     }
 }

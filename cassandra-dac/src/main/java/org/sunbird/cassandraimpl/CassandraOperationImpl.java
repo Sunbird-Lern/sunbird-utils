@@ -2,20 +2,6 @@ package org.sunbird.cassandraimpl;
 
 import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.sunbird.cassandra.CassandraOperation;
-import org.sunbird.common.CassandraUtil;
-import org.sunbird.common.Constants;
-import org.sunbird.common.exception.ProjectCommonException;
-import org.sunbird.common.models.response.Response;
-import org.sunbird.common.models.util.ProjectLogger;
-import org.sunbird.common.responsecode.ResponseCode;
-import org.sunbird.helper.CassandraConnectionManager;
-
 import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.PreparedStatement;
 import com.datastax.driver.core.ResultSet;
@@ -25,6 +11,19 @@ import com.datastax.driver.core.querybuilder.Delete;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
 import com.datastax.driver.core.querybuilder.Select.Where;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import org.sunbird.cassandra.CassandraOperation;
+import org.sunbird.common.CassandraUtil;
+import org.sunbird.common.Constants;
+import org.sunbird.common.exception.ProjectCommonException;
+import org.sunbird.common.models.response.Response;
+import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.ProjectLogger;
+import org.sunbird.common.responsecode.ResponseCode;
+import org.sunbird.helper.CassandraConnectionManager;
 
 /**
  * 
@@ -52,6 +51,10 @@ public class CassandraOperationImpl implements CassandraOperation{
 		        CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement.bind(array));
 				response.put(Constants.RESPONSE, Constants.SUCCESS);
 		} catch (Exception e) {
+		      if(e.getMessage().contains(JsonKey.UNKNOWN_IDENTIFIER) || e.getMessage().contains(JsonKey.UNDEFINED_IDENTIFIER)){
+		        ProjectLogger.log("Exception occured while inserting record to "+ tableName +" : "+e.getMessage(), e);
+		        throw new ProjectCommonException(ResponseCode.invalidPropertyError.getErrorCode(), CassandraUtil.processExceptionForUnknownIdentifier(e), ResponseCode.CLIENT_ERROR.getResponseCode());
+		      }
 			 ProjectLogger.log("Exception occured while inserting record to "+ tableName +" : "+e.getMessage(), e);
 			 throw new ProjectCommonException(ResponseCode.dbInsertionError.getErrorCode(), ResponseCode.dbInsertionError.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
@@ -83,6 +86,10 @@ public class CassandraOperationImpl implements CassandraOperation{
     		CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement);
     		response.put(Constants.RESPONSE, Constants.SUCCESS);
 		}catch(Exception e){
+		  if(e.getMessage().contains(JsonKey.UNKNOWN_IDENTIFIER)){
+            ProjectLogger.log(Constants.EXCEPTION_MSG_UPDATE + tableName +" : "+e.getMessage(), e);
+            throw new ProjectCommonException(ResponseCode.invalidPropertyError.getErrorCode(), CassandraUtil.processExceptionForUnknownIdentifier(e), ResponseCode.CLIENT_ERROR.getResponseCode());
+          }
 			ProjectLogger.log(Constants.EXCEPTION_MSG_UPDATE + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.dbUpdateError.getErrorCode(), ResponseCode.dbUpdateError.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
@@ -239,6 +246,10 @@ public class CassandraOperationImpl implements CassandraOperation{
 		   response.put(Constants.RESPONSE, Constants.SUCCESS);
 			
 		} catch (Exception e) {
+		  if(e.getMessage().contains(JsonKey.UNKNOWN_IDENTIFIER)){
+            ProjectLogger.log(Constants.EXCEPTION_MSG_UPSERT + tableName +" : "+e.getMessage(), e);
+            throw new ProjectCommonException(ResponseCode.invalidPropertyError.getErrorCode(), CassandraUtil.processExceptionForUnknownIdentifier(e), ResponseCode.CLIENT_ERROR.getResponseCode());
+          }
 		    ProjectLogger.log(Constants.EXCEPTION_MSG_UPSERT + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
