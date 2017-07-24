@@ -631,14 +631,15 @@ public final class RequestValidator {
 	 * This method will validate user org requested data.
 	 * @param userRequest Request
 	 */
-	public static void validateUserOrg(Request userRequest) {
-		validateOrg(userRequest);
-		if (isNull(userRequest.getRequest().get(JsonKey.USER_ID))
-				|| (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USER_ID)))) {
-			throw new ProjectCommonException(ResponseCode.userIdRequired.getErrorCode(),
-					ResponseCode.userIdRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-		}
-	}
+  public static void validateUserOrg(Request userRequest) {
+    validateOrg(userRequest);
+    if(!ProjectUtil.isStringNullOREmpty((String)userRequest.getRequest().get(JsonKey.USER_ID)) && (!ProjectUtil.isStringNullOREmpty((String)userRequest.getRequest().get(JsonKey.USER_NAME))
+        || !ProjectUtil.isStringNullOREmpty((String)userRequest.getRequest().get(JsonKey.USERNAME)))) {
+      throw new ProjectCommonException(ResponseCode.usernameOrUserIdError.getErrorCode(),
+          ResponseCode.usernameOrUserIdError.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+  }
 	/**
      * This method will validate verifyUser requested data.
      * @param userRequest Request
@@ -664,11 +665,15 @@ public final class RequestValidator {
    */
   @SuppressWarnings("rawtypes")
   public static void validateAddMember(Request userRequest) {
-    validateUserOrg(userRequest);
+    validateOrg(userRequest);
     if (userRequest.getRequest().containsKey(JsonKey.ROLES)
         && ((List) userRequest.getRequest().get(JsonKey.ROLES)).isEmpty()) {
       throw new ProjectCommonException(ResponseCode.roleRequired.getErrorCode(),
           ResponseCode.roleRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+    } if(!ProjectUtil.isStringNullOREmpty((String)userRequest.getRequest().get(JsonKey.USER_ID)) && (!ProjectUtil.isStringNullOREmpty((String)userRequest.getRequest().get(JsonKey.USER_NAME))
+        || !ProjectUtil.isStringNullOREmpty((String)userRequest.getRequest().get(JsonKey.USERNAME)))) {
+      throw new ProjectCommonException(ResponseCode.usernameOrUserIdError.getErrorCode(),
+          ResponseCode.usernameOrUserIdError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
     }
   }
 	
