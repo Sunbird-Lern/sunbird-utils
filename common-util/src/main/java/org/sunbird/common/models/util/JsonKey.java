@@ -254,6 +254,7 @@ public class JsonKey {
   public static final String USER_ORG_DB = "user_org_db";
   public static final String EMAIL_VERIFIED = "emailVerified";
   public static final String PHONE_NUMBER_VERIFIED = "phoneNumberVerified";
+  public static final String PHONE_VERIFIED = "phoneVerified";
   public static final String PROVIDER = "provider";
   public static final String LOGIN_ID = "loginId";
   public static final String USER_FOUND = "user exist with this login Id.";
