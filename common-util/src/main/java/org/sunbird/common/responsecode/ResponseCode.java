@@ -49,6 +49,8 @@ public enum ResponseCode {
     invalidParentId(ResponseMessage.Key.INVALID_PARENT_ORGANIZATION_ID, ResponseMessage.Message.INVALID_PARENT_ORGANIZATION_ID),
     channelIdRequiredForRootOrg(ResponseMessage.Key.CHANNEL_MISSING, ResponseMessage.Message.CHANNEL_MISSING),
     cyclicValidationError(ResponseMessage.Key.CYCLIC_VALIDATION_FAILURE, ResponseMessage.Message.CYCLIC_VALIDATION_FAILURE),
+    invalidUsrData(ResponseMessage.Key.INVALID_USR_DATA, ResponseMessage.Message.INVALID_USR_DATA),
+    usrValidationError(ResponseMessage.Key.USR_DATA_VALIDATION_ERROR, ResponseMessage.Message.USR_DATA_VALIDATION_ERROR),
     enrollmentStartDateRequiredError(ResponseMessage.Key.ENROLLMENT_START_DATE_MISSING, ResponseMessage.Message.ENROLLMENT_START_DATE_MISSING),
     courseDurationRequiredError(ResponseMessage.Key.COURSE_DURATION_MISSING, ResponseMessage.Message.COURSE_DURATION_MISSING),
     loginTypeRequired(ResponseMessage.Key.LOGIN_TYPE_MISSING, ResponseMessage.Message.LOGIN_TYPE_MISSING),
