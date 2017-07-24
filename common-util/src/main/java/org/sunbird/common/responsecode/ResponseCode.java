@@ -44,6 +44,7 @@ public enum ResponseCode {
     sourceAndExternalIdValidationError(ResponseMessage.Key.REQUIRED_DATA_ORG_MISSING, ResponseMessage.Message.REQUIRED_DATA_ORG_MISSING),
     organisationNameRequired(ResponseMessage.Key.ORGANISATION_NAME_MISSING, ResponseMessage.Message.ORGANISATION_NAME_MISSING),
     channelUniquenessInvalid(ResponseMessage.Key.CHANNEL_SHOULD_BE_UNIQUE, ResponseMessage.Message.CHANNEL_SHOULD_BE_UNIQUE),
+    invalidOrgData(ResponseMessage.Key.INVALID_ORG_DATA, ResponseMessage.Message.INVALID_ORG_DATA),
     invalidRootOrganisationId(ResponseMessage.Key.INVALID_ROOT_ORGANIZATION, ResponseMessage.Message.INVALID_ROOT_ORGANIZATION),
     invalidParentId(ResponseMessage.Key.INVALID_PARENT_ORGANIZATION_ID, ResponseMessage.Message.INVALID_PARENT_ORGANIZATION_ID),
     channelIdRequiredForRootOrg(ResponseMessage.Key.CHANNEL_MISSING, ResponseMessage.Message.CHANNEL_MISSING),
