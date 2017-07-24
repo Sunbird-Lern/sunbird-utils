@@ -2,22 +2,6 @@ package org.sunbird.cassandraimpl;
 
 import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.sunbird.cassandra.CassandraOperation;
-import org.sunbird.common.CassandraUtil;
-import org.sunbird.common.Constants;
-import org.sunbird.common.exception.ProjectCommonException;
-import org.sunbird.common.models.response.Response;
-import org.sunbird.common.models.util.JsonKey;
-import org.sunbird.common.models.util.ProjectLogger;
-import org.sunbird.common.models.util.ProjectUtil;
-import org.sunbird.common.responsecode.ResponseCode;
-import org.sunbird.helper.CassandraConnectionManager;
-
 import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.PreparedStatement;
 import com.datastax.driver.core.ResultSet;
@@ -27,6 +11,19 @@ import com.datastax.driver.core.querybuilder.Delete;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
 import com.datastax.driver.core.querybuilder.Select.Where;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import org.sunbird.cassandra.CassandraOperation;
+import org.sunbird.common.CassandraUtil;
+import org.sunbird.common.Constants;
+import org.sunbird.common.exception.ProjectCommonException;
+import org.sunbird.common.models.response.Response;
+import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.ProjectLogger;
+import org.sunbird.common.responsecode.ResponseCode;
+import org.sunbird.helper.CassandraConnectionManager;
 
 /**
  * 
