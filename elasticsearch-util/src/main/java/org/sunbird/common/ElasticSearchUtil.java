@@ -498,10 +498,14 @@ public class ElasticSearchUtil {
 
         String key = entry.getKey();
         Object val = entry.getValue();
-        if (val instanceof String) {
-            query.must(QueryBuilders.commonTermsQuery(key, val));
-        } else if (val instanceof List) {
-             query.must(QueryBuilders.matchQuery(key , String.join(" " , ((List<String>) val))));
+        if (val instanceof List) {
+            if(!((List) val).isEmpty()) {
+                if(((List) val).get(0) instanceof String) {
+                    query.must(QueryBuilders.matchQuery(key, String.join(" ", ((List<String>) val))));
+                }else{
+                    query.must(QueryBuilders.termsQuery(key, ((List) val).stream().toArray(Object[]::new)));
+                }
+            }
         } else if (val instanceof Map) {
             Map<String, Object> value = (Map<String, Object>) val;
             Map<String, Object> rangeOperation = new HashMap<String, Object>();
@@ -526,6 +530,8 @@ public class ElasticSearchUtil {
                     query.must(rangeQueryBuilder);
                 }
             }
+        }else{
+            query.must(QueryBuilders.commonTermsQuery(key, val));
         }
     }
 

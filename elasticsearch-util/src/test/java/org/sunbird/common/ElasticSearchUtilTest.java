@@ -88,12 +88,16 @@ public class ElasticSearchUtilTest {
         List<String> languages = new ArrayList<String>();
         languages.add("English");
         languages.add("Hindi");
+        List<Integer> grades = new ArrayList<Integer>();
+        grades.add(10);
+        grades.add(20);
         Map<String , Object> filterMap = new HashMap<String , Object>();
         filterMap.put("language" , languages);
+        filterMap.put("grades" , grades);
         additionalProperties.put(JsonKey.FILTERS,filterMap);
         Map<String, Object> rangeMap = new HashMap<String , Object>();
         rangeMap.put(">",0);
-        additionalProperties.put("pkgVersion" , rangeMap);
+        filterMap.put("pkgVersion" , rangeMap);
 
         searchDTO.setAdditionalProperties(additionalProperties);
         searchDTO.setFields(fields);
