@@ -75,9 +75,14 @@ public class CassandraTest {
     
     @Test(expected=ProjectCommonException.class)
     public void testAInsertFailedOp() {
-      operation.insertRecord(cach.getProperty("keyspace"), "address", dummyAddress);
+      operation.insertRecord(cach.getProperty("keyspace"), "address1", address);
     }
     
+    @Test(expected=ProjectCommonException.class)
+    public void testAInsertFailedOpWithInvalidProperty() {
+      operation.insertRecord(cach.getProperty("keyspace"), "address", dummyAddress);
+    }
+       
     @Test
     public void testBUpdateOp() {
       address.put(JsonKey.CITY, "city");
@@ -88,6 +93,13 @@ public class CassandraTest {
     
     @Test(expected=ProjectCommonException.class)
     public void testBUpdateFailedOp() {
+      dummyAddress.put(JsonKey.CITY, "city");
+      dummyAddress.put(JsonKey.ADD_TYPE, "addrType");
+      operation.updateRecord(cach.getProperty("keyspace"), "address1", address);
+    }
+    
+    @Test(expected=ProjectCommonException.class)
+    public void testBUpdateFailedOpWithInvalidProperty() {
       dummyAddress.put(JsonKey.CITY, "city");
       dummyAddress.put(JsonKey.ADD_TYPE, "addrType");
       operation.updateRecord(cach.getProperty("keyspace"), "address", dummyAddress);
@@ -205,6 +217,13 @@ public class CassandraTest {
       address.put("Country", "country");
       Response response=operation.upsertRecord(cach.getProperty("keyspace"), "address1", address);
       assertEquals("SUCCESS", response.get("response"));
+    }
+    
+    @Test(expected=ProjectCommonException.class)
+    public void testHUpsertOpFailedWithInvalidParameter() {
+      //address.put("Country", "country");
+      Response response=operation.upsertRecord(cach.getProperty("keyspace"), "address", dummyAddress);
+      //assertEquals("SUCCESS", response.get("response"));
     }
     
     @Test
