@@ -1,6 +1,5 @@
 package org.sunbird.common.request;
 
-import static org.sunbird.common.models.util.ProjectUtil.isNull;
 
 import java.util.List;
 import java.util.Map;
@@ -75,39 +74,7 @@ public final class RequestValidator {
   public static void validateCreateUser(Request userRequest) {
 	  Map<String,Object> addrReqMap = null;
 	  Map<String,Object> reqMap = null;
-		if (userRequest.getRequest().get(JsonKey.USERNAME) == null) {
-			throw new ProjectCommonException(ResponseCode.userNameRequired.getErrorCode(),
-					ResponseCode.userNameRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-		}
-		if (userRequest.getRequest().get(JsonKey.EMAIL) == null) {
-			throw new ProjectCommonException(ResponseCode.emailRequired.getErrorCode(),
-					ResponseCode.emailRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-		}
-		if (null != userRequest.getRequest().get(JsonKey.EMAIL) && !ProjectUtil.isEmailvalid((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
-			throw new ProjectCommonException(ResponseCode.emailFormatError.getErrorCode(),
-					ResponseCode.emailFormatError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-		}
-		if (userRequest.getRequest().get(JsonKey.FIRST_NAME) == null
-				|| (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.FIRST_NAME)))) {
-			throw new ProjectCommonException(ResponseCode.firstNameRequired.getErrorCode(),
-					ResponseCode.firstNameRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-		} 
-		if (userRequest.getRequest().get(JsonKey.PHONE) == null
-				|| (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PHONE)))) {
-			throw new ProjectCommonException(ResponseCode.phoneNoRequired.getErrorCode(),
-					ResponseCode.phoneNoRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-		} 
-		if (userRequest.getRequest().containsKey(JsonKey.ROLES) && null != userRequest.getRequest().get(JsonKey.ROLES) 
-		    && !(userRequest.getRequest().get(JsonKey.ROLES) instanceof List)) {
-        throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
-                ProjectUtil.formatMessage(ResponseCode.dataTypeError.getErrorMessage(), JsonKey.ROLES,JsonKey.LIST), ResponseCode.CLIENT_ERROR.getResponseCode());
-        }
-		if (userRequest.getRequest().containsKey(JsonKey.LANGUAGE) && null != userRequest.getRequest().get(JsonKey.LANGUAGE) 
-            && !(userRequest.getRequest().get(JsonKey.LANGUAGE) instanceof List)) {
-        throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
-            ProjectUtil.formatMessage(ResponseCode.dataTypeError.getErrorMessage(), JsonKey.LANGUAGE,JsonKey.LIST), ResponseCode.CLIENT_ERROR.getResponseCode());
-        }
-		
+	     doUserBasicValidation(userRequest);
 		if (userRequest.getRequest().containsKey(JsonKey.ADDRESS) && null != userRequest.getRequest().get(JsonKey.ADDRESS) ) {
 		  if(!(userRequest.getRequest().get(JsonKey.ADDRESS) instanceof List)){
 	          throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
@@ -171,7 +138,44 @@ public final class RequestValidator {
 		
 	}
 	
-
+	/**
+	 * This method will do basic validation for user request object.
+	 * @param userRequest
+	 */
+   public static void doUserBasicValidation(Request userRequest) {
+     if (userRequest.getRequest().get(JsonKey.USERNAME) == null) {
+       throw new ProjectCommonException(ResponseCode.userNameRequired.getErrorCode(),
+               ResponseCode.userNameRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+   }
+   if (userRequest.getRequest().get(JsonKey.EMAIL) == null) {
+       throw new ProjectCommonException(ResponseCode.emailRequired.getErrorCode(),
+               ResponseCode.emailRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+   }
+   if (null != userRequest.getRequest().get(JsonKey.EMAIL) && !ProjectUtil.isEmailvalid((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
+       throw new ProjectCommonException(ResponseCode.emailFormatError.getErrorCode(),
+               ResponseCode.emailFormatError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+   }
+   if (userRequest.getRequest().get(JsonKey.FIRST_NAME) == null
+           || (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.FIRST_NAME)))) {
+       throw new ProjectCommonException(ResponseCode.firstNameRequired.getErrorCode(),
+               ResponseCode.firstNameRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+   } 
+   if (userRequest.getRequest().get(JsonKey.PHONE) == null
+           || (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PHONE)))) {
+       throw new ProjectCommonException(ResponseCode.phoneNoRequired.getErrorCode(),
+               ResponseCode.phoneNoRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+   } 
+   if (userRequest.getRequest().containsKey(JsonKey.ROLES) && null != userRequest.getRequest().get(JsonKey.ROLES) 
+       && !(userRequest.getRequest().get(JsonKey.ROLES) instanceof List)) {
+   throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
+           ProjectUtil.formatMessage(ResponseCode.dataTypeError.getErrorMessage(), JsonKey.ROLES,JsonKey.LIST), ResponseCode.CLIENT_ERROR.getResponseCode());
+   }
+   if (userRequest.getRequest().containsKey(JsonKey.LANGUAGE) && null != userRequest.getRequest().get(JsonKey.LANGUAGE) 
+       && !(userRequest.getRequest().get(JsonKey.LANGUAGE) instanceof List)) {
+   throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
+       ProjectUtil.formatMessage(ResponseCode.dataTypeError.getErrorMessage(), JsonKey.LANGUAGE,JsonKey.LIST), ResponseCode.CLIENT_ERROR.getResponseCode());
+   }
+   }
 	public static void validateCreateOrg(Request request) {
 	    if (ProjectUtil
 	        .isStringNullOREmpty((String) request.getRequest().get(JsonKey.ORG_NAME))) {
