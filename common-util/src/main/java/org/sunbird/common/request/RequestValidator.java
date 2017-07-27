@@ -74,6 +74,7 @@ public final class RequestValidator {
   public static void validateCreateUser(Request userRequest) {
 	  Map<String,Object> addrReqMap = null;
 	  Map<String,Object> reqMap = null;
+	  phoneAndEmailValidationForCreateUser(userRequest);
 	     doUserBasicValidation(userRequest);
 		if (userRequest.getRequest().containsKey(JsonKey.ADDRESS) && null != userRequest.getRequest().get(JsonKey.ADDRESS) ) {
 		  if(!(userRequest.getRequest().get(JsonKey.ADDRESS) instanceof List)){
@@ -138,32 +139,92 @@ public final class RequestValidator {
 		
 	}
 	
-	/**
+	private static void phoneAndEmailValidationForCreateUser(Request userRequest) {
+    //Email is always mandatory for both External as well as our internal portal
+	  if (userRequest.getRequest().get(JsonKey.EMAIL) == null) {
+	       throw new ProjectCommonException(ResponseCode.emailRequired.getErrorCode(),
+	               ResponseCode.emailRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+	   }
+	   if (!ProjectUtil.isEmailvalid((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
+	       throw new ProjectCommonException(ResponseCode.emailFormatError.getErrorCode(),
+	               ResponseCode.emailFormatError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+	   }
+	   if(!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PROVIDER))){
+	     if(!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PHONE))){
+	         if(null != userRequest.getRequest().get(JsonKey.PHONE_NUMBER_VERIFIED)){
+	           if(userRequest.getRequest().get(JsonKey.PHONE_NUMBER_VERIFIED) instanceof Boolean){
+	             if(!((boolean) userRequest.getRequest().get(JsonKey.PHONE_NUMBER_VERIFIED))){
+	               throw new ProjectCommonException(ResponseCode.phoneVerifiedError.getErrorCode(),
+	                   ResponseCode.phoneVerifiedError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+	             }
+	           }else{
+	             throw new ProjectCommonException(ResponseCode.phoneVerifiedError.getErrorCode(),
+	                   ResponseCode.phoneVerifiedError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+	           }
+	         }else{
+	           throw new ProjectCommonException(ResponseCode.phoneVerifiedError.getErrorCode(),
+                   ResponseCode.phoneVerifiedError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+	         }
+	       }
+	     if(null == userRequest.getRequest().get(JsonKey.EMAIL_VERIFIED) || 
+	         !((boolean)userRequest.getRequest().get(JsonKey.EMAIL_VERIFIED))){
+	       throw new ProjectCommonException(ResponseCode.emailVerifiedError.getErrorCode(),
+               ResponseCode.emailVerifiedError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+	       } 
+	   }
+	}
+	
+	private static void phoneAndEmailValidationForUpdateUser(Request userRequest) {
+	       
+	       if(!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PROVIDER))){
+	         
+	         if(!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.EMAIL))){
+	           
+	           if (!ProjectUtil.isEmailvalid((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
+	               throw new ProjectCommonException(ResponseCode.emailFormatError.getErrorCode(),
+	                       ResponseCode.emailFormatError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+	           }
+	           if(null == userRequest.getRequest().get(JsonKey.EMAIL_VERIFIED) || 
+	                 !((boolean)userRequest.getRequest().get(JsonKey.EMAIL_VERIFIED))){
+	               throw new ProjectCommonException(ResponseCode.emailVerifiedError.getErrorCode(),
+	                   ResponseCode.emailVerifiedError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+	               } 
+	         }
+	         
+	         if(!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PHONE))){
+	             if(null != userRequest.getRequest().get(JsonKey.PHONE_NUMBER_VERIFIED)){
+	               if(userRequest.getRequest().get(JsonKey.PHONE_NUMBER_VERIFIED) instanceof Boolean){
+	                 if(!((boolean) userRequest.getRequest().get(JsonKey.PHONE_NUMBER_VERIFIED))){
+	                   throw new ProjectCommonException(ResponseCode.phoneVerifiedError.getErrorCode(),
+	                       ResponseCode.phoneVerifiedError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+	                 }
+	               }else{
+	                 throw new ProjectCommonException(ResponseCode.phoneVerifiedError.getErrorCode(),
+	                       ResponseCode.phoneVerifiedError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+	               }
+	             }else{
+	               throw new ProjectCommonException(ResponseCode.phoneVerifiedError.getErrorCode(),
+	                   ResponseCode.phoneVerifiedError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+	             }
+	           }
+	       }
+	    }
+
+  /**
 	 * This method will do basic validation for user request object.
 	 * @param userRequest
 	 */
    public static void doUserBasicValidation(Request userRequest) {
+     
      if (userRequest.getRequest().get(JsonKey.USERNAME) == null) {
        throw new ProjectCommonException(ResponseCode.userNameRequired.getErrorCode(),
                ResponseCode.userNameRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
    }
-   if (userRequest.getRequest().get(JsonKey.EMAIL) == null) {
-       throw new ProjectCommonException(ResponseCode.emailRequired.getErrorCode(),
-               ResponseCode.emailRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-   }
-   if (null != userRequest.getRequest().get(JsonKey.EMAIL) && !ProjectUtil.isEmailvalid((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
-       throw new ProjectCommonException(ResponseCode.emailFormatError.getErrorCode(),
-               ResponseCode.emailFormatError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-   }
+   
    if (userRequest.getRequest().get(JsonKey.FIRST_NAME) == null
            || (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.FIRST_NAME)))) {
        throw new ProjectCommonException(ResponseCode.firstNameRequired.getErrorCode(),
                ResponseCode.firstNameRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-   } 
-   if (userRequest.getRequest().get(JsonKey.PHONE) == null
-           || (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PHONE)))) {
-       throw new ProjectCommonException(ResponseCode.phoneNoRequired.getErrorCode(),
-               ResponseCode.phoneNoRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
    } 
    if (userRequest.getRequest().containsKey(JsonKey.ROLES) && null != userRequest.getRequest().get(JsonKey.ROLES) 
        && !(userRequest.getRequest().get(JsonKey.ROLES) instanceof List)) {
@@ -230,6 +291,8 @@ public final class RequestValidator {
 	 */
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	public static void validateUpdateUser(Request userRequest) {
+	  
+	  phoneAndEmailValidationForUpdateUser(userRequest);
 		if (userRequest.getRequest().containsKey(JsonKey.FIRST_NAME) && (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.FIRST_NAME)))) {
 			throw new ProjectCommonException(ResponseCode.firstNameRequired.getErrorCode(),
 					ResponseCode.firstNameRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
