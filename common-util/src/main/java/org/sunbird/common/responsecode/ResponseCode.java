@@ -118,6 +118,8 @@ public enum ResponseCode {
     contentTypeRequiredError(ResponseMessage.Key.CONTNET_TYPE_ERROR, ResponseMessage.Message.CONTNET_TYPE_ERROR),
     invalidPropertyError(ResponseMessage.Key.INVALID_PROPERTY_ERROR, ResponseMessage.Message.INVALID_PROPERTY_ERROR),
     usernameOrUserIdError(ResponseMessage.Key.USER_NAME_OR_ID_ERROR, ResponseMessage.Message.USER_NAME_OR_ID_ERROR),
+    emailVerifiedError(ResponseMessage.Key.EMAIL_VERIFY_ERROR, ResponseMessage.Message.EMAIL_VERIFY_ERROR),
+    phoneVerifiedError(ResponseMessage.Key.PHONE_VERIFY_ERROR, ResponseMessage.Message.PHONE_VERIFY_ERROR),
 	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404);
 	
 	private int responseCode;
