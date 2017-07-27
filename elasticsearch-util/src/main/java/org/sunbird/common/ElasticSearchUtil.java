@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 
+import java.util.stream.Collectors;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
@@ -30,9 +31,13 @@ import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.CommonTermsQueryBuilder;
 import org.elasticsearch.index.query.ExistsQueryBuilder;
+import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
+import org.elasticsearch.index.query.TermsQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -49,6 +54,8 @@ import org.sunbird.helper.ConnectionManager;
 import org.sunbird.helper.ElasticSearchMapping;
 import org.sunbird.helper.ElasticSearchSettings;
 
+import static org.sunbird.common.models.util.ProjectUtil.isNotNull;
+
 /**
  * This class will provide all required operation
  * for elastic search.
@@ -64,9 +71,12 @@ public class ElasticSearchUtil {
     private static final String GTE = ">=";
     private static final String GT = ">";
     private static final String ASC_ORDER="ASC";
-    private static List<String> upsertResults = new ArrayList<String>(
+    private static final String STARTS_WITH = "startsWith";
+    private static final String ENDS_WITH = "endsWith";
+    private static final List<String> upsertResults = new ArrayList<String>(
         Arrays.asList("CREATED", "UPDATED", "NOOP"));
-    
+    private final static String SOFT_MODE = "soft";
+
     /**
      * This method will put a new data entry inside Elastic search. identifier
      * value becomes _id inside ES, so every time provide a unique value while
@@ -340,12 +350,16 @@ public class ElasticSearchUtil {
 
         SearchRequestBuilder searchRequestBuilder = getSearchBuilder(ConnectionManager.getClient(), index, type);
 
+        //check mode and set constraints
+        Map<String , Float> constraintsMap = getConstraints(searchDTO);
+
         BoolQueryBuilder query = new BoolQueryBuilder();
 
         //add channel field as mandatory
         String channel = PropertiesCache.getInstance().getProperty(JsonKey.SUNBIRD_ES_CHANNEL);
         if(!(ProjectUtil.isStringNullOREmpty(channel) || JsonKey.SUNBIRD_ES_CHANNEL.equals(channel))) {
-            query.must(QueryBuilders.matchQuery(JsonKey.CHANNEL, channel));
+            //query.must(QueryBuilders.matchQuery(JsonKey.CHANNEL, channel));
+            query.must(createMatchQuery(JsonKey.CHANNEL, channel , constraintsMap.get(JsonKey.CHANNEL)));
         }
 
         //apply simple query string
@@ -374,15 +388,11 @@ public class ElasticSearchUtil {
         //apply additional properties
         if(searchDTO.getAdditionalProperties() !=null && searchDTO.getAdditionalProperties().size()>0)
         for (Map.Entry<String, Object> entry : searchDTO.getAdditionalProperties().entrySet()) {
-            addAdditionalProperties(query, entry);
+            addAdditionalProperties(query, entry, constraintsMap);
         }
 
-        //apply group query
-        if(searchDTO.getGroupQuery() != null && searchDTO.getGroupQuery().size()>0){
-            for(Map<String , Object> gq : searchDTO.getGroupQuery()){
-                groupQueryExecutor(query , gq);
-            }
-        }
+        //RegexpQueryBuilder regexpQueryBuilder = QueryBuilders.regexpQuery("courseType" , "~pe");
+        ///query.must(regexpQueryBuilder);
 
         //set final query to search request builder
         searchRequestBuilder.setQuery(query);
@@ -406,50 +416,18 @@ public class ElasticSearchUtil {
         return responsemap;
     }
 
-    /**
-     * Method to perform group query
-     * @param query
-     * @param gq
-     */
-    @SuppressWarnings("unchecked")
-    private static void groupQueryExecutor(BoolQueryBuilder query, Map<String, Object> gq) {
+    private static Map<String,Float> getConstraints(SearchDTO searchDTO) {
 
-        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
-        for(Map.Entry<String , Object> entry : gq.entrySet()){
-            String key = entry.getKey();
-            Object val = entry.getValue();
-
-            if (val instanceof String) {
-                boolQueryBuilder.must(QueryBuilders.commonTermsQuery(key, val));
-            } else if (val instanceof List) {
-                boolQueryBuilder.must(QueryBuilders.termsQuery(key, ((List<String>) val).stream().toArray(String[]::new)));
-            } else if (val instanceof Map) {
-                Map<String, Object> value = (Map<String, Object>) val;
-                Map<String, Object> rangeOperation = new HashMap<String, Object>();
-                for (Map.Entry<String, Object> it : value.entrySet()) {
-                    String operation = it.getKey();
-                    if (operation.startsWith(LT) || operation.startsWith(GT)) {
-                        rangeOperation.put(operation, it.getValue());
-                    }
-                }
-                for (Map.Entry<String, Object> it : rangeOperation.entrySet()) {
-                    if (it.getKey().equalsIgnoreCase(LTE)) {
-                        RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key).lte(it.getValue());
-                        boolQueryBuilder.must(rangeQueryBuilder);
-                    } else if (it.getKey().equalsIgnoreCase(LT)) {
-                        RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key).lt(it.getValue());
-                        boolQueryBuilder.must(rangeQueryBuilder);
-                    } else if (it.getKey().equalsIgnoreCase(GTE)) {
-                        RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key).gte(it.getValue());
-                        boolQueryBuilder.must(rangeQueryBuilder);
-                    } else if (it.getKey().equalsIgnoreCase(GT)) {
-                        RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key).gt(it.getValue());
-                        boolQueryBuilder.must(rangeQueryBuilder);
-                    }
-                }
+        if(!(searchDTO.getMode().isEmpty())){
+            if(searchDTO.getMode().contains(SOFT_MODE)){
+                    return searchDTO.getSoftConstraints().entrySet().stream()
+                        .collect(Collectors.toMap(
+                            e -> e.getKey(),
+                            e -> e.getValue().floatValue()
+                        ));
             }
         }
-        query.should(boolQueryBuilder);
+        return new HashMap<String , Float>();
     }
 
     private static SearchRequestBuilder getSearchBuilder(TransportClient client, String index, String ... type) {
@@ -468,9 +446,12 @@ public class ElasticSearchUtil {
      * Method to add the additional search query like range query , exists - not exist filter etc.
      * @param query
      * @param entry
+     * @param constraintsMap
      */
     @SuppressWarnings("unchecked")
-    private static void addAdditionalProperties(BoolQueryBuilder query, Map.Entry<String, Object> entry) {
+    private static void addAdditionalProperties(BoolQueryBuilder query,
+        Entry<String, Object> entry,
+        Map<String, Float> constraintsMap) {
 
         String key = entry.getKey();
 
@@ -478,12 +459,10 @@ public class ElasticSearchUtil {
            
 			Map<String, Object> filters = (Map<String, Object>) entry.getValue();
             for (Map.Entry<String, Object> en : filters.entrySet()) {
-               createFilterESOpperation(en , query);
+               createFilterESOpperation(en , query, constraintsMap);
             }
-        }else if (key.equalsIgnoreCase(JsonKey.EXISTS)) {
-            createESOpperation(entry ,query);
-        }else if (key.equalsIgnoreCase(JsonKey.NOT_EXISTS)) {
-            createESOpperation(entry ,query);
+        }else if (key.equalsIgnoreCase(JsonKey.EXISTS) || key.equalsIgnoreCase(JsonKey.NOT_EXISTS)) {
+            createESOpperation(entry ,query , constraintsMap);
         }
 
     }
@@ -492,47 +471,44 @@ public class ElasticSearchUtil {
      * Method to create CommonTermQuery , multimatch  and Range Query.
      * @param entry
      * @param query
+     * @param constraintsMap
      * @return
      */
     @SuppressWarnings("unchecked")
-    private static void createFilterESOpperation(Entry<String, Object> entry, BoolQueryBuilder query) {
+    private static void createFilterESOpperation(Entry<String, Object> entry,
+        BoolQueryBuilder query, Map<String, Float> constraintsMap) {
 
         String key = entry.getKey();
         Object val = entry.getValue();
         if (val instanceof List) {
             if(!((List) val).isEmpty()) {
                 if(((List) val).get(0) instanceof String) {
-                    query.must(QueryBuilders.matchQuery(key, String.join(" ", ((List<String>) val))));
+                    query.must(createMatchQuery(key ,String.join(" ", ((List<String>) val)) , constraintsMap.get(key)));
                 }else{
-                    query.must(QueryBuilders.termsQuery(key, ((List) val).stream().toArray(Object[]::new)));
+                    query.must(createTermsQuery(key ,(List)val , constraintsMap.get(key)));
                 }
             }
         } else if (val instanceof Map) {
             Map<String, Object> value = (Map<String, Object>) val;
             Map<String, Object> rangeOperation = new HashMap<String, Object>();
+            Map<String , Object> lexicalOperation = new HashMap<String , Object>();
             for (Map.Entry<String, Object> it : value.entrySet()) {
                 String operation = it.getKey();
                 if (operation.startsWith(LT) || operation.startsWith(GT)) {
                     rangeOperation.put(operation, it.getValue());
+                }else if(operation.startsWith(STARTS_WITH) || operation.startsWith(ENDS_WITH)){
+                    lexicalOperation.put(operation , it.getValue());
                 }
             }
-            for (Map.Entry<String, Object> it : rangeOperation.entrySet()) {
-                if (it.getKey().equalsIgnoreCase(LTE)) {
-                    RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key).lte(it.getValue());
-                    query.must(rangeQueryBuilder);
-                } else if (it.getKey().equalsIgnoreCase(LT)) {
-                    RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key).lt(it.getValue());
-                    query.must(rangeQueryBuilder);
-                } else if (it.getKey().equalsIgnoreCase(GTE)) {
-                    RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key).gte(it.getValue());
-                    query.must(rangeQueryBuilder);
-                } else if (it.getKey().equalsIgnoreCase(GT)) {
-                    RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(key).gt(it.getValue());
-                    query.must(rangeQueryBuilder);
-                }
+            if(!(rangeOperation.isEmpty())) {
+                query.must(createRangeQuery(key, rangeOperation, constraintsMap.get(key)));
             }
+            if(!(lexicalOperation.isEmpty())){
+                query.must(createLexicalQuery(key, lexicalOperation, constraintsMap.get(key)));
+            }
+
         }else{
-            query.must(QueryBuilders.commonTermsQuery(key, val));
+            query.must(createCommonTermsQuery(key , val , constraintsMap.get(key)));
         }
     }
 
@@ -540,22 +516,22 @@ public class ElasticSearchUtil {
      * Method to create EXISTS and NOT EXIST FILTER QUERY .
      * @param entry
      * @param query
+     * @param constraintsMap
      */
     @SuppressWarnings("unchecked")
-    private static void createESOpperation(Entry<String, Object> entry, BoolQueryBuilder query) {
+    private static void createESOpperation(Entry<String, Object> entry, BoolQueryBuilder query,
+        Map<String, Float> constraintsMap) {
 
         String operation = entry.getKey();
         List<String> existsList = (List<String>) entry.getValue();
 
         if (operation.equalsIgnoreCase(JsonKey.EXISTS)) {
-            for (String str : existsList) {
-                ExistsQueryBuilder existsQuery1 = QueryBuilders.existsQuery(str);
-                query.must(existsQuery1);
+            for (String name : existsList) {
+                query.must(createExistQuery(name , constraintsMap.get(name)));
             }
         } else if (operation.equalsIgnoreCase(JsonKey.NOT_EXISTS)) {
-            for (String str : existsList) {
-                ExistsQueryBuilder existsQuery1 = QueryBuilders.existsQuery(str);
-                query.mustNot(existsQuery1);
+            for (String name : existsList) {
+                query.mustNot(createExistQuery(name , constraintsMap.get(name)));
             }
         }
     }
@@ -651,6 +627,78 @@ public class ElasticSearchUtil {
 			return true;
 		}
 	}
+
+	private static MatchQueryBuilder createMatchQuery(String name , Object text , Float boost){
+	    if(isNotNull(boost)) {
+          return QueryBuilders.matchQuery(name, text).boost(boost);
+      }else{
+          return QueryBuilders.matchQuery(name, text);
+      }
+  }
+
+    private static TermsQueryBuilder createTermsQuery(String name, List values , Float boost){
+        if(isNotNull(boost)) {
+            return QueryBuilders.termsQuery(name, ( values).stream().toArray(Object[]::new)).boost(boost);
+        }else{
+            return QueryBuilders.termsQuery(name, (values).stream().toArray(Object[]::new));
+        }
+    }
+
+    private static RangeQueryBuilder createRangeQuery(String name , Map<String, Object> rangeOperation , Float boost){
+
+        RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(name);
+        for (Map.Entry<String, Object> it : rangeOperation.entrySet()) {
+            if (it.getKey().equalsIgnoreCase(LTE)) {
+                rangeQueryBuilder.lte(it.getValue());
+            } else if (it.getKey().equalsIgnoreCase(LT)) {
+                rangeQueryBuilder.lt(it.getValue());
+            } else if (it.getKey().equalsIgnoreCase(GTE)) {
+                rangeQueryBuilder.gte(it.getValue());
+            } else if (it.getKey().equalsIgnoreCase(GT)) {
+                rangeQueryBuilder.gt(it.getValue());
+            }
+        }
+        if(isNotNull(boost)){
+            return rangeQueryBuilder.boost(boost);
+        }
+        return rangeQueryBuilder;
+    }
+
+    private static CommonTermsQueryBuilder createCommonTermsQuery(String name, Object text, Float boost){
+        if(isNotNull(boost)) {
+            return QueryBuilders.commonTermsQuery(name, text).boost(boost);
+        }else{
+            return QueryBuilders.commonTermsQuery(name, text);
+        }
+    }
+
+    private static ExistsQueryBuilder  createExistQuery(String name , Float boost){
+        if(isNotNull(boost)) {
+            return QueryBuilders.existsQuery(name).boost(boost);
+        }else{
+            return QueryBuilders.existsQuery(name);
+        }
+    }
+
+    private static QueryBuilder createLexicalQuery(String key, Map<String, Object> rangeOperation,
+        Float boost) {
+        QueryBuilder queryBuilder = null;
+        for (Map.Entry<String, Object> it : rangeOperation.entrySet()) {
+            if (it.getKey().equalsIgnoreCase(STARTS_WITH)) {
+                if(isNotNull(boost)) {
+                    queryBuilder = QueryBuilders.prefixQuery(key, (String)it.getValue()).boost(boost);
+                }
+                queryBuilder= QueryBuilders.prefixQuery(key, (String)it.getValue());
+            } else if (it.getKey().equalsIgnoreCase(ENDS_WITH)) {
+                String endsWithRegex = "~"+it.getValue();
+                if(isNotNull(boost)) {
+                    queryBuilder= QueryBuilders.regexpQuery(key, endsWithRegex).boost(boost);
+                }
+                queryBuilder= QueryBuilders.regexpQuery(key, endsWithRegex);
+            }
+        }
+        return queryBuilder;
+    }
 }
 
 
