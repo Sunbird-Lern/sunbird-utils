@@ -26,7 +26,7 @@ public class ProjectUtil {
     /**
      * format the date in YYYY-MM-DD hh:mm:ss:SSZ
      */
-    public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss:SSSZ");
+    public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSSZ");
     private static AtomicInteger atomicInteger = new AtomicInteger();
 
     public static final long BACKGROUND_ACTOR_WAIT_TIME = 30;
