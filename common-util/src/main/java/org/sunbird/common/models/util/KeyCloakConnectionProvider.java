@@ -20,7 +20,11 @@ public class KeyCloakConnectionProvider {
    private static PropertiesCache cache = PropertiesCache.getInstance();
    
    static {
-		initialiseConnection();
+		try {
+      initialiseConnection();
+    } catch (Exception e) {
+      ProjectLogger.log(e.getMessage(), e);
+    }
 		registerShutDownHook();
 	}
 
@@ -28,7 +32,7 @@ public class KeyCloakConnectionProvider {
 	 * Method to initializate the Keycloak connection
 	 * @return Keycloak connection
 	 */
-  public static Keycloak initialiseConnection() {
+  public static Keycloak initialiseConnection() throws Exception{
     ProjectLogger.log("key cloak instance is creation started.");
     keycloak = initialiseEnvConnection();
     if (keycloak != null) {
@@ -58,7 +62,7 @@ public class KeyCloakConnectionProvider {
    * then it will return null.
    * @return Keycloak
    */
-  private static Keycloak initialiseEnvConnection() {
+  private static Keycloak initialiseEnvConnection() throws Exception{
     String url = System.getenv(JsonKey.SUNBIRD_SSO_URL);
     String username = System.getenv(JsonKey.SUNBIRD_SSO_USERNAME);
     String password = System.getenv(JsonKey.SUNBIRD_SSO_PASSWORD);
@@ -88,20 +92,24 @@ public class KeyCloakConnectionProvider {
 
   }
    
-   
+  
    /**
 	 * This method will provide key cloak
 	 * connection instance. 
 	 * @return Keycloak
 	 */
-	public static Keycloak getConnection(){
-		if(keycloak !=null) {
-		   return keycloak;
-		}
-		else {
-			return initialiseConnection();
-		}
-	}
+  public static Keycloak getConnection() {
+    if (keycloak != null) {
+      return keycloak;
+    } else {
+      try {
+        return initialiseConnection();
+      } catch (Exception e) {
+        ProjectLogger.log(e.getMessage(), e);
+      }
+    }
+    return null;
+  }
 	
 	/**
 	 * This class will be called by registerShutDownHook to 
