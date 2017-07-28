@@ -1,5 +1,6 @@
 package org.sunbird.common.responsecode;
 
+import org.sunbird.common.models.util.ProjectUtil;
 
 /**
  * 
@@ -185,6 +186,9 @@ public enum ResponseCode {
      * @return String
      */
     public static String getResponseMessage(String code) {
+     if(ProjectUtil.isStringNullOREmpty(code)){
+       return "";
+     } 
     String value = "";
     ResponseCode responseCodes[] = ResponseCode.values();
     for (ResponseCode actionState : responseCodes) {
@@ -239,6 +243,9 @@ public enum ResponseCode {
      * @return String
      */
     public static ResponseCode getResponse(String errorCode) {
+       if(ProjectUtil.isStringNullOREmpty(errorCode)) {
+         return null;
+       }
         ResponseCode value =null;
     ResponseCode responseCodes[] = ResponseCode.values();
     for (ResponseCode response : responseCodes) {
