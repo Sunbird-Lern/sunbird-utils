@@ -134,6 +134,31 @@ public class KeyCloakServiceImpl implements SSOManager {
         }
         return JsonKey.SUCCESS;
     }
+
+  /**
+   * Method to deactivate the user on basis of user id.
+   *
+   * @param request Map
+   * @return boolean true if success otherwise false .
+   */
+  @Override
+  public String deactivateUser(Map<String, Object> request) {
+    Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
+    String userId = (String) request.get(JsonKey.USER_ID);
+    UserResource resource = keycloak.realm(cache.getProperty(JsonKey.SSO_REALM)).users().get(userId);
+    UserRepresentation ur = resource.toRepresentation();
+    ur.setEnabled(false);
+    if (isNotNull(resource)) {
+      try {
+        resource.update(ur);
+      } catch (Exception ex) {
+        ProjectCommonException projectCommonException = new ProjectCommonException(ex.getMessage(), ex.getMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+        throw projectCommonException;
+      }
+
+    }
+    return JsonKey.SUCCESS;
+  }
     
     /**
      * This method will send email verification link to registered user email
