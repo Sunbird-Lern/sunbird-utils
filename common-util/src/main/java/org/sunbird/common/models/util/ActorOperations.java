@@ -32,7 +32,7 @@ public enum ActorOperations {
     REJECT_USER_ORGANISATION("rejectUserOrganisation"),INSERT_ORG_INFO_ELASTIC("insertOrgInfoToElastic"),
     DOWNLOAD_USERS("downloadUsersData"),DOWNLOAD_ORGS("downlaodOrg"),DELETE_USER("deleteUser")
     ,DELETE_BY_IDENTIFIER("deleteByIdentifier"),
-    BULK_UPLOAD("bulkUpload"),PROCESS_BULK_UPLOAD("processBulkUpload");
+    BULK_UPLOAD("bulkUpload"),PROCESS_BULK_UPLOAD("processBulkUpload"),ASSIGN_ROLES("assignRoles");
     
     private String value;
 
