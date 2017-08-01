@@ -31,8 +31,9 @@ public enum ActorOperations {
 	GET_USER_DETAILS_BY_LOGINID("getUserDetailsByLoginId"),UPDATE_ORG_INFO_ELASTIC("updateOrgInfoToElastic"),
     REJECT_USER_ORGANISATION("rejectUserOrganisation"),INSERT_ORG_INFO_ELASTIC("insertOrgInfoToElastic"),
     DOWNLOAD_USERS("downloadUsersData"),DOWNLOAD_ORGS("downlaodOrg"),DELETE_USER("deleteUser")
-    ,DELETE_BY_IDENTIFIER("deleteByIdentifier");
-
+    ,DELETE_BY_IDENTIFIER("deleteByIdentifier"),
+    BULK_UPLOAD("bulkUpload"),PROCESS_BULK_UPLOAD("processBulkUpload");
+    
     private String value;
 
     /**

@@ -123,6 +123,9 @@ public interface ResponseMessage {
         public static final String USER_ACCOUNT_BLOCKED = "User account has been blocked .";
         public static final String EMAIL_VERIFY_ERROR = "Please provide a verified email in order to create user.";
         public static final String PHONE_VERIFY_ERROR = "Please provide a verified phone number in order to create user.";
+        public static final String BULK_USER_UPLOAD_ERROR = "Please provide either organisation Id or external Id & provider value.";
+        public static final String DATA_SIZE_EXCEEDED = "Maxiumum data we can process is {0}";
+        public static final String INVALID_COLUMN_NAME = "Invalid column name.";
 	}
     
     public interface Key {
@@ -240,5 +243,8 @@ public interface ResponseMessage {
 		public static final String USER_ACCOUNT_BLOCKED = "USER_ACCOUNT_BLOCKED";
 		public static final String EMAIL_VERIFY_ERROR = "EMAIL_VERIFY_ERROR";
 		public static final String PHONE_VERIFY_ERROR = "PHONE_VERIFY_ERROR";
+		public static final String BULK_USER_UPLOAD_ERROR = "BULK_USER_UPLOAD_ERROR";
+		public static final String DATA_SIZE_EXCEEDED = "DATA_SIZE_EXCEEDED";
+		public static final String INVALID_COLUMN_NAME = "INVALID_COLUMN_NAME";
     }
 }
