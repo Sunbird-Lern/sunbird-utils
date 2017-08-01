@@ -775,4 +775,18 @@ public final class RequestValidator {
       }
       return false;
     }
+    
+    /**
+     * This method will validate bulk user upload requested data.
+     * 
+     * @param request Request
+     */
+    public static void validateUploadUser(Request request) {
+      if(!(!ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.EXTERNAL_ID)) && 
+          !ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.PROVIDER)))
+          || !ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.ORGANISATION_ID))){
+        throw new ProjectCommonException(ResponseCode.bulkUserUploadError.getErrorCode(),
+            ResponseCode.bulkUserUploadError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
+    }
 }
