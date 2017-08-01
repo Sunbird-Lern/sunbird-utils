@@ -8,7 +8,7 @@ package org.sunbird.common.models.util;
  */
 
 public enum ActorOperations {
-  
+   
     ENROLL_COURSE("enrollCourse"), GET_COURSE("getCourse"), ADD_CONTENT("addContent"),
     GET_CONTENT("getContent"), CREATE_COURSE("createCourse"), UPDATE_COURSE("updateCourse"),
     PUBLISH_COURSE("publishCourse"), SEARCH_COURSE("searchCourse"), DELETE_COURSE("deleteCourse"),
@@ -30,7 +30,8 @@ public enum ActorOperations {
 	APPROVE_USER_ORGANISATION("approveUserOrganisation"),COMPOSITE_SEARCH("compositeSearch"),
 	GET_USER_DETAILS_BY_LOGINID("getUserDetailsByLoginId"),UPDATE_ORG_INFO_ELASTIC("updateOrgInfoToElastic"),
     REJECT_USER_ORGANISATION("rejectUserOrganisation"),INSERT_ORG_INFO_ELASTIC("insertOrgInfoToElastic"),
-    DOWNLOAD_USERS("downloadUsersData"),DOWNLOAD_ORGS("downlaodOrg");
+    DOWNLOAD_USERS("downloadUsersData"),DOWNLOAD_ORGS("downlaodOrg"),DELETE_USER("deleteUser")
+    ,DELETE_BY_IDENTIFIER("deleteByIdentifier");
 
     private String value;
 
