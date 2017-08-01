@@ -118,6 +118,7 @@ public enum ResponseCode {
     contentTypeRequiredError(ResponseMessage.Key.CONTNET_TYPE_ERROR, ResponseMessage.Message.CONTNET_TYPE_ERROR),
     invalidPropertyError(ResponseMessage.Key.INVALID_PROPERTY_ERROR, ResponseMessage.Message.INVALID_PROPERTY_ERROR),
     usernameOrUserIdError(ResponseMessage.Key.USER_NAME_OR_ID_ERROR, ResponseMessage.Message.USER_NAME_OR_ID_ERROR),
+    userAccountlocked(ResponseMessage.Key.USER_ACCOUNT_BLOCKED, ResponseMessage.Message.USER_ACCOUNT_BLOCKED),
 	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404);
 	
 	private int responseCode;
@@ -233,7 +234,7 @@ public enum ResponseCode {
     /**
      * This method will provide ResponseCode enum based on error code
      * 
-     * @param code
+     * @param errorCode
      * @return String
      */
     public static ResponseCode getResponse(String errorCode) {

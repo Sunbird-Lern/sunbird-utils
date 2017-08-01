@@ -47,4 +47,11 @@ public interface SSOManager {
 	 * @return boolean
 	 */
 	public boolean isEmailVerified(String userId);
+
+	/**
+	 * Method to deactivate user from keycloak , it is like soft delete .
+	 * @param request
+	 * @return
+	 */
+	public String deactivateUser(Map<String, Object> request);
 }
