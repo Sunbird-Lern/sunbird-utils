@@ -121,6 +121,8 @@ public interface ResponseMessage {
         public static final String INVALID_PROPERTY_ERROR = "invalid property {0}.";
         public static final String USER_NAME_OR_ID_ERROR = "Please provide either username or userId.";
         public static final String USER_ACCOUNT_BLOCKED = "User account has been blocked .";
+        public static final String EMAIL_VERIFY_ERROR = "Please provide a verified email in order to create user.";
+        public static final String PHONE_VERIFY_ERROR = "Please provide a verified phone number in order to create user.";
 	}
     
     public interface Key {
@@ -236,5 +238,7 @@ public interface ResponseMessage {
 		public static final String INVALID_PROPERTY_ERROR = "INVALID_PROPERTY_ERROR";
 		public static final String USER_NAME_OR_ID_ERROR = "USER_NAME_OR_ID_ERROR";
 		public static final String USER_ACCOUNT_BLOCKED = "USER_ACCOUNT_BLOCKED";
+		public static final String EMAIL_VERIFY_ERROR = "EMAIL_VERIFY_ERROR";
+		public static final String PHONE_VERIFY_ERROR = "PHONE_VERIFY_ERROR";
     }
 }
