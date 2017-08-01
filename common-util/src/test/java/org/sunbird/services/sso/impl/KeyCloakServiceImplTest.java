@@ -81,7 +81,17 @@ public class KeyCloakServiceImplTest {
     }
 
     @Test
-    public void vremoveUserTest(){
+    public void vdeactivateUserTest(){
+
+        Map<String , Object> request = new HashMap<String , Object>();
+        request.put(JsonKey.USER_ID , userId);
+        request.put(JsonKey.FIRST_NAME , userName);
+        String result = keyCloakService.deactivateUser(request);
+        Assert.assertNotNull(result);
+    }
+
+    @Test
+    public void xremoveUserTest(){
 
         Map<String , Object> request = new HashMap<String , Object>();
         request.put(JsonKey.USER_ID , userId);
