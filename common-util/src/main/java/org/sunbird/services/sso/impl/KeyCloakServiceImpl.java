@@ -48,6 +48,8 @@ public class KeyCloakServiceImpl implements SSOManager {
           result = keycloak.realm(cache.getProperty(JsonKey.SSO_REALM)).users().create(user);
         } catch (Exception e) {
           ProjectLogger.log(e.getMessage(), e);
+          ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
+          throw projectCommonException;
         }
          if(request != null) {
         if (result.getStatus() != 201) {
@@ -82,8 +84,16 @@ public class KeyCloakServiceImpl implements SSOManager {
     public String updateUser(Map<String, Object> request) {
         // TODO Auto-generated method stub
         String userId = (String) request.get(JsonKey.USER_ID);
-        UserResource resource = keycloak.realm(cache.getProperty(JsonKey.SSO_REALM)).users().get(userId);
-        UserRepresentation ur = resource.toRepresentation();
+        UserRepresentation  ur= null;
+        UserResource resource = null;
+        try {
+          resource = keycloak.realm(cache.getProperty(JsonKey.SSO_REALM)).users().get(userId);
+          ur = resource.toRepresentation();
+        } catch (Exception e) {
+          ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(), ResponseCode.invalidUsrData.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+          throw projectCommonException;
+        }
+        
         // set the UserRepresantation with the map value...
         if (isNotNull(request.get(JsonKey.FIRST_NAME))) {
             ur.setFirstName((String) request.get(JsonKey.FIRST_NAME));
@@ -105,7 +115,7 @@ public class KeyCloakServiceImpl implements SSOManager {
         try {
             resource.update(ur);
         } catch (Exception ex) {
-            ProjectCommonException projectCommonException = new ProjectCommonException(ex.getMessage(), ex.getMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+            ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(), ResponseCode.invalidUsrData.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
             throw projectCommonException;
         }
         return (String) JsonKey.SUCCESS;
