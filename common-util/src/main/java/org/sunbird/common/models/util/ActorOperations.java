@@ -29,7 +29,8 @@ public enum ActorOperations {
 	ADD_MEMBER_ORGANISATION("addMemberOrganisation"), REMOVE_MEMBER_ORGANISATION("removeMemberOrganisation"),
 	APPROVE_USER_ORGANISATION("approveUserOrganisation"),COMPOSITE_SEARCH("compositeSearch"),
 	GET_USER_DETAILS_BY_LOGINID("getUserDetailsByLoginId"),UPDATE_ORG_INFO_ELASTIC("updateOrgInfoToElastic"),
-    REJECT_USER_ORGANISATION("rejectUserOrganisation"),INSERT_ORG_INFO_ELASTIC("insertOrgInfoToElastic");
+    REJECT_USER_ORGANISATION("rejectUserOrganisation"),INSERT_ORG_INFO_ELASTIC("insertOrgInfoToElastic"),
+    DOWNLOAD_USERS("downloadUsersData"),DOWNLOAD_ORGS("downlaodOrg");
 
     private String value;
 
