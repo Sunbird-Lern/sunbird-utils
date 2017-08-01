@@ -320,4 +320,10 @@ public class JsonKey {
   public static final String UNDEFINED_IDENTIFIER = "Undefined column name ";
   public static final String FAILED = "FAILED";
   public static final String USER_NAME = "username";
+  public static final String FILE = "file";
+  public static final String BULK_OP_DB = "BulkOpDb";
+  public static final String PROCESS_ID = "processId";
+  public static final String USER_LIST = "userList";
+  public static final String ERROR_MSG = "err_msg";
+  public static final String BAD_REQUEST = "badRequest";
 }
