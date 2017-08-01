@@ -1,5 +1,6 @@
 package org.sunbird.common.responsecode;
 
+import org.sunbird.common.models.util.ProjectUtil;
 
 /**
  * 
@@ -123,6 +124,7 @@ public enum ResponseCode {
     bulkUserUploadError(ResponseMessage.Key.BULK_USER_UPLOAD_ERROR, ResponseMessage.Message.BULK_USER_UPLOAD_ERROR),
     dataSizeError(ResponseMessage.Key.DATA_SIZE_EXCEEDED, ResponseMessage.Message.DATA_SIZE_EXCEEDED),
     InvalidColumnError(ResponseMessage.Key.INVALID_COLUMN_NAME, ResponseMessage.Message.INVALID_COLUMN_NAME),
+    userAccountlocked(ResponseMessage.Key.USER_ACCOUNT_BLOCKED, ResponseMessage.Message.USER_ACCOUNT_BLOCKED),
 	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404);
 	
 	private int responseCode;
@@ -188,6 +190,9 @@ public enum ResponseCode {
      * @return String
      */
     public static String getResponseMessage(String code) {
+     if(ProjectUtil.isStringNullOREmpty(code)){
+       return "";
+     }
     String value = "";
     ResponseCode responseCodes[] = ResponseCode.values();
     for (ResponseCode actionState : responseCodes) {
@@ -238,10 +243,13 @@ public enum ResponseCode {
     /**
      * This method will provide ResponseCode enum based on error code
      * 
-     * @param code
+     * @param errorCode
      * @return String
      */
     public static ResponseCode getResponse(String errorCode) {
+       if(ProjectUtil.isStringNullOREmpty(errorCode)) {
+         return null;
+       }
         ResponseCode value =null;
     ResponseCode responseCodes[] = ResponseCode.values();
     for (ResponseCode response : responseCodes) {
