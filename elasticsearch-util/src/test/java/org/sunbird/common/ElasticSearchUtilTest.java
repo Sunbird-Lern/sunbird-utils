@@ -53,7 +53,7 @@ public class ElasticSearchUtilTest {
         //inserting second record
         ElasticSearchUtil.createData(indexName, typeName, (String)map1.get("courseId"), map1);
         assertEquals(responseId, map.get("courseId"));
-        //wait for 1 second since the created data will reflect after some tine
+        //wait for 1 second since the created data will reflect after some time
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -93,6 +93,9 @@ public class ElasticSearchUtilTest {
         fields.add("courseType");
         fields.add("createdOn");
         fields.add("description");
+        Map<String , String> sortMap = new HashMap<>();
+        sortMap.put("courseType" , "ASC");
+        searchDTO.setSortBy(sortMap);
 
         Map<String , Object> additionalProperties = new HashMap<String , Object>();
 
@@ -101,14 +104,14 @@ public class ElasticSearchUtilTest {
         existsList.add("size");
 
         additionalProperties.put(JsonKey.EXISTS , existsList);
-        List<String> languages = new ArrayList<String>();
-        languages.add("English");
-        languages.add("Hindi");
+        List<String> description = new ArrayList<String>();
+        description.add("This is for chemistry");
+        description.add("Hindi Jii");
         List<Integer> sizes = new ArrayList<Integer>();
         sizes.add(10);
         sizes.add(20);
         Map<String , Object> filterMap = new HashMap<String , Object>();
-        filterMap.put("language" , languages);
+        filterMap.put("description" , description);
         filterMap.put("size" , sizes);
         additionalProperties.put(JsonKey.FILTERS,filterMap);
         Map<String, Object> rangeMap = new HashMap<String , Object>();
@@ -118,27 +121,31 @@ public class ElasticSearchUtilTest {
         lexicalMap.put(STARTS_WITH , "type");
         filterMap.put("courseType" , lexicalMap);
         Map<String , Object> lexicalMap1 = new HashMap<>();
-        lexicalMap1.put(ENDS_WITH , "ysics");
-        filterMap.put("description" , lexicalMap1);
+        lexicalMap1.put(ENDS_WITH , "sunbird");
+        filterMap.put("courseAddedByName" , lexicalMap1);
+        //for exact math key value pair
+        filterMap.put("orgName" , "Name of the organisation");
 
         searchDTO.setAdditionalProperties(additionalProperties);
         searchDTO.setFields(fields);
-        /*List<String> facets = new ArrayList<String>();
+        //facets
+        List<String> facets = new ArrayList<String>();
         facets.add("description");
         facets.add("courseType");
-        searchDTO.setFacets(facets);*/
+        searchDTO.setFacets(facets);
+
+        //soft constraints
         List<String> mode = Arrays.asList("soft");
         searchDTO.setMode(mode);
-
         Map<String , Integer> constraintMap = new HashMap<String , Integer>();
         constraintMap.put("grades" , 10);
         constraintMap.put("pkgVersion" , 5);
         searchDTO.setSoftConstraints(constraintMap);
         Map map = ElasticSearchUtil.complexSearch(searchDTO,indexName , typeName);
 
-        List response = (List) map.get(JsonKey.RESPONSE);
-        //System.out.println(response.get(0));
-        assertEquals(1 , response.size());
+        /*List response = (List) map.get(JsonKey.RESPONSE);
+        //System.out.println(response.get(0));*/
+        assertEquals(3 , map.size());
         //assertNotNull(map);
     }
 

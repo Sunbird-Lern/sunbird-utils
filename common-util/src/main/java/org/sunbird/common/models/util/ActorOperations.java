@@ -30,9 +30,9 @@ public enum ActorOperations {
 	APPROVE_USER_ORGANISATION("approveUserOrganisation"),COMPOSITE_SEARCH("compositeSearch"),
 	GET_USER_DETAILS_BY_LOGINID("getUserDetailsByLoginId"),UPDATE_ORG_INFO_ELASTIC("updateOrgInfoToElastic"),
     REJECT_USER_ORGANISATION("rejectUserOrganisation"),INSERT_ORG_INFO_ELASTIC("insertOrgInfoToElastic"),
-    DOWNLOAD_USERS("downloadUsersData"),DOWNLOAD_ORGS("downlaodOrg"),DELETE_USER("deleteUser")
+    DOWNLOAD_USERS("downloadUsersData"),DOWNLOAD_ORGS("downlaodOrg"),BLOCK_USER("blockUser")
     ,DELETE_BY_IDENTIFIER("deleteByIdentifier"),
-    BULK_UPLOAD("bulkUpload"),PROCESS_BULK_UPLOAD("processBulkUpload"),ASSIGN_ROLES("assignRoles");
+    BULK_UPLOAD("bulkUpload"),PROCESS_BULK_UPLOAD("processBulkUpload"),ASSIGN_ROLES("assignRoles"), UNBLOCK_USER("unblockUser");
     
     private String value;
 
