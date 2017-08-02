@@ -153,6 +153,7 @@ public class KeyCloakServiceImpl implements SSOManager {
    */
   @Override
   public String deactivateUser(Map<String, Object> request) {
+    try {
     Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
     String userId = (String) request.get(JsonKey.USER_ID);
     UserResource resource = keycloak.realm(cache.getProperty(JsonKey.SSO_REALM)).users().get(userId);
@@ -162,10 +163,16 @@ public class KeyCloakServiceImpl implements SSOManager {
       try {
         resource.update(ur);
       } catch (Exception ex) {
-        ProjectCommonException projectCommonException = new ProjectCommonException(ex.getMessage(), ex.getMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+        ProjectLogger.log(ex.getMessage(), ex);
+        ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(), ResponseCode.invalidUsrData.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
         throw projectCommonException;
       }
 
+    }
+    } catch (Exception e) {
+      ProjectLogger.log(e.getMessage(), e);
+      ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(), ResponseCode.invalidUsrData.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+      throw projectCommonException; 
     }
     return JsonKey.SUCCESS;
   }
@@ -178,6 +185,7 @@ public class KeyCloakServiceImpl implements SSOManager {
    */
   @Override
   public String activateUser(Map<String, Object> request) {
+    try {
     Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
     String userId = (String) request.get(JsonKey.USER_ID);
     UserResource resource = keycloak.realm(cache.getProperty(JsonKey.SSO_REALM)).users().get(userId);
@@ -187,10 +195,16 @@ public class KeyCloakServiceImpl implements SSOManager {
       try {
         resource.update(ur);
       } catch (Exception ex) {
-        ProjectCommonException projectCommonException = new ProjectCommonException(ex.getMessage(), ex.getMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+        ProjectLogger.log(ex.getMessage(), ex);
+        ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(), ResponseCode.invalidUsrData.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
         throw projectCommonException;
       }
 
+    }
+    } catch (Exception e) {
+      ProjectLogger.log(e.getMessage(), e);
+      ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(), ResponseCode.invalidUsrData.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+      throw projectCommonException; 
     }
     return JsonKey.SUCCESS;
   }

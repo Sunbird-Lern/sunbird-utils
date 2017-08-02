@@ -326,4 +326,9 @@ public class JsonKey {
   public static final String USER_LIST = "userList";
   public static final String ERROR_MSG = "err_msg";
   public static final String BAD_REQUEST = "badRequest";
+  public static final String UPLOADED_BY = "uploadedBy";
+  public static final String UPLOADED_DATE = "uploadedDate";
+  public static final String PROCESS_START_TIME = "processStartTime";
+  public static final String PROCESS_END_TIME = "processEndTime";
+  
 }
