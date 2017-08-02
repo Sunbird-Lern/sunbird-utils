@@ -330,5 +330,6 @@ public class JsonKey {
   public static final String UPLOADED_DATE = "uploadedDate";
   public static final String PROCESS_START_TIME = "processStartTime";
   public static final String PROCESS_END_TIME = "processEndTime";
-  
+  public static final String SUCCESS_RESULT = "successResult";
+  public static final String FAILURE_RESULT = "failureResult";
 }

@@ -68,6 +68,20 @@ public class ProjectUtil {
             return this.value;
         }
     }
+    
+    public enum BulkProcessStatus {
+      NEW(1), IN_PROGRESS(1), INTERRUPT(2), COMPLETED(3);
+
+      private int value;
+
+      BulkProcessStatus(int value) {
+          this.value = value;
+      }
+
+      public int getValue() {
+          return this.value;
+      }
+  }
 
     public enum OrgStatus{
         INACTIVE(0), ACTIVE(1), BLOCKED(2), RETIRED(3);
