@@ -789,4 +789,26 @@ public final class RequestValidator {
             ResponseCode.bulkUserUploadError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
       }
     }
+    
+  public static void validateAssignRole(Request request) {
+    if (ProjectUtil.isStringNullOREmpty(
+        (String) request.getRequest().get(JsonKey.USER_ID))) {
+      if (!ProjectUtil.isStringNullOREmpty(
+          (String) request.getRequest().get(JsonKey.EXTERNAL_ID))
+          && !ProjectUtil.isStringNullOREmpty(
+              (String) request.getRequest().get(JsonKey.PROVIDER))) {
+        throw new ProjectCommonException(
+            ResponseCode.sourceAndExternalIdValidationError.getErrorCode(),
+            ResponseCode.sourceAndExternalIdValidationError.getErrorMessage(),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
+
+
+    }
+    if(request.getRequest().get(JsonKey.ROLES) == null || !(request.getRequest().get(JsonKey.ROLES) instanceof List)) {
+      throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
+          ProjectUtil.formatMessage(ResponseCode.dataTypeError.getErrorMessage(), JsonKey.ROLES,JsonKey.LIST), ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+  }
+    
 }
