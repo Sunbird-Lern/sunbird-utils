@@ -453,6 +453,7 @@ public class ElasticSearchUtil {
             termsList.add(internalMap);
           }
           facetMap.put("values", termsList);
+          facetMap.put(JsonKey.NAME , facets);
           finalFacetList.add(facetMap);
 
         }
