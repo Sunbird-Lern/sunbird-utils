@@ -133,6 +133,7 @@ public interface ResponseMessage {
         public static final String COURSE_BATCH_START_DATE_INVALID = "batch statrt date is invalid.";
         public static final String DATE_FORMAT_ERRROR = "Date format error.";
         public static final String END_DATE_ERROR = "end date should be greater than start date.";
+        public  static final String INVALID_CSV_FILE = "Please provide valid csv file.";
 	}
     
     public interface Key {
@@ -260,5 +261,6 @@ public interface ResponseMessage {
 		public static final String COURSE_BATCH_START_DATE_INVALID = "COURSE_BATCH_START_DATE_INVALID";
 		public static final String DATE_FORMAT_ERRROR = "DATE_FORMAT_ERRROR";
 		public static final String END_DATE_ERROR = "END_DATE_ERROR";
+		public static final String INVALID_CSV_FILE = "INVALID_CSV_FILE";
     }
 }
