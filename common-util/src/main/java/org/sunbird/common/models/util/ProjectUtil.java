@@ -69,6 +69,21 @@ public class ProjectUtil {
         }
     }
     
+
+    public enum BulkProcessStatus {
+      NEW(0), IN_PROGRESS(1), INTERRUPT(2), COMPLETED(3);
+
+      private int value;
+
+      BulkProcessStatus(int value) {
+          this.value = value;
+      }
+
+      public int getValue() {
+          return this.value;
+      }
+  }
+
     public enum OrgStatus{
         INACTIVE(0), ACTIVE(1), BLOCKED(2), RETIRED(3);
 
@@ -168,20 +183,6 @@ public class ProjectUtil {
         }
     }
 
-  public enum BulkProcessStatus {
-    NEW(0), IN_PROGRESS(1), INTERRUPT(2), COMPLETED(3);
-
-    private int value;
-
-    BulkProcessStatus(int value) {
-      this.value = value;
-    }
-
-    public int getValue() {
-      return this.value;
-    }
-  }
-    
     /**
      * This method will check incoming value is null or empty
      * it will do empty check by doing trim method. in case of
@@ -466,5 +467,24 @@ public class ProjectUtil {
     SimpleDateFormat simpleDateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSSZ");
     simpleDateFormat.setLenient(false);
     return  simpleDateFormat;
+  }
+  
+  /**
+   * 
+   * @author Manzarul
+   *
+   */
+  public enum EnrolmentType {
+    open("open"),inviteOnly("invite-only");
+    private String val;
+    EnrolmentType (String val) {
+      this.val = val;
+    }
+    public String getVal() {
+      return val;
+    }
+    public void setVal(String val) {
+      this.val = val;
+    }
   }
 }
