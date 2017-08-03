@@ -126,6 +126,12 @@ public enum ResponseCode {
     InvalidColumnError(ResponseMessage.Key.INVALID_COLUMN_NAME, ResponseMessage.Message.INVALID_COLUMN_NAME),
     userAccountlocked(ResponseMessage.Key.USER_ACCOUNT_BLOCKED, ResponseMessage.Message.USER_ACCOUNT_BLOCKED),
     userAlreadyActive(ResponseMessage.Key.USER_ALREADY_ACTIVE, ResponseMessage.Message.USER_ALREADY_ACTIVE),
+    enrolmentTypeRequired(ResponseMessage.Key.ENROLMENT_TYPE_REQUIRED, ResponseMessage.Message.ENROLMENT_TYPE_REQUIRED),
+    enrolmentIncorrectValue(ResponseMessage.Key.ENROLMENT_TYPE_VALUE_ERROR, ResponseMessage.Message.ENROLMENT_TYPE_VALUE_ERROR),
+    courseBatchSatrtDateRequired(ResponseMessage.Key.COURSE_BATCH_START_DATE_REQUIRED, ResponseMessage.Message.COURSE_BATCH_START_DATE_REQUIRED),
+    courseBatchStartDateError(ResponseMessage.Key.COURSE_BATCH_START_DATE_INVALID, ResponseMessage.Message.COURSE_BATCH_START_DATE_INVALID),
+    dateFormatError(ResponseMessage.Key.DATE_FORMAT_ERRROR, ResponseMessage.Message.DATE_FORMAT_ERRROR),
+    endDateError(ResponseMessage.Key.END_DATE_ERROR, ResponseMessage.Message.END_DATE_ERROR),
 	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404);
 	
 	private int responseCode;

@@ -32,7 +32,9 @@ public enum ActorOperations {
     REJECT_USER_ORGANISATION("rejectUserOrganisation"),INSERT_ORG_INFO_ELASTIC("insertOrgInfoToElastic"),
     DOWNLOAD_USERS("downloadUsersData"),DOWNLOAD_ORGS("downlaodOrg"),BLOCK_USER("blockUser")
     ,DELETE_BY_IDENTIFIER("deleteByIdentifier"),
-    BULK_UPLOAD("bulkUpload"),PROCESS_BULK_UPLOAD("processBulkUpload"),ASSIGN_ROLES("assignRoles"), UNBLOCK_USER("unblockUser");
+    BULK_UPLOAD("bulkUpload"),PROCESS_BULK_UPLOAD("processBulkUpload"),ASSIGN_ROLES("assignRoles"), UNBLOCK_USER("unblockUser"),
+    CREATE_BATCH("createBatch"),UPDATE_BATCH("updateBatch"),REMOVE_BATCH("removeBatch"),ADD_USER_TO_BATCH("addUserBatch"),
+    REMOVE_USER_FROM_BATCH("removeUserFromBatch"),GET_BATCH("getBatch");
     
     private String value;
 

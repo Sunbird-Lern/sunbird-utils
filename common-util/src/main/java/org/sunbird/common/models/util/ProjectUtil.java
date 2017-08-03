@@ -70,7 +70,7 @@ public class ProjectUtil {
     }
     
     public enum BulkProcessStatus {
-      NEW(1), IN_PROGRESS(1), INTERRUPT(2), COMPLETED(3);
+      NEW(0), IN_PROGRESS(1), INTERRUPT(2), COMPLETED(3);
 
       private int value;
 
@@ -466,5 +466,24 @@ public class ProjectUtil {
     SimpleDateFormat simpleDateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSSZ");
     simpleDateFormat.setLenient(false);
     return  simpleDateFormat;
+  }
+  
+  /**
+   * 
+   * @author Manzarul
+   *
+   */
+  public enum EnrolmentType {
+    open("open"),inviteOnly("invite-only");
+    private String val;
+    EnrolmentType (String val) {
+      this.val = val;
+    }
+    public String getVal() {
+      return val;
+    }
+    public void setVal(String val) {
+      this.val = val;
+    }
   }
 }
