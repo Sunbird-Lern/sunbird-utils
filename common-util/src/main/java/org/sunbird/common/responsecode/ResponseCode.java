@@ -132,6 +132,7 @@ public enum ResponseCode {
     courseBatchStartDateError(ResponseMessage.Key.COURSE_BATCH_START_DATE_INVALID, ResponseMessage.Message.COURSE_BATCH_START_DATE_INVALID),
     dateFormatError(ResponseMessage.Key.DATE_FORMAT_ERRROR, ResponseMessage.Message.DATE_FORMAT_ERRROR),
     endDateError(ResponseMessage.Key.END_DATE_ERROR, ResponseMessage.Message.END_DATE_ERROR),
+    csvError(ResponseMessage.Key.INVALID_CSV_FILE, ResponseMessage.Message.INVALID_CSV_FILE),
 	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404);
 	
 	private int responseCode;
