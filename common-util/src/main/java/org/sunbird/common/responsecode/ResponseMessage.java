@@ -127,6 +127,7 @@ public interface ResponseMessage {
         public static final String DATA_SIZE_EXCEEDED = "Maxiumum data we can process is {0}";
         public static final String INVALID_COLUMN_NAME = "Invalid column name.";
         public  static final String USER_ALREADY_ACTIVE = "User is already active";
+        public  static final String INVALID_CSV_FILE = "Please provide valid csv file.";
 	}
     
     public interface Key {
@@ -248,5 +249,6 @@ public interface ResponseMessage {
 		public static final String DATA_SIZE_EXCEEDED = "DATA_SIZE_EXCEEDED";
 		public static final String INVALID_COLUMN_NAME = "INVALID_COLUMN_NAME";
 		public static final String USER_ALREADY_ACTIVE = "USER_ALREADY_ACTIVE";
+		public static final String INVALID_CSV_FILE = "INVALID_CSV_FILE";
     }
 }
