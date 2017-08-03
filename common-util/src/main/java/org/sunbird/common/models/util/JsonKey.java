@@ -332,4 +332,10 @@ public class JsonKey {
   public static final String PROCESS_END_TIME = "processEndTime";
   public static final String SUCCESS_RESULT = "successResult";
   public static final String FAILURE_RESULT = "failureResult";
+  public static final String BATCH ="batch";
+  public static final String COURSE_BATCH_DB = "courseBatchDB";
+  public static String COURSE_CREATOR = "courseCreator";
+  public static String ENROLMENTTYPE = "enrolmentType";
+  public static String START_DATE = "startDate";
+  public static String END_DATE = "endDate";
 }
