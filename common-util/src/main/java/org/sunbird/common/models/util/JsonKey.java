@@ -334,10 +334,25 @@ public class JsonKey {
   public static final String FAILURE_RESULT = "failureResult";
   public static final String BATCH ="batch";
   public static final String COURSE_BATCH_DB = "courseBatchDB";
+  public static final String MENTORS = "mentors";
   public static final String COURSE_CREATOR = "courseCreator";
   public static final String ENROLMENTTYPE = "enrolmentType";
   public static final String START_DATE = "startDate";
   public static final String END_DATE = "endDate";
-  public static final String MENTORS = "mentors";
+  public static final String ENROLLMENT_TYPE = "enrollmentType";
+  public static final String INVITE_ONLY = "invite-only";
+  public static final String OPEN = "open";
+  public static final String USER_IDs = "userIds";
+  public static final String PARTICIPANTS = "participants";
 
+
+  public static final String PERIOD = "period";
+  public static final String ORG_ID = "orgId";
+  public static final String SNAPSHOT = "snapshot";
+  public static final String SERIES = "series"; 
+  public static final String AGGREGATIONS = "aggregations";
+  public static final String VALUE = "value";
+  public static final String SPLIT = "split";
+  public static final String COURSE_PUBLISHED_STATUS = "course_publish_status";
+  public static String SUBMIT_DATE = "submitDate";
 }
