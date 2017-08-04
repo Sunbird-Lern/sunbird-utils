@@ -332,7 +332,5 @@ public class JsonKey {
   public static final String PROCESS_END_TIME = "processEndTime";
   public static final String SUCCESS_RESULT = "successResult";
   public static final String FAILURE_RESULT = "failureResult";
-  public static final String SUCCESS_RESULT = "successResult";
-  public static final String FAILURE_RESULT = "failureResult";
 
 }
