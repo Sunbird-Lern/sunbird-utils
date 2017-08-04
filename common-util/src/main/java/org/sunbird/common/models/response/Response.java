@@ -102,6 +102,14 @@ public class Response implements Serializable, Cloneable {
   }
 
   /**
+   * 
+   * @param map
+   */
+  public void putAll(Map<String, Object> map) {
+    result.putAll(map);
+  }
+  
+  /**
    * This will provide response parameter object.
    * 
    * @return ResponseParams
