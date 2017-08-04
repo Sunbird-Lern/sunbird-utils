@@ -338,5 +338,11 @@ public class JsonKey {
   public static String ENROLMENTTYPE = "enrolmentType";
   public static String START_DATE = "startDate";
   public static String END_DATE = "endDate";
+  public static final String ENROLLMENT_TYPE = "enrollmentType";
+  public static final String INVITE_ONLY = "invite-only";
+  public static final String OPEN = "open";
+  public static final String USER_IDs = "userIds";
+  public static final String PARTICIPANTS = "participants";
+
 
 }

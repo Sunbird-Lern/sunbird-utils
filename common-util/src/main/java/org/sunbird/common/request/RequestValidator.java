@@ -490,29 +490,28 @@ public final class RequestValidator {
 	 * This method will validate add course request data.
 	 * @param courseRequest Request
 	 */
-	public static void validateAddCourse(Request courseRequest) {
+	public static void validateAddBatchCourse(Request courseRequest) {
 
-		 if (courseRequest.getRequest().get(JsonKey.CONTENT_ID) == null) {
-		   throw new ProjectCommonException(ResponseCode.courseIdRequiredError.getErrorCode(),
-					ResponseCode.courseIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+		 if (courseRequest.getRequest().get(JsonKey.BATCH_ID) == null) {
+		   throw new ProjectCommonException(ResponseCode.courseBatchIdRequired.getErrorCode(),
+					ResponseCode.courseBatchIdRequired.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
 		}
-		 if (courseRequest.getRequest().get(JsonKey.COURSE_NAME) == null) {
-		   throw new ProjectCommonException(ResponseCode.courseNameRequired.getErrorCode(),
-					ResponseCode.courseNameRequired.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+		 if (courseRequest.getRequest().get(JsonKey.USER_IDs) == null) {
+		   throw new ProjectCommonException(ResponseCode.userIdRequired.getErrorCode(),
+					ResponseCode.userIdRequired.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
 		}
-		 if (courseRequest.getRequest().get(JsonKey.ORGANISATION_ID) == null) {
-		   throw new ProjectCommonException(ResponseCode.organisationIdRequiredError.getErrorCode(),
-					ResponseCode.organisationIdRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
+	}
+
+	/**
+	 * This method will validate add course request data.
+	 * @param courseRequest Request
+	 */
+	public static void validateGetBatchCourse(Request courseRequest) {
+
+		if (courseRequest.getRequest().get(JsonKey.BATCH_ID) == null) {
+			throw new ProjectCommonException(ResponseCode.courseBatchIdRequired.getErrorCode(),
+					ResponseCode.courseBatchIdRequired.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
 		}
-		 if (courseRequest.getRequest().get(JsonKey.ENROLLMENT_START_DATE) == null) {
-		   throw new ProjectCommonException(ResponseCode.enrollmentStartDateRequiredError.getErrorCode(),
-					ResponseCode.enrollmentStartDateRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
-		}
-		 if (courseRequest.getRequest().get(JsonKey.COURSE_DURATION) == null) {
-		   throw new ProjectCommonException(ResponseCode.courseDurationRequiredError.getErrorCode(),
-					ResponseCode.courseDurationRequiredError.getErrorMessage(),ResponseCode.CLIENT_ERROR.getResponseCode());
-		}
-	
 	}
 	
 	/**
