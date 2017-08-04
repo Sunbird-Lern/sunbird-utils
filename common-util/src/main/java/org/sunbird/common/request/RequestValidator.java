@@ -19,7 +19,7 @@ import org.sunbird.common.responsecode.ResponseCode;
  * @author Manzarul
  */
 public final class RequestValidator {
-   private static SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-DD"); 
+   private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); 
     static {
       format.setLenient(false);
     }
@@ -866,6 +866,58 @@ mentors : List of user ids , who will work as a mentor.
           ResponseCode.dataTypeError.getErrorMessage(),
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
+  }
+  
+  public static void validateUpdateCourseBatchReq(Request request) {
+    
+    if (request.getRequest().containsKey(JsonKey.NAME) && ProjectUtil
+        .isStringNullOREmpty((String) request.getRequest().get(JsonKey.NAME))) {
+      throw new ProjectCommonException(
+          ResponseCode.courseNameRequired.getErrorCode(),
+          ResponseCode.courseNameRequired.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    if (request.getRequest().containsKey(JsonKey.ENROLMENTTYPE)){
+      String enrolmentType =
+          (String) request.getRequest().get(JsonKey.ENROLMENTTYPE);
+      validateEnrolmentType(enrolmentType);
+    }
+    String startDate = null;
+    if (request.getRequest().containsKey(JsonKey.START_DATE)){
+      startDate = (String) request.getRequest().get(JsonKey.START_DATE);
+      validateStartDate(startDate);
+    }
+    if (request.getRequest().containsKey(JsonKey.END_DATE) ){
+      if(null == startDate){
+        throw new ProjectCommonException(
+            ResponseCode.courseBatchStartDateError.getErrorCode(),
+            ResponseCode.courseBatchStartDateError.getErrorMessage(),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
+      if (request.getRequest().containsKey(JsonKey.END_DATE)
+          && !ProjectUtil.isStringNullOREmpty(
+              (String) request.getRequest().get(JsonKey.END_DATE))) {
+        validateEndDate(startDate,
+            (String) request.getRequest().get(JsonKey.END_DATE));
+      }
+    }
+      if (request.getRequest().containsKey(JsonKey.COURSE_CREATED_FOR)
+          && !(request.getRequest()
+              .get(JsonKey.COURSE_CREATED_FOR) instanceof List)) {
+        throw new ProjectCommonException(
+            ResponseCode.dataTypeError.getErrorCode(),
+            ResponseCode.dataTypeError.getErrorMessage(),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
+      
+      if (request.getRequest().containsKey(JsonKey.MENTORS)
+          && !(request.getRequest()
+              .get(JsonKey.MENTORS) instanceof List)) {
+        throw new ProjectCommonException(
+            ResponseCode.dataTypeError.getErrorCode(),
+            ResponseCode.dataTypeError.getErrorMessage(),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
   }
   
   /**
