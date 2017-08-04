@@ -339,4 +339,11 @@ public class JsonKey {
   public static String START_DATE = "startDate";
   public static String END_DATE = "endDate";
 
+  public static final String PERIOD = "period";
+  public static final String ORG_ID = "orgId";
+  public static final String SNAPSHOT = "snapshot";
+  public static final String SERIES = "series"; 
+  public static final String AGGREGATIONS = "aggregations";
+  public static final String VALUE = "value";
+  public static final String SPLIT = "split";
 }
