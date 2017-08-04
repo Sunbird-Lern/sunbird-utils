@@ -182,7 +182,7 @@ public class ProjectUtil {
             return this.value;
         }
     }
-
+    
     /**
      * This method will check incoming value is null or empty
      * it will do empty check by doing trim method. in case of
@@ -468,9 +468,9 @@ public class ProjectUtil {
     simpleDateFormat.setLenient(false);
     return  simpleDateFormat;
   }
-  
+
   /**
-   * 
+   *
    * @author Manzarul
    *
    */
