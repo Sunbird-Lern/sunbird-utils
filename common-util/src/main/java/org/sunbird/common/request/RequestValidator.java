@@ -1,6 +1,8 @@
 package org.sunbird.common.request;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +19,10 @@ import org.sunbird.common.responsecode.ResponseCode;
  * @author Manzarul
  */
 public final class RequestValidator {
-    
+   private static SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-DD"); 
+    static {
+      format.setLenient(false);
+    }
 	/**
 	 * This method will do course enrollment request data
 	 * validation. if all mandatory data is coming then it won't do any thing
@@ -792,7 +797,11 @@ public final class RequestValidator {
       }
       
     }
-    
+  
+    /**
+     * 
+     * @param request
+     */
   public static void validateAssignRole(Request request) {
     if (ProjectUtil.isStringNullOREmpty(
         (String) request.getRequest().get(JsonKey.USER_ID))) {
@@ -805,13 +814,128 @@ public final class RequestValidator {
             ResponseCode.sourceAndExternalIdValidationError.getErrorMessage(),
             ResponseCode.CLIENT_ERROR.getResponseCode());
       }
-
-
     }
     if(request.getRequest().get(JsonKey.ROLES) == null || !(request.getRequest().get(JsonKey.ROLES) instanceof List)) {
       throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
           ProjectUtil.formatMessage(ResponseCode.dataTypeError.getErrorMessage(), JsonKey.ROLES,JsonKey.LIST), ResponseCode.CLIENT_ERROR.getResponseCode());
     }
   }
+  
+  /**
+   * courseId : Should be a valid courseId under EKStep.
+name : should not be null or empty
+enrolmentType: can have only following two values {"open","invite-only"}
+startDate : In yyyy-MM-DD format , and must be >= today date.
+endDate : In yyyy-MM-DD format and must be > startDate
+createdFor : List of valid organisation ids. this filed will be used in case of "invite-only" enrolmentType. for open type if createdFor values is coming then system will just save that value.
+mentors : List of user ids , who will work as a mentor.
+   * @param request
+   */
+  
+  public static void validateCreateBatchReq(Request request) {
+    if (ProjectUtil.isStringNullOREmpty(
+        (String) request.getRequest().get(JsonKey.COURSE_ID))) {
+      throw new ProjectCommonException(
+          ResponseCode.invalidCourseId.getErrorCode(),
+          ResponseCode.invalidCourseId.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    if (ProjectUtil
+        .isStringNullOREmpty((String) request.getRequest().get(JsonKey.NAME))) {
+      throw new ProjectCommonException(
+          ResponseCode.courseNameRequired.getErrorCode(),
+          ResponseCode.courseNameRequired.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    String enrolmentType =
+        (String) request.getRequest().get(JsonKey.ENROLMENTTYPE);
+    validateEnrolmentType(enrolmentType);
+    String startDate = (String) request.getRequest().get(JsonKey.START_DATE);
+    validateStartDate(startDate);
+    if (request.getRequest().containsKey(JsonKey.END_DATE)
+        && !ProjectUtil.isStringNullOREmpty(
+            (String) request.getRequest().get(JsonKey.END_DATE))) {
+      validateEndDate(startDate,
+          (String) request.getRequest().get(JsonKey.END_DATE));
+    }
+    if (request.getRequest().containsKey(JsonKey.COURSE_CREATED_FOR)
+        && !(request.getRequest()
+            .get(JsonKey.COURSE_CREATED_FOR) instanceof List)) {
+      throw new ProjectCommonException(
+          ResponseCode.dataTypeError.getErrorCode(),
+          ResponseCode.dataTypeError.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+  }
+  
+  /**
+   * 
+   * @param enrolmentType
+   */
+  private static void validateEnrolmentType(String enrolmentType) {
+    if (ProjectUtil.isStringNullOREmpty(enrolmentType)) {
+      throw new ProjectCommonException(
+          ResponseCode.enrolmentTypeRequired.getErrorCode(),
+          ResponseCode.enrolmentTypeRequired.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    if (!(ProjectUtil.EnrolmentType.open.getVal()
+        .equalsIgnoreCase(enrolmentType)
+        || ProjectUtil.EnrolmentType.inviteOnly.getVal()
+            .equalsIgnoreCase(enrolmentType))) {
+      throw new ProjectCommonException(
+          ResponseCode.enrolmentIncorrectValue.getErrorCode(),
+          ResponseCode.enrolmentIncorrectValue.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+  }
+  
+  /**
+   * 
+   * @param startDate
+   */
+  private static void validateStartDate(String startDate) {
+    if (ProjectUtil.isStringNullOREmpty(startDate)) {
+      throw new ProjectCommonException(
+          ResponseCode.courseBatchSatrtDateRequired.getErrorCode(),
+          ResponseCode.courseBatchSatrtDateRequired.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    try {
+      Date batchStartDate = format.parse(startDate);
+      Date date = new Date();
+      if (batchStartDate.before(date)) {
+        throw new ProjectCommonException(
+            ResponseCode.courseBatchStartDateError.getErrorCode(),
+            ResponseCode.courseBatchStartDateError.getErrorMessage(),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
+    } catch (Exception e) {
+      throw new ProjectCommonException(
+          ResponseCode.dateFormatError.getErrorCode(),
+          ResponseCode.dateFormatError.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+  }
     
+  
+  private static void validateEndDate(String startDate, String endDate) {
+    try {
+      Date batchEndDate = format.parse(endDate);
+      Date batchStartDate = format.parse(startDate);
+      if (batchStartDate.getTime() >= batchEndDate.getTime()) {
+        throw new ProjectCommonException(
+            ResponseCode.endDateError.getErrorCode(),
+            ResponseCode.endDateError.getErrorMessage(),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
+    } catch (Exception e) {
+      throw new ProjectCommonException(
+          ResponseCode.dateFormatError.getErrorCode(),
+          ResponseCode.dateFormatError.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+
+  }
+  
 }
