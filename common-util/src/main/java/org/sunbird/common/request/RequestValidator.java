@@ -847,7 +847,7 @@ mentors : List of user ids , who will work as a mentor.
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
     String enrolmentType =
-        (String) request.getRequest().get(JsonKey.ENROLMENTTYPE);
+        (String) request.getRequest().get(JsonKey.ENROLLMENT_TYPE);
     validateEnrolmentType(enrolmentType);
     String startDate = (String) request.getRequest().get(JsonKey.START_DATE);
     validateStartDate(startDate);
@@ -876,9 +876,9 @@ mentors : List of user ids , who will work as a mentor.
           ResponseCode.courseNameRequired.getErrorMessage(),
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
-    if (request.getRequest().containsKey(JsonKey.ENROLMENTTYPE)){
+    if (request.getRequest().containsKey(JsonKey.ENROLLMENT_TYPE)){
       String enrolmentType =
-          (String) request.getRequest().get(JsonKey.ENROLMENTTYPE);
+          (String) request.getRequest().get(JsonKey.ENROLLMENT_TYPE);
       validateEnrolmentType(enrolmentType);
     }
     String startDate = null;
