@@ -47,11 +47,11 @@ public class AppTest
 		//passing wrong url
 		String response=null;
 		try {
-			response = HttpUtil.sendPostRequest("https://dev.ekstep.in/api/learning/v/content/list", data, headers);
+			response = HttpUtil.sendPostRequest("https://dev.ekstep.in/api/learning/v2/content/list", data, headers);
 		} catch (IOException e) {
 			
 		}
-		Assert.assertEquals("", response);
+		Assert.assertNotNull(response);
 	}
 	
 	//@Test

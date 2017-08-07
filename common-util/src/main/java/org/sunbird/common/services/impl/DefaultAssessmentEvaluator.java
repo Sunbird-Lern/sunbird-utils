@@ -16,8 +16,7 @@ import org.sunbird.common.services.AssessmentEvaluator;
 
 /**
  * @author Manzarul
- * @author Amit Kumar
- *
+ * This class will do the default assessment evaluation logic.
  */
 public class DefaultAssessmentEvaluator implements AssessmentEvaluator {
 

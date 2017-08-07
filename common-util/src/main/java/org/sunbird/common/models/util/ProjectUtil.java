@@ -3,13 +3,17 @@
  */
 package org.sunbird.common.models.util;
 
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
+
 import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.sunbird.common.request.Request;
 
 /**
  * This class will contains all the common utility
@@ -22,10 +26,12 @@ public class ProjectUtil {
     /**
      * format the date in YYYY-MM-DD hh:mm:ss:SSZ
      */
-    public static final SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss:SSSZ");
+    public static final SimpleDateFormat format = getDateFormatter();
+
     private static AtomicInteger atomicInteger = new AtomicInteger();
 
     public static final long BACKGROUND_ACTOR_WAIT_TIME = 30;
+    
     /**
      * @author Manzarul
      */
@@ -59,6 +65,35 @@ public class ProjectUtil {
         }
 
         public int getValue() {
+            return this.value;
+        }
+    }
+    
+
+    public enum BulkProcessStatus {
+      NEW(0), IN_PROGRESS(1), INTERRUPT(2), COMPLETED(3);
+
+      private int value;
+
+      BulkProcessStatus(int value) {
+          this.value = value;
+      }
+
+      public int getValue() {
+          return this.value;
+      }
+  }
+
+    public enum OrgStatus{
+        INACTIVE(0), ACTIVE(1), BLOCKED(2), RETIRED(3);
+
+        private Integer value;
+
+        OrgStatus(Integer value) {
+            this.value = value;
+        }
+
+        public Integer getValue() {
             return this.value;
         }
     }
@@ -123,6 +158,23 @@ public class ProjectUtil {
         private String value;
 
         Source(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return this.value;
+        }
+    }
+    
+    /**
+     * @author Amit Kumar
+     */
+    public enum UserRole {
+        PUBLIC("PUBLIC"), CONTENT_CREATOR("CONTENT_CREATOR"), CONTENT_REVIEWER("CONTENT_REVIEWER"), ORG_ADMIN("ORG_ADMIN"), ORG_MEMBER("ORG_MEMBER");
+
+        private String value;
+
+        UserRole(String value) {
             this.value = value;
         }
 
@@ -223,7 +275,7 @@ public class ProjectUtil {
      *
      */
 	public enum EsIndex {
-		sunbird("sunbird");
+		sunbird("searchindex");
 		private String indexName;
 
 		private EsIndex(String name) {
@@ -245,7 +297,7 @@ public class ProjectUtil {
 	 *
 	 */
 	public enum EsType {
-		course("course"), content("content");
+		course("course"), content("content"), user("user"), organisation("org");
 		private String typeName;
 
 		private EsType(String name) {
@@ -283,6 +335,28 @@ public class ProjectUtil {
 		}
 	}
 	
+
+    /**
+     * This enum will hold all the Address type name.
+     * @author Amit Kumar
+     *
+     */
+    public enum AddressType {
+        permanent("permanent"), current("current"), office("office"), home("home");
+        private String typeName;
+
+        private AddressType(String name) {
+            this.typeName = name;
+        }
+
+        public String getTypeName() {
+            return typeName;
+        }
+
+        public void setTypeName(String typeName) {
+            this.typeName = typeName;
+        }
+    }
 	public enum AssessmentResult {
 		gradeA("A", "Pass"), gradeB("B", "Pass"), gradeC("C", "Pass"), gradeD("D", "Pass"), gradeE("E", "Pass"), gradeF("F", "Fail");
 		private String grade;
@@ -344,4 +418,73 @@ public class ProjectUtil {
 			return AssessmentResult.gradeF;
 		}
 	}
+
+    public static boolean isNull(Object obj){
+        return null == obj ? true:false;
+    }
+
+    public static boolean isNotNull(Object obj){
+        return null != obj? true:false;
+    }
+
+    public static String formatMessage(String exceptionMsg,Object ...  fieldValue){
+      return MessageFormat.format(exceptionMsg,fieldValue);
+    }
+   
+  /**
+   * This method will make some requested key value as lower case.  
+   * @param reqObj Request
+   */
+  public static void updateMapSomeValueTOLowerCase(Request reqObj) {
+    if (reqObj.getRequest().get(JsonKey.SOURCE) != null) {
+      reqObj.getRequest().put(JsonKey.SOURCE,
+          ((String) reqObj.getRequest().get(JsonKey.SOURCE)).toLowerCase());
+    }
+    if (reqObj.getRequest().get(JsonKey.EXTERNAL_ID) != null) {
+      reqObj.getRequest().put(JsonKey.EXTERNAL_ID,
+          ((String) reqObj.getRequest().get(JsonKey.EXTERNAL_ID))
+              .toLowerCase());
+    }
+    if (reqObj.getRequest().get(JsonKey.USERNAME) != null) {
+      reqObj.getRequest().put(JsonKey.USERNAME,
+          ((String) reqObj.getRequest().get(JsonKey.USERNAME)).toLowerCase());
+    }
+    if (reqObj.getRequest().get(JsonKey.USER_NAME) != null) {
+      reqObj.getRequest().put(JsonKey.USER_NAME,
+          ((String) reqObj.getRequest().get(JsonKey.USER_NAME)).toLowerCase());
+    }
+    if (reqObj.getRequest().get(JsonKey.PROVIDER) != null) {
+      reqObj.getRequest().put(JsonKey.PROVIDER,
+          ((String) reqObj.getRequest().get(JsonKey.PROVIDER)).toLowerCase());
+    }if (reqObj.getRequest().get(JsonKey.LOGIN_ID) != null) {
+      reqObj.getRequest().put(JsonKey.LOGIN_ID,
+          ((String) reqObj.getRequest().get(JsonKey.LOGIN_ID)).toLowerCase());
+    }
+
+  }
+
+  private static SimpleDateFormat getDateFormatter() {
+    SimpleDateFormat simpleDateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSSZ");
+    simpleDateFormat.setLenient(false);
+    return  simpleDateFormat;
+  }
+
+  /**
+   *
+   * @author Manzarul
+   *
+   */
+  public enum EnrolmentType {
+    open("open"),inviteOnly("invite-only");
+    private String val;
+    EnrolmentType (String val) {
+      this.val = val;
+    }
+    public String getVal() {
+      return val;
+    }
+    public void setVal(String val) {
+      this.val = val;
+    }
+  }
 }

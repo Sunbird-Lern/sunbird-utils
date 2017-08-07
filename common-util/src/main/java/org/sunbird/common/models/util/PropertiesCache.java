@@ -2,6 +2,7 @@ package org.sunbird.common.models.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+
 import java.util.Properties;
 
 /*
@@ -9,10 +10,13 @@ import java.util.Properties;
  * this class is used for reading properties file 
  */
 public class PropertiesCache {
-	private final String[] fileName = ProjectUtil.FILE_NAME;
+  
+	private static final String[] fileName = ProjectUtil.FILE_NAME;
 	private final Properties configProp = new Properties();
 
-	
+	/**
+	 * private default constructor
+	 */
 	private PropertiesCache()
 	   {
 		 for (String file : fileName){
@@ -20,7 +24,7 @@ public class PropertiesCache {
 	      try {
 	          configProp.load(in);
 	      } catch (IOException e) {
-	          e.printStackTrace();
+	        ProjectLogger.log("Error in properties cache",e);
 	      }
 		 }
 	   }

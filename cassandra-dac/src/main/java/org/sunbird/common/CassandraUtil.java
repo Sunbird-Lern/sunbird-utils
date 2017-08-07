@@ -6,11 +6,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
-import org.sunbird.common.models.util.LogHelper;
+import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.ProjectLogger;
+import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
-
+import org.sunbird.common.responsecode.ResponseCode;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 
@@ -20,8 +22,9 @@ import com.datastax.driver.core.Row;
  */
 public final class CassandraUtil{
 
-	private final static LogHelper LOGGER = LogHelper.getInstance(CassandraUtil.class.getName());
-	private final static PropertiesCache instance = PropertiesCache.getInstance();
+	private static final PropertiesCache instance = PropertiesCache.getInstance();
+	
+	private CassandraUtil(){}
 	
 	/**
 	 * @desc This method is used to create prepared statement based on table name and column name provided in request
@@ -43,7 +46,7 @@ public final class CassandraUtil{
 	      }
 	    }
 	    query.append(commaSepValueBuilder+")"+Constants.IF_NOT_EXISTS);
-	    LOGGER.debug(query.toString());
+	    ProjectLogger.log(query.toString());
 		return query.toString();
 		
 	}
@@ -69,7 +72,7 @@ public final class CassandraUtil{
 			}
 			responseList.add(map);
 		}
-		LOGGER.debug(responseList.toString());
+		ProjectLogger.log(responseList.toString());
 		response.put(Constants.RESPONSE, responseList);
 		return response;
 	}
@@ -87,7 +90,7 @@ public final class CassandraUtil{
 		key.remove(Constants.IDENTIFIER);
 		query.append(String.join(" = ? ,", key));
 		query.append(Constants.EQUAL_WITH_QUE_MARK+ Constants.WHERE_ID +Constants.EQUAL_WITH_QUE_MARK);
-	    LOGGER.debug(query.toString());
+        ProjectLogger.log(query.toString());
 		return query.toString();
 	}
 	
@@ -102,7 +105,7 @@ public final class CassandraUtil{
 		StringBuilder query=new StringBuilder(Constants.SELECT);
 		query.append(String.join(",", properties));
 		query.append(Constants.FROM + keyspaceName + Constants.DOT + tableName +Constants.WHERE +Constants.IDENTIFIER +Constants.EQUAL +" ?; ");
-	    LOGGER.debug(query.toString());
+	    ProjectLogger.log(query.toString());
 		return query.toString();
 		
 	}
@@ -127,8 +130,14 @@ public final class CassandraUtil{
 	      }
 	    }
 	    query.append(commaSepValueBuilder+Constants.CLOSING_BRACE);
-	    LOGGER.debug(query.toString());
+	    ProjectLogger.log(query.toString());
 		return query.toString();
 		
+	}
+	
+	public static String processExceptionForUnknownIdentifier(Exception e){
+	//Unknown identifier
+	  return ProjectUtil.formatMessage(ResponseCode.invalidPropertyError.getErrorMessage(), e.getMessage().replace(JsonKey.UNKNOWN_IDENTIFIER, "")
+	      .replace(JsonKey.UNDEFINED_IDENTIFIER, "")).trim();
 	}
 }

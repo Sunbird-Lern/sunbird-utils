@@ -1,8 +1,11 @@
+/**
+ * 
+ */
 package org.sunbird.common.models.util.datasecurity;
 
 import java.security.MessageDigest;
 
-import org.sunbird.common.models.util.LogHelper;
+import org.sunbird.common.models.util.ProjectLogger;
 
 
 /**
@@ -11,7 +14,6 @@ import org.sunbird.common.models.util.LogHelper;
  *
  */
 public class OneWayHashing {
-    private static final LogHelper logger = LogHelper.getInstance(OneWayHashing.class.getName());
     /**
      * This method will encrypt value using SHA-256 . it is one way encryption.
      * 
@@ -28,10 +30,10 @@ public class OneWayHashing {
 			for (int i = 0; i < byteData.length; i++) {
 				sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
 			}
-			logger.info("encrypted value is==: " + sb.toString());
+			ProjectLogger.log("encrypted value is==: " + sb.toString());
 			return sb.toString();
 		} catch (Exception e) {
-			logger.error(e);
+			ProjectLogger.log("Error while encrypting", e);
 		}
 		return "";
 	}

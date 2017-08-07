@@ -1,4 +1,8 @@
+/**
+ * 
+ */
 package org.sunbird.dto;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,8 +26,9 @@ public class SearchDTO {
 	boolean fuzzySearch = false;
 	//additional properties will hold , filters, exist , not exist
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-	private Map<String, Object> softConstraints = new HashMap<String, Object>();
+	private Map<String, Integer> softConstraints = new HashMap<>();
 	private List<Map<String , Object>> groupQuery = new ArrayList<Map<String , Object>>();
+	private List<String> mode = new ArrayList<String>();
 
 	public List<Map<String, Object>> getGroupQuery() {
 		return groupQuery;
@@ -108,10 +113,10 @@ public class SearchDTO {
 	public void setOffset(Integer offset) {
 		this.offset = offset;
 	}
-	public Map<String, Object> getSoftConstraints() {
+	public Map<String, Integer> getSoftConstraints() {
 		return softConstraints;
 	}
-	public void setSoftConstraints(Map<String, Object> softConstraints) {
+	public void setSoftConstraints(Map<String, Integer> softConstraints) {
 		this.softConstraints = softConstraints;
 	}
 	public String getQuery() {
@@ -119,5 +124,13 @@ public class SearchDTO {
 	}
 	public void setQuery(String query) {
 		this.query = query;
+	}
+
+	public List<String> getMode() {
+		return mode;
+	}
+
+	public void setMode(List<String> mode) {
+		this.mode = mode;
 	}
 }
