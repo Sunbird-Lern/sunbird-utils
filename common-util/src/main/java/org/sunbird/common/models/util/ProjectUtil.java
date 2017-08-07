@@ -275,7 +275,7 @@ public class ProjectUtil {
      *
      */
 	public enum EsIndex {
-		sunbird("sunbird");
+		sunbird("searchIndex");
 		private String indexName;
 
 		private EsIndex(String name) {
