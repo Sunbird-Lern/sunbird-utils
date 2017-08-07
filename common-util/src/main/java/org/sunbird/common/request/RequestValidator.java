@@ -988,5 +988,17 @@ mentors : List of user ids , who will work as a mentor.
     }
 
   }
+ 
   
+  public static void validateSyncRequest(Request request) {
+    if (request.getRequest().get(JsonKey.OBJECT_TYPE) == null
+        || ProjectUtil.isStringNullOREmpty(
+            (String) request.getRequest().get(JsonKey.OBJECT_TYPE))) {
+      throw new ProjectCommonException(
+          ResponseCode.dataTypeError.getErrorCode(),
+          ResponseCode.dataTypeError.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+
+  }
 }
