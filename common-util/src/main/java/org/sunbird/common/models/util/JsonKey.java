@@ -358,7 +358,6 @@ public class JsonKey {
   public static final String TAG = "tag";
   public static final String FILTER = "filter";
   public static final String COURSE_PUBLISHED_STATUS = "course_publish_status";
-  public static final String SUBMIT_DATE = "submitDate";
   public static final String COURSE_ENROLLMENT = "course_enrollment";
   public static String SUBMIT_DATE = "submitDate";
 
