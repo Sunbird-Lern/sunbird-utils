@@ -4,6 +4,7 @@ package org.sunbird.common;
  * @author Amit Kumar
  */
 public interface Constants {
+  
 	//CASSANDRA CONFIG PROPERTIES
 	public static final String CORE_CONNECTIONS_PER_HOST_FOR_LOCAL="coreConnectionsPerHostForLocal";
 	public static final String CORE_CONNECTIONS_PER_HOST_FOR_REMOTE="coreConnectionsPerHostForRemote";
@@ -14,8 +15,6 @@ public interface Constants {
 	public static final String POOL_TIMEOUT="poolTimeoutMillis";
 	public static final String CONTACT_POINT="contactPoint";
 	public static final String PORT="port";
-	public static final String CASSANDRA_USERNAME="userName";
-	public static final String CASSANDRA_PASSWORD="password";
 	public static final String QUERY_LOGGER_THRESHOLD="queryLoggerConstantThreshold";
 	public static final String CASSANDRA_PROPERTIES_FILE="cassandra.config.properties";
 	
@@ -51,5 +50,9 @@ public interface Constants {
 	public static final String IF_EXISTS = " IF EXISTS;";
 	public static final String ALREADY_EXIST = "Record with this primary key already exist.";
 	public static final String IF_NOT_EXISTS = " IF NOT EXISTS;";
+	public static final String EXCEPTION_MSG_FETCH = "Exception occured while fetching record from ";
+	public static final String EXCEPTION_MSG_UPSERT = "Exception occured while upserting record from ";
+	public static final String EXCEPTION_MSG_DELETE = "Exception occured while deleting record from ";
+	public static final String EXCEPTION_MSG_UPDATE = "Exception occured while updating record to ";
 	
 }

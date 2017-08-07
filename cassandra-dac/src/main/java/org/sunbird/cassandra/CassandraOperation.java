@@ -1,9 +1,11 @@
+/**
+ * 
+ */
 package org.sunbird.cassandra;
 
 import java.util.List;
 import java.util.Map;
 
-import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
 
 /**
@@ -13,6 +15,7 @@ import org.sunbird.common.models.response.Response;
  *
  */
 public interface CassandraOperation {
+  
 	/**
 	 * @desc This method is used to insert/update record in cassandra db (if primary key exist in request ,it will update  
 	 * else will insert the record in cassandra db.
@@ -24,9 +27,8 @@ public interface CassandraOperation {
 	 * @param tableName String
 	 * @param request Map<String,Object>(i.e map of column name and their value)
 	 * @return Response Response
-	 * @throws ProjectCommonException (throws exception if it fails to do upsert operation.) 
 	 */
-	public Response upsertRecord(String keyspaceName,String tableName,Map<String,Object> request) throws ProjectCommonException;
+	public Response upsertRecord(String keyspaceName,String tableName,Map<String,Object> request);
 
 	/**
 	 * @desc This method is used to insert record in cassandra db 
@@ -35,9 +37,8 @@ public interface CassandraOperation {
 	 * @param tableName String
 	 * @param request Map<String,Object>(i.e map of column name and their value)
 	 * @return Response Response
-	 * @throws ProjectCommonException (throws exception if it fails to do insert operation.) 
 	 */
-	public Response insertRecord(String keyspaceName,String tableName,Map<String,Object> request) throws ProjectCommonException;
+	public Response insertRecord(String keyspaceName,String tableName,Map<String,Object> request);
 
 	/**
 	 * @desc This method is used to update record in cassandra db 
@@ -45,9 +46,8 @@ public interface CassandraOperation {
 	 * @param tableName String
 	 * @param request Map<String,Object>(i.e map of column name and their value)
 	 * @return Response Response
-	 * @throws ProjectCommonException (throws exception if it fails to do update operation.) 
 	 */
-	public Response updateRecord(String keyspaceName,String tableName,Map<String,Object> request) throws ProjectCommonException;
+	public Response updateRecord(String keyspaceName,String tableName,Map<String,Object> request);
 	
 	/**
 	 * @desc This method is used to delete record in cassandra db by their primary key(identifier)
@@ -55,9 +55,8 @@ public interface CassandraOperation {
 	 * @param tableName String
 	 * @param identifier String
 	 * @return Response Response
-	 * @throws ProjectCommonException (throws exception if it fails to do delete operation.) 
 	 */
-	public Response deleteRecord(String keyspaceName,String tableName,String identifier) throws ProjectCommonException;
+	public Response deleteRecord(String keyspaceName,String tableName,String identifier);
 	
 	/**
 	 * @desc This method is used to fetch record based on primary key
@@ -65,9 +64,8 @@ public interface CassandraOperation {
 	 * @param tableName String
 	 * @param identifier String
 	 * @return Response  Response
-	 * @throws ProjectCommonException  
 	 */
-	public Response  getRecordById(String keyspaceName,String tableName,String identifier) throws ProjectCommonException;
+	public Response  getRecordById(String keyspaceName,String tableName,String identifier);
 	
 	/**
 	 * @desc This method is used to fetch record based on given parameter and it's value
@@ -78,9 +76,8 @@ public interface CassandraOperation {
 	 * @param propertyName String
 	 * @param propertyValue Object
 	 * @return Response Response
-	 * @throws ProjectCommonException 
 	 */
-	public Response  getRecordsByProperty(String keyspaceName,String tableName,String propertyName,Object propertyValue) throws ProjectCommonException;
+	public Response  getRecordsByProperty(String keyspaceName,String tableName,String propertyName,Object propertyValue);
 	
 	/**
 	 * @desc This method is used to fetch record based on given parameter and it's list of value
@@ -91,9 +88,8 @@ public interface CassandraOperation {
 	 * @param propertyName String
 	 * @param propertyValueList List<Object> 
 	 * @return Response Response
-	 * @throws ProjectCommonException 
 	 */
-	public Response  getRecordsByProperty(String keyspaceName,String tableName,String propertyName,List<Object> propertyValueList) throws ProjectCommonException;
+	public Response  getRecordsByProperty(String keyspaceName,String tableName,String propertyName,List<Object> propertyValueList);
 	
 	/**
 	 * @desc This method is used to fetch record based on given parameter list and their values
@@ -101,9 +97,8 @@ public interface CassandraOperation {
 	 * @param tableName String
 	 * @param propertyMap Map<String,Object> propertyMap)(i.e map of column name and their value)
 	 * @return Response Response
-	 * @throws ProjectCommonException 
 	 */
-	public Response  getRecordsByProperties(String keyspaceName,String tableName,Map<String,Object> propertyMap) throws ProjectCommonException;
+	public Response  getRecordsByProperties(String keyspaceName,String tableName,Map<String,Object> propertyMap);
 	
 	/**
 	 * @desc This method is used to fetch properties value based on id 
@@ -112,16 +107,14 @@ public interface CassandraOperation {
 	 * @param id  String
 	 * @param properties String varargs
 	 * @return Response Response
-	 * @throws ProjectCommonException 
 	 */
-	public Response  getPropertiesValueById(String keyspaceName,String tableName,String id,String... properties) throws ProjectCommonException;
+	public Response  getPropertiesValueById(String keyspaceName,String tableName,String id,String... properties);
 	
 	/**
 	 * @desc This method is used to fetch all records for table(i.e Select * from tableName)
 	 * @param keyspaceName String (data base keyspace name)
 	 * @param tableName String
 	 * @return Response Response
-	 * @throws ProjectCommonException 
 	 */
-	public Response  getAllRecords(String keyspaceName,String tableName) throws ProjectCommonException;
+	public Response  getAllRecords(String keyspaceName,String tableName);
 }
