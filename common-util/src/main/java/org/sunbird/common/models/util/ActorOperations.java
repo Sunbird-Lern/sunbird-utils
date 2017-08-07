@@ -37,7 +37,10 @@ public enum ActorOperations {
     REMOVE_USER_FROM_BATCH("removeUserFromBatch"),GET_BATCH("getBatch"),INSERT_COURSE_BATCH_ES("insertCourseBatchToEs"),
     UPDATE_COURSE_BATCH_ES("updateCourseBatchToEs"),GET_BULK_OP_STATUS("getBulkOpStatus"),
     ORG_CREATION_METRICS("orgCreationMetrics"),ORG_CONSUMPTION_METRICS("orgConsumptionMetrics"),
-    GET_COURSE_BATCH_DETAIL("getCourseBatchDetail");
+    COURSE_PROGRESS_METRICS("courseProgressMetrics"), COURSE_CREATION_METRICS("courseConsumptionMetrics"), 
+    USER_CREATION_METRICS("userCreationMetrics"), USER_CONSUMPTION_METRICS("userConsumptionMetrics"),
+    GET_COURSE_BATCH_DETAIL("getCourseBatchDetail"),
+    SYNC("sync");
 
     private String value;
 
