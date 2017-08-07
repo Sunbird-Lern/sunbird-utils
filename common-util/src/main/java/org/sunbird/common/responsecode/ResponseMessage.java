@@ -136,6 +136,9 @@ public interface ResponseMessage {
         public  static final String INVALID_CSV_FILE = "Please provide valid csv file.";
       public static final String INVALID_COURSE_BATCH_ID = "Invalid course batch id ";
       public  static final String COURSE_BATCH_ID_MISSING="Course batch Id required";
+      public static final String ENROLLMENT_TYPE_VALIDATION = "Enrollment type should be invite-only.";
+      public static final String COURSE_CREATED_FOR_NULL = "Batch does not belong to any organisation .";
+      public static final String USER_NOT_BELONGS_TO_ANY_ORG ="User does not belongs to any org .";
 	}
     
     public interface Key {
@@ -266,5 +269,8 @@ public interface ResponseMessage {
 		public static final String INVALID_CSV_FILE = "INVALID_CSV_FILE";
 		public static final String INVALID_COURSE_BATCH_ID = "INVALID_COURSE_BATCH_ID";
 		public  static final String COURSE_BATCH_ID_MISSING = "COURSE_BATCH_ID_MISSING";
+		public static final String ENROLLMENT_TYPE_VALIDATION = "ENROLLMENT_TYPE_VALIDATION";
+		public static final String COURSE_CREATED_FOR_NULL = "COURSE_CREATED_FOR_NULL";
+		public static final String USER_NOT_BELONGS_TO_ANY_ORG ="USER_NOT_BELONGS_TO_ANY_ORG";
     }
 }
