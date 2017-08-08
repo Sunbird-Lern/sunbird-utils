@@ -359,7 +359,7 @@ public class JsonKey {
   public static final String FILTER = "filter";
   public static final String COURSE_PUBLISHED_STATUS = "course_publish_status";
   public static final String COURSE_ENROLLMENT = "course_enrollment";
-  public static final String OBJECT_IDS = "ObjectIds";
+  public static final String OBJECT_IDS = "objectIds";
   public static final String SUBMIT_DATE = "submitDate";
 
   public static final String COURSE_ADDITIONAL_INFO = "courseAdditionalInfo";
