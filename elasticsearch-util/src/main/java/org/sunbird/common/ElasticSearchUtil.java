@@ -143,7 +143,7 @@ public class ElasticSearchUtil {
       response = ConnectionManager.getClient().prepareGet(index, type, identifier).get();
     }
     if (response == null) {
-      return null;
+      return new HashMap<String , Object>();
     }
     return response.getSource();
   }
@@ -234,9 +234,11 @@ public class ElasticSearchUtil {
       try {
         response = ConnectionManager.getClient().update(updateRequest).get();
       } catch (InterruptedException e) {
-        e.printStackTrace();
+        ProjectLogger.log(e.getMessage() ,e);
+        return false;
       } catch (ExecutionException e) {
-        e.printStackTrace();
+        ProjectLogger.log(e.getMessage() ,e);
+        return false;
       }
       ProjectLogger.log("updated response==" + response.getResult().name());
       if (upsertResults.contains(response.getResult().name())) {
