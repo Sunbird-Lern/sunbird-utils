@@ -156,9 +156,9 @@ public final class RequestValidator {
 	   }
 	   if(!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PROVIDER))){
 	     if(!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PHONE))){
-	         if(null != userRequest.getRequest().get(JsonKey.PHONE_NUMBER_VERIFIED)){
-	           if(userRequest.getRequest().get(JsonKey.PHONE_NUMBER_VERIFIED) instanceof Boolean){
-	             if(!((boolean) userRequest.getRequest().get(JsonKey.PHONE_NUMBER_VERIFIED))){
+	         if(null != userRequest.getRequest().get(JsonKey.PHONE_VERIFIED)){
+	           if(userRequest.getRequest().get(JsonKey.PHONE_VERIFIED) instanceof Boolean){
+	             if(!((boolean) userRequest.getRequest().get(JsonKey.PHONE_VERIFIED))){
 	               throw new ProjectCommonException(ResponseCode.phoneVerifiedError.getErrorCode(),
 	                   ResponseCode.phoneVerifiedError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 	             }
@@ -197,9 +197,9 @@ public final class RequestValidator {
 	         }
 	         
 	         if(!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PHONE))){
-	             if(null != userRequest.getRequest().get(JsonKey.PHONE_NUMBER_VERIFIED)){
-	               if(userRequest.getRequest().get(JsonKey.PHONE_NUMBER_VERIFIED) instanceof Boolean){
-	                 if(!((boolean) userRequest.getRequest().get(JsonKey.PHONE_NUMBER_VERIFIED))){
+	             if(null != userRequest.getRequest().get(JsonKey.PHONE_VERIFIED)){
+	               if(userRequest.getRequest().get(JsonKey.PHONE_VERIFIED) instanceof Boolean){
+	                 if(!((boolean) userRequest.getRequest().get(JsonKey.PHONE_VERIFIED))){
 	                   throw new ProjectCommonException(ResponseCode.phoneVerifiedError.getErrorCode(),
 	                       ResponseCode.phoneVerifiedError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 	                 }
