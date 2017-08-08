@@ -343,7 +343,7 @@ public class JsonKey {
   public static final String INVITE_ONLY = "invite-only";
   public static final String OPEN = "open";
   public static final String USER_IDs = "userIds";
-  public static final String PARTICIPANTS = "participants";
+  public static final String PARTICIPANT = "participant";
 
 
   public static final String PERIOD = "period";
@@ -358,7 +358,9 @@ public class JsonKey {
   public static final String TAG = "tag";
   public static final String FILTER = "filter";
   public static final String COURSE_PUBLISHED_STATUS = "course_publish_status";
-  public static final String SUBMIT_DATE = "submitDate";
   public static final String COURSE_ENROLLMENT = "course_enrollment";
   public static final String OBJECT_IDS = "ObjectIds";
+  public static final String SUBMIT_DATE = "submitDate";
+
+  public static final String COURSE_ADDITIONAL_INFO = "courseAdditionalInfo";
 }
