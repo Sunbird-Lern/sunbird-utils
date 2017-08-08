@@ -39,8 +39,8 @@ public enum ActorOperations {
     ORG_CREATION_METRICS("orgCreationMetrics"),ORG_CONSUMPTION_METRICS("orgConsumptionMetrics"),
     COURSE_PROGRESS_METRICS("courseProgressMetrics"), COURSE_CREATION_METRICS("courseConsumptionMetrics"), 
     USER_CREATION_METRICS("userCreationMetrics"), USER_CONSUMPTION_METRICS("userConsumptionMetrics"),
-    GET_COURSE_BATCH_DETAIL("getCourseBatchDetail"),
-    SYNC("sync");
+    GET_COURSE_BATCH_DETAIL("getCourseBatchDetail"),UPDATE_USER_ORG_ES("updateUserOrgES"),
+    REMOVE_USER_ORG_ES("removeUserOrgES"),SYNC("sync");
 
     private String value;
 
