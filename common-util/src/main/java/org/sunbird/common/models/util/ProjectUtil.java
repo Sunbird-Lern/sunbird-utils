@@ -297,7 +297,7 @@ public class ProjectUtil {
 	 *
 	 */
 	public enum EsType {
-		course("course"), content("content"), user("user"), organisation("org");
+		course("course"), content("content"), user("user"), organisation("org"),usercourses("usercourses");
 		private String typeName;
 
 		private EsType(String name) {
