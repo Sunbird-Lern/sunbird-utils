@@ -40,7 +40,7 @@ public enum ActorOperations {
     COURSE_PROGRESS_METRICS("courseProgressMetrics"), COURSE_CREATION_METRICS("courseConsumptionMetrics"), 
     USER_CREATION_METRICS("userCreationMetrics"), USER_CONSUMPTION_METRICS("userConsumptionMetrics"),
     GET_COURSE_BATCH_DETAIL("getCourseBatchDetail"),
-    SYNC("sync");
+    SYNC("sync"),INSERT_USR_COURSES_INFO_ELASTIC("insertUserCoursesInfoToElastic"),UPDATE_USR_COURSES_INFO_ELASTIC("updateUserCoursesInfoToElastic");
 
     private String value;
 
