@@ -363,4 +363,5 @@ public class JsonKey {
   public static final String SUBMIT_DATE = "submitDate";
 
   public static final String COURSE_ADDITIONAL_INFO = "courseAdditionalInfo";
+  public static final String USER_COURSES = "userCourses";
 }
