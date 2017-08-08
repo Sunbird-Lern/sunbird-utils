@@ -3,7 +3,13 @@
  */
 package org.sunbird.helper;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.sunbird.common.ElasticSearchUtil;
+import org.sunbird.common.models.util.JsonKey;
 
 /**
  * This class will define Elastic search mapping.
@@ -26,8 +32,19 @@ public class ElasticSearchMapping {
   
   public static void main(String[] args) {
    // ElasticSearchUtil.updateIndexAndMapping("sunbird12345", "user");
-    ElasticSearchUtil.createIndex("sunbird12345", "user", ElasticSearchMapping.createMapping(),
-        ElasticSearchSettings.createSettingsForIndex());
+   /* ElasticSearchUtil.createIndex("sunbird12345", "user", ElasticSearchMapping.createMapping(),
+        ElasticSearchSettings.createSettingsForIndex());*/
+    List<Map<String,Object>> dataList = new ArrayList<>();
+    for (int i=99999; i<=1000000; i++) {
+      Map<String,Object> map = new HashMap<String, Object>();
+      map.put(JsonKey.IDENTIFIER, i+"");
+      map.put(JsonKey.NAME, "manzarul haque_"+i);
+      map.put(JsonKey.EMAIL, "manzarul.haque@tarento.com_");
+      dataList.add(map);
+    }
+    ElasticSearchUtil.bulkInsertData("sunbird12345", "user", dataList);
+     Map<String,Object> data = ElasticSearchUtil.getDataByIdentifier("sunbird12345", "user", "99999");
+     System.out.println(data);
   }
 
 }

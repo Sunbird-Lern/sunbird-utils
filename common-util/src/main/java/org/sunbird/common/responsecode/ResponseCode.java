@@ -135,6 +135,9 @@ public enum ResponseCode {
     csvError(ResponseMessage.Key.INVALID_CSV_FILE, ResponseMessage.Message.INVALID_CSV_FILE),
     invalidCourseBatchId(ResponseMessage.Key.INVALID_COURSE_BATCH_ID, ResponseMessage.Message.INVALID_COURSE_BATCH_ID),
     courseBatchIdRequired(ResponseMessage.Key.COURSE_BATCH_ID_MISSING, ResponseMessage.Message.COURSE_BATCH_ID_MISSING),
+    enrollmentTypeValidation(ResponseMessage.Key.ENROLLMENT_TYPE_VALIDATION, ResponseMessage.Message.ENROLLMENT_TYPE_VALIDATION),
+    courseCreatedForIsNull(ResponseMessage.Key.COURSE_CREATED_FOR_NULL, ResponseMessage.Message.COURSE_CREATED_FOR_NULL),
+    userNotAssociatedToOrg(ResponseMessage.Key.USER_NOT_BELONGS_TO_ANY_ORG, ResponseMessage.Message.USER_NOT_BELONGS_TO_ANY_ORG),
 	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404);
 	
 	private int responseCode;

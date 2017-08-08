@@ -19,6 +19,10 @@ import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.admin.indices.exists.types.TypesExistsRequest;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
+import org.elasticsearch.action.bulk.BulkItemResponse;
+import org.elasticsearch.action.bulk.BulkProcessor;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
@@ -758,6 +762,67 @@ public class ElasticSearchUtil {
     }
     return queryBuilder;
   }
+  
+  /**
+   * This method will do the bulk data insertion.
+   * @param index  String index name
+   * @param type String type name
+   * @param dataList  List<Map<String, Object>>
+   * @return boolean
+   */
+  public static boolean bulkInsertData(String index, String type,
+      List<Map<String, Object>> dataList) {
+    boolean response = true;
+    try {
+    BulkProcessor bulkProcessor = BulkProcessor
+        .builder(ConnectionManager.getClient(), new BulkProcessor.Listener() {
+          @Override
+          public void beforeBulk(long executionId, BulkRequest request) {
+            // TODO Auto-generated method stub
+          }
+
+          @Override
+          public void afterBulk(long executionId, BulkRequest request,
+              BulkResponse response) {
+            Iterator<BulkItemResponse> bulkResponse = response.iterator();
+            if (bulkResponse != null) {
+              while (bulkResponse.hasNext()) {
+                BulkItemResponse bResponse = bulkResponse.next();
+                ProjectLogger.log("Bulk insert api response==="
+                    + bResponse.getId() + " " + bResponse.isFailed());
+              }
+            }
+          }
+
+          @Override
+          public void afterBulk(long executionId, BulkRequest request,
+              Throwable failure) {
+            // TODO Auto-generated method stub
+
+          }
+        }).setBulkActions(10000).setConcurrentRequests(0).build();
+
+    for (Map<String, Object> map : dataList) {
+      map.put(JsonKey.IDENTIFIER, map.get(JsonKey.ID));
+      IndexRequest request =
+          new IndexRequest(index, type, (String) map.get(JsonKey.IDENTIFIER))
+              .source(map);
+      bulkProcessor.add(request);
+    }
+    // Flush any remaining requests
+    bulkProcessor.flush();
+
+    // Or close the bulkProcessor if you don't need it anymore
+    bulkProcessor.close();
+
+    // Refresh your indices
+    ConnectionManager.getClient().admin().indices().prepareRefresh().get();
+    } catch (Exception e) {
+      response = false;
+      ProjectLogger.log(e.getMessage(), e);
+    }
+    return response;
+  }
+  
+  
 }
-
-
