@@ -466,7 +466,9 @@ public class ElasticSearchUtil {
       }
     }
     responsemap.put(JsonKey.CONTENT, esSource);
-    responsemap.put(JsonKey.FACETS, finalFacetList);
+    if(!(finalFacetList.isEmpty())) {
+      responsemap.put(JsonKey.FACETS, finalFacetList);
+    }
     responsemap.put(JsonKey.COUNT, count);
     return responsemap;
   }
