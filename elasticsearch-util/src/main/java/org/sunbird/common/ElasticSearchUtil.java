@@ -114,7 +114,7 @@ public class ElasticSearchUtil {
           .log("Save value==" + response.getId() + " " + response.status(), LoggerEnum.INFO.name());
       return response.getId();
     } catch (Exception e) {
-      ProjectLogger.log(e.getMessage(), e);
+      ProjectLogger.log("Error while saving "+type+" id : "+identifier, e);
     }
     return "";
   }
