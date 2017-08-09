@@ -138,6 +138,7 @@ public enum ResponseCode {
     enrollmentTypeValidation(ResponseMessage.Key.ENROLLMENT_TYPE_VALIDATION, ResponseMessage.Message.ENROLLMENT_TYPE_VALIDATION),
     courseCreatedForIsNull(ResponseMessage.Key.COURSE_CREATED_FOR_NULL, ResponseMessage.Message.COURSE_CREATED_FOR_NULL),
     userNotAssociatedToOrg(ResponseMessage.Key.USER_NOT_BELONGS_TO_ANY_ORG, ResponseMessage.Message.USER_NOT_BELONGS_TO_ANY_ORG),
+    invalidObjectType(ResponseMessage.Key.INVALID_OBJECT_TYPE, ResponseMessage.Message.INVALID_OBJECT_TYPE),
 	OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404);
 	
 	private int responseCode;
