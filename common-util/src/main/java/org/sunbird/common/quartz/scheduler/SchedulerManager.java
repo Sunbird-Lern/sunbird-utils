@@ -12,6 +12,7 @@ import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
+import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
@@ -30,14 +31,16 @@ public class SchedulerManager {
     Properties configProp = new Properties();
     try {
       configProp.load(in);
-      Scheduler scheduler = new StdSchedulerFactory().getScheduler();
+      Scheduler scheduler = new StdSchedulerFactory(configProp).getScheduler();
+     String identifier = scheduler.getSchedulerInstanceId();
    // 1- create a job and bind with class which is implementing Job
       // interface.
-      JobDetail job = JobBuilder.newJob(SimpleJob.class).requestRecovery(true).build();
+      JobDetail job = JobBuilder.newJob(SimpleJob.class).withIdentity("testJob", identifier).build();
       
       // 2- Create a trigger object that will define frequency of run.
-      Trigger trigger = TriggerBuilder.newTrigger()
-          .withSchedule(CronScheduleBuilder.cronSchedule("0 0/1 * 1/1 * ? *")).build();
+      Trigger trigger = TriggerBuilder.newTrigger().withIdentity("trigger", identifier)
+          .withSchedule(SimpleScheduleBuilder.repeatMinutelyForever()).build();
+      //CronScheduleBuilder.cronSchedule("0 0/1 * 1/1 * ? *")
       try {
           scheduler.scheduleJob(job, trigger);
           scheduler.start();
