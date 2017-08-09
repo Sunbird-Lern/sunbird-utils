@@ -139,6 +139,7 @@ public interface ResponseMessage {
       public static final String ENROLLMENT_TYPE_VALIDATION = "Enrollment type should be invite-only.";
       public static final String COURSE_CREATED_FOR_NULL = "Batch does not belong to any organisation .";
       public static final String USER_NOT_BELONGS_TO_ANY_ORG ="User does not belongs to any org .";
+      public static final String INVALID_OBJECT_TYPE ="Invalid Object Type.";
 	}
     
     public interface Key {
@@ -272,5 +273,6 @@ public interface ResponseMessage {
 		public static final String ENROLLMENT_TYPE_VALIDATION = "ENROLLMENT_TYPE_VALIDATION";
 		public static final String COURSE_CREATED_FOR_NULL = "COURSE_CREATED_FOR_NULL";
 		public static final String USER_NOT_BELONGS_TO_ANY_ORG ="USER_NOT_BELONGS_TO_ANY_ORG";
+		public static final String INVALID_OBJECT_TYPE ="INVALID_OBJECT_TYPE";
     }
 }
