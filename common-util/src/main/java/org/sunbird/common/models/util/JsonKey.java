@@ -367,4 +367,5 @@ public class JsonKey {
   public static final String USER_COURSES = "userCourses";
   public static final String COUNTER_INCREMENT_STATUS = "countIncrementStatus";
   public static final String COUNTER_DECREMENT_STATUS = "countDecrementStatus";
+  public static final String USER_COURSE = "user_course";
 }
