@@ -114,7 +114,7 @@ public class ElasticSearchUtil {
           .log("Save value==" + response.getId() + " " + response.status(), LoggerEnum.INFO.name());
       return response.getId();
     } catch (Exception e) {
-      ProjectLogger.log(e.getMessage(), e);
+      ProjectLogger.log("Error while saving "+type+" id : "+identifier, e);
     }
     return "";
   }
@@ -466,7 +466,9 @@ public class ElasticSearchUtil {
       }
     }
     responsemap.put(JsonKey.CONTENT, esSource);
-    responsemap.put(JsonKey.FACETS, finalFacetList);
+    if(!(finalFacetList.isEmpty())) {
+      responsemap.put(JsonKey.FACETS, finalFacetList);
+    }
     responsemap.put(JsonKey.COUNT, count);
     return responsemap;
   }
