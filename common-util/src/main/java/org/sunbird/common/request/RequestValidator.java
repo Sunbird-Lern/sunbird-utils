@@ -2,14 +2,17 @@ package org.sunbird.common.request;
 
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.ProjectUtil.AddressType;
+import org.sunbird.common.models.util.ProjectUtil.ProgressStatus;
 import org.sunbird.common.responsecode.ResponseCode;
 
 
@@ -867,8 +870,34 @@ mentors : List of user ids , who will work as a mentor.
     }
   }
   
+  private static boolean checkProgressStatus(int status){
+    for(ProgressStatus pstatus : ProgressStatus.values()){
+      if(pstatus.getValue() == status){
+        return true;
+      }
+    }
+    return false;
+  }
+  
   public static void validateUpdateCourseBatchReq(Request request) {
-    
+    if (null != request.getRequest().get(JsonKey.STATUS) ){
+      boolean status = false;
+      try{
+      status = checkProgressStatus(Integer.parseInt(""+request.getRequest().get(JsonKey.STATUS)));
+      }catch(Exception e){
+        ProjectLogger.log(e.getMessage(), e);
+        throw new ProjectCommonException(
+            ResponseCode.progressStatusError.getErrorCode(),
+            ResponseCode.progressStatusError.getErrorMessage(),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
+      if(!status){
+        throw new ProjectCommonException(
+            ResponseCode.progressStatusError.getErrorCode(),
+            ResponseCode.progressStatusError.getErrorMessage(),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
+    }
     if (request.getRequest().containsKey(JsonKey.NAME) && ProjectUtil
         .isStringNullOREmpty((String) request.getRequest().get(JsonKey.NAME))) {
       throw new ProjectCommonException(
@@ -954,13 +983,19 @@ mentors : List of user ids , who will work as a mentor.
     }
     try {
       Date batchStartDate = format.parse(startDate);
-      Date date = new Date();
-      if (batchStartDate.before(date)) {
+      Date todayDate = format.parse(format.format(new Date()));
+      Calendar cal1 = Calendar.getInstance();
+      Calendar cal2 = Calendar.getInstance();
+      cal1.setTime(batchStartDate);
+      cal2.setTime(todayDate);
+      if (batchStartDate.before(todayDate)) {
         throw new ProjectCommonException(
             ResponseCode.courseBatchStartDateError.getErrorCode(),
             ResponseCode.courseBatchStartDateError.getErrorMessage(),
             ResponseCode.CLIENT_ERROR.getResponseCode());
       }
+    } catch (ProjectCommonException e) {
+          throw e;
     } catch (Exception e) {
       throw new ProjectCommonException(
           ResponseCode.dateFormatError.getErrorCode(),
