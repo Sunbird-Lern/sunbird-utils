@@ -129,8 +129,8 @@ public interface ResponseMessage {
         public  static final String USER_ALREADY_ACTIVE = "User is already active";
         public static final String ENROLMENT_TYPE_REQUIRED = "Enrolment type is mandatory.";
         public static final String ENROLMENT_TYPE_VALUE_ERROR = "EnrolmentType value must be either open or invite-only.";
-        public static final String COURSE_BATCH_START_DATE_REQUIRED = "batch statrt date is mandatory.";
-        public static final String COURSE_BATCH_START_DATE_INVALID = "batch statrt date is invalid.";
+        public static final String COURSE_BATCH_START_DATE_REQUIRED = "batch start date is mandatory.";
+        public static final String COURSE_BATCH_START_DATE_INVALID = "batch start date should be either today or future date.";
         public static final String DATE_FORMAT_ERRROR = "Date format error.";
         public static final String END_DATE_ERROR = "end date should be greater than start date.";
         public  static final String INVALID_CSV_FILE = "Please provide valid csv file.";
@@ -140,6 +140,7 @@ public interface ResponseMessage {
       public static final String COURSE_CREATED_FOR_NULL = "Batch does not belong to any organisation .";
       public static final String USER_NOT_BELONGS_TO_ANY_ORG ="User does not belongs to any org .";
       public static final String INVALID_OBJECT_TYPE ="Invalid Object Type.";
+      public static final String INVALID_PROGRESS_STATUS = "Progress status value should be NOT_STARTED(0), STARTED(1), COMPLETED(2).";
 	}
     
     public interface Key {
@@ -274,5 +275,6 @@ public interface ResponseMessage {
 		public static final String COURSE_CREATED_FOR_NULL = "COURSE_CREATED_FOR_NULL";
 		public static final String USER_NOT_BELONGS_TO_ANY_ORG ="USER_NOT_BELONGS_TO_ANY_ORG";
 		public static final String INVALID_OBJECT_TYPE ="INVALID_OBJECT_TYPE";
+		public static final String INVALID_PROGRESS_STATUS = "INVALID_PROGRESS_STATUS";
     }
 }
