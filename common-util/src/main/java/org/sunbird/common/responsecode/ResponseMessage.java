@@ -141,6 +141,7 @@ public interface ResponseMessage {
       public static final String USER_NOT_BELONGS_TO_ANY_ORG ="User does not belongs to any org .";
       public static final String INVALID_OBJECT_TYPE ="Invalid Object Type.";
       public static final String INVALID_PROGRESS_STATUS = "Progress status value should be NOT_STARTED(0), STARTED(1), COMPLETED(2).";
+      public static final String COURSE_BATCH_START_PASSED_DATE_INVALID = "This Batch already started.";
 	}
     
     public interface Key {
@@ -276,5 +277,6 @@ public interface ResponseMessage {
 		public static final String USER_NOT_BELONGS_TO_ANY_ORG ="USER_NOT_BELONGS_TO_ANY_ORG";
 		public static final String INVALID_OBJECT_TYPE ="INVALID_OBJECT_TYPE";
 		public static final String INVALID_PROGRESS_STATUS = "INVALID_PROGRESS_STATUS";
+		public static final String COURSE_BATCH_START_PASSED_DATE_INVALID = "COURSE_BATCH_START_PASSED_DATE_INVALID";
     }
 }
