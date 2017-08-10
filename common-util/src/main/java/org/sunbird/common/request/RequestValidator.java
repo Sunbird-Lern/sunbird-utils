@@ -2,6 +2,8 @@ package org.sunbird.common.request;
 
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -1032,6 +1034,13 @@ mentors : List of user ids , who will work as a mentor.
       throw new ProjectCommonException(
           ResponseCode.dataTypeError.getErrorCode(),
           ResponseCode.dataTypeError.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    List<String> list = new ArrayList<>( Arrays.asList( new String[]{JsonKey.USER, JsonKey.ORGANISATION,JsonKey.BATCH,JsonKey.USER_COURSE} ) );
+    if(!list.contains(request.getRequest().get(JsonKey.OBJECT_TYPE))){
+      throw new ProjectCommonException(
+          ResponseCode.invalidObjectType.getErrorCode(),
+          ResponseCode.invalidObjectType.getErrorMessage(),
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
 
