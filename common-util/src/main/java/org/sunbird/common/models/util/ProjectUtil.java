@@ -31,6 +31,7 @@ public class ProjectUtil {
     private static AtomicInteger atomicInteger = new AtomicInteger();
 
     public static final long BACKGROUND_ACTOR_WAIT_TIME = 30;
+    public static final String YEAR_MONTH_DATE_FORMAT = "yyyy-MM-dd";
     
     /**
      * @author Manzarul
