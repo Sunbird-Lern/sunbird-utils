@@ -143,6 +143,7 @@ public interface ResponseMessage {
       public static final String INVALID_PROGRESS_STATUS = "Progress status value should be NOT_STARTED(0), STARTED(1), COMPLETED(2).";
       public static final String COURSE_BATCH_START_PASSED_DATE_INVALID = "This Batch already started.";
       public static final String UNABLE_TO_CONNECT_TO_EKSTEP = "Unable to connect to Ekstep Server";
+      public static final String EMPTY_CSV_FILE = "CSV file is Empty.";
 	}
     
     public interface Key {
@@ -280,5 +281,6 @@ public interface ResponseMessage {
 		public static final String INVALID_PROGRESS_STATUS = "INVALID_PROGRESS_STATUS";
 		public static final String COURSE_BATCH_START_PASSED_DATE_INVALID = "COURSE_BATCH_START_PASSED_DATE_INVALID";
 		public static final String UNABLE_TO_CONNECT_TO_EKSTEP = "UNABLE_TO_CONNECT_TO_EKSTEP";
+		public static final String EMPTY_CSV_FILE = "EMPTY_CSV_FILE";
     }
 }
