@@ -260,7 +260,7 @@ public final class RequestValidator {
 	    if (ProjectUtil
 	        .isStringNullOREmpty((String) request.getRequest().get(JsonKey.ORGANISATION_ID))) {
 	      if((ProjectUtil
-	            .isStringNullOREmpty((String) request.getRequest().get(JsonKey.SOURCE)))&& (ProjectUtil
+	            .isStringNullOREmpty((String) request.getRequest().get(JsonKey.PROVIDER)))&& (ProjectUtil
 	            .isStringNullOREmpty((String) request.getRequest().get(JsonKey.EXTERNAL_ID)))) {
 	        throw new ProjectCommonException(ResponseCode.sourceAndExternalIdValidationError.getErrorCode(),
 	              ResponseCode.sourceAndExternalIdValidationError.getErrorMessage(),
