@@ -43,9 +43,12 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.index.query.TermsQueryBuilder;
+import org.elasticsearch.search.DocValueFormat.DateTime;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
+import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -390,7 +393,7 @@ public class ElasticSearchUtil {
 
     //apply simple query string
     if (null != searchDTO.getQuery()) {
-      query.should(QueryBuilders.simpleQueryStringQuery(searchDTO.getQuery()));
+      query.should(QueryBuilders.simpleQueryStringQuery(searchDTO.getQuery()).field("all_fields"));
     }
     //apply the sorting
     if (searchDTO.getSortBy() != null && searchDTO.getSortBy().size() > 0) {
@@ -427,10 +430,7 @@ public class ElasticSearchUtil {
     List finalFacetList = new ArrayList();
 
     if (null != searchDTO.getFacets() && searchDTO.getFacets().size() > 0) {
-      for (String facets : searchDTO.getFacets()) {
-        searchRequestBuilder
-            .addAggregation(AggregationBuilders.terms(facets).field(facets + RAW_APPEND));
-      }
+      addAggregations(searchRequestBuilder ,searchDTO.getFacets());
     }
     ProjectLogger.log("calling search builder======" + searchRequestBuilder.toString());
     SearchResponse response = searchRequestBuilder.execute().actionGet();
@@ -448,18 +448,36 @@ public class ElasticSearchUtil {
 
       //fetch aggregations aggregations
       if (null != searchDTO.getFacets() && searchDTO.getFacets().size() > 0) {
-        for (String facets : searchDTO.getFacets()) {
-          List<Object> termsList = new ArrayList<>();
+        Map<String ,String> m1 = searchDTO.getFacets().get(0);
+        for(Map.Entry<String,String> entry : m1.entrySet()){
+          String field = entry.getKey();
+          String aggsType = entry.getValue();
+          List<Object> aggsList = new ArrayList<>();
           Map facetMap = new HashMap();
-          Terms aggs = response.getAggregations().get(facets);
-          for (Bucket bucket : aggs.getBuckets()) {
-            Map internalMap = new HashMap();
-            internalMap.put(JsonKey.NAME, bucket.getKey());
-            internalMap.put(JsonKey.COUNT, bucket.getDocCount());
-            termsList.add(internalMap);
+          if(JsonKey.DATE_HISTOGRAM.equalsIgnoreCase(aggsType)){
+            Histogram agg = response.getAggregations().get(field);
+            for (Histogram.Bucket ent : agg.getBuckets()) {
+              //DateTime key = (DateTime) ent.getKey();    // Key
+              String keyAsString = ent.getKeyAsString(); // Key as String
+              long docCount = ent.getDocCount();         // Doc count
+              Map internalMap = new HashMap();
+              internalMap.put(JsonKey.NAME, keyAsString);
+              internalMap.put(JsonKey.COUNT, docCount);
+              aggsList.add(internalMap);
+
+            }
           }
-          facetMap.put("values", termsList);
-          facetMap.put(JsonKey.NAME , facets);
+          else{
+            Terms aggs = response.getAggregations().get(field);
+            for (Bucket bucket : aggs.getBuckets()) {
+              Map internalMap = new HashMap();
+              internalMap.put(JsonKey.NAME, bucket.getKey());
+              internalMap.put(JsonKey.COUNT, bucket.getDocCount());
+              aggsList.add(internalMap);
+            }
+          }
+          facetMap.put("values", aggsList);
+          facetMap.put(JsonKey.NAME , field);
           finalFacetList.add(facetMap);
 
         }
@@ -471,6 +489,31 @@ public class ElasticSearchUtil {
     }
     responsemap.put(JsonKey.COUNT, count);
     return responsemap;
+  }
+
+  private static void addAggregations(
+      SearchRequestBuilder searchRequestBuilder,
+      List<Map<String, String>> facets) {
+
+    Map<String, String> map = facets.get(0);
+    for (Map.Entry<String, String> entry : map.entrySet()) {
+
+      String key = entry.getKey();
+      String value = entry.getValue();
+      if (JsonKey.DATE_HISTOGRAM.equalsIgnoreCase(value)) {
+        searchRequestBuilder
+            .addAggregation(AggregationBuilders
+                .dateHistogram(key)
+                .field(key + RAW_APPEND)
+                .dateHistogramInterval(DateHistogramInterval.days(1)));
+
+      } else if (null == value) {
+        searchRequestBuilder
+            .addAggregation(AggregationBuilders.terms(key).field(key + RAW_APPEND));
+
+      }
+
+    }
   }
 
   private static Map<String, Float> getConstraints(SearchDTO searchDTO) {
