@@ -353,11 +353,13 @@ public class JsonKey {
   public static final String AGGREGATIONS = "aggregations";
   public static final String VALUE = "value";
   public static final String SPLIT = "split";
-  public static final String EKSTEP_METRICS_URL = "ekstep_metrics_api_url";
-  public static final String EKSTEP_ES_METRICS_URL = "ekstep_es_metrics_api_url";
+  public static final String EKSTEP_METRICS_URL = "ekstep_metrics_base_url";
+  public static final String EKSTEP_ES_METRICS_API_URL = "ekstep_es_metrics_api_url";
+  public static final String EKSTEP_METRICS_API_URL = "ekstep_metrics_api_url";
   public static final String EKSTEP_METRICS_AUTHORIZATION = "ekstep_metrics_authorization";
   public static final String TIME_UNIT = "time_unit";
   public static final String TAG = "tag";
+  public static final String TAGS = "tags";
   public static final String FILTER = "filter";
   public static final String COURSE_PUBLISHED_STATUS = "course_publish_status";
   public static final String COURSE_ENROLLMENT = "course_enrollment";
@@ -369,4 +371,5 @@ public class JsonKey {
   public static final String COUNTER_INCREMENT_STATUS = "countIncrementStatus";
   public static final String COUNTER_DECREMENT_STATUS = "countDecrementStatus";
   public static final String USER_COURSE = "user_course";
+  public static final String DATE_HISTOGRAM = "DATE_HISTOGRAM";
 }
