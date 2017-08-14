@@ -128,10 +128,13 @@ public class ElasticSearchUtilTest {
 
         searchDTO.setAdditionalProperties(additionalProperties);
         searchDTO.setFields(fields);
+        searchDTO.setQuery("organisation");
         //facets
-        List<String> facets = new ArrayList<String>();
-        facets.add("description");
-        facets.add("courseType");
+        List<Map<String,String>> facets = new ArrayList<>();
+        Map<String , String> m1 = new HashMap<>();
+        m1.put("description" , null);
+        m1.put("createdOn", JsonKey.DATE_HISTOGRAM);
+        facets.add(m1);
         searchDTO.setFacets(facets);
 
         //soft constraints
@@ -141,6 +144,7 @@ public class ElasticSearchUtilTest {
         constraintMap.put("grades" , 10);
         constraintMap.put("pkgVersion" , 5);
         searchDTO.setSoftConstraints(constraintMap);
+        searchDTO.setQuery("organisation Name published");
         Map map = ElasticSearchUtil.complexSearch(searchDTO,indexName , typeName);
 
         /*List response = (List) map.get(JsonKey.RESPONSE);
@@ -251,7 +255,7 @@ public class ElasticSearchUtilTest {
         map.put("mimeType", "application/vnd.ekstep.html-archive");
         map.put("osId", "org.ekstep.quiz.app");
         map.put("languageCode","hi");
-        map.put("createdOn","2017-05-04T13:47:32.676+0000");
+        map.put("createdOn","2017-06-04T13:47:32.676+0000");
         map.put("pkgVersion", val);
         map.put("versionKey","1495646809112");
 
