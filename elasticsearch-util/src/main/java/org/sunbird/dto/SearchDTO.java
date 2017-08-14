@@ -16,7 +16,7 @@ public class SearchDTO {
 
 	@SuppressWarnings("rawtypes")
 	private List<Map> properties;
-	private List<String> facets;
+	private List<Map<String ,String>> facets = new ArrayList<>();
 	private List<String> fields;
 	private Map<String, String> sortBy = new HashMap<String, String>();
 	private String operation;
@@ -68,10 +68,10 @@ public class SearchDTO {
 	public void setLimit(Integer limit) {
 		this.limit = limit;
 	}
-	public List<String> getFacets() {
+	public List<Map<String, String>> getFacets() {
 		return facets;
 	}
-	public void setFacets(List<String> facets) {
+	public void setFacets(List<Map<String, String>> facets) {
 		this.facets = facets;
 	}
 	public Map<String, String> getSortBy() {
