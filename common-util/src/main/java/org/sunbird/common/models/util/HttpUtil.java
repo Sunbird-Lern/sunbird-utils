@@ -12,10 +12,19 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpRequest;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPatch;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.sunbird.common.responsecode.ResponseCode;
 
 /**
  * This utility method will handle external 
@@ -158,16 +167,81 @@ public class HttpUtil {
 		return builder.toString();
 	} 
     
+    
+	/**
+     * Makes an HTTP request using PATCH method to the specified URL.
+     *
+     * @param requestURL
+     *            the URL of the remote server
+     * @param params
+     *            A map containing POST data in form of key-value pairs
+     * @return An HttpURLConnection object
+     * @throws IOException
+     *             thrown if any I/O error occurred
+     */
+    public static String sendPatchRequest(String requestURL,
+      String params, Map<String, String> headers)
+      throws IOException {
+    HttpPatch patch = new HttpPatch(requestURL);
+    setHeaders(patch, headers);
+    CloseableHttpClient httpClient = HttpClients.createDefault();
+    StringEntity entity = new StringEntity(params);
+    patch.setEntity(entity);
+    try {
+      CloseableHttpResponse response = httpClient.execute(patch);
+      ProjectLogger.log("response code for Patch Resques");
+      if (response.getStatusLine().getStatusCode() == ResponseCode.OK
+          .getResponseCode()) {
+        return ResponseCode.success.getErrorCode();
+      }
+      return "Failure";
+    } catch (Exception e) {
+      ProjectLogger.log(e.getMessage(), e);
+    }
+    return "Failure";
+  }
+	
+	
+	/**
+     * Set the header for request.
+     * @param httpURLConnection  HttpURLConnection
+     * @param headers Map<String,String>
+     */
+  private static void setHeaders(HttpPatch httpPatch,
+      Map<String, String> headers) {
+    Iterator<Entry<String, String>> itr = headers.entrySet().iterator();
+    while (itr.hasNext()) {
+      Entry<String, String> entry = itr.next();
+      httpPatch.setHeader(entry.getKey(), entry.getValue());
+    }
+  }
+    
+    
     /**
      * Set the header for request.
      * @param httpURLConnection  HttpURLConnection
      * @param headers Map<String,String>
      */
     private static void setHeaders( HttpURLConnection httpURLConnection ,Map<String,String> headers ) {
-    	 Iterator<Entry<String,String>> itr = headers.entrySet().iterator();
-    	 while ( itr.hasNext() ) {
-    		 Entry<String,String> entry = itr.next();
-    	     httpURLConnection.setRequestProperty(entry.getKey(),entry.getValue());
-    	 }
+         Iterator<Entry<String,String>> itr = headers.entrySet().iterator();
+         while ( itr.hasNext() ) {
+             Entry<String,String> entry = itr.next();
+             httpURLConnection.setRequestProperty(entry.getKey(),entry.getValue());
+         }
+    } 
+    
+    
+    
+    public static void main(String[] args) {
+      Map<String,String> headermap = new HashMap<String, String>();
+      headermap.put("Content-Type", "application/json");
+      headermap.put("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2MzExMTYwNTMzOGY0Zjc5YTgwZTM3YjcyZjVjMmUwZiJ9.azmj_AHmndeJz0h6yIkOJz1XjeZR6Gzd-OrZzR66I0A");
+      try {
+       String response = sendPatchRequest("https://qa.ekstep.in/api/system/v3/content/update/LP_FT_25", "{\"request\": {\"content\": {\"name\": \"Testing Name\"}}}", headermap);
+       System.out.println(response);
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
     }
 }

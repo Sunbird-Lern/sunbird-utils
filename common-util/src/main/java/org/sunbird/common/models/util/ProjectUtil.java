@@ -267,7 +267,7 @@ public class ProjectUtil {
         return UUID.randomUUID().toString();
     }
      
-    public enum Method {GET,POST,PUT,DELETE}
+    public enum Method {GET,POST,PUT,DELETE,PATCH}
     public static final String FILE_NAME [] = {"cassandratablecolumn.properties","elasticsearch.config.properties","cassandra.config.properties","dbconfig.properties","externalresource.properties","sso.properties"};
     
     /**
