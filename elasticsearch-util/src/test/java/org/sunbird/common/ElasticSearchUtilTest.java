@@ -145,10 +145,11 @@ public class ElasticSearchUtilTest {
         constraintMap.put("pkgVersion" , 5);
         searchDTO.setSoftConstraints(constraintMap);
         searchDTO.setQuery("organisation Name published");
+
+
         Map map = ElasticSearchUtil.complexSearch(searchDTO,indexName , typeName);
 
-        /*List response = (List) map.get(JsonKey.RESPONSE);
-        //System.out.println(response.get(0));*/
+        List response = (List) map.get(JsonKey.RESPONSE);
         assertEquals(3 , map.size());
         //assertNotNull(map);
     }
