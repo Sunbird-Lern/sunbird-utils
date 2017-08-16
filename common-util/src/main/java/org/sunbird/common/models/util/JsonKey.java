@@ -351,6 +351,7 @@ public class JsonKey {
   public static final String SNAPSHOT = "snapshot";
   public static final String SERIES = "series"; 
   public static final String AGGREGATIONS = "aggregations";
+  public static final String METRICS = "metrics";
   public static final String VALUE = "value";
   public static final String SPLIT = "split";
   public static final String EKSTEP_METRICS_URL = "ekstep_metrics_base_url";
