@@ -433,7 +433,22 @@ public class ElasticSearchUtil {
       addAggregations(searchRequestBuilder ,searchDTO.getFacets());
     }
     ProjectLogger.log("calling search builder======" + searchRequestBuilder.toString());
-    SearchResponse response = searchRequestBuilder.execute().actionGet();
+    boolean appliedExclude = false;
+    if (type != null && type.length > 0) {
+      for (int i = 0; i < type.length; i++) {
+        if (type[i].equalsIgnoreCase(ProjectUtil.EsType.user.getTypeName())) {
+          ProjectLogger.log("Exclude key applied...");
+          appliedExclude = true;
+          break;
+        }
+      }
+    }
+    SearchResponse response = null;
+    if(appliedExclude) {
+      response = searchRequestBuilder.setFetchSource(null, ProjectUtil.excludes).execute().actionGet();
+    } else {
+      response = searchRequestBuilder.execute().actionGet();
+    }
     ProjectLogger.log("getting response for es======" + response);
     List<Map<String, Object>> esSource = new ArrayList<Map<String, Object>>();
     Map<String, Object> responsemap = new HashMap<>();
