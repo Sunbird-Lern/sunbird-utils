@@ -403,10 +403,9 @@ public class ElasticSearchUtil {
     }
 
     //apply the fields filter
-    if (searchDTO.getFields() != null && searchDTO.getFields().size() > 0) {
       searchRequestBuilder
-          .setFetchSource(searchDTO.getFields().stream().toArray(String[]::new), null);
-    }
+          .setFetchSource(searchDTO.getFields()!= null?searchDTO.getFields().stream().toArray(String[]::new):null, searchDTO.getExcludedFields() != null ?searchDTO.getExcludedFields().stream().toArray(String[]::new):null);
+
 
     // setting the offset
     if (searchDTO.getOffset() != null) {
@@ -433,22 +432,8 @@ public class ElasticSearchUtil {
       addAggregations(searchRequestBuilder ,searchDTO.getFacets());
     }
     ProjectLogger.log("calling search builder======" + searchRequestBuilder.toString());
-    boolean appliedExclude = false;
-    if (type != null && type.length > 0) {
-      for (int i = 0; i < type.length; i++) {
-        if (type[i].equalsIgnoreCase(ProjectUtil.EsType.user.getTypeName())) {
-          ProjectLogger.log("Exclude key applied...");
-          appliedExclude = true;
-          break;
-        }
-      }
-    }
     SearchResponse response = null;
-    if(appliedExclude) {
-      response = searchRequestBuilder.setFetchSource(null, ProjectUtil.excludes).execute().actionGet();
-    } else {
-      response = searchRequestBuilder.execute().actionGet();
-    }
+    response = searchRequestBuilder.execute().actionGet();
     ProjectLogger.log("getting response for es======" + response);
     List<Map<String, Object>> esSource = new ArrayList<Map<String, Object>>();
     Map<String, Object> responsemap = new HashMap<>();

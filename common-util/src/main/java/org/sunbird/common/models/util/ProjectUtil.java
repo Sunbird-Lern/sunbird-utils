@@ -489,6 +489,6 @@ public class ProjectUtil {
     }
   }
   
-  public static final String [] excludes = new String[]{JsonKey.EMAIL,JsonKey.PHONE,JsonKey.USERNAME,JsonKey.LOGIN_ID,JsonKey.AADHAAR_NO,JsonKey.USER_ID,JsonKey.IDENTIFIER};
+  public static final String [] excludes = new String[]{JsonKey.EMAIL,JsonKey.PHONE,JsonKey.USERNAME,JsonKey.LOGIN_ID,JsonKey.AADHAAR_NO,JsonKey.USER_ID};
   
 }

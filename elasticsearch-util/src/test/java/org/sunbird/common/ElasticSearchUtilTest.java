@@ -93,9 +93,12 @@ public class ElasticSearchUtilTest {
         fields.add("courseType");
         fields.add("createdOn");
         fields.add("description");
+        List<String> excludefields = new ArrayList<String>();
+        excludefields.add("createdOn");
         Map<String , String> sortMap = new HashMap<>();
         sortMap.put("courseType" , "ASC");
         searchDTO.setSortBy(sortMap);
+        searchDTO.setExcludedFields(excludefields);
 
         Map<String , Object> additionalProperties = new HashMap<String , Object>();
 
