@@ -21,7 +21,7 @@ public class SearchDTO {
 	private Map<String, String> sortBy = new HashMap<String, String>();
 	private String operation;
 	private String query;
-	private Integer limit=20;
+	private Integer limit=250;
 	private Integer offset=0;
 	boolean fuzzySearch = false;
 	//additional properties will hold , filters, exist , not exist
