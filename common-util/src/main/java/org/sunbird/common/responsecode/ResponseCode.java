@@ -104,6 +104,7 @@ public enum ResponseCode {
 	loginIdRequired(ResponseMessage.Key.LOGIN_ID_MISSING, ResponseMessage.Message.LOGIN_ID_MISSING),
     contentStatusRequired(ResponseMessage.Key.CONTENT_STATUS_MISSING_ERROR, ResponseMessage.Message.CONTENT_STATUS_MISSING_ERROR),
 	esError(ResponseMessage.Key.ES_ERROR, ResponseMessage.Message.ES_ERROR),
+	invalidPeriod(ResponseMessage.Key.INVALID_PERIOD, ResponseMessage.Message.INVALID_PERIOD),
     userNotFound(ResponseMessage.Key.USER_NOT_FOUND, ResponseMessage.Message.USER_NOT_FOUND),
 	idRequired(ResponseMessage.Key.ID_REQUIRED_ERROR, ResponseMessage.Message.ID_REQUIRED_ERROR),
 	dataTypeError(ResponseMessage.Key.DATA_TYPE_ERROR, ResponseMessage.Message.DATA_TYPE_ERROR),
