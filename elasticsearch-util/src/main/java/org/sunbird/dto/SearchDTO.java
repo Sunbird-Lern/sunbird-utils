@@ -18,6 +18,7 @@ public class SearchDTO {
 	private List<Map> properties;
 	private List<Map<String ,String>> facets = new ArrayList<>();
 	private List<String> fields;
+	private List<String> excludedFields;
 	private Map<String, String> sortBy = new HashMap<String, String>();
 	private String operation;
 	private String query;
@@ -132,5 +133,14 @@ public class SearchDTO {
 
 	public void setMode(List<String> mode) {
 		this.mode = mode;
+	}
+
+
+	public List<String> getExcludedFields() {
+		return excludedFields;
+	}
+
+	public void setExcludedFields(List<String> excludedFields) {
+		this.excludedFields = excludedFields;
 	}
 }
