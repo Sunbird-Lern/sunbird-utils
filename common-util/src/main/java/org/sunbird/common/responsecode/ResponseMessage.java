@@ -104,6 +104,7 @@ public interface ResponseMessage {
 		public static final String LOGIN_ID_MISSING = "loginId is required.";
 		public static final String CONTENT_STATUS_MISSING_ERROR = "content status is required .";
 		public static final String ES_ERROR = "Something went wrong when processing data using elasticSearch";
+		public static final String INVALID_PERIOD = "Time Period is invalid";
 		public static final String USER_NOT_FOUND = "user not found.";
 		public static final String ID_REQUIRED_ERROR = "For deleting a record, Id is required.";
 		public static final String DATA_TYPE_ERROR = "{0} data type should be of {1}.";
@@ -244,6 +245,7 @@ public interface ResponseMessage {
 		public static final String LOGIN_ID_MISSING = "LOGIN_ID_MISSING";
 		public static final String CONTENT_STATUS_MISSING_ERROR = "CONTENT_STATUS_MISSING_ERROR";
 		public static final String ES_ERROR = "ELASTICSEARCH_ERROR";
+		public static final String INVALID_PERIOD = "INVALID_PERIOD";
 		public static final String USER_NOT_FOUND = "USER_NOT_FOUND";
 		public static final String ID_REQUIRED_ERROR = "ID_REQUIRED_ERROR";
 		public static final String DATA_TYPE_ERROR = "DATA_TYPE_ERROR";
