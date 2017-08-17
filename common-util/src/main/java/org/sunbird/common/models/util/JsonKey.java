@@ -380,5 +380,10 @@ public class JsonKey {
   public static final String COUNT_DECREMENT_DATE = "countDecrementDate";
   public static final String EKSTEP_CONTENT_UPDATE_URL = "ekstep.content.update.url";
   public static final String CONTENT_NAME = "contentName";
+  public static final String SUNBIRD_PG_HOST = "sunbird_pg_host";
+  public static final String SUNBIRD_PG_PORT = "sunbird_pg_port";
+  public static final String SUNBIRD_PG_DB = "sunbird_pg_db";
+  public static final String SUNBIRD_PG_USER = "sunbird_pg_user";
+  public static final String SUNBIRD_PG_PASSWORD = "sunbird_pg_password";
   public static final String LOCATION = "location";
 }
