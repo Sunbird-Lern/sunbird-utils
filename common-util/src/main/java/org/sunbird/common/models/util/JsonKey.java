@@ -380,4 +380,5 @@ public class JsonKey {
   public static final String COUNT_DECREMENT_DATE = "countDecrementDate";
   public static final String EKSTEP_CONTENT_UPDATE_URL = "ekstep.content.update.url";
   public static final String CONTENT_NAME = "contentName";
+  public static final String LOCATION = "location";
 }
