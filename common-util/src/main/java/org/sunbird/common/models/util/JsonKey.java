@@ -390,5 +390,5 @@ public class JsonKey {
   public static final String THUMBNAIL = "thumbnail";
   public static final String SLUG = "slug";
   public static final String CONTACT_DETAILS = "contactDetail";
-  public static final String SUNBIRD_INSTALLATION = "sunbird.installation";
+  public static final String SUNBIRD_INSTALLATION = "sunbird_installation";
 }
