@@ -74,6 +74,13 @@
 		    </exclusions>-->
   </dependency>
   
+     <!-- https://mvnrepository.com/artifact/com.moparisthebest/junidecode -->
+	<dependency>
+	    <groupId>com.moparisthebest</groupId>
+	    <artifactId>junidecode</artifactId>
+	    <version>0.1.1</version>
+	</dependency>
+  
   </dependencies>
     <build>
      <pluginManagement>

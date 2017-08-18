@@ -388,4 +388,5 @@ public class JsonKey {
   public static final String DOB = "dob";
   public static final String GENDER = "gender";
   public static final String THUMBNAIL = "thumbnail";
+  public static final String SLUG = "slug";
 }
