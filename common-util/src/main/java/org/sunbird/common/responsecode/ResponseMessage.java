@@ -54,7 +54,7 @@ public interface ResponseMessage {
         public static final String COURSE_DURATION_MISSING = "Course duration is mandatory.";
         public static final String LOGIN_TYPE_MISSING = "Login type is required.";
         public static final String EMAIL_IN_USE = "Email already exists.";
-        public static final String USERNAME_EMAIL_IN_USE = "Username is already in use. Please try with a different username.";
+        public static final String USERNAME_EMAIL_IN_USE = "Username or Email is already in used. Please try with a different Username or Email.";
         public static final String KEY_CLOAK_DEFAULT_ERROR = "server error at sso.";
         public static final String USER_REG_UNSUCCESSFULL = "User Registration unsuccessfull.";
         public static final String USER_UPDATE_UNSUCCESSFULL = "User update operation is unsuccessfull.";
