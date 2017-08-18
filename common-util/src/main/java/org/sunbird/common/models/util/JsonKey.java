@@ -353,7 +353,6 @@ public class JsonKey {
   public static final String AGGREGATIONS = "aggregations";
   public static final String METRICS = "metrics";
   public static final String SUMMARY = "summary";
-  public static final String VALUE = "value";
   public static final String SPLIT = "split";
   public static final String EKSTEP_METRICS_URL = "ekstep_metrics_base_url";
   public static final String EKSTEP_ES_METRICS_API_URL = "ekstep_es_metrics_api_url";
