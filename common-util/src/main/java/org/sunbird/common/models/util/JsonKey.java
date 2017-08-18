@@ -385,6 +385,9 @@ public class JsonKey {
   public static final String SUNBIRD_PG_USER = "sunbird_pg_user";
   public static final String SUNBIRD_PG_PASSWORD = "sunbird_pg_password";
   public static final String LOCATION = "location";
+  public static final String DOB = "dob";
+  public static final String GENDER = "gender";
+  public static final String THUMBNAIL = "thumbnail";
   public static final String SLUG = "slug";
   public static final String CONTACT_DETAILS = "contactDetail";
 }
