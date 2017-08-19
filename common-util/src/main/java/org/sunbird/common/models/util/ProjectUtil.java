@@ -491,4 +491,23 @@ public class ProjectUtil {
   
   public static final String [] excludes = new String[]{JsonKey.EMAIL,JsonKey.PHONE,JsonKey.USERNAME,JsonKey.LOGIN_ID,JsonKey.AADHAAR_NO,JsonKey.USER_ID};
   
+  /**
+   * 
+   * @author Manzarul
+   *
+   */
+  public enum AzureContainer {
+    userProfileImg ("userprofileimg"),orgImage ("orgimg");
+    private String name;
+    private AzureContainer(String name) {
+      this.name = name;
+    }
+    public String getName() {
+      return name;
+    }
+    public void setName(String name) {
+      this.name = name;
+    }
+  }
+  
 }
