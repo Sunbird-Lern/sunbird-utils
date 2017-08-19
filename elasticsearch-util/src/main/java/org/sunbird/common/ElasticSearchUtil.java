@@ -392,8 +392,8 @@ public class ElasticSearchUtil {
     }
 
     //apply simple query string
-    if (null != searchDTO.getQuery()) {
-      query.should(QueryBuilders.simpleQueryStringQuery(searchDTO.getQuery()).field("all_fields"));
+    if (!ProjectUtil.isStringNullOREmpty(searchDTO.getQuery())) {
+      query.must(QueryBuilders.simpleQueryStringQuery(searchDTO.getQuery()).field("all_fields"));
     }
     //apply the sorting
     if (searchDTO.getSortBy() != null && searchDTO.getSortBy().size() > 0) {
