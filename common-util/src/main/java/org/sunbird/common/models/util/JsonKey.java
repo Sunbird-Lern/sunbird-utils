@@ -393,4 +393,9 @@ public class JsonKey {
   public static final String SUNBIRD_INSTALLATION = "sunbird_installation";
   public static final String ACCOUNT_NAME = "account_name";
   public static final String ACCOUNT_KEY = "account_key";
+
+  public static final String HOME_URL = "homeUrl";
+  public static final String PREFERRED_LANGUAGE = "preferredLanguage";
+  public static final String THEME = "theme";
+
 }
