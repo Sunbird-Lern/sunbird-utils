@@ -145,6 +145,7 @@ public enum ResponseCode {
     progressStatusError(ResponseMessage.Key.INVALID_PROGRESS_STATUS, ResponseMessage.Message.INVALID_PROGRESS_STATUS),
     courseBatchStartPassedDateError(ResponseMessage.Key.COURSE_BATCH_START_PASSED_DATE_INVALID, ResponseMessage.Message.COURSE_BATCH_START_PASSED_DATE_INVALID),
     csvFileEmpty(ResponseMessage.Key.EMPTY_CSV_FILE, ResponseMessage.Message.EMPTY_CSV_FILE),
+    invalidChannel(ResponseMessage.Key.INVALID_CHANNEL, ResponseMessage.Message.INVALID_CHANNEL),
     OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404);
 	
 	private int responseCode;
