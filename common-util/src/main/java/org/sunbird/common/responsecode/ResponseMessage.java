@@ -147,6 +147,7 @@ public interface ResponseMessage {
       public static final String UNABLE_TO_CONNECT_TO_EKSTEP = "Unable to connect to Ekstep Server";
       public static final String EMPTY_CSV_FILE = "CSV file is Empty.";
       public static final String INVALID_ROOT_ORG_DATA = "Root org doesn't exist for this Organisation Id and channel {0}";
+      public static final String INVALID_CHANNEL = "Channel value is invalid.";
 	}
     
     public interface Key {
@@ -288,5 +289,6 @@ public interface ResponseMessage {
 		public static final String UNABLE_TO_CONNECT_TO_EKSTEP = "UNABLE_TO_CONNECT_TO_EKSTEP";
 		public static final String EMPTY_CSV_FILE = "EMPTY_CSV_FILE";
 		public static final String INVALID_ROOT_ORG_DATA = "INVALID_ROOT_ORG_DATA";
+		public static final String INVALID_CHANNEL = "INVALID_CHANNEL";
     }
 }
