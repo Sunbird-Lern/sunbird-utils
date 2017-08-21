@@ -397,5 +397,7 @@ public class JsonKey {
   public static final String HOME_URL = "homeUrl";
   public static final String PREFERRED_LANGUAGE = "preferredLanguage";
   public static final String THEME = "theme";
+  
+  
 
 }
