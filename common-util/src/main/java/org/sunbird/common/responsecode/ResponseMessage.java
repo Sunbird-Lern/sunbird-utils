@@ -126,7 +126,7 @@ public interface ResponseMessage {
         public static final String EMAIL_VERIFY_ERROR = "Please provide a verified email in order to create user.";
         public static final String PHONE_VERIFY_ERROR = "Please provide a verified phone number in order to create user.";
         public static final String BULK_USER_UPLOAD_ERROR = "Please provide either organisation Id or external Id & provider value.";
-        public static final String DATA_SIZE_EXCEEDED = "Maxiumum data we can process is 200";
+        public static final String DATA_SIZE_EXCEEDED = "Maximum upload data size should be 200";
         public static final String INVALID_COLUMN_NAME = "Invalid column name.";
         public  static final String USER_ALREADY_ACTIVE = "User is already active";
         public static final String ENROLMENT_TYPE_REQUIRED = "Enrolment type is mandatory.";
@@ -148,6 +148,7 @@ public interface ResponseMessage {
       public static final String EMPTY_CSV_FILE = "CSV file is Empty.";
       public static final String INVALID_ROOT_ORG_DATA = "Root org doesn't exist for this Organisation Id and channel {0}";
       public static final String INVALID_CHANNEL = "Channel value is invalid.";
+      public static final String INVALID_PROCESS_ID = "Invalid Process Id.";
 	}
     
     public interface Key {
@@ -290,5 +291,6 @@ public interface ResponseMessage {
 		public static final String EMPTY_CSV_FILE = "EMPTY_CSV_FILE";
 		public static final String INVALID_ROOT_ORG_DATA = "INVALID_ROOT_ORG_DATA";
 		public static final String INVALID_CHANNEL = "INVALID_CHANNEL";
+		public static final String INVALID_PROCESS_ID = "INVALID_PROCESS_ID";
     }
 }
