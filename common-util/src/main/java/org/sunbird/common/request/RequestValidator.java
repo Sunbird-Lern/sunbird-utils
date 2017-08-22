@@ -790,16 +790,16 @@ public final class RequestValidator {
      * 
      * @param request Request
      */
-    public static void validateUploadUser(Request request) {
-      if((!ProjectUtil.isStringNullOREmpty(
-          (String) request.getRequest().get(JsonKey.EXTERNAL_ID))
-          && !ProjectUtil.isStringNullOREmpty(
-              (String) request.getRequest().get(JsonKey.PROVIDER))) ||
-          ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.ORGANISATION_ID))){
-        throw new ProjectCommonException(ResponseCode.bulkUserUploadError.getErrorCode(),
-            ResponseCode.bulkUserUploadError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+    public static void validateUploadUser(Request reqObj) {
+      if(ProjectUtil.isStringNullOREmpty((String) reqObj.getRequest().get(JsonKey.ORGANISATION_ID))){
+        if((ProjectUtil.isStringNullOREmpty(
+            (String) reqObj.getRequest().get(JsonKey.EXTERNAL_ID))
+            || ProjectUtil.isStringNullOREmpty(
+                (String) reqObj.getRequest().get(JsonKey.PROVIDER)))){
+          throw new ProjectCommonException(ResponseCode.bulkUserUploadError.getErrorCode(),
+              ResponseCode.bulkUserUploadError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+        }
       }
-      
     }
   
     /**
