@@ -40,7 +40,7 @@ public interface ResponseMessage {
         public static final String PASSWORD_MIN_LENGHT = "Password should have at least 8 character.";
         public static final String PASSWORD_MAX_LENGHT = "Password should not be more than 12 character.";
         public static final String ORGANISATION_ID_MISSING = "Organisation id is mandatory.";
-        public static final String REQUIRED_DATA_ORG_MISSING = "Organisation Id or Source with External Id values are required for the operation";
+        public static final String REQUIRED_DATA_ORG_MISSING = "Organisation Id or Provider with External Id values are required for the operation";
         public static final String ORGANISATION_NAME_MISSING = "organisation name is mandatory.";
         public static final String CHANNEL_SHOULD_BE_UNIQUE = "Channel value already used by another organisation. Provide different value for channel";
         public static final String INVALID_ORG_DATA = "Given Organisation Data doesn't exist in our records. Please provide a valid one";
