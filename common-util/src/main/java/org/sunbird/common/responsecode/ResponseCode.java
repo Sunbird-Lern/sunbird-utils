@@ -96,7 +96,7 @@ public enum ResponseCode {
     jobDetailsRequired(ResponseMessage.Key.JOBDETAILS_REQUIRED_ERROR, ResponseMessage.Message.JOBDETAILS_REQUIRED_ERROR),
 	dataAlreadyExist(ResponseMessage.Key.DATA_ALREADY_EXIST, ResponseMessage.Message.DATA_ALREADY_EXIST),
 	invalidData(ResponseMessage.Key.INVALID_DATA, ResponseMessage.Message.INVALID_DATA),
-	invalidCourseId(ResponseMessage.Key.INVALID_COURSE_ID, ResponseMessage.Message.INVALID_OPERATION_NAME),
+	invalidCourseId(ResponseMessage.Key.INVALID_COURSE_ID, ResponseMessage.Message.INVALID_COURSE_ID),
 	orgIdRequired(ResponseMessage.Key.ORG_ID_MISSING, ResponseMessage.Message.ORG_ID_MISSING),
 	actorConnectionError(ResponseMessage.Key.ACTOR_CONNECTION_ERROR, ResponseMessage.Message.ACTOR_CONNECTION_ERROR),
 	userAlreadyExist(ResponseMessage.Key.USER_ALREADY_EXIST, ResponseMessage.Message.USER_ALREADY_EXIST),
