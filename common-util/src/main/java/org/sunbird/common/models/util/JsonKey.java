@@ -397,7 +397,7 @@ public class JsonKey {
   public static final String HOME_URL = "homeUrl";
   public static final String PREFERRED_LANGUAGE = "preferredLanguage";
   public static final String THEME = "theme";
-  public static final String EKSTEP_BASE_URL = "ekstep_base_url";
+  public static final String EKSTEP_BASE_URL = "ekstep_api_base_url";
   public static final String EKSTEP_COURSE_PUBLISH_URL ="ekstep_course_publish_url";
 
 }
