@@ -153,8 +153,8 @@ public class JsonKey {
   public static final String OFFSET = "offset";
   public static final String LIMIT = "limit";
 
-  public static final String EKSTEP_CONTNET_URL = "content.url";
-  public static final String EKSTEP_CONTNET_SEARCH_URL = "ekstep.content.search.url";
+  public static final String EKSTEP_CONTNET_URL = "content_url";
+  public static final String EKSTEP_CONTNET_SEARCH_URL = "ekstep_content_search_url";
   public static final String SUNBIRD_ACTOR_IP = "sunbird_learnerstate_actor_host";
   public static final String SUNBIRD_ACTOR_PORT = "sunbird_learnerstate_actor_port";
   public static final String SUNBIRD_ACTOR_SERVICE_IP = "sunbird_learner_actor_host";
@@ -279,7 +279,7 @@ public class JsonKey {
   public static final String CONTENT_PROGRESS = "progress";
   public static final String IS_DELETED = "isDeleted";
   public static final String PROFILE_SUMMARY = "profileSummary";
-  public static final String EKSTEP_TELEMETRY_API_URL = "ekstep.telemetry.api.url";
+  public static final String EKSTEP_TELEMETRY_API_URL = "ekstep_telemetry_api_url";
   public static final String ADDRESS_LINE1 = "addressLine1";
   public static final String CITY = "city";  
   public static final String LIST = "List";  
@@ -397,7 +397,7 @@ public class JsonKey {
   public static final String HOME_URL = "homeUrl";
   public static final String PREFERRED_LANGUAGE = "preferredLanguage";
   public static final String THEME = "theme";
-  
-  
+  public static final String EKSTEP_BASE_URL = "ekstep_base_url";
+  public static final String EKSTEP_COURSE_PUBLISH_URL ="ekstep_course_publish_url";
 
 }
