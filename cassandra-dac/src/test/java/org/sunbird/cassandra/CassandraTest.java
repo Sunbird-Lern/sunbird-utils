@@ -18,11 +18,12 @@ import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.helper.CassandraConnectionManager;
+import org.sunbird.helper.ServiceFactory;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CassandraTest {
 	
-	static CassandraOperation operation= new CassandraOperationImpl();
+	private CassandraOperation operation = ServiceFactory.getInstance();
 	static Map<String,Object> address = null;
 	static Map<String,Object> dummyAddress = null;
 	static PropertiesCache cach = PropertiesCache.getInstance();
