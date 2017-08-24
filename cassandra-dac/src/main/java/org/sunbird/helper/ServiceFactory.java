@@ -12,6 +12,7 @@ import org.sunbird.cassandraimpl.CassandraOperationImpl;
  */
 public class ServiceFactory {
   
+  private ServiceFactory(){}
   /**
    * On call of this method , it will provide a new 
    * CassandraOperationImpl instance on each call.
