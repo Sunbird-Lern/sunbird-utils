@@ -207,6 +207,18 @@ public class ProjectUtil {
     public static String getFormattedDate() {
         return format.format(new Date());
     }
+    
+    /**
+     * This method will provide formatted date
+     *
+     * @return
+     */
+    public static String formatDate(Date date) {
+    	if (null != date)
+    		return format.format(date);
+    	else
+    		return null;
+    }
 
 
     private static Pattern pattern;
