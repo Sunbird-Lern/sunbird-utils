@@ -46,7 +46,8 @@ public enum ActorOperations {
     SYNC("sync"),INSERT_USR_COURSES_INFO_ELASTIC("insertUserCoursesInfoToElastic"),
     UPDATE_USR_COURSES_INFO_ELASTIC("updateUserCoursesInfoToElastic"),SCHEDULE_BULK_UPLOAD("scheduleBulkUpload"),
     COURSE_PROGRESS_METRICS_REPORT("courseProgressMetricsReport"), COURSE_CREATION_METRICS_REPORT("courseConsumptionMetricsReport"),
-    ORG_CREATION_METRICS_REPORT("orgCreationMetricsReport"),ORG_CONSUMPTION_METRICS_REPORT("orgConsumptionMetricsReport");
+    ORG_CREATION_METRICS_REPORT("orgCreationMetricsReport"),ORG_CONSUMPTION_METRICS_REPORT("orgConsumptionMetricsReport"),
+    FILE_STORAGE_SERVICE("fileStorageService");
 
     private String value;
 

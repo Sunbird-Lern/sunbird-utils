@@ -148,6 +148,7 @@ public enum ResponseCode {
     invalidRootOrgData(ResponseMessage.Key.INVALID_ROOT_ORG_DATA, ResponseMessage.Message.INVALID_ROOT_ORG_DATA),
     invalidChannel(ResponseMessage.Key.INVALID_CHANNEL, ResponseMessage.Message.INVALID_CHANNEL),
     invalidProcessId(ResponseMessage.Key.INVALID_PROCESS_ID, ResponseMessage.Message.INVALID_PROCESS_ID),
+    storageContainerNameMandatory(ResponseMessage.Key.STORAGE_CONTAINER_NAME_MANDATORY, ResponseMessage.Message.STORAGE_CONTAINER_NAME_MANDATORY),
     OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404);
 	
 	private int responseCode;
