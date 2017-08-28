@@ -152,6 +152,7 @@ public interface ResponseMessage {
       public static final String EMAIL_SUBJECT_ERROR = "Email Subject is mandatory.";
       public static final String EMAIL_BODY_ERROR = "Email Body is mandatory.";
       public static final String RECIPIENT_ADDRESS_ERROR = "Please send recipientEmails or recipientUserIds.";
+      public static final String STORAGE_CONTAINER_NAME_MANDATORY = " Container name can not be null or empty .";
 	}
     
     public interface Key {
@@ -298,5 +299,6 @@ public interface ResponseMessage {
 		public static final String EMAIL_SUBJECT_ERROR = "EMAIL_SUBJECT_ERROR";
 		public static final String EMAIL_BODY_ERROR = "EMAIL_BODY_ERROR";
 		public static final String RECIPIENT_ADDRESS_ERROR = "RECIPIENT_ADDRESS_ERROR";
+        public static final String STORAGE_CONTAINER_NAME_MANDATORY = "STORAGE_CONTAINER_NAME_MANDATORY";
     }
 }

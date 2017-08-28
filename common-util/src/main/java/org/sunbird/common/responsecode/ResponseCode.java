@@ -151,6 +151,7 @@ public enum ResponseCode {
     emailSubjectError(ResponseMessage.Key.EMAIL_SUBJECT_ERROR, ResponseMessage.Message.EMAIL_SUBJECT_ERROR),
     emailBodyError(ResponseMessage.Key.EMAIL_BODY_ERROR, ResponseMessage.Message.EMAIL_BODY_ERROR),
     recipientAddressError(ResponseMessage.Key.RECIPIENT_ADDRESS_ERROR, ResponseMessage.Message.RECIPIENT_ADDRESS_ERROR),
+    storageContainerNameMandatory(ResponseMessage.Key.STORAGE_CONTAINER_NAME_MANDATORY, ResponseMessage.Message.STORAGE_CONTAINER_NAME_MANDATORY),
     OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404);
 	
 	private int responseCode;
