@@ -3,9 +3,17 @@
  */
 package org.sunbird.common.models.util.azure;
 
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.blob.ListBlobItem;
 import java.io.File;
 import java.io.FileInputStream;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 
@@ -16,7 +24,7 @@ import com.microsoft.azure.storage.blob.CloudBlockBlob;
  * @author Manzarul
  *
  */
-public class FileUtility {
+public class AzureFileUtility {
   
   /**
    * This method will upload the file inside Azure storage with provided filename
@@ -38,7 +46,7 @@ public class FileUtility {
       return false;
     }
     CloudBlobContainer container =
-        ConnectionManager.getContainer(containerName);
+        AzureConnectionManager.getContainer(containerName,true);
     if (container == null) {
       ProjectLogger.log("Unable to get Azure contains object");
       return false;
@@ -63,7 +71,7 @@ public class FileUtility {
    * @param containerName
    * @return boolean
    */
-  public static boolean deleteFile(String fileName, String containerName )
+  public static boolean deleteFile(String containerName, String fileName )
      {
     if (fileName == null) {
       ProjectLogger.log("File name can not be null");
@@ -74,7 +82,7 @@ public class FileUtility {
       return false;
     }
     CloudBlobContainer container =
-        ConnectionManager.getContainer(containerName);
+        AzureConnectionManager.getContainer(containerName , true);
     if (container == null) {
       ProjectLogger.log("Unable to get Azure contains object");
       return false;
@@ -107,7 +115,7 @@ public class FileUtility {
       return false;
     }
     CloudBlobContainer container =
-        ConnectionManager.getContainer(containerName);
+        AzureConnectionManager.getContainer(containerName, true);
     if (container == null) {
       ProjectLogger.log("Unable to get Azure contains object");
       return false;
@@ -124,6 +132,86 @@ public class FileUtility {
       ProjectLogger.log(e.getMessage(), e);
     }
     return false;
+  }
+
+
+
+  public static String uploadFile(String containerName , String blobName , String fileName){
+
+    boolean flag = false;
+    CloudBlobContainer container = AzureConnectionManager.getContainer(containerName,true);
+    // Create or overwrite the "myimage.jpg" blob with contents from a local file.
+    CloudBlockBlob blob = null;
+    String fileUrl = null;
+    try {
+      blob = container.getBlockBlobReference("searchprocessor");
+      File source = new File(fileName);
+      flag =true;
+      blob.upload(new FileInputStream(source), source.length());
+      //fileUrl = blob.getStorageUri().getPrimaryUri().getPath();
+      fileUrl = blob.getUri().toString();
+    } catch (URISyntaxException e) {
+      ProjectLogger.log("Unable to upload file :"+fileName , e);
+      e.printStackTrace();
+    } catch (StorageException e) {
+      ProjectLogger.log("Unable to upload file :"+fileName , e);
+      e.printStackTrace();
+    } catch (FileNotFoundException e) {
+      ProjectLogger.log("Unable to upload file :"+fileName , e);
+      e.printStackTrace();
+    } catch (IOException e) {
+      ProjectLogger.log("Unable to upload file :"+fileName , e);
+      e.printStackTrace();
+    }
+
+    return fileUrl;
+
+  }
+
+  public static boolean downloadFile(String containerName , String blobName , String downloadFolder){
+
+
+    boolean flag = false;
+    CloudBlobContainer container = AzureConnectionManager.getContainer(containerName,true);
+    // Create or overwrite the "myimage.jpg" blob with contents from a local file.
+    CloudBlockBlob blob = null;
+
+    try {
+      blob = container.getBlockBlobReference(blobName);
+      if(blob.exists()) {
+        if(!(downloadFolder.endsWith(("/")))){
+          downloadFolder = downloadFolder+"/";
+        }
+        blob.download(new FileOutputStream(downloadFolder + blobName));
+      }
+    } catch (URISyntaxException e) {
+      ProjectLogger.log("Unable to upload blobfile :"+blobName , e);
+      e.printStackTrace();
+    } catch (StorageException e) {
+      ProjectLogger.log("Unable to upload file :"+blobName , e);
+      e.printStackTrace();
+    } catch (FileNotFoundException e) {
+      ProjectLogger.log("Unable to upload file :"+blobName , e);
+      e.printStackTrace();
+    }
+    return flag;
+  }
+
+  public static List<String> listAllBlobbs(String containerName){
+
+    List<String> blobsList = new ArrayList<>();
+    CloudBlobContainer container = AzureConnectionManager.getContainer(containerName,true);
+    // Loop over blobs within the container and output the URI to each of them.
+    for (ListBlobItem blobItem : container.listBlobs()) {
+      blobsList.add(blobItem.getUri().toString());
+    }
+    return blobsList;
+  }
+
+  public static void main(String[] args) {
+    String flag = uploadFile("mycontainer" , "serchprocessor001", "/home/arvind/Desktop/SearchProcessor.java");
+    System.out.println("SUCCESS");
+    System.out.println(flag);
   }
   
   
