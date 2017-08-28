@@ -149,6 +149,10 @@ public interface ResponseMessage {
       public static final String INVALID_ROOT_ORG_DATA = "Root org doesn't exist for this Organisation Id and channel {0}";
       public static final String INVALID_CHANNEL = "Channel value is invalid.";
       public static final String INVALID_PROCESS_ID = "Invalid Process Id.";
+      public static final String EMAIL_SUBJECT_ERROR = "Email Subject is mandatory.";
+      public static final String EMAIL_BODY_ERROR = "Email Body is mandatory.";
+      public static final String RECIPIENT_ADDRESS_ERROR = "Please send recipientEmails or recipientUserIds.";
+      public static final String STORAGE_CONTAINER_NAME_MANDATORY = " Container name can not be null or empty .";
 	}
     
     public interface Key {
@@ -292,5 +296,9 @@ public interface ResponseMessage {
 		public static final String INVALID_ROOT_ORG_DATA = "INVALID_ROOT_ORG_DATA";
 		public static final String INVALID_CHANNEL = "INVALID_CHANNEL";
 		public static final String INVALID_PROCESS_ID = "INVALID_PROCESS_ID";
+		public static final String EMAIL_SUBJECT_ERROR = "EMAIL_SUBJECT_ERROR";
+		public static final String EMAIL_BODY_ERROR = "EMAIL_BODY_ERROR";
+		public static final String RECIPIENT_ADDRESS_ERROR = "RECIPIENT_ADDRESS_ERROR";
+        public static final String STORAGE_CONTAINER_NAME_MANDATORY = "STORAGE_CONTAINER_NAME_MANDATORY";
     }
 }

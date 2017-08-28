@@ -110,7 +110,7 @@ public class SendMail {
       p.setProperty("class.resource.loader.class",
           "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
       engine.init(p);
-      String templatePath = "/downloadtemplate.vm";
+      String templatePath = "/emailtemplate.vm";
       Template template = engine.getTemplate(templatePath);
       StringWriter writer = new StringWriter();
       template.merge(context, writer);

@@ -404,4 +404,10 @@ public class JsonKey {
   public static final String EMAIL_SERVER_USERNAME  = "sunbird_mail_server_username";
   public static final String EMAIL_SERVER_PASSWORD  = "sunbird_mail_server_password";
   public static final String EMAIL_SERVER_FROM  = "sunbird_mail_server_from_email";
+  public static final String CONTAINER = "container";
+  public static final String BODY = "body";
+  public static final String RECIPIENT_EMAILS = "recipientEmails";
+  public static final String RECIPIENT_USERIDS = "recipientUserIds";
+  public static final String EMAIL_REQUEST = "emailReq";
+  public static final String DOWNLOAD_URL = "downloadUrl";
 }

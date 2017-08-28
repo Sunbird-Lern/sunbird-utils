@@ -7,12 +7,13 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import org.apache.velocity.VelocityContext;
 import org.sunbird.common.request.Request;
 
 /**
@@ -510,4 +511,22 @@ public class ProjectUtil {
     }
   }
   
+  public static VelocityContext getContext(Map<String,Object> map){
+    VelocityContext context = new VelocityContext();
+    
+    if(!ProjectUtil.isStringNullOREmpty((String)map.get(JsonKey.DOWNLOAD_URL))){
+      context.put(JsonKey.DOWNLOAD_URL, map.get(JsonKey.DOWNLOAD_URL));
+    }
+    if(!ProjectUtil.isStringNullOREmpty((String)map.get(JsonKey.NAME))){
+      context.put(JsonKey.NAME,(String)map.get(JsonKey.NAME));
+    }
+    context.put(JsonKey.BODY, map.get(JsonKey.BODY));
+    context.put(JsonKey.SUBJECT, map.get(JsonKey.SUBJECT));
+    //context.put("thanks", "Thanks.");
+    return context;
+  }
+  
+  public static String getTemplate(String templateType){
+    return "/emailtemplate.vm";
+  }
 }
