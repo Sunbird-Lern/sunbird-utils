@@ -410,4 +410,5 @@ public class JsonKey {
   public static final String RECIPIENT_USERIDS = "recipientUserIds";
   public static final String EMAIL_REQUEST = "emailReq";
   public static final String DOWNLOAD_URL = "downloadUrl";
+  public static final String REQUEST_ID = "requestId";
 }
