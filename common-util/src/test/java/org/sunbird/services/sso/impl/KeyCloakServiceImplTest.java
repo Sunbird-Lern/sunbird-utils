@@ -7,7 +7,8 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
-
+import org.sunbird.services.sso.SSOManager;
+import org.sunbird.services.sso.SSOServiceFactory;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class KeyCloakServiceImplTest {
 
-    KeyCloakServiceImpl keyCloakService = new KeyCloakServiceImpl();
+    SSOManager keyCloakService = SSOServiceFactory.getInstance();
 
     private static String userId ;
     final static String userName = UUID.randomUUID().toString().replaceAll("-", "");

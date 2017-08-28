@@ -11,7 +11,7 @@ import org.sunbird.cassandraimpl.CassandraOperationImpl;
  * @author Manzarul
  */
 public class ServiceFactory {
-  
+  private static CassandraOperation operation = null;
   private ServiceFactory(){}
   /**
    * On call of this method , it will provide a new 
@@ -19,7 +19,10 @@ public class ServiceFactory {
    * @return
    */
   public static CassandraOperation getInstance() {
-    return new CassandraOperationImpl();
+    if(null == operation){
+      operation = new CassandraOperationImpl();
+    }
+    return operation;
   }
 
 }
