@@ -401,4 +401,9 @@ public class JsonKey {
   public static final String EKSTEP_COURSE_PUBLISH_URL ="ekstep_course_publish_url";
   public static final String CONTAINER = "container";
 
+  public static final String EMAIL_SERVER_HOST = "mail_server_host";
+  public static final String EMAIL_SERVER_PORT  = "mail_server_port";
+  public static final String EMAIL_SERVER_USERNAME  = "mail_server_username";
+  public static final String EMAIL_SERVER_PASSWORD  = "mail_server_password";
+  public static final String EMAIL_SERVER_FROM  = "mail_server_from_email";
 }
