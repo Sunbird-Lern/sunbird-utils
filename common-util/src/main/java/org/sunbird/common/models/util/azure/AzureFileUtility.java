@@ -25,6 +25,8 @@ import com.microsoft.azure.storage.blob.CloudBlockBlob;
  *
  */
 public class AzureFileUtility {
+
+  private static final String DEFAULT_CONTAINER = "default";
   
   /**
    * This method will upload the file inside Azure storage with provided filename
@@ -173,6 +175,11 @@ public class AzureFileUtility {
     String containerPath ="";
     String filePath="";
 
+    if(ProjectUtil.isStringNullOREmpty(containerName)){
+      containerName = DEFAULT_CONTAINER;
+    }else{
+      containerName = containerName.toLowerCase();
+    }
     //processContainer(containerName , containerPath , filePath);
     if(containerName.startsWith("/")){
       containerName = containerName.substring(1);
