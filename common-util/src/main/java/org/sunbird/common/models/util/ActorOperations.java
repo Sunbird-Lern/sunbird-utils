@@ -44,7 +44,9 @@ public enum ActorOperations {
     GET_COURSE_BATCH_DETAIL("getCourseBatchDetail"),UPDATE_USER_ORG_ES("updateUserOrgES"),
     REMOVE_USER_ORG_ES("removeUserOrgES"),UPDATE_USER_ROLES_ES("updateUserRoles"),
     SYNC("sync"),INSERT_USR_COURSES_INFO_ELASTIC("insertUserCoursesInfoToElastic"),
-    UPDATE_USR_COURSES_INFO_ELASTIC("updateUserCoursesInfoToElastic"),SCHEDULE_BULK_UPLOAD("scheduleBulkUpload");
+    UPDATE_USR_COURSES_INFO_ELASTIC("updateUserCoursesInfoToElastic"),SCHEDULE_BULK_UPLOAD("scheduleBulkUpload"),
+    COURSE_PROGRESS_METRICS_REPORT("courseProgressMetricsReport"), COURSE_CREATION_METRICS_REPORT("courseConsumptionMetricsReport"),
+    ORG_CREATION_METRICS_REPORT("orgCreationMetricsReport"),ORG_CONSUMPTION_METRICS_REPORT("orgConsumptionMetricsReport");
 
     private String value;
 
