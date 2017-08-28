@@ -1045,4 +1045,33 @@ mentors : List of user ids , who will work as a mentor.
     }
 
   }
+  
+  public static void validateSendMail(Request request) {
+    if (ProjectUtil.isStringNullOREmpty((String)request.getRequest().get(JsonKey.SUBJECT))) {
+      throw new ProjectCommonException(
+          ResponseCode.emailSubjectError.getErrorCode(),
+          ResponseCode.emailSubjectError.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    if (ProjectUtil.isStringNullOREmpty((String)request.getRequest().get(JsonKey.BODY))) {
+      throw new ProjectCommonException(
+          ResponseCode.emailBodyError.getErrorCode(),
+          ResponseCode.emailBodyError.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    if(null == (request.getRequest().get(JsonKey.RECIPIENT_EMAILS)) && null == (request.getRequest().get(JsonKey.RECIPIENT_USERIDS))){
+      throw new ProjectCommonException(
+          ResponseCode.recipientAddressError.getErrorCode(),
+          ResponseCode.recipientAddressError.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    if((null != (request.getRequest().get(JsonKey.RECIPIENT_EMAILS)) && ((List)request.getRequest().get(JsonKey.RECIPIENT_EMAILS)).isEmpty()) && 
+      (null != (request.getRequest().get(JsonKey.RECIPIENT_USERIDS)) && ((List)request.getRequest().get(JsonKey.RECIPIENT_USERIDS)).isEmpty())){
+        throw new ProjectCommonException(
+            ResponseCode.recipientAddressError.getErrorCode(),
+            ResponseCode.recipientAddressError.getErrorMessage(),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+  }
+  
 }
