@@ -1045,7 +1045,6 @@ mentors : List of user ids , who will work as a mentor.
     }
 
   }
-<<<<<<< HEAD
   
   public static void validateSendMail(Request request) {
     if (ProjectUtil.isStringNullOREmpty((String)request.getRequest().get(JsonKey.SUBJECT))) {
