@@ -1045,4 +1045,15 @@ mentors : List of user ids , who will work as a mentor.
     }
 
   }
+
+  public static void validateFileUpload(Request reqObj) {
+
+		if(ProjectUtil.isStringNullOREmpty((String)reqObj.get(JsonKey.CONTAINER))){
+			throw new ProjectCommonException(
+					ResponseCode.storageContainerNameMandatory.getErrorCode(),
+					ResponseCode.storageContainerNameMandatory.getErrorMessage(),
+					ResponseCode.CLIENT_ERROR.getResponseCode());
+		}
+
+  }
 }

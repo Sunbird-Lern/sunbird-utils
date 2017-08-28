@@ -1,5 +1,6 @@
 package org.sunbird.common.models.util.azure;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -15,6 +16,11 @@ public class AzureCloudService implements CloudService {
   @Override
   public boolean downLoadFile(String containerName, String fileName, String downloadFolder) {
     return AzureFileUtility.downloadFile(containerName , fileName , downloadFolder);
+  }
+
+  @Override
+  public String uploadFile(String containerName, File file) {
+    return AzureFileUtility.uploadFile(containerName, file);
   }
 
   @Override
