@@ -35,7 +35,7 @@ public class AzureFileUtility {
    * @param file File
    * @return boolean
    */
-  public static boolean uploadFile(String fileName, String containerName,
+  public static boolean uploadTheFile(String fileName, String containerName,
       File file) {
     if (file == null) {
       ProjectLogger.log("Upload file can not be null");
@@ -144,7 +144,7 @@ public class AzureFileUtility {
     CloudBlockBlob blob = null;
     String fileUrl = null;
     try {
-      blob = container.getBlockBlobReference("searchprocessor");
+      blob = container.getBlockBlobReference(blobName);
       File source = new File(fileName);
       flag =true;
       blob.upload(new FileInputStream(source), source.length());
@@ -166,6 +166,62 @@ public class AzureFileUtility {
 
     return fileUrl;
 
+  }
+
+  public static String uploadFile(String containerName , File source){
+
+    String containerPath ="";
+    String filePath="";
+
+    //processContainer(containerName , containerPath , filePath);
+    if(containerName.startsWith("/")){
+      containerName = containerName.substring(1);
+    }
+    if(containerName.contains("/")){
+      String arr[]=containerName.split("/", 2);
+      containerPath = arr[0];
+      if(arr[1].length()>0 && arr[1].endsWith("/")){
+        filePath=arr[1];
+      }else if(arr[1].length()>0){
+        filePath=arr[1]+"/";
+      }
+    }else{
+      containerPath = containerName;
+    }
+
+    CloudBlobContainer container = AzureConnectionManager.getContainer(containerPath,true);
+    // Create or overwrite the "myimage.jpg" blob with contents from a local file.
+    CloudBlockBlob blob = null;
+    String fileUrl = null;
+    try {
+      blob = container.getBlockBlobReference(filePath+source.getName());
+      //File source = new File(fileName);
+      blob.upload(new FileInputStream(source), source.length());
+      //fileUrl = blob.getStorageUri().getPrimaryUri().getPath();
+      fileUrl = blob.getUri().toString();
+    } catch (URISyntaxException e) {
+      ProjectLogger.log("Unable to upload file :"+source.getName() , e);
+      e.printStackTrace();
+    } catch (StorageException e) {
+      ProjectLogger.log("Unable to upload file :"+source.getName() , e);
+      e.printStackTrace();
+    } catch (FileNotFoundException e) {
+      ProjectLogger.log("Unable to upload file :"+source.getName() , e);
+      e.printStackTrace();
+    } catch (IOException e) {
+      ProjectLogger.log("Unable to upload file :"+source.getName() , e);
+      e.printStackTrace();
+    }
+    return fileUrl;
+
+  }
+
+  private static void processContainerPath(String containerName, String containerPath, String filePath) {
+    if(containerName.contains("/")){
+      String arr[]=containerName.split("/", 2);
+      containerPath = arr[0];
+      filePath=arr[1]+"/";
+    }
   }
 
   public static boolean downloadFile(String containerName , String blobName , String downloadFolder){
