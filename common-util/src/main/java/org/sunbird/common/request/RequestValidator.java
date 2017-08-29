@@ -1085,4 +1085,27 @@ mentors : List of user ids , who will work as a mentor.
 		}
 
   }
+  
+  /**
+   * 
+   * @param reqObj
+   */
+  public static void validateAddUserBadge(Request reqObj) {
+
+    if(ProjectUtil.isStringNullOREmpty((String)reqObj.get(JsonKey.BADGE_TYPE_ID))){
+        throw new ProjectCommonException(
+                ResponseCode.badgeTypeIdMandatory.getErrorCode(),
+                ResponseCode.badgeTypeIdMandatory.getErrorMessage(),
+                ResponseCode.CLIENT_ERROR.getResponseCode());
+    } if(ProjectUtil.isStringNullOREmpty((String)reqObj.get(JsonKey.RECEIVER_ID))){
+      throw new ProjectCommonException(
+          ResponseCode.receiverIdMandatory.getErrorCode(),
+          ResponseCode.receiverIdMandatory.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+}
+
+}
+  
+  
+  
 }

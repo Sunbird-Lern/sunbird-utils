@@ -271,6 +271,10 @@ public class ProjectUtil {
         return env + "" + uid + "" + atomicInteger.getAndIncrement();
     }
 
+    public static void main(String[] args) {
+      System.out.println(getUniqueIdFromTimestamp(2));
+    }
+    
     /**
      * This method will generate the unique id .
      *

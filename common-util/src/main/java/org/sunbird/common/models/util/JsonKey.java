@@ -411,4 +411,9 @@ public class JsonKey {
   public static final String EMAIL_REQUEST = "emailReq";
   public static final String DOWNLOAD_URL = "downloadUrl";
   public static final String REQUEST_ID = "requestId";
+  public static final String BADGES_DB = "badge";
+  public static final String USER_BADGES_DB = "user_badge";
+  public static final String BADGE_TYPE_ID = "badgeTypeId";
+  public static final String RECEIVER_ID = "receiverId";
+  public static final String BADGES = "badges";
 }
