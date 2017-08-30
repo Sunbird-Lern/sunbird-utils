@@ -529,4 +529,21 @@ public class ProjectUtil {
   public static String getTemplate(String templateType){
     return "/emailtemplate.vm";
   }
+
+  /**
+   * @author Arvind
+   */
+  public enum ReportTrackingStatus {
+    NEW(0), GENERATING_FILE(1), UPLOADING_FILE(2),UPLOADING_FILE_SUCCESS(3),SENDING_MAIL(4),SENDING_MAIL_SUCCESS(5);
+
+    private int value;
+
+    ReportTrackingStatus(int value) {
+      this.value = value;
+    }
+
+    public int getValue() {
+      return this.value;
+    }
+  }
 }
