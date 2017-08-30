@@ -208,6 +208,18 @@ public class ProjectUtil {
     public static String getFormattedDate() {
         return format.format(new Date());
     }
+    
+    /**
+     * This method will provide formatted date
+     *
+     * @return
+     */
+    public static String formatDate(Date date) {
+    	if (null != date)
+    		return format.format(date);
+    	else
+    		return null;
+    }
 
 
     private static Pattern pattern;
@@ -259,6 +271,10 @@ public class ProjectUtil {
         return env + "" + uid + "" + atomicInteger.getAndIncrement();
     }
 
+    public static void main(String[] args) {
+      System.out.println(getUniqueIdFromTimestamp(2));
+    }
+    
     /**
      * This method will generate the unique id .
      *

@@ -152,8 +152,13 @@ public interface ResponseMessage {
       public static final String EMAIL_SUBJECT_ERROR = "Email Subject is mandatory.";
       public static final String EMAIL_BODY_ERROR = "Email Body is mandatory.";
       public static final String RECIPIENT_ADDRESS_ERROR = "Please send recipientEmails or recipientUserIds.";
-      public static final String STORAGE_CONTAINER_NAME_MANDATORY = " Container name can not be null or empty .";
-      public static final String CLOUD_SERVICE_ERROR = " Cloud storage service error .";
+      public static final String STORAGE_CONTAINER_NAME_MANDATORY = " Container name can not be null or empty.";
+      public static final String CLOUD_SERVICE_ERROR = "Cloud storage service error.";
+      public static final String BADGE_TYPE_ID_ERROR = "Badge type id is mandatory.";
+      public static final String RECEIVER_ID_ERROR = "Receiver id is mandatory.";
+      public static final String INVALID_RECEIVER_ID = "Receiver id is invalid.";
+      public static final String INVALID_BADGE_ID = "Invalid badge type id.";
+      public static final String USER_REG_ORG_ERROR = "this user belongs to some other organisation.";
 	}
     
     public interface Key {
@@ -301,6 +306,11 @@ public interface ResponseMessage {
 		public static final String EMAIL_BODY_ERROR = "EMAIL_BODY_ERROR";
 		public static final String RECIPIENT_ADDRESS_ERROR = "RECIPIENT_ADDRESS_ERROR";
         public static final String STORAGE_CONTAINER_NAME_MANDATORY = "STORAGE_CONTAINER_NAME_MANDATORY";
+        public static final String USER_REG_ORG_ERROR = "USER_REG_ORG_ERROR";
         public static final String CLOUD_SERVICE_ERROR = "CLOUD_SERVICE_ERROR";
+        public static final String BADGE_TYPE_ID_ERROR = "BADGE_TYPE_ID_ERROR";
+        public static final String RECEIVER_ID_ERROR = "RECEIVER_ID_ERROR";
+        public static final String INVALID_RECEIVER_ID = "INVALID_RECEIVER_ID";
+        public static final String INVALID_BADGE_ID = "INVALID_BADGE_ID";
     }
 }
