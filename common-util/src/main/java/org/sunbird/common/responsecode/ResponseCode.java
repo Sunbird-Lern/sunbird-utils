@@ -152,7 +152,12 @@ public enum ResponseCode {
     emailBodyError(ResponseMessage.Key.EMAIL_BODY_ERROR, ResponseMessage.Message.EMAIL_BODY_ERROR),
     recipientAddressError(ResponseMessage.Key.RECIPIENT_ADDRESS_ERROR, ResponseMessage.Message.RECIPIENT_ADDRESS_ERROR),
     storageContainerNameMandatory(ResponseMessage.Key.STORAGE_CONTAINER_NAME_MANDATORY, ResponseMessage.Message.STORAGE_CONTAINER_NAME_MANDATORY),
+    userRegOrgError(ResponseMessage.Key.USER_REG_ORG_ERROR, ResponseMessage.Message.USER_REG_ORG_ERROR),
     cloudServiceError(ResponseMessage.Key.CLOUD_SERVICE_ERROR, ResponseMessage.Message.CLOUD_SERVICE_ERROR),
+    badgeTypeIdMandatory(ResponseMessage.Key.BADGE_TYPE_ID_ERROR, ResponseMessage.Message.BADGE_TYPE_ID_ERROR),
+    receiverIdMandatory(ResponseMessage.Key.RECEIVER_ID_ERROR, ResponseMessage.Message.RECEIVER_ID_ERROR),
+    invalidReceiverId (ResponseMessage.Key.INVALID_RECEIVER_ID, ResponseMessage.Message.INVALID_RECEIVER_ID),
+    invalidBadgeTypeId(ResponseMessage.Key.INVALID_BADGE_ID, ResponseMessage.Message.INVALID_BADGE_ID),
     OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404);
 	
 	private int responseCode;
