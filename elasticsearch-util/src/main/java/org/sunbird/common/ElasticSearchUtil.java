@@ -135,7 +135,7 @@ public class ElasticSearchUtil {
   public static Map<String, Object> getDataByIdentifier(String index, String type,
       String identifier) {
     long startTime = System.currentTimeMillis();
-    ProjectLogger.log("ElasticSearchUtil createData method started at ==" +startTime+" for Type "+type, LoggerEnum.PERF_LOG);
+    ProjectLogger.log("ElasticSearchUtil getDataByIdentifier method started at ==" +startTime+" for Type "+type, LoggerEnum.PERF_LOG);
     GetResponse response = null;
     if (ProjectUtil.isStringNullOREmpty(index) && ProjectUtil.isStringNullOREmpty(type)
         && ProjectUtil.isStringNullOREmpty(identifier)) {
