@@ -87,9 +87,10 @@ public class SendMail {
      * @param subject
      *            subject
      */
-    public static void sendMail(String[] receipent, String subject,
+    public static boolean sendMail(String[] receipent, String subject,
       VelocityContext context, String templateName) {
     Transport transport = null;
+    boolean flag = true;
     try {
       Session session = Session.getInstance(props,
           new GMailAuthenticator(userName, password));
@@ -119,6 +120,7 @@ public class SendMail {
       transport.sendMessage(message, message.getAllRecipients());
       transport.close();
     } catch (Exception e) {
+      flag=false;
       ProjectLogger.log(e.toString(), e);
     } finally {
       if (transport != null) {
@@ -129,6 +131,7 @@ public class SendMail {
         }
       }
     }
+    return flag;
   }
 
     /**
@@ -264,6 +267,7 @@ public class SendMail {
       context.put("name","Manzarul");
       context.put("body", "Some text message for user.");
       context.put("thanks", "Thanks.");
-      sendMail(new String [] {"manzarul.haque@tarento.com"}, "test email ntp", context, null);
+      sendMail(new String [] {"manzarul.haque@tarento.com"}, "test email ntp", context, ProjectUtil.getTemplate(""));
+      System.out.println("SUCCESS");
     }
 }

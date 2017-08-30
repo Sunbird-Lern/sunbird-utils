@@ -411,4 +411,6 @@ public class JsonKey {
   public static final String EMAIL_REQUEST = "emailReq";
   public static final String DOWNLOAD_URL = "downloadUrl";
   public static final String REQUEST_ID = "requestId";
+  public static final String REPORT_TRACKING_DB ="reportTrackingDb";
+  public static final String FILE_URL = "fileUrl";
 }

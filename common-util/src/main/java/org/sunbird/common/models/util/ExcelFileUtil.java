@@ -2,6 +2,7 @@ package org.sunbird.common.models.util;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -12,12 +13,14 @@ import org.sunbird.common.models.util.ProjectLogger;
 
 public class ExcelFileUtil {
 
-  public static void writeToFile(String fileName, List<List<Object>> values) {
+  public static File writeToFile(String fileName, List<List<Object>> values) {
     //Blank workbook
     XSSFWorkbook workbook = new XSSFWorkbook(); 
      
     //Create a blank sheet
     XSSFSheet sheet = workbook.createSheet("Data");
+    FileOutputStream out = null;
+    File file =null;
   
     int rownum = 0;
     for (Object key : values)
@@ -41,25 +44,39 @@ public class ExcelFileUtil {
     try
     {
         //Write the workbook in file system
-        FileOutputStream out = new FileOutputStream(new File(fileName + ".xlsx"));
+        file = new File(fileName + ".xlsx");
+        out = new FileOutputStream(file);
         workbook.write(out);
-        out.close();
-        ProjectLogger.log("File " + fileName+ "was created successfully");
+        //out.close();
+        ProjectLogger.log("File " + fileName+ " created successfully");
+
     } 
     catch (Exception e) 
     {
         e.printStackTrace();
+    }finally{
+      if(null != out){
+        try {
+          out.close();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
     }
+    return file;
   }
   
   @SuppressWarnings("unchecked")
-  private static String getListValue(Object obj){
-    List<Object> data = (List<Object>)obj;
-    StringBuffer sb = new StringBuffer();
-    for(Object value: data){
-      sb.append((String)value).append(",");
+  private static String getListValue(Object obj) {
+    List<Object> data = (List<Object>) obj;
+    if (!(data.isEmpty())) {
+      StringBuffer sb = new StringBuffer();
+      for (Object value : data) {
+        sb.append((String) value).append(",");
+      }
+      sb.deleteCharAt(sb.length() - 1);
+      return sb.toString();
     }
-    sb.deleteCharAt(sb.length()-1);
-    return sb.toString();
+    return "";
   }
 }
