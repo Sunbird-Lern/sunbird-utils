@@ -48,7 +48,7 @@ public enum ActorOperations {
     COURSE_PROGRESS_METRICS_REPORT("courseProgressMetricsReport"), COURSE_CREATION_METRICS_REPORT("courseConsumptionMetricsReport"),
     ORG_CREATION_METRICS_REPORT("orgCreationMetricsReport"),ORG_CONSUMPTION_METRICS_REPORT("orgConsumptionMetricsReport"),
     EMAIL_SERVICE("emailService"),FILE_STORAGE_SERVICE("fileStorageService"),GET_ALL_BADGE("getAllBadge"),ADD_USER_BADGE("addUserBadge"),
-    ADD_USER_BADGE_BKG("addUserBadgebackground"),FILE_UPLOAD_AND_SEND_MAIL("fileUploadAndSendMail");
+    ADD_USER_BADGE_BKG("addUserBadgebackground"),FILE_UPLOAD_AND_SEND_MAIL("fileUploadAndSendMail"),SEND_MAIL("sendMail");
 
     private String value;
 
