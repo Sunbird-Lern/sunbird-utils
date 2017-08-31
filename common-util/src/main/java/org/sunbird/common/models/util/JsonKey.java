@@ -429,4 +429,5 @@ public class JsonKey {
   public static final String EKSTEP_SERVICE = "EkStep service";
   public static final String CHECKS = "checks";
   public static final String TRY_COUNT = "tryCount";
+  public static final String RESOURCE_ID = "resourceId";
 }
