@@ -419,4 +419,5 @@ public class JsonKey {
   public static final String BADGES = "badges";
   public static final String REPORT_TRACKING_DB ="reportTrackingDb";
   public static final String FILE_URL = "fileUrl";
+  public static final String TRY_COUNT = "tryCount";
 }
