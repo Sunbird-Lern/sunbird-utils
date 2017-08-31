@@ -5,15 +5,17 @@ package org.sunbird.common.models.util;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.apache.velocity.VelocityContext;
+import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.request.Request;
 
 /**
@@ -561,5 +563,34 @@ public class ProjectUtil {
     public int getValue() {
       return this.value;
     }
+  }
+  
+  /**
+   * 
+   * @param serviceName
+   * @param isError
+   * @param e
+   * @return
+   */
+  public static Map<String, Object> createCheckResponse(String serviceName,
+      boolean isError,Exception e) {
+    Map<String, Object> responseMap = new HashMap<>();
+    responseMap.put(JsonKey.NAME, serviceName);
+    if(!isError){
+    responseMap.put(JsonKey.Healthy, true);
+    responseMap.put(JsonKey.ERROR, "");
+    responseMap.put(JsonKey.ERRORMSG, "");
+    }else {
+      responseMap.put(JsonKey.Healthy, false);
+      if(e instanceof ProjectCommonException) {
+        ProjectCommonException commonException = (ProjectCommonException) e;
+        responseMap.put(JsonKey.ERROR, commonException.getResponseCode());
+        responseMap.put(JsonKey.ERRORMSG, commonException.getMessage());
+      }else {
+        responseMap.put(JsonKey.ERROR, e.getMessage());
+        responseMap.put(JsonKey.ERRORMSG, e.getMessage());
+      }
+    }
+    return responseMap;
   }
 }
