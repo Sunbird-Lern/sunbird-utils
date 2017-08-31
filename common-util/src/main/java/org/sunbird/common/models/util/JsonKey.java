@@ -419,4 +419,13 @@ public class JsonKey {
   public static final String BADGES = "badges";
   public static final String REPORT_TRACKING_DB ="reportTrackingDb";
   public static final String FILE_URL = "fileUrl";
+  public static final String Healthy = "healthy";
+  public static final String ERROR = "err";
+  public static final String ERRORMSG ="errmsg";
+  public static final String ACTOR_SERVICE = "Actor service";
+  public static final String LEARNER_SERVICE = "Learner service";
+  public static final String CASSANDRA_SERVICE = "Cassandra service";
+  public static final String ES_SERVICE = "Elastic search service";
+  public static final String EKSTEP_SERVICE = "EkStep service";
+  public static final String CHECKS = "checks";
 }
