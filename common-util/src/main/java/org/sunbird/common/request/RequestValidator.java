@@ -151,7 +151,7 @@ public final class RequestValidator {
 	
 	private static void phoneAndEmailValidationForCreateUser(Request userRequest) {
     //Email is always mandatory for both External as well as our internal portal
-	  if (userRequest.getRequest().get(JsonKey.EMAIL) == null) {
+	  if (ProjectUtil.isStringNullOREmpty((String)userRequest.getRequest().get(JsonKey.EMAIL))) {
 	       throw new ProjectCommonException(ResponseCode.emailRequired.getErrorCode(),
 	               ResponseCode.emailRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
 	   }
