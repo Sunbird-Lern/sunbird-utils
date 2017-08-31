@@ -552,7 +552,7 @@ public class ProjectUtil {
    * @author Arvind
    */
   public enum ReportTrackingStatus {
-    NEW(0), GENERATING_FILE(1), UPLOADING_FILE(2),UPLOADING_FILE_SUCCESS(3),SENDING_MAIL(4),SENDING_MAIL_SUCCESS(5);
+    NEW(0), GENERATING_FILE(1), UPLOADING_FILE(2),UPLOADING_FILE_SUCCESS(3),SENDING_MAIL(4),SENDING_MAIL_SUCCESS(5), FAILED(9);
 
     private int value;
 
