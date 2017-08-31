@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -16,9 +15,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpRequest;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.entity.StringEntity;
@@ -47,6 +43,8 @@ public class HttpUtil {
      */
     public static String sendGetRequest(String requestURL,Map<String,String> headers)
 			throws IOException {
+      long startTime = System.currentTimeMillis();
+      ProjectLogger.log("HttpUtil sendGetRequest method started at ==" +startTime+" for requestURL "+requestURL, LoggerEnum.PERF_LOG);
 		URL url = new URL(requestURL);
 		HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 		httpURLConnection.setUseCaches(false);
@@ -56,7 +54,12 @@ public class HttpUtil {
 		if (headers != null && headers.size() > 0) {
 			setHeaders(httpURLConnection, headers);
 		}
-		return getResponse(httpURLConnection);
+		
+	    String str = getResponse(httpURLConnection);
+	    long stopTime = System.currentTimeMillis();
+        long elapsedTime = stopTime - startTime;
+	    ProjectLogger.log("HttpUtil sendGetRequest method end at ==" +stopTime+" for requestURL "+requestURL+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
+		return str;
 	}
      
     
@@ -75,6 +78,8 @@ public class HttpUtil {
      */
     public static String sendPostRequest(String requestURL,
 			Map<String, String> params,Map<String,String> headers) throws IOException {
+      long startTime = System.currentTimeMillis();
+      ProjectLogger.log("HttpUtil sendPostRequest method started at ==" +startTime+" for requestURL "+requestURL, LoggerEnum.PERF_LOG);
 		URL url = new URL(requestURL);
 		HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 		httpURLConnection.setUseCaches(false);
@@ -101,7 +106,12 @@ public class HttpUtil {
 		 writer.write(requestParams.toString());
 		 writer.flush();
 		 }
-		return getResponse(httpURLConnection);
+		 
+	        String str = getResponse(httpURLConnection);
+	        long stopTime = System.currentTimeMillis();
+	        long elapsedTime = stopTime - startTime;
+	        ProjectLogger.log("HttpUtil sendPostRequest method end at ==" +stopTime+" for requestURL "+requestURL+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
+		return str;
 	}
     
     /**
@@ -117,6 +127,8 @@ public class HttpUtil {
      */
     public static String sendPostRequest(String requestURL,
 			String params,Map<String,String> headers) throws IOException {
+      long startTime = System.currentTimeMillis();
+      ProjectLogger.log("HttpUtil sendPostRequest method started at ==" +startTime+" for requestURL "+requestURL, LoggerEnum.PERF_LOG);
 		URL url = new URL(requestURL);
 		HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 		httpURLConnection.setUseCaches(false);
@@ -129,7 +141,12 @@ public class HttpUtil {
 		 OutputStreamWriter writer = new OutputStreamWriter(httpURLConnection.getOutputStream());
 		 writer.write(params);
 		 writer.flush();
-		return getResponse(httpURLConnection);
+		 
+         String str = getResponse(httpURLConnection);
+         long stopTime = System.currentTimeMillis();
+         long elapsedTime = stopTime - startTime;
+         ProjectLogger.log("HttpUtil sendPostRequest method end at ==" +stopTime+" for requestURL "+requestURL+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
+		return str;
 	}
     
 	private static String getResponse(HttpURLConnection httpURLConnection) {
@@ -182,6 +199,9 @@ public class HttpUtil {
     public static String sendPatchRequest(String requestURL,
       String params, Map<String, String> headers)
       throws IOException {
+      long startTime = System.currentTimeMillis();
+      ProjectLogger.log("HttpUtil sendPatchRequest method started at ==" +startTime+" for requestURL "+requestURL, LoggerEnum.PERF_LOG);
+        
     HttpPatch patch = new HttpPatch(requestURL);
     setHeaders(patch, headers);
     CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -192,12 +212,21 @@ public class HttpUtil {
       ProjectLogger.log("response code for Patch Resques");
       if (response.getStatusLine().getStatusCode() == ResponseCode.OK
           .getResponseCode()) {
+        long stopTime = System.currentTimeMillis();
+        long elapsedTime = stopTime - startTime;
+        ProjectLogger.log("HttpUtil sendPatchRequest method end at ==" +stopTime+" for requestURL "+requestURL+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
         return ResponseCode.success.getErrorCode();
       }
+      long stopTime = System.currentTimeMillis();
+      long elapsedTime = stopTime - startTime;
+      ProjectLogger.log("HttpUtil sendPatchRequest method end at ==" +stopTime+" for requestURL "+requestURL+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
       return "Failure";
     } catch (Exception e) {
       ProjectLogger.log(e.getMessage(), e);
     }
+    long stopTime = System.currentTimeMillis();
+    long elapsedTime = stopTime - startTime;
+    ProjectLogger.log("HttpUtil sendPatchRequest method end at ==" +stopTime+" for requestURL "+requestURL+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
     return "Failure";
   }
 	
