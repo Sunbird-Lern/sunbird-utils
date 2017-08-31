@@ -357,6 +357,7 @@ public class JsonKey {
   public static final String EKSTEP_METRICS_URL = "ekstep_metrics_base_url";
   public static final String EKSTEP_ES_METRICS_API_URL = "ekstep_es_metrics_api_url";
   public static final String EKSTEP_METRICS_API_URL = "ekstep_metrics_api_url";
+  public static final String EKSTEP_CONCEPT_URL = "ekstep_concept_base_url";
   public static final String EKSTEP_METRICS_AUTHORIZATION = "ekstep_metrics_authorization";
   public static final String TIME_UNIT = "time_unit";
   public static final String TAG = "tag";
