@@ -49,7 +49,7 @@ public enum ActorOperations {
     ORG_CREATION_METRICS_REPORT("orgCreationMetricsReport"),ORG_CONSUMPTION_METRICS_REPORT("orgConsumptionMetricsReport"),
     EMAIL_SERVICE("emailService"),FILE_STORAGE_SERVICE("fileStorageService"),GET_ALL_BADGE("getAllBadge"),ADD_USER_BADGE("addUserBadge"),
     ADD_USER_BADGE_BKG("addUserBadgebackground"),FILE_UPLOAD_AND_SEND_MAIL("fileUploadAndSendMail"),HEALTH_CHECK("healthCheck"),
-   SEND_MAIL("sendMail");
+   SEND_MAIL("sendMail"),ACTOR("actor"),CASSANDRA("cassandra"),ES("es"),EKSTEP("ekstep");
 
     private String value;
 
