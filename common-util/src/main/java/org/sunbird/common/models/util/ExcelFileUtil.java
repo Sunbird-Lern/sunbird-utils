@@ -37,6 +37,10 @@ public class ExcelFileUtil {
                 cell.setCellValue((Integer)obj);
            }else if(obj instanceof List){
              cell.setCellValue(getListValue(obj));
+           }else {
+             if(ProjectUtil.isNotNull(obj)) {
+               cell.setCellValue(obj.toString());
+             }
            }
         }
         rownum++;
