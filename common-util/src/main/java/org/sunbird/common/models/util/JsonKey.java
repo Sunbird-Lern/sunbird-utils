@@ -430,4 +430,8 @@ public class JsonKey {
   public static final String CHECKS = "checks";
   public static final String TRY_COUNT = "tryCount";
   public static final String RESOURCE_ID = "resourceId";
+  public static final String ALL = "all";
+  public static final String ACTION_NAME = "actionName";
+  public static final String DEFAULT_ACTION_NAME = "Download Reports";
+  public static final String FROM_EMAIL ="fromEmail";
 }

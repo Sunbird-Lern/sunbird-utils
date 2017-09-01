@@ -541,7 +541,8 @@ public class ProjectUtil {
     }
     context.put(JsonKey.BODY, map.get(JsonKey.BODY));
     context.put(JsonKey.SUBJECT, map.get(JsonKey.SUBJECT));
-    //context.put("thanks", "Thanks.");
+    context.put(JsonKey.FROM_EMAIL, ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.EMAIL_SERVER_FROM))==false?System.getenv(JsonKey.EMAIL_SERVER_FROM):"");
+    context.put(JsonKey.ACTION_NAME,(String)map.get(JsonKey.ACTION_NAME));
     return context;
   }
   
@@ -583,13 +584,13 @@ public class ProjectUtil {
     responseMap.put(JsonKey.ERRORMSG, "");
     }else {
       responseMap.put(JsonKey.Healthy, false);
-      if(e instanceof ProjectCommonException) {
+      if(e!=null && e instanceof ProjectCommonException) {
         ProjectCommonException commonException = (ProjectCommonException) e;
         responseMap.put(JsonKey.ERROR, commonException.getResponseCode());
         responseMap.put(JsonKey.ERRORMSG, commonException.getMessage());
       }else {
-        responseMap.put(JsonKey.ERROR, e.getMessage());
-        responseMap.put(JsonKey.ERRORMSG, e.getMessage());
+        responseMap.put(JsonKey.ERROR, e!=null?e.getMessage():"connection Error");
+        responseMap.put(JsonKey.ERRORMSG, e!=null?e.getMessage():"connection Error");
       }
     }
     return responseMap;
