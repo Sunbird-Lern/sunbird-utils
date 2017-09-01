@@ -58,12 +58,11 @@ public class SendMail {
           PropertiesCache.getInstance().getProperty(JsonKey.EMAIL_SERVER_HOST);
       port =
           PropertiesCache.getInstance().getProperty(JsonKey.EMAIL_SERVER_PORT);
-      userName = PropertiesCache.getInstance()
+      userName =PropertiesCache.getInstance()
           .getProperty(JsonKey.EMAIL_SERVER_USERNAME);
       password = PropertiesCache.getInstance()
           .getProperty(JsonKey.EMAIL_SERVER_PASSWORD);
-      fromEmail =
-          PropertiesCache.getInstance().getProperty(JsonKey.EMAIL_SERVER_FROM);
+      fromEmail = PropertiesCache.getInstance().getProperty(JsonKey.EMAIL_SERVER_FROM);
     }
     props = System.getProperties();
     props.put("mail.smtp.host", host);
@@ -91,6 +90,9 @@ public class SendMail {
       VelocityContext context, String templateName) {
     Transport transport = null;
     boolean flag = true;
+    if(context != null) {
+      context.put(JsonKey.FROM_EMAIL, fromEmail);
+    }
     try {
       Session session = Session.getInstance(props,
           new GMailAuthenticator(userName, password));
@@ -262,11 +264,14 @@ public class SendMail {
     
     
     public static void main(String[] args) {
+      //{=, downloadUrl=https://www.google.com/, name=, body=, fromEmail=, actionName=}
       VelocityContext context = new VelocityContext();
-      //context.put("logo_url", "https://dev.open-sunbird.org");
-      context.put("name","Manzarul");
-      context.put("body", "Some text message for user.");
-      context.put("thanks", "Thanks.");
+      //context.put("downloadUrl", "https://dev.open-sunbird.org");
+      context.put("name",null);
+      context.put("body", "You did not get my point, Inside action methods when we want to call or redirect to another action method we normally use return redirect(routes.MyController.someMethod().url()) but how can I pass parameters in this case (Do not forget this is a Post call and I am using DynamicForm to extract parameters inside MyController.someMethod()");
+      context.put("actionName","View Details");
+      context.put("fromEmail", "");
+      context.put("subject", "test email");
       sendMail(new String [] {"manzarul.haque@tarento.com"}, "test email ntp", context, ProjectUtil.getTemplate(""));
       System.out.println("SUCCESS");
     }
