@@ -159,6 +159,7 @@ public enum ResponseCode {
     receiverIdMandatory(ResponseMessage.Key.RECEIVER_ID_ERROR, ResponseMessage.Message.RECEIVER_ID_ERROR),
     invalidReceiverId (ResponseMessage.Key.INVALID_RECEIVER_ID, ResponseMessage.Message.INVALID_RECEIVER_ID),
     invalidBadgeTypeId(ResponseMessage.Key.INVALID_BADGE_ID, ResponseMessage.Message.INVALID_BADGE_ID),
+    invalidRole(ResponseMessage.Key.INVALID_ROLE, ResponseMessage.Message.INVALID_ROLE),
     OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404);
 	
 	private int responseCode;

@@ -10,12 +10,15 @@ public abstract class FileUtil {
   @SuppressWarnings("unchecked")
   protected static String getListValue(Object obj) {
     List<Object> data = (List<Object>) obj;
+    if (!(data.isEmpty())) {
     StringBuffer sb = new StringBuffer();
     for (Object value : data) {
       sb.append((String) value).append(",");
     }
     sb.deleteCharAt(sb.length() - 1);
     return sb.toString();
+    }
+    return "";
   }
 
 }
