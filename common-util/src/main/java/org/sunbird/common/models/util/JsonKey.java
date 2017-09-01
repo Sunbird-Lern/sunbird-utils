@@ -430,4 +430,5 @@ public class JsonKey {
   public static final String CHECKS = "checks";
   public static final String TRY_COUNT = "tryCount";
   public static final String RESOURCE_ID = "resourceId";
+  public static final String FORMAT = "format";
 }
