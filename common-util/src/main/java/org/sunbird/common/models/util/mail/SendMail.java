@@ -267,7 +267,7 @@ public class SendMail {
       //{=, downloadUrl=https://www.google.com/, name=, body=, fromEmail=, actionName=}
       VelocityContext context = new VelocityContext();
       //context.put("downloadUrl", "https://dev.open-sunbird.org");
-      context.put("name",null);
+      context.put("name","");
       context.put("body", "You did not get my point, Inside action methods when we want to call or redirect to another action method we normally use return redirect(routes.MyController.someMethod().url()) but how can I pass parameters in this case (Do not forget this is a Post call and I am using DynamicForm to extract parameters inside MyController.someMethod()");
       context.put("actionName","View Details");
       context.put("fromEmail", "");
