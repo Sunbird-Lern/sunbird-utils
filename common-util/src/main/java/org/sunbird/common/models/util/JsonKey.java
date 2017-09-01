@@ -243,7 +243,6 @@ public class JsonKey {
   public static final String EXTERNAL_ID_VALUE = "externalIdValue";
   public static final String IS_VERIFIED = "isVerified";
   public static final String PHONE = "phone";
-  public static final String AADHAAR_NO = "aadhaarNo";
   public static final String INSERT = "insert";
   public static final String UPDATE = "update";
   public static final String USER_ORG = "user_org";
