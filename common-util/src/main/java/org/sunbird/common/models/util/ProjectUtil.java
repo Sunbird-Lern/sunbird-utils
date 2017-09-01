@@ -3,6 +3,7 @@
  */
 package org.sunbird.common.models.util;
 
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -593,4 +594,35 @@ public class ProjectUtil {
     }
     return responseMap;
   }
+  
+  
+  /**
+   * This method will make EkStep api call register the tag.
+   * @param tagId String unique tag id.
+   * @param body  String requested body
+   * @param header Map<String,String>
+   * @return String
+   * @throws IOException 
+   */
+  public static String registertag(String tagId,String body, Map<String,String> header) throws IOException {
+    String tagStatus = "";
+    try {
+      ProjectLogger
+          .log("start call for registering the tag ==" + tagId);
+      tagStatus = HttpUtil.sendPostRequest(
+          PropertiesCache.getInstance()
+              .getProperty(JsonKey.EKSTEP_BASE_URL)
+              + PropertiesCache.getInstance()
+                  .getProperty(JsonKey.EKSTEP_TAG_API_URL)
+              + "/" + tagId,
+              body, header);
+      ProjectLogger
+          .log("end call for tag registration id and status  ==" + tagId
+              + " " + tagStatus);
+    } catch (IOException e) {
+        throw e;
+    }
+    return tagStatus;
+  }
+  
 }
