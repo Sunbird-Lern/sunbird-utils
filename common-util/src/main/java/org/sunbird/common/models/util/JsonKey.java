@@ -375,6 +375,7 @@ public class JsonKey {
   public static final String DATE_HISTOGRAM = "DATE_HISTOGRAM";
   public static final String EKSTEP_TAG_API_URL ="ekstep.tag.api.url";
   public static final String HASH_TAG_ID = "hashtagid";
+  public static final String HASHTAGID = "hashTagId";
   public static final String COUNT_INCREMENT_DATE = "countIncrementDate";
   public static final String COUNT_DECREMENT_DATE = "countDecrementDate";
   public static final String EKSTEP_CONTENT_UPDATE_URL = "ekstep.content.update.url";
