@@ -916,5 +916,16 @@ public class ElasticSearchUtil {
     return response;
   }
   
-  
+  /**
+   * This method will do the health check of elastic search.
+   * @return boolean
+   * @throws InterruptedException
+   * @throws ExecutionException
+   */
+  public static boolean healthCheck() throws InterruptedException, ExecutionException {
+    boolean indexResponse = false;
+      indexResponse = ConnectionManager.getClient().admin().indices()
+          .exists(Requests.indicesExistsRequest(ProjectUtil.EsIndex.sunbird.name())).get().isExists();
+    return indexResponse;
+  }
 }
