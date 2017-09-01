@@ -160,6 +160,7 @@ public interface ResponseMessage {
       public static final String INVALID_RECEIVER_ID = "Receiver id is invalid.";
       public static final String INVALID_BADGE_ID = "Invalid badge type id.";
       public static final String USER_REG_ORG_ERROR = "this user belongs to some other organisation.";
+      public static final String INVALID_ROLE = "Invalid role value provided in request.";
 	}
     
     public interface Key {
@@ -314,5 +315,6 @@ public interface ResponseMessage {
         public static final String RECEIVER_ID_ERROR = "RECEIVER_ID_ERROR";
         public static final String INVALID_RECEIVER_ID = "INVALID_RECEIVER_ID";
         public static final String INVALID_BADGE_ID = "INVALID_BADGE_ID";
+        public static final String INVALID_ROLE = "INVALID_ROLE";
     }
 }
