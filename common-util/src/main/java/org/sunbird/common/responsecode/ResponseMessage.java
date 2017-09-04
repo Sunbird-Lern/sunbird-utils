@@ -103,7 +103,7 @@ public interface ResponseMessage {
 		public static final String INVALID_USER_ID = "User Id does not exists in our records";
 		public static final String LOGIN_ID_MISSING = "loginId is required.";
 		public static final String CONTENT_STATUS_MISSING_ERROR = "content status is required .";
-		public static final String ES_ERROR = "Something went wrong when processing data using elasticSearch";
+		public static final String ES_ERROR = "Something went wrong when processing data for search";
 		public static final String INVALID_PERIOD = "Time Period is invalid";
 		public static final String USER_NOT_FOUND = "user not found.";
 		public static final String ID_REQUIRED_ERROR = "For deleting a record, Id is required.";
@@ -148,6 +148,7 @@ public interface ResponseMessage {
       public static final String INVALID_JSON = "Unable to process object to JSON/ JSON to Object";
       public static final String EMPTY_CSV_FILE = "CSV file is Empty.";
       public static final String INVALID_ROOT_ORG_DATA = "Root org doesn't exist for this Organisation Id and channel {0}";
+      public static final String NO_DATA = "No sufficient data for fetching the results";
       public static final String INVALID_CHANNEL = "Channel value is invalid.";
       public static final String INVALID_PROCESS_ID = "Invalid Process Id.";
       public static final String EMAIL_SUBJECT_ERROR = "Email Subject is mandatory.";
@@ -303,6 +304,7 @@ public interface ResponseMessage {
 		public static final String INVALID_JSON = "INVALID_JSON";
 		public static final String EMPTY_CSV_FILE = "EMPTY_CSV_FILE";
 		public static final String INVALID_ROOT_ORG_DATA = "INVALID_ROOT_ORG_DATA";
+		public static final String NO_DATA = "NO_DATA";
 		public static final String INVALID_CHANNEL = "INVALID_CHANNEL";
 		public static final String INVALID_PROCESS_ID = "INVALID_PROCESS_ID";
 		public static final String EMAIL_SUBJECT_ERROR = "EMAIL_SUBJECT_ERROR";
