@@ -147,6 +147,7 @@ public enum ResponseCode {
     courseBatchStartPassedDateError(ResponseMessage.Key.COURSE_BATCH_START_PASSED_DATE_INVALID, ResponseMessage.Message.COURSE_BATCH_START_PASSED_DATE_INVALID),
     csvFileEmpty(ResponseMessage.Key.EMPTY_CSV_FILE, ResponseMessage.Message.EMPTY_CSV_FILE),
     invalidRootOrgData(ResponseMessage.Key.INVALID_ROOT_ORG_DATA, ResponseMessage.Message.INVALID_ROOT_ORG_DATA),
+    noDataForConsumption(ResponseMessage.Key.NO_DATA,ResponseMessage.Message.NO_DATA),
     invalidChannel(ResponseMessage.Key.INVALID_CHANNEL, ResponseMessage.Message.INVALID_CHANNEL),
     invalidProcessId(ResponseMessage.Key.INVALID_PROCESS_ID, ResponseMessage.Message.INVALID_PROCESS_ID),
     emailSubjectError(ResponseMessage.Key.EMAIL_SUBJECT_ERROR, ResponseMessage.Message.EMAIL_SUBJECT_ERROR),
