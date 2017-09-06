@@ -540,7 +540,6 @@ public class ProjectUtil {
       context.put(JsonKey.NAME,(String)map.get(JsonKey.NAME));
     }
     context.put(JsonKey.BODY, map.get(JsonKey.BODY));
-    context.put(JsonKey.SUBJECT, map.get(JsonKey.SUBJECT));
     context.put(JsonKey.FROM_EMAIL, ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.EMAIL_SERVER_FROM))==false?System.getenv(JsonKey.EMAIL_SERVER_FROM):"");
     context.put(JsonKey.ACTION_NAME,(String)map.get(JsonKey.ACTION_NAME));
     return context;
