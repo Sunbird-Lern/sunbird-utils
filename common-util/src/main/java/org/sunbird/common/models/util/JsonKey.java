@@ -436,4 +436,8 @@ public class JsonKey {
   public static final String FROM_EMAIL ="fromEmail";
   public static final String FILE_NAME = "fileName";
   public static final String FORMAT = "format";
+  
+  public static final String OrgCreation = "orgCreation";
+  public static final String OrgConsumption = "orgConsumption";
+  public static final String CourseProgress = "courseProgress";
 }
