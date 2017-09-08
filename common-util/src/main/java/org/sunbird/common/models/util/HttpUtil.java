@@ -8,14 +8,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPatch;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.sunbird.common.responsecode.ResponseCode;
 
 /**
  * This utility method will handle external 
@@ -38,6 +43,8 @@ public class HttpUtil {
      */
     public static String sendGetRequest(String requestURL,Map<String,String> headers)
 			throws IOException {
+      long startTime = System.currentTimeMillis();
+      ProjectLogger.log("HttpUtil sendGetRequest method started at ==" +startTime+" for requestURL "+requestURL, LoggerEnum.PERF_LOG);
 		URL url = new URL(requestURL);
 		HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 		httpURLConnection.setUseCaches(false);
@@ -47,7 +54,12 @@ public class HttpUtil {
 		if (headers != null && headers.size() > 0) {
 			setHeaders(httpURLConnection, headers);
 		}
-		return getResponse(httpURLConnection);
+		
+	    String str = getResponse(httpURLConnection);
+	    long stopTime = System.currentTimeMillis();
+        long elapsedTime = stopTime - startTime;
+	    ProjectLogger.log("HttpUtil sendGetRequest method end at ==" +stopTime+" for requestURL "+requestURL+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
+		return str;
 	}
      
     
@@ -66,6 +78,8 @@ public class HttpUtil {
      */
     public static String sendPostRequest(String requestURL,
 			Map<String, String> params,Map<String,String> headers) throws IOException {
+      long startTime = System.currentTimeMillis();
+      ProjectLogger.log("HttpUtil sendPostRequest method started at ==" +startTime+" for requestURL "+requestURL, LoggerEnum.PERF_LOG);
 		URL url = new URL(requestURL);
 		HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 		httpURLConnection.setUseCaches(false);
@@ -92,7 +106,12 @@ public class HttpUtil {
 		 writer.write(requestParams.toString());
 		 writer.flush();
 		 }
-		return getResponse(httpURLConnection);
+		 
+	        String str = getResponse(httpURLConnection);
+	        long stopTime = System.currentTimeMillis();
+	        long elapsedTime = stopTime - startTime;
+	        ProjectLogger.log("HttpUtil sendPostRequest method end at ==" +stopTime+" for requestURL "+requestURL+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
+		return str;
 	}
     
     /**
@@ -108,6 +127,8 @@ public class HttpUtil {
      */
     public static String sendPostRequest(String requestURL,
 			String params,Map<String,String> headers) throws IOException {
+      long startTime = System.currentTimeMillis();
+      ProjectLogger.log("HttpUtil sendPostRequest method started at ==" +startTime+" for requestURL "+requestURL, LoggerEnum.PERF_LOG);
 		URL url = new URL(requestURL);
 		HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 		httpURLConnection.setUseCaches(false);
@@ -120,7 +141,12 @@ public class HttpUtil {
 		 OutputStreamWriter writer = new OutputStreamWriter(httpURLConnection.getOutputStream());
 		 writer.write(params);
 		 writer.flush();
-		return getResponse(httpURLConnection);
+		 
+         String str = getResponse(httpURLConnection);
+         long stopTime = System.currentTimeMillis();
+         long elapsedTime = stopTime - startTime;
+         ProjectLogger.log("HttpUtil sendPostRequest method end at ==" +stopTime+" for requestURL "+requestURL+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
+		return str;
 	}
     
 	private static String getResponse(HttpURLConnection httpURLConnection) {
@@ -158,16 +184,93 @@ public class HttpUtil {
 		return builder.toString();
 	} 
     
+    
+	/**
+     * Makes an HTTP request using PATCH method to the specified URL.
+     *
+     * @param requestURL
+     *            the URL of the remote server
+     * @param params
+     *            A map containing POST data in form of key-value pairs
+     * @return An HttpURLConnection object
+     * @throws IOException
+     *             thrown if any I/O error occurred
+     */
+    public static String sendPatchRequest(String requestURL,
+      String params, Map<String, String> headers)
+      throws IOException {
+      long startTime = System.currentTimeMillis();
+      ProjectLogger.log("HttpUtil sendPatchRequest method started at ==" +startTime+" for requestURL "+requestURL, LoggerEnum.PERF_LOG);
+        
+    HttpPatch patch = new HttpPatch(requestURL);
+    setHeaders(patch, headers);
+    CloseableHttpClient httpClient = HttpClients.createDefault();
+    StringEntity entity = new StringEntity(params);
+    patch.setEntity(entity);
+    try {
+      CloseableHttpResponse response = httpClient.execute(patch);
+      ProjectLogger.log("response code for Patch Resques");
+      if (response.getStatusLine().getStatusCode() == ResponseCode.OK
+          .getResponseCode()) {
+        long stopTime = System.currentTimeMillis();
+        long elapsedTime = stopTime - startTime;
+        ProjectLogger.log("HttpUtil sendPatchRequest method end at ==" +stopTime+" for requestURL "+requestURL+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
+        return ResponseCode.success.getErrorCode();
+      }
+      long stopTime = System.currentTimeMillis();
+      long elapsedTime = stopTime - startTime;
+      ProjectLogger.log("HttpUtil sendPatchRequest method end at ==" +stopTime+" for requestURL "+requestURL+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
+      return "Failure";
+    } catch (Exception e) {
+      ProjectLogger.log(e.getMessage(), e);
+    }
+    long stopTime = System.currentTimeMillis();
+    long elapsedTime = stopTime - startTime;
+    ProjectLogger.log("HttpUtil sendPatchRequest method end at ==" +stopTime+" for requestURL "+requestURL+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
+    return "Failure";
+  }
+	
+	
+	/**
+     * Set the header for request.
+     * @param httpURLConnection  HttpURLConnection
+     * @param headers Map<String,String>
+     */
+  private static void setHeaders(HttpPatch httpPatch,
+      Map<String, String> headers) {
+    Iterator<Entry<String, String>> itr = headers.entrySet().iterator();
+    while (itr.hasNext()) {
+      Entry<String, String> entry = itr.next();
+      httpPatch.setHeader(entry.getKey(), entry.getValue());
+    }
+  }
+    
+    
     /**
      * Set the header for request.
      * @param httpURLConnection  HttpURLConnection
      * @param headers Map<String,String>
      */
     private static void setHeaders( HttpURLConnection httpURLConnection ,Map<String,String> headers ) {
-    	 Iterator<Entry<String,String>> itr = headers.entrySet().iterator();
-    	 while ( itr.hasNext() ) {
-    		 Entry<String,String> entry = itr.next();
-    	     httpURLConnection.setRequestProperty(entry.getKey(),entry.getValue());
-    	 }
+         Iterator<Entry<String,String>> itr = headers.entrySet().iterator();
+         while ( itr.hasNext() ) {
+             Entry<String,String> entry = itr.next();
+             httpURLConnection.setRequestProperty(entry.getKey(),entry.getValue());
+         }
+    } 
+    
+    
+    
+    public static void main(String[] args) {
+      Map<String,String> headermap = new HashMap<String, String>();
+      headermap.put("Content-Type", "application/json");
+      headermap.put("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2MzExMTYwNTMzOGY0Zjc5YTgwZTM3YjcyZjVjMmUwZiJ9.azmj_AHmndeJz0h6yIkOJz1XjeZR6Gzd-OrZzR66I0A");
+      try {
+       String response = sendPatchRequest("https://qa.ekstep.in/api/system/v3/content/update/LP_FT_25", "{\"request\": {\"content\": {\"name\": \"Testing Name\"}}}", headermap);
+       System.out.println(response);
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
     }
 }

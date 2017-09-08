@@ -3,6 +3,8 @@
  */
 package org.sunbird.common;
 
+import static org.sunbird.common.models.util.ProjectUtil.isNotNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,13 +14,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
-
 import java.util.stream.Collectors;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.admin.indices.exists.types.TypesExistsRequest;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
+import org.elasticsearch.action.bulk.BulkItemResponse;
+import org.elasticsearch.action.bulk.BulkProcessor;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
@@ -42,11 +47,12 @@ import org.elasticsearch.index.query.TermsQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
+import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
-
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
@@ -56,8 +62,6 @@ import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
 import org.sunbird.helper.ElasticSearchMapping;
 import org.sunbird.helper.ElasticSearchSettings;
-
-import static org.sunbird.common.models.util.ProjectUtil.isNotNull;
 
 /**
  * This class will provide all required operation
@@ -95,6 +99,8 @@ public class ElasticSearchUtil {
    */
   public static String createData(String index, String type, String identifier,
       Map<String, Object> data) {
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log("ElasticSearchUtil createData method started at ==" +startTime+" for Type "+type, LoggerEnum.PERF_LOG);
     if (ProjectUtil.isStringNullOREmpty(identifier) || ProjectUtil.isStringNullOREmpty(type)
         || ProjectUtil.isStringNullOREmpty(index)) {
       ProjectLogger.log("Identifier value is null or empty ,not able to save data.");
@@ -110,8 +116,11 @@ public class ElasticSearchUtil {
           .log("Save value==" + response.getId() + " " + response.status(), LoggerEnum.INFO.name());
       return response.getId();
     } catch (Exception e) {
-      ProjectLogger.log(e.getMessage(), e);
+      ProjectLogger.log("Error while saving "+type+" id : "+identifier, e);
     }
+    long stopTime = System.currentTimeMillis();
+    long elapsedTime = stopTime - startTime;
+    ProjectLogger.log("ElasticSearchUtil createData method end at ==" +stopTime+" for Type "+type+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
     return "";
   }
 
@@ -125,6 +134,8 @@ public class ElasticSearchUtil {
    */
   public static Map<String, Object> getDataByIdentifier(String index, String type,
       String identifier) {
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log("ElasticSearchUtil getDataByIdentifier method started at ==" +startTime+" for Type "+type, LoggerEnum.PERF_LOG);
     GetResponse response = null;
     if (ProjectUtil.isStringNullOREmpty(index) && ProjectUtil.isStringNullOREmpty(type)
         && ProjectUtil.isStringNullOREmpty(identifier)) {
@@ -139,8 +150,11 @@ public class ElasticSearchUtil {
       response = ConnectionManager.getClient().prepareGet(index, type, identifier).get();
     }
     if (response == null) {
-      return null;
+      return new HashMap<String , Object>();
     }
+    long stopTime = System.currentTimeMillis();
+    long elapsedTime = stopTime - startTime;
+    ProjectLogger.log("ElasticSearchUtil getDataByIdentifier method end at ==" +stopTime+" for Type "+type+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
     return response.getSource();
   }
 
@@ -154,6 +168,8 @@ public class ElasticSearchUtil {
    */
   public static Map<String, Object> searchData(String index, String type,
       Map<String, Object> searchData) {
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log("ElasticSearchUtil searchData method started at ==" +startTime+" for Type "+type, LoggerEnum.PERF_LOG);
     SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
     Iterator<Entry<String, Object>> itr = searchData.entrySet().iterator();
     while (itr.hasNext()) {
@@ -171,7 +187,9 @@ public class ElasticSearchUtil {
       ProjectLogger.log("Error while execution in Elasticsearch", e);
     }
     sr.getHits().getAt(0).getSource();
-
+    long stopTime = System.currentTimeMillis();
+    long elapsedTime = stopTime - startTime;
+    ProjectLogger.log("ElasticSearchUtil searchData method end at ==" +stopTime+" for Type "+type+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
     return sr.getAggregations().asList().get(0).getMetaData();
   }
 
@@ -187,6 +205,8 @@ public class ElasticSearchUtil {
    */
   public static boolean updateData(String index, String type, String identifier,
       Map<String, Object> data) {
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log("ElasticSearchUtil updateData method started at ==" +startTime+" for Type "+type, LoggerEnum.PERF_LOG);
     if (!ProjectUtil.isStringNullOREmpty(index)
         && !ProjectUtil.isStringNullOREmpty(type)
         && !ProjectUtil.isStringNullOREmpty(identifier) && data != null) {
@@ -197,6 +217,9 @@ public class ElasticSearchUtil {
         ProjectLogger.log("updated response==" + response.getResult().name(),
             LoggerEnum.INFO.name());
         if (response.getResult().name().equals("UPDATED")) {
+          long stopTime = System.currentTimeMillis();
+          long elapsedTime = stopTime - startTime;
+          ProjectLogger.log("ElasticSearchUtil updateData method end at ==" +stopTime+" for Type "+type+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
           return true;
         }
       } catch (Exception e) {
@@ -205,6 +228,9 @@ public class ElasticSearchUtil {
     } else {
       ProjectLogger.log("Requested data is invalid.");
     }
+    long stopTime = System.currentTimeMillis();
+    long elapsedTime = stopTime - startTime;
+    ProjectLogger.log("ElasticSearchUtil updateData method end at ==" +stopTime+" for Type "+type+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
     return false;
   }
 
@@ -220,6 +246,8 @@ public class ElasticSearchUtil {
    */
   public static boolean upsertData(String index, String type, String identifier,
       Map<String, Object> data) {
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log("ElasticSearchUtil upsertData method started at ==" +startTime+" for Type "+type, LoggerEnum.PERF_LOG);
     if (!ProjectUtil.isStringNullOREmpty(index) && !ProjectUtil.isStringNullOREmpty(type)
         && !ProjectUtil.isStringNullOREmpty(identifier) && data != null) {
       verifyOrCreateIndexAndType(index, type);
@@ -229,18 +257,23 @@ public class ElasticSearchUtil {
       UpdateResponse response = null;
       try {
         response = ConnectionManager.getClient().update(updateRequest).get();
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      } catch (ExecutionException e) {
-        e.printStackTrace();
+      } catch (InterruptedException | ExecutionException e) {
+        ProjectLogger.log(e.getMessage() ,e);
+        return false;
       }
       ProjectLogger.log("updated response==" + response.getResult().name());
       if (upsertResults.contains(response.getResult().name())) {
+        long stopTime = System.currentTimeMillis();
+        long elapsedTime = stopTime - startTime;
+        ProjectLogger.log("ElasticSearchUtil upsertData method end at ==" +stopTime+" for Type "+type+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
         return true;
       }
     } else {
       ProjectLogger.log("Requested data is invalid.");
     }
+    long stopTime = System.currentTimeMillis();
+    long elapsedTime = stopTime - startTime;
+    ProjectLogger.log("ElasticSearchUtil upsertData method end at ==" +stopTime+" for Type "+type+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
     return false;
   }
 
@@ -252,6 +285,8 @@ public class ElasticSearchUtil {
    * @param identifier String
    */
   public static void removeData(String index, String type, String identifier) {
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log("ElasticSearchUtil removeData method started at ==" +startTime, LoggerEnum.PERF_LOG);
     if (!ProjectUtil.isStringNullOREmpty(index) && !ProjectUtil.isStringNullOREmpty(type)
         && !ProjectUtil.isStringNullOREmpty(identifier)) {
       verifyOrCreateIndexAndType(index, type);
@@ -265,6 +300,9 @@ public class ElasticSearchUtil {
     } else {
       ProjectLogger.log("Data can not be deleted due to invalid input.");
     }
+    long stopTime = System.currentTimeMillis();
+    long elapsedTime = stopTime - startTime;
+    ProjectLogger.log("ElasticSearchUtil removeData method end at ==" +stopTime+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
   }
 
   /**
@@ -367,7 +405,8 @@ public class ElasticSearchUtil {
    */
   public static Map<String, Object> complexSearch(SearchDTO searchDTO, String index,
       String... type) {
-
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log("ElasticSearchUtil complexSearch method started at ==" +startTime, LoggerEnum.PERF_LOG);
     SearchRequestBuilder searchRequestBuilder = getSearchBuilder(ConnectionManager.getClient(),
         index, type);
 
@@ -383,8 +422,8 @@ public class ElasticSearchUtil {
     }
 
     //apply simple query string
-    if (null != searchDTO.getQuery()) {
-      query.should(QueryBuilders.simpleQueryStringQuery(searchDTO.getQuery()));
+    if (!ProjectUtil.isStringNullOREmpty(searchDTO.getQuery())) {
+      query.must(QueryBuilders.simpleQueryStringQuery(searchDTO.getQuery()).field("all_fields"));
     }
     //apply the sorting
     if (searchDTO.getSortBy() != null && searchDTO.getSortBy().size() > 0) {
@@ -394,10 +433,9 @@ public class ElasticSearchUtil {
     }
 
     //apply the fields filter
-    if (searchDTO.getFields() != null && searchDTO.getFields().size() > 0) {
       searchRequestBuilder
-          .setFetchSource(searchDTO.getFields().stream().toArray(String[]::new), null);
-    }
+          .setFetchSource(searchDTO.getFields()!= null?searchDTO.getFields().stream().toArray(String[]::new):null, searchDTO.getExcludedFields() != null ?searchDTO.getExcludedFields().stream().toArray(String[]::new):null);
+
 
     // setting the offset
     if (searchDTO.getOffset() != null) {
@@ -421,13 +459,11 @@ public class ElasticSearchUtil {
     List finalFacetList = new ArrayList();
 
     if (null != searchDTO.getFacets() && searchDTO.getFacets().size() > 0) {
-      for (String facets : searchDTO.getFacets()) {
-        searchRequestBuilder
-            .addAggregation(AggregationBuilders.terms(facets).field(facets + RAW_APPEND));
-      }
+      addAggregations(searchRequestBuilder ,searchDTO.getFacets());
     }
     ProjectLogger.log("calling search builder======" + searchRequestBuilder.toString());
-    SearchResponse response = searchRequestBuilder.execute().actionGet();
+    SearchResponse response = null;
+    response = searchRequestBuilder.execute().actionGet();
     ProjectLogger.log("getting response for es======" + response);
     List<Map<String, Object>> esSource = new ArrayList<Map<String, Object>>();
     Map<String, Object> responsemap = new HashMap<>();
@@ -442,27 +478,79 @@ public class ElasticSearchUtil {
 
       //fetch aggregations aggregations
       if (null != searchDTO.getFacets() && searchDTO.getFacets().size() > 0) {
-        for (String facets : searchDTO.getFacets()) {
-          List<Object> termsList = new ArrayList<>();
+        Map<String ,String> m1 = searchDTO.getFacets().get(0);
+        for(Map.Entry<String,String> entry : m1.entrySet()){
+          String field = entry.getKey();
+          String aggsType = entry.getValue();
+          List<Object> aggsList = new ArrayList<>();
           Map facetMap = new HashMap();
-          Terms aggs = response.getAggregations().get(facets);
-          for (Bucket bucket : aggs.getBuckets()) {
-            Map internalMap = new HashMap();
-            internalMap.put(JsonKey.NAME, bucket.getKey());
-            internalMap.put(JsonKey.COUNT, bucket.getDocCount());
-            termsList.add(internalMap);
+          if(JsonKey.DATE_HISTOGRAM.equalsIgnoreCase(aggsType)){
+            Histogram agg = response.getAggregations().get(field);
+            for (Histogram.Bucket ent : agg.getBuckets()) {
+              //DateTime key = (DateTime) ent.getKey();    // Key
+              String keyAsString = ent.getKeyAsString(); // Key as String
+              long docCount = ent.getDocCount();         // Doc count
+              Map internalMap = new HashMap();
+              internalMap.put(JsonKey.NAME, keyAsString);
+              internalMap.put(JsonKey.COUNT, docCount);
+              aggsList.add(internalMap);
+
+            }
           }
-          facetMap.put("values", termsList);
-          facetMap.put(JsonKey.NAME , facets);
+          else{
+            Terms aggs = response.getAggregations().get(field);
+            for (Bucket bucket : aggs.getBuckets()) {
+              Map internalMap = new HashMap();
+              internalMap.put(JsonKey.NAME, bucket.getKey());
+              internalMap.put(JsonKey.COUNT, bucket.getDocCount());
+              aggsList.add(internalMap);
+            }
+          }
+          facetMap.put("values", aggsList);
+          facetMap.put(JsonKey.NAME , field);
           finalFacetList.add(facetMap);
 
         }
       }
     }
     responsemap.put(JsonKey.CONTENT, esSource);
-    responsemap.put(JsonKey.FACETS, finalFacetList);
+    if(!(finalFacetList.isEmpty())) {
+      responsemap.put(JsonKey.FACETS, finalFacetList);
+    }
     responsemap.put(JsonKey.COUNT, count);
+    long stopTime = System.currentTimeMillis();
+    long elapsedTime = stopTime - startTime;
+    ProjectLogger.log("ElasticSearchUtil complexSearch method end at ==" +stopTime+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
     return responsemap;
+  }
+
+  private static void addAggregations(
+      SearchRequestBuilder searchRequestBuilder,
+      List<Map<String, String>> facets) {
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log("ElasticSearchUtil addAggregations method started at ==" +startTime, LoggerEnum.PERF_LOG);
+    Map<String, String> map = facets.get(0);
+    for (Map.Entry<String, String> entry : map.entrySet()) {
+
+      String key = entry.getKey();
+      String value = entry.getValue();
+      if (JsonKey.DATE_HISTOGRAM.equalsIgnoreCase(value)) {
+        searchRequestBuilder
+            .addAggregation(AggregationBuilders
+                .dateHistogram(key)
+                .field(key + RAW_APPEND)
+                .dateHistogramInterval(DateHistogramInterval.days(1)));
+
+      } else if (null == value) {
+        searchRequestBuilder
+            .addAggregation(AggregationBuilders.terms(key).field(key + RAW_APPEND));
+
+      }
+
+    }
+    long stopTime = System.currentTimeMillis();
+    long elapsedTime = stopTime - startTime;
+    ProjectLogger.log("ElasticSearchUtil addAggregations method end at ==" +stopTime+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
   }
 
   private static Map<String, Float> getConstraints(SearchDTO searchDTO) {
@@ -499,7 +587,8 @@ public class ElasticSearchUtil {
   private static void addAdditionalProperties(BoolQueryBuilder query,
       Entry<String, Object> entry,
       Map<String, Float> constraintsMap) {
-
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log("ElasticSearchUtil addAdditionalProperties method started at ==" +startTime, LoggerEnum.PERF_LOG);
     String key = entry.getKey();
 
     if (key.equalsIgnoreCase(JsonKey.FILTERS)) {
@@ -511,7 +600,9 @@ public class ElasticSearchUtil {
     } else if (key.equalsIgnoreCase(JsonKey.EXISTS) || key.equalsIgnoreCase(JsonKey.NOT_EXISTS)) {
       createESOpperation(entry, query, constraintsMap);
     }
-
+    long stopTime = System.currentTimeMillis();
+    long elapsedTime = stopTime - startTime;
+    ProjectLogger.log("ElasticSearchUtil addAdditionalProperties method end at ==" +stopTime+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
   }
 
   /**
@@ -695,7 +786,7 @@ public class ElasticSearchUtil {
   private static RangeQueryBuilder createRangeQuery(String name, Map<String, Object> rangeOperation,
       Float boost) {
 
-    RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(name);
+    RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(name+RAW_APPEND);
     for (Map.Entry<String, Object> it : rangeOperation.entrySet()) {
       if (it.getKey().equalsIgnoreCase(LTE)) {
         rangeQueryBuilder.lte(it.getValue());
@@ -758,6 +849,83 @@ public class ElasticSearchUtil {
     }
     return queryBuilder;
   }
+  
+  /**
+   * This method will do the bulk data insertion.
+   * @param index  String index name
+   * @param type String type name
+   * @param dataList  List<Map<String, Object>>
+   * @return boolean
+   */
+  public static boolean bulkInsertData(String index, String type,
+      List<Map<String, Object>> dataList) {
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log("ElasticSearchUtil bulkInsertData method started at ==" +startTime+" for Type "+type, LoggerEnum.PERF_LOG);
+    boolean response = true;
+    try {
+    BulkProcessor bulkProcessor = BulkProcessor
+        .builder(ConnectionManager.getClient(), new BulkProcessor.Listener() {
+          @Override
+          public void beforeBulk(long executionId, BulkRequest request) {
+            // TODO Auto-generated method stub
+          }
+
+          @Override
+          public void afterBulk(long executionId, BulkRequest request,
+              BulkResponse response) {
+            Iterator<BulkItemResponse> bulkResponse = response.iterator();
+            if (bulkResponse != null) {
+              while (bulkResponse.hasNext()) {
+                BulkItemResponse bResponse = bulkResponse.next();
+                ProjectLogger.log("Bulk insert api response==="
+                    + bResponse.getId() + " " + bResponse.isFailed());
+              }
+            }
+          }
+
+          @Override
+          public void afterBulk(long executionId, BulkRequest request,
+              Throwable failure) {
+            // TODO Auto-generated method stub
+
+          }
+        }).setBulkActions(10000).setConcurrentRequests(0).build();
+
+    for (Map<String, Object> map : dataList) {
+      map.put(JsonKey.IDENTIFIER, map.get(JsonKey.ID));
+      IndexRequest request =
+          new IndexRequest(index, type, (String) map.get(JsonKey.IDENTIFIER))
+              .source(map);
+      bulkProcessor.add(request);
+    }
+    // Flush any remaining requests
+    bulkProcessor.flush();
+
+    // Or close the bulkProcessor if you don't need it anymore
+    bulkProcessor.close();
+
+    // Refresh your indices
+    ConnectionManager.getClient().admin().indices().prepareRefresh().get();
+    } catch (Exception e) {
+      response = false;
+      ProjectLogger.log(e.getMessage(), e);
+    }
+    long stopTime = System.currentTimeMillis();
+    long elapsedTime = stopTime - startTime;
+    ProjectLogger.log("ElasticSearchUtil bulkInsertData method end at ==" +stopTime+" for Type "+type+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
+    return response;
+  }
+  
+  /**
+   * This method will do the health check of elastic search.
+   * @return boolean
+   * @throws InterruptedException
+   * @throws ExecutionException
+   */
+  public static boolean healthCheck() throws InterruptedException, ExecutionException {
+    boolean indexResponse = false;
+      indexResponse = ConnectionManager.getClient().admin().indices()
+          .exists(Requests.indicesExistsRequest(ProjectUtil.EsIndex.sunbird.name())).get().isExists();
+    return indexResponse;
+  }
 }
-
-
