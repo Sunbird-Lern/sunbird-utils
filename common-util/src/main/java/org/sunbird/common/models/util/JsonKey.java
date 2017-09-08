@@ -440,4 +440,5 @@ public class JsonKey {
   public static final String OrgCreation = "orgCreation";
   public static final String OrgConsumption = "orgConsumption";
   public static final String CourseProgress = "courseProgress";
+  public static final String CourseConsumption = "courseConsumption";
 }
