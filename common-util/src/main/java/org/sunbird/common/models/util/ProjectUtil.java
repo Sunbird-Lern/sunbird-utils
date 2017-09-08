@@ -3,16 +3,20 @@
  */
 package org.sunbird.common.models.util;
 
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.velocity.VelocityContext;
+import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.request.Request;
 
 /**
@@ -31,6 +35,7 @@ public class ProjectUtil {
     private static AtomicInteger atomicInteger = new AtomicInteger();
 
     public static final long BACKGROUND_ACTOR_WAIT_TIME = 30;
+    public static final String YEAR_MONTH_DATE_FORMAT = "yyyy-MM-dd";
     
     /**
      * @author Manzarul
@@ -206,6 +211,18 @@ public class ProjectUtil {
     public static String getFormattedDate() {
         return format.format(new Date());
     }
+    
+    /**
+     * This method will provide formatted date
+     *
+     * @return
+     */
+    public static String formatDate(Date date) {
+    	if (null != date)
+    		return format.format(date);
+    	else
+    		return null;
+    }
 
 
     private static Pattern pattern;
@@ -257,6 +274,10 @@ public class ProjectUtil {
         return env + "" + uid + "" + atomicInteger.getAndIncrement();
     }
 
+    public static void main(String[] args) {
+      System.out.println(getUniqueIdFromTimestamp(2));
+    }
+    
     /**
      * This method will generate the unique id .
      *
@@ -266,7 +287,7 @@ public class ProjectUtil {
         return UUID.randomUUID().toString();
     }
      
-    public enum Method {GET,POST,PUT,DELETE}
+    public enum Method {GET,POST,PUT,DELETE,PATCH}
     public static final String FILE_NAME [] = {"cassandratablecolumn.properties","elasticsearch.config.properties","cassandra.config.properties","dbconfig.properties","externalresource.properties","sso.properties"};
     
     /**
@@ -297,7 +318,7 @@ public class ProjectUtil {
 	 *
 	 */
 	public enum EsType {
-		course("course"), content("content"), user("user"), organisation("org");
+		course("course"), content("content"), user("user"), organisation("org"),usercourses("usercourses");
 		private String typeName;
 
 		private EsType(String name) {
@@ -487,4 +508,121 @@ public class ProjectUtil {
       this.val = val;
     }
   }
+  
+  public static final String [] excludes = new String[]{JsonKey.EMAIL,JsonKey.PHONE,JsonKey.USERNAME,JsonKey.LOGIN_ID,JsonKey.USER_ID};
+  
+  /**
+   * 
+   * @author Manzarul
+   *
+   */
+  public enum AzureContainer {
+    userProfileImg ("userprofileimg"),orgImage ("orgimg");
+    private String name;
+    private AzureContainer(String name) {
+      this.name = name;
+    }
+    public String getName() {
+      return name;
+    }
+    public void setName(String name) {
+      this.name = name;
+    }
+  }
+  
+  public static VelocityContext getContext(Map<String,Object> map){
+    VelocityContext context = new VelocityContext();
+    
+    if(!ProjectUtil.isStringNullOREmpty((String)map.get(JsonKey.DOWNLOAD_URL))){
+      context.put(JsonKey.DOWNLOAD_URL, map.get(JsonKey.DOWNLOAD_URL));
+    }
+    if(!ProjectUtil.isStringNullOREmpty((String)map.get(JsonKey.NAME))){
+      context.put(JsonKey.NAME,(String)map.get(JsonKey.NAME));
+    }
+    context.put(JsonKey.BODY, map.get(JsonKey.BODY));
+    context.put(JsonKey.FROM_EMAIL, ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.EMAIL_SERVER_FROM))==false?System.getenv(JsonKey.EMAIL_SERVER_FROM):"");
+    context.put(JsonKey.ACTION_NAME,(String)map.get(JsonKey.ACTION_NAME));
+    return context;
+  }
+  
+  public static String getTemplate(String templateType){
+    return "/emailtemplate.vm";
+  }
+
+  /**
+   * @author Arvind
+   */
+  public enum ReportTrackingStatus {
+    NEW(0), GENERATING_DATA(1), UPLOADING_FILE(2),UPLOADING_FILE_SUCCESS(3),SENDING_MAIL(4),SENDING_MAIL_SUCCESS(5), FAILED(9);
+
+    private int value;
+
+    ReportTrackingStatus(int value) {
+      this.value = value;
+    }
+
+    public int getValue() {
+      return this.value;
+    }
+  }
+  
+  /**
+   * 
+   * @param serviceName
+   * @param isError
+   * @param e
+   * @return
+   */
+  public static Map<String, Object> createCheckResponse(String serviceName,
+      boolean isError,Exception e) {
+    Map<String, Object> responseMap = new HashMap<>();
+    responseMap.put(JsonKey.NAME, serviceName);
+    if(!isError){
+    responseMap.put(JsonKey.Healthy, true);
+    responseMap.put(JsonKey.ERROR, "");
+    responseMap.put(JsonKey.ERRORMSG, "");
+    }else {
+      responseMap.put(JsonKey.Healthy, false);
+      if(e!=null && e instanceof ProjectCommonException) {
+        ProjectCommonException commonException = (ProjectCommonException) e;
+        responseMap.put(JsonKey.ERROR, commonException.getResponseCode());
+        responseMap.put(JsonKey.ERRORMSG, commonException.getMessage());
+      }else {
+        responseMap.put(JsonKey.ERROR, e!=null?e.getMessage():"connection Error");
+        responseMap.put(JsonKey.ERRORMSG, e!=null?e.getMessage():"connection Error");
+      }
+    }
+    return responseMap;
+  }
+  
+  
+  /**
+   * This method will make EkStep api call register the tag.
+   * @param tagId String unique tag id.
+   * @param body  String requested body
+   * @param header Map<String,String>
+   * @return String
+   * @throws IOException 
+   */
+  public static String registertag(String tagId,String body, Map<String,String> header) throws IOException {
+    String tagStatus = "";
+    try {
+      ProjectLogger
+          .log("start call for registering the tag ==" + tagId);
+      tagStatus = HttpUtil.sendPostRequest(
+          PropertiesCache.getInstance()
+              .getProperty(JsonKey.EKSTEP_BASE_URL)
+              + PropertiesCache.getInstance()
+                  .getProperty(JsonKey.EKSTEP_TAG_API_URL)
+              + "/" + tagId,
+              body, header);
+      ProjectLogger
+          .log("end call for tag registration id and status  ==" + tagId
+              + " " + tagStatus);
+    } catch (IOException e) {
+        throw e;
+    }
+    return tagStatus;
+  }
+  
 }

@@ -21,6 +21,7 @@ import org.sunbird.common.Constants;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.helper.CassandraConnectionManager;
@@ -37,6 +38,8 @@ public class CassandraOperationImpl implements CassandraOperation{
 	
 	@Override
 	public Response insertRecord(String keyspaceName, String tableName, Map<String, Object> request){
+	  long startTime = System.currentTimeMillis();
+	  ProjectLogger.log("Cassandra Service insertRecord method started at ==" +startTime, LoggerEnum.PERF_LOG);
 		Response response = new Response();
 		try {
 			String query = CassandraUtil.getPreparedStatement(keyspaceName,tableName,request);
@@ -58,12 +61,17 @@ public class CassandraOperationImpl implements CassandraOperation{
 			 ProjectLogger.log("Exception occured while inserting record to "+ tableName +" : "+e.getMessage(), e);
 			 throw new ProjectCommonException(ResponseCode.dbInsertionError.getErrorCode(), ResponseCode.dbInsertionError.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
+		 long stopTime = System.currentTimeMillis();
+		 long elapsedTime = stopTime - startTime;
+		 ProjectLogger.log("Cassandra Service insertRecord method end at ==" +stopTime+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
 		return response;
 	}
 
 
 	@Override
 	public Response updateRecord(String keyspaceName, String tableName, Map<String, Object> request){
+	  long startTime = System.currentTimeMillis();
+      ProjectLogger.log("Cassandra Service updateRecord method started at ==" +startTime, LoggerEnum.PERF_LOG);
 		Response response = new Response();
 		try{
     		String query = CassandraUtil.getUpdateQueryStatement(keyspaceName, tableName, request);
@@ -93,12 +101,17 @@ public class CassandraOperationImpl implements CassandraOperation{
 			ProjectLogger.log(Constants.EXCEPTION_MSG_UPDATE + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.dbUpdateError.getErrorCode(), ResponseCode.dbUpdateError.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
+		long stopTime = System.currentTimeMillis();
+        long elapsedTime = stopTime - startTime;
+        ProjectLogger.log("Cassandra Service updateRecord method end at ==" +stopTime+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
 		return response;
 	}
 
 
 	@Override
 	public Response deleteRecord(String keyspaceName, String tableName, String identifier){
+	  long startTime = System.currentTimeMillis();
+      ProjectLogger.log("Cassandra Service deleteRecord method started at ==" +startTime, LoggerEnum.PERF_LOG);
 		Response response = new Response();
 		try{
 		Delete.Where delete = QueryBuilder.delete().from(keyspaceName, tableName)
@@ -109,12 +122,17 @@ public class CassandraOperationImpl implements CassandraOperation{
 			ProjectLogger.log(Constants.EXCEPTION_MSG_DELETE + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
+		long stopTime = System.currentTimeMillis();
+        long elapsedTime = stopTime - startTime;
+        ProjectLogger.log("Cassandra Service deleteRecord method end at ==" +stopTime+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
 		 return response;
 	}
 
 
 	@Override
 	public Response getRecordById(String keyspaceName, String tableName, String identifier){
+	  long startTime = System.currentTimeMillis();
+      ProjectLogger.log("Cassandra Service getRecordById method started at ==" +startTime, LoggerEnum.PERF_LOG);
 		Response response = new Response();
 		try{
 			Select selectQuery = QueryBuilder.select().all().from(keyspaceName, tableName);
@@ -127,12 +145,17 @@ public class CassandraOperationImpl implements CassandraOperation{
 			ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
+		long stopTime = System.currentTimeMillis();
+        long elapsedTime = stopTime - startTime;
+        ProjectLogger.log("Cassandra Service getRecordById method end at ==" +stopTime+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
 		 return response;
 	}
 
 
 	@Override
 	public Response getRecordsByProperty(String keyspaceName, String tableName, String propertyName, Object propertyValue){
+	  long startTime = System.currentTimeMillis();
+      ProjectLogger.log("Cassandra Service getRecordsByProperty method started at ==" +startTime, LoggerEnum.PERF_LOG);
 		Response response = new Response();
 		try{
 			Select selectQuery = QueryBuilder.select().all().from(keyspaceName, tableName);
@@ -147,12 +170,17 @@ public class CassandraOperationImpl implements CassandraOperation{
 			ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
+		long stopTime = System.currentTimeMillis();
+        long elapsedTime = stopTime - startTime;
+        ProjectLogger.log("Cassandra Service getRecordsByProperty method end at ==" +stopTime+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
 		 return response;
 	}
 
 	@Override
 	public Response getRecordsByProperty(String keyspaceName, String tableName, String propertyName,
 			List<Object> propertyValueList){
+	  long startTime = System.currentTimeMillis();
+      ProjectLogger.log("Cassandra Service getRecordsByProperty method started at ==" +startTime, LoggerEnum.PERF_LOG);
 		Response response = new Response();
 		try{
 			Select selectQuery = QueryBuilder.select().all().from(keyspaceName, tableName);
@@ -165,12 +193,17 @@ public class CassandraOperationImpl implements CassandraOperation{
 			ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
+		long stopTime = System.currentTimeMillis();
+        long elapsedTime = stopTime - startTime;
+        ProjectLogger.log("Cassandra Service getRecordsByProperty method end at ==" +stopTime+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
 		 return response;
 	}
 
 
 	@Override
 	public Response getRecordsByProperties(String keyspaceName, String tableName, Map<String, Object> propertyMap){
+	  long startTime = System.currentTimeMillis();
+      ProjectLogger.log("Cassandra Service getRecordsByProperties method started at ==" +startTime, LoggerEnum.PERF_LOG);
 		Response response = new Response();
 		try{
 			Select selectQuery = QueryBuilder.select().all().from(keyspaceName, tableName);
@@ -191,12 +224,17 @@ public class CassandraOperationImpl implements CassandraOperation{
 		    ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
+		long stopTime = System.currentTimeMillis();
+        long elapsedTime = stopTime - startTime;
+        ProjectLogger.log("Cassandra Service getRecordsByProperties method end at ==" +stopTime+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
 		 return response;
 	}
 
 
 	@Override
 	public Response getPropertiesValueById(String keyspaceName, String tableName, String id, String... properties){
+	  long startTime = System.currentTimeMillis();
+      ProjectLogger.log("Cassandra Service getPropertiesValueById method started at ==" +startTime, LoggerEnum.PERF_LOG);
 		Response response = new Response();
 		try{
 			String selectQuery = CassandraUtil.getSelectStatement(keyspaceName, tableName, properties);
@@ -208,12 +246,17 @@ public class CassandraOperationImpl implements CassandraOperation{
 		    ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
+		long stopTime = System.currentTimeMillis();
+        long elapsedTime = stopTime - startTime;
+        ProjectLogger.log("Cassandra Service getPropertiesValueById method end at ==" +stopTime+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
 		return response;
 	}
 
 
 	@Override
 	public Response getAllRecords(String keyspaceName, String tableName){
+	  long startTime = System.currentTimeMillis();
+      ProjectLogger.log("Cassandra Service getAllRecords method started at ==" +startTime, LoggerEnum.PERF_LOG);
 		Response response = new Response();
 		try{
 			Select selectQuery = QueryBuilder.select().all().from(keyspaceName, tableName);
@@ -223,6 +266,9 @@ public class CassandraOperationImpl implements CassandraOperation{
 		    ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
+		long stopTime = System.currentTimeMillis();
+        long elapsedTime = stopTime - startTime;
+        ProjectLogger.log("Cassandra Service getAllRecords method end at ==" +stopTime+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
 		return response;
 	}
 
@@ -230,7 +276,8 @@ public class CassandraOperationImpl implements CassandraOperation{
 	
 	@Override
 	public Response upsertRecord(String keyspaceName, String tableName, Map<String, Object> request){
-
+	  long startTime = System.currentTimeMillis();
+      ProjectLogger.log("Cassandra Service upsertRecord method started at ==" +startTime, LoggerEnum.PERF_LOG);
 		Response response = new Response();
 		try {
 			String query = CassandraUtil.getPreparedStatementFrUpsert(keyspaceName,tableName,request);
@@ -253,6 +300,9 @@ public class CassandraOperationImpl implements CassandraOperation{
 		    ProjectLogger.log(Constants.EXCEPTION_MSG_UPSERT + tableName +" : "+e.getMessage(), e);
 			throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
 		}
+		long stopTime = System.currentTimeMillis();
+        long elapsedTime = stopTime - startTime;
+        ProjectLogger.log("Cassandra Service upsertRecord method end at ==" +stopTime+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
 		return response;
 	
 	}

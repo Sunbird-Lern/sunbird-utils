@@ -40,7 +40,7 @@ public interface ResponseMessage {
         public static final String PASSWORD_MIN_LENGHT = "Password should have at least 8 character.";
         public static final String PASSWORD_MAX_LENGHT = "Password should not be more than 12 character.";
         public static final String ORGANISATION_ID_MISSING = "Organisation id is mandatory.";
-        public static final String REQUIRED_DATA_ORG_MISSING = "Organisation Id or Source with External Id values are required for the operation";
+        public static final String REQUIRED_DATA_ORG_MISSING = "Organisation Id or Provider with External Id values are required for the operation";
         public static final String ORGANISATION_NAME_MISSING = "organisation name is mandatory.";
         public static final String CHANNEL_SHOULD_BE_UNIQUE = "Channel value already used by another organisation. Provide different value for channel";
         public static final String INVALID_ORG_DATA = "Given Organisation Data doesn't exist in our records. Please provide a valid one";
@@ -54,7 +54,7 @@ public interface ResponseMessage {
         public static final String COURSE_DURATION_MISSING = "Course duration is mandatory.";
         public static final String LOGIN_TYPE_MISSING = "Login type is required.";
         public static final String EMAIL_IN_USE = "Email already exists.";
-        public static final String USERNAME_EMAIL_IN_USE = "Username is already in use. Please try with a different username.";
+        public static final String USERNAME_EMAIL_IN_USE = "Username or Email is already in used. Please try with a different Username or Email.";
         public static final String KEY_CLOAK_DEFAULT_ERROR = "server error at sso.";
         public static final String USER_REG_UNSUCCESSFULL = "User Registration unsuccessfull.";
         public static final String USER_UPDATE_UNSUCCESSFULL = "User update operation is unsuccessfull.";
@@ -103,6 +103,8 @@ public interface ResponseMessage {
 		public static final String INVALID_USER_ID = "User Id does not exists in our records";
 		public static final String LOGIN_ID_MISSING = "loginId is required.";
 		public static final String CONTENT_STATUS_MISSING_ERROR = "content status is required .";
+		public static final String ES_ERROR = "Something went wrong when processing data for search";
+		public static final String INVALID_PERIOD = "Time Period is invalid";
 		public static final String USER_NOT_FOUND = "user not found.";
 		public static final String ID_REQUIRED_ERROR = "For deleting a record, Id is required.";
 		public static final String DATA_TYPE_ERROR = "{0} data type should be of {1}.";
@@ -124,18 +126,42 @@ public interface ResponseMessage {
         public static final String EMAIL_VERIFY_ERROR = "Please provide a verified email in order to create user.";
         public static final String PHONE_VERIFY_ERROR = "Please provide a verified phone number in order to create user.";
         public static final String BULK_USER_UPLOAD_ERROR = "Please provide either organisation Id or external Id & provider value.";
-        public static final String DATA_SIZE_EXCEEDED = "Maxiumum data we can process is {0}";
+        public static final String DATA_SIZE_EXCEEDED = "Maximum upload data size should be 200";
         public static final String INVALID_COLUMN_NAME = "Invalid column name.";
         public  static final String USER_ALREADY_ACTIVE = "User is already active";
         public static final String ENROLMENT_TYPE_REQUIRED = "Enrolment type is mandatory.";
         public static final String ENROLMENT_TYPE_VALUE_ERROR = "EnrolmentType value must be either open or invite-only.";
-        public static final String COURSE_BATCH_START_DATE_REQUIRED = "batch statrt date is mandatory.";
-        public static final String COURSE_BATCH_START_DATE_INVALID = "batch statrt date is invalid.";
+        public static final String COURSE_BATCH_START_DATE_REQUIRED = "batch start date is mandatory.";
+        public static final String COURSE_BATCH_START_DATE_INVALID = "batch start date should be either today or future date.";
         public static final String DATE_FORMAT_ERRROR = "Date format error.";
         public static final String END_DATE_ERROR = "end date should be greater than start date.";
         public  static final String INVALID_CSV_FILE = "Please provide valid csv file.";
       public static final String INVALID_COURSE_BATCH_ID = "Invalid course batch id ";
       public  static final String COURSE_BATCH_ID_MISSING="Course batch Id required";
+      public static final String ENROLLMENT_TYPE_VALIDATION = "Enrollment type should be invite-only.";
+      public static final String USER_NOT_BELONGS_TO_ANY_ORG ="User does not belongs to any org .";
+      public static final String INVALID_OBJECT_TYPE ="Invalid Object Type.";
+      public static final String INVALID_PROGRESS_STATUS = "Progress status value should be NOT_STARTED(0), STARTED(1), COMPLETED(2).";
+      public static final String COURSE_CREATED_FOR_NULL = "Batch does not belong to any organisation .";
+      public static final String COURSE_BATCH_START_PASSED_DATE_INVALID = "This Batch already started.";
+      public static final String UNABLE_TO_CONNECT_TO_EKSTEP = "Unable to connect to Ekstep Server";
+      public static final String INVALID_JSON = "Unable to process object to JSON/ JSON to Object";
+      public static final String EMPTY_CSV_FILE = "CSV file is Empty.";
+      public static final String INVALID_ROOT_ORG_DATA = "Root org doesn't exist for this Organisation Id and channel {0}";
+        public static final String NO_DATA = "No sufficient data for fetching the results";
+      public static final String INVALID_CHANNEL = "Channel value is invalid.";
+      public static final String INVALID_PROCESS_ID = "Invalid Process Id.";
+      public static final String EMAIL_SUBJECT_ERROR = "Email Subject is mandatory.";
+      public static final String EMAIL_BODY_ERROR = "Email Body is mandatory.";
+      public static final String RECIPIENT_ADDRESS_ERROR = "Please send recipientEmails or recipientUserIds.";
+      public static final String STORAGE_CONTAINER_NAME_MANDATORY = " Container name can not be null or empty.";
+      public static final String CLOUD_SERVICE_ERROR = "Cloud storage service error.";
+      public static final String BADGE_TYPE_ID_ERROR = "Badge type id is mandatory.";
+      public static final String RECEIVER_ID_ERROR = "Receiver id is mandatory.";
+      public static final String INVALID_RECEIVER_ID = "Receiver id is invalid.";
+      public static final String INVALID_BADGE_ID = "Invalid badge type id.";
+      public static final String USER_REG_ORG_ERROR = "this user belongs to some other organisation.";
+      public static final String INVALID_ROLE = "Invalid role value provided in request.";
 	}
     
     public interface Key {
@@ -234,6 +260,8 @@ public interface ResponseMessage {
 		public static final String INVALID_USER_ID = "INVALID_USER_ID";
 		public static final String LOGIN_ID_MISSING = "LOGIN_ID_MISSING";
 		public static final String CONTENT_STATUS_MISSING_ERROR = "CONTENT_STATUS_MISSING_ERROR";
+		public static final String ES_ERROR = "ELASTICSEARCH_ERROR";
+		public static final String INVALID_PERIOD = "INVALID_PERIOD";
 		public static final String USER_NOT_FOUND = "USER_NOT_FOUND";
 		public static final String ID_REQUIRED_ERROR = "ID_REQUIRED_ERROR";
 		public static final String DATA_TYPE_ERROR = "DATA_TYPE_ERROR";
@@ -266,5 +294,29 @@ public interface ResponseMessage {
 		public static final String INVALID_CSV_FILE = "INVALID_CSV_FILE";
 		public static final String INVALID_COURSE_BATCH_ID = "INVALID_COURSE_BATCH_ID";
 		public  static final String COURSE_BATCH_ID_MISSING = "COURSE_BATCH_ID_MISSING";
+		public static final String ENROLLMENT_TYPE_VALIDATION = "ENROLLMENT_TYPE_VALIDATION";
+		public static final String COURSE_CREATED_FOR_NULL = "COURSE_CREATED_FOR_NULL";
+		public static final String USER_NOT_BELONGS_TO_ANY_ORG ="USER_NOT_BELONGS_TO_ANY_ORG";
+		public static final String INVALID_OBJECT_TYPE ="INVALID_OBJECT_TYPE";
+		public static final String INVALID_PROGRESS_STATUS = "INVALID_PROGRESS_STATUS";
+		public static final String COURSE_BATCH_START_PASSED_DATE_INVALID = "COURSE_BATCH_START_PASSED_DATE_INVALID";
+		public static final String UNABLE_TO_CONNECT_TO_EKSTEP = "UNABLE_TO_CONNECT_TO_EKSTEP";
+		public static final String INVALID_JSON = "INVALID_JSON";
+		public static final String EMPTY_CSV_FILE = "EMPTY_CSV_FILE";
+		public static final String INVALID_ROOT_ORG_DATA = "INVALID_ROOT_ORG_DATA";
+		public static final String NO_DATA = "NO_DATA";
+		public static final String INVALID_CHANNEL = "INVALID_CHANNEL";
+		public static final String INVALID_PROCESS_ID = "INVALID_PROCESS_ID";
+		public static final String EMAIL_SUBJECT_ERROR = "EMAIL_SUBJECT_ERROR";
+		public static final String EMAIL_BODY_ERROR = "EMAIL_BODY_ERROR";
+		public static final String RECIPIENT_ADDRESS_ERROR = "RECIPIENT_ADDRESS_ERROR";
+        public static final String STORAGE_CONTAINER_NAME_MANDATORY = "STORAGE_CONTAINER_NAME_MANDATORY";
+        public static final String USER_REG_ORG_ERROR = "USER_REG_ORG_ERROR";
+        public static final String CLOUD_SERVICE_ERROR = "CLOUD_SERVICE_ERROR";
+        public static final String BADGE_TYPE_ID_ERROR = "BADGE_TYPE_ID_ERROR";
+        public static final String RECEIVER_ID_ERROR = "RECEIVER_ID_ERROR";
+        public static final String INVALID_RECEIVER_ID = "INVALID_RECEIVER_ID";
+        public static final String INVALID_BADGE_ID = "INVALID_BADGE_ID";
+        public static final String INVALID_ROLE = "INVALID_ROLE";
     }
 }

@@ -46,6 +46,13 @@ public class ProjectLogger {
   /**
    * To log message, data in used defined log level.
    */
+  public static void log(String message, LoggerEnum logEnum) {
+    info(message, null, logEnum);
+  }
+  
+  /**
+   * To log message, data in used defined log level.
+   */
   public static void log(String message, Object data, String logLevel) {
     backendLog(message, data, null, logLevel);
   }
@@ -67,7 +74,12 @@ public class ProjectLogger {
   private static void info(String message, Object data) {
     rootLogger.info(getBELogEvent(LoggerEnum.INFO.name(), message, data));
   }
-
+  
+  private static void info(String message, Object data,LoggerEnum loggerEnum) {
+    rootLogger.info(getBELogEvent(LoggerEnum.INFO.name(), message, data,loggerEnum));
+  }
+  
+  
   private static void debug(String message, Object data) {
     rootLogger.debug(getBELogEvent(LoggerEnum.DEBUG.name(), message, data));
   }
@@ -100,18 +112,23 @@ public class ProjectLogger {
     }
   }
 
+  private static String getBELogEvent(String logLevel, String message, Object data,LoggerEnum logEnum) {
+    String logData = getBELog(logLevel, message, data, null,logEnum);
+    return logData;
+  }
+  
   private static String getBELogEvent(String logLevel, String message, Object data) {
-    String logData = getBELog(logLevel, message, data, null);
+    String logData = getBELog(logLevel, message, data, null,null);
     return logData;
   }
 
   private static String getBELogEvent(String logLevel, String message, Object data, Throwable e) {
-    String logData = getBELog(logLevel, message, data, e);
+    String logData = getBELog(logLevel, message, data, e,null);
     return logData;
   }
 
   private static String getBELog(String logLevel, String message, Object data,
-      Throwable exception) {
+      Throwable exception,LoggerEnum logEnum) {
     String mid = dataId + "." + System.currentTimeMillis() + "." + UUID.randomUUID();
     long unixTime = System.currentTimeMillis();
     LogEvent te = new LogEvent();
@@ -128,7 +145,11 @@ public class ProjectLogger {
     if (null != exception) {
       eks.put(JsonKey.STACKTRACE, ExceptionUtils.getStackTrace(exception));
     }
+    if(logEnum != null) {
+      te.setEid(logEnum.name());
+    }else{
     te.setEid(LoggerEnum.BE_LOG.name());
+    }
     te.setEts(unixTime);
     te.setMid(mid);
     te.setVer(eVersion);
