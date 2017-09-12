@@ -21,7 +21,7 @@ public class KeyCloakServiceImplTest {
 
     SSOManager keyCloakService = SSOServiceFactory.getInstance();
 
-    private static String userId ;
+    private static Map<String,String> userId ;
     final static String userName = UUID.randomUUID().toString().replaceAll("-", "");
 
     @BeforeClass
