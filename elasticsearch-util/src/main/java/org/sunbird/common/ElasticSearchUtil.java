@@ -456,7 +456,7 @@ public class ElasticSearchUtil {
 
     //set final query to search request builder
     searchRequestBuilder.setQuery(query);
-    List finalFacetList = new ArrayList();
+     List finalFacetList = new ArrayList();
 
     if (null != searchDTO.getFacets() && searchDTO.getFacets().size() > 0) {
       addAggregations(searchRequestBuilder ,searchDTO.getFacets());
@@ -747,7 +747,7 @@ public class ElasticSearchUtil {
 
 
   /**
-   * Method to create the index and type.
+   * Method to create the index and type with provided setting and mapping.
    *
    * @param index String
    * @param type String
@@ -867,7 +867,8 @@ public class ElasticSearchUtil {
         .builder(ConnectionManager.getClient(), new BulkProcessor.Listener() {
           @Override
           public void beforeBulk(long executionId, BulkRequest request) {
-            // TODO Auto-generated method stub
+             //doing the verification  for index and type here.
+            verifyOrCreateIndexAndType(index, type);
           }
 
           @Override
@@ -886,8 +887,7 @@ public class ElasticSearchUtil {
           @Override
           public void afterBulk(long executionId, BulkRequest request,
               Throwable failure) {
-            // TODO Auto-generated method stub
-
+           ProjectLogger.log("Bulk upload error block", failure);
           }
         }).setBulkActions(10000).setConcurrentRequests(0).build();
 

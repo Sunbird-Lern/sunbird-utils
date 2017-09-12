@@ -140,7 +140,6 @@ public class AzureFileUtility {
 
   public static String uploadFile(String containerName , String blobName , String fileName){
 
-    boolean flag = false;
     CloudBlobContainer container = AzureConnectionManager.getContainer(containerName,true);
     // Create or overwrite the "myimage.jpg" blob with contents from a local file.
     CloudBlockBlob blob = null;
@@ -148,22 +147,17 @@ public class AzureFileUtility {
     try {
       blob = container.getBlockBlobReference(blobName);
       File source = new File(fileName);
-      flag =true;
       blob.upload(new FileInputStream(source), source.length());
       //fileUrl = blob.getStorageUri().getPrimaryUri().getPath();
       fileUrl = blob.getUri().toString();
     } catch (URISyntaxException e) {
       ProjectLogger.log("Unable to upload file :"+fileName , e);
-      e.printStackTrace();
     } catch (StorageException e) {
       ProjectLogger.log("Unable to upload file :"+fileName , e);
-      e.printStackTrace();
     } catch (FileNotFoundException e) {
       ProjectLogger.log("Unable to upload file :"+fileName , e);
-      e.printStackTrace();
     } catch (IOException e) {
       ProjectLogger.log("Unable to upload file :"+fileName , e);
-      e.printStackTrace();
     }
 
     return fileUrl;
@@ -180,7 +174,6 @@ public class AzureFileUtility {
     }else{
       containerName = containerName.toLowerCase();
     }
-    //processContainer(containerName , containerPath , filePath);
     if(containerName.startsWith("/")){
       containerName = containerName.substring(1);
     }
@@ -208,28 +201,17 @@ public class AzureFileUtility {
       fileUrl = blob.getUri().toString();
     } catch (URISyntaxException e) {
       ProjectLogger.log("Unable to upload file :"+source.getName() , e);
-      e.printStackTrace();
     } catch (StorageException e) {
       ProjectLogger.log("Unable to upload file :"+source.getName() , e);
-      e.printStackTrace();
     } catch (FileNotFoundException e) {
       ProjectLogger.log("Unable to upload file :"+source.getName() , e);
-      e.printStackTrace();
     } catch (IOException e) {
       ProjectLogger.log("Unable to upload file :"+source.getName() , e);
-      e.printStackTrace();
     }
     return fileUrl;
 
   }
 
-  private static void processContainerPath(String containerName, String containerPath, String filePath) {
-    if(containerName.contains("/")){
-      String arr[]=containerName.split("/", 2);
-      containerPath = arr[0];
-      filePath=arr[1]+"/";
-    }
-  }
 
   public static boolean downloadFile(String containerName , String blobName , String downloadFolder){
 
@@ -249,13 +231,10 @@ public class AzureFileUtility {
       }
     } catch (URISyntaxException e) {
       ProjectLogger.log("Unable to upload blobfile :"+blobName , e);
-      e.printStackTrace();
     } catch (StorageException e) {
       ProjectLogger.log("Unable to upload file :"+blobName , e);
-      e.printStackTrace();
     } catch (FileNotFoundException e) {
       ProjectLogger.log("Unable to upload file :"+blobName , e);
-      e.printStackTrace();
     }
     return flag;
   }
