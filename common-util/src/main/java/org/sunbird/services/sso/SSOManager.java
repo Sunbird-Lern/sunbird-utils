@@ -24,9 +24,9 @@ public interface SSOManager {
 	/**
 	 * This method will do user creation inside Single sign on server.
 	 * @param request Map<String,Object>
-	 * @return String
+	 * @return Map<String,String>
 	 */
-	public String createUser(Map<String,Object> request);
+	public Map<String,String> createUser(Map<String,Object> request);
 	
 	/**
 	 * Method to update user account in keycloak on basis of userId.

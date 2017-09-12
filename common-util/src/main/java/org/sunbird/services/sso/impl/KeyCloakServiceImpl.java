@@ -3,6 +3,8 @@
  */
 package org.sunbird.services.sso.impl;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.keycloak.RSATokenVerifier;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UserResource;
@@ -18,6 +20,7 @@ import org.sunbird.services.sso.SSOManager;
 
 import javax.ws.rs.core.Response;
 
+import java.io.IOException;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
@@ -39,7 +42,7 @@ public class KeyCloakServiceImpl implements SSOManager {
     private static PropertiesCache cache = PropertiesCache.getInstance();
     Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
     private static final boolean IS_EMAIL_SETUP_COMPLETE = false;
-    
+   private static final String URL = KeyCloakConnectionProvider.SSO_URL+ "realms/" + KeyCloakConnectionProvider.SSO_REALM+"/protocol/openid-connect/token"; 
   @Override
   public String verifyToken(String accessToken) {
     String userId = "";
@@ -68,14 +71,15 @@ public class KeyCloakServiceImpl implements SSOManager {
 
     public static void main(String[] args) {
       SSOManager manager = new KeyCloakServiceImpl();
-      manager.verifyToken("eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI5emhhVnZDbl81OEtheHpldHBzYXNZQ2lEallkemJIX3U2LV93SDk4SEc0In0.eyJqdGkiOiIyNjUwZGI2MS1mZWEzLTRjZWQtYTBjNy1lYTYxZGI3NDRhNjMiLCJleHAiOjE1MDUyMTM2MjAsIm5iZiI6MCwiaWF0IjoxNTA1MjEzMDIwLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvYXV0aC9yZWFsbXMvbWFzdGVyIiwiYXVkIjoic2VjdXJpdHktYWRtaW4tY29uc29sZSIsInN1YiI6ImIzYTZkMTY4LWJjZmQtNDE2MS1hYzVmLTljZjYyODIyNzlmMyIsInR5cCI6IkJlYXJlciIsImF6cCI6InNlY3VyaXR5LWFkbWluLWNvbnNvbGUiLCJub25jZSI6ImIzMGEwZjE3LWFlMTEtNDUyMS1iYTAyLWIxNDZiYjdkNDQ2NiIsImF1dGhfdGltZSI6MTUwNTIxMzAxOSwic2Vzc2lvbl9zdGF0ZSI6ImI2OGZiNTExLWExZmEtNGRlOS1hM2NlLWJmMGJmYzFhNTA5OCIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOltdLCJyZXNvdXJjZV9hY2Nlc3MiOnt9LCJuYW1lIjoiTWFuemFydWwgaGFxdWUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0ZXN0MTIzNDU2NyIsImdpdmVuX25hbWUiOiJNYW56YXJ1bCBoYXF1ZSIsImVtYWlsIjoidGVzdDEyM0B0LmNvbSJ9.Mj1pO33Zl7ZNTcXIYGFh2XnTwATj5XOu8HAF17bFtejRyAS9UHeG1mZxesEMsvX4dnUvRr20mcrZBGNPAZ94BKikREPM2eF4ye32fY1cknJwNbWsTyVc2HWOfl3ve8rDqm9cX43HdttWpuHYs9zqGfx01nC8PpFHSYaR5vvXBjIsA26mDL-LrT8RoxcZcbf537CtrpAByhVUa-kjkEKzxignF2kJTKj1As3qiFYGGJj4VKI60AM0Ry6ST1OqUP4jIttsN2QzSqpR3SE2SJtNUosuIbAk35zIqR0ZBOguUYOg43bwroK0kPZbPv_BFXHtaZ2IZp783cZAm-vQl67AwQ");
-   /*  Map<String,Object> map = new HashMap<String, Object>();
+     // manager.verifyToken("eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI5emhhVnZDbl81OEtheHpldHBzYXNZQ2lEallkemJIX3U2LV93SDk4SEc0In0.eyJqdGkiOiIyNjUwZGI2MS1mZWEzLTRjZWQtYTBjNy1lYTYxZGI3NDRhNjMiLCJleHAiOjE1MDUyMTM2MjAsIm5iZiI6MCwiaWF0IjoxNTA1MjEzMDIwLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvYXV0aC9yZWFsbXMvbWFzdGVyIiwiYXVkIjoic2VjdXJpdHktYWRtaW4tY29uc29sZSIsInN1YiI6ImIzYTZkMTY4LWJjZmQtNDE2MS1hYzVmLTljZjYyODIyNzlmMyIsInR5cCI6IkJlYXJlciIsImF6cCI6InNlY3VyaXR5LWFkbWluLWNvbnNvbGUiLCJub25jZSI6ImIzMGEwZjE3LWFlMTEtNDUyMS1iYTAyLWIxNDZiYjdkNDQ2NiIsImF1dGhfdGltZSI6MTUwNTIxMzAxOSwic2Vzc2lvbl9zdGF0ZSI6ImI2OGZiNTExLWExZmEtNGRlOS1hM2NlLWJmMGJmYzFhNTA5OCIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOltdLCJyZXNvdXJjZV9hY2Nlc3MiOnt9LCJuYW1lIjoiTWFuemFydWwgaGFxdWUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0ZXN0MTIzNDU2NyIsImdpdmVuX25hbWUiOiJNYW56YXJ1bCBoYXF1ZSIsImVtYWlsIjoidGVzdDEyM0B0LmNvbSJ9.Mj1pO33Zl7ZNTcXIYGFh2XnTwATj5XOu8HAF17bFtejRyAS9UHeG1mZxesEMsvX4dnUvRr20mcrZBGNPAZ94BKikREPM2eF4ye32fY1cknJwNbWsTyVc2HWOfl3ve8rDqm9cX43HdttWpuHYs9zqGfx01nC8PpFHSYaR5vvXBjIsA26mDL-LrT8RoxcZcbf537CtrpAByhVUa-kjkEKzxignF2kJTKj1As3qiFYGGJj4VKI60AM0Ry6ST1OqUP4jIttsN2QzSqpR3SE2SJtNUosuIbAk35zIqR0ZBOguUYOg43bwroK0kPZbPv_BFXHtaZ2IZp783cZAm-vQl67AwQ");
+     Map<String,Object> map = new HashMap<String, Object>();
      map.put(JsonKey.FIRST_NAME, "Amit");
-     map.put(JsonKey.EMAIL, "ak@test.com");
-     map.put(JsonKey.USERNAME, "ak@test");
+     map.put(JsonKey.EMAIL, "ak1@test.com");
+     map.put(JsonKey.USERNAME, "ak1@test");
+     map.put(JsonKey.PASSWORD, "value");
      map.put(JsonKey.EMAIL_VERIFIED, true);
-      String userId = manager.createUser(map);
-      System.out.println(userId);*/
+      Map<String,String> userId = manager.createUser(map);
+      System.out.println(userId);
     }
     
     
@@ -96,8 +100,9 @@ public class KeyCloakServiceImpl implements SSOManager {
     }
     
     @Override
-    public String createUser(Map<String, Object> request) {
+    public Map<String,String> createUser(Map<String, Object> request) {
         String userId = null;
+        String accessToken = null;
         UserRepresentation user = createUserReqObj(request);
         Response result = null;
         try {
@@ -130,9 +135,12 @@ public class KeyCloakServiceImpl implements SSOManager {
         && ((request.get(JsonKey.PASSWORD) != null) && !ProjectUtil
             .isStringNullOREmpty((String) request.get(JsonKey.PASSWORD)))) {
       doPasswordUpdate(userId, (String) request.get(JsonKey.PASSWORD));
+       accessToken = login(user.getUsername(), (String) request.get(JsonKey.PASSWORD));
     }
-
-        return userId;
+      Map<String,String> map = new HashMap<>();
+      map.put(JsonKey.USER_ID, userId);
+      map.put(JsonKey.ACCESSTOKEN, accessToken);
+        return map;
     }
 
 
@@ -349,5 +357,38 @@ public class KeyCloakServiceImpl implements SSOManager {
     }
   }
   
+  
+  /**
+   * This method will call keycloak service to user login. after 
+   * successfull login it will provide access token.
+   * @param userName String
+   * @param password String
+   * @return String access token
+   */
+  public String login(String userName, String password) {
+    String accessTokenId = "";
+    StringBuilder builder = new StringBuilder();
+    builder.append(
+        "client_id=" + KeyCloakConnectionProvider.CLIENT_ID + "&username="
+            + userName + "&password=" + password + "&grant_type=password");
+    Map<String, String> headerMap = new HashMap<>();
+    headerMap.put("Content-Type", "application/x-www-form-urlencoded");
+    try {
+      String response =
+          HttpUtil.sendPostRequest(URL, builder.toString(), headerMap);
+      if (!ProjectUtil.isStringNullOREmpty(response)) {
+        try {
+          JSONObject object = new JSONObject(response);
+          accessTokenId = object.getString(JsonKey.ACCESS_TOKEN);
+        } catch (JSONException e) {
+          ProjectLogger.log(e.getMessage(), e);
+        }
+
+      }
+    } catch (IOException e) {
+      ProjectLogger.log(e.getMessage(), e);
+    }
+    return accessTokenId;
+  }
   
  }

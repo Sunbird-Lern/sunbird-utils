@@ -20,6 +20,7 @@ public class KeyCloakConnectionProvider {
    private static PropertiesCache cache = PropertiesCache.getInstance();
    public static String SSO_URL = null;
    public static String SSO_REALM =  null;
+   public static String CLIENT_ID = null;
    static {
 		try {
       initialiseConnection();
@@ -53,6 +54,7 @@ public class KeyCloakConnectionProvider {
     }
     SSO_URL = cache.getProperty(JsonKey.SSO_URL);
     SSO_REALM = cache.getProperty(JsonKey.SSO_REALM);
+    CLIENT_ID = cache.getProperty(JsonKey.SSO_CLIENT_ID);
     keycloak = keycloakBuilder.build();
 
 	   ProjectLogger.log("key cloak instance is created successfully.");
@@ -81,6 +83,7 @@ public class KeyCloakConnectionProvider {
     }
     SSO_URL = url;
     SSO_REALM = relam;
+    CLIENT_ID = cleintId;
     KeycloakBuilder keycloakBuilder = KeycloakBuilder.builder().serverUrl(url).realm(relam)
         .username(username).password(password).clientId(cleintId)
         .resteasyClient(new ResteasyClientBuilder()
