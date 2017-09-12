@@ -9,7 +9,7 @@ public interface ResponseMessage {
   
     public interface Message {
       
-        public static final String UNAUTHORISE_USER = "You are not authorise.";
+        public static final String UNAUTHORISE_USER = "You are not authorized.";
         public static final String INVALID_USER_CREDENTIALS = "Please check your credentials";
         public static final String INVALID_OPERATION_NAME = "Operation name is invalid.Please provide a valid operation name";
         public static final String INVALID_REQUESTED_DATA = "Requested data for this operation is not valid.";
@@ -166,7 +166,7 @@ public interface ResponseMessage {
     
     public interface Key {
       
-        public static final String UNAUTHORISE_USER = "UNAUTHORISE_USER";
+        public static final String UNAUTHORISE_USER = "UNAUTHORIZE_USER";
         public static final String INVALID_USER_CREDENTIALS = "INVALID_USER_CREDENTIALS";
         public static final String INVALID_OPERATION_NAME = "INVALID_OPERATION_NAME";
         public static final String INVALID_REQUESTED_DATA = "INVALID_REQUESTED_DATA";

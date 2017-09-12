@@ -11,6 +11,7 @@ import java.util.Locale;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
+import org.sunbird.common.models.util.PropertiesCache;
 
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.blob.BlobContainerPermissions;
@@ -25,10 +26,9 @@ import com.microsoft.azure.storage.blob.CloudBlobContainer;
  */
 public class AzureConnectionManager {
 
-  private static String            accountName = "sunbirddev";
-  private static String            accountKey  =
-      "zl8q5yA4fxG5PAha2rc6rRWQ8vQlKMGKb79YlQN1br7EOOD8jmVhBOlTP3J7KqKTj3J2TxkJArQR8IrXV551Fg==";
-  private static String            storageAccountString;
+  private static String  accountName = "";
+  private static String  accountKey  ="";
+  private static String  storageAccountString;
   private static AzureConnectionManager connectionManager;
   static {
     String name = System.getenv(JsonKey.ACCOUNT_NAME);
@@ -38,6 +38,8 @@ public class AzureConnectionManager {
       ProjectLogger.log(
           "Azure account name and key is not provided by environment variable."
               + name + " " + key);
+      name = PropertiesCache.getInstance().getProperty(JsonKey.ACCOUNT_NAME);
+      key =  PropertiesCache.getInstance().getProperty(JsonKey.ACCOUNT_KEY);
       storageAccountString = "DefaultEndpointsProtocol=https;AccountName="
           + accountName + ";AccountKey=" + accountKey
           + ";EndpointSuffix=core.windows.net";
@@ -105,9 +107,9 @@ public class AzureConnectionManager {
         return container;
       }
     } catch (URISyntaxException e) {
-      e.printStackTrace();
+      ProjectLogger.log(e.getMessage(),e);
     }  catch (StorageException e) {
-      e.printStackTrace();
+      ProjectLogger.log(e.getMessage(),e);
     }
     ProjectLogger.log("Container does not exist ==" + containerName);
     return null;
@@ -123,9 +125,9 @@ public class AzureConnectionManager {
       // Create the blob client.
       blobClient = storageAccount.createCloudBlobClient();
     } catch (URISyntaxException e) {
-      e.printStackTrace();
+      ProjectLogger.log(e.getMessage(),e);
     } catch (InvalidKeyException e) {
-      e.printStackTrace();
+      ProjectLogger.log(e.getMessage(),e);
     }
     return blobClient;
   }
@@ -145,9 +147,9 @@ public class AzureConnectionManager {
       // Delete the blob container.
       result = container.deleteIfExists();
     } catch (URISyntaxException e) {
-      e.printStackTrace();
+      ProjectLogger.log(e.getMessage(),e);
     }  catch (StorageException e) {
-      e.printStackTrace();
+      ProjectLogger.log(e.getMessage(),e);
     }
     return result;
   }

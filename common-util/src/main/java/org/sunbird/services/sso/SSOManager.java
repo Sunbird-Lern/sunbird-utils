@@ -13,12 +13,13 @@ import java.util.Map;
 public interface SSOManager {
 	
 	/**
-	 * This method will take userId and authToken as
-	 * a key and verify against SSO server , user is valid or not.
-	 * @param request Map<String,String>
+	 * This method will verify user access token and provide
+	 * userId if token is valid. in case of invalid access token it
+	 * will throw ProjectCommon exception with 401.
+	 * @param token String JWT access token
 	 * @return String
 	 */
-	public String verifyToken(Map<String,String> request );
+	public String verifyToken(String token );
 	
 	/**
 	 * This method will do user creation inside Single sign on server.
