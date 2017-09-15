@@ -444,4 +444,6 @@ public class JsonKey {
   public static final String ACCESS_TOKEN = "access_token";
   public static final String ACCESSTOKEN = "accessToken";
   public static final String BULK_USER_UPLOAD = "bulkUserUpload";
+  public static String SUNBIRD_QUARTZ_MODE = "sunbird_quartz_mode";
+  public static String EMBEDDED= "embedded";
 }
