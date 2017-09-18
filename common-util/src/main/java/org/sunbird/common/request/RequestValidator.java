@@ -1105,7 +1105,77 @@ mentors : List of user ids , who will work as a mentor.
 }
 
 }
-  
-  
+  /**
+   * 
+   * @param reqObj
+   */
+  public static void validateCreateOrgType (Request reqObj) {
+    if(ProjectUtil.isStringNullOREmpty((String)reqObj.getRequest().get(JsonKey.NAME))){
+      throw new ProjectCommonException(
+              ResponseCode.orgTypeMandatory.getErrorCode(),
+              ResponseCode.orgTypeMandatory.getErrorMessage(),
+              ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+  }
+ 
+  /**
+   * 
+   * @param reqObj
+   */
+  public static void validateUpdateOrgType (Request reqObj) {
+    if(ProjectUtil.isStringNullOREmpty((String)reqObj.getRequest().get(JsonKey.NAME))){
+      throw new ProjectCommonException(
+              ResponseCode.orgTypeMandatory.getErrorCode(),
+              ResponseCode.orgTypeMandatory.getErrorMessage(),
+              ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    if(ProjectUtil.isStringNullOREmpty((String)reqObj.getRequest().get(JsonKey.ID))){
+      throw new ProjectCommonException(
+              ResponseCode.orgTypeIdRequired.getErrorCode(),
+              ResponseCode.orgTypeIdRequired.getErrorMessage(),
+              ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+  }
+
+  @SuppressWarnings("rawtypes")
+  public static void validateNote(Request request){
+      if (ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.USER_ID))) {
+        throw new ProjectCommonException(ResponseCode.userIdRequired.getErrorCode(),
+            ResponseCode.userIdRequired.getErrorMessage(),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
+      if (ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.TITLE))) {
+        throw new ProjectCommonException(ResponseCode.titleRequired.getErrorCode(),
+            ResponseCode.titleRequired.getErrorMessage(),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
+      if (ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.NOTE))) {
+        throw new ProjectCommonException(ResponseCode.noteRequired.getErrorCode(),
+            ResponseCode.noteRequired.getErrorMessage(), 
+            ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
+      if (ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.CONTENT_ID))
+          || ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.COURSE_ID))) {
+        throw new ProjectCommonException(ResponseCode.contentIdError.getErrorCode(),
+            ResponseCode.contentIdError.getErrorMessage(),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
+      if(request.getRequest().containsKey(JsonKey.TAGS)){
+        if(request.getRequest().get(JsonKey.TAGS) instanceof List &&
+            ((List)request.getRequest().get(JsonKey.TAGS)).isEmpty()){
+          throw new ProjectCommonException(ResponseCode.invalidTags.getErrorCode(),
+              ResponseCode.invalidTags.getErrorMessage(),
+              ResponseCode.CLIENT_ERROR.getResponseCode());
+        }
+      }
+   }
+   
+    public static void validateNoteId(String noteId) {
+      if (ProjectUtil.isStringNullOREmpty(noteId)) {
+        throw new ProjectCommonException(ResponseCode.invalidNoteId.getErrorCode(),
+            ResponseCode.invalidNoteId.getErrorMessage(),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
+    }
   
 }
