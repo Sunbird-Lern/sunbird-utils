@@ -1131,8 +1131,8 @@ mentors : List of user ids , who will work as a mentor.
     }
     if(ProjectUtil.isStringNullOREmpty((String)reqObj.getRequest().get(JsonKey.ID))){
       throw new ProjectCommonException(
-              ResponseCode.idRequired.getErrorCode(),
-              ResponseCode.idRequired.getErrorMessage(),
+              ResponseCode.orgTypeIdRequired.getErrorCode(),
+              ResponseCode.orgTypeIdRequired.getErrorMessage(),
               ResponseCode.CLIENT_ERROR.getResponseCode());
     }
   }
