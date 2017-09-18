@@ -4,10 +4,10 @@
 package org.sunbird.common.models.util.datasecurity.impl;
 
 import org.sunbird.common.models.util.ProjectUtil;
+import org.sunbird.common.models.util.datasecurity.DataMaskingService;
 import org.sunbird.common.models.util.datasecurity.DecryptionService;
 import org.sunbird.common.models.util.datasecurity.EncryptionService;
 
-import com.sun.org.apache.regexp.internal.recompile;
 
 /**
  * This factory will provide encryption service instance and decryption
@@ -19,10 +19,12 @@ public class ServiceFactory {
 
   private static EncryptionService encryptionService;
   private static DecryptionService decryptionService;
+  private static DataMaskingService maskingService;
 
   static {
     encryptionService = new DefaultEncryptionServivceImpl();
     decryptionService = new DefaultDecryptionServiceImpl();
+    maskingService =  new  DefaultDataMaskServiceImpl();
   }
 
 
@@ -64,6 +66,18 @@ public class ServiceFactory {
         return decryptionService;
       default:
         return decryptionService;
+    }
+  }
+  
+  public static DataMaskingService getMaskingServiceInstance (String val) {
+    if(ProjectUtil.isStringNullOREmpty(val)) {
+      return maskingService;
+    }
+    switch (val) {
+      case "defaultMasking":
+        return maskingService;
+      default:
+        return maskingService;
     }
   }
 }
