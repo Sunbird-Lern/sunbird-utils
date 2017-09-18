@@ -453,4 +453,5 @@ public class JsonKey {
   public static final String TITLE = "title";
   public static final String USER_NOTES_DB = "userNotes_db";
   public static final String EKSTEP_DOMAIN_URL = "ekstep_domain_url";
+  public static final String REPLACE_WITH_X = "X";
 }
