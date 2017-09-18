@@ -50,7 +50,8 @@ public enum ActorOperations {
     EMAIL_SERVICE("emailService"),FILE_STORAGE_SERVICE("fileStorageService"),GET_ALL_BADGE("getAllBadge"),ADD_USER_BADGE("addUserBadge"),
     ADD_USER_BADGE_BKG("addUserBadgebackground"),FILE_GENERATION_AND_UPLOAD("fileGenerationAndUpload"),HEALTH_CHECK("healthCheck"),
    SEND_MAIL("sendMail"), PROCESS_DATA("processData"), ACTOR("actor"),CASSANDRA("cassandra"),ES("es"),EKSTEP("ekstep"),
-    COURSE_PROGRESS_METRICS_DATA("courseProgressMetricsData");
+    COURSE_PROGRESS_METRICS_DATA("courseProgressMetricsData"),GET_ORG_TYPE_LIST("getOrgTypeList"),CREATE_ORG_TYPE("createOrgType"),
+    UPDATE_ORG_TYPE("updateOrgType");
 
     private String value;
 
