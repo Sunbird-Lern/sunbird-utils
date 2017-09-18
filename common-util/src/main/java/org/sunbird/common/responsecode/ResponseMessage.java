@@ -163,6 +163,14 @@ public interface ResponseMessage {
       public static final String USER_REG_ORG_ERROR = "this user belongs to some other organisation.";
       public static final String INVALID_ROLE = "Invalid role value provided in request.";
       public static final String INVALID_SALT = "Please provide salt value.";
+      public static final String ORG_TYPE_MANDATORY = "Org Type name is mandatory.";
+      public static final String ORG_TYPE_ALREADY_EXIST = "Org type with this name already exist.Please provide some other name.";
+      public static final String ORG_TYPE_ID_REQUIRED_ERROR = "Org Type Id is required.";
+      public static final String TITLE_REQUIRED = "Title is required";
+      public static final String NOTE_REQUIRED = "No data to store for notes";
+      public static final String CONTENT_ID_ERROR = "Please provide content id or course id";
+      public static final String INVALID_TAGS = "Invalid data for tags";
+      public static final String NOTE_ID_INVALID = "Invalid note id";
 	}
     
     public interface Key {
@@ -320,5 +328,13 @@ public interface ResponseMessage {
         public static final String INVALID_BADGE_ID = "INVALID_BADGE_ID";
         public static final String INVALID_ROLE = "INVALID_ROLE";
         public static final String INVALID_SALT = "INVALID_SALT";
+        public static final String ORG_TYPE_MANDATORY = "ORG_TYPE_MANDATORY";
+        public static final String ORG_TYPE_ALREADY_EXIST = "ORG_TYPE_ALREADY_EXIST";
+        public static final String ORG_TYPE_ID_REQUIRED_ERROR = "ORG_TYPE_ID_REQUIRED_ERROR";
+        public static final String TITLE_REQUIRED = "TITLE_REQUIRED";
+        public static final String NOTE_REQUIRED = "NOTE_REQUIRED";
+        public static final String CONTENT_ID_ERROR = "CONTENT_ID_OR_COURSE_ID_REQUIRED";
+        public static final String INVALID_TAGS = "INVALID_TAGS";
+        public static final String NOTE_ID_INVALID = "NOTE_ID_INVALID";
     }
 }
