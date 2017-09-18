@@ -446,4 +446,10 @@ public class JsonKey {
   public static final String BULK_USER_UPLOAD = "bulkUserUpload";
   public static String SUNBIRD_QUARTZ_MODE = "sunbird_quartz_mode";
   public static String EMBEDDED= "embedded";
+  
+  public static final String NOTE = "note";
+  public static final String NOTE_ID = "noteId";
+  public static final String TITLE = "title";
+  public static final String USER_NOTES_DB = "userNotes_db";
+  public static final String EKSTEP_DOMAIN_URL = "ekstep_domain_url";
 }
