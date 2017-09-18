@@ -1105,7 +1105,36 @@ mentors : List of user ids , who will work as a mentor.
 }
 
 }
-  
-  
+  /**
+   * 
+   * @param reqObj
+   */
+  public static void validateCreateOrgType (Request reqObj) {
+    if(ProjectUtil.isStringNullOREmpty((String)reqObj.getRequest().get(JsonKey.NAME))){
+      throw new ProjectCommonException(
+              ResponseCode.orgTypeMandatory.getErrorCode(),
+              ResponseCode.orgTypeMandatory.getErrorMessage(),
+              ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+  }
+ 
+  /**
+   * 
+   * @param reqObj
+   */
+  public static void validateUpdateOrgType (Request reqObj) {
+    if(ProjectUtil.isStringNullOREmpty((String)reqObj.getRequest().get(JsonKey.NAME))){
+      throw new ProjectCommonException(
+              ResponseCode.orgTypeMandatory.getErrorCode(),
+              ResponseCode.orgTypeMandatory.getErrorMessage(),
+              ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    if(ProjectUtil.isStringNullOREmpty((String)reqObj.getRequest().get(JsonKey.ID))){
+      throw new ProjectCommonException(
+              ResponseCode.idRequired.getErrorCode(),
+              ResponseCode.idRequired.getErrorMessage(),
+              ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+  }
   
 }

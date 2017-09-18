@@ -161,6 +161,9 @@ public enum ResponseCode {
     invalidReceiverId (ResponseMessage.Key.INVALID_RECEIVER_ID, ResponseMessage.Message.INVALID_RECEIVER_ID),
     invalidBadgeTypeId(ResponseMessage.Key.INVALID_BADGE_ID, ResponseMessage.Message.INVALID_BADGE_ID),
     invalidRole(ResponseMessage.Key.INVALID_ROLE, ResponseMessage.Message.INVALID_ROLE),
+    orgTypeMandatory(ResponseMessage.Key.ORG_TYPE_MANDATORY, ResponseMessage.Message.ORG_TYPE_MANDATORY),
+    orgTypeAlreadyExist(ResponseMessage.Key.ORG_TYPE_ALREADY_EXIST, ResponseMessage.Message.ORG_TYPE_ALREADY_EXIST),
+    orgTypeIdRequired(ResponseMessage.Key.ORG_TYPE_ID_REQUIRED_ERROR, ResponseMessage.Message.ORG_TYPE_ID_REQUIRED_ERROR),
     OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404),UNAUTHORIZED(401);
 	
 	private int responseCode;
