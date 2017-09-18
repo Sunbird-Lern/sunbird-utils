@@ -162,6 +162,7 @@ public interface ResponseMessage {
       public static final String INVALID_BADGE_ID = "Invalid badge type id.";
       public static final String USER_REG_ORG_ERROR = "this user belongs to some other organisation.";
       public static final String INVALID_ROLE = "Invalid role value provided in request.";
+      public static final String INVALID_SALT = "Please provide salt value.";
 	}
     
     public interface Key {
@@ -318,5 +319,6 @@ public interface ResponseMessage {
         public static final String INVALID_RECEIVER_ID = "INVALID_RECEIVER_ID";
         public static final String INVALID_BADGE_ID = "INVALID_BADGE_ID";
         public static final String INVALID_ROLE = "INVALID_ROLE";
+        public static final String INVALID_SALT = "INVALID_SALT";
     }
 }
