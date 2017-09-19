@@ -36,14 +36,14 @@ public class DefaultDataMaskServiceImpl implements DataMaskingService {
     if(!ProjectUtil.isEmailvalid(email)) {
       return email;
     }
+    StringBuilder builder = new StringBuilder();
     String emails [] = email.split("@");
     int length = emails[0].length();
-    StringBuilder builder = new StringBuilder();
     for (int i=0 ; i< email.length();i++) {
-      if (i<length-2) {
-       builder.append(JsonKey.REPLACE_WITH_X);
-      }  else {
+      if (i<2 || i>=length) {
         builder.append(email.charAt(i));
+      }  else {
+        builder.append(JsonKey.REPLACE_WITH_X);
       }
     }
     return builder.toString();
