@@ -120,7 +120,7 @@ public enum ResponseCode {
     sourceAndExternalIdAlreadyExist(ResponseMessage.Key.SRC_EXTERNAL_ID_ALREADY_EXIST, ResponseMessage.Message.SRC_EXTERNAL_ID_ALREADY_EXIST),
     userAlreadyEnrolledThisCourse(ResponseMessage.Key.ALREADY_ENROLLED_COURSE, ResponseMessage.Message.ALREADY_ENROLLED_COURSE),
     pageAlreadyExist(ResponseMessage.Key.PAGE_ALREADY_EXIST, ResponseMessage.Message.PAGE_ALREADY_EXIST),
-    contentTypeRequiredError(ResponseMessage.Key.CONTNET_TYPE_ERROR, ResponseMessage.Message.CONTNET_TYPE_ERROR),
+    contentTypeRequiredError(ResponseMessage.Key.CONTENT_TYPE_ERROR, ResponseMessage.Message.CONTENT_TYPE_ERROR),
     invalidPropertyError(ResponseMessage.Key.INVALID_PROPERTY_ERROR, ResponseMessage.Message.INVALID_PROPERTY_ERROR),
     usernameOrUserIdError(ResponseMessage.Key.USER_NAME_OR_ID_ERROR, ResponseMessage.Message.USER_NAME_OR_ID_ERROR),
     emailVerifiedError(ResponseMessage.Key.EMAIL_VERIFY_ERROR, ResponseMessage.Message.EMAIL_VERIFY_ERROR),
