@@ -12,7 +12,7 @@ public class Delta implements Serializable {
 
   private static final long serialVersionUID = -1771624289282630137L;
   private String beforeContentId;
-  private String afterContnetId;
+  private String afterContentId;
   private String contentId;
   private String date;
   private String name;
@@ -36,14 +36,14 @@ public class Delta implements Serializable {
    * @return the afterContnetId
    */
   public String getAfterContnetId() {
-    return afterContnetId;
+    return afterContentId;
   }
 
   /**
    * @param afterContnetId the afterContnetId to set
    */
   public void setAfterContnetId(String afterContnetId) {
-    this.afterContnetId = afterContnetId;
+    this.afterContentId = afterContnetId;
   }
 
   /**
