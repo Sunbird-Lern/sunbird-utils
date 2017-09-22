@@ -77,7 +77,7 @@ public class DefaultAssessmentEvaluator implements AssessmentEvaluator {
 		double maxScore = 0;
 		String userId = "";
 		String courseId = "";
-		String contnetId = "";
+		String contentId = "";
 		Map<String, Object> resultMap = null;
 		List<Map<String, Object>> listMap = new ArrayList<>();
 		if (assmntMap != null && assmntMap.size() > 0) {
@@ -88,7 +88,7 @@ public class DefaultAssessmentEvaluator implements AssessmentEvaluator {
 				
 				for (Map<String, Object> map : list) {
 					courseId = (String) map.get(JsonKey.COURSE_ID);
-					contnetId = (String) map.get(JsonKey.CONTENT_ID);
+					contentId = (String) map.get(JsonKey.CONTENT_ID);
 					userId = (String) map.get(JsonKey.USER_ID);
 					score = score + (((String)map.get(JsonKey.ASSESSMENT_SCORE)) != null ? Double.parseDouble((String) map.get(JsonKey.ASSESSMENT_SCORE)) : 0 );
 					maxScore = maxScore + (((String)map.get(JsonKey.ASSESSMENT_MAX_SCORE)) != null ? Double.parseDouble((String) map.get(JsonKey.ASSESSMENT_MAX_SCORE)) : 0 );
@@ -98,14 +98,14 @@ public class DefaultAssessmentEvaluator implements AssessmentEvaluator {
 				resultMap = new HashMap<>();
 				resultMap.put(JsonKey.USER_ID, userId);
 				resultMap.put(JsonKey.COURSE_ID, courseId);
-				resultMap.put(JsonKey.CONTENT_ID, contnetId);
+				resultMap.put(JsonKey.CONTENT_ID, contentId);
 				resultMap.put(JsonKey.RESULT, result.getResult());
 				resultMap.put(JsonKey.ASSESSMENT_GRADE, result.getGrade());
 				resultMap.put(JsonKey.ASSESSMENT_SCORE, String.valueOf(score));
 				listMap.add(resultMap);
-				contnetId = "";
+				contentId = "";
 				userId = "";
-				contnetId = "";
+				contentId = "";
 				score = 0;
 				maxScore = 0;  
 			} 
