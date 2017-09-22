@@ -33,7 +33,7 @@ public class DefaultDataMaskServiceImpl implements DataMaskingService {
 
   @Override
   public String maskEmail(String email) {
-    if(!ProjectUtil.isEmailvalid(email)) {
+    if((ProjectUtil.isStringNullOREmpty(email)) || (!ProjectUtil.isEmailvalid(email))) {
       return email;
     }
     StringBuilder builder = new StringBuilder();
@@ -64,5 +64,9 @@ public class DefaultDataMaskServiceImpl implements DataMaskingService {
           }
      }
     return builder.toString();
+  }
+  
+  public static void main(String[] args) {
+    System.out.println(ServiceFactory.getMaskingServiceInstance(null).maskData("qwerty"));
   }
 }
