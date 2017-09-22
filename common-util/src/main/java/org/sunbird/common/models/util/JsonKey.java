@@ -462,4 +462,7 @@ public class JsonKey {
   public static final String ON = "ON";
   public static final String MASKED_PHONE = "maskedPhone";
   public static final String MASKED_EMAIL = "maskedEmail";
+  
+  public static final String COMPLETENESS = "completeness";
+  public static final String MISSING_FIELDS = "missingFields";
 }
