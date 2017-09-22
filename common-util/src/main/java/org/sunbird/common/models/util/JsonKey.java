@@ -465,4 +465,7 @@ public class JsonKey {
   
   public static final String COMPLETENESS = "completeness";
   public static final String MISSING_FIELDS = "missingFields";
+  public static final String BULK_UPLOAD_USER_DATA_SIZE = "bulk_upload_user_data_size";
+  public static final String BULK_UPLOAD_ORG_DATA_SIZE = "bulk_upload_org_data_size";
+  public static final String BULK_UPLOAD_BATCH_DATA_SIZE = "bulk_upload_batch_data_size";
 }

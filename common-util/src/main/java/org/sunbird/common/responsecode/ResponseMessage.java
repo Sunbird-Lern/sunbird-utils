@@ -126,7 +126,7 @@ public interface ResponseMessage {
         public static final String EMAIL_VERIFY_ERROR = "Please provide a verified email in order to create user.";
         public static final String PHONE_VERIFY_ERROR = "Please provide a verified phone number in order to create user.";
         public static final String BULK_USER_UPLOAD_ERROR = "Please provide either organisation Id or external Id & provider value.";
-        public static final String DATA_SIZE_EXCEEDED = "Maximum upload data size should be 200";
+        public static final String DATA_SIZE_EXCEEDED = "Maximum upload data size should be {0}";
         public static final String INVALID_COLUMN_NAME = "Invalid column name.";
         public  static final String USER_ALREADY_ACTIVE = "User is already active";
         public static final String ENROLMENT_TYPE_REQUIRED = "Enrolment type is mandatory.";
