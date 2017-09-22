@@ -8,7 +8,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
@@ -150,6 +149,10 @@ public final class RequestValidator {
 	}
 	
 	private static void phoneAndEmailValidationForCreateUser(Request userRequest) {
+	  if(!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PHONE))){
+	    String phone = (String) userRequest.getRequest().get(JsonKey.PHONE);
+	    validatePhoneNo( phone );
+	  }
     //Email is always mandatory for both External as well as our internal portal
 	  if (ProjectUtil.isStringNullOREmpty((String)userRequest.getRequest().get(JsonKey.EMAIL))) {
 	       throw new ProjectCommonException(ResponseCode.emailRequired.getErrorCode(),
@@ -184,8 +187,24 @@ public final class RequestValidator {
 	   }
 	}
 	
-	private static void phoneAndEmailValidationForUpdateUser(Request userRequest) {
-	       
+	private static boolean validatePhoneNo(String phone) {
+	  if(phone.contains("+")){
+        phone = phone.replace("+", "");
+      }
+      try{
+        Long.parseLong(phone);
+      }catch(Exception ex){
+        ProjectLogger.log(phone +"this phone no. is not a valid one.");
+        throw new ProjectCommonException(ResponseCode.phoneNoFormatError.getErrorCode(),
+            ResponseCode.phoneNoFormatError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
+      return true;
+    }
+
+  private static void phoneAndEmailValidationForUpdateUser(Request userRequest) {
+      if(!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PHONE))){
+        validatePhoneNo( (String) userRequest.getRequest().get(JsonKey.PHONE) );
+      }
 	       if(!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PROVIDER))){
 	         
 	         if(!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.EMAIL))){

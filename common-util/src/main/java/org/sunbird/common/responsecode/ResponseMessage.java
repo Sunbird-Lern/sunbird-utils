@@ -172,6 +172,7 @@ public interface ResponseMessage {
       public static final String INVALID_TAGS = "Invalid data for tags";
       public static final String NOTE_ID_INVALID = "Invalid note id";
       public static final String USER_DATA_ENCRYPTION_ERROR = "Exception Occurred while encrypting user data.";
+      public static final String INVALID_PHONE_NO_FORMAT = "Please provide a valid phone number.";
 	}
     
     public interface Key {
@@ -338,5 +339,6 @@ public interface ResponseMessage {
         public static final String INVALID_TAGS = "INVALID_TAGS";
         public static final String NOTE_ID_INVALID = "NOTE_ID_INVALID";
         public static final String USER_DATA_ENCRYPTION_ERROR = "USER_DATA_ENCRYPTION_ERROR";
+        public static final String INVALID_PHONE_NO_FORMAT = "INVALID_PHONE_NO_FORMAT";
     }
 }

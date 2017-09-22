@@ -171,6 +171,7 @@ public enum ResponseCode {
     invalidTags(ResponseMessage.Key.INVALID_TAGS, ResponseMessage.Message.INVALID_TAGS),
     invalidNoteId(ResponseMessage.Key.NOTE_ID_INVALID, ResponseMessage.Message.NOTE_ID_INVALID),
     userDataEncryptionError(ResponseMessage.Key.USER_DATA_ENCRYPTION_ERROR, ResponseMessage.Message.USER_DATA_ENCRYPTION_ERROR),
+    phoneNoFormatError(ResponseMessage.Key.INVALID_PHONE_NO_FORMAT, ResponseMessage.Message.INVALID_PHONE_NO_FORMAT),
     OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404),UNAUTHORIZED(401);
 	
 	private int responseCode;

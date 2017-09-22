@@ -27,7 +27,7 @@ public interface DecryptionService {
    * @return Map<String,Object>
    * @throws Exception
    */
-  public Map<String,Object> decryptData (Map<String,Object> data) throws Exception;
+  public Map<String,Object> decryptData (Map<String,Object> data) ;
   
   /**
    * This method will take list of map as an input to decrypt the data,
@@ -38,7 +38,7 @@ public interface DecryptionService {
    * @return List<Map<String,Object>>
    * @throws Exception
    */
-  public List<Map<String,Object>>  decryptData (List<Map<String,Object>> data) throws Exception;
+  public List<Map<String,Object>>  decryptData (List<Map<String,Object>> data) ;
   
   /**
    * This method will take String as an input and decrypt the String and return back.
@@ -46,6 +46,6 @@ public interface DecryptionService {
    * @return String
    * @throws Exception
    */
-  public String decryptData (String data) throws Exception;
+  public String decryptData (String data) ;
 
 }

@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.models.util.datasecurity.DecryptionService;
@@ -32,7 +33,7 @@ public class DefaultDecryptionServiceImpl implements DecryptionService{
   }
   
   @Override
-  public Map<String, Object> decryptData(Map<String, Object> data) throws Exception {
+  public Map<String, Object> decryptData(Map<String, Object> data) {
     if(JsonKey.ON.equalsIgnoreCase(sunbirdEncryption)){
       if (data == null) {
         return data;
@@ -53,7 +54,7 @@ public class DefaultDecryptionServiceImpl implements DecryptionService{
   }
 
   @Override
-  public List<Map<String, Object>> decryptData(List<Map<String, Object>> data) throws Exception{
+  public List<Map<String, Object>> decryptData(List<Map<String, Object>> data) {
     if(JsonKey.ON.equalsIgnoreCase(sunbirdEncryption)){
      if (data == null || data.isEmpty()) {
        return data;
@@ -67,7 +68,7 @@ public class DefaultDecryptionServiceImpl implements DecryptionService{
   }
 
   @Override
-  public String decryptData(String data) throws Exception {
+  public String decryptData(String data){
     if(JsonKey.ON.equalsIgnoreCase(sunbirdEncryption)){
       if (ProjectUtil.isStringNullOREmpty(data)) {
         return data;
@@ -89,9 +90,9 @@ public class DefaultDecryptionServiceImpl implements DecryptionService{
    *            encrypted password.
    * @param salt
    * @return decrypted password.
-   * @throws Exception
    */
-  public static String decrypt(String value) throws Exception {
+  public static String decrypt(String value){
+    try{
       salt = DefaultEncryptionServivceImpl.getSalt(); 
       Key key = generateKey();
       Cipher c = Cipher.getInstance(ALGORITHM);
@@ -107,6 +108,10 @@ public class DefaultDecryptionServiceImpl implements DecryptionService{
           valueToDecrypt = dValue;
       }
       return dValue;
+    }catch(Exception ex){
+      ProjectLogger.log("Exception Occurred while decrypting value");
+    }
+    return value;
   }
 
   private static Key generateKey() throws Exception {
