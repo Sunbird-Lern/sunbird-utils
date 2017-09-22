@@ -454,4 +454,12 @@ public class JsonKey {
   public static final String USER_NOTES_DB = "userNotes_db";
   public static final String EKSTEP_DOMAIN_URL = "ekstep_domain_url";
   public static final String REPLACE_WITH_X = "X";
+  public static final String ADDRESS_LINE2 = "addressLine2";
+  public static final String STATE = "state";
+  public static final String ZIPCODE = "zipcode";
+  public static final String COUNTRY = "country";
+  public static final String SUNBIRD_ENCRYPTION = "sunbird_encryption";
+  public static final String ON = "ON";
+  public static final String MASKED_PHONE = "maskedPhone";
+  public static final String MASKED_EMAIL = "maskedEmail";
 }

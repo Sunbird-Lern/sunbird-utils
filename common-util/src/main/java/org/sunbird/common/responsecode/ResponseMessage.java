@@ -171,6 +171,7 @@ public interface ResponseMessage {
       public static final String CONTENT_ID_ERROR = "Please provide content id or course id";
       public static final String INVALID_TAGS = "Invalid data for tags";
       public static final String NOTE_ID_INVALID = "Invalid note id";
+      public static final String USER_DATA_ENCRYPTION_ERROR = "Exception Occurred while encrypting user data.";
 	}
     
     public interface Key {
@@ -336,5 +337,6 @@ public interface ResponseMessage {
         public static final String CONTENT_ID_ERROR = "CONTENT_ID_OR_COURSE_ID_REQUIRED";
         public static final String INVALID_TAGS = "INVALID_TAGS";
         public static final String NOTE_ID_INVALID = "NOTE_ID_INVALID";
+        public static final String USER_DATA_ENCRYPTION_ERROR = "USER_DATA_ENCRYPTION_ERROR";
     }
 }
