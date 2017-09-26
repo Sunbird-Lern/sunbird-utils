@@ -53,7 +53,7 @@ public enum ActorOperations {
     COURSE_PROGRESS_METRICS_DATA("courseProgressMetricsData"),GET_ORG_TYPE_LIST("getOrgTypeList"),CREATE_ORG_TYPE("createOrgType"),
     UPDATE_ORG_TYPE("updateOrgType"), CREATE_NOTE("createNote"), UPDATE_NOTE("updateNote"),
     SEARCH_NOTE("searchNote"), GET_NOTE("getNote"), DELETE_NOTE("deleteNote"),
-    INSERT_USER_NOTES_ES("insertUserNotesToElastic"), 
+    INSERT_USER_NOTES_ES("insertUserNotesToElastic"),ENCRYPT_USER_DATA("encryptUserData"),DECRYPT_USER_DATA("decryptUserData"), 
     UPDATE_USER_NOTES_ES("updateUserNotesToElastic");
 
     private String value;
