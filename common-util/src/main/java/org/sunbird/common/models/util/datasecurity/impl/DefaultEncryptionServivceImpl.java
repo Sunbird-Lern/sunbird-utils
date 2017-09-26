@@ -154,8 +154,10 @@ public class DefaultEncryptionServivceImpl implements EncryptionService{
     return salt;
   } 
   
-  public static void main(String[] args) {
-    ServiceFactory.getEncryptionServiceInstance(null);
+  public static void main(String[] args) throws Exception {
+    EncryptionService service = ServiceFactory.getEncryptionServiceInstance(null);
+    System.out.println(service.encryptData("amit.ec006@gmail.com"));
+    
   }
   
 }

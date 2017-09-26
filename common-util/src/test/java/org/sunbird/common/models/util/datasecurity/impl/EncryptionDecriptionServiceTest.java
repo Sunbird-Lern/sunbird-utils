@@ -198,7 +198,7 @@ public class EncryptionDecriptionServiceTest {
   }
   @Test
   public void testPhoneMasking(){
-    assertEquals(maskingService.maskPhone("1234567890"),"XXXXXX7890");
+    assertEquals(maskingService.maskPhone("1234567890"),"******7890");
   }
   @Test
   public void testEmptyEmailMasking(){
@@ -210,7 +210,7 @@ public class EncryptionDecriptionServiceTest {
   }
   @Test
   public void testEmailMasking(){
-    assertEquals(maskingService.maskEmail("amit.ec006@gmail.com"),"amXXXXXXXX@gmail.com");
+    assertEquals(maskingService.maskEmail("amit.ec006@gmail.com"),"am********@gmail.com");
   }
   @Test
   public void testEmptyDataMasking(){
@@ -222,7 +222,7 @@ public class EncryptionDecriptionServiceTest {
   }
   @Test
   public void testDataMasking(){
-    assertEquals(maskingService.maskData("qwerty"),"XXerty");
+    assertEquals(maskingService.maskData("qwerty"),"**erty");
   }
   @Test
   public void testDataOfLengthLessThanEqualTo4Masking(){

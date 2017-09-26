@@ -23,7 +23,7 @@ public class DefaultDataMaskServiceImpl implements DataMaskingService {
     int length = phone.length();
     for (int i = 0; i < length; i++) {
       if (i < length - 4) {
-        builder.append(JsonKey.REPLACE_WITH_X);
+        builder.append(JsonKey.REPLACE_WITH_ASTERISK);
       } else {
         builder.append(phone.charAt(i));
       }
@@ -43,7 +43,7 @@ public class DefaultDataMaskServiceImpl implements DataMaskingService {
       if (i<2 || i>=length) {
         builder.append(email.charAt(i));
       }  else {
-        builder.append(JsonKey.REPLACE_WITH_X);
+        builder.append(JsonKey.REPLACE_WITH_ASTERISK);
       }
     }
     return builder.toString();
@@ -58,7 +58,7 @@ public class DefaultDataMaskServiceImpl implements DataMaskingService {
      StringBuilder builder = new StringBuilder();
      for (int i =0 ; i< data.length();i++) {
           if (i<lenght) {
-             builder.append(JsonKey.REPLACE_WITH_X);
+             builder.append(JsonKey.REPLACE_WITH_ASTERISK);
           } else {
             builder.append(data.charAt(i));
           }
@@ -67,6 +67,9 @@ public class DefaultDataMaskServiceImpl implements DataMaskingService {
   }
   
   public static void main(String[] args) {
-    System.out.println(ServiceFactory.getMaskingServiceInstance(null).maskData("qwerty"));
+    System.out.println(ServiceFactory.getMaskingServiceInstance(null).maskEmail("amit@gmail.com"));
+   
+
+
   }
 }
