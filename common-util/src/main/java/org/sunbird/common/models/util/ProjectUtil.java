@@ -288,7 +288,7 @@ public class ProjectUtil {
     }
      
     public enum Method {GET,POST,PUT,DELETE,PATCH}
-    public static final String FILE_NAME [] = {"cassandratablecolumn.properties","elasticsearch.config.properties","cassandra.config.properties","dbconfig.properties","externalresource.properties","sso.properties","userencryption.properties"};
+    public static final String FILE_NAME [] = {"cassandratablecolumn.properties","elasticsearch.config.properties","cassandra.config.properties","dbconfig.properties","externalresource.properties","sso.properties","userencryption.properties","profilecompleteness.properties"};
     
     /**
      * Enum to hold the index name for Elastic search.
@@ -510,7 +510,7 @@ public class ProjectUtil {
     }
   }
   
-  public static final String [] excludes = new String[]{JsonKey.EMAIL,JsonKey.PHONE,JsonKey.USERNAME,JsonKey.LOGIN_ID,JsonKey.USER_ID};
+  public static final String [] excludes = new String[]{JsonKey.EMAIL,JsonKey.PHONE,JsonKey.USERNAME,JsonKey.LOGIN_ID,JsonKey.USER_ID,JsonKey.COMPLETENESS,JsonKey.MISSING_FIELDS};
   
   /**
    * 
@@ -625,5 +625,4 @@ public class ProjectUtil {
     }
     return tagStatus;
   }
-  
 }
