@@ -28,46 +28,47 @@ import org.sunbird.common.responsecode.ResponseCode;
 
 /**
  * Default data encryption service
+ * 
  * @author Manzarul
  *
  */
-public class DefaultEncryptionServivceImpl implements EncryptionService{
-  
-  private static String salt ="";
-  
+public class DefaultEncryptionServivceImpl implements EncryptionService {
+
+  private static String salt = "";
+
   private String sunbirdEncryption = "";
-  public DefaultEncryptionServivceImpl(){
+
+  public DefaultEncryptionServivceImpl() {
     sunbirdEncryption = System.getenv(JsonKey.SUNBIRD_ENCRYPTION);
-    if(ProjectUtil.isStringNullOREmpty(sunbirdEncryption)){
+    if (ProjectUtil.isStringNullOREmpty(sunbirdEncryption)) {
       sunbirdEncryption = PropertiesCache.getInstance().getProperty(JsonKey.SUNBIRD_ENCRYPTION);
     }
   }
-  
+
   @Override
-  public Map<String, Object> encryptData(Map<String, Object> data) throws Exception{
-    if(JsonKey.ON.equalsIgnoreCase(sunbirdEncryption)){
-       if(data == null) {
-           return data;
-       }
-        Iterator<Entry<String,Object>> itr = data.entrySet().iterator();
-        while (itr.hasNext()) {
-          Entry<String,Object> entry = itr.next();
-          if (entry.getValue() instanceof Map || entry.getValue() instanceof List) {
-            // do nothing
-          } else {
-            if(null != entry.getValue()){
-              data.put(entry.getKey(), encrypt(entry.getValue()+""));
-            }
+  public Map<String, Object> encryptData(Map<String, Object> data) throws Exception {
+    if (JsonKey.ON.equalsIgnoreCase(sunbirdEncryption)) {
+      if (data == null) {
+        return data;
+      }
+      Iterator<Entry<String, Object>> itr = data.entrySet().iterator();
+      while (itr.hasNext()) {
+        Entry<String, Object> entry = itr.next();
+        if (entry.getValue() instanceof Map || entry.getValue() instanceof List) {
+          // do nothing
+        } else {
+          if (null != entry.getValue()) {
+            data.put(entry.getKey(), encrypt(entry.getValue() + ""));
           }
         }
+      }
     }
     return data;
   }
 
   @Override
-  public List<Map<String, Object>> encryptData(List<Map<String, Object>> data)
-      throws Exception {
-    if(JsonKey.ON.equalsIgnoreCase(sunbirdEncryption)){
+  public List<Map<String, Object>> encryptData(List<Map<String, Object>> data) throws Exception {
+    if (JsonKey.ON.equalsIgnoreCase(sunbirdEncryption)) {
       if (data == null || data.isEmpty()) {
         return data;
       }
@@ -80,56 +81,56 @@ public class DefaultEncryptionServivceImpl implements EncryptionService{
 
   @Override
   public String encryptData(String data) throws Exception {
-    if(JsonKey.ON.equalsIgnoreCase(sunbirdEncryption)){
+    if (JsonKey.ON.equalsIgnoreCase(sunbirdEncryption)) {
       if (ProjectUtil.isStringNullOREmpty(data)) {
         return data;
       }
-      if(null != data){
+      if (null != data) {
         return encrypt(data);
-      }else {
+      } else {
         return data;
       }
     } else {
       return data;
     }
   }
-  
-  
-  
+
+
+
   /**
    * this method is used to encrypt the password.
    * 
-   * @param value
-   *            String password
+   * @param value String password
    * @param salt
    * @return encrypted password.
-   * @throws NoSuchPaddingException 
-   * @throws NoSuchAlgorithmException 
-   * @throws InvalidKeyException 
-   * @throws BadPaddingException 
-   * @throws IllegalBlockSizeException 
+   * @throws NoSuchPaddingException
+   * @throws NoSuchAlgorithmException
+   * @throws InvalidKeyException
+   * @throws BadPaddingException
+   * @throws IllegalBlockSizeException
    */
-  public static String encrypt(String value) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException{
-  salt = getSalt();
-  Key key = generateKey();
-  Cipher c = Cipher.getInstance(ALGORITHM);
-  c.init(Cipher.ENCRYPT_MODE, key);
+  public static String encrypt(String value) throws NoSuchAlgorithmException,
+      NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+    salt = getSalt();
+    Key key = generateKey();
+    Cipher c = Cipher.getInstance(ALGORITHM);
+    c.init(Cipher.ENCRYPT_MODE, key);
 
-  String valueToEnc = null;
-  String eValue = value;
-  for (int i = 0; i < ITERATIONS; i++) {
+    String valueToEnc = null;
+    String eValue = value;
+    for (int i = 0; i < ITERATIONS; i++) {
       valueToEnc = salt + eValue;
       byte[] encValue = c.doFinal(valueToEnc.getBytes());
-      eValue =   new sun.misc.BASE64Encoder().encode(encValue);
-  }
-  return eValue;
+      eValue = new sun.misc.BASE64Encoder().encode(encValue);
+    }
+    return eValue;
   }
 
   private static Key generateKey() {
     return new SecretKeySpec(keyValue, ALGORITHM);
   }
-  
-  
+
+
   /**
    * 
    * @return
@@ -145,19 +146,17 @@ public class DefaultEncryptionServivceImpl implements EncryptionService{
       }
     }
     if (ProjectUtil.isStringNullOREmpty(salt)) {
-      ProjectLogger.log("throwing exception for invalid salt==",
-          LoggerEnum.INFO.name());
+      ProjectLogger.log("throwing exception for invalid salt==", LoggerEnum.INFO.name());
       throw new ProjectCommonException(ResponseCode.saltValue.getErrorCode(),
-          ResponseCode.saltValue.getErrorMessage(),
-          ResponseCode.SERVER_ERROR.getResponseCode());
+          ResponseCode.saltValue.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
     }
     return salt;
-  } 
-  
+  }
+
   public static void main(String[] args) throws Exception {
     EncryptionService service = ServiceFactory.getEncryptionServiceInstance(null);
     System.out.println(service.encryptData("amit.ec006@gmail.com"));
-    
+
   }
-  
+
 }
