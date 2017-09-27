@@ -472,4 +472,5 @@ public class JsonKey {
   public static final String ENC_PHONE = "encPhone";
   public static final String ENC_EMAIL = "encEmail";
   public static final String REPLACE_WITH_ASTERISK = "*";
+  public static final String CURRENT_LOGIN_TIME = "currentLoginTime";
 }
