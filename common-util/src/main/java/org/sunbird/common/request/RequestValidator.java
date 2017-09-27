@@ -145,7 +145,7 @@ public final class RequestValidator {
               }
            }
         }
-		
+		validateWebPages(userRequest);
 	}
 	
 	private static void phoneAndEmailValidationForCreateUser(Request userRequest) {
@@ -451,7 +451,7 @@ public final class RequestValidator {
                 ResponseCode.CLIENT_ERROR.getResponseCode());
           } 
         }
-        
+        validateWebPages(userRequest);
    }
 
 	/**
@@ -1208,6 +1208,18 @@ mentors : List of user ids , who will work as a mentor.
       throw new ProjectCommonException(ResponseCode.invalidNoteId.getErrorCode(),
           ResponseCode.invalidNoteId.getErrorMessage(),
           ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+  }
+  
+  @SuppressWarnings("unchecked")
+  public static void validateWebPages(Request request) {
+    if(request.getRequest().containsKey(JsonKey.WEB_PAGES)){
+      List<Map<String, String>> data = (List<Map<String, String>>) request.getRequest().get(JsonKey.WEB_PAGES);
+      if(null == data || data.isEmpty()){
+        throw new ProjectCommonException(ResponseCode.invalidWebPageData.getErrorCode(),
+            ResponseCode.invalidWebPageData.getErrorMessage(),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
     }
   }
   

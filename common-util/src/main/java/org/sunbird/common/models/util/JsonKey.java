@@ -473,4 +473,8 @@ public class JsonKey {
   public static final String ENC_EMAIL = "encEmail";
   public static final String REPLACE_WITH_ASTERISK = "*";
   public static final String CURRENT_LOGIN_TIME = "currentLoginTime";
+
+  public static final String WEB_PAGES = "webPages";
+  public static final String MEDIA_TYPE_DB = "mediaTypeDB";
+
 }
