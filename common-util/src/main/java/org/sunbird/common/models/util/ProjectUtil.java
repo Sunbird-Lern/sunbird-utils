@@ -4,6 +4,8 @@
 package org.sunbird.common.models.util;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,6 +38,7 @@ public class ProjectUtil {
 
     public static final long BACKGROUND_ACTOR_WAIT_TIME = 30;
     public static final String YEAR_MONTH_DATE_FORMAT = "yyyy-MM-dd";
+    private static Map<String , String> templateMap = new HashMap<>();
     
     /**
      * @author Manzarul
@@ -232,9 +235,16 @@ public class ProjectUtil {
 
     static {
         pattern = Pattern.compile(EMAIL_PATTERN);
+        initializeMailTemplateMap();
     }
 
-    /**
+  private static void initializeMailTemplateMap() {
+    templateMap.put("contentFlagged" , "/contentFlaggedMailTemplate.vm");
+    templateMap.put("acceptFlag" , "/acceptFlagMailTemplate.vm");
+    templateMap.put("rejectFlag" , "/rejectFlagMailTemplate.vm");
+  }
+
+  /**
      * Validate email with regular expression
      *
      * @param email
@@ -534,20 +544,28 @@ public class ProjectUtil {
   public static VelocityContext getContext(Map<String,Object> map){
     VelocityContext context = new VelocityContext();
     
-    if(!ProjectUtil.isStringNullOREmpty((String)map.get(JsonKey.DOWNLOAD_URL))){
-      context.put(JsonKey.DOWNLOAD_URL, map.get(JsonKey.DOWNLOAD_URL));
+    if(!ProjectUtil.isStringNullOREmpty((String)map.get(JsonKey.ACTION_URL))){
+      context.put(JsonKey.ACTION_URL, map.get(JsonKey.ACTION_URL));
     }
     if(!ProjectUtil.isStringNullOREmpty((String)map.get(JsonKey.NAME))){
       context.put(JsonKey.NAME,(String)map.get(JsonKey.NAME));
     }
     context.put(JsonKey.BODY, map.get(JsonKey.BODY));
     context.put(JsonKey.FROM_EMAIL, ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.EMAIL_SERVER_FROM))==false?System.getenv(JsonKey.EMAIL_SERVER_FROM):"");
+    // add the org bname after regards in mail
+    context.put(JsonKey.ORG_SERVER_FROM_NAME, ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.ORG_SERVER_FROM_NAME))==false?System.getenv(JsonKey.ORG_SERVER_FROM_NAME):"");
+    // add image url in the mail
+    context.put(JsonKey.ORG_IMAGE_URL, ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.ORG_IMAGE_URL))==false?System.getenv(JsonKey.ORG_IMAGE_URL):"");
+
     context.put(JsonKey.ACTION_NAME,(String)map.get(JsonKey.ACTION_NAME));
     return context;
   }
   
-  public static String getTemplate(String templateType){
-    return "/emailtemplate.vm";
+  public static String getTemplate(Map<String, Object> map){
+    if(ProjectUtil.isStringNullOREmpty(templateMap.get(map.get(JsonKey.EMAIL_TEMPLATE_TYPE)))) {
+      return "/emailtemplate.vm";
+    }
+    return templateMap.get(map.get(JsonKey.EMAIL_TEMPLATE_TYPE));
   }
 
   /**

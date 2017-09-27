@@ -472,4 +472,9 @@ public class JsonKey {
   public static final String ENC_PHONE = "encPhone";
   public static final String ENC_EMAIL = "encEmail";
   public static final String REPLACE_WITH_ASTERISK = "*";
+  public static final String EMAIL_TEMPLATE_TYPE = "emailTemplateType";
+  public static final String ACTION_URL = "actionUrl";
+  public static final String ORG_SERVER_FROM_NAME = "orgServerFromName";
+  public static final String ORG_IMAGE_URL = "orgImageUrl";
+
 }
