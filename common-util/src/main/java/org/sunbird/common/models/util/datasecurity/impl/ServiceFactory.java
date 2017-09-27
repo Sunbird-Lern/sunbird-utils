@@ -10,8 +10,9 @@ import org.sunbird.common.models.util.datasecurity.EncryptionService;
 
 
 /**
- * This factory will provide encryption service instance and decryption
- * service instance with default implementation.
+ * This factory will provide encryption service instance and decryption service instance with
+ * default implementation.
+ * 
  * @author Manzarul
  *
  */
@@ -24,7 +25,7 @@ public class ServiceFactory {
   static {
     encryptionService = new DefaultEncryptionServivceImpl();
     decryptionService = new DefaultDecryptionServiceImpl();
-    maskingService =  new  DefaultDataMaskServiceImpl();
+    maskingService = new DefaultDataMaskServiceImpl();
   }
 
 
@@ -37,7 +38,7 @@ public class ServiceFactory {
    * @return EncryptionService
    */
   public static EncryptionService getEncryptionServiceInstance(String val) {
-    if(ProjectUtil.isStringNullOREmpty(val)) {
+    if (ProjectUtil.isStringNullOREmpty(val)) {
       return encryptionService;
     }
     switch (val) {
@@ -58,7 +59,7 @@ public class ServiceFactory {
    * @return DecryptionService
    */
   public static DecryptionService getDecryptionServiceInstance(String val) {
-    if(ProjectUtil.isStringNullOREmpty(val)) {
+    if (ProjectUtil.isStringNullOREmpty(val)) {
       return decryptionService;
     }
     switch (val) {
@@ -68,9 +69,9 @@ public class ServiceFactory {
         return decryptionService;
     }
   }
-  
-  public static DataMaskingService getMaskingServiceInstance (String val) {
-    if(ProjectUtil.isStringNullOREmpty(val)) {
+
+  public static DataMaskingService getMaskingServiceInstance(String val) {
+    if (ProjectUtil.isStringNullOREmpty(val)) {
       return maskingService;
     }
     switch (val) {

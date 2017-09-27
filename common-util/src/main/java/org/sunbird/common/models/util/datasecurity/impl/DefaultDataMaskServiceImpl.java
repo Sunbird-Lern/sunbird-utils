@@ -19,7 +19,7 @@ public class DefaultDataMaskServiceImpl implements DataMaskingService {
       return phone;
     }
     StringBuilder builder = new StringBuilder();
-     phone = phone.trim().replace("-", "");
+    phone = phone.trim().replace("-", "");
     int length = phone.length();
     for (int i = 0; i < length; i++) {
       if (i < length - 4) {
@@ -33,16 +33,16 @@ public class DefaultDataMaskServiceImpl implements DataMaskingService {
 
   @Override
   public String maskEmail(String email) {
-    if((ProjectUtil.isStringNullOREmpty(email)) || (!ProjectUtil.isEmailvalid(email))) {
+    if ((ProjectUtil.isStringNullOREmpty(email)) || (!ProjectUtil.isEmailvalid(email))) {
       return email;
     }
     StringBuilder builder = new StringBuilder();
-    String emails [] = email.split("@");
+    String emails[] = email.split("@");
     int length = emails[0].length();
-    for (int i=0 ; i< email.length();i++) {
-      if (i<2 || i>=length) {
+    for (int i = 0; i < email.length(); i++) {
+      if (i < 2 || i >= length) {
         builder.append(email.charAt(i));
-      }  else {
+      } else {
         builder.append(JsonKey.REPLACE_WITH_ASTERISK);
       }
     }
@@ -51,24 +51,24 @@ public class DefaultDataMaskServiceImpl implements DataMaskingService {
 
   @Override
   public String maskData(String data) {
-     if (ProjectUtil.isStringNullOREmpty(data) || data.length()<=3) {
-       return data;
-     }
-     int lenght = data.length()-4;
-     StringBuilder builder = new StringBuilder();
-     for (int i =0 ; i< data.length();i++) {
-          if (i<lenght) {
-             builder.append(JsonKey.REPLACE_WITH_ASTERISK);
-          } else {
-            builder.append(data.charAt(i));
-          }
-     }
+    if (ProjectUtil.isStringNullOREmpty(data) || data.length() <= 3) {
+      return data;
+    }
+    int lenght = data.length() - 4;
+    StringBuilder builder = new StringBuilder();
+    for (int i = 0; i < data.length(); i++) {
+      if (i < lenght) {
+        builder.append(JsonKey.REPLACE_WITH_ASTERISK);
+      } else {
+        builder.append(data.charAt(i));
+      }
+    }
     return builder.toString();
   }
-  
+
   public static void main(String[] args) {
     System.out.println(ServiceFactory.getMaskingServiceInstance(null).maskEmail("amit@gmail.com"));
-   
+
 
 
   }
