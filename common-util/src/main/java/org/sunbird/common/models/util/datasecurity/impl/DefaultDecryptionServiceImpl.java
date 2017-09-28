@@ -21,7 +21,7 @@ import org.sunbird.common.models.util.datasecurity.DecryptionService;
  *
  */
 public class DefaultDecryptionServiceImpl implements DecryptionService {
-  public static String salt = "";
+  public static String sunbird_encryption = "";
 
   private String sunbirdEncryption = "";
 
@@ -87,12 +87,12 @@ public class DefaultDecryptionServiceImpl implements DecryptionService {
    * this method is used to decrypt password.
    * 
    * @param value encrypted password.
-   * @param salt
+   * @param sunbird_encryption
    * @return decrypted password.
    */
   public static String decrypt(String value) {
     try {
-      salt = DefaultEncryptionServivceImpl.getSalt();
+      sunbird_encryption = DefaultEncryptionServivceImpl.getSalt();
       Key key = generateKey();
       Cipher c = Cipher.getInstance(ALGORITHM);
       c.init(Cipher.DECRYPT_MODE, key);
@@ -102,7 +102,7 @@ public class DefaultDecryptionServiceImpl implements DecryptionService {
       for (int i = 0; i < ITERATIONS; i++) {
         byte[] decordedValue = new sun.misc.BASE64Decoder().decodeBuffer(valueToDecrypt);
         byte[] decValue = c.doFinal(decordedValue);
-        dValue = new String(decValue).substring(salt.length());
+        dValue = new String(decValue).substring(sunbird_encryption.length());
         valueToDecrypt = dValue;
       }
       return dValue;

@@ -446,7 +446,7 @@ public class JsonKey {
   public static final String BULK_USER_UPLOAD = "bulkUserUpload";
   public static String SUNBIRD_QUARTZ_MODE = "sunbird_quartz_mode";
   public static String EMBEDDED= "embedded";
-  public static final String SALT = "sunbird_salt";
+  public static final String ENCRYPTION_KEY = "sunbird_encryption_key";
   
   public static final String NOTE = "note";
   public static final String NOTE_ID = "noteId";
