@@ -92,7 +92,7 @@ public class KeyCloakServiceImplTest {
     }
 
     @Test
-    public void xremoveUserTest(){
+    public void zremoveUserTest(){
 
         Map<String , Object> request = new HashMap<String , Object>();
         request.put(JsonKey.USER_ID , userId.get(JsonKey.USER_ID));
@@ -110,4 +110,29 @@ public class KeyCloakServiceImplTest {
       String response = keyCloakService.verifyToken(userId.get(JsonKey.ACCESSTOKEN));
       Assert.assertNotNull(response);
     }
+    
+    @Test
+    public void xaddLoginTimeTest () {
+       boolean response = keyCloakService.addUserLoginTime(userId.get(JsonKey.USER_ID));
+       Assert.assertEquals(true, response);
+    }
+    
+    @Test
+    public void yverifyLastLoginTime () {
+      String lastLoginTime = keyCloakService.getLastLoginTime(userId.get(JsonKey.USER_ID));
+      Assert.assertNull(lastLoginTime);
+    }
+  
+    @Test
+    public void yxddLoginTimeTest () {
+       boolean response = keyCloakService.addUserLoginTime(userId.get(JsonKey.USER_ID));
+       Assert.assertEquals(true, response);
+    }
+    
+    @Test
+    public void yyerifyLastLoginTime () {
+      String lastLoginTime = keyCloakService.getLastLoginTime(userId.get(JsonKey.USER_ID));
+      Assert.assertNotNull(lastLoginTime);
+    }
+    
 }

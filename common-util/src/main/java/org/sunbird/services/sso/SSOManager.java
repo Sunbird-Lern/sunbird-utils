@@ -62,4 +62,18 @@ public interface SSOManager {
 	 * @return
 	 */
 	public String activateUser(Map<String, Object> request);
+	
+	/**
+	 * This method will read user last login time from key claok.
+	 * @param userId String
+	 * @return String (as epoch value or null)
+	 */
+	public String getLastLoginTime (String userId);
+	
+	/**
+	 * This method will add user current login time to keycloak.
+	 * @param userId String
+	 * @return boolean
+	 */
+	public boolean addUserLoginTime (String userId); 
 }

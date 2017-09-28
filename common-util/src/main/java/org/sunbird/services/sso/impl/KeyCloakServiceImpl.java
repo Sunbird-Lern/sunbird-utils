@@ -17,6 +17,7 @@ import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.*;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.services.sso.SSOManager;
+import org.sunbird.services.sso.SSOServiceFactory;
 
 import javax.ws.rs.core.Response;
 
@@ -24,8 +25,10 @@ import java.io.IOException;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
@@ -386,6 +389,67 @@ public class KeyCloakServiceImpl implements SSOManager {
       ProjectLogger.log(e.getMessage(), e);
     }
     return accessTokenId;
+  }
+  
+  public static void main(String[] args) {
+    SSOManager sso = SSOServiceFactory.getInstance();
+    Map<String,Object> map = new HashMap<>();
+    map.put(JsonKey.USER_ID, "607476a7-a072-4e18-8d0f-5e8279642cb3");
+    map.put(JsonKey.FIRST_NAME, "Test");
+    sso.updateUser(map);
+  }
+
+  @Override
+  public String getLastLoginTime(String userId) {
+    String lastLoginTime = null;
+    try {
+      UserResource resource = keycloak
+          .realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
+      UserRepresentation ur = resource.toRepresentation();
+      Map<String, List<String>> map = ur.getAttributes();
+      if(map == null) {
+        map = new HashMap<>();
+      }
+      List<String> list = map.get(JsonKey.LAST_LOGIN_TIME);
+      if (list != null && list.size() > 0) {
+        lastLoginTime = list.get(0);
+      }
+    } catch (Exception e) {
+      ProjectLogger.log(e.getMessage(),e);
+    }
+    return lastLoginTime;
+  }
+
+  @Override
+  public boolean addUserLoginTime(String userId) {
+    boolean response = true;
+    try {
+      UserResource resource = keycloak
+          .realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
+      UserRepresentation ur = resource.toRepresentation();
+      Map<String, List<String>> map = ur.getAttributes();
+      List<String> list = new ArrayList<>();
+      if(map == null) {
+        map = new HashMap<>();
+      }
+      List<String> currentLogTime = map.get(JsonKey.CURRENT_LOGIN_TIME);
+      if (currentLogTime == null || currentLogTime.size() == 0) {
+        currentLogTime = new ArrayList<String>();
+        currentLogTime.add(System.currentTimeMillis() + "");
+      } else {
+        list.add(currentLogTime.get(0));
+        currentLogTime.clear();
+        currentLogTime.add(0, System.currentTimeMillis() + "");
+      }
+      map.put(JsonKey.CURRENT_LOGIN_TIME, currentLogTime);
+      map.put(JsonKey.LAST_LOGIN_TIME, list);
+      ur.setAttributes(map);
+      resource.update(ur);
+    } catch (Exception e) {
+      ProjectLogger.log(e.getMessage(), e);
+      response = false;
+    }
+    return response;
   }
   
  }
