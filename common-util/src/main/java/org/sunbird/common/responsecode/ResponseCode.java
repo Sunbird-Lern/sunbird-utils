@@ -172,6 +172,9 @@ public enum ResponseCode {
     invalidNoteId(ResponseMessage.Key.NOTE_ID_INVALID, ResponseMessage.Message.NOTE_ID_INVALID),
     userDataEncryptionError(ResponseMessage.Key.USER_DATA_ENCRYPTION_ERROR, ResponseMessage.Message.USER_DATA_ENCRYPTION_ERROR),
     phoneNoFormatError(ResponseMessage.Key.INVALID_PHONE_NO_FORMAT, ResponseMessage.Message.INVALID_PHONE_NO_FORMAT),
+    invalidWebPageData(ResponseMessage.Key.INVALID_WEBPAGE_DATA, ResponseMessage.Message.INVALID_WEBPAGE_DATA),
+    invalidMediaType(ResponseMessage.Key.INVALID_MEDIA_TYPE, ResponseMessage.Message.INVALID_MEDIA_TYPE),
+    invalidWebPageUrl(ResponseMessage.Key.INVALID_WEBPAGE_URL, ResponseMessage.Key.INVALID_WEBPAGE_URL),
     OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404),UNAUTHORIZED(401);
 	
 	private int responseCode;
