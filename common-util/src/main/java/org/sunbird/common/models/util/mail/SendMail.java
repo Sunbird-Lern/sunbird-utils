@@ -1,6 +1,7 @@
 package org.sunbird.common.models.util.mail;
 
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
@@ -272,7 +273,7 @@ public class SendMail {
       context.put("actionName","View Details");
       context.put("fromEmail", "");
       context.put("subject", "test email");
-      sendMail(new String [] {"manzarul.haque@tarento.com"}, "test email ntp", context, ProjectUtil.getTemplate(""));
+      sendMail(new String [] {"arvind.gla@gmail.com"}, "test email ntp", context, ProjectUtil.getTemplate(new HashMap<String , Object>()));
       System.out.println("SUCCESS");
     }
 }
