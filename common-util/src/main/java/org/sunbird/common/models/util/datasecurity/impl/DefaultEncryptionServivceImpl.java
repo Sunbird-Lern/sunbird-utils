@@ -34,7 +34,7 @@ import org.sunbird.common.responsecode.ResponseCode;
  */
 public class DefaultEncryptionServivceImpl implements EncryptionService {
 
-  private static String salt = "";
+  private static String encryption_key = "";
 
   private String sunbirdEncryption = "";
 
@@ -101,7 +101,7 @@ public class DefaultEncryptionServivceImpl implements EncryptionService {
    * this method is used to encrypt the password.
    * 
    * @param value String password
-   * @param salt
+   * @param encryption_key
    * @return encrypted password.
    * @throws NoSuchPaddingException
    * @throws NoSuchAlgorithmException
@@ -111,7 +111,7 @@ public class DefaultEncryptionServivceImpl implements EncryptionService {
    */
   public static String encrypt(String value) throws NoSuchAlgorithmException,
       NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-    salt = getSalt();
+    encryption_key = getSalt();
     Key key = generateKey();
     Cipher c = Cipher.getInstance(ALGORITHM);
     c.init(Cipher.ENCRYPT_MODE, key);
@@ -119,7 +119,7 @@ public class DefaultEncryptionServivceImpl implements EncryptionService {
     String valueToEnc = null;
     String eValue = value;
     for (int i = 0; i < ITERATIONS; i++) {
-      valueToEnc = salt + eValue;
+      valueToEnc = encryption_key + eValue;
       byte[] encValue = c.doFinal(valueToEnc.getBytes());
       eValue = new sun.misc.BASE64Encoder().encode(encValue);
     }
@@ -136,21 +136,21 @@ public class DefaultEncryptionServivceImpl implements EncryptionService {
    * @return
    */
   public static String getSalt() {
-    if (!ProjectUtil.isStringNullOREmpty(salt)) {
-      return salt;
+    if (!ProjectUtil.isStringNullOREmpty(encryption_key)) {
+      return encryption_key;
     } else {
-      salt = System.getenv(JsonKey.SALT);
-      if (ProjectUtil.isStringNullOREmpty(salt)) {
+      encryption_key = System.getenv(JsonKey.ENCRYPTION_KEY);
+      if (ProjectUtil.isStringNullOREmpty(encryption_key)) {
         ProjectLogger.log("Salt value is not provided by Env");
-        salt = PropertiesCache.getInstance().getProperty(JsonKey.SALT);
+        encryption_key = PropertiesCache.getInstance().getProperty(JsonKey.ENCRYPTION_KEY);
       }
     }
-    if (ProjectUtil.isStringNullOREmpty(salt)) {
+    if (ProjectUtil.isStringNullOREmpty(encryption_key)) {
       ProjectLogger.log("throwing exception for invalid salt==", LoggerEnum.INFO.name());
       throw new ProjectCommonException(ResponseCode.saltValue.getErrorCode(),
           ResponseCode.saltValue.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
     }
-    return salt;
+    return encryption_key;
   }
 
   public static void main(String[] args) throws Exception {
