@@ -242,6 +242,8 @@ public class ProjectUtil {
     templateMap.put("contentFlagged" , "/contentFlaggedMailTemplate.vm");
     templateMap.put("acceptFlag" , "/acceptFlagMailTemplate.vm");
     templateMap.put("rejectFlag" , "/rejectFlagMailTemplate.vm");
+    templateMap.put("publishContent" , "/publishContentMailTemplate.vm");
+    templateMap.put("rejectContent" , "/rejectContentMailTemplate.vm");
   }
 
   /**
@@ -553,7 +555,7 @@ public class ProjectUtil {
     context.put(JsonKey.BODY, map.get(JsonKey.BODY));
     context.put(JsonKey.FROM_EMAIL, ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.EMAIL_SERVER_FROM))==false?System.getenv(JsonKey.EMAIL_SERVER_FROM):"");
     // add the org bname after regards in mail
-    context.put(JsonKey.ORG_SERVER_FROM_NAME, ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.ORG_SERVER_FROM_NAME))==false?System.getenv(JsonKey.ORG_SERVER_FROM_NAME):"");
+    context.put(JsonKey.ORG_NAME, (String)map.get(JsonKey.ORG_NAME));
     // add image url in the mail
     context.put(JsonKey.ORG_IMAGE_URL, ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.ORG_IMAGE_URL))==false?System.getenv(JsonKey.ORG_IMAGE_URL):"");
 
