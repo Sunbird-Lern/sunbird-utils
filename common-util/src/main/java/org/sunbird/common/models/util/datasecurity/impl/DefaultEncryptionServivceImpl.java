@@ -109,6 +109,7 @@ public class DefaultEncryptionServivceImpl implements EncryptionService {
    * @throws BadPaddingException
    * @throws IllegalBlockSizeException
    */
+  @SuppressWarnings("restriction")
   public static String encrypt(String value) throws NoSuchAlgorithmException,
       NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
     encryption_key = getSalt();
@@ -151,12 +152,6 @@ public class DefaultEncryptionServivceImpl implements EncryptionService {
           ResponseCode.saltValue.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
     }
     return encryption_key;
-  }
-
-  public static void main(String[] args) throws Exception {
-    EncryptionService service = ServiceFactory.getEncryptionServiceInstance(null);
-    System.out.println(service.encryptData("amit.ec006@gmail.com"));
-
   }
 
 }
