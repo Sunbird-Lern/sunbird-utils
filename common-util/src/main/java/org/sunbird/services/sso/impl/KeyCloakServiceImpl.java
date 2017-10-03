@@ -50,10 +50,7 @@ public class KeyCloakServiceImpl implements SSOManager {
   public String verifyToken(String accessToken) {
     String userId = "";
     try {
-      String key = keycloak.realm(KeyCloakConnectionProvider.SSO_REALM)
-          .keys().getKeyMetadata().getKeys().get(0).getPublicKey();
-      ProjectLogger.log("123vc==="+key);
-      PublicKey publicKey = toPublicKey(key);
+      PublicKey publicKey = toPublicKey(SSO_PUBLIC_KEY);
       AccessToken token =
           RSATokenVerifier.verifyToken(
               accessToken, publicKey, KeyCloakConnectionProvider.SSO_URL
