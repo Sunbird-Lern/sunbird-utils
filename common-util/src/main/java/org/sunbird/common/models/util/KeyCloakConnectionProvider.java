@@ -74,6 +74,7 @@ public class KeyCloakConnectionProvider {
     String cleintId = System.getenv(JsonKey.SUNBIRD_SSO_CLIENT_ID);
     String cleintSecret = System.getenv(JsonKey.SUNBIRD_SSO_CLIENT_SECRET);
     String relam = System.getenv(JsonKey.SUNBIRD_SSO_RELAM);
+    ProjectLogger.log(""+url+"  "+username+" " + password+" " + cleintId+" " +relam , LoggerEnum.INFO.name());
     if (ProjectUtil.isStringNullOREmpty(url) || ProjectUtil.isStringNullOREmpty(username)
         || ProjectUtil.isStringNullOREmpty(password) || ProjectUtil.isStringNullOREmpty(cleintId)
         || ProjectUtil.isStringNullOREmpty(relam)) {
@@ -82,6 +83,7 @@ public class KeyCloakConnectionProvider {
       return null;
     }
     SSO_URL = url;
+    ProjectLogger.log("SSO url is==" + SSO_URL , LoggerEnum.INFO.name());
     SSO_REALM = relam;
     CLIENT_ID = cleintId;
     KeycloakBuilder keycloakBuilder = KeycloakBuilder.builder().serverUrl(url).realm(relam)
