@@ -62,7 +62,7 @@ public class KeyCloakServiceImpl implements SSOManager {
           + token.getProfile() + " " + token.getSubject() + " Active== "
           + token.isActive() + "  isExpired==" + token.isExpired() + " "
           + token.issuedNow().getExpiration(),LoggerEnum.INFO.name());
-    } catch (VerificationException e) {
+    } catch (Exception e) {
       ProjectLogger.log("User token is not authorized==" + e);
       throw new ProjectCommonException(ResponseCode.unAuthorised.getErrorCode(),
           ResponseCode.unAuthorised.getErrorMessage(),
