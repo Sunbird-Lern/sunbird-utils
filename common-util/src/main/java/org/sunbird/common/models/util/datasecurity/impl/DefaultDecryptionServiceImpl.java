@@ -21,7 +21,7 @@ import org.sunbird.common.models.util.datasecurity.DecryptionService;
  *
  */
 public class DefaultDecryptionServiceImpl implements DecryptionService {
-  public static String sunbird_encryption = "";
+  private static String sunbird_encryption = "";
 
   private String sunbirdEncryption = "";
 
@@ -112,8 +112,7 @@ public class DefaultDecryptionServiceImpl implements DecryptionService {
     return value;
   }
 
-  private static Key generateKey() throws Exception {
-    Key key = new SecretKeySpec(keyValue, ALGORITHM);
-    return key;
+  private static Key generateKey(){
+    return new SecretKeySpec(keyValue, ALGORITHM);
   }
 }
