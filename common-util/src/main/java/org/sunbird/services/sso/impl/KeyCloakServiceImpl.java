@@ -44,7 +44,7 @@ public class KeyCloakServiceImpl implements SSOManager {
     Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
     private static final boolean IS_EMAIL_SETUP_COMPLETE = false;
    private static final String URL = KeyCloakConnectionProvider.SSO_URL+ "realms/" + KeyCloakConnectionProvider.SSO_REALM+"/protocol/openid-connect/token"; 
-   private static final String SSO_PUBLIC_KEY ="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgwmq1MQXx4CroJuXsL4ftlwZPpf0DVBT0a885kGXDN6HCggRzZ1UMC97vvV6fr7uXE4sCOk1P6Y5XGXti2UbVVZFCk+x/v4t9KhVNsSl+3KV1IBMha0q3bXCmvRiYNfzMv1nDgTPix20FFpt7on859slkATfIdOq5ROaTOTfCArOhLWmFKbkUmIB20D7PmNRUhIZ0wI1D/eESMY2t30OaWgHnoNFkvrc1QhvbaGL7/pNikDCXvovIIgbByyEMShqNa1G71d04GLsBJNhk0zLEku6/tGQ8jZRhPAEkWwHWmc9b5LuChm79Fn0opRy8Mbi7YAoIUBwJ1hi4vKBttDtTQIDAQAB" ;//System.getenv(JsonKey.SSO_PUBLIC_KEY);
+   private static final String SSO_PUBLIC_KEY =System.getenv(JsonKey.SSO_PUBLIC_KEY);
    
    @Override
   public String verifyToken(String accessToken) {
