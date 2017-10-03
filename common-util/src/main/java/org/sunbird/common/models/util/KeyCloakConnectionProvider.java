@@ -74,7 +74,6 @@ public class KeyCloakConnectionProvider {
     String cleintId = System.getenv(JsonKey.SUNBIRD_SSO_CLIENT_ID);
     String cleintSecret = System.getenv(JsonKey.SUNBIRD_SSO_CLIENT_SECRET);
     String relam = System.getenv(JsonKey.SUNBIRD_SSO_RELAM);
-    ProjectLogger.log("12pzw= "+""+url+"  "+username+" " + password+" " + cleintId+" " +relam , LoggerEnum.INFO.name());
     if (ProjectUtil.isStringNullOREmpty(url) || ProjectUtil.isStringNullOREmpty(username)
         || ProjectUtil.isStringNullOREmpty(password) || ProjectUtil.isStringNullOREmpty(cleintId)
         || ProjectUtil.isStringNullOREmpty(relam)) {
