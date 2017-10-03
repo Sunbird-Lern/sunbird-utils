@@ -39,6 +39,7 @@ public class ProjectUtil {
     public static final long BACKGROUND_ACTOR_WAIT_TIME = 30;
     public static final String YEAR_MONTH_DATE_FORMAT = "yyyy-MM-dd";
     private static Map<String , String> templateMap = new HashMap<>();
+    private static final int randomPasswordLength = 9;
     
     /**
      * @author Manzarul
@@ -244,6 +245,7 @@ public class ProjectUtil {
     templateMap.put("rejectFlag" , "/rejectFlagMailTemplate.vm");
     templateMap.put("publishContent" , "/publishContentMailTemplate.vm");
     templateMap.put("rejectContent" , "/rejectContentMailTemplate.vm");
+    templateMap.put("welcome" , "/welcomeMailTemplate.vm");
   }
 
   /**
@@ -560,6 +562,9 @@ public class ProjectUtil {
     context.put(JsonKey.ORG_IMAGE_URL, ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.ORG_IMAGE_URL))==false?System.getenv(JsonKey.ORG_IMAGE_URL):"");
 
     context.put(JsonKey.ACTION_NAME,(String)map.get(JsonKey.ACTION_NAME));
+
+    context.put(JsonKey.USER_NAME,(String)map.get(JsonKey.USER_NAME));
+    context.put(JsonKey.TEMPORARY_PASSWORD,(String)map.get(JsonKey.TEMPORARY_PASSWORD));
     return context;
   }
   
@@ -644,5 +649,17 @@ public class ProjectUtil {
         throw e;
     }
     return tagStatus;
+  }
+
+  public static String generateRandomPassword(){
+    String SALTCHARS = "abcdef12345ghijklACDEFGHmnopqrs67IJKLMNOP890tuvQRSTUwxyzVWXYZ";
+    StringBuilder salt = new StringBuilder();
+    Random rnd = new Random();
+    while (salt.length() < randomPasswordLength) { // length of the random string.
+      int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+      salt.append(SALTCHARS.charAt(index));
+    }
+    String saltStr = salt.toString();
+    return saltStr;
   }
 }
