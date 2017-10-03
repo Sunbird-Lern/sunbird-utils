@@ -51,7 +51,7 @@ public class KeyCloakServiceImpl implements SSOManager {
     String userId = "";
     try {
       PublicKey publicKey = toPublicKey(SSO_PUBLIC_KEY);
-      ProjectLogger.log("SSO url== " + KeyCloakConnectionProvider.SSO_URL);
+      ProjectLogger.log("SSOUrl== " + KeyCloakConnectionProvider.SSO_URL,LoggerEnum.INFO.name());
       AccessToken token =
           RSATokenVerifier.verifyToken(
               accessToken, publicKey, KeyCloakConnectionProvider.SSO_URL
