@@ -484,4 +484,8 @@ public class JsonKey {
   public static final String ORG_IMAGE_URL = "orgImageUrl";
   public static final String CREATE = "create";
   public static final String SSO_PUBLIC_KEY = "sunbird_sso_publickey";
+  public static final String REQ_ID = "reqId";
+  public static final String OPERATION_TYPE = "operationType";
+  public static final String DATE = "date";
+  public static final String OBJECT_ID = "objectId";
 }
