@@ -645,4 +645,24 @@ public class ProjectUtil {
     }
     return tagStatus;
   }
+  
+  public enum ObjectTypes {
+    user("user"), organisation("organisation"), batch("batch");
+    
+    private String value;
+
+    private ObjectTypes(String value) {
+      this.value = value;
+    }
+    
+    public String getValue() {
+      return value;
+    }
+
+    public void setValue(String value) {
+      this.value = value;
+    }
+    
+    
+  }
 }
