@@ -176,6 +176,7 @@ public interface ResponseMessage {
       public static final String INVALID_WEBPAGE_DATA = "Invalid webPage data";
       public static final String INVALID_MEDIA_TYPE = "Invalid media type for webPage";
       public static final String INVALID_WEBPAGE_URL = "Invalid webPage URL";
+      public static final String INVALID_DATE_RANGE = "Date range should be between 3 Month.";
     }
     
     public interface Key {
@@ -346,5 +347,6 @@ public interface ResponseMessage {
         public static final String INVALID_WEBPAGE_DATA = "INVALID_WEBPAGE_DATA";
         public static final String INVALID_MEDIA_TYPE = "INVALID_MEDIA_TYPE";
         public static final String INVALID_WEBPAGE_URL = "INVALID_WEBPAGE_URL";
+        public static final String INVALID_DATE_RANGE = "INVALID_DATE_RANGE";
     }
 }
