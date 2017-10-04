@@ -8,7 +8,6 @@ import org.json.JSONObject;
 import org.keycloak.RSATokenVerifier;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UserResource;
-import org.keycloak.common.VerificationException;
 import org.keycloak.representations.AccessToken;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -45,13 +44,13 @@ public class KeyCloakServiceImpl implements SSOManager {
     Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
     private static final boolean IS_EMAIL_SETUP_COMPLETE = false;
    private static final String URL = KeyCloakConnectionProvider.SSO_URL+ "realms/" + KeyCloakConnectionProvider.SSO_REALM+"/protocol/openid-connect/token"; 
-  @Override
+   private static final String SSO_PUBLIC_KEY =System.getenv(JsonKey.SSO_PUBLIC_KEY);
+   
+   @Override
   public String verifyToken(String accessToken) {
     String userId = "";
     try {
-      PublicKey publicKey =
-          toPublicKey(keycloak.realm(KeyCloakConnectionProvider.SSO_REALM)
-              .keys().getKeyMetadata().getKeys().get(0).getPublicKey());
+      PublicKey publicKey = toPublicKey(SSO_PUBLIC_KEY);
       AccessToken token =
           RSATokenVerifier.verifyToken(
               accessToken, publicKey, KeyCloakConnectionProvider.SSO_URL
@@ -393,10 +392,11 @@ public class KeyCloakServiceImpl implements SSOManager {
   
   public static void main(String[] args) {
     SSOManager sso = SSOServiceFactory.getInstance();
-    Map<String,Object> map = new HashMap<>();
+    /*Map<String,Object> map = new HashMap<>();
     map.put(JsonKey.USER_ID, "607476a7-a072-4e18-8d0f-5e8279642cb3");
     map.put(JsonKey.FIRST_NAME, "Test");
-    sso.updateUser(map);
+    sso.updateUser(map);*/
+    sso.verifyToken("eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1WXhXdE4tZzRfMld5MG5PS1ZoaE5hU0gtM2lSSjdXU25ibFlwVVU0TFRrIn0.eyJqdGkiOiJiMGE2N2RlOC1kN2Y5LTRiZTktOWQ0ZC05OThjN2UyNjNkNjQiLCJleHAiOjE1MDcwMzIyMzksIm5iZiI6MCwiaWF0IjoxNTA3MDI4NjM5LCJpc3MiOiJodHRwczovL2Rldi5vcGVuLXN1bmJpcmQub3JnL2F1dGgvcmVhbG1zL3N1bmJpcmQiLCJhdWQiOiJwb3J0YWwiLCJzdWIiOiJiZTdlZmIyMy02YWY5LTRkOTItODJiMy1hNGQ3OGZjZmEyZjYiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJwb3J0YWwiLCJhdXRoX3RpbWUiOjE1MDcwMjY1MTksInNlc3Npb25fc3RhdGUiOiJiZmJhYjZjMS0wMTc0LTQyOGYtODkyMS03MWQ5MTJmY2UxYTgiLCJhY3IiOiIwIiwiYWxsb3dlZC1vcmlnaW5zIjpbXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwibmFtZSI6IkFtaXQgS3VtYXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJjb250ZW50cmV2aWV3ZXIxMSIsImdpdmVuX25hbWUiOiJBbWl0IiwiZmFtaWx5X25hbWUiOiJLdW1hciIsImVtYWlsIjoiY29udGVudHJldmlld2VyMTFAaWxpbWkuaW4ifQ.VDlsVXyBFMH14RtObvfVeOj6qZ00CSvb2TEc7zgHJIMvku6S9w_J5rU51vq48LoX2BIIfojxgqCm4C05hnQwwTzFKCH6Rfg67VWAt4JTcblcEFgehMdFmGZF7KLemh49HJkSxjxNjSC1isX0FoYsZHs4AsMpcba20g8Y6s1G6EQBCDgB04T7zRv9TD68BgFkhqqjZXJP3d5oBJbrmPlBFhOwSQC7EzNhONUYhCoFQpg-EMG8oHIYOAQwyHV6KDf3PxWl64qwv23exmdbUNkODDezWrVPEd9PXpseKcAFT3aBswqfrIEOt_mQVIWE5Qo7fC62bUvuOxxaXp7E3zAl4Q");
   }
 
   @Override
