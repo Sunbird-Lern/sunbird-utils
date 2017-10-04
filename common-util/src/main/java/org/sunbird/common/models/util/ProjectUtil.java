@@ -308,7 +308,7 @@ public class ProjectUtil {
      *
      */
 	public enum EsIndex {
-		sunbird("searchindex");
+		sunbird("searchindex"), sunbirdDataAudit("sunbirddataaudit");
 		private String indexName;
 
 		private EsIndex(String name) {
@@ -331,7 +331,7 @@ public class ProjectUtil {
 	 */
 	public enum EsType {
 		course("course"), content("content"), user("user"), organisation("org"), usercourses("usercourses"),
-		usernotes("usernotes");
+		usernotes("usernotes"), history("history");
 		private String typeName;
 
 		private EsType(String name) {
@@ -557,8 +557,9 @@ public class ProjectUtil {
     // add the org bname after regards in mail
     context.put(JsonKey.ORG_NAME, (String)map.get(JsonKey.ORG_NAME));
     // add image url in the mail
-    context.put(JsonKey.ORG_IMAGE_URL, ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.ORG_IMAGE_URL))==false?System.getenv(JsonKey.ORG_IMAGE_URL):"");
-
+    if(!ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL))) {
+    context.put(JsonKey.ORG_IMAGE_URL, System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL));
+    }
     context.put(JsonKey.ACTION_NAME,(String)map.get(JsonKey.ACTION_NAME));
     return context;
   }
