@@ -308,7 +308,7 @@ public class ProjectUtil {
      *
      */
 	public enum EsIndex {
-		sunbird("searchindex");
+		sunbird("searchindex"), sunbirdDataAudit("sunbirddataaudit");
 		private String indexName;
 
 		private EsIndex(String name) {
@@ -331,7 +331,7 @@ public class ProjectUtil {
 	 */
 	public enum EsType {
 		course("course"), content("content"), user("user"), organisation("org"), usercourses("usercourses"),
-		usernotes("usernotes");
+		usernotes("usernotes"), history("history");
 		private String typeName;
 
 		private EsType(String name) {
