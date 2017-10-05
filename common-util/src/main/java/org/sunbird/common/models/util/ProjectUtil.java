@@ -550,21 +550,34 @@ public class ProjectUtil {
     
     if(!ProjectUtil.isStringNullOREmpty((String)map.get(JsonKey.ACTION_URL))){
       context.put(JsonKey.ACTION_URL, map.get(JsonKey.ACTION_URL));
+      map.remove(JsonKey.ACTION_URL);
     }
     if(!ProjectUtil.isStringNullOREmpty((String)map.get(JsonKey.NAME))){
       context.put(JsonKey.NAME,(String)map.get(JsonKey.NAME));
+      map.remove(JsonKey.NAME);
     }
     context.put(JsonKey.BODY, map.get(JsonKey.BODY));
+    map.remove(JsonKey.BODY);
     context.put(JsonKey.FROM_EMAIL, ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.EMAIL_SERVER_FROM))==false?System.getenv(JsonKey.EMAIL_SERVER_FROM):"");
     // add the org bname after regards in mail
     context.put(JsonKey.ORG_NAME, (String)map.get(JsonKey.ORG_NAME));
+    map.remove(JsonKey.ORG_NAME);
     // add image url in the mail
     context.put(JsonKey.ORG_IMAGE_URL, ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.ORG_IMAGE_URL))==false?System.getenv(JsonKey.ORG_IMAGE_URL):"");
 
     context.put(JsonKey.ACTION_NAME,(String)map.get(JsonKey.ACTION_NAME));
+    map.remove(JsonKey.ACTION_NAME);
 
-    context.put(JsonKey.USER_NAME,(String)map.get(JsonKey.USER_NAME));
+    context.put(JsonKey.USERNAME,(String)map.get(JsonKey.USERNAME));
+    map.remove(JsonKey.USERNAME);
     context.put(JsonKey.TEMPORARY_PASSWORD,(String)map.get(JsonKey.TEMPORARY_PASSWORD));
+    map.remove(JsonKey.TEMPORARY_PASSWORD);
+
+
+    for(Map.Entry<String , Object> entry : map.entrySet()){
+      context.put(entry.getKey() , entry.getValue());
+    }
+
     return context;
   }
   
