@@ -82,6 +82,7 @@ public class KeyCloakConnectionProvider {
       return null;
     }
     SSO_URL = url;
+    ProjectLogger.log("SSO url is==" + SSO_URL , LoggerEnum.INFO.name());
     SSO_REALM = relam;
     CLIENT_ID = cleintId;
     KeycloakBuilder keycloakBuilder = KeycloakBuilder.builder().serverUrl(url).realm(relam)
