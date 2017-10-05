@@ -55,7 +55,7 @@ public enum ActorOperations {
     SEARCH_NOTE("searchNote"), GET_NOTE("getNote"), DELETE_NOTE("deleteNote"),
     INSERT_USER_NOTES_ES("insertUserNotesToElastic"),ENCRYPT_USER_DATA("encryptUserData"),DECRYPT_USER_DATA("decryptUserData"), 
     UPDATE_USER_NOTES_ES("updateUserNotesToElastic"),USER_CURRENT_LOGIN("userCurrentLogin"), GET_MEDIA_TYPES("getMediaTypes"),
-    SEARCH_AUDIT_LOG("searchAuditLog");
+    SEARCH_AUDIT_LOG("searchAuditLog"), PROCESS_AUDIT_LOG("processAuditLog");
 
     private String value;
 
