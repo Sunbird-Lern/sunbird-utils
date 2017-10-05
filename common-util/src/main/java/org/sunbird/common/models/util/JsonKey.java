@@ -481,8 +481,21 @@ public class JsonKey {
   public static final String EMAIL_TEMPLATE_TYPE = "emailTemplateType";
   public static final String ACTION_URL = "actionUrl";
   public static final String ORG_SERVER_FROM_NAME = "orgServerFromName";
+  public static final String SUNBIRD_ENV_LOGO_URL = "sunbird_env_logo_url";
   public static final String ORG_IMAGE_URL = "orgImageUrl";
+  public static final String CREATE = "create";
   public static final String SSO_PUBLIC_KEY = "sunbird_sso_publickey";
+  public static final String REQ_ID = "reqId";
+  public static final String OPERATION_TYPE = "operationType";
+  public static final String DATE = "date";
+  public static final String OBJECT_ID = "objectId";
+
+  public static final String LOG_RECORD = "logRecord";
+  public static final String PROPERTIES = "properties";
+  public static final String USER_RELATIONS = "user_relations";
+  public static final String ORG_RELATIONS = "org_relations";
+  public static final String BATCH_RELATIONS = "batch_relations";
+
   public static final String TEMPORARY_PASSWORD = "tempPassword";
   public static final String WEB_URL ="webUrl";
   public static final String APP_URL ="appUrl";

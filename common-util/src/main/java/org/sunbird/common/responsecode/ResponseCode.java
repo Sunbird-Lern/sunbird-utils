@@ -175,6 +175,7 @@ public enum ResponseCode {
     invalidWebPageData(ResponseMessage.Key.INVALID_WEBPAGE_DATA, ResponseMessage.Message.INVALID_WEBPAGE_DATA),
     invalidMediaType(ResponseMessage.Key.INVALID_MEDIA_TYPE, ResponseMessage.Message.INVALID_MEDIA_TYPE),
     invalidWebPageUrl(ResponseMessage.Key.INVALID_WEBPAGE_URL, ResponseMessage.Key.INVALID_WEBPAGE_URL),
+    invalidDateRange(ResponseMessage.Key.INVALID_DATE_RANGE, ResponseMessage.Key.INVALID_DATE_RANGE),
     OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404),UNAUTHORIZED(401);
 	
 	private int responseCode;
