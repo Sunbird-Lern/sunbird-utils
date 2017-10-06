@@ -41,7 +41,7 @@ public class ProjectUtil {
     private static Map<String , String> templateMap = new HashMap<>();
     private static final int randomPasswordLength = 9;
     public static final String FILE_NAME [] = {"cassandratablecolumn.properties","elasticsearch.config.properties","cassandra.config.properties","dbconfig.properties","externalresource.properties","sso.properties","userencryption.properties","profilecompleteness.properties"};
-    private static PropertiesCache propertiesCache = PropertiesCache.getInstance();
+    public static PropertiesCache propertiesCache = PropertiesCache.getInstance();
 
     /**
      * @author Manzarul
