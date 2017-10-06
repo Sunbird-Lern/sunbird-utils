@@ -175,7 +175,7 @@ public interface ResponseMessage {
       public static final String INVALID_PHONE_NO_FORMAT = "Please provide a valid phone number.";
       public static final String INVALID_WEBPAGE_DATA = "Invalid webPage data";
       public static final String INVALID_MEDIA_TYPE = "Invalid media type for webPage";
-      public static final String INVALID_WEBPAGE_URL = "Invalid webPage URL";
+      public static final String INVALID_WEBPAGE_URL = "Invalid URL for {0}";
       public static final String INVALID_DATE_RANGE = "Date range should be between 3 Month.";
     }
     

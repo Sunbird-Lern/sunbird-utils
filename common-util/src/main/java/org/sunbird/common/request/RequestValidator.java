@@ -451,7 +451,6 @@ public final class RequestValidator {
                 ResponseCode.CLIENT_ERROR.getResponseCode());
           } 
         }
-        validateWebPages(userRequest);
    }
 
 	/**
