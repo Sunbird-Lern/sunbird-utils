@@ -489,11 +489,15 @@ public class JsonKey {
   public static final String OPERATION_TYPE = "operationType";
   public static final String DATE = "date";
   public static final String OBJECT_ID = "objectId";
-  
+
   public static final String LOG_RECORD = "logRecord";
   public static final String PROPERTIES = "properties";
   public static final String USER_RELATIONS = "user_relations";
   public static final String ORG_RELATIONS = "org_relations";
   public static final String BATCH_RELATIONS = "batch_relations";
+
+  public static final String TEMPORARY_PASSWORD = "tempPassword";
+  public static final String WEB_URL ="webUrl";
+  public static final String APP_URL ="appUrl";
 
 }
