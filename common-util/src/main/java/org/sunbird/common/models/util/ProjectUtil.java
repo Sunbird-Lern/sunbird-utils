@@ -39,7 +39,10 @@ public class ProjectUtil {
     public static final long BACKGROUND_ACTOR_WAIT_TIME = 30;
     public static final String YEAR_MONTH_DATE_FORMAT = "yyyy-MM-dd";
     private static Map<String , String> templateMap = new HashMap<>();
-    
+    private static final int randomPasswordLength = 9;
+    public static final String FILE_NAME [] = {"cassandratablecolumn.properties","elasticsearch.config.properties","cassandra.config.properties","dbconfig.properties","externalresource.properties","sso.properties","userencryption.properties","profilecompleteness.properties"};
+    public static PropertiesCache propertiesCache = PropertiesCache.getInstance();
+
     /**
      * @author Manzarul
      */
@@ -244,6 +247,7 @@ public class ProjectUtil {
     templateMap.put("rejectFlag" , "/rejectFlagMailTemplate.vm");
     templateMap.put("publishContent" , "/publishContentMailTemplate.vm");
     templateMap.put("rejectContent" , "/rejectContentMailTemplate.vm");
+    templateMap.put("welcome" , "/welcomeMailTemplate.vm");
   }
 
   /**
@@ -300,8 +304,6 @@ public class ProjectUtil {
     }
      
     public enum Method {GET,POST,PUT,DELETE,PATCH}
-    public static final String FILE_NAME [] = {"cassandratablecolumn.properties","elasticsearch.config.properties","cassandra.config.properties","dbconfig.properties","externalresource.properties","sso.properties","userencryption.properties","profilecompleteness.properties"};
-    
     /**
      * Enum to hold the index name for Elastic search.
      * @author Manzarul
@@ -548,19 +550,34 @@ public class ProjectUtil {
     
     if(!ProjectUtil.isStringNullOREmpty((String)map.get(JsonKey.ACTION_URL))){
       context.put(JsonKey.ACTION_URL, map.get(JsonKey.ACTION_URL));
+      map.remove(JsonKey.ACTION_URL);
     }
     if(!ProjectUtil.isStringNullOREmpty((String)map.get(JsonKey.NAME))){
       context.put(JsonKey.NAME,(String)map.get(JsonKey.NAME));
+      map.remove(JsonKey.NAME);
     }
     context.put(JsonKey.BODY, map.get(JsonKey.BODY));
-    context.put(JsonKey.FROM_EMAIL, ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.EMAIL_SERVER_FROM))==false?System.getenv(JsonKey.EMAIL_SERVER_FROM):"");
-    // add the org bname after regards in mail
+    map.remove(JsonKey.BODY);
+    context.put(JsonKey.FROM_EMAIL, ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.EMAIL_SERVER_FROM))==false?System.getenv(JsonKey.EMAIL_SERVER_FROM):((propertiesCache.getProperty(JsonKey.EMAIL_SERVER_FROM)!= null)?propertiesCache.getProperty(JsonKey.EMAIL_SERVER_FROM) : ""));
     context.put(JsonKey.ORG_NAME, (String)map.get(JsonKey.ORG_NAME));
+    map.remove(JsonKey.ORG_NAME);
     // add image url in the mail
-    if(!ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL))) {
-    context.put(JsonKey.ORG_IMAGE_URL, System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL));
+    if(!ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL)) || !ProjectUtil.isStringNullOREmpty(propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL))) {
+    context.put(JsonKey.ORG_IMAGE_URL, ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL))?propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL):System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL));
     }
     context.put(JsonKey.ACTION_NAME,(String)map.get(JsonKey.ACTION_NAME));
+    map.remove(JsonKey.ACTION_NAME);
+
+    context.put(JsonKey.USERNAME,(String)map.get(JsonKey.USERNAME));
+    map.remove(JsonKey.USERNAME);
+    context.put(JsonKey.TEMPORARY_PASSWORD,(String)map.get(JsonKey.TEMPORARY_PASSWORD));
+    map.remove(JsonKey.TEMPORARY_PASSWORD);
+
+
+    for(Map.Entry<String , Object> entry : map.entrySet()){
+      context.put(entry.getKey() , entry.getValue());
+    }
+
     return context;
   }
   
@@ -646,16 +663,16 @@ public class ProjectUtil {
     }
     return tagStatus;
   }
-  
+
   public enum ObjectTypes {
     user("user"), organisation("organisation"), batch("batch");
-    
+
     private String value;
 
     private ObjectTypes(String value) {
       this.value = value;
     }
-    
+
     public String getValue() {
       return value;
     }
@@ -663,7 +680,19 @@ public class ProjectUtil {
     public void setValue(String value) {
       this.value = value;
     }
-    
-    
+
+
+  }
+
+  public static String generateRandomPassword(){
+    String SALTCHARS = "abcdef12345ghijklACDEFGHmnopqrs67IJKLMNOP890tuvQRSTUwxyzVWXYZ";
+    StringBuilder salt = new StringBuilder();
+    Random rnd = new Random();
+    while (salt.length() < randomPasswordLength) { // length of the random string.
+      int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+      salt.append(SALTCHARS.charAt(index));
+    }
+    String saltStr = salt.toString();
+    return saltStr;
   }
 }
