@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class PropertiesCache {
 
-  private static final String[] fileName = ProjectUtil.FILE_NAME;
+  private final String[] fileName = ProjectUtil.FILE_NAME;
   private final Properties configProp = new Properties();
   public final Map<String, Float> attributePercentageMap = new ConcurrentHashMap<>();
 
