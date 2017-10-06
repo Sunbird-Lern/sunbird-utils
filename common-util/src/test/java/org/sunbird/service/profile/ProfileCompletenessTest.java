@@ -141,6 +141,23 @@ public class ProfileCompletenessTest {
     Map<String,Object> response = service.computeProfile(requestMap);
     int val =(int) response.get(JsonKey.COMPLETENESS);
     Assert.assertEquals(82, val);
+    requestMap.remove("avatar");
+    response = service.computeProfile(requestMap);
+    val =(int) response.get(JsonKey.COMPLETENESS);
+    Assert.assertEquals(75, val);
+    requestMap.put("avatar", "some value");
+    response = service.computeProfile(requestMap);
+    val =(int) response.get(JsonKey.COMPLETENESS);
+    Assert.assertEquals(82, val);
+    Map<String,Object> address = new HashMap<>();
+    address.put(JsonKey.CITY, "Bangalore");
+    address.put(JsonKey.STATE, "sdkjdfjks");
+    List<Map<String,Object>> list = new ArrayList<>();
+    list.add(address);
+    requestMap.put(JsonKey.ADDRESS, list);
+    response = service.computeProfile(requestMap);
+    val =(int) response.get(JsonKey.COMPLETENESS);
+    Assert.assertEquals(88, val);
   }
   
   
