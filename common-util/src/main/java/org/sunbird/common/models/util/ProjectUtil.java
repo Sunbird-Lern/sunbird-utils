@@ -40,7 +40,7 @@ public class ProjectUtil {
     public static final String YEAR_MONTH_DATE_FORMAT = "yyyy-MM-dd";
     private static Map<String , String> templateMap = new HashMap<>();
     private static final int randomPasswordLength = 9;
-    public static final String FILE_NAME [] = {"cassandratablecolumn.properties","elasticsearch.config.properties","cassandra.config.properties","dbconfig.properties","externalresource.properties","sso.properties","userencryption.properties","profilecompleteness.properties"};
+    public static final String FILE_NAME [] = {"cassandratablecolumn.properties","elasticsearch.config.properties","cassandra.config.properties","dbconfig.properties","externalresource.properties","sso.properties","userencryption.properties","profilecompleteness.properties","mailTemplates.properties"};
     public static PropertiesCache propertiesCache = PropertiesCache.getInstance();
 
     /**
