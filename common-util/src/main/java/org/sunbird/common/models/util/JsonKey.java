@@ -499,5 +499,9 @@ public class JsonKey {
   public static final String TEMPORARY_PASSWORD = "tempPassword";
   public static final String WEB_URL ="webUrl";
   public static final String APP_URL ="appUrl";
+  public static final String ONBOARDING_WELCOME_MAIL_BODY="onboarding_welcome_mail_body";
+  public static final String MAIL_NOTE="mail_note";
+  public static final String WELCOME_MESSAGE = "welcomeMessage";
+  public static final String ONOARDING_WELCOME_MESSAGE = "onboarding_welcome_message";
 
 }
