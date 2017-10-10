@@ -37,7 +37,4 @@ public class OneWayHashing {
 		}
 		return "";
 	}
-	public static void main(String[] args) {
-		System.out.println(encryptVal("test"));
-	}
 }
