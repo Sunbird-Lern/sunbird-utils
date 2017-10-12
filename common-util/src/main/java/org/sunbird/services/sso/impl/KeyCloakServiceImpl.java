@@ -3,22 +3,9 @@
  */
 package org.sunbird.services.sso.impl;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.keycloak.RSATokenVerifier;
-import org.keycloak.admin.client.Keycloak;
-import org.keycloak.admin.client.resource.UserResource;
-import org.keycloak.representations.AccessToken;
-import org.keycloak.representations.idm.CredentialRepresentation;
-import org.keycloak.representations.idm.UserRepresentation;
-
-import org.sunbird.common.exception.ProjectCommonException;
-import org.sunbird.common.models.util.*;
-import org.sunbird.common.responsecode.ResponseCode;
-import org.sunbird.services.sso.SSOManager;
-import org.sunbird.services.sso.SSOServiceFactory;
-
-import javax.ws.rs.core.Response;
+import static java.util.Arrays.asList;
+import static org.sunbird.common.models.util.ProjectUtil.isNotNull;
+import static org.sunbird.common.models.util.ProjectUtil.isNull;
 
 import java.io.IOException;
 import java.security.KeyFactory;
@@ -29,10 +16,24 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static java.util.Arrays.asList;
-import static org.sunbird.common.models.util.ProjectUtil.isNull;
-import static org.sunbird.common.models.util.ProjectUtil.isNotNull;
+import javax.ws.rs.core.Response;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.keycloak.RSATokenVerifier;
+import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.resource.UserResource;
+import org.keycloak.representations.AccessToken;
+import org.keycloak.representations.idm.CredentialRepresentation;
+import org.keycloak.representations.idm.UserRepresentation;
+import org.sunbird.common.exception.ProjectCommonException;
+import org.sunbird.common.models.util.HttpUtil;
+import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.KeyCloakConnectionProvider;
+import org.sunbird.common.models.util.LoggerEnum;
+import org.sunbird.common.models.util.ProjectLogger;
+import org.sunbird.common.models.util.ProjectUtil;
+import org.sunbird.common.responsecode.ResponseCode;
+import org.sunbird.services.sso.SSOManager;
 
 /**
  * Single sign out service implementation with Key Cloak.
@@ -96,35 +97,31 @@ public class KeyCloakServiceImpl implements SSOManager {
       result = keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().create(user);
     } catch (Exception e) {
       ProjectLogger.log(e.getMessage(), e);
-      ProjectCommonException projectCommonException = new ProjectCommonException(
+      throw new ProjectCommonException(
           ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(),
           ResponseCode.SERVER_ERROR.getResponseCode());
-      throw projectCommonException;
     }
     if (request != null) {
       if (result.getStatus() != 201) {
         ProjectLogger.log("Couldn't create user." + result.getStatus() + " " + result.toString(),
             new RuntimeException());
         if (result.getStatus() == 409) {
-          ProjectCommonException projectCommonException = new ProjectCommonException(
+          throw new ProjectCommonException(
               ResponseCode.emailANDUserNameAlreadyExistError.getErrorCode(),
               ResponseCode.emailANDUserNameAlreadyExistError.getErrorMessage(),
               ResponseCode.CLIENT_ERROR.getResponseCode());
-          throw projectCommonException;
         } else {
-          ProjectCommonException projectCommonException = new ProjectCommonException(
+          throw new ProjectCommonException(
               ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(),
               ResponseCode.SERVER_ERROR.getResponseCode());
-          throw projectCommonException;
         }
       } else {
         userId = result.getHeaderString("Location").replaceAll(".*/(.*)$", "$1");
       }
     } else {
-      ProjectCommonException projectCommonException = new ProjectCommonException(
+      throw new ProjectCommonException(
           ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(),
           ResponseCode.SERVER_ERROR.getResponseCode());
-      throw projectCommonException;
     }
 
     // reset the password with same password
@@ -152,10 +149,9 @@ public class KeyCloakServiceImpl implements SSOManager {
       resource = keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
       ur = resource.toRepresentation();
     } catch (Exception e) {
-      ProjectCommonException projectCommonException = new ProjectCommonException(
+      throw new ProjectCommonException(
           ResponseCode.invalidUsrData.getErrorCode(), ResponseCode.invalidUsrData.getErrorMessage(),
           ResponseCode.CLIENT_ERROR.getResponseCode());
-      throw projectCommonException;
     }
 
     // set the UserRepresantation with the map value...
@@ -188,12 +184,11 @@ public class KeyCloakServiceImpl implements SSOManager {
         resource.update(ur);
       }
     } catch (Exception ex) {
-      ProjectCommonException projectCommonException = new ProjectCommonException(
+      throw new ProjectCommonException(
           ResponseCode.invalidUsrData.getErrorCode(), ResponseCode.invalidUsrData.getErrorMessage(),
           ResponseCode.CLIENT_ERROR.getResponseCode());
-      throw projectCommonException;
     }
-    return (String) JsonKey.SUCCESS;
+    return JsonKey.SUCCESS;
   }
 
   /**
@@ -213,9 +208,8 @@ public class KeyCloakServiceImpl implements SSOManager {
       try {
         resource.remove();
       } catch (Exception ex) {
-        ProjectCommonException projectCommonException = new ProjectCommonException(ex.getMessage(),
+        throw new ProjectCommonException(ex.getMessage(),
             ex.getMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-        throw projectCommonException;
       }
 
     }
@@ -242,20 +236,17 @@ public class KeyCloakServiceImpl implements SSOManager {
           resource.update(ur);
         } catch (Exception ex) {
           ProjectLogger.log(ex.getMessage(), ex);
-          ProjectCommonException projectCommonException =
-              new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(),
+          throw new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(),
                   ResponseCode.invalidUsrData.getErrorMessage(),
                   ResponseCode.CLIENT_ERROR.getResponseCode());
-          throw projectCommonException;
         }
 
       }
     } catch (Exception e) {
       ProjectLogger.log(e.getMessage(), e);
-      ProjectCommonException projectCommonException = new ProjectCommonException(
+      throw new ProjectCommonException(
           ResponseCode.invalidUsrData.getErrorCode(), ResponseCode.invalidUsrData.getErrorMessage(),
           ResponseCode.CLIENT_ERROR.getResponseCode());
-      throw projectCommonException;
     }
     return JsonKey.SUCCESS;
   }
@@ -280,20 +271,17 @@ public class KeyCloakServiceImpl implements SSOManager {
           resource.update(ur);
         } catch (Exception ex) {
           ProjectLogger.log(ex.getMessage(), ex);
-          ProjectCommonException projectCommonException =
-              new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(),
+          throw new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(),
                   ResponseCode.invalidUsrData.getErrorMessage(),
                   ResponseCode.CLIENT_ERROR.getResponseCode());
-          throw projectCommonException;
         }
 
       }
     } catch (Exception e) {
       ProjectLogger.log(e.getMessage(), e);
-      ProjectCommonException projectCommonException = new ProjectCommonException(
+      throw new ProjectCommonException(
           ResponseCode.invalidUsrData.getErrorCode(), ResponseCode.invalidUsrData.getErrorMessage(),
           ResponseCode.CLIENT_ERROR.getResponseCode());
-      throw projectCommonException;
     }
     return JsonKey.SUCCESS;
   }
@@ -380,9 +368,8 @@ public class KeyCloakServiceImpl implements SSOManager {
         verifyEmail(userId);
       }
     } catch (Exception ex) {
-      ProjectCommonException projectCommonException = new ProjectCommonException(ex.getMessage(),
+      throw new ProjectCommonException(ex.getMessage(),
           ex.getMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-      throw projectCommonException;
     }
   }
 
@@ -431,7 +418,7 @@ public class KeyCloakServiceImpl implements SSOManager {
         map = new HashMap<>();
       }
       List<String> list = map.get(JsonKey.LAST_LOGIN_TIME);
-      if (list != null && list.size() > 0) {
+      if (list != null && !list.isEmpty()) {
         lastLoginTime = list.get(0);
       }
     } catch (Exception e) {
@@ -453,13 +440,13 @@ public class KeyCloakServiceImpl implements SSOManager {
         map = new HashMap<>();
       }
       List<String> currentLogTime = map.get(JsonKey.CURRENT_LOGIN_TIME);
-      if (currentLogTime == null || currentLogTime.size() == 0) {
-        currentLogTime = new ArrayList<String>();
-        currentLogTime.add(System.currentTimeMillis() + "");
+      if (currentLogTime == null || currentLogTime.isEmpty()) {
+        currentLogTime = new ArrayList<>();
+        currentLogTime.add(Long.toString(System.currentTimeMillis()));
       } else {
         list.add(currentLogTime.get(0));
         currentLogTime.clear();
-        currentLogTime.add(0, System.currentTimeMillis() + "");
+        currentLogTime.add(0, Long.toString(System.currentTimeMillis()));
       }
       map.put(JsonKey.CURRENT_LOGIN_TIME, currentLogTime);
       map.put(JsonKey.LAST_LOGIN_TIME, list);
