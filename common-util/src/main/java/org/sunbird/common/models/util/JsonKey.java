@@ -503,5 +503,8 @@ public class JsonKey {
   public static final String MAIL_NOTE="mail_note";
   public static final String WELCOME_MESSAGE = "welcomeMessage";
   public static final String ONOARDING_WELCOME_MESSAGE = "onboarding_welcome_message";
+  public static final String REMOTE = "remote";
+  public static final String API_ACTOR_PROVIDER = "api_actor_provider";
+  public static final String BACKGROUND_ACTOR_PROVIDER = "background_actor_provider";
 
 }
