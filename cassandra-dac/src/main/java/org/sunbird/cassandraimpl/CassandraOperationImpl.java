@@ -23,8 +23,10 @@ import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
+import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.helper.CassandraConnectionManager;
+import org.sunbird.helper.CassandraConnectionMngrFactory;
 
 /**
  * 
@@ -35,7 +37,14 @@ import org.sunbird.helper.CassandraConnectionManager;
  */
 public class CassandraOperationImpl implements CassandraOperation{
 
-	
+	private CassandraConnectionManager connectionManager ;
+
+	public CassandraOperationImpl() {
+		PropertiesCache propertiesCache = PropertiesCache.getInstance();
+		String cassandraMode = propertiesCache.getProperty(JsonKey.SUNBIRD_CASSANDRA_MODE);
+		connectionManager = CassandraConnectionMngrFactory.getObject(cassandraMode);
+	}
+
 	@Override
 	public Response insertRecord(String keyspaceName, String tableName, Map<String, Object> request){
 	  long startTime = System.currentTimeMillis();
@@ -43,7 +52,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 		Response response = new Response();
 		try {
 			String query = CassandraUtil.getPreparedStatement(keyspaceName,tableName,request);
-			PreparedStatement statement = CassandraConnectionManager.getSession(keyspaceName).prepare(query);
+			PreparedStatement statement = connectionManager.getSession(keyspaceName).prepare(query);
 			BoundStatement boundStatement = new BoundStatement(statement);
 			Iterator<Object> iterator = request.values().iterator(); 
 			Object [] array =  new Object[request.keySet().size()];
@@ -51,7 +60,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 			while (iterator.hasNext()) {
 				array[i++] = iterator.next();
 			}
-		        CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement.bind(array));
+			connectionManager.getSession(keyspaceName).execute(boundStatement.bind(array));
 				response.put(Constants.RESPONSE, Constants.SUCCESS);
 		} catch (Exception e) {
 		      if(e.getMessage().contains(JsonKey.UNKNOWN_IDENTIFIER) || e.getMessage().contains(JsonKey.UNDEFINED_IDENTIFIER)){
@@ -76,7 +85,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 		try{
     		String query = CassandraUtil.getUpdateQueryStatement(keyspaceName, tableName, request);
     		String updateQuery =query+Constants.IF_EXISTS;
-    		PreparedStatement statement = CassandraConnectionManager.getSession(keyspaceName).prepare(updateQuery);
+    		PreparedStatement statement = connectionManager.getSession(keyspaceName).prepare(updateQuery);
     		Object [] array =  new Object[request.size()];
     		int i=0;
     		String str= "";
@@ -91,7 +100,7 @@ public class CassandraOperationImpl implements CassandraOperation{
     		}
     		array[i] = request.get(Constants.IDENTIFIER);
     		BoundStatement boundStatement = statement.bind(array);
-    		CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement);
+			connectionManager.getSession(keyspaceName).execute(boundStatement);
     		response.put(Constants.RESPONSE, Constants.SUCCESS);
 		}catch(Exception e){
 		  if(e.getMessage().contains(JsonKey.UNKNOWN_IDENTIFIER)){
@@ -116,7 +125,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 		try{
 		Delete.Where delete = QueryBuilder.delete().from(keyspaceName, tableName)
 				.where(eq(Constants.IDENTIFIER, identifier));
-		 CassandraConnectionManager.getSession(keyspaceName).execute(delete);
+			connectionManager.getSession(keyspaceName).execute(delete);
 		 response.put(Constants.RESPONSE, Constants.SUCCESS);
 		}catch(Exception e){
 			ProjectLogger.log(Constants.EXCEPTION_MSG_DELETE + tableName +" : "+e.getMessage(), e);
@@ -139,7 +148,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 		    Where selectWhere = selectQuery.where();
 		    Clause clause = QueryBuilder.eq(Constants.IDENTIFIER, identifier);
 		    selectWhere.and(clause);
-			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(selectQuery);
+			ResultSet results  = connectionManager.getSession(keyspaceName).execute(selectQuery);
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
 			ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
@@ -163,7 +172,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 		    Clause clause = QueryBuilder.eq(propertyName, propertyValue);
 		    selectWhere.and(clause);
 		    ResultSet results=null;
-		    Session session=CassandraConnectionManager.getSession(keyspaceName);
+		    Session session=connectionManager.getSession(keyspaceName);
 			results  = session.execute(selectQuery);
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
@@ -187,7 +196,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 		    Where selectWhere = selectQuery.where();
 		    Clause clause = QueryBuilder.in(propertyName, propertyValueList);
 		    selectWhere.and(clause);
-			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(selectQuery);
+			ResultSet results  = connectionManager.getSession(keyspaceName).execute(selectQuery);
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
 			ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
@@ -218,7 +227,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 				    selectWhere.and(clause);
 		    	}
 		    }
-			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(selectQuery.allowFiltering());
+			ResultSet results  = connectionManager.getSession(keyspaceName).execute(selectQuery.allowFiltering());
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
 		    ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
@@ -238,9 +247,9 @@ public class CassandraOperationImpl implements CassandraOperation{
 		Response response = new Response();
 		try{
 			String selectQuery = CassandraUtil.getSelectStatement(keyspaceName, tableName, properties);
-			PreparedStatement statement = CassandraConnectionManager.getSession(keyspaceName).prepare(selectQuery);
+			PreparedStatement statement = connectionManager.getSession(keyspaceName).prepare(selectQuery);
 			BoundStatement boundStatement = new BoundStatement(statement);
-			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement.bind(id));
+			ResultSet results  = connectionManager.getSession(keyspaceName).execute(boundStatement.bind(id));
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
 		    ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
@@ -260,7 +269,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 		Response response = new Response();
 		try{
 			Select selectQuery = QueryBuilder.select().all().from(keyspaceName, tableName);
-			ResultSet results  = CassandraConnectionManager.getSession(keyspaceName).execute(selectQuery);
+			ResultSet results  = connectionManager.getSession(keyspaceName).execute(selectQuery);
 			response = CassandraUtil.createResponse(results);
 		}catch(Exception e){
 		    ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName +" : "+e.getMessage(), e);
@@ -281,7 +290,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 		Response response = new Response();
 		try {
 			String query = CassandraUtil.getPreparedStatementFrUpsert(keyspaceName,tableName,request);
-			PreparedStatement statement = CassandraConnectionManager.getSession(keyspaceName).prepare(query);
+			PreparedStatement statement = connectionManager.getSession(keyspaceName).prepare(query);
 			BoundStatement boundStatement = new BoundStatement(statement);
 			Iterator<Object> iterator = request.values().iterator(); 
 			Object [] array =  new Object[request.keySet().size()];
@@ -289,7 +298,7 @@ public class CassandraOperationImpl implements CassandraOperation{
 			while (iterator.hasNext()) {
 				array[i++] = iterator.next();
 			}
-		   CassandraConnectionManager.getSession(keyspaceName).execute(boundStatement.bind(array));
+			connectionManager.getSession(keyspaceName).execute(boundStatement.bind(array));
 		   response.put(Constants.RESPONSE, Constants.SUCCESS);
 			
 		} catch (Exception e) {
