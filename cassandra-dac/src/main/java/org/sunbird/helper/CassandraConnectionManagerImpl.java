@@ -43,6 +43,15 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
     this.mode = mode;
   }
 
+  /**
+   * Method to create the cassandra connection on the basis of mode i.e. standalone or embedde read from properties file .
+   * @param ip
+   * @param port
+   * @param userName
+   * @param password
+   * @param keyspace
+   * @return boolean
+   */
   @Override
   public boolean createConnection(String ip, String port, String userName, String password,
       String keyspace) {
@@ -58,6 +67,15 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
     return connectionCreated;
   }
 
+  /**
+   * Method to create the standalone cassandra connection .
+   * @param ip
+   * @param port
+   * @param userName
+   * @param password
+   * @param keyspace
+   * @return
+   */
   private boolean createStandaloneConnection(String ip, String port, String userName,
       String password,
       String keyspace) {
@@ -165,6 +183,15 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
         .withPoolingOptions(poolingOptions).build();
   }
 
+  /**
+   * Method to create the embedded cassandra connection on localhost and port 9142 by default.
+   * @param ip
+   * @param port
+   * @param userName
+   * @param password
+   * @param keyspace
+   * @return
+   */
   private boolean createEmbeddedConnection(String ip, String port, String userName, String password,
       String keyspace) {
 
