@@ -11,6 +11,11 @@ public class CassandraConnectionMngrFactory {
 
   private static Map<String , CassandraConnectionManager> connectionFactoryMap = new HashMap<>();
 
+  /**
+   * Factory method to get the cassandra connection manager oject on basis of mode name pass in argument . default mode is standalone mode .
+   * @param name
+   * @return
+   */
   public static CassandraConnectionManager getObject(String name){
 
     if(!connectionFactoryMap.containsKey(name)){
@@ -22,14 +27,12 @@ public class CassandraConnectionMngrFactory {
             CassandraConnectionManager embeddedcassandraConnectionManager = new CassandraConnectionManagerImpl(mode);
             connectionFactoryMap.put(JsonKey.EMBEDDED_MODE , embeddedcassandraConnectionManager);
           }
-        }else if(name.equalsIgnoreCase(JsonKey.STANDALONE_MODE)){
+        }else{
           if(null == connectionFactoryMap.get(JsonKey.STANDALONE_MODE)){
             String mode =JsonKey.STANDALONE_MODE;
             CassandraConnectionManager standaloneCassandraConnectionManager = new CassandraConnectionManagerImpl(mode);
             connectionFactoryMap.put(JsonKey.STANDALONE_MODE , standaloneCassandraConnectionManager);
           }
-        }else{
-          //throw exception here since name is not valid connection manager name   .....
         }
       }
 
