@@ -695,4 +695,24 @@ public class ProjectUtil {
     String saltStr = salt.toString();
     return saltStr;
   }
+  
+  /**
+   * This method will do the phone number validation check
+   * @param phoneNo String
+   * @return  boolean
+   */
+  public static boolean validatePhoneNumber(String phoneNo) {
+    phoneNo = phoneNo.replace("+", "");
+    if (phoneNo.matches("\\d{10}"))
+      return true;
+    else if (phoneNo.matches("\\d{3}[-\\.\\s]\\d{3}[-\\.\\s]\\d{4}"))
+      return true;
+    else if (phoneNo.matches("\\d{3}-\\d{3}-\\d{4}\\s(x|(ext))\\d{3,5}"))
+      return true;
+    else if (phoneNo.matches("\\(\\d{3}\\)-\\d{3}-\\d{4}"))
+      return true;
+    else
+      return false;
+
+  }
 }

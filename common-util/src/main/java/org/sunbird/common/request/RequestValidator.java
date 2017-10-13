@@ -1222,4 +1222,19 @@ mentors : List of user ids , who will work as a mentor.
     }
   }
   
+  /**
+   * 
+   * @param request
+   */
+  public static void validateForgotpassword(Request request) {
+    if (request.getRequest().get(JsonKey.USERNAME) == null
+        || ProjectUtil.isStringNullOREmpty(
+            (String) request.getRequest().get(JsonKey.USERNAME))) {
+      throw new ProjectCommonException(
+          ResponseCode.userNameRequired.getErrorCode(),
+          ResponseCode.userNameRequired.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+  }
+  
 }

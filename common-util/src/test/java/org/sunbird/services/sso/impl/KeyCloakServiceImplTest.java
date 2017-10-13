@@ -23,7 +23,7 @@ public class KeyCloakServiceImplTest {
 
     private static Map<String,String> userId ;
     final static String userName = UUID.randomUUID().toString().replaceAll("-", "");
-
+    
     @BeforeClass
     public static void setup(){
 
@@ -42,7 +42,7 @@ public class KeyCloakServiceImplTest {
         userId = keyCloakService.createUser(request);
         Assert.assertNotNull(userId);
     }
-
+   
     @Test(expected = ProjectCommonException.class)
     public void createUserTestWithSameEmailUserName(){
 
@@ -80,7 +80,32 @@ public class KeyCloakServiceImplTest {
         String result = keyCloakService.updateUser(request);
         Assert.assertNotNull(result);
     }
+   
+    
+    @Test
+    public void updateUserTestWithOutPassingAnyField(){
 
+        Map<String , Object> request = new HashMap<String , Object>();
+        request.put(JsonKey.USER_ID , userId.get(JsonKey.USER_ID));
+        String result = keyCloakService.updateUser(request);
+        Assert.assertNotNull(result);
+    }
+    
+    @Test
+    public void updateUserTestWithAllFieldsExceptProvider(){
+
+        Map<String , Object> request = new HashMap<String , Object>();
+        request.put(JsonKey.USER_ID , userId.get(JsonKey.USER_ID));
+        request.put(JsonKey.PASSWORD , "password");
+        request.put(JsonKey.FIRST_NAME , "A");
+        request.put(JsonKey.LAST_NAME , "B");
+        request.put(JsonKey.EMAIL_VERIFIED , true);
+        request.put(JsonKey.EMAIL , userName.substring(0,10));
+        String result = keyCloakService.updateUser(request);
+        Assert.assertNotNull(result);
+    }
+    
+    
     @Test
     public void vdeactivateUserTest(){
 
