@@ -506,4 +506,7 @@ public class JsonKey {
   public static final String SUNBIRD_APP_URL = "sunbird_app_url";
   public static final String SUNBIRD_WEB_URL = "sunird_web_url";
   public static final String STATUS_CODE = "statusCode";
+  public static final String REMOTE = "remote";
+  public static final String API_ACTOR_PROVIDER = "api_actor_provider";
+  public static final String BACKGROUND_ACTOR_PROVIDER = "background_actor_provider";
 }

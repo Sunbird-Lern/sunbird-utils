@@ -249,12 +249,4 @@ public class AzureFileUtility {
     }
     return blobsList;
   }
-
-  public static void main(String[] args) {
-    String flag = uploadFile("mycontainer" , "serchprocessor001", "/home/arvind/Desktop/SearchProcessor.java");
-    System.out.println("SUCCESS");
-    System.out.println(flag);
-  }
-  
-  
 }
