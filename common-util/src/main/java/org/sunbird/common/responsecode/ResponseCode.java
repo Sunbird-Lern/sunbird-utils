@@ -176,6 +176,10 @@ public enum ResponseCode {
     invalidMediaType(ResponseMessage.Key.INVALID_MEDIA_TYPE, ResponseMessage.Message.INVALID_MEDIA_TYPE),
     invalidWebPageUrl(ResponseMessage.Key.INVALID_WEBPAGE_URL, ResponseMessage.Message.INVALID_WEBPAGE_URL),
     invalidDateRange(ResponseMessage.Key.INVALID_DATE_RANGE, ResponseMessage.Message.INVALID_DATE_RANGE),
+    invalidBatchEndDateError(ResponseMessage.Key.INVALID_BATCH_END_DATE_ERROR, ResponseMessage.Message.INVALID_BATCH_END_DATE_ERROR),
+    invalidBatchStartDateError(ResponseMessage.Key.INVALID_BATCH_START_DATE_ERROR, ResponseMessage.Message.INVALID_BATCH_START_DATE_ERROR),
+    courseBatchEndDateError(ResponseMessage.Key.COURSE_BATCH_END_DATE_ERROR, ResponseMessage.Message.COURSE_BATCH_END_DATE_ERROR),
+    BatchCloseError(ResponseMessage.Key.COURSE_BATCH_IS_CLOSED_ERROR, ResponseMessage.Message.COURSE_BATCH_IS_CLOSED_ERROR),
     OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404),UNAUTHORIZED(401),REDIRECTION_REQUIRED(302);
 	
 	private int responseCode;

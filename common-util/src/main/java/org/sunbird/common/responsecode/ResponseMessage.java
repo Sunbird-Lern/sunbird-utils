@@ -177,6 +177,10 @@ public interface ResponseMessage {
       public static final String INVALID_MEDIA_TYPE = "Invalid media type for webPage";
       public static final String INVALID_WEBPAGE_URL = "Invalid URL for {0}";
       public static final String INVALID_DATE_RANGE = "Date range should be between 3 Month.";
+      public static final String INVALID_BATCH_END_DATE_ERROR = "Please provide valid End Date.";
+      public static final String INVALID_BATCH_START_DATE_ERROR = "Please provide valid Start Date.";
+      public static final String COURSE_BATCH_END_DATE_ERROR = "Batch has been closed.";
+      public static final String COURSE_BATCH_IS_CLOSED_ERROR = "Batch has been closed.";
     }
     
     public interface Key {
@@ -348,5 +352,9 @@ public interface ResponseMessage {
         public static final String INVALID_MEDIA_TYPE = "INVALID_MEDIA_TYPE";
         public static final String INVALID_WEBPAGE_URL = "INVALID_WEBPAGE_URL";
         public static final String INVALID_DATE_RANGE = "INVALID_DATE_RANGE";
+        public static final String INVALID_BATCH_END_DATE_ERROR = "INVALID_BATCH_END_DATE_ERROR";
+        public static final String INVALID_BATCH_START_DATE_ERROR = "INVALID_BATCH_START_DATE_ERROR";
+        public static final String COURSE_BATCH_END_DATE_ERROR = "COURSE_BATCH_END_DATE_ERROR";
+        public static final String COURSE_BATCH_IS_CLOSED_ERROR = "COURSE_BATCH_IS_CLOSED_ERROR";
     }
 }
