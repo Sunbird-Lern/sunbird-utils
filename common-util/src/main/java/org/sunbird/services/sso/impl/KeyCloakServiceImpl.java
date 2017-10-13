@@ -55,7 +55,7 @@ public class KeyCloakServiceImpl implements SSOManager {
           RSATokenVerifier.verifyToken(
               accessToken, publicKey, KeyCloakConnectionProvider.SSO_URL
                   + "realms/" + KeyCloakConnectionProvider.SSO_REALM,
-              false, false);
+              true, true);
       userId = token.getSubject();
       ProjectLogger.log(token.getId() + " " + token.issuedFor + " "
           + token.getProfile() + " " + token.getSubject() + " Active== "
