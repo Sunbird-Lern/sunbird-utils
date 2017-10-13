@@ -503,5 +503,7 @@ public class JsonKey {
   public static final String MAIL_NOTE="mail_note";
   public static final String WELCOME_MESSAGE = "welcomeMessage";
   public static final String ONOARDING_WELCOME_MESSAGE = "onboarding_welcome_message";
-
+  public static final String SUNBIRD_APP_URL = "sunbird_app_url";
+  public static final String SUNBIRD_WEB_URL = "sunird_web_url";
+  public static final String STATUS_CODE = "statusCode";
 }
