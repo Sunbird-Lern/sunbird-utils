@@ -503,5 +503,9 @@ public class JsonKey {
   public static final String MAIL_NOTE="mail_note";
   public static final String WELCOME_MESSAGE = "welcomeMessage";
   public static final String ONOARDING_WELCOME_MESSAGE = "onboarding_welcome_message";
+  public static final String CASSANDRA_IN_EMBEDDED_MODE = "cassandraInEmbeddedMode";
+  public static final String SUNBIRD_CASSANDRA_MODE = "sunbird_cassandra_mode";
+  public static final String EMBEDDED_MODE = "embedded";
+  public static final String STANDALONE_MODE = "standalone";
 
 }
