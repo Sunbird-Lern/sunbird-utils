@@ -128,9 +128,12 @@ public class KeyCloakServiceImpl implements SSOManager {
     if (!(ProjectUtil.isStringNullOREmpty(userId)) && ((request.get(JsonKey.PASSWORD) != null)
         && !ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.PASSWORD)))) {
       doPasswordUpdate(userId, (String) request.get(JsonKey.PASSWORD));
-      if (request.get(JsonKey.BULK_USER_UPLOAD) == null) {
+      //key cloak setting is change now so key cloak won't 
+      //provide access token id just after create user. because 
+      // change password is mandatory on keyclaok.
+     /* if (request.get(JsonKey.BULK_USER_UPLOAD) == null) {
         accessToken = login(user.getUsername(), (String) request.get(JsonKey.PASSWORD));
-      }
+      }*/
     }
     Map<String, String> map = new HashMap<>();
     map.put(JsonKey.USER_ID, userId);
