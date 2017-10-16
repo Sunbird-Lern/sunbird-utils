@@ -57,11 +57,11 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
       String keyspace) {
     boolean connectionCreated = false;
     if (mode.equalsIgnoreCase(JsonKey.EMBEDDED_MODE)) {
-      return createEmbeddedConnection(ip, port, userName, password,
+      connectionCreated = createEmbeddedConnection(ip, port, userName, password,
           keyspace);
     }
-    if (mode.equalsIgnoreCase(JsonKey.STANDALONE_MODE)) {
-      return createStandaloneConnection(ip, port, userName, password,
+    else {
+      connectionCreated = createStandaloneConnection(ip, port, userName, password,
           keyspace);
     }
     return connectionCreated;
