@@ -509,4 +509,11 @@ public class JsonKey {
   public static final String REMOTE = "remote";
   public static final String API_ACTOR_PROVIDER = "api_actor_provider";
   public static final String BACKGROUND_ACTOR_PROVIDER = "background_actor_provider";
+  public static final String CASSANDRA_IN_EMBEDDED_MODE = "cassandraInEmbeddedMode";
+  public static final String SUNBIRD_CASSANDRA_MODE = "sunbird_cassandra_mode";
+  public static final String EMBEDDED_MODE = "embedded";
+  public static final String STANDALONE_MODE = "standalone";
+  public static final String EMBEDDED_CASSANDRA_HOST = "embedded_cassandra_host";
+  public static final String EMBEDDED_CASSANDRA_PORT = "embedded_cassandra_port";
+  public static final String EMBEDDED_CQL_FILE_NAME = "embedded_cql_file_name";
 }
