@@ -184,7 +184,7 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
   }
 
   /**
-   * Method to create the embedded cassandra connection on localhost and port 9142 by default.
+   * Method to create the embedded cassandra connection on host{{read from external properties}} and port {{read from external properties}}.
    * @param ip
    * @param port
    * @param userName
@@ -203,24 +203,22 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
     if (null == cassandraSessionMap.get(keyspace)) {
       try {
         EmbeddedCassandraServerHelper.startEmbeddedCassandra(Long.parseLong(propertiesCache.getProperty("embeddedCassandra_TimeOut")));
-        Cluster cluster = new Cluster.Builder().addContactPoints("127.0.0.1").withPort(9142)
+        Cluster cluster = new Cluster.Builder().addContactPoints(propertiesCache.getProperty(JsonKey.EMBEDDED_CASSANDRA_HOST)).withPort(Integer.parseInt(propertiesCache.getProperty(JsonKey.EMBEDDED_CASSANDRA_PORT)))
             .build();
         cassandraSession = cluster.connect();
         CQLDataLoader dataLoader = new CQLDataLoader(cassandraSession);
-        System.out.println("loading data .....");
-        dataLoader.load(new ClassPathCQLDataSet("cassandra.cql", keyspace));
-        //session = dataLoader.getSession();
-        System.out.println("EMBEDDED SESSION IS " + cassandraSession);
+        ProjectLogger.log("CASSANDRA EMBEDDED MODE - LOADING DATA");
+        dataLoader.load(new ClassPathCQLDataSet(propertiesCache.getProperty(JsonKey.EMBEDDED_CQL_FILE_NAME), keyspace));
         if (null != cassandraSession) {
           cassandraSessionMap.put(keyspace, cassandraSession);
           cassandraclusterMap.put(keyspace, cluster);
         }
       } catch (TTransportException e) {
-        e.printStackTrace();
+        ProjectLogger.log("Exception occured while creating Embedded cassandra connection", e);
       } catch (IOException e) {
-        e.printStackTrace();
+        ProjectLogger.log("Exception occured while creating Embedded cassandra connection", e);
       } catch (InterruptedException e) {
-        e.printStackTrace();
+        ProjectLogger.log("Exception occured while creating Embedded cassandra connection", e);
       }
     }
     if (null != cassandraSessionMap.get(keyspace)) {
