@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectUtil;
+import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.services.AssessmentEvaluator;
 import org.sunbird.common.services.impl.DefaultAssessmentEvaluator;
 
@@ -26,19 +27,24 @@ public class AppTest
 	public static void init(){
 		headers.put("content-type", "application/json");
 		headers.put("accept", "application/json");
-		headers.put("user-id", "mahesh");	 
+		headers.put("user-id", "mahesh");
+		 String header = System.getenv(JsonKey.EKSTEP_AUTHORIZATION);
+	        if (ProjectUtil.isStringNullOREmpty(header)) {
+	          header = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_AUTHORIZATION);
+	        }
+		headers.put("authorization", "Bearer"+ header);
 	} 
     
 	
 	@Test
 	public void testGetResourceMethod() throws Exception{
-		String response = HttpUtil.sendGetRequest("https://dev.ekstep.in/api/learning/v2/content/numeracy_377", headers);
+		String response = HttpUtil.sendGetRequest("https://dev.ekstep.in/api/learning/v3/content/numeracy_377", headers);
 		Assert.assertNotNull(response);
 	}
 	
 	@Test
 	public void testPostResourceMethod() throws Exception {
-		String response = HttpUtil.sendPostRequest("https://dev.ekstep.in/api/learning/v2/content/list", data, headers);
+		String response = HttpUtil.sendPostRequest("https://dev.ekstep.in/api/learning/v3/content/list", data, headers);
 		Assert.assertNotNull(response);
 	}
 	
@@ -47,7 +53,7 @@ public class AppTest
 		//passing wrong url
 		String response=null;
 		try {
-			response = HttpUtil.sendPostRequest("https://dev.ekstep.in/api/learning/v2/content/list", data, headers);
+			response = HttpUtil.sendPostRequest("https://dev.ekstep.in/api/learning/v3/content/list", data, headers);
 		} catch (IOException e) {
 			
 		}
