@@ -153,8 +153,8 @@ public class JsonKey {
   public static final String OFFSET = "offset";
   public static final String LIMIT = "limit";
 
-  public static final String EKSTEP_CONTNET_URL = "content_url";
-  public static final String EKSTEP_CONTNET_SEARCH_URL = "ekstep_content_search_url";
+  public static final String EKSTEP_CONTENT_URL = "content_url";
+  public static final String EKSTEP_CONTENT_SEARCH_URL = "ekstep_content_search_url";
   public static final String SUNBIRD_ACTOR_IP = "sunbird_learnerstate_actor_host";
   public static final String SUNBIRD_ACTOR_PORT = "sunbird_learnerstate_actor_port";
   public static final String SUNBIRD_ACTOR_SERVICE_IP = "sunbird_learner_actor_host";
