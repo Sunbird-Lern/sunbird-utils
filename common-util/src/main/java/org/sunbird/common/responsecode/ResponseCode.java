@@ -180,6 +180,9 @@ public enum ResponseCode {
     invalidBatchStartDateError(ResponseMessage.Key.INVALID_BATCH_START_DATE_ERROR, ResponseMessage.Message.INVALID_BATCH_START_DATE_ERROR),
     courseBatchEndDateError(ResponseMessage.Key.COURSE_BATCH_END_DATE_ERROR, ResponseMessage.Message.COURSE_BATCH_END_DATE_ERROR),
     BatchCloseError(ResponseMessage.Key.COURSE_BATCH_IS_CLOSED_ERROR, ResponseMessage.Message.COURSE_BATCH_IS_CLOSED_ERROR),
+    newPasswordRequired(ResponseMessage.Key.CONFIIRM_PASSWORD_MISSING, ResponseMessage.Message.CONFIIRM_PASSWORD_MISSING),
+    newPasswordEmpty(ResponseMessage.Key.CONFIIRM_PASSWORD_EMPTY, ResponseMessage.Message.CONFIIRM_PASSWORD_EMPTY),
+    samePasswordError(ResponseMessage.Key.SAME_PASSWORD_ERROR, ResponseMessage.Message.SAME_PASSWORD_ERROR),
     OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404),UNAUTHORIZED(401),REDIRECTION_REQUIRED(302);
 	
 	private int responseCode;
