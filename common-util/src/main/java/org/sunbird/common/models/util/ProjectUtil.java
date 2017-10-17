@@ -733,4 +733,17 @@ public class ProjectUtil {
       return false;
 
   }
+  
+  public static Map<String,String> getEkstepHeader(){
+    Map<String,String> headerMap = new HashMap<>();
+    String header = System.getenv(JsonKey.EKSTEP_AUTHORIZATION);
+      if (ProjectUtil.isStringNullOREmpty(header)) {
+        header = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_AUTHORIZATION);
+      } else {
+        header = JsonKey.BEARER+header;
+      }
+       headerMap.put(JsonKey.AUTHORIZATION, header);
+       headerMap.put("Content-Type", "application/json");
+    return headerMap;
+}
 }
