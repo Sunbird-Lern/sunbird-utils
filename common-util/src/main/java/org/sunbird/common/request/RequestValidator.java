@@ -570,11 +570,21 @@ public final class RequestValidator {
           ResponseCode.passwordRequired.getErrorMessage(),
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
-    if (userRequest.getRequest().get(JsonKey.NEW_PASSWORD) == null || (ProjectUtil
-        .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.NEW_PASSWORD)))) {
-      throw new ProjectCommonException(ResponseCode.sourceRequired.getErrorCode(),
-          ResponseCode.sourceRequired.getErrorMessage(),
+     if(userRequest.getRequest().get(JsonKey.NEW_PASSWORD) ==null) {
+       throw new ProjectCommonException(ResponseCode.newPasswordRequired.getErrorCode(),
+           ResponseCode.newPasswordRequired.getErrorMessage(),
+           ResponseCode.CLIENT_ERROR.getResponseCode());
+     }
+    if (ProjectUtil
+        .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.NEW_PASSWORD))) {
+      throw new ProjectCommonException(ResponseCode.newPasswordEmpty
+          .getErrorCode(),
+          ResponseCode.newPasswordEmpty.getErrorMessage(),
           ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    if (((String) userRequest.getRequest().get(JsonKey.NEW_PASSWORD))
+        .equals((String) userRequest.getRequest().get(JsonKey.PASSWORD))) {
+
     }
   }
 

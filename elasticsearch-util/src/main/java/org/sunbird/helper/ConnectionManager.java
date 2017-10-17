@@ -71,32 +71,52 @@ public class ConnectionManager {
     * This method will read configuration data form properties file and update the list.
     * @return boolean
     */
-	private static boolean initialiseConnection() {
-		try {
-			if(initialiseConnectionFromEnv()) {
-				ProjectLogger.log("value found under system variable.");
-				return true;
-			}
-			PropertiesCache propertiesCache = PropertiesCache.getInstance();
-			String cluster = propertiesCache.getProperty("es.cluster.name");
-			String hostName = propertiesCache.getProperty("es.host.name");
-			String port = propertiesCache.getProperty("es.host.port");
-			String splitedHost[] = hostName.split(",");
-			for (String val : splitedHost) {
-				host.add(val);
-			}
-			String splitedPort[] = port.split(",");
-			for (String val : splitedPort) {
-				ports.add(Integer.parseInt(val));
-			}
-			boolean response = createClient(cluster, host, ports);
-			ProjectLogger.log("ELASTIC SEARCH CONNECTION ESTABLISHED " + response, LoggerEnum.INFO.name());
-		} catch (Exception e) {
-			ProjectLogger.log("Error while initialising connection", e);
-			return false;
-		}
-		return true;
-	}
+  private static boolean initialiseConnection() {
+    try {
+      if (initialiseConnectionFromEnv()) {
+        ProjectLogger.log("value found under system variable.");
+        return true;
+      }
+      PropertiesCache propertiesCache = PropertiesCache.getInstance();
+      String cluster = propertiesCache.getProperty("es.cluster.name");
+      String hostName = propertiesCache.getProperty("es.host.name");
+      String port = propertiesCache.getProperty("es.host.port");
+      return initialiseConnectionFromPropertiesFile(cluster, hostName, port);
+    } catch (Exception e) {
+      ProjectLogger.log("Error while initialising connection", e);
+      return false;
+    }
+  }
+	
+  /**
+   * This method will initialize the connection from 
+   * Resource properties file.
+   * @param cluster String cluster name
+   * @param hostName String host name
+   * @param port String port
+   * @return boolean
+   */
+  public static boolean initialiseConnectionFromPropertiesFile(String cluster,
+      String hostName, String port) {
+    try {
+      String splitedHost[] = hostName.split(",");
+      for (String val : splitedHost) {
+        host.add(val);
+      }
+      String splitedPort[] = port.split(",");
+      for (String val : splitedPort) {
+        ports.add(Integer.parseInt(val));
+      }
+      boolean response = createClient(cluster, host, ports);
+      ProjectLogger.log("ELASTIC SEARCH CONNECTION ESTABLISHED " + response,
+          LoggerEnum.INFO.name());
+    } catch (Exception e) {
+      ProjectLogger.log("Error while initialising connection", e);
+      return false;
+    }
+    return true;
+  }
+	
 	
 	
 	/**
