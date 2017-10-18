@@ -142,7 +142,9 @@ public class ElasticSearchUtil {
       ProjectLogger.log("Invalid request is coming.");
     } else if (ProjectUtil.isStringNullOREmpty(index)) {
       ProjectLogger.log("Please provide index value.");
-    } else if (ProjectUtil.isStringNullOREmpty(type)) {
+    } else if (ProjectUtil.isStringNullOREmpty(identifier)){
+      ProjectLogger.log("identifier value is null or empty.");
+    }else if (ProjectUtil.isStringNullOREmpty(type)) {
       verifyOrCreateIndexAndType(index, type);
       response = ConnectionManager.getClient().prepareGet().setIndex(index).setId(identifier).get();
     } else {
