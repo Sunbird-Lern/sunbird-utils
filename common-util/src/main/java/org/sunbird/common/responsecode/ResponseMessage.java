@@ -116,7 +116,7 @@ public interface ResponseMessage {
 		public static final String NAME_OF_ORGANISATION_ERROR = "Organisation Name is required.";
 		public static final String ROLES_MISSING = "user role is required.";
         public static final String INVALID_DATE_FORMAT = "Invalid Date format . Date format should be : yyyy-MM-dd hh:mm:ss:SSSZ";
-        public static final String SRC_EXTERNAL_ID_ALREADY_EXIST = "SOURCE WITH EXTERNAL ID ALREADY EXIST .";
+        public static final String SRC_EXTERNAL_ID_ALREADY_EXIST = "PROVIDER WITH EXTERNAL ID ALREADY EXIST .";
         public static final String ALREADY_ENROLLED_COURSE = "User has already Enrolled this course .";
         public static final String EXISTING_ORG_MEMBER ="You already have a membership of this organization.";
         public static final String CONTENT_TYPE_ERROR = "Please add Content-Type header with value application/json";
