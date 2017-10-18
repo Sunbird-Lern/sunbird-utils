@@ -181,6 +181,9 @@ public interface ResponseMessage {
       public static final String INVALID_BATCH_START_DATE_ERROR = "Please provide valid Start Date.";
       public static final String COURSE_BATCH_END_DATE_ERROR = "Batch has been closed.";
       public static final String COURSE_BATCH_IS_CLOSED_ERROR = "Batch has been closed.";
+      public static final String CONFIIRM_PASSWORD_MISSING = "Confirm password is mandatory.";
+      public static final String CONFIIRM_PASSWORD_EMPTY = "Confirm password can not be empty.";
+      public static final String SAME_PASSWORD_ERROR = "new password can't be same as old password.";
     }
     
     public interface Key {
@@ -356,5 +359,8 @@ public interface ResponseMessage {
         public static final String INVALID_BATCH_START_DATE_ERROR = "INVALID_BATCH_START_DATE_ERROR";
         public static final String COURSE_BATCH_END_DATE_ERROR = "COURSE_BATCH_END_DATE_ERROR";
         public static final String COURSE_BATCH_IS_CLOSED_ERROR = "COURSE_BATCH_IS_CLOSED_ERROR";
+        public static final String CONFIIRM_PASSWORD_MISSING = "CONFIIRM_PASSWORD_MISSING";
+        public static final String CONFIIRM_PASSWORD_EMPTY = "CONFIIRM_PASSWORD_EMPTY";
+        public static final String SAME_PASSWORD_ERROR = "SAME_PASSWORD_ERROR";
     }
 }
