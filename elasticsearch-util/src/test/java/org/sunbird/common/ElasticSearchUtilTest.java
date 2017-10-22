@@ -318,7 +318,7 @@ public class ElasticSearchUtilTest {
      assertTrue(settings != null);
    } 
    
-   @Test
+   //@Test
    public void zzyTestWhenClusterisNull () {
      ElasticSearchUtil.deleteIndex(indexName);
      ConnectionManager.closeClient();
