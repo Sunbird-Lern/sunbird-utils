@@ -160,5 +160,36 @@ public class ProfileCompletenessTest {
     Assert.assertEquals(88, val);
   }
   
+  @Test
+  public void profileCompletenessWithNullAttribute() {
+    Map<String,Object> requestMap = null;
+    Map<String,Object> response = service.computeProfile(requestMap);
+    int val =(int) (response.get(JsonKey.COMPLETENESS)!=null ? response.get(JsonKey.COMPLETENESS):0);
+    Assert.assertEquals(0, val);
+  }
+  
+  
+  @Test
+  public void profileCompletenessWithList() {
+    Map<String,Object> requestMap = new HashMap<>();
+    List<String> attribute = new ArrayList<>();
+    attribute.add("pro");
+    requestMap.put("list", attribute);
+    Map<String,Object> response = service.computeProfile(requestMap);
+    int val =(int) (response.get(JsonKey.COMPLETENESS)!=null ? response.get(JsonKey.COMPLETENESS):0);
+    Assert.assertEquals(0, val);
+  }
+  
+  
+  @Test
+  public void profileCompletenessWithMap() {
+    Map<String,Object> requestMap = new HashMap<>();
+    Map<String,Object> attribute = new HashMap<>();
+    attribute.put("pro","test");
+    requestMap.put("list", attribute);
+    Map<String,Object> response = service.computeProfile(requestMap);
+    int val =(int) (response.get(JsonKey.COMPLETENESS)!=null ? response.get(JsonKey.COMPLETENESS):0);
+    Assert.assertEquals(0, val);
+  }
   
 }
