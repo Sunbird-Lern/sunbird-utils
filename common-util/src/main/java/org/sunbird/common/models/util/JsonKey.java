@@ -516,4 +516,5 @@ public class JsonKey {
   public static final String EMBEDDED_CASSANDRA_HOST = "embedded_cassandra_host";
   public static final String EMBEDDED_CASSANDRA_PORT = "embedded_cassandra_port";
   public static final String EMBEDDED_CQL_FILE_NAME = "embedded_cql_file_name";
+  public static final String RETRY_COUNT = "retryCount";
 }
