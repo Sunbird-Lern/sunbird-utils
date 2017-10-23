@@ -81,7 +81,7 @@ public class ProjectUtil {
 
 
   public enum BulkProcessStatus {
-    NEW(0), IN_PROGRESS(1), INTERRUPT(2), COMPLETED(3);
+    NEW(0), IN_PROGRESS(1), INTERRUPT(2), COMPLETED(3), FAILED(9);
 
     private int value;
 
