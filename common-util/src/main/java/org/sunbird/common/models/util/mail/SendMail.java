@@ -50,11 +50,7 @@ public class SendMail {
         || ProjectUtil.isStringNullOREmpty(fromEmail)) {
       ProjectLogger.log("Email setting value is not provided by Env variable==" + host + " " + port
           + " " + fromEmail, LoggerEnum.INFO.name());
-      host = PropertiesCache.getInstance().getProperty(JsonKey.EMAIL_SERVER_HOST);
-      port = PropertiesCache.getInstance().getProperty(JsonKey.EMAIL_SERVER_PORT);
-      userName = PropertiesCache.getInstance().getProperty(JsonKey.EMAIL_SERVER_USERNAME);
-      password = PropertiesCache.getInstance().getProperty(JsonKey.EMAIL_SERVER_PASSWORD);
-      fromEmail = PropertiesCache.getInstance().getProperty(JsonKey.EMAIL_SERVER_FROM);
+      initialiseFromProperty();
     }
     props = System.getProperties();
     props.put("mail.smtp.host", host);
@@ -66,6 +62,17 @@ public class SendMail {
     props.put("mail.smtp.port", port);
   }
 
+  /**
+   * This method will initialize values from property files.
+   */
+  public static void initialiseFromProperty () {
+    host = PropertiesCache.getInstance().getProperty(JsonKey.EMAIL_SERVER_HOST);
+    port = PropertiesCache.getInstance().getProperty(JsonKey.EMAIL_SERVER_PORT);
+    userName = PropertiesCache.getInstance().getProperty(JsonKey.EMAIL_SERVER_USERNAME);
+    password = PropertiesCache.getInstance().getProperty(JsonKey.EMAIL_SERVER_PASSWORD);
+    fromEmail = PropertiesCache.getInstance().getProperty(JsonKey.EMAIL_SERVER_FROM);
+  }
+  
   /**
    * this method is used to send email.
    * 
@@ -154,9 +161,12 @@ public class SendMail {
       }
       message.setSubject(subject);
       VelocityEngine engine = new VelocityEngine();
-      engine.init();
-      String templatePath = PropertiesCache.getInstance().getProperty("email.template.basepath");
-      Template template = engine.getTemplate(templatePath + templateName);
+      Properties p = new Properties();
+      p.setProperty("resource.loader", "class");
+      p.setProperty("class.resource.loader.class",
+          "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+      engine.init(p);
+      Template template = engine.getTemplate(templateName);
       StringWriter writer = new StringWriter();
       template.merge(context, writer);
       message.setContent(writer.toString(), "text/html");

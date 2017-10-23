@@ -76,4 +76,13 @@ public interface SSOManager {
 	 * @return boolean
 	 */
 	public boolean addUserLoginTime (String userId); 
+	
+	/**
+	 * this method will do the user login with key cloak.
+	 * after login it will provide access token. 
+	 * @param userName String
+	 * @param password String
+	 * @return String
+	 */
+	public String login(String userName, String password); 
 }
