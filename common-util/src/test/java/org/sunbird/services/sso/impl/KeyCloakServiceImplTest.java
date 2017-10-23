@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.services.sso.SSOManager;
 import org.sunbird.services.sso.SSOServiceFactory;
 
@@ -176,4 +177,42 @@ public class KeyCloakServiceImplTest {
       Assert.assertNotNull(lastLoginTime);
     }
     
+  @Test
+  public void makeUserActive() {
+    Map<String, Object> reqMap = new HashMap<>();
+    reqMap.put(JsonKey.USER_ID, userId.get(JsonKey.USER_ID));
+    String response = keyCloakService.activateUser(reqMap);
+    Assert.assertEquals(JsonKey.SUCCESS, response);
+  }
+  
+  @Test
+  public void makeUserActiveFailure() {
+    Map<String, Object> reqMap = new HashMap<>();
+    reqMap.put(JsonKey.USER_ID, "");
+    try {
+     keyCloakService.activateUser(reqMap);
+    } catch (ProjectCommonException e) {
+      Assert.assertEquals(ResponseCode.invalidUsrData.getErrorCode(), e.getCode());
+      Assert.assertEquals(ResponseCode.invalidUsrData.getErrorMessage(), e.getMessage());
+      Assert.assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+    }
+  }
+  
+  @Test
+  public void loginSuccessTest() {
+   String authKey = keyCloakService.login(userName, "password");
+   Assert.assertNotEquals("", authKey);
+  }
+  
+  @Test
+  public void loginFailureTest() {
+    String authKey = keyCloakService.login(userName, "password123");
+    Assert.assertEquals("", authKey);
+   }
+  
+  @Test
+  public void emailVerifiedTest() {
+    boolean response = keyCloakService.isEmailVerified(userId.get(JsonKey.USER_ID));
+    Assert.assertEquals(true, response);
+  }
 }
