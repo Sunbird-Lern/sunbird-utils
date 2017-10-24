@@ -516,4 +516,14 @@ public class JsonKey {
   public static final String EMBEDDED_CASSANDRA_HOST = "embedded_cassandra_host";
   public static final String EMBEDDED_CASSANDRA_PORT = "embedded_cassandra_port";
   public static final String EMBEDDED_CQL_FILE_NAME = "embedded_cql_file_name";
+  public static final String ENDORSED_USER_ID = "endorsedUserId";
+  public static final String SKILL_NAME = "skillName";
+  public static final String USER_SKILL_DB = "userSkillDb";
+  public static final String SKILL_ENDORSEMENT_DB = "skillEndorsementDb";
+  public static final String SKILL_NAME_TO_LOWERCASE = "skillnametolowercase";
+  public static final String ADDED_AT = "addedAt";
+  public static final String ENDORSERS = "endorsers";
+  public static final String ENDORSEMENT_COUNT = "endorsementcount";
+  public static final String SKILLS = "skills";
+  public static final String SKILLS_LIST_DB = "skillsListDb";
 }
