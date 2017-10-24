@@ -26,7 +26,7 @@ public class Request implements Serializable {
 
     private String managerName;
     private String operation;
-    private String request_id;
+    private String requestId;
     private int env;
 
     {
@@ -39,12 +39,12 @@ public class Request implements Serializable {
         }
         
         //set request_id
-		request_id = (String) ExecutionContext.getCurrent().getGlobalContext().get(HeaderParam.REQUEST_ID.getParamName());
+		requestId = (String) ExecutionContext.getCurrent().getGlobalContext().get(HeaderParam.REQUEST_ID.getParamName());
     }
 
     public Request() {
     	this.params = new RequestParams();
-    	this.params.setMsgid(request_id);
+    	this.params.setMsgid(requestId);
    
     }
     
@@ -54,17 +54,17 @@ public class Request implements Serializable {
     	    this.params = new RequestParams();
     	else if (!ProjectUtil.isStringNullOREmpty(this.params.getMsgid())) {
     	    ExecutionContext.setRequestId(this.params.getMsgid());
-    	    this.request_id = this.params.getMsgid();
+    	    this.requestId = this.params.getMsgid();
     	}
-    	if(ProjectUtil.isStringNullOREmpty(this.params.getMsgid()) && !ProjectUtil.isStringNullOREmpty(request_id))
-    		this.params.setMsgid(request_id);
+    	if(ProjectUtil.isStringNullOREmpty(this.params.getMsgid()) && !ProjectUtil.isStringNullOREmpty(requestId))
+    		this.params.setMsgid(requestId);
         this.context.putAll(request.getContext());
     }
     
     public String getRequestId() {
         if (null != this.params)
             return this.params.getMsgid();
-        return request_id;
+        return requestId;
     }
 
     public Map<String, Object> getContext() {
@@ -90,8 +90,8 @@ public class Request implements Serializable {
         return request.get(key);
     }
     
-	public void setRequest_id(String request_id) {
-		this.request_id = request_id;
+	public void setRequestId(String requestId) {
+		this.requestId = requestId;
 	}
 
 	public void put(String key, Object vo) {
@@ -156,8 +156,8 @@ public class Request implements Serializable {
 
     public void setParams(RequestParams params) {
         this.params = params;
-    	if(this.params.getMsgid()==null&&request_id!=null)
-    		this.params.setMsgid(request_id);
+    	if(this.params.getMsgid()==null&&requestId!=null)
+    		this.params.setMsgid(requestId);
 
     }
 

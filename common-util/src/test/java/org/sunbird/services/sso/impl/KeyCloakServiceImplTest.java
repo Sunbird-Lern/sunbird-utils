@@ -7,8 +7,11 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.services.sso.SSOManager;
 import org.sunbird.services.sso.SSOServiceFactory;
+
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -23,10 +26,29 @@ public class KeyCloakServiceImplTest {
 
     private static Map<String,String> userId ;
     final static String userName = UUID.randomUUID().toString().replaceAll("-", "");
-    
+    static Class t  = null;    
     @BeforeClass
-    public static void setup(){
-
+    public static void setUp() {
+      try {
+        t  = Class.forName("org.sunbird.services.sso.SSOServiceFactory");
+      } catch (ClassNotFoundException e) {
+      }
+    }
+    
+    @SuppressWarnings("deprecation")
+    @Test
+    public void instanceCreationTest() {
+      Exception exp = null ;
+      try {
+        Constructor<SSOServiceFactory> constructor =
+            t.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        SSOServiceFactory application = constructor.newInstance();
+        org.junit.Assert.assertNotNull(application);
+      } catch (Exception e) {
+        exp = e;
+      }
+      org.junit.Assert.assertNull(exp);
     }
 
     @Test
@@ -130,11 +152,6 @@ public class KeyCloakServiceImplTest {
       keyCloakService.verifyToken("eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI5emhhVnZDbl81OEtheHpldHBzYXNZQ2lEallkemJIX3U2LV93SDk4SEc0In0.eyJqdGkiOiI5ZmQzNzgzYy01YjZmLTQ3OWQtYmMzYy0yZWEzOGUzZmRmYzgiLCJleHAiOjE1MDUxMTQyNDYsIm5iZiI6MCwiaWF0IjoxNTA1MTEzNjQ2LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvYXV0aC9yZWFsbXMvbWFzdGVyIiwiYXVkIjoic2VjdXJpdHktYWRtaW4tY29uc29sZSIsInN1YiI6ImIzYTZkMTY4LWJjZmQtNDE2MS1hYzVmLTljZjYyODIyNzlmMyIsInR5cCI6IkJlYXJlciIsImF6cCI6InNlY3VyaXR5LWFkbWluLWNvbnNvbGUiLCJub25jZSI6ImMxOGVlMDM2LTAyMWItNGVlZC04NWVhLTc0MjMyYzg2ZmI4ZSIsImF1dGhfdGltZSI6MTUwNTExMzY0Niwic2Vzc2lvbl9zdGF0ZSI6ImRiZTU2NDlmLTY4MDktNDA3NS05Njk5LTVhYjIyNWMwZTkyMiIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOltdLCJyZXNvdXJjZV9hY2Nlc3MiOnt9LCJuYW1lIjoiTWFuemFydWwgaGFxdWUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0ZXN0MTIzNDU2NyIsImdpdmVuX25hbWUiOiJNYW56YXJ1bCBoYXF1ZSIsImVtYWlsIjoidGVzdDEyM0B0LmNvbSJ9.Xdjqe16MSkiR94g-Uj_pVZ2L3gnIdKpkJ6aB82W_w_c3yEmx1mXYBdkxe4zMz3ks4OX_PWwSFEbJECHcnujUwF6Ula0xtXTfuESB9hFyiWHtVAhuh5UlCCwPnsihv5EqK6u-Qzo0aa6qZOiQK3Zo7FLpnPUDxn4yHyo3mRZUiWf76KTl8PhSMoXoWxcR2vGW0b-cPixILTZPV0xXUZoozCui70QnvTgOJDWqr7y80EWDkS4Ptn-QM3q2nJlw63mZreOG3XTdraOlcKIP5vFK992dyyHlYGqWVzigortS9Ah4cprFVuLlX8mu1cQvqHBtW-0Dq_JlcTMaztEnqvJ6XA");
       }
     
-    // @Test this test case in no more valid.
-    public void verifyAuthTOkenSuccess() {
-      String response = keyCloakService.verifyToken(userId.get(JsonKey.ACCESSTOKEN));
-      Assert.assertNotNull(response);
-    }
     
     @Test
     public void xaddLoginTimeTest () {
@@ -160,4 +177,42 @@ public class KeyCloakServiceImplTest {
       Assert.assertNotNull(lastLoginTime);
     }
     
+  @Test
+  public void makeUserActive() {
+    Map<String, Object> reqMap = new HashMap<>();
+    reqMap.put(JsonKey.USER_ID, userId.get(JsonKey.USER_ID));
+    String response = keyCloakService.activateUser(reqMap);
+    Assert.assertEquals(JsonKey.SUCCESS, response);
+  }
+  
+  @Test
+  public void makeUserActiveFailure() {
+    Map<String, Object> reqMap = new HashMap<>();
+    reqMap.put(JsonKey.USER_ID, "");
+    try {
+     keyCloakService.activateUser(reqMap);
+    } catch (ProjectCommonException e) {
+      Assert.assertEquals(ResponseCode.invalidUsrData.getErrorCode(), e.getCode());
+      Assert.assertEquals(ResponseCode.invalidUsrData.getErrorMessage(), e.getMessage());
+      Assert.assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+    }
+  }
+  
+  @Test
+  public void loginSuccessTest() {
+   String authKey = keyCloakService.login(userName, "password");
+   Assert.assertNotEquals("", authKey);
+  }
+  
+  @Test
+  public void loginFailureTest() {
+    String authKey = keyCloakService.login(userName, "password123");
+    Assert.assertEquals("", authKey);
+   }
+  
+  @Test
+  public void emailVerifiedTest() {
+    boolean response = keyCloakService.isEmailVerified(userId.get(JsonKey.USER_ID));
+    Assert.assertEquals(true, response);
+  }
 }

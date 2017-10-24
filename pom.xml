@@ -6,8 +6,8 @@
   <packaging>pom</packaging>
   <name>sunbird_common_module</name>
   <modules>
+      <module>common-util</module>
       <module>cassandra-dac</module>
-		  <module>common-util</module>
-		  <module>elasticsearch-util</module>
+      <module>elasticsearch-util</module>
   </modules>
 </project>
