@@ -3,6 +3,7 @@ package org.sunbird.common;
 import static org.junit.Assert.assertEquals;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 import org.elasticsearch.client.transport.TransportClient;
 import org.junit.AfterClass;
@@ -11,6 +12,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
 import org.sunbird.helper.ElasticSearchMapping;
@@ -273,4 +275,78 @@ public class ElasticSearchUtilTest {
         map.put("channel" , "NTP");
         return map;
     }
+    
+    @Test
+    public void saveDataWithOutIndexname() {
+        String responseMap = ElasticSearchUtil.createData("", typeName, (String)map.get("courseId"),map);
+        assertEquals("ERROR", responseMap);
+    }
+    
+    @Test
+    public void saveDataWithOutTypeName() {
+        String responseMap = ElasticSearchUtil.createData(indexName, "", (String)map.get("courseId"),map);
+        assertEquals("ERROR", responseMap);
+    }
+   
+    @Test
+    public void getDataByEmptyIdentifier() {
+        Map<String,Object> responseMap = ElasticSearchUtil.getDataByIdentifier(indexName, typeName, "");
+        assertEquals(0, responseMap.size());
+    }
+   
+    @Test
+    public void zRemoveDataByIdentifier() {
+         ElasticSearchUtil.removeData(indexName, typeName, (String)map.get("courseId"));
+        assertEquals(true, true);
+    }
+    
+    @Test
+    public void zyRemoveDataByIdentifierFailure() {
+         ElasticSearchUtil.removeData(indexName, typeName, "");
+        assertEquals(false, false);
+    }
+    
+   @Test 
+   public void checkMappingObject () {
+     ElasticSearchMapping mapping = new ElasticSearchMapping();
+     assertTrue(mapping != null);
+   } 
+   
+   @Test 
+   public void checkSettingsObject () {
+     ElasticSearchSettings settings = new ElasticSearchSettings();
+     assertTrue(settings != null);
+   } 
+   
+   //@Test
+   public void zzyTestWhenClusterisNull () {
+     ElasticSearchUtil.deleteIndex(indexName);
+     ConnectionManager.closeClient();
+     ConnectionManager.getClient();
+   }
+   
+   @Test 
+   public void failureConnectionTestFromProperties () {
+    boolean response = ConnectionManager.initialiseConnectionFromPropertiesFile("Test", "localhost", "localhost");
+    assertFalse(response);
+   }
+   
+   @Test 
+  public void checkHealth() {
+    boolean response = false;
+    try {
+      response = ElasticSearchUtil.healthCheck();
+    } catch (InterruptedException e) {
+
+    } catch (ExecutionException e) {
+    }
+    assertEquals(true,response);
+  }
+   
+  @Test
+  public void upsertDataTest () {
+    Map<String,Object> data = new HashMap<String, Object>();
+    data.put("test", "test");
+    ElasticSearchUtil.upsertData(indexName, typeName, "test-12349", data);
+  }
 }

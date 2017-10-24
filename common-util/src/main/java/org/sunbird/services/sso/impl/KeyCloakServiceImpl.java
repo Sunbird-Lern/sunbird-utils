@@ -3,22 +3,9 @@
  */
 package org.sunbird.services.sso.impl;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.keycloak.RSATokenVerifier;
-import org.keycloak.admin.client.Keycloak;
-import org.keycloak.admin.client.resource.UserResource;
-import org.keycloak.representations.AccessToken;
-import org.keycloak.representations.idm.CredentialRepresentation;
-import org.keycloak.representations.idm.UserRepresentation;
-
-import org.sunbird.common.exception.ProjectCommonException;
-import org.sunbird.common.models.util.*;
-import org.sunbird.common.responsecode.ResponseCode;
-import org.sunbird.services.sso.SSOManager;
-import org.sunbird.services.sso.SSOServiceFactory;
-
-import javax.ws.rs.core.Response;
+import static java.util.Arrays.asList;
+import static org.sunbird.common.models.util.ProjectUtil.isNotNull;
+import static org.sunbird.common.models.util.ProjectUtil.isNull;
 
 import java.io.IOException;
 import java.security.KeyFactory;
@@ -29,10 +16,24 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static java.util.Arrays.asList;
-import static org.sunbird.common.models.util.ProjectUtil.isNull;
-import static org.sunbird.common.models.util.ProjectUtil.isNotNull;
+import javax.ws.rs.core.Response;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.keycloak.RSATokenVerifier;
+import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.resource.UserResource;
+import org.keycloak.representations.AccessToken;
+import org.keycloak.representations.idm.CredentialRepresentation;
+import org.keycloak.representations.idm.UserRepresentation;
+import org.sunbird.common.exception.ProjectCommonException;
+import org.sunbird.common.models.util.HttpUtil;
+import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.KeyCloakConnectionProvider;
+import org.sunbird.common.models.util.LoggerEnum;
+import org.sunbird.common.models.util.ProjectLogger;
+import org.sunbird.common.models.util.ProjectUtil;
+import org.sunbird.common.responsecode.ResponseCode;
+import org.sunbird.services.sso.SSOManager;
 
 /**
  * Single sign out service implementation with Key Cloak.
@@ -41,171 +42,182 @@ import static org.sunbird.common.models.util.ProjectUtil.isNotNull;
  */
 public class KeyCloakServiceImpl implements SSOManager {
 
-    Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
-    private static final boolean IS_EMAIL_SETUP_COMPLETE = false;
-   private static final String URL = KeyCloakConnectionProvider.SSO_URL+ "realms/" + KeyCloakConnectionProvider.SSO_REALM+"/protocol/openid-connect/token"; 
-   private static final String SSO_PUBLIC_KEY =System.getenv(JsonKey.SSO_PUBLIC_KEY);
-   
-   @Override
+  Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
+  private static final boolean IS_EMAIL_SETUP_COMPLETE = false;
+  private static final String URL = KeyCloakConnectionProvider.SSO_URL + "realms/"
+      + KeyCloakConnectionProvider.SSO_REALM + "/protocol/openid-connect/token";
+  private static final String SSO_PUBLIC_KEY = System.getenv(JsonKey.SSO_PUBLIC_KEY);
+
+  @Override
   public String verifyToken(String accessToken) {
     String userId = "";
     try {
       PublicKey publicKey = toPublicKey(SSO_PUBLIC_KEY);
-      AccessToken token =
-          RSATokenVerifier.verifyToken(
-              accessToken, publicKey, KeyCloakConnectionProvider.SSO_URL
-                  + "realms/" + KeyCloakConnectionProvider.SSO_REALM,
-              true, true);
+      AccessToken token = RSATokenVerifier.verifyToken(accessToken, publicKey,
+          KeyCloakConnectionProvider.SSO_URL + "realms/" + KeyCloakConnectionProvider.SSO_REALM,
+          true, true);
       userId = token.getSubject();
-      ProjectLogger.log(token.getId() + " " + token.issuedFor + " "
-          + token.getProfile() + " " + token.getSubject() + " Active== "
-          + token.isActive() + "  isExpired==" + token.isExpired() + " "
-          + token.issuedNow().getExpiration(),LoggerEnum.INFO.name());
+      ProjectLogger.log(
+          token.getId() + " " + token.issuedFor + " " + token.getProfile() + " "
+              + token.getSubject() + " Active== " + token.isActive() + "  isExpired=="
+              + token.isExpired() + " " + token.issuedNow().getExpiration(),
+          LoggerEnum.INFO.name());
     } catch (Exception e) {
       ProjectLogger.log("User token is not authorized==" + e);
       throw new ProjectCommonException(ResponseCode.unAuthorised.getErrorCode(),
-          ResponseCode.unAuthorised.getErrorMessage(),
-          ResponseCode.UNAUTHORIZED.getResponseCode());
+          ResponseCode.unAuthorised.getErrorMessage(), ResponseCode.UNAUTHORIZED.getResponseCode());
     }
     return userId;
   }
 
-    /**
-     * This method will generate Public key form keycloak realm publickey String
-     * @param publicKeyString String
-     * @return  PublicKey
-     */
-    private PublicKey toPublicKey(String publicKeyString) {
-      try {
-        byte[] publicBytes = Base64.getDecoder().decode(publicKeyString);
-        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-        return keyFactory.generatePublic(keySpec);
-      } catch (Exception e) {
-        return null;
-      }
+  /**
+   * This method will generate Public key form keycloak realm publickey String
+   * 
+   * @param publicKeyString String
+   * @return PublicKey
+   */
+  private PublicKey toPublicKey(String publicKeyString) {
+    try {
+      byte[] publicBytes = Base64.getDecoder().decode(publicKeyString);
+      X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicBytes);
+      KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+      return keyFactory.generatePublic(keySpec);
+    } catch (Exception e) {
+      return null;
     }
-    
-    @Override
-    public Map<String,String> createUser(Map<String, Object> request) {
-        String userId = null;
-        String accessToken = null;
-        UserRepresentation user = createUserReqObj(request);
-        Response result = null;
-        try {
-          result = keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().create(user);
-        } catch (Exception e) {
-          ProjectLogger.log(e.getMessage(), e);
-          ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
-          throw projectCommonException;
-        }
-         if(request != null) {
-        if (result.getStatus() != 201) {
-            ProjectLogger.log("Couldn't create user." + result.getStatus() + " " + result.toString(), new RuntimeException());
-            if (result.getStatus() == 409) {
-                ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.emailANDUserNameAlreadyExistError.getErrorCode(), ResponseCode.emailANDUserNameAlreadyExistError.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-                throw projectCommonException;
-            } else {
-                ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
-                throw projectCommonException;
-            }
+  }
+
+  @Override
+  public Map<String, String> createUser(Map<String, Object> request) {
+    String userId = null;
+    String accessToken = null;
+    UserRepresentation user = createUserReqObj(request);
+    Response result = null;
+    try {
+      result = keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().create(user);
+    } catch (Exception e) {
+      ProjectLogger.log(e.getMessage(), e);
+      throw new ProjectCommonException(
+          ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    if (request != null) {
+      if (result.getStatus() != 201) {
+        ProjectLogger.log("Couldn't create user." + result.getStatus() + " " + result.toString(),
+            new RuntimeException());
+        if (result.getStatus() == 409) {
+          throw new ProjectCommonException(
+              ResponseCode.emailANDUserNameAlreadyExistError.getErrorCode(),
+              ResponseCode.emailANDUserNameAlreadyExistError.getErrorMessage(),
+              ResponseCode.CLIENT_ERROR.getResponseCode());
         } else {
-            userId = result.getHeaderString("Location").replaceAll(".*/(.*)$", "$1");
+          throw new ProjectCommonException(
+              ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(),
+              ResponseCode.SERVER_ERROR.getResponseCode());
         }
-         }else {
-           ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
-           throw projectCommonException;
-         }
+      } else {
+        userId = result.getHeaderString("Location").replaceAll(".*/(.*)$", "$1");
+      }
+    } else {
+      throw new ProjectCommonException(
+          ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
 
-        //reset the password with same password
-    if (!(ProjectUtil.isStringNullOREmpty(userId))
-        && ((request.get(JsonKey.PASSWORD) != null) && !ProjectUtil
-            .isStringNullOREmpty((String) request.get(JsonKey.PASSWORD)))) {
+    // reset the password with same password
+    if (!(ProjectUtil.isStringNullOREmpty(userId)) && ((request.get(JsonKey.PASSWORD) != null)
+        && !ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.PASSWORD)))) {
       doPasswordUpdate(userId, (String) request.get(JsonKey.PASSWORD));
-       if(request.get(JsonKey.BULK_USER_UPLOAD) == null) {
-       accessToken = login(user.getUsername(), (String) request.get(JsonKey.PASSWORD));
-       }
+      //key cloak setting is change now so key cloak won't 
+      //provide access token id just after create user. because 
+      // change password is mandatory on keyclaok.
+     /* if (request.get(JsonKey.BULK_USER_UPLOAD) == null) {
+        accessToken = login(user.getUsername(), (String) request.get(JsonKey.PASSWORD));
+      }*/
     }
-      Map<String,String> map = new HashMap<>();
-      map.put(JsonKey.USER_ID, userId);
-      map.put(JsonKey.ACCESSTOKEN, accessToken);
-        return map;
-    }
+    Map<String, String> map = new HashMap<>();
+    map.put(JsonKey.USER_ID, userId);
+    map.put(JsonKey.ACCESSTOKEN, accessToken);
+    return map;
+  }
 
 
-    @Override
-    public String updateUser(Map<String, Object> request) {
-        String userId = (String) request.get(JsonKey.USER_ID);
-        UserRepresentation  ur= null;
-        UserResource resource = null;
-        boolean needTobeUpdate = false;
-        try {
-          resource = keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
-          ur = resource.toRepresentation();
-        } catch (Exception e) {
-          ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(), ResponseCode.invalidUsrData.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-          throw projectCommonException;
-        }
-        
-        // set the UserRepresantation with the map value...
-        if (isNotNull(request.get(JsonKey.FIRST_NAME))) {
-             needTobeUpdate = true;
-            ur.setFirstName((String) request.get(JsonKey.FIRST_NAME));
-        }
-        if (isNotNull(request.get(JsonKey.LAST_NAME))) {
-            needTobeUpdate = true;
-            ur.setLastName((String) request.get(JsonKey.LAST_NAME));
-        }
-        if (isNotNull(request.get(JsonKey.EMAIL))) {
-            needTobeUpdate = true;
-            ur.setEmail((String) request.get(JsonKey.EMAIL));
-        }
-        if(isNotNull(request.get(JsonKey.USERNAME))) {
+  @Override
+  public String updateUser(Map<String, Object> request) {
+    String userId = (String) request.get(JsonKey.USER_ID);
+    UserRepresentation ur = null;
+    UserResource resource = null;
+    boolean needTobeUpdate = false;
+    try {
+      resource = keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
+      ur = resource.toRepresentation();
+    } catch (Exception e) {
+      throw new ProjectCommonException(
+          ResponseCode.invalidUsrData.getErrorCode(), ResponseCode.invalidUsrData.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+
+    // set the UserRepresantation with the map value...
+    if (isNotNull(request.get(JsonKey.FIRST_NAME))) {
+      needTobeUpdate = true;
+      ur.setFirstName((String) request.get(JsonKey.FIRST_NAME));
+    }
+    if (isNotNull(request.get(JsonKey.LAST_NAME))) {
+      needTobeUpdate = true;
+      ur.setLastName((String) request.get(JsonKey.LAST_NAME));
+    }
+    if (isNotNull(request.get(JsonKey.EMAIL))) {
+      needTobeUpdate = true;
+      ur.setEmail((String) request.get(JsonKey.EMAIL));
+    }
+    if (isNotNull(request.get(JsonKey.USERNAME))) {
       if (isNotNull(request.get(JsonKey.PROVIDER))) {
         needTobeUpdate = true;
         ur.setUsername((String) request.get(JsonKey.USERNAME) + JsonKey.LOGIN_ID_DELIMETER
             + (String) request.get(JsonKey.PROVIDER));
-      }else{
-          needTobeUpdate = true;
-          ur.setUsername((String) request.get(JsonKey.USERNAME));
-        }
-        }
-        try {
-          // if user sending any basic profile data
-          //then no need to make api call to keycloak to update profile.
-            if(needTobeUpdate){
-            resource.update(ur);
-            }
-        } catch (Exception ex) {
-            ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(), ResponseCode.invalidUsrData.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-            throw projectCommonException;
-        }
-        return (String) JsonKey.SUCCESS;
+      } else {
+        needTobeUpdate = true;
+        ur.setUsername((String) request.get(JsonKey.USERNAME));
+      }
     }
-
-    /**
-     * Method to remove the user on basis of user id.
-     *
-     * @param request Map
-     * @return boolean true if success otherwise false .
-     */
-    @Override
-    public String removeUser(Map<String, Object> request) {
-        Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
-        String userId = (String) request.get(JsonKey.USER_ID);
-        UserResource resource = keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
-
-        if (isNotNull(resource)) {
-            try {
-                resource.remove();
-            } catch (Exception ex) {
-                ProjectCommonException projectCommonException = new ProjectCommonException(ex.getMessage(), ex.getMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-                throw projectCommonException;
-            }
-
-        }
-        return JsonKey.SUCCESS;
+    try {
+      // if user sending any basic profile data
+      // then no need to make api call to keycloak to update profile.
+      if (needTobeUpdate) {
+        resource.update(ur);
+      }
+    } catch (Exception ex) {
+      throw new ProjectCommonException(
+          ResponseCode.invalidUsrData.getErrorCode(), ResponseCode.invalidUsrData.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
     }
+    return JsonKey.SUCCESS;
+  }
+
+  /**
+   * Method to remove the user on basis of user id.
+   *
+   * @param request Map
+   * @return boolean true if success otherwise false .
+   */
+  @Override
+  public String removeUser(Map<String, Object> request) {
+    Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
+    String userId = (String) request.get(JsonKey.USER_ID);
+    UserResource resource =
+        keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
+
+    if (isNotNull(resource)) {
+      try {
+        resource.remove();
+      } catch (Exception ex) {
+        throw new ProjectCommonException(ex.getMessage(),
+            ex.getMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
+
+    }
+    return JsonKey.SUCCESS;
+  }
 
   /**
    * Method to deactivate the user on basis of user id.
@@ -216,25 +228,28 @@ public class KeyCloakServiceImpl implements SSOManager {
   @Override
   public String deactivateUser(Map<String, Object> request) {
     try {
-    Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
-    String userId = (String) request.get(JsonKey.USER_ID);
-    UserResource resource = keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
-    UserRepresentation ur = resource.toRepresentation();
-    ur.setEnabled(false);
-    if (isNotNull(resource)) {
-      try {
-        resource.update(ur);
-      } catch (Exception ex) {
-        ProjectLogger.log(ex.getMessage(), ex);
-        ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(), ResponseCode.invalidUsrData.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-        throw projectCommonException;
-      }
+      Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
+      String userId = (String) request.get(JsonKey.USER_ID);
+      UserResource resource =
+          keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
+      UserRepresentation ur = resource.toRepresentation();
+      ur.setEnabled(false);
+      if (isNotNull(resource)) {
+        try {
+          resource.update(ur);
+        } catch (Exception ex) {
+          ProjectLogger.log(ex.getMessage(), ex);
+          throw new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(),
+                  ResponseCode.invalidUsrData.getErrorMessage(),
+                  ResponseCode.CLIENT_ERROR.getResponseCode());
+        }
 
-    }
+      }
     } catch (Exception e) {
       ProjectLogger.log(e.getMessage(), e);
-      ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(), ResponseCode.invalidUsrData.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-      throw projectCommonException; 
+      throw new ProjectCommonException(
+          ResponseCode.invalidUsrData.getErrorCode(), ResponseCode.invalidUsrData.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
     }
     return JsonKey.SUCCESS;
   }
@@ -248,39 +263,43 @@ public class KeyCloakServiceImpl implements SSOManager {
   @Override
   public String activateUser(Map<String, Object> request) {
     try {
-    Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
-    String userId = (String) request.get(JsonKey.USER_ID);
-    UserResource resource = keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
-    UserRepresentation ur = resource.toRepresentation();
-    ur.setEnabled(true);
-    if (isNotNull(resource)) {
-      try {
-        resource.update(ur);
-      } catch (Exception ex) {
-        ProjectLogger.log(ex.getMessage(), ex);
-        ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(), ResponseCode.invalidUsrData.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-        throw projectCommonException;
-      }
+      Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
+      String userId = (String) request.get(JsonKey.USER_ID);
+      UserResource resource =
+          keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
+      UserRepresentation ur = resource.toRepresentation();
+      ur.setEnabled(true);
+      if (isNotNull(resource)) {
+        try {
+          resource.update(ur);
+        } catch (Exception ex) {
+          ProjectLogger.log(ex.getMessage(), ex);
+          throw new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(),
+                  ResponseCode.invalidUsrData.getErrorMessage(),
+                  ResponseCode.CLIENT_ERROR.getResponseCode());
+        }
 
-    }
+      }
     } catch (Exception e) {
       ProjectLogger.log(e.getMessage(), e);
-      ProjectCommonException projectCommonException = new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(), ResponseCode.invalidUsrData.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-      throw projectCommonException; 
+      throw new ProjectCommonException(
+          ResponseCode.invalidUsrData.getErrorCode(), ResponseCode.invalidUsrData.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
     }
     return JsonKey.SUCCESS;
   }
-    
-    /**
-     * This method will send email verification link to registered user email
-     * @param userId key claok id.
-     */
-    private void verifyEmail(String userId) {
-      keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId).sendVerifyEmail();
-    }
+
+  /**
+   * This method will send email verification link to registered user email
+   * 
+   * @param userId key claok id.
+   */
+  private void verifyEmail(String userId) {
+    keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId).sendVerifyEmail();
+  }
 
 
-    @Override
+  @Override
   public boolean isEmailVerified(String userId) {
     UserResource resource =
         keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
@@ -290,13 +309,14 @@ public class KeyCloakServiceImpl implements SSOManager {
     return resource.toRepresentation().isEmailVerified();
 
   }
- 
-    /**
-     * This method will create user object from in coming map data.
-     * it will read only some predefine key from the map.
-     * @param request Map<String, Object>
-     * @return UserRepresentation
-     */
+
+  /**
+   * This method will create user object from in coming map data. it will read only some predefine
+   * key from the map.
+   * 
+   * @param request Map<String, Object>
+   * @return UserRepresentation
+   */
   private UserRepresentation createUserReqObj(Map<String, Object> request) {
     CredentialRepresentation credential = new CredentialRepresentation();
     UserRepresentation user = new UserRepresentation();
@@ -328,11 +348,12 @@ public class KeyCloakServiceImpl implements SSOManager {
     user.setEnabled(true);
     return user;
   }
-  
+
   /**
-   * This method will do the user password update. it will send verify email
-   * link to user if IS_EMAIL_SETUP_COMPLETE value is true , by default it's false.
-   * @param userId String 
+   * This method will do the user password update. it will send verify email link to user if
+   * IS_EMAIL_SETUP_COMPLETE value is true , by default it's false.
+   * 
+   * @param userId String
    * @param password String
    */
   private void doPasswordUpdate(String userId, String password) {
@@ -350,16 +371,16 @@ public class KeyCloakServiceImpl implements SSOManager {
         verifyEmail(userId);
       }
     } catch (Exception ex) {
-      ProjectCommonException projectCommonException = new ProjectCommonException(ex.getMessage(),
+      throw new ProjectCommonException(ex.getMessage(),
           ex.getMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-      throw projectCommonException;
     }
   }
-  
-  
+
+
   /**
-   * This method will call keycloak service to user login. after 
-   * successfull login it will provide access token.
+   * This method will call keycloak service to user login. after successfull login it will provide
+   * access token.
+   * 
    * @param userName String
    * @param password String
    * @return String access token
@@ -367,14 +388,12 @@ public class KeyCloakServiceImpl implements SSOManager {
   public String login(String userName, String password) {
     String accessTokenId = "";
     StringBuilder builder = new StringBuilder();
-    builder.append(
-        "client_id=" + KeyCloakConnectionProvider.CLIENT_ID + "&username="
-            + userName + "&password=" + password + "&grant_type=password");
+    builder.append("client_id=" + KeyCloakConnectionProvider.CLIENT_ID + "&username=" + userName
+        + "&password=" + password + "&grant_type=password");
     Map<String, String> headerMap = new HashMap<>();
     headerMap.put("Content-Type", "application/x-www-form-urlencoded");
     try {
-      String response =
-          HttpUtil.sendPostRequest(URL, builder.toString(), headerMap);
+      String response = HttpUtil.sendPostRequest(URL, builder.toString(), headerMap);
       if (!ProjectUtil.isStringNullOREmpty(response)) {
         try {
           JSONObject object = new JSONObject(response);
@@ -389,33 +408,24 @@ public class KeyCloakServiceImpl implements SSOManager {
     }
     return accessTokenId;
   }
-  
-  public static void main(String[] args) {
-    SSOManager sso = SSOServiceFactory.getInstance();
-    /*Map<String,Object> map = new HashMap<>();
-    map.put(JsonKey.USER_ID, "607476a7-a072-4e18-8d0f-5e8279642cb3");
-    map.put(JsonKey.FIRST_NAME, "Test");
-    sso.updateUser(map);*/
-    sso.verifyToken("eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1WXhXdE4tZzRfMld5MG5PS1ZoaE5hU0gtM2lSSjdXU25ibFlwVVU0TFRrIn0.eyJqdGkiOiJiMGE2N2RlOC1kN2Y5LTRiZTktOWQ0ZC05OThjN2UyNjNkNjQiLCJleHAiOjE1MDcwMzIyMzksIm5iZiI6MCwiaWF0IjoxNTA3MDI4NjM5LCJpc3MiOiJodHRwczovL2Rldi5vcGVuLXN1bmJpcmQub3JnL2F1dGgvcmVhbG1zL3N1bmJpcmQiLCJhdWQiOiJwb3J0YWwiLCJzdWIiOiJiZTdlZmIyMy02YWY5LTRkOTItODJiMy1hNGQ3OGZjZmEyZjYiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJwb3J0YWwiLCJhdXRoX3RpbWUiOjE1MDcwMjY1MTksInNlc3Npb25fc3RhdGUiOiJiZmJhYjZjMS0wMTc0LTQyOGYtODkyMS03MWQ5MTJmY2UxYTgiLCJhY3IiOiIwIiwiYWxsb3dlZC1vcmlnaW5zIjpbXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwibmFtZSI6IkFtaXQgS3VtYXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJjb250ZW50cmV2aWV3ZXIxMSIsImdpdmVuX25hbWUiOiJBbWl0IiwiZmFtaWx5X25hbWUiOiJLdW1hciIsImVtYWlsIjoiY29udGVudHJldmlld2VyMTFAaWxpbWkuaW4ifQ.VDlsVXyBFMH14RtObvfVeOj6qZ00CSvb2TEc7zgHJIMvku6S9w_J5rU51vq48LoX2BIIfojxgqCm4C05hnQwwTzFKCH6Rfg67VWAt4JTcblcEFgehMdFmGZF7KLemh49HJkSxjxNjSC1isX0FoYsZHs4AsMpcba20g8Y6s1G6EQBCDgB04T7zRv9TD68BgFkhqqjZXJP3d5oBJbrmPlBFhOwSQC7EzNhONUYhCoFQpg-EMG8oHIYOAQwyHV6KDf3PxWl64qwv23exmdbUNkODDezWrVPEd9PXpseKcAFT3aBswqfrIEOt_mQVIWE5Qo7fC62bUvuOxxaXp7E3zAl4Q");
-  }
 
   @Override
   public String getLastLoginTime(String userId) {
     String lastLoginTime = null;
     try {
-      UserResource resource = keycloak
-          .realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
+      UserResource resource =
+          keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
       UserRepresentation ur = resource.toRepresentation();
       Map<String, List<String>> map = ur.getAttributes();
-      if(map == null) {
+      if (map == null) {
         map = new HashMap<>();
       }
       List<String> list = map.get(JsonKey.LAST_LOGIN_TIME);
-      if (list != null && list.size() > 0) {
+      if (list != null && !list.isEmpty()) {
         lastLoginTime = list.get(0);
       }
     } catch (Exception e) {
-      ProjectLogger.log(e.getMessage(),e);
+      ProjectLogger.log(e.getMessage(), e);
     }
     return lastLoginTime;
   }
@@ -424,22 +434,22 @@ public class KeyCloakServiceImpl implements SSOManager {
   public boolean addUserLoginTime(String userId) {
     boolean response = true;
     try {
-      UserResource resource = keycloak
-          .realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
+      UserResource resource =
+          keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
       UserRepresentation ur = resource.toRepresentation();
       Map<String, List<String>> map = ur.getAttributes();
       List<String> list = new ArrayList<>();
-      if(map == null) {
+      if (map == null) {
         map = new HashMap<>();
       }
       List<String> currentLogTime = map.get(JsonKey.CURRENT_LOGIN_TIME);
-      if (currentLogTime == null || currentLogTime.size() == 0) {
-        currentLogTime = new ArrayList<String>();
-        currentLogTime.add(System.currentTimeMillis() + "");
+      if (currentLogTime == null || currentLogTime.isEmpty()) {
+        currentLogTime = new ArrayList<>();
+        currentLogTime.add(Long.toString(System.currentTimeMillis()));
       } else {
         list.add(currentLogTime.get(0));
         currentLogTime.clear();
-        currentLogTime.add(0, System.currentTimeMillis() + "");
+        currentLogTime.add(0, Long.toString(System.currentTimeMillis()));
       }
       map.put(JsonKey.CURRENT_LOGIN_TIME, currentLogTime);
       map.put(JsonKey.LAST_LOGIN_TIME, list);
@@ -451,5 +461,5 @@ public class KeyCloakServiceImpl implements SSOManager {
     }
     return response;
   }
-  
- }
+
+}

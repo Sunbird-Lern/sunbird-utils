@@ -153,8 +153,8 @@ public class JsonKey {
   public static final String OFFSET = "offset";
   public static final String LIMIT = "limit";
 
-  public static final String EKSTEP_CONTNET_URL = "content_url";
-  public static final String EKSTEP_CONTNET_SEARCH_URL = "ekstep_content_search_url";
+  public static final String EKSTEP_CONTENT_URL = "content_url";
+  public static final String EKSTEP_CONTENT_SEARCH_URL = "ekstep_content_search_url";
   public static final String SUNBIRD_ACTOR_IP = "sunbird_learnerstate_actor_host";
   public static final String SUNBIRD_ACTOR_PORT = "sunbird_learnerstate_actor_port";
   public static final String SUNBIRD_ACTOR_SERVICE_IP = "sunbird_learner_actor_host";
@@ -503,12 +503,18 @@ public class JsonKey {
   public static final String MAIL_NOTE="mail_note";
   public static final String WELCOME_MESSAGE = "welcomeMessage";
   public static final String ONOARDING_WELCOME_MESSAGE = "onboarding_welcome_message";
+  public static final String SUNBIRD_APP_URL = "sunbird_app_url";
+  public static final String SUNBIRD_WEB_URL = "sunird_web_url";
+  public static final String STATUS_CODE = "statusCode";
+  public static final String REMOTE = "remote";
+  public static final String API_ACTOR_PROVIDER = "api_actor_provider";
+  public static final String BACKGROUND_ACTOR_PROVIDER = "background_actor_provider";
   public static final String CASSANDRA_IN_EMBEDDED_MODE = "cassandraInEmbeddedMode";
   public static final String SUNBIRD_CASSANDRA_MODE = "sunbird_cassandra_mode";
   public static final String EMBEDDED_MODE = "embedded";
   public static final String STANDALONE_MODE = "standalone";
-
   public static final String EMBEDDED_CASSANDRA_HOST = "embedded_cassandra_host";
   public static final String EMBEDDED_CASSANDRA_PORT = "embedded_cassandra_port";
   public static final String EMBEDDED_CQL_FILE_NAME = "embedded_cql_file_name";
+  public static final String RETRY_COUNT = "retryCount";
 }
