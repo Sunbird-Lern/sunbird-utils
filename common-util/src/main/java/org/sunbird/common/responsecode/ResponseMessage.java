@@ -184,6 +184,8 @@ public interface ResponseMessage {
       public static final String CONFIIRM_PASSWORD_MISSING = "Confirm password is mandatory.";
       public static final String CONFIIRM_PASSWORD_EMPTY = "Confirm password can not be empty.";
       public static final String SAME_PASSWORD_ERROR = "new password can't be same as old password.";
+      public static final String ENDORSED_USER_ID_REQUIRED =" Endorsed user id required .";
+      public static final String CAN_NOT_ENDORSE = "Can not endorse since both belong to different orgs .";
     }
     
     public interface Key {
@@ -362,5 +364,7 @@ public interface ResponseMessage {
         public static final String CONFIIRM_PASSWORD_MISSING = "CONFIIRM_PASSWORD_MISSING";
         public static final String CONFIIRM_PASSWORD_EMPTY = "CONFIIRM_PASSWORD_EMPTY";
         public static final String SAME_PASSWORD_ERROR = "SAME_PASSWORD_ERROR";
+        public static final String ENDORSED_USER_ID_REQUIRED="ENDORSED_USER_ID_REQUIRED";
+        public static final String CAN_NOT_ENDORSE = "CAN_NOT_ENDORSE";
     }
 }

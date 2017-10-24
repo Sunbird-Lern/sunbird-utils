@@ -183,6 +183,9 @@ public enum ResponseCode {
     newPasswordRequired(ResponseMessage.Key.CONFIIRM_PASSWORD_MISSING, ResponseMessage.Message.CONFIIRM_PASSWORD_MISSING),
     newPasswordEmpty(ResponseMessage.Key.CONFIIRM_PASSWORD_EMPTY, ResponseMessage.Message.CONFIIRM_PASSWORD_EMPTY),
     samePasswordError(ResponseMessage.Key.SAME_PASSWORD_ERROR, ResponseMessage.Message.SAME_PASSWORD_ERROR),
+    endorsedUserIdRequired(ResponseMessage.Key.ENDORSED_USER_ID_REQUIRED, ResponseMessage.Message.ENDORSED_USER_ID_REQUIRED),
+    canNotEndorse(ResponseMessage.Key.CAN_NOT_ENDORSE, ResponseMessage.Message.CAN_NOT_ENDORSE),
+
     OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404),UNAUTHORIZED(401),REDIRECTION_REQUIRED(302);
 	
 	private int responseCode;
