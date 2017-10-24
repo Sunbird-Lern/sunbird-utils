@@ -33,5 +33,10 @@ public class OnWayhashingTest {
     Assert.assertNotEquals((OneWayHashing.encryptVal("")).length(), 0);
   }
   
+  @Test 
+  public void testCalss () {
+    OneWayHashing oneWayHashing = new OneWayHashing();
+    Assert.assertNotEquals(oneWayHashing, null);
+  }
   
 }

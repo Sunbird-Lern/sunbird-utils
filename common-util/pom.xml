@@ -5,7 +5,7 @@
   <groupId>org.sunbird</groupId>
   <artifactId>common-util</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>common</name>
+  <name>sunbird_common_util</name>
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -148,7 +148,14 @@
       <artifactId>commons-csv</artifactId>
       <version>1.4</version>
     </dependency>
-
+  
+   <dependency>
+         <groupId>org.jvnet.mock-javamail</groupId>
+     <artifactId>mock-javamail</artifactId>
+     <version>1.9</version>
+     <scope>test</scope>
+    </dependency>
+ 
   </dependencies>
     <build>
      <pluginManagement>
