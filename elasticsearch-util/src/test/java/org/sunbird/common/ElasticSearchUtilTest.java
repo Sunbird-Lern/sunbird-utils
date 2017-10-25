@@ -9,6 +9,7 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.sunbird.common.models.util.JsonKey;
@@ -20,6 +21,7 @@ import org.sunbird.helper.ElasticSearchSettings;
 
 import static org.junit.Assert.*;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@Ignore
 public class ElasticSearchUtilTest {
     private static Map<String,Object> map = null;
     private static Map<String,Object> map1 = null;
