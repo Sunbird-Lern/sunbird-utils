@@ -186,6 +186,8 @@ public interface ResponseMessage {
       public static final String SAME_PASSWORD_ERROR = "new password can't be same as old password.";
       public static final String ENDORSED_USER_ID_REQUIRED =" Endorsed user id required .";
       public static final String CAN_NOT_ENDORSE = "Can not endorse since both belong to different orgs .";
+      public static final String INVALID_ORG_TYPE_ID_ERROR = "Please provide valid orgTypeId.";
+      public static final String INVALID_ORG_TYPE_ERROR = "Please provide valid orgType.";
     }
     
     public interface Key {
@@ -366,5 +368,7 @@ public interface ResponseMessage {
         public static final String SAME_PASSWORD_ERROR = "SAME_PASSWORD_ERROR";
         public static final String ENDORSED_USER_ID_REQUIRED="ENDORSED_USER_ID_REQUIRED";
         public static final String CAN_NOT_ENDORSE = "CAN_NOT_ENDORSE";
+        public static final String INVALID_ORG_TYPE_ID_ERROR = "INVALID_ORG_TYPE_ID_ERROR";
+        public static final String INVALID_ORG_TYPE_ERROR = "INVALID_ORG_TYPE_ERROR";
     }
 }
