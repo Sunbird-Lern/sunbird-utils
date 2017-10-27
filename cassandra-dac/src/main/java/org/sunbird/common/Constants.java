@@ -27,6 +27,7 @@ public interface Constants {
 	public static final String SUCCESS="SUCCESS";
 	public static final String RESPONSE="response";
 	public static final String SESSION_IS_NULL="cassandra session is null for this ";
+	public static final String CLUSTER_IS_NULL="cassandra cluster value is null for this ";
 	public static final String QUE_MARK="?";
 	public static final String INSERT_INTO="INSERT INTO ";
 	public static final String OPEN_BRACE_WITH_SPACE=" (";
