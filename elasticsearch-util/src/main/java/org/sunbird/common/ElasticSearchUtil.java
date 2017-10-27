@@ -151,8 +151,8 @@ public class ElasticSearchUtil {
       verifyOrCreateIndexAndType(index, type);
       response = ConnectionManager.getClient().prepareGet(index, type, identifier).get();
     }
-    if (response == null) {
-      return new HashMap<String , Object>();
+    if (response == null || null == response.getSource()) {
+      return new HashMap<>();
     }
     long stopTime = System.currentTimeMillis();
     long elapsedTime = stopTime - startTime;
@@ -286,16 +286,17 @@ public class ElasticSearchUtil {
    * @param type String
    * @param identifier String
    */
-  public static void removeData(String index, String type, String identifier) {
+  public static boolean removeData(String index, String type, String identifier) {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log("ElasticSearchUtil removeData method started at ==" +startTime, LoggerEnum.PERF_LOG);
+    DeleteResponse deleteResponse = null;
     if (!ProjectUtil.isStringNullOREmpty(index) && !ProjectUtil.isStringNullOREmpty(type)
         && !ProjectUtil.isStringNullOREmpty(identifier)) {
       verifyOrCreateIndexAndType(index, type);
       try {
-        DeleteResponse response = ConnectionManager.getClient()
+        deleteResponse = ConnectionManager.getClient()
             .prepareDelete(index, type, identifier).get();
-        ProjectLogger.log("delete info ==" + response.getResult().name() + " " + response.getId());
+        ProjectLogger.log("delete info ==" + deleteResponse.getResult().name() + " " + deleteResponse.getId());
       } catch (Exception e) {
         ProjectLogger.log(e.getMessage(), e);
       }
@@ -305,6 +306,11 @@ public class ElasticSearchUtil {
     long stopTime = System.currentTimeMillis();
     long elapsedTime = stopTime - startTime;
     ProjectLogger.log("ElasticSearchUtil removeData method end at ==" +stopTime+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
+    if(deleteResponse.getResult().name().equalsIgnoreCase("DELETED")){
+      return true;
+    }else {
+     return false;
+    }
   }
 
   /**
@@ -396,7 +402,7 @@ public class ElasticSearchUtil {
     }
     return response;
   }
-
+  
   /**
    * Method to perform the elastic search on the basis of SearchDTO . SearchDTO contains the search
    * criteria like fields, facets, sort by , filters etc. here user can pass single type to search
@@ -411,7 +417,6 @@ public class ElasticSearchUtil {
     ProjectLogger.log("ElasticSearchUtil complexSearch method started at ==" +startTime, LoggerEnum.PERF_LOG);
     SearchRequestBuilder searchRequestBuilder = getSearchBuilder(ConnectionManager.getClient(),
         index, type);
-
     //check mode and set constraints
     Map<String, Float> constraintsMap = getConstraints(searchDTO);
 
