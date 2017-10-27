@@ -317,6 +317,13 @@ public final class RequestValidator {
           ResponseCode.organisationNameRequired.getErrorMessage(),
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
+    if(null!= request.getRequest().get(JsonKey.IS_ROOT_ORG) && (Boolean)request.getRequest().get(JsonKey.IS_ROOT_ORG)){
+      if(ProjectUtil.isStringNullOREmpty((String)request.getRequest().get(JsonKey.CHANNEL))){
+        throw new ProjectCommonException(ResponseCode.channelIdRequiredForRootOrg.getErrorCode(),
+            ResponseCode.channelIdRequiredForRootOrg.getErrorMessage(),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
+    }
   }
 
   public static void validateOrg(Request request) {
@@ -346,6 +353,13 @@ public final class RequestValidator {
       throw new ProjectCommonException(ResponseCode.invalidRequestData.getErrorCode(),
           ResponseCode.invalidRequestData.getErrorMessage(),
           ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    if(null!= request.getRequest().get(JsonKey.IS_ROOT_ORG) && (Boolean)request.getRequest().get(JsonKey.IS_ROOT_ORG)){
+      if(ProjectUtil.isStringNullOREmpty((String)request.getRequest().get(JsonKey.CHANNEL))){
+        throw new ProjectCommonException(ResponseCode.channelIdRequiredForRootOrg.getErrorCode(),
+            ResponseCode.channelIdRequiredForRootOrg.getErrorMessage(),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
     }
   }
 
