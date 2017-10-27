@@ -246,6 +246,7 @@ public class ProjectUtil {
     templateMap.put("publishContent", "/publishContentMailTemplate.vm");
     templateMap.put("rejectContent", "/rejectContentMailTemplate.vm");
     templateMap.put("welcome", "/welcomeMailTemplate.vm");
+    templateMap.put("unlistedPublishContent" , "/unlistedPublishContentMailTemplate.vm");
   }
 
   /**
