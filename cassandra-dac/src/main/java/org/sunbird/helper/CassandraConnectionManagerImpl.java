@@ -1,7 +1,6 @@
 package org.sunbird.helper;
 
 import com.datastax.driver.core.AtomicMonotonicTimestampGenerator;
-import com.datastax.driver.core.AuthProvider;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Host;
 import com.datastax.driver.core.HostDistance;
@@ -10,10 +9,14 @@ import com.datastax.driver.core.PoolingOptions;
 import com.datastax.driver.core.ProtocolVersion;
 import com.datastax.driver.core.QueryLogger;
 import com.datastax.driver.core.Session;
+import com.datastax.driver.core.TableMetadata;
 import com.datastax.driver.core.policies.DefaultRetryPolicy;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.apache.thrift.transport.TTransportException;
 import org.cassandraunit.CQLDataLoader;
 import org.cassandraunit.dataset.cql.ClassPathCQLDataSet;
@@ -83,7 +86,6 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
     Session cassandraSession = null;
     boolean connection = false;
     Cluster cluster = null;
-    //Session session = null;
     try {
       if (null == cassandraSessionMap.get(keyspace)) {
         PropertiesCache cache = PropertiesCache.getInstance();
@@ -238,6 +240,29 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
     }
     return cassandraSessionMap.get(keyspaceName);
   }
+  
+  @Override
+  public Cluster getCluster(String keyspaceName) {
+    if (null == cassandraclusterMap.get(keyspaceName)) {
+      throw new ProjectCommonException(
+          ResponseCode.internalError.getErrorCode(), Constants.CLUSTER_IS_NULL + keyspaceName,
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    return cassandraclusterMap.get(keyspaceName);
+  }
+  
+  @Override
+  public List<String> getTableList(String keyspacename) {
+    Collection<TableMetadata> tables = cassandraclusterMap.get(keyspacename).getMetadata()
+        .getKeyspace(keyspacename)
+        .getTables(); 
+
+    // to convert to list of the names
+    return tables.stream()
+            .map(tm -> tm.getName())
+            .collect(Collectors.toList());
+  }
+  
 
   /**
    * Register the hook for resource clean up.
@@ -265,4 +290,5 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
       ProjectLogger.log("completed resource cleanup Cassandra.");
     }
   }
+
 }
