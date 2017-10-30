@@ -185,7 +185,9 @@ public enum ResponseCode {
     samePasswordError(ResponseMessage.Key.SAME_PASSWORD_ERROR, ResponseMessage.Message.SAME_PASSWORD_ERROR),
     endorsedUserIdRequired(ResponseMessage.Key.ENDORSED_USER_ID_REQUIRED, ResponseMessage.Message.ENDORSED_USER_ID_REQUIRED),
     canNotEndorse(ResponseMessage.Key.CAN_NOT_ENDORSE, ResponseMessage.Message.CAN_NOT_ENDORSE),
-
+    invalidOrgTypeId(ResponseMessage.Key.INVALID_ORG_TYPE_ID_ERROR, ResponseMessage.Message.INVALID_ORG_TYPE_ID_ERROR),
+    invalidOrgType(ResponseMessage.Key.INVALID_ORG_TYPE_ERROR, ResponseMessage.Message.INVALID_ORG_TYPE_ERROR),
+    tableOrDocNameError(ResponseMessage.Key.TABLE_OR_DOC_NAME_ERROR, ResponseMessage.Message.TABLE_OR_DOC_NAME_ERROR),
     OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404),UNAUTHORIZED(401),REDIRECTION_REQUIRED(302);
 	
 	private int responseCode;

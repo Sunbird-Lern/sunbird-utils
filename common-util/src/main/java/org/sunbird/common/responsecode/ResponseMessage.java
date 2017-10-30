@@ -39,17 +39,17 @@ public interface ResponseMessage {
         public static final String PASSWORD_MISSING = "Password is mandatory.";
         public static final String PASSWORD_MIN_LENGHT = "Password should have at least 8 character.";
         public static final String PASSWORD_MAX_LENGHT = "Password should not be more than 12 character.";
-        public static final String ORGANISATION_ID_MISSING = "Organisation id is mandatory.";
-        public static final String REQUIRED_DATA_ORG_MISSING = "Organisation Id or Provider with External Id values are required for the operation";
-        public static final String ORGANISATION_NAME_MISSING = "organisation name is mandatory.";
-        public static final String CHANNEL_SHOULD_BE_UNIQUE = "Channel value already used by another organisation. Provide different value for channel";
-        public static final String INVALID_ORG_DATA = "Given Organisation Data doesn't exist in our records. Please provide a valid one";
+        public static final String ORGANISATION_ID_MISSING = "Organization id is mandatory.";
+        public static final String REQUIRED_DATA_ORG_MISSING = "Organization Id or Provider with External Id values are required for the operation";
+        public static final String ORGANISATION_NAME_MISSING = "organization name is mandatory.";
+        public static final String CHANNEL_SHOULD_BE_UNIQUE = "Channel value already used by another organization. Provide different value for channel";
+        public static final String INVALID_ORG_DATA = "Given Organization Data doesn't exist in our records. Please provide a valid one";
         public static final String INVALID_USR_DATA = "Given User Data doesn't exist in our records. Please provide a valid one";
         public static final String USR_DATA_VALIDATION_ERROR = "Please provide valid userId or userName";
         public static final String INVALID_ROOT_ORGANIZATION = "Root organization id is invalid";
         public static final String INVALID_PARENT_ORGANIZATION_ID = "Parent organization id is invalid";
         public static final String CYCLIC_VALIDATION_FAILURE = "The relation cannot be created as it is cyclic";
-        public static final String CHANNEL_MISSING = "Channel is mandatory for root organisation";
+        public static final String CHANNEL_MISSING = "Channel is mandatory for root organization";
         public static final String ENROLLMENT_START_DATE_MISSING = "Enrollment start date is mandatory.";
         public static final String COURSE_DURATION_MISSING = "Course duration is mandatory.";
         public static final String LOGIN_TYPE_MISSING = "Login type is required.";
@@ -96,7 +96,7 @@ public interface ResponseMessage {
 		public static final String INVALID_DATA = "Incorrect data.";
 		public static final String INVALID_COURSE_ID = "Course doesnot exist. Please provide a valid course identifier";
 		public static final String PHONE_NO_REQUIRED_ERROR = "Phone number is required.";
-		public static final String ORG_ID_MISSING ="Organisation Id required.";
+		public static final String ORG_ID_MISSING ="Organization Id required.";
 		public static final String ACTOR_CONNECTION_ERROR = "Service is not able to connect with actor.";
 		public static final String USER_ALREADY_EXIST = "user already exist.";
 		public static final String PAGE_ALREADY_EXIST = "page already exist with this Page Name and Org Code.";
@@ -113,7 +113,7 @@ public interface ResponseMessage {
 		public static final String NAME_OF_INSTITUTION_ERROR = "Please provide name of Institution.";
 		public static final String EDUCATION_DEGREE_ERROR = "Education degree is required.";
 		public static final String JOB_NAME_ERROR = "Job Name is required.";
-		public static final String NAME_OF_ORGANISATION_ERROR = "Organisation Name is required.";
+		public static final String NAME_OF_ORGANISATION_ERROR = "Organization Name is required.";
 		public static final String ROLES_MISSING = "user role is required.";
         public static final String INVALID_DATE_FORMAT = "Invalid Date format . Date format should be : yyyy-MM-dd hh:mm:ss:SSSZ";
         public static final String SRC_EXTERNAL_ID_ALREADY_EXIST = "PROVIDER WITH EXTERNAL ID ALREADY EXIST .";
@@ -125,7 +125,7 @@ public interface ResponseMessage {
         public static final String USER_ACCOUNT_BLOCKED = "User account has been blocked .";
         public static final String EMAIL_VERIFY_ERROR = "Please provide a verified email in order to create user.";
         public static final String PHONE_VERIFY_ERROR = "Please provide a verified phone number in order to create user.";
-        public static final String BULK_USER_UPLOAD_ERROR = "Please provide either organisation Id or external Id & provider value.";
+        public static final String BULK_USER_UPLOAD_ERROR = "Please provide either organization Id or external Id & provider value.";
         public static final String DATA_SIZE_EXCEEDED = "Maximum upload data size should be {0}";
         public static final String INVALID_COLUMN_NAME = "Invalid column name.";
         public  static final String USER_ALREADY_ACTIVE = "User is already active";
@@ -142,12 +142,12 @@ public interface ResponseMessage {
       public static final String USER_NOT_BELONGS_TO_ANY_ORG ="User does not belongs to any org .";
       public static final String INVALID_OBJECT_TYPE ="Invalid Object Type.";
       public static final String INVALID_PROGRESS_STATUS = "Progress status value should be NOT_STARTED(0), STARTED(1), COMPLETED(2).";
-      public static final String COURSE_CREATED_FOR_NULL = "Batch does not belong to any organisation .";
+      public static final String COURSE_CREATED_FOR_NULL = "Batch does not belong to any organization .";
       public static final String COURSE_BATCH_START_PASSED_DATE_INVALID = "This Batch already started.";
       public static final String UNABLE_TO_CONNECT_TO_EKSTEP = "Unable to connect to Ekstep Server";
       public static final String INVALID_JSON = "Unable to process object to JSON/ JSON to Object";
       public static final String EMPTY_CSV_FILE = "CSV file is Empty.";
-      public static final String INVALID_ROOT_ORG_DATA = "Root org doesn't exist for this Organisation Id and channel {0}";
+      public static final String INVALID_ROOT_ORG_DATA = "Root org doesn't exist for this Organization Id and channel {0}";
         public static final String NO_DATA = "No sufficient data for fetching the results";
       public static final String INVALID_CHANNEL = "Channel value is invalid.";
       public static final String INVALID_PROCESS_ID = "Invalid Process Id.";
@@ -160,7 +160,7 @@ public interface ResponseMessage {
       public static final String RECEIVER_ID_ERROR = "Receiver id is mandatory.";
       public static final String INVALID_RECEIVER_ID = "Receiver id is invalid.";
       public static final String INVALID_BADGE_ID = "Invalid badge type id.";
-      public static final String USER_REG_ORG_ERROR = "this user belongs to some other organisation.";
+      public static final String USER_REG_ORG_ERROR = "this user belongs to some other organization.";
       public static final String INVALID_ROLE = "Invalid role value provided in request.";
       public static final String INVALID_SALT = "Please provide salt value.";
       public static final String ORG_TYPE_MANDATORY = "Org Type name is mandatory.";
@@ -186,6 +186,9 @@ public interface ResponseMessage {
       public static final String SAME_PASSWORD_ERROR = "new password can't be same as old password.";
       public static final String ENDORSED_USER_ID_REQUIRED =" Endorsed user id required .";
       public static final String CAN_NOT_ENDORSE = "Can not endorse since both belong to different orgs .";
+      public static final String INVALID_ORG_TYPE_ID_ERROR = "Please provide valid orgTypeId.";
+      public static final String INVALID_ORG_TYPE_ERROR = "Please provide valid orgType.";
+      public static final String TABLE_OR_DOC_NAME_ERROR = "Please provide valid table or documentName.";
     }
     
     public interface Key {
@@ -220,11 +223,11 @@ public interface ResponseMessage {
         public static final String PASSWORD_MISSING = "PASSWORD_REQUIRED_ERROR";
         public static final String PASSWORD_MIN_LENGHT = "PASSWORD_MIN_LENGHT_ERROR";
         public static final String PASSWORD_MAX_LENGHT = "PASSWORD_MAX_LENGHT_ERROR";
-        public static final String ORGANISATION_ID_MISSING = "ORGANISATION_ID_MISSING";
+        public static final String ORGANISATION_ID_MISSING = "ORGANIZATION_ID_MISSING";
         public static final String REQUIRED_DATA_ORG_MISSING = "REQUIRED_DATA_MISSING";
-        public static final String ORGANISATION_NAME_MISSING = "ORGANISATION_NAME_MISSING";
+        public static final String ORGANISATION_NAME_MISSING = "ORGANIZATION_NAME_MISSING";
         public static final String CHANNEL_SHOULD_BE_UNIQUE = "CHANNEL_SHOULD_BE_UNIQUE";
-        public static final String INVALID_ORG_DATA = "INVALID_ORGANISATION_DATA";
+        public static final String INVALID_ORG_DATA = "INVALID_ORGANIZATION_DATA";
         public static final String INVALID_USR_DATA = "INVALID_USER_DATA";
         public static final String USR_DATA_VALIDATION_ERROR = "USER_DATA_VALIDATION_ERROR";
         public static final String INVALID_ROOT_ORGANIZATION = "INVALID ROOT ORGANIZATION";
@@ -294,7 +297,7 @@ public interface ResponseMessage {
 		public static final String NAME_OF_INSTITUTION_ERROR = "NAME_OF_INSTITUTION_ERROR";
 		public static final String EDUCATION_DEGREE_ERROR = "EDUCATION_DEGREE_ERROR";
 		public static final String JOB_NAME_ERROR = "JOB_NAME_ERROR";
-		public static final String NAME_OF_ORGANISATION_ERROR = "NAME_OF_ORGANISATION_ERROR";
+		public static final String NAME_OF_ORGANISATION_ERROR = "NAME_OF_ORGANIZATION_ERROR";
 		public static final String ROLES_MISSING = "ROLES_REQUIRED_ERROR";
 		public static final String INVALID_DATE_FORMAT = "INVALID_DATE_FORMAT";
 		public static final String SRC_EXTERNAL_ID_ALREADY_EXIST = "SRC_EXTERNAL_ID_ALREADY_EXIST";
@@ -366,5 +369,8 @@ public interface ResponseMessage {
         public static final String SAME_PASSWORD_ERROR = "SAME_PASSWORD_ERROR";
         public static final String ENDORSED_USER_ID_REQUIRED="ENDORSED_USER_ID_REQUIRED";
         public static final String CAN_NOT_ENDORSE = "CAN_NOT_ENDORSE";
+        public static final String INVALID_ORG_TYPE_ID_ERROR = "INVALID_ORG_TYPE_ID_ERROR";
+        public static final String INVALID_ORG_TYPE_ERROR = "INVALID_ORG_TYPE_ERROR";
+        public static final String TABLE_OR_DOC_NAME_ERROR = "TABLE_OR_DOC_NAME_ERROR";
     }
 }
