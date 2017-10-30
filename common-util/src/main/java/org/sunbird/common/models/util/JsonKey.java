@@ -527,6 +527,8 @@ public class JsonKey {
   public static final String ENDORSEMENT_COUNT = "endorsementcount";
   public static final String SKILLS = "skills";
   public static final String SKILLS_LIST_DB = "skillsListDb";
+  public static final String PRIVATE = "private";
+  public static final String PROFILE_VISIBILITY = "profilevisibility";
   public static final String ORG_TYPE_ID = "orgTypeId";
   public static final String SUNBIRD = "sunbird";
   public static final String SUNBIRD_PLUGIN = "sunbirdplugin";
