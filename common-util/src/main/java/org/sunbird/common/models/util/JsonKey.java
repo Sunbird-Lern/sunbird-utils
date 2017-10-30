@@ -527,4 +527,6 @@ public class JsonKey {
   public static final String ENDORSEMENT_COUNT = "endorsementcount";
   public static final String SKILLS = "skills";
   public static final String SKILLS_LIST_DB = "skillsListDb";
+  public static final String PRIVATE = "private";
+  public static final String PROFILE_VISIBILITY = "profilevisibility";
 }

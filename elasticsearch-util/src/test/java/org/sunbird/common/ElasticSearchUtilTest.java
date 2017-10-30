@@ -101,7 +101,10 @@ public class ElasticSearchUtilTest {
         sortMap.put("courseType" , "ASC");
         searchDTO.setSortBy(sortMap);
         searchDTO.setExcludedFields(excludefields);
-
+        searchDTO.setLimit(20);
+        searchDTO.setOffset(0);
+        Map<String,Object> additionalPro = new HashMap<String, Object>();
+        searchDTO.addAdditionalProperty("test", additionalPro);
         Map<String , Object> additionalProperties = new HashMap<String , Object>();
 
         List<String> existsList = new ArrayList<String>();
@@ -347,6 +350,34 @@ public class ElasticSearchUtilTest {
   public void upsertDataTest () {
     Map<String,Object> data = new HashMap<String, Object>();
     data.put("test", "test");
-    ElasticSearchUtil.upsertData(indexName, typeName, "test-12349", data);
+    boolean response = ElasticSearchUtil.upsertData(indexName, typeName, "test-12349", data);
+    assertEquals(true,response);
   }
+  
+  @Test
+  public void bulkInsertTest () {
+    Map<String,Object> data = new HashMap<String, Object>();
+    data.put("test1", "test");
+    data.put("test2", "manzarul");
+    List<Map<String,Object>> listOfMap = new ArrayList<Map<String,Object>>();
+    listOfMap.add(data);
+    boolean response = ElasticSearchUtil.bulkInsertData(indexName, typeName, listOfMap);
+   assertEquals(true,response);
+  }
+  
+  @Test
+  public void search () {
+    Map<String,Object> data = new HashMap<String, Object>();
+    data.put("test1", "test");
+    try {
+    Map<String,Object> map = ElasticSearchUtil.searchData(indexName, typeName, data);
+    } catch (Exception e) {
+      
+    }
+  }
+  @Test
+  public void mappingAddOrUpdateTest () {
+    ElasticSearchUtil.addOrUpdateMapping(indexName, typeName, ElasticSearchMapping.createMapping());
+  }
+  
 }
