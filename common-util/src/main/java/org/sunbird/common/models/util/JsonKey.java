@@ -530,4 +530,8 @@ public class JsonKey {
   public static final String ORG_TYPE_ID = "orgTypeId";
   public static final String SUNBIRD = "sunbird";
   public static final String SUNBIRD_PLUGIN = "sunbirdplugin";
+  public static final String TENANT_PREFERENCE = "tenantPreference";
+  public static final String TENANT_PREFERENCE_DB = "tenantPreferenceDb";
+  public static final String TERM_AND_CONDITION_STATUS = "tcStatus";
+  public static final String TC_UPDATED_DATE = "tcUpdatedAt";
 }
