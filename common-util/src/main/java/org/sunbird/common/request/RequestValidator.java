@@ -40,8 +40,7 @@ public final class RequestValidator {
   public static void validateEnrollCourse(Request courseRequestDto) {
     if (courseRequestDto.getRequest().get(JsonKey.COURSE_ID) == null) {
       throw new ProjectCommonException(ResponseCode.courseIdRequiredError.getErrorCode(),
-          ResponseCode.courseIdRequiredError.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.courseIdRequiredError.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -56,8 +55,7 @@ public final class RequestValidator {
     if (((List<Map<String, Object>>) (contentRequestDto.getRequest().get(JsonKey.CONTENTS)))
         .size() == 0) {
       throw new ProjectCommonException(ResponseCode.contentIdRequired.getErrorCode(),
-          ResponseCode.contentIdRequiredError.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.contentIdRequiredError.getErrorMessage(), ERROR_CODE);
     } else {
       List<Map<String, Object>> list =
           (List<Map<String, Object>>) (contentRequestDto.getRequest().get(JsonKey.CONTENTS));
@@ -66,19 +64,16 @@ public final class RequestValidator {
 
           if (null == map.get(JsonKey.CONTENT_ID)) {
             throw new ProjectCommonException(ResponseCode.contentIdRequired.getErrorCode(),
-                ResponseCode.contentIdRequiredError.getErrorMessage(),
-                ERROR_CODE);
+                ResponseCode.contentIdRequiredError.getErrorMessage(), ERROR_CODE);
           }
           if (ProjectUtil.isNull(map.get(JsonKey.STATUS))) {
             throw new ProjectCommonException(ResponseCode.contentStatusRequired.getErrorCode(),
-                ResponseCode.contentStatusRequired.getErrorMessage(),
-                ERROR_CODE);
+                ResponseCode.contentStatusRequired.getErrorMessage(), ERROR_CODE);
           }
 
         } else {
           throw new ProjectCommonException(ResponseCode.contentIdRequired.getErrorCode(),
-              ResponseCode.contentIdRequiredError.getErrorMessage(),
-              ERROR_CODE);
+              ResponseCode.contentIdRequiredError.getErrorMessage(), ERROR_CODE);
         }
       }
     }
@@ -127,13 +122,11 @@ public final class RequestValidator {
           reqMap = reqList.get(i);
           if (ProjectUtil.isStringNullOREmpty((String) reqMap.get(JsonKey.NAME))) {
             throw new ProjectCommonException(ResponseCode.educationNameError.getErrorCode(),
-                ResponseCode.educationNameError.getErrorMessage(),
-                ERROR_CODE);
+                ResponseCode.educationNameError.getErrorMessage(), ERROR_CODE);
           }
           if (ProjectUtil.isStringNullOREmpty((String) reqMap.get(JsonKey.DEGREE))) {
             throw new ProjectCommonException(ResponseCode.educationDegreeError.getErrorCode(),
-                ResponseCode.educationDegreeError.getErrorMessage(),
-                ERROR_CODE);
+                ResponseCode.educationDegreeError.getErrorMessage(), ERROR_CODE);
           }
           if (reqMap.containsKey(JsonKey.ADDRESS) && null != reqMap.get(JsonKey.ADDRESS)) {
             addrReqMap = (Map<String, Object>) reqMap.get(JsonKey.ADDRESS);
@@ -157,13 +150,11 @@ public final class RequestValidator {
           reqMap = reqList.get(i);
           if (ProjectUtil.isStringNullOREmpty((String) reqMap.get(JsonKey.JOB_NAME))) {
             throw new ProjectCommonException(ResponseCode.jobNameError.getErrorCode(),
-                ResponseCode.jobNameError.getErrorMessage(),
-                ERROR_CODE);
+                ResponseCode.jobNameError.getErrorMessage(), ERROR_CODE);
           }
           if (ProjectUtil.isStringNullOREmpty((String) reqMap.get(JsonKey.ORG_NAME))) {
             throw new ProjectCommonException(ResponseCode.organisationNameError.getErrorCode(),
-                ResponseCode.organisationNameError.getErrorMessage(),
-                ERROR_CODE);
+                ResponseCode.organisationNameError.getErrorMessage(), ERROR_CODE);
           }
           if (reqMap.containsKey(JsonKey.ADDRESS) && null != reqMap.get(JsonKey.ADDRESS)) {
             addrReqMap = (Map<String, Object>) reqMap.get(JsonKey.ADDRESS);
@@ -180,16 +171,22 @@ public final class RequestValidator {
       String phone = (String) userRequest.getRequest().get(JsonKey.PHONE);
       validatePhoneNo(phone);
     }
-    // Email is always mandatory for both External as well as our internal portal
-    if (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
-      throw new ProjectCommonException(ResponseCode.emailRequired.getErrorCode(),
-          ResponseCode.emailRequired.getErrorMessage(),
-          ERROR_CODE);
+
+    if (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.EMAIL))
+        && ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PHONE))) {
+      throw new ProjectCommonException(ResponseCode.emailorPhoneRequired.getErrorCode(),
+          ResponseCode.emailorPhoneRequired.getErrorMessage(), ERROR_CODE);
     }
-    if (!ProjectUtil.isEmailvalid((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
+
+    // Email is always mandatory for both External as well as our internal portal
+    /*if (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
+      throw new ProjectCommonException(ResponseCode.emailRequired.getErrorCode(),
+          ResponseCode.emailRequired.getErrorMessage(), ERROR_CODE);
+    }*/
+    if (!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.EMAIL))
+        && !ProjectUtil.isEmailvalid((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
       throw new ProjectCommonException(ResponseCode.emailFormatError.getErrorCode(),
-          ResponseCode.emailFormatError.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.emailFormatError.getErrorMessage(), ERROR_CODE);
     }
     if (!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PROVIDER))) {
       if (!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PHONE))) {
@@ -197,25 +194,21 @@ public final class RequestValidator {
           if (userRequest.getRequest().get(JsonKey.PHONE_VERIFIED) instanceof Boolean) {
             if (!((boolean) userRequest.getRequest().get(JsonKey.PHONE_VERIFIED))) {
               throw new ProjectCommonException(ResponseCode.phoneVerifiedError.getErrorCode(),
-                  ResponseCode.phoneVerifiedError.getErrorMessage(),
-                  ERROR_CODE);
+                  ResponseCode.phoneVerifiedError.getErrorMessage(), ERROR_CODE);
             }
           } else {
             throw new ProjectCommonException(ResponseCode.phoneVerifiedError.getErrorCode(),
-                ResponseCode.phoneVerifiedError.getErrorMessage(),
-                ERROR_CODE);
+                ResponseCode.phoneVerifiedError.getErrorMessage(), ERROR_CODE);
           }
         } else {
           throw new ProjectCommonException(ResponseCode.phoneVerifiedError.getErrorCode(),
-              ResponseCode.phoneVerifiedError.getErrorMessage(),
-              ERROR_CODE);
+              ResponseCode.phoneVerifiedError.getErrorMessage(), ERROR_CODE);
         }
       }
       if (null == userRequest.getRequest().get(JsonKey.EMAIL_VERIFIED)
           || !((boolean) userRequest.getRequest().get(JsonKey.EMAIL_VERIFIED))) {
         throw new ProjectCommonException(ResponseCode.emailVerifiedError.getErrorCode(),
-            ResponseCode.emailVerifiedError.getErrorMessage(),
-            ERROR_CODE);
+            ResponseCode.emailVerifiedError.getErrorMessage(), ERROR_CODE);
       }
     }
   }
@@ -229,8 +222,7 @@ public final class RequestValidator {
     } catch (Exception ex) {
       ProjectLogger.log(phone + "this phone no. is not a valid one.");
       throw new ProjectCommonException(ResponseCode.phoneNoFormatError.getErrorCode(),
-          ResponseCode.phoneNoFormatError.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.phoneNoFormatError.getErrorMessage(), ERROR_CODE);
     }
     return true;
   }
@@ -245,14 +237,12 @@ public final class RequestValidator {
 
         if (!ProjectUtil.isEmailvalid((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
           throw new ProjectCommonException(ResponseCode.emailFormatError.getErrorCode(),
-              ResponseCode.emailFormatError.getErrorMessage(),
-              ERROR_CODE);
+              ResponseCode.emailFormatError.getErrorMessage(), ERROR_CODE);
         }
         if (null == userRequest.getRequest().get(JsonKey.EMAIL_VERIFIED)
             || !((boolean) userRequest.getRequest().get(JsonKey.EMAIL_VERIFIED))) {
           throw new ProjectCommonException(ResponseCode.emailVerifiedError.getErrorCode(),
-              ResponseCode.emailVerifiedError.getErrorMessage(),
-              ERROR_CODE);
+              ResponseCode.emailVerifiedError.getErrorMessage(), ERROR_CODE);
         }
       }
 
@@ -261,18 +251,15 @@ public final class RequestValidator {
           if (userRequest.getRequest().get(JsonKey.PHONE_VERIFIED) instanceof Boolean) {
             if (!((boolean) userRequest.getRequest().get(JsonKey.PHONE_VERIFIED))) {
               throw new ProjectCommonException(ResponseCode.phoneVerifiedError.getErrorCode(),
-                  ResponseCode.phoneVerifiedError.getErrorMessage(),
-                  ERROR_CODE);
+                  ResponseCode.phoneVerifiedError.getErrorMessage(), ERROR_CODE);
             }
           } else {
             throw new ProjectCommonException(ResponseCode.phoneVerifiedError.getErrorCode(),
-                ResponseCode.phoneVerifiedError.getErrorMessage(),
-                ERROR_CODE);
+                ResponseCode.phoneVerifiedError.getErrorMessage(), ERROR_CODE);
           }
         } else {
           throw new ProjectCommonException(ResponseCode.phoneVerifiedError.getErrorCode(),
-              ResponseCode.phoneVerifiedError.getErrorMessage(),
-              ERROR_CODE);
+              ResponseCode.phoneVerifiedError.getErrorMessage(), ERROR_CODE);
         }
       }
     }
@@ -287,15 +274,13 @@ public final class RequestValidator {
 
     if (userRequest.getRequest().get(JsonKey.USERNAME) == null) {
       throw new ProjectCommonException(ResponseCode.userNameRequired.getErrorCode(),
-          ResponseCode.userNameRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.userNameRequired.getErrorMessage(), ERROR_CODE);
     }
 
     if (userRequest.getRequest().get(JsonKey.FIRST_NAME) == null || (ProjectUtil
         .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.FIRST_NAME)))) {
       throw new ProjectCommonException(ResponseCode.firstNameRequired.getErrorCode(),
-          ResponseCode.firstNameRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.firstNameRequired.getErrorMessage(), ERROR_CODE);
     }
     if (userRequest.getRequest().containsKey(JsonKey.ROLES)
         && null != userRequest.getRequest().get(JsonKey.ROLES)
@@ -317,11 +302,11 @@ public final class RequestValidator {
   public static void validateCreateOrg(Request request) {
     if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.ORG_NAME))) {
       throw new ProjectCommonException(ResponseCode.organisationNameRequired.getErrorCode(),
-          ResponseCode.organisationNameRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.organisationNameRequired.getErrorMessage(), ERROR_CODE);
     }
-    if(null!= request.getRequest().get(JsonKey.IS_ROOT_ORG) && (Boolean)request.getRequest().get(JsonKey.IS_ROOT_ORG)){
-      if(ProjectUtil.isStringNullOREmpty((String)request.getRequest().get(JsonKey.CHANNEL))){
+    if (null != request.getRequest().get(JsonKey.IS_ROOT_ORG)
+        && (Boolean) request.getRequest().get(JsonKey.IS_ROOT_ORG)) {
+      if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.CHANNEL))) {
         throw new ProjectCommonException(ResponseCode.channelIdRequiredForRootOrg.getErrorCode(),
             ResponseCode.channelIdRequiredForRootOrg.getErrorMessage(),
             ResponseCode.CLIENT_ERROR.getResponseCode());
@@ -337,8 +322,7 @@ public final class RequestValidator {
               .isStringNullOREmpty((String) request.getRequest().get(JsonKey.EXTERNAL_ID)))) {
         throw new ProjectCommonException(
             ResponseCode.sourceAndExternalIdValidationError.getErrorCode(),
-            ResponseCode.sourceAndExternalIdValidationError.getErrorMessage(),
-            ERROR_CODE);
+            ResponseCode.sourceAndExternalIdValidationError.getErrorMessage(), ERROR_CODE);
       }
     }
   }
@@ -348,17 +332,16 @@ public final class RequestValidator {
     if (request.getRequest().containsKey(JsonKey.ROOT_ORG_ID)) {
       if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.ROOT_ORG_ID))) {
         throw new ProjectCommonException(ResponseCode.invalidRootOrganisationId.getErrorCode(),
-            ResponseCode.invalidRootOrganisationId.getErrorMessage(),
-            ERROR_CODE);
+            ResponseCode.invalidRootOrganisationId.getErrorMessage(), ERROR_CODE);
       }
     }
     if (request.getRequest().get(JsonKey.STATUS) != null) {
       throw new ProjectCommonException(ResponseCode.invalidRequestData.getErrorCode(),
-          ResponseCode.invalidRequestData.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.invalidRequestData.getErrorMessage(), ERROR_CODE);
     }
-    if(null!= request.getRequest().get(JsonKey.IS_ROOT_ORG) && (Boolean)request.getRequest().get(JsonKey.IS_ROOT_ORG)){
-      if(ProjectUtil.isStringNullOREmpty((String)request.getRequest().get(JsonKey.CHANNEL))){
+    if (null != request.getRequest().get(JsonKey.IS_ROOT_ORG)
+        && (Boolean) request.getRequest().get(JsonKey.IS_ROOT_ORG)) {
+      if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.CHANNEL))) {
         throw new ProjectCommonException(ResponseCode.channelIdRequiredForRootOrg.getErrorCode(),
             ResponseCode.channelIdRequiredForRootOrg.getErrorMessage(),
             ResponseCode.CLIENT_ERROR.getResponseCode());
@@ -370,8 +353,7 @@ public final class RequestValidator {
     validateOrg(request);
     if (!request.getRequest().containsKey(JsonKey.STATUS)) {
       throw new ProjectCommonException(ResponseCode.invalidRequestData.getErrorCode(),
-          ResponseCode.invalidRequestData.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.invalidRequestData.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -388,16 +370,14 @@ public final class RequestValidator {
     if (userRequest.getRequest().containsKey(JsonKey.FIRST_NAME) && (ProjectUtil
         .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.FIRST_NAME)))) {
       throw new ProjectCommonException(ResponseCode.firstNameRequired.getErrorCode(),
-          ResponseCode.firstNameRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.firstNameRequired.getErrorMessage(), ERROR_CODE);
     }
 
     if (userRequest.getRequest().containsKey(JsonKey.EMAIL)
         && userRequest.getRequest().get(JsonKey.EMAIL) != null) {
       if (!ProjectUtil.isEmailvalid((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
         throw new ProjectCommonException(ResponseCode.emailFormatError.getErrorCode(),
-            ResponseCode.emailFormatError.getErrorMessage(),
-            ERROR_CODE);
+            ResponseCode.emailFormatError.getErrorMessage(), ERROR_CODE);
       }
     }
 
@@ -412,8 +392,7 @@ public final class RequestValidator {
       if (userRequest.getRequest().get(JsonKey.ROLES) instanceof List
           && ((List) userRequest.getRequest().get(JsonKey.ROLES)).isEmpty()) {
         throw new ProjectCommonException(ResponseCode.rolesRequired.getErrorCode(),
-            ResponseCode.rolesRequired.getErrorMessage(),
-            ERROR_CODE);
+            ResponseCode.rolesRequired.getErrorMessage(), ERROR_CODE);
       }
     }
     if (userRequest.getRequest().containsKey(JsonKey.LANGUAGE)
@@ -427,27 +406,23 @@ public final class RequestValidator {
       if (userRequest.getRequest().get(JsonKey.LANGUAGE) instanceof List
           && ((List) userRequest.getRequest().get(JsonKey.LANGUAGE)).isEmpty()) {
         throw new ProjectCommonException(ResponseCode.languageRequired.getErrorCode(),
-            ResponseCode.languageRequired.getErrorMessage(),
-            ERROR_CODE);
+            ResponseCode.languageRequired.getErrorMessage(), ERROR_CODE);
       }
     }
     if (userRequest.getRequest().get(JsonKey.ADDRESS) != null
         && ((List) userRequest.getRequest().get(JsonKey.ADDRESS)).isEmpty()) {
       throw new ProjectCommonException(ResponseCode.addressRequired.getErrorCode(),
-          ResponseCode.addressRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.addressRequired.getErrorMessage(), ERROR_CODE);
     }
     if (userRequest.getRequest().get(JsonKey.EDUCATION) != null
         && ((List) userRequest.getRequest().get(JsonKey.EDUCATION)).isEmpty()) {
       throw new ProjectCommonException(ResponseCode.educationRequired.getErrorCode(),
-          ResponseCode.educationRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.educationRequired.getErrorMessage(), ERROR_CODE);
     }
     if (userRequest.getRequest().get(JsonKey.JOB_PROFILE) != null
         && ((List) userRequest.getRequest().get(JsonKey.JOB_PROFILE)).isEmpty()) {
       throw new ProjectCommonException(ResponseCode.jobDetailsRequired.getErrorCode(),
-          ResponseCode.jobDetailsRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.jobDetailsRequired.getErrorMessage(), ERROR_CODE);
     }
 
     if (userRequest.getRequest().get(JsonKey.ADDRESS) != null
@@ -462,8 +437,7 @@ public final class RequestValidator {
             && ((boolean) reqMap.get(JsonKey.IS_DELETED))
             && ProjectUtil.isStringNullOREmpty((String) reqMap.get(JsonKey.ID))) {
           throw new ProjectCommonException(ResponseCode.idRequired.getErrorCode(),
-              ResponseCode.idRequired.getErrorMessage(),
-              ERROR_CODE);
+              ResponseCode.idRequired.getErrorMessage(), ERROR_CODE);
         }
         if (!reqMap.containsKey(JsonKey.IS_DELETED)
             || (reqMap.containsKey(JsonKey.IS_DELETED) && (null == reqMap.get(JsonKey.IS_DELETED)
@@ -484,21 +458,18 @@ public final class RequestValidator {
             && ((boolean) reqMap.get(JsonKey.IS_DELETED))
             && ProjectUtil.isStringNullOREmpty((String) reqMap.get(JsonKey.ID))) {
           throw new ProjectCommonException(ResponseCode.idRequired.getErrorCode(),
-              ResponseCode.idRequired.getErrorMessage(),
-              ERROR_CODE);
+              ResponseCode.idRequired.getErrorMessage(), ERROR_CODE);
         }
         if (!reqMap.containsKey(JsonKey.IS_DELETED)
             || (reqMap.containsKey(JsonKey.IS_DELETED) && (null == reqMap.get(JsonKey.IS_DELETED)
                 || !(boolean) reqMap.get(JsonKey.IS_DELETED)))) {
           if (ProjectUtil.isStringNullOREmpty((String) reqMap.get(JsonKey.JOB_NAME))) {
             throw new ProjectCommonException(ResponseCode.jobNameError.getErrorCode(),
-                ResponseCode.jobNameError.getErrorMessage(),
-                ERROR_CODE);
+                ResponseCode.jobNameError.getErrorMessage(), ERROR_CODE);
           }
           if (ProjectUtil.isStringNullOREmpty((String) reqMap.get(JsonKey.ORG_NAME))) {
             throw new ProjectCommonException(ResponseCode.organisationNameError.getErrorCode(),
-                ResponseCode.organisationNameError.getErrorMessage(),
-                ERROR_CODE);
+                ResponseCode.organisationNameError.getErrorMessage(), ERROR_CODE);
           }
 
           if (reqMap.containsKey(JsonKey.ADDRESS) && null != reqMap.get(JsonKey.ADDRESS)) {
@@ -518,21 +489,18 @@ public final class RequestValidator {
             && ((boolean) reqMap.get(JsonKey.IS_DELETED))
             && ProjectUtil.isStringNullOREmpty((String) reqMap.get(JsonKey.ID))) {
           throw new ProjectCommonException(ResponseCode.idRequired.getErrorCode(),
-              ResponseCode.idRequired.getErrorMessage(),
-              ERROR_CODE);
+              ResponseCode.idRequired.getErrorMessage(), ERROR_CODE);
         }
         if (!reqMap.containsKey(JsonKey.IS_DELETED)
             || (reqMap.containsKey(JsonKey.IS_DELETED) && (null == reqMap.get(JsonKey.IS_DELETED)
                 || !(boolean) reqMap.get(JsonKey.IS_DELETED)))) {
           if (ProjectUtil.isStringNullOREmpty((String) reqMap.get(JsonKey.NAME))) {
             throw new ProjectCommonException(ResponseCode.educationNameError.getErrorCode(),
-                ResponseCode.educationNameError.getErrorMessage(),
-                ERROR_CODE);
+                ResponseCode.educationNameError.getErrorMessage(), ERROR_CODE);
           }
           if (ProjectUtil.isStringNullOREmpty((String) reqMap.get(JsonKey.DEGREE))) {
             throw new ProjectCommonException(ResponseCode.educationDegreeError.getErrorCode(),
-                ResponseCode.educationDegreeError.getErrorMessage(),
-                ERROR_CODE);
+                ResponseCode.educationDegreeError.getErrorMessage(), ERROR_CODE);
           }
           if (reqMap.containsKey(JsonKey.ADDRESS) && null != reqMap.get(JsonKey.ADDRESS)) {
             validateAddress((Map<String, Object>) reqMap.get(JsonKey.ADDRESS), JsonKey.EDUCATION);
@@ -544,8 +512,7 @@ public final class RequestValidator {
       if (ProjectUtil
           .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.ROOT_ORG_ID))) {
         throw new ProjectCommonException(ResponseCode.invalidRootOrganisationId.getErrorCode(),
-            ResponseCode.invalidRootOrganisationId.getErrorMessage(),
-            ERROR_CODE);
+            ResponseCode.invalidRootOrganisationId.getErrorMessage(), ERROR_CODE);
       }
     }
   }
@@ -558,20 +525,17 @@ public final class RequestValidator {
   public static void validateUserLogin(Request userRequest) {
     if (userRequest.getRequest().get(JsonKey.USERNAME) == null) {
       throw new ProjectCommonException(ResponseCode.userNameRequired.getErrorCode(),
-          ResponseCode.userNameRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.userNameRequired.getErrorMessage(), ERROR_CODE);
     }
     if (userRequest.getRequest().get(JsonKey.PASSWORD) == null || (ProjectUtil
         .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PASSWORD)))) {
       throw new ProjectCommonException(ResponseCode.passwordRequired.getErrorCode(),
-          ResponseCode.passwordRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.passwordRequired.getErrorMessage(), ERROR_CODE);
     }
     if (userRequest.getRequest().get(JsonKey.SOURCE) == null || (ProjectUtil
         .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PASSWORD)))) {
       throw new ProjectCommonException(ResponseCode.sourceRequired.getErrorCode(),
-          ResponseCode.sourceRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.sourceRequired.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -584,20 +548,16 @@ public final class RequestValidator {
     if (userRequest.getRequest().get(JsonKey.PASSWORD) == null || (ProjectUtil
         .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PASSWORD)))) {
       throw new ProjectCommonException(ResponseCode.passwordRequired.getErrorCode(),
-          ResponseCode.passwordRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.passwordRequired.getErrorMessage(), ERROR_CODE);
     }
-     if(userRequest.getRequest().get(JsonKey.NEW_PASSWORD) ==null) {
-       throw new ProjectCommonException(ResponseCode.newPasswordRequired.getErrorCode(),
-           ResponseCode.newPasswordRequired.getErrorMessage(),
-           ERROR_CODE);
-     }
+    if (userRequest.getRequest().get(JsonKey.NEW_PASSWORD) == null) {
+      throw new ProjectCommonException(ResponseCode.newPasswordRequired.getErrorCode(),
+          ResponseCode.newPasswordRequired.getErrorMessage(), ERROR_CODE);
+    }
     if (ProjectUtil
         .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.NEW_PASSWORD))) {
-      throw new ProjectCommonException(ResponseCode.newPasswordEmpty
-          .getErrorCode(),
-          ResponseCode.newPasswordEmpty.getErrorMessage(),
-          ERROR_CODE);
+      throw new ProjectCommonException(ResponseCode.newPasswordEmpty.getErrorCode(),
+          ResponseCode.newPasswordEmpty.getErrorMessage(), ERROR_CODE);
     }
     if (((String) userRequest.getRequest().get(JsonKey.NEW_PASSWORD))
         .equals((String) userRequest.getRequest().get(JsonKey.PASSWORD))) {
@@ -614,14 +574,12 @@ public final class RequestValidator {
     if (request == null
         || (ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.SOURCE)))) {
       throw new ProjectCommonException(ResponseCode.sourceRequired.getErrorCode(),
-          ResponseCode.sourceRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.sourceRequired.getErrorMessage(), ERROR_CODE);
     }
     if (request == null
         || (ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.PAGE_NAME)))) {
       throw new ProjectCommonException(ResponseCode.pageNameRequired.getErrorCode(),
-          ResponseCode.pageNameRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.pageNameRequired.getErrorMessage(), ERROR_CODE);
     }
 
   }
@@ -635,13 +593,11 @@ public final class RequestValidator {
 
     if (courseRequest.getRequest().get(JsonKey.BATCH_ID) == null) {
       throw new ProjectCommonException(ResponseCode.courseBatchIdRequired.getErrorCode(),
-          ResponseCode.courseBatchIdRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.courseBatchIdRequired.getErrorMessage(), ERROR_CODE);
     }
     if (courseRequest.getRequest().get(JsonKey.USER_IDs) == null) {
       throw new ProjectCommonException(ResponseCode.userIdRequired.getErrorCode(),
-          ResponseCode.userIdRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.userIdRequired.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -654,8 +610,7 @@ public final class RequestValidator {
 
     if (courseRequest.getRequest().get(JsonKey.BATCH_ID) == null) {
       throw new ProjectCommonException(ResponseCode.courseBatchIdRequired.getErrorCode(),
-          ResponseCode.courseBatchIdRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.courseBatchIdRequired.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -668,8 +623,7 @@ public final class RequestValidator {
 
     if (request.getRequest().get(JsonKey.COURSE_ID) == null) {
       throw new ProjectCommonException(ResponseCode.courseIdRequired.getErrorCode(),
-          ResponseCode.courseIdRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.courseIdRequired.getErrorMessage(), ERROR_CODE);
     }
 
   }
@@ -682,8 +636,7 @@ public final class RequestValidator {
   public static void validatePublishCourse(Request request) {
     if (request.getRequest().get(JsonKey.COURSE_ID) == null) {
       throw new ProjectCommonException(ResponseCode.courseIdRequiredError.getErrorCode(),
-          ResponseCode.courseIdRequiredError.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.courseIdRequiredError.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -696,8 +649,7 @@ public final class RequestValidator {
   public static void validateDeleteCourse(Request request) {
     if (request.getRequest().get(JsonKey.COURSE_ID) == null) {
       throw new ProjectCommonException(ResponseCode.courseIdRequiredError.getErrorCode(),
-          ResponseCode.courseIdRequiredError.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.courseIdRequiredError.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -712,15 +664,13 @@ public final class RequestValidator {
         .isStringNullOREmpty((String) (request.getRequest().get(JsonKey.SECTION_NAME) != null
             ? request.getRequest().get(JsonKey.SECTION_NAME) : ""))) {
       throw new ProjectCommonException(ResponseCode.sectionNameRequired.getErrorCode(),
-          ResponseCode.sectionNameRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.sectionNameRequired.getErrorMessage(), ERROR_CODE);
     }
     if (ProjectUtil
         .isStringNullOREmpty((String) (request.getRequest().get(JsonKey.SECTION_DATA_TYPE) != null
             ? request.getRequest().get(JsonKey.SECTION_DATA_TYPE) : ""))) {
       throw new ProjectCommonException(ResponseCode.sectionDataTypeRequired.getErrorCode(),
-          ResponseCode.sectionDataTypeRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.sectionDataTypeRequired.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -734,21 +684,18 @@ public final class RequestValidator {
         .isStringNullOREmpty((String) (request.getRequest().get(JsonKey.SECTION_NAME) != null
             ? request.getRequest().get(JsonKey.SECTION_NAME) : ""))) {
       throw new ProjectCommonException(ResponseCode.sectionNameRequired.getErrorCode(),
-          ResponseCode.sectionNameRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.sectionNameRequired.getErrorMessage(), ERROR_CODE);
     }
     if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ID) != null
         ? request.getRequest().get(JsonKey.ID) : ""))) {
       throw new ProjectCommonException(ResponseCode.sectionIdRequired.getErrorCode(),
-          ResponseCode.sectionIdRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.sectionIdRequired.getErrorMessage(), ERROR_CODE);
     }
     if (ProjectUtil
         .isStringNullOREmpty((String) (request.getRequest().get(JsonKey.SECTION_DATA_TYPE) != null
             ? request.getRequest().get(JsonKey.SECTION_DATA_TYPE) : ""))) {
       throw new ProjectCommonException(ResponseCode.sectionDataTypeRequired.getErrorCode(),
-          ResponseCode.sectionDataTypeRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.sectionDataTypeRequired.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -763,8 +710,7 @@ public final class RequestValidator {
         .isStringNullOREmpty((String) (request.getRequest().get(JsonKey.PAGE_NAME) != null
             ? request.getRequest().get(JsonKey.PAGE_NAME) : ""))) {
       throw new ProjectCommonException(ResponseCode.pageNameRequired.getErrorCode(),
-          ResponseCode.pageNameRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.pageNameRequired.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -778,14 +724,12 @@ public final class RequestValidator {
         .isStringNullOREmpty((String) (request.getRequest().get(JsonKey.PAGE_NAME) != null
             ? request.getRequest().get(JsonKey.PAGE_NAME) : ""))) {
       throw new ProjectCommonException(ResponseCode.pageNameRequired.getErrorCode(),
-          ResponseCode.pageNameRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.pageNameRequired.getErrorMessage(), ERROR_CODE);
     }
     if (ProjectUtil.isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ID) != null
         ? request.getRequest().get(JsonKey.ID) : ""))) {
       throw new ProjectCommonException(ResponseCode.pageIdRequired.getErrorCode(),
-          ResponseCode.pageIdRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.pageIdRequired.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -800,22 +744,19 @@ public final class RequestValidator {
         .isStringNullOREmpty((String) (request.getRequest().get(JsonKey.COURSE_ID) != null
             ? request.getRequest().get(JsonKey.COURSE_ID) : ""))) {
       throw new ProjectCommonException(ResponseCode.courseIdRequired.getErrorCode(),
-          ResponseCode.courseIdRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.courseIdRequired.getErrorMessage(), ERROR_CODE);
     }
     if (ProjectUtil
         .isStringNullOREmpty((String) (request.getRequest().get(JsonKey.CONTENT_ID) != null
             ? request.getRequest().get(JsonKey.CONTENT_ID) : ""))) {
       throw new ProjectCommonException(ResponseCode.contentIdRequired.getErrorCode(),
-          ResponseCode.contentIdRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.contentIdRequired.getErrorMessage(), ERROR_CODE);
     }
     if (ProjectUtil
         .isStringNullOREmpty((String) (request.getRequest().get(JsonKey.ATTEMPT_ID) != null
             ? request.getRequest().get(JsonKey.ATTEMPT_ID) : ""))) {
       throw new ProjectCommonException(ResponseCode.attemptIdRequired.getErrorCode(),
-          ResponseCode.attemptIdRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.attemptIdRequired.getErrorMessage(), ERROR_CODE);
     }
     if (request.getRequest().get(JsonKey.ASSESSMENT) != null) {
       @SuppressWarnings("unchecked")
@@ -825,26 +766,22 @@ public final class RequestValidator {
         if (ProjectUtil.isStringNullOREmpty((String) (map.get(JsonKey.ASSESSMENT_ITEM_ID) != null
             ? map.get(JsonKey.ASSESSMENT_ITEM_ID) : ""))) {
           throw new ProjectCommonException(ResponseCode.assessmentItemIdRequired.getErrorCode(),
-              ResponseCode.assessmentItemIdRequired.getErrorMessage(),
-              ERROR_CODE);
+              ResponseCode.assessmentItemIdRequired.getErrorMessage(), ERROR_CODE);
         }
         if (ProjectUtil.isStringNullOREmpty((String) (map.get(JsonKey.ASSESSMENT_TYPE) != null
             ? map.get(JsonKey.ASSESSMENT_TYPE) : ""))) {
           throw new ProjectCommonException(ResponseCode.assessmentTypeRequired.getErrorCode(),
-              ResponseCode.assessmentTypeRequired.getErrorMessage(),
-              ERROR_CODE);
+              ResponseCode.assessmentTypeRequired.getErrorMessage(), ERROR_CODE);
         }
         if (ProjectUtil.isStringNullOREmpty((String) (map.get(JsonKey.ASSESSMENT_ANSWERS) != null
             ? map.get(JsonKey.ASSESSMENT_ANSWERS) : ""))) {
           throw new ProjectCommonException(ResponseCode.assessmentAnswersRequired.getErrorCode(),
-              ResponseCode.assessmentAnswersRequired.getErrorMessage(),
-              ERROR_CODE);
+              ResponseCode.assessmentAnswersRequired.getErrorMessage(), ERROR_CODE);
         }
         if (ProjectUtil.isStringNullOREmpty((String) (map.get(JsonKey.ASSESSMENT_MAX_SCORE) != null
             ? map.get(JsonKey.ASSESSMENT_ANSWERS) : ""))) {
           throw new ProjectCommonException(ResponseCode.assessmentmaxScoreRequired.getErrorCode(),
-              ResponseCode.assessmentmaxScoreRequired.getErrorMessage(),
-              ERROR_CODE);
+              ResponseCode.assessmentmaxScoreRequired.getErrorMessage(), ERROR_CODE);
         }
       }
     }
@@ -862,8 +799,7 @@ public final class RequestValidator {
         .isStringNullOREmpty((String) (request.getRequest().get(JsonKey.COURSE_ID) != null
             ? request.getRequest().get(JsonKey.COURSE_ID) : ""))) {
       throw new ProjectCommonException(ResponseCode.courseIdRequiredError.getErrorCode(),
-          ResponseCode.courseIdRequiredError.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.courseIdRequiredError.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -880,8 +816,7 @@ public final class RequestValidator {
             || !ProjectUtil
                 .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USERNAME)))) {
       throw new ProjectCommonException(ResponseCode.usernameOrUserIdError.getErrorCode(),
-          ResponseCode.usernameOrUserIdError.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.usernameOrUserIdError.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -893,8 +828,7 @@ public final class RequestValidator {
   public static void validateVerifyUser(Request userRequest) {
     if (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.LOGIN_ID))) {
       throw new ProjectCommonException(ResponseCode.loginIdRequired.getErrorCode(),
-          ResponseCode.loginIdRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.loginIdRequired.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -924,8 +858,7 @@ public final class RequestValidator {
             || !ProjectUtil
                 .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USERNAME)))) {
       throw new ProjectCommonException(ResponseCode.usernameOrUserIdError.getErrorCode(),
-          ResponseCode.usernameOrUserIdError.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.usernameOrUserIdError.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -936,25 +869,22 @@ public final class RequestValidator {
           ERROR_CODE);
     }
     if (ProjectUtil.isStringNullOREmpty((String) address.get(JsonKey.CITY))) {
-      throw new ProjectCommonException(
-          ResponseCode.addressError.getErrorCode(), ProjectUtil
-              .formatMessage(ResponseCode.addressError.getErrorMessage(), type, JsonKey.CITY),
+      throw new ProjectCommonException(ResponseCode.addressError.getErrorCode(), ProjectUtil
+          .formatMessage(ResponseCode.addressError.getErrorMessage(), type, JsonKey.CITY),
           ERROR_CODE);
     }
     if (address.containsKey(JsonKey.ADD_TYPE) && type.equals(JsonKey.ADDRESS)) {
 
       if (ProjectUtil.isStringNullOREmpty((String) address.get(JsonKey.ADD_TYPE))) {
-        throw new ProjectCommonException(
-            ResponseCode.addressError.getErrorCode(), ProjectUtil
-                .formatMessage(ResponseCode.addressError.getErrorMessage(), type, JsonKey.TYPE),
+        throw new ProjectCommonException(ResponseCode.addressError.getErrorCode(), ProjectUtil
+            .formatMessage(ResponseCode.addressError.getErrorMessage(), type, JsonKey.TYPE),
             ERROR_CODE);
       }
 
       if (!ProjectUtil.isStringNullOREmpty((String) address.get(JsonKey.ADD_TYPE))
           && !checkAddressType((String) address.get(JsonKey.ADD_TYPE))) {
         throw new ProjectCommonException(ResponseCode.addressTypeError.getErrorCode(),
-            ResponseCode.addressTypeError.getErrorMessage(),
-            ERROR_CODE);
+            ResponseCode.addressTypeError.getErrorMessage(), ERROR_CODE);
       }
     }
   }
@@ -979,8 +909,7 @@ public final class RequestValidator {
       if ((ProjectUtil.isStringNullOREmpty((String) reqObj.getRequest().get(JsonKey.EXTERNAL_ID))
           || ProjectUtil.isStringNullOREmpty((String) reqObj.getRequest().get(JsonKey.PROVIDER)))) {
         throw new ProjectCommonException(ResponseCode.bulkUserUploadError.getErrorCode(),
-            ResponseCode.bulkUserUploadError.getErrorMessage(),
-            ERROR_CODE);
+            ResponseCode.bulkUserUploadError.getErrorMessage(), ERROR_CODE);
       }
     }
   }
@@ -996,8 +925,7 @@ public final class RequestValidator {
               .isStringNullOREmpty((String) request.getRequest().get(JsonKey.PROVIDER))) {
         throw new ProjectCommonException(
             ResponseCode.sourceAndExternalIdValidationError.getErrorCode(),
-            ResponseCode.sourceAndExternalIdValidationError.getErrorMessage(),
-            ERROR_CODE);
+            ResponseCode.sourceAndExternalIdValidationError.getErrorMessage(), ERROR_CODE);
       }
     }
     if (request.getRequest().get(JsonKey.ROLES) == null
@@ -1022,13 +950,11 @@ public final class RequestValidator {
   public static void validateCreateBatchReq(Request request) {
     if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.COURSE_ID))) {
       throw new ProjectCommonException(ResponseCode.invalidCourseId.getErrorCode(),
-          ResponseCode.invalidCourseId.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.invalidCourseId.getErrorMessage(), ERROR_CODE);
     }
     if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.NAME))) {
       throw new ProjectCommonException(ResponseCode.courseNameRequired.getErrorCode(),
-          ResponseCode.courseNameRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.courseNameRequired.getErrorMessage(), ERROR_CODE);
     }
     String enrolmentType = (String) request.getRequest().get(JsonKey.ENROLLMENT_TYPE);
     validateEnrolmentType(enrolmentType);
@@ -1041,8 +967,7 @@ public final class RequestValidator {
     if (request.getRequest().containsKey(JsonKey.COURSE_CREATED_FOR)
         && !(request.getRequest().get(JsonKey.COURSE_CREATED_FOR) instanceof List)) {
       throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
-          ResponseCode.dataTypeError.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.dataTypeError.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -1064,20 +989,17 @@ public final class RequestValidator {
       } catch (Exception e) {
         ProjectLogger.log(e.getMessage(), e);
         throw new ProjectCommonException(ResponseCode.progressStatusError.getErrorCode(),
-            ResponseCode.progressStatusError.getErrorMessage(),
-            ERROR_CODE);
+            ResponseCode.progressStatusError.getErrorMessage(), ERROR_CODE);
       }
       if (!status) {
         throw new ProjectCommonException(ResponseCode.progressStatusError.getErrorCode(),
-            ResponseCode.progressStatusError.getErrorMessage(),
-            ERROR_CODE);
+            ResponseCode.progressStatusError.getErrorMessage(), ERROR_CODE);
       }
     }
     if (request.getRequest().containsKey(JsonKey.NAME)
         && ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.NAME))) {
       throw new ProjectCommonException(ResponseCode.courseNameRequired.getErrorCode(),
-          ResponseCode.courseNameRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.courseNameRequired.getErrorMessage(), ERROR_CODE);
     }
     if (request.getRequest().containsKey(JsonKey.ENROLLMENT_TYPE)) {
       String enrolmentType = (String) request.getRequest().get(JsonKey.ENROLLMENT_TYPE);
@@ -1088,8 +1010,7 @@ public final class RequestValidator {
       boolean bool = validateDateWithTodayDate((String) request.getRequest().get(JsonKey.END_DATE));
       if (!bool) {
         throw new ProjectCommonException(ResponseCode.invalidBatchEndDateError.getErrorCode(),
-            ResponseCode.invalidBatchEndDateError.getErrorMessage(),
-            ERROR_CODE);
+            ResponseCode.invalidBatchEndDateError.getErrorMessage(), ERROR_CODE);
       }
     }
 
@@ -1108,27 +1029,23 @@ public final class RequestValidator {
         cal2.setTime(batchEndDate);
       } catch (Exception e) {
         throw new ProjectCommonException(ResponseCode.dateFormatError.getErrorCode(),
-            ResponseCode.dateFormatError.getErrorMessage(),
-            ERROR_CODE);
+            ResponseCode.dateFormatError.getErrorMessage(), ERROR_CODE);
       }
       if (batchEndDate.before(batchStartDate)) {
         throw new ProjectCommonException(ResponseCode.invalidBatchEndDateError.getErrorCode(),
-            ResponseCode.invalidBatchEndDateError.getErrorMessage(),
-            ERROR_CODE);
+            ResponseCode.invalidBatchEndDateError.getErrorMessage(), ERROR_CODE);
       }
     }
     if (request.getRequest().containsKey(JsonKey.COURSE_CREATED_FOR)
         && !(request.getRequest().get(JsonKey.COURSE_CREATED_FOR) instanceof List)) {
       throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
-          ResponseCode.dataTypeError.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.dataTypeError.getErrorMessage(), ERROR_CODE);
     }
 
     if (request.getRequest().containsKey(JsonKey.MENTORS)
         && !(request.getRequest().get(JsonKey.MENTORS) instanceof List)) {
       throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
-          ResponseCode.dataTypeError.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.dataTypeError.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -1145,8 +1062,7 @@ public final class RequestValidator {
       }
     } catch (Exception e) {
       throw new ProjectCommonException(ResponseCode.dateFormatError.getErrorCode(),
-          ResponseCode.dateFormatError.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.dateFormatError.getErrorMessage(), ERROR_CODE);
     }
     return true;
   }
@@ -1158,14 +1074,12 @@ public final class RequestValidator {
   private static void validateEnrolmentType(String enrolmentType) {
     if (ProjectUtil.isStringNullOREmpty(enrolmentType)) {
       throw new ProjectCommonException(ResponseCode.enrolmentTypeRequired.getErrorCode(),
-          ResponseCode.enrolmentTypeRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.enrolmentTypeRequired.getErrorMessage(), ERROR_CODE);
     }
     if (!(ProjectUtil.EnrolmentType.open.getVal().equalsIgnoreCase(enrolmentType)
         || ProjectUtil.EnrolmentType.inviteOnly.getVal().equalsIgnoreCase(enrolmentType))) {
       throw new ProjectCommonException(ResponseCode.enrolmentIncorrectValue.getErrorCode(),
-          ResponseCode.enrolmentIncorrectValue.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.enrolmentIncorrectValue.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -1176,8 +1090,7 @@ public final class RequestValidator {
   private static void validateStartDate(String startDate) {
     if (ProjectUtil.isStringNullOREmpty(startDate)) {
       throw new ProjectCommonException(ResponseCode.courseBatchSatrtDateRequired.getErrorCode(),
-          ResponseCode.courseBatchSatrtDateRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.courseBatchSatrtDateRequired.getErrorMessage(), ERROR_CODE);
     }
     try {
       Date batchStartDate = format.parse(startDate);
@@ -1188,15 +1101,13 @@ public final class RequestValidator {
       cal2.setTime(todayDate);
       if (batchStartDate.before(todayDate)) {
         throw new ProjectCommonException(ResponseCode.courseBatchStartDateError.getErrorCode(),
-            ResponseCode.courseBatchStartDateError.getErrorMessage(),
-            ERROR_CODE);
+            ResponseCode.courseBatchStartDateError.getErrorMessage(), ERROR_CODE);
       }
     } catch (ProjectCommonException e) {
       throw e;
     } catch (Exception e) {
       throw new ProjectCommonException(ResponseCode.dateFormatError.getErrorCode(),
-          ResponseCode.dateFormatError.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.dateFormatError.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -1207,13 +1118,11 @@ public final class RequestValidator {
       Date batchStartDate = format.parse(startDate);
       if (batchStartDate.getTime() >= batchEndDate.getTime()) {
         throw new ProjectCommonException(ResponseCode.endDateError.getErrorCode(),
-            ResponseCode.endDateError.getErrorMessage(),
-            ERROR_CODE);
+            ResponseCode.endDateError.getErrorMessage(), ERROR_CODE);
       }
     } catch (Exception e) {
       throw new ProjectCommonException(ResponseCode.dateFormatError.getErrorCode(),
-          ResponseCode.dateFormatError.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.dateFormatError.getErrorMessage(), ERROR_CODE);
     }
 
   }
@@ -1223,15 +1132,13 @@ public final class RequestValidator {
     if (request.getRequest().get(JsonKey.OBJECT_TYPE) == null || ProjectUtil
         .isStringNullOREmpty((String) request.getRequest().get(JsonKey.OBJECT_TYPE))) {
       throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
-          ResponseCode.dataTypeError.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.dataTypeError.getErrorMessage(), ERROR_CODE);
     }
     List<String> list = new ArrayList<>(Arrays.asList(
         new String[] {JsonKey.USER, JsonKey.ORGANISATION, JsonKey.BATCH, JsonKey.USER_COURSE}));
     if (!list.contains(request.getRequest().get(JsonKey.OBJECT_TYPE))) {
       throw new ProjectCommonException(ResponseCode.invalidObjectType.getErrorCode(),
-          ResponseCode.invalidObjectType.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.invalidObjectType.getErrorMessage(), ERROR_CODE);
     }
 
   }
@@ -1240,27 +1147,23 @@ public final class RequestValidator {
   public static void validateSendMail(Request request) {
     if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.SUBJECT))) {
       throw new ProjectCommonException(ResponseCode.emailSubjectError.getErrorCode(),
-          ResponseCode.emailSubjectError.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.emailSubjectError.getErrorMessage(), ERROR_CODE);
     }
     if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.BODY))) {
       throw new ProjectCommonException(ResponseCode.emailBodyError.getErrorCode(),
-          ResponseCode.emailBodyError.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.emailBodyError.getErrorMessage(), ERROR_CODE);
     }
     if (null == (request.getRequest().get(JsonKey.RECIPIENT_EMAILS))
         && null == (request.getRequest().get(JsonKey.RECIPIENT_USERIDS))) {
       throw new ProjectCommonException(ResponseCode.recipientAddressError.getErrorCode(),
-          ResponseCode.recipientAddressError.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.recipientAddressError.getErrorMessage(), ERROR_CODE);
     }
     if ((null != (request.getRequest().get(JsonKey.RECIPIENT_EMAILS))
         && ((List) request.getRequest().get(JsonKey.RECIPIENT_EMAILS)).isEmpty())
         && (null != (request.getRequest().get(JsonKey.RECIPIENT_USERIDS))
             && ((List) request.getRequest().get(JsonKey.RECIPIENT_USERIDS)).isEmpty())) {
       throw new ProjectCommonException(ResponseCode.recipientAddressError.getErrorCode(),
-          ResponseCode.recipientAddressError.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.recipientAddressError.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -1269,8 +1172,7 @@ public final class RequestValidator {
 
     if (ProjectUtil.isStringNullOREmpty((String) reqObj.get(JsonKey.CONTAINER))) {
       throw new ProjectCommonException(ResponseCode.storageContainerNameMandatory.getErrorCode(),
-          ResponseCode.storageContainerNameMandatory.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.storageContainerNameMandatory.getErrorMessage(), ERROR_CODE);
     }
 
   }
@@ -1283,13 +1185,11 @@ public final class RequestValidator {
 
     if (ProjectUtil.isStringNullOREmpty((String) reqObj.get(JsonKey.BADGE_TYPE_ID))) {
       throw new ProjectCommonException(ResponseCode.badgeTypeIdMandatory.getErrorCode(),
-          ResponseCode.badgeTypeIdMandatory.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.badgeTypeIdMandatory.getErrorMessage(), ERROR_CODE);
     }
     if (ProjectUtil.isStringNullOREmpty((String) reqObj.get(JsonKey.RECEIVER_ID))) {
       throw new ProjectCommonException(ResponseCode.receiverIdMandatory.getErrorCode(),
-          ResponseCode.receiverIdMandatory.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.receiverIdMandatory.getErrorMessage(), ERROR_CODE);
     }
 
   }
@@ -1301,8 +1201,7 @@ public final class RequestValidator {
   public static void validateCreateOrgType(Request reqObj) {
     if (ProjectUtil.isStringNullOREmpty((String) reqObj.getRequest().get(JsonKey.NAME))) {
       throw new ProjectCommonException(ResponseCode.orgTypeMandatory.getErrorCode(),
-          ResponseCode.orgTypeMandatory.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.orgTypeMandatory.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -1313,13 +1212,11 @@ public final class RequestValidator {
   public static void validateUpdateOrgType(Request reqObj) {
     if (ProjectUtil.isStringNullOREmpty((String) reqObj.getRequest().get(JsonKey.NAME))) {
       throw new ProjectCommonException(ResponseCode.orgTypeMandatory.getErrorCode(),
-          ResponseCode.orgTypeMandatory.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.orgTypeMandatory.getErrorMessage(), ERROR_CODE);
     }
     if (ProjectUtil.isStringNullOREmpty((String) reqObj.getRequest().get(JsonKey.ID))) {
       throw new ProjectCommonException(ResponseCode.orgTypeIdRequired.getErrorCode(),
-          ResponseCode.orgTypeIdRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.orgTypeIdRequired.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -1332,13 +1229,11 @@ public final class RequestValidator {
   public static void validateNote(Request request) {
     if (ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.USER_ID))) {
       throw new ProjectCommonException(ResponseCode.userIdRequired.getErrorCode(),
-          ResponseCode.userIdRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.userIdRequired.getErrorMessage(), ERROR_CODE);
     }
     if (ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.TITLE))) {
       throw new ProjectCommonException(ResponseCode.titleRequired.getErrorCode(),
-          ResponseCode.titleRequired.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.titleRequired.getErrorMessage(), ERROR_CODE);
     }
     if (ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.NOTE))) {
       throw new ProjectCommonException(ResponseCode.noteRequired.getErrorCode(),
@@ -1347,20 +1242,17 @@ public final class RequestValidator {
     if (ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.CONTENT_ID))) {
       if (ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.COURSE_ID))) {
         throw new ProjectCommonException(ResponseCode.contentIdError.getErrorCode(),
-            ResponseCode.contentIdError.getErrorMessage(),
-            ERROR_CODE);
+            ResponseCode.contentIdError.getErrorMessage(), ERROR_CODE);
       }
     }
     if (request.getRequest().containsKey(JsonKey.TAGS)) {
       if ((request.getRequest().get(JsonKey.TAGS) instanceof List)
           && ((List) request.getRequest().get(JsonKey.TAGS)).isEmpty()) {
         throw new ProjectCommonException(ResponseCode.invalidTags.getErrorCode(),
-            ResponseCode.invalidTags.getErrorMessage(),
-            ERROR_CODE);
+            ResponseCode.invalidTags.getErrorMessage(), ERROR_CODE);
       } else if (request.getRequest().get(JsonKey.TAGS) instanceof String) {
         throw new ProjectCommonException(ResponseCode.invalidTags.getErrorCode(),
-            ResponseCode.invalidTags.getErrorMessage(),
-            ERROR_CODE);
+            ResponseCode.invalidTags.getErrorMessage(), ERROR_CODE);
       }
     }
   }
@@ -1373,8 +1265,7 @@ public final class RequestValidator {
   public static void validateNoteId(String noteId) {
     if (ProjectUtil.isStringNullOREmpty(noteId)) {
       throw new ProjectCommonException(ResponseCode.invalidNoteId.getErrorCode(),
-          ResponseCode.invalidNoteId.getErrorMessage(),
-          ERROR_CODE);
+          ResponseCode.invalidNoteId.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -1385,27 +1276,23 @@ public final class RequestValidator {
           (List<Map<String, String>>) request.getRequest().get(JsonKey.WEB_PAGES);
       if (null == data || data.isEmpty()) {
         throw new ProjectCommonException(ResponseCode.invalidWebPageData.getErrorCode(),
-            ResponseCode.invalidWebPageData.getErrorMessage(),
-            ERROR_CODE);
+            ResponseCode.invalidWebPageData.getErrorMessage(), ERROR_CODE);
       }
     }
   }
-  
+
   /**
    * 
    * @param request
    */
   public static void validateForgotpassword(Request request) {
     if (request.getRequest().get(JsonKey.USERNAME) == null
-        || ProjectUtil.isStringNullOREmpty(
-            (String) request.getRequest().get(JsonKey.USERNAME))) {
-      throw new ProjectCommonException(
-          ResponseCode.userNameRequired.getErrorCode(),
-          ResponseCode.userNameRequired.getErrorMessage(),
-          ERROR_CODE);
+        || ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.USERNAME))) {
+      throw new ProjectCommonException(ResponseCode.userNameRequired.getErrorCode(),
+          ResponseCode.userNameRequired.getErrorMessage(), ERROR_CODE);
     }
   }
-  
+
   public static void validateProfileVisibility(Request request) {
     if (request.getRequest().get(JsonKey.PRIVATE) == null
         && request.getRequest().get(JsonKey.PUBLIC) == null) {
@@ -1414,31 +1301,24 @@ public final class RequestValidator {
     }
     if (request.getRequest().containsKey(JsonKey.PRIVATE)
         && !(request.getRequest().get(JsonKey.PRIVATE) instanceof List)) {
-      throw new ProjectCommonException(
-          ResponseCode.dataTypeError.getErrorCode(),
-          ProjectUtil.formatMessage(
-              ResponseCode.dataTypeError.getErrorMessage(), JsonKey.PRIVATE,
+      throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
+          ProjectUtil.formatMessage(ResponseCode.dataTypeError.getErrorMessage(), JsonKey.PRIVATE,
               JsonKey.LIST),
           ERROR_CODE);
     }
     if (request.getRequest().containsKey(JsonKey.PUBLIC)
         && !(request.getRequest().get(JsonKey.PUBLIC) instanceof List)) {
-      throw new ProjectCommonException(
-          ResponseCode.dataTypeError.getErrorCode(),
-          ProjectUtil.formatMessage(
-              ResponseCode.dataTypeError.getErrorMessage(), JsonKey.PUBLIC,
+      throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
+          ProjectUtil.formatMessage(ResponseCode.dataTypeError.getErrorMessage(), JsonKey.PUBLIC,
               JsonKey.LIST),
           ERROR_CODE);
     }
     if (request.getRequest().get(JsonKey.USER_ID) == null
-        || ProjectUtil.isStringNullOREmpty(
-            ((String) request.getRequest().get(JsonKey.USER_ID)))) {
-      throw new ProjectCommonException(
-          ResponseCode.usernameOrUserIdError.getErrorCode(),
+        || ProjectUtil.isStringNullOREmpty(((String) request.getRequest().get(JsonKey.USER_ID)))) {
+      throw new ProjectCommonException(ResponseCode.usernameOrUserIdError.getErrorCode(),
           ResponseCode.usernameOrUserIdError.getErrorMessage(), ERROR_CODE);
     }
   }
-  
   /**
    * Method to validate  
    * @param request
@@ -1474,5 +1354,4 @@ public final class RequestValidator {
           ResponseCode.invalidClientId.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
     }
   }
-  
 }
