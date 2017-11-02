@@ -193,6 +193,8 @@ public interface ResponseMessage {
       public static final String PHONE_ALREADY_IN_USE = "Phone already in use. Please provide different phone number.";
       public static final String INVALID_CLIENT_NAME = "Please provide unique valid client name";
       public static final String INVALID_CLIENT_ID = "Please provide valid client id";
+      public static final String USER_PHONE_UPDATE_FAILED = "user phone update is failed.";
+      public static final String ES_UPDATE_FAILED = "Data insertion to ES failed.";
     }
     
     public interface Key {
@@ -324,7 +326,7 @@ public interface ResponseMessage {
 		public static final String END_DATE_ERROR = "END_DATE_ERROR";
 		public static final String INVALID_CSV_FILE = "INVALID_CSV_FILE";
 		public static final String INVALID_COURSE_BATCH_ID = "INVALID_COURSE_BATCH_ID";
-		public  static final String COURSE_BATCH_ID_MISSING = "COURSE_BATCH_ID_MISSING";
+		public static final String COURSE_BATCH_ID_MISSING = "COURSE_BATCH_ID_MISSING";
 		public static final String ENROLLMENT_TYPE_VALIDATION = "ENROLLMENT_TYPE_VALIDATION";
 		public static final String COURSE_CREATED_FOR_NULL = "COURSE_CREATED_FOR_NULL";
 		public static final String USER_NOT_BELONGS_TO_ANY_ORG ="USER_NOT_BELONGS_TO_ANY_ORG";
@@ -380,5 +382,7 @@ public interface ResponseMessage {
         public static final String PHONE_ALREADY_IN_USE = "PHONE_ALREADY_IN_USE";
         public static final String INVALID_CLIENT_NAME = "INVALID_CLIENT_NAME";
         public static final String INVALID_CLIENT_ID = "INVALID_CLIENT_ID";
+        public static final String USER_PHONE_UPDATE_FAILED = "USER_PHONE_UPDATE_FAILED";
+        public static final String ES_UPDATE_FAILED = "ES_UPDATE_FAILED";
     }
 }
