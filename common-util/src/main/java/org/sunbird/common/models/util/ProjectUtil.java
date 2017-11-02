@@ -262,14 +262,14 @@ public class ProjectUtil {
   }
 
   /**
-   * This method will generate user auth token based on user name , source and timestamp
+   * This method will generate auth token based on name , source and timestamp
    *
-   * @param userName String
+   * @param name String
    * @param source String
    * @return String
    */
-  public static String createUserAuthToken(String userName, String source) {
-    String data = userName + source + System.currentTimeMillis();
+  public static String createAuthToken(String name, String source) {
+    String data = name + source + System.currentTimeMillis();
     UUID authId = UUID.nameUUIDFromBytes(data.getBytes());
     return authId.toString();
   }
