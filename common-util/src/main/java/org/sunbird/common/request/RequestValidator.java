@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
@@ -1436,6 +1436,42 @@ public final class RequestValidator {
       throw new ProjectCommonException(
           ResponseCode.usernameOrUserIdError.getErrorCode(),
           ResponseCode.usernameOrUserIdError.getErrorMessage(), ERROR_CODE);
+    }
+  }
+  
+  /**
+   * Method to validate  
+   * @param request
+   */
+  public static void validateRegisterClient(Request request) {
+   
+      if (StringUtils.isBlank((String)request.getRequest().get(JsonKey.CLIENT_NAME))) {
+        throw new ProjectCommonException(ResponseCode.invalidClientName.getErrorCode(),
+            ResponseCode.invalidClientName.getErrorMessage(),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
+  }
+  
+  /**
+   * Method to validate the request for updating the client key
+   * @param request
+   */
+  public static void validateUpdateClientKey(String clientId, String masterAccessToken){
+    validateClientId(clientId);
+    if(ProjectUtil.isStringNullOREmpty(masterAccessToken)){
+      throw new ProjectCommonException(ResponseCode.invalidRequestData.getErrorCode(),
+          ResponseCode.invalidRequestData.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+  }
+  
+  /**
+   * Method to validate clientId
+   * @param request
+   */
+  public static void validateClientId(String clientId){
+    if(ProjectUtil.isStringNullOREmpty(clientId)){
+      throw new ProjectCommonException(ResponseCode.invalidClientId.getErrorCode(),
+          ResponseCode.invalidClientId.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
     }
   }
   
