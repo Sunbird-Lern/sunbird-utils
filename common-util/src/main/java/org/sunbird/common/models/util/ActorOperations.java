@@ -58,7 +58,7 @@ public enum ActorOperations {
     SEARCH_AUDIT_LOG("searchAuditLog"), PROCESS_AUDIT_LOG("processAuditLog"),FORGOT_PASSWORD("forgotpassword"),
     ADD_SKILL("addSkill"), GET_SKILL("getSkill") , GET_SKILLS_LIST("getSkillsList"),PROFILE_VISIBILITY("profileVisibility"),CREATE_TENANT_PREFERENCE("createTanentPreference"),
     UPDATE_TENANT_PREFERENCE("updateTenantPreference"),GET_TENANT_PREFERENCE("getTenantPreference"),
-    UPDATE_TC_STATUS_OF_USER("updateTCStatusOfUser");
+    UPDATE_TC_STATUS_OF_USER("updateTCStatusOfUser"),CREATE_GEO_LOCATION("createGeoLocation");
 
     private String value;
 
