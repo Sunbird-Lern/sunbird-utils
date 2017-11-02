@@ -532,4 +532,5 @@ public class JsonKey {
   public static final String ORG_TYPE_ID = "orgTypeId";
   public static final String SUNBIRD = "sunbird";
   public static final String SUNBIRD_PLUGIN = "sunbirdplugin";
+  public static final String MOBILE = "mobile";
 }

@@ -188,6 +188,8 @@ public enum ResponseCode {
     invalidOrgTypeId(ResponseMessage.Key.INVALID_ORG_TYPE_ID_ERROR, ResponseMessage.Message.INVALID_ORG_TYPE_ID_ERROR),
     invalidOrgType(ResponseMessage.Key.INVALID_ORG_TYPE_ERROR, ResponseMessage.Message.INVALID_ORG_TYPE_ERROR),
     tableOrDocNameError(ResponseMessage.Key.TABLE_OR_DOC_NAME_ERROR, ResponseMessage.Message.TABLE_OR_DOC_NAME_ERROR),
+    emailorPhoneRequired(ResponseMessage.Key.EMAIL_OR_PHONE_MISSING, ResponseMessage.Message.EMAIL_OR_PHONE_MISSING),
+    PhoneNumberInUse(ResponseMessage.Key.PHONE_ALREADY_IN_USE, ResponseMessage.Message.PHONE_ALREADY_IN_USE),
     OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404),UNAUTHORIZED(401),REDIRECTION_REQUIRED(302);
 	
 	private int responseCode;
