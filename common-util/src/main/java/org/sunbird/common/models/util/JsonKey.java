@@ -542,5 +542,7 @@ public class JsonKey {
   public static final String CLIENT_ID = "clientId";
   public static final String MASTER_KEY = "masterKey";
   public static final String CLIENT_INFO_DB = "clientInfo_db";
+  public static final String TOPIC_NAME = "topicName";
+  public static final String TOPIC = "topic";
 
 }
