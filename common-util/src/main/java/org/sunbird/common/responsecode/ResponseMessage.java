@@ -189,6 +189,8 @@ public interface ResponseMessage {
       public static final String INVALID_ORG_TYPE_ID_ERROR = "Please provide valid orgTypeId.";
       public static final String INVALID_ORG_TYPE_ERROR = "Please provide valid orgType.";
       public static final String TABLE_OR_DOC_NAME_ERROR = "Please provide valid table or documentName.";
+      public static final String EMAIL_OR_PHONE_MISSING = "Please provide either email or phone.";
+      public static final String PHONE_ALREADY_IN_USE = "Phone already in use. Please provide different phone number.";
       public static final String INVALID_CLIENT_NAME = "Please provide unique valid client name";
       public static final String INVALID_CLIENT_ID = "Please provide valid client id";
     }
@@ -374,6 +376,8 @@ public interface ResponseMessage {
         public static final String INVALID_ORG_TYPE_ID_ERROR = "INVALID_ORG_TYPE_ID_ERROR";
         public static final String INVALID_ORG_TYPE_ERROR = "INVALID_ORG_TYPE_ERROR";
         public static final String TABLE_OR_DOC_NAME_ERROR = "TABLE_OR_DOC_NAME_ERROR";
+        public static final String EMAIL_OR_PHONE_MISSING = "EMAIL_OR_PHONE_MISSING";
+        public static final String PHONE_ALREADY_IN_USE = "PHONE_ALREADY_IN_USE";
         public static final String INVALID_CLIENT_NAME = "INVALID_CLIENT_NAME";
         public static final String INVALID_CLIENT_ID = "INVALID_CLIENT_ID";
     }
