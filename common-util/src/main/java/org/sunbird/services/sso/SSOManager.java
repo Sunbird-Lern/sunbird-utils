@@ -78,6 +78,23 @@ public interface SSOManager {
 	public boolean addUserLoginTime (String userId); 
 	
 	/**
+	 * This method will add custom attribute to keycloak.
+	 * @param key
+	 * @param value
+	 * @param id
+	 * @return boolean
+	 */
+	public boolean addAttributesToKeyCloak(String key,String value,String id);
+	
+	/**
+	 * This method will read key value from keycloak
+	 * @param key
+	 * @param userId
+	 * @return
+	 */
+	public String getAttributesValue(String  key ,String userId);
+	
+	/**
 	 * this method will do the user login with key cloak.
 	 * after login it will provide access token. 
 	 * @param userName String
