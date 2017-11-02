@@ -536,4 +536,5 @@ public class JsonKey {
   public static final String TENANT_PREFERENCE_DB = "tenantPreferenceDb";
   public static final String TERM_AND_CONDITION_STATUS = "tcStatus";
   public static final String TC_UPDATED_DATE = "tcUpdatedAt";
+  public static final String GEO_LOCATION_DB ="geoLocationDb";
 }
