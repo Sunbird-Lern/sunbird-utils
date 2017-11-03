@@ -194,7 +194,6 @@ public enum ResponseCode {
     invalidClientId(ResponseMessage.Key.INVALID_CLIENT_ID, ResponseMessage.Message.INVALID_CLIENT_ID),
     userPhoneUpdateFailed(ResponseMessage.Key.USER_PHONE_UPDATE_FAILED, ResponseMessage.Message.USER_PHONE_UPDATE_FAILED),
     esUpdateFailed(ResponseMessage.Key.ES_UPDATE_FAILED, ResponseMessage.Message.ES_UPDATE_FAILED),
-    invalidLocationId(ResponseMessage.Key.INVALID_LOCATION_ID , ResponseMessage.Key.INVALID_LOCATION_ID),
     invalidTypeValue(ResponseMessage.Key.INVALID_TYPE_VALUE , ResponseMessage.Key.INVALID_TYPE_VALUE),
     invalidLocationId(ResponseMessage.Key.INVALID_LOCATION_ID, ResponseMessage.Message.INVALID_LOCATION_ID),
     invalidHashTagId(ResponseMessage.Key.INVALID_HASHTAG_ID, ResponseMessage.Message.INVALID_HASHTAG_ID),
