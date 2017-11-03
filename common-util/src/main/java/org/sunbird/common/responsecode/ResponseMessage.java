@@ -197,6 +197,7 @@ public interface ResponseMessage {
       public static final String ES_UPDATE_FAILED = "Data insertion to ES failed.";
       public static final String INVALID_LOCATION_ID = "Please provide valid location id.";
       public static final String INVALID_HASHTAG_ID = "Please provide different hashTagId.This HashTagId is associated with some other organization.";
+      public static final String INVALID_USR_ORG_DATA = "Given User Data doesn't belongs to this organization. Please provide a valid one";
     }
     
     public interface Key {
@@ -388,5 +389,6 @@ public interface ResponseMessage {
         public static final String ES_UPDATE_FAILED = "ES_UPDATE_FAILED";
         public static final String INVALID_LOCATION_ID = "INVALID_LOCATION_ID";
         public static final String INVALID_HASHTAG_ID = "INVALID_HASHTAG_ID";
+        public static final String INVALID_USR_ORG_DATA = "INVALID_USR_ORG_DATA";
     }
 }
