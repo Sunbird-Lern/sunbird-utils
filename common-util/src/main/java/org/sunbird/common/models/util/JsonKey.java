@@ -545,5 +545,8 @@ public class JsonKey {
   public static final String CLIENT_INFO_DB = "clientInfo_db";
   public static final String TOPIC_NAME = "topicName";
   public static final String TOPIC = "topic";
+  public static final String TO = "to";
+  public static final String FCM_URL = "fcm.url";
+  public static final String SUNBIRD_FCM_ACCOUNT_KEY = "sunbird_fcm_account_key";
 
 }
