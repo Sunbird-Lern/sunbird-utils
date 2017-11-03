@@ -179,6 +179,9 @@ public class KeyCloakServiceImpl implements SSOManager {
         needTobeUpdate = true;
         ur.setUsername((String) request.get(JsonKey.USERNAME));
       }
+    } if (isNotNull(request.get(JsonKey.PHONE))) {
+      needTobeUpdate = true;
+        ur = addAttributeToKeyCloak(JsonKey.MOBILE, (String)request.get(JsonKey.PHONE), ur);
     }
     try {
       // if user sending any basic profile data
@@ -481,7 +484,7 @@ public class KeyCloakServiceImpl implements SSOManager {
       resource.update(ur);
     } catch (Exception e) {
       ProjectLogger.log("Exception occurred while updating "+key+ " with value "+value+" in keycloak."+e.getMessage() , e);
-      response = true;
+      response = false;
     }
     return response;
   }
@@ -506,4 +509,22 @@ public class KeyCloakServiceImpl implements SSOManager {
     return "";
   }
  
+  
+  public UserRepresentation addAttributeToKeyCloak(String key,String value,UserRepresentation ur) {
+    try {
+      Map<String, List<String>> map = ur.getAttributes();
+      List<String> list = new ArrayList<>();
+      list.add(value);
+      if (map == null) {
+        map = new HashMap<>();
+      }
+      map.put(key, list);
+      ur.setAttributes(map);
+    } catch (Exception e) {
+      ProjectLogger.log("Exception occurred while updating "+key+ " with value "+value+" in keycloak."+e.getMessage() , e);
+    }
+    return ur;
+  }
+  
+  
 }
