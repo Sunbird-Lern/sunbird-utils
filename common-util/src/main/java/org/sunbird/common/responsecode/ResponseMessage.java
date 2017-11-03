@@ -195,6 +195,8 @@ public interface ResponseMessage {
       public static final String INVALID_CLIENT_ID = "Please provide valid client id";
       public static final String USER_PHONE_UPDATE_FAILED = "user phone update is failed.";
       public static final String ES_UPDATE_FAILED = "Data insertion to ES failed.";
+      public static final String INVALID_LOCATION_ID = "Invalid locationId";
+      public static final String INVALID_TYPE_VALUE = "Type value should be organisation OR location .";
     }
     
     public interface Key {
@@ -384,5 +386,7 @@ public interface ResponseMessage {
         public static final String INVALID_CLIENT_ID = "INVALID_CLIENT_ID";
         public static final String USER_PHONE_UPDATE_FAILED = "USER_PHONE_UPDATE_FAILED";
         public static final String ES_UPDATE_FAILED = "ES_UPDATE_FAILED";
+        public static final String INVALID_LOCATION_ID = "INVALID_LOCATION_ID";
+        public static final String INVALID_TYPE_VALUE = "INVALID_TYPE_VALUE";
     }
 }
