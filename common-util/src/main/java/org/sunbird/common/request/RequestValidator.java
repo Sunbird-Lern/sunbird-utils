@@ -1293,6 +1293,7 @@ public final class RequestValidator {
     }
   }
 
+  @SuppressWarnings("unchecked")
   public static void validateProfileVisibility(Request request) {
     if (request.getRequest().get(JsonKey.PRIVATE) == null
         && request.getRequest().get(JsonKey.PUBLIC) == null) {
@@ -1318,6 +1319,27 @@ public final class RequestValidator {
       throw new ProjectCommonException(ResponseCode.usernameOrUserIdError.getErrorCode(),
           ResponseCode.usernameOrUserIdError.getErrorMessage(), ERROR_CODE);
     }
+    if (null != request.getRequest().get(JsonKey.PRIVATE)
+        && null != request.getRequest().get(JsonKey.PUBLIC)) {
+      List<String> privateList = (List<String>) request.getRequest().get(JsonKey.PRIVATE);
+      List<String> publicList = (List<String>) request.getRequest().get(JsonKey.PUBLIC);
+      if (privateList.size()>publicList.size()){
+        for(String field: publicList){
+          if(privateList.contains(field)){
+            throw new ProjectCommonException(ResponseCode.visibilityInvalid.getErrorCode(),
+                ResponseCode.visibilityInvalid.getErrorMessage(), ERROR_CODE);
+          }
+        }
+      }else{
+        for(String field: privateList){
+          if(publicList.contains(field)){
+            throw new ProjectCommonException(ResponseCode.visibilityInvalid.getErrorCode(),
+                ResponseCode.visibilityInvalid.getErrorMessage(), ERROR_CODE);
+          }
+        }
+      }
+    }
+     
   }
   /**
    * Method to validate  
