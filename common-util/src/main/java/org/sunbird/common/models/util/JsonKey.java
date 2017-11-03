@@ -546,5 +546,6 @@ public class JsonKey {
   public static final String TOPIC_NAME = "topicName";
   public static final String TOPIC = "topic";
   public static final String LOCATION_ID = "locationId";
+  public static final String LOC_ID = "locationId";
 
 }
