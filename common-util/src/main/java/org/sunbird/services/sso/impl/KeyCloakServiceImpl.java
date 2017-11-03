@@ -480,8 +480,8 @@ public class KeyCloakServiceImpl implements SSOManager {
       ur.setAttributes(map);
       resource.update(ur);
     } catch (Exception e) {
-      ProjectLogger.log("Exception occurred while updating "+key+ " with value "+value+" in keycloak." , e);
-      response = false;
+      ProjectLogger.log("Exception occurred while updating "+key+ " with value "+value+" in keycloak."+e.getMessage() , e);
+      response = true;
     }
     return response;
   }
