@@ -6,7 +6,8 @@ import java.util.List;
 
 /**
  * Interface for cassandra connection manager , implementation would be Standalone and Embedde cassandra connection manager .
- * Created by arvind on 11/10/17.
+ * @author Amit Kumar
+ * @author Arvind
  */
 public interface CassandraConnectionManager {
 
