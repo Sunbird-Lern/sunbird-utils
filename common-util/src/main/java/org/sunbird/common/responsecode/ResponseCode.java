@@ -192,6 +192,12 @@ public enum ResponseCode {
     PhoneNumberInUse(ResponseMessage.Key.PHONE_ALREADY_IN_USE, ResponseMessage.Message.PHONE_ALREADY_IN_USE),
     invalidClientName(ResponseMessage.Key.INVALID_CLIENT_NAME, ResponseMessage.Message.INVALID_CLIENT_NAME),
     invalidClientId(ResponseMessage.Key.INVALID_CLIENT_ID, ResponseMessage.Message.INVALID_CLIENT_ID),
+    userPhoneUpdateFailed(ResponseMessage.Key.USER_PHONE_UPDATE_FAILED, ResponseMessage.Message.USER_PHONE_UPDATE_FAILED),
+    esUpdateFailed(ResponseMessage.Key.ES_UPDATE_FAILED, ResponseMessage.Message.ES_UPDATE_FAILED),
+    invalidTypeValue(ResponseMessage.Key.INVALID_TYPE_VALUE , ResponseMessage.Key.INVALID_TYPE_VALUE),
+    invalidLocationId(ResponseMessage.Key.INVALID_LOCATION_ID, ResponseMessage.Message.INVALID_LOCATION_ID),
+    invalidHashTagId(ResponseMessage.Key.INVALID_HASHTAG_ID, ResponseMessage.Message.INVALID_HASHTAG_ID),
+    invalidUsrOrgData(ResponseMessage.Key.INVALID_USR_ORG_DATA, ResponseMessage.Message.INVALID_USR_ORG_DATA),
     OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404),UNAUTHORIZED(401),REDIRECTION_REQUIRED(302);
 	
 	private int responseCode;

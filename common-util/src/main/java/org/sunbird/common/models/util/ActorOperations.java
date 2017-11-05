@@ -59,7 +59,9 @@ public enum ActorOperations {
     ADD_SKILL("addSkill"), GET_SKILL("getSkill") , GET_SKILLS_LIST("getSkillsList"),PROFILE_VISIBILITY("profileVisibility"),CREATE_TENANT_PREFERENCE("createTanentPreference"),
     UPDATE_TENANT_PREFERENCE("updateTenantPreference"),GET_TENANT_PREFERENCE("getTenantPreference"),
     UPDATE_TC_STATUS_OF_USER("updateTCStatusOfUser"), REGISTER_CLIENT("registerClient"), UPDATE_CLIENT_KEY("updateClientKey"), GET_CLIENT_KEY("getClientKey"),CREATE_GEO_LOCATION("createGeoLocation"),
-    GET_GEO_LOCATION("getGeoLocation");
+    GET_GEO_LOCATION("getGeoLocation"),
+    UPDATE_GEO_LOCATION("updateGeoLocation"),
+    DELETE_GEO_LOCATION("deleteGeoLocation");
 
     private String value;
 

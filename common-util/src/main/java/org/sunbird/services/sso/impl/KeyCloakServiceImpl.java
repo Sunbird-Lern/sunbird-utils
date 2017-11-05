@@ -461,49 +461,5 @@ public class KeyCloakServiceImpl implements SSOManager {
     }
     return response;
   }
-  
-  @Override
-  public boolean addAttributesToKeyCloak(String key,String value,String id) {
-    boolean response = true;
-    try {
-      UserResource resource =
-          keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(id);
-      UserRepresentation ur = resource.toRepresentation();
-      Map<String, List<String>> map = ur.getAttributes();
-      List<String> list = new ArrayList<>();
-      list.add(value);
-      if (map == null) {
-        map = new HashMap<>();
-      }
-      
-      map.put(key, list);
-      ur.setAttributes(map);
-      resource.update(ur);
-    } catch (Exception e) {
-      ProjectLogger.log(e.getMessage(), e);
-      response = false;
-    }
-    return response;
-  }
-  
-  @Override
-  public String getAttributesValue(String  key ,String userId) {
-    try {
-      UserResource resource =
-          keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
-      UserRepresentation ur = resource.toRepresentation();
-      Map<String, List<String>> map = ur.getAttributes();
-      if (map == null) {
-        map = new HashMap<>();
-      }
-      List<String> list = map.get(key);
-      if (list != null && !list.isEmpty()) {
-        return list.get(0);
-      }
-    } catch (Exception e) {
-      ProjectLogger.log(e.getMessage(), e);
-    }
-    return "";
-  }
- 
+   
 }
