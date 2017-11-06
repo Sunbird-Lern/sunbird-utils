@@ -23,7 +23,6 @@ public class ResponseParams implements Serializable {
 
   /**
    * This will contains response message id.
-   * 
    * @return String
    */
   public String getResmsgid() {
@@ -32,7 +31,6 @@ public class ResponseParams implements Serializable {
 
   /**
    * set the response message id.
-   * 
    * @param resmsgid String
    */
   public void setResmsgid(String resmsgid) {
@@ -41,7 +39,6 @@ public class ResponseParams implements Serializable {
 
   /**
    * This will provide request specific message id.
-   * 
    * @return String
    */
   public String getMsgid() {
@@ -50,7 +47,6 @@ public class ResponseParams implements Serializable {
 
   /**
    * Set the request specific message id.
-   * 
    * @param msgid
    */
   public void setMsgid(String msgid) {
@@ -59,7 +55,6 @@ public class ResponseParams implements Serializable {
 
   /**
    * This will provide error message
-   * 
    * @return String
    */
   public String getErr() {
@@ -68,7 +63,6 @@ public class ResponseParams implements Serializable {
 
   /**
    * Set the error message
-   * 
    * @param err String
    */
   public void setErr(String err) {
@@ -77,7 +71,6 @@ public class ResponseParams implements Serializable {
 
   /**
    * This will return api call status
-   * 
    * @return String
    */
   public String getStatus() {
@@ -86,7 +79,6 @@ public class ResponseParams implements Serializable {
 
   /**
    * Set the api call status
-   * 
    * @param status
    */
   public void setStatus(String status) {
@@ -95,7 +87,6 @@ public class ResponseParams implements Serializable {
 
   /**
    * This will provide Error message in english
-   * 
    * @return String
    */
   public String getErrmsg() {
@@ -104,7 +95,6 @@ public class ResponseParams implements Serializable {
 
   /**
    * Set the error message in English.
-   * 
    * @param message String
    */
   public void setErrmsg(String message) {

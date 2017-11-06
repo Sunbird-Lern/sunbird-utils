@@ -199,6 +199,7 @@ public interface ResponseMessage {
       public static final String INVALID_LOCATION_ID = "Please provide valid location id.";
       public static final String INVALID_HASHTAG_ID = "Please provide different hashTagId.This HashTagId is associated with some other organization.";
       public static final String INVALID_USR_ORG_DATA = "Given User Data doesn't belongs to this organization. Please provide a valid one";
+      public static final String INVALID_VISIBILITY_REQUEST = "Private and Public fields cannot be same";
     }
     
     public interface Key {
@@ -392,5 +393,6 @@ public interface ResponseMessage {
         public static final String INVALID_LOCATION_ID = "INVALID_LOCATION_ID";
         public static final String INVALID_HASHTAG_ID = "INVALID_HASHTAG_ID";
         public static final String INVALID_USR_ORG_DATA = "INVALID_USR_ORG_DATA";
+        public static final String INVALID_VISIBILITY_REQUEST = "INVALID_VISIBILITY_REQUEST";
     }
 }
