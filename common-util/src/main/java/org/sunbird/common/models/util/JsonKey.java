@@ -1,18 +1,17 @@
 /**
- * 
  */
 package org.sunbird.common.models.util;
 
 /**
- * 
- * This class will contains all the key related to request and response
- * 
+ * This class will contains all the key related to request and response.
  * @author Manzarul
- *
  */
 
-public class JsonKey {
-
+public final class JsonKey {
+  
+  private JsonKey(){
+    
+  }
   public static final String USER_ID = "userId";
   public static final String CONTENT_ID = "contentId";
   public static final String CONTENT_IDS = "contentIds";
@@ -528,7 +527,7 @@ public class JsonKey {
   public static final String SKILLS = "skills";
   public static final String SKILLS_LIST_DB = "skillsListDb";
   public static final String PRIVATE = "private";
-  public static final String PROFILE_VISIBILITY = "profilevisibility";
+  public static final String PROFILE_VISIBILITY = "profileVisibility";
   public static final String ORG_TYPE_ID = "orgTypeId";
   public static final String SUNBIRD = "sunbird";
   public static final String SUNBIRD_PLUGIN = "sunbirdplugin";

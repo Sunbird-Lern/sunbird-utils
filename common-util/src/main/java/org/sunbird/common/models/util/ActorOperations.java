@@ -4,7 +4,6 @@ package org.sunbird.common.models.util;
  * This enum will contains different operation
  *  for a learner {addCourse, getCourse, update , getContent}
  * @author Manzarul
- *
  */
 
 public enum ActorOperations {
