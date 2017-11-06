@@ -17,70 +17,70 @@ public class Params implements Serializable {
   private String errmsg;
 
   /**
-   * @return the resmsgid
+   * @return  String
    */
   public String getResmsgid() {
     return resmsgid;
   }
 
   /**
-   * @param resmsgid the resmsgid to set
+   * @param resmsgid Stirng
    */
   public void setResmsgid(String resmsgid) {
     this.resmsgid = resmsgid;
   }
 
   /**
-   * @return the msgid
+   * @return Stirng
    */
   public String getMsgid() {
     return msgid;
   }
 
   /**
-   * @param msgid the msgid to set
+   * @param msgid String
    */
   public void setMsgid(String msgid) {
     this.msgid = msgid;
   }
 
   /**
-   * @return the err
+   * @return String
    */
   public String getErr() {
     return err;
   }
 
   /**
-   * @param err the err to set
+   * @param err String
    */
   public void setErr(String err) {
     this.err = err;
   }
 
   /**
-   * @return the status
+   * @return String
    */
   public String getStatus() {
     return status;
   }
 
   /**
-   * @param status the status to set
+   * @param status Stirng
    */
   public void setStatus(String status) {
     this.status = status;
   }
 
   /**
-   * @return the errmsg
+   * @return Stirng
    */
   public String getErrmsg() {
     return errmsg;
   }
 
   /**
-   * @param errmsg the errmsg to set
+   * @param errmsg Stirng
    */
   public void setErrmsg(String errmsg) {
     this.errmsg = errmsg;
