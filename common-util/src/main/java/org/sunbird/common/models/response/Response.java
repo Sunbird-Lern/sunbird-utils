@@ -24,7 +24,6 @@ public class Response implements Serializable, Cloneable {
 
   /**
    * This will provide request unique id.
-   * 
    * @return String
    */
   public String getId() {
@@ -33,7 +32,6 @@ public class Response implements Serializable, Cloneable {
 
   /**
    * set the unique id
-   * 
    * @param id String
    */
   public void setId(String id) {
@@ -42,7 +40,6 @@ public class Response implements Serializable, Cloneable {
 
   /**
    * this will provide api version
-   * 
    * @return String
    */
   public String getVer() {
@@ -51,7 +48,6 @@ public class Response implements Serializable, Cloneable {
 
   /**
    * set the api version
-   * 
    * @param ver String
    */
   public void setVer(String ver) {
@@ -60,7 +56,6 @@ public class Response implements Serializable, Cloneable {
 
   /**
    * this will provide complete time value
-   * 
    * @return String
    */
   public String getTs() {
@@ -69,7 +64,6 @@ public class Response implements Serializable, Cloneable {
 
   /**
    * set the time value
-   * 
    * @param ts String
    */
   public void setTs(String ts) {
@@ -77,33 +71,30 @@ public class Response implements Serializable, Cloneable {
   }
 
   /**
-   * @return the responseValueObjects
+   * @return Map<String, Object> 
    */
   public Map<String, Object> getResult() {
     return result;
   }
 
   /**
-   * 
-   * @param key
-   * @return
+   * @param key String
+   * @return Object
    */
   public Object get(String key) {
     return result.get(key);
   }
 
   /**
-   * 
-   * @param key
-   * @param vo
+   * @param key String
+   * @param vo Object
    */
   public void put(String key, Object vo) {
     result.put(key, vo);
   }
 
   /**
-   * 
-   * @param map
+   * @param map Map<String, Object>
    */
   public void putAll(Map<String, Object> map) {
     result.putAll(map);
@@ -111,7 +102,6 @@ public class Response implements Serializable, Cloneable {
   
   /**
    * This will provide response parameter object.
-   * 
    * @return ResponseParams
    */
   public ResponseParams getParams() {
@@ -120,8 +110,7 @@ public class Response implements Serializable, Cloneable {
 
   /**
    * set the response parameter object.
-   * 
-   * @param params
+   * @param params ResponseParams
    */
   public void setParams(ResponseParams params) {
     this.params = params;
@@ -129,7 +118,6 @@ public class Response implements Serializable, Cloneable {
 
   /**
    * Set the response code for header.
-   * 
    * @param code ResponseCode
    */
   public void setResponseCode(ResponseCode code) {
@@ -138,7 +126,6 @@ public class Response implements Serializable, Cloneable {
 
   /**
    * get the response code
-   * 
    * @return ResponseCode
    */
   public ResponseCode getResponseCode() {

@@ -480,4 +480,5 @@ public class KeyCloakServiceImpl implements SSOManager {
     }
     return response;
   }
+
 }
