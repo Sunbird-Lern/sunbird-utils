@@ -1367,7 +1367,7 @@ public final class RequestValidator {
   }
   
   /**
-   * Method to validate clientId
+   * Method to validate clientId.
    * @param request
    */
   public static void validateClientId(String clientId){
@@ -1376,4 +1376,42 @@ public final class RequestValidator {
           ResponseCode.invalidClientId.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
     }
   }
+  
+  /**
+   * Method to validate notification request data.
+   * @param request Request
+   */
+  @SuppressWarnings("unchecked")
+  public static void validateSendNotification(Request request) {
+    if (ProjectUtil
+        .isStringNullOREmpty((String) request.getRequest().get(JsonKey.TO))) {
+      throw new ProjectCommonException(ResponseCode.invalidTopic.getErrorCode(),
+          ResponseCode.invalidTopic.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    if (request.getRequest().get(JsonKey.DATA) == null
+        || !(request.getRequest().get(JsonKey.DATA) instanceof Map)
+        || ((Map<String, Object>) request.getRequest().get(JsonKey.DATA))
+            .size() == 0) {
+      throw new ProjectCommonException(
+          ResponseCode.invalidTopicData.getErrorCode(),
+          ResponseCode.invalidTopicData.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    
+    if (ProjectUtil
+        .isStringNullOREmpty((String) request.getRequest().get(JsonKey.TYPE))) {
+      throw new ProjectCommonException(
+          ResponseCode.invalidNotificationType.getErrorCode(),
+          ResponseCode.invalidNotificationType.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    if (!(JsonKey.FCM.equalsIgnoreCase((String) request.getRequest().get(JsonKey.TYPE)))) {
+      throw new ProjectCommonException(
+          ResponseCode.notificationTypeSupport.getErrorCode(),
+          ResponseCode.notificationTypeSupport.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+  }
+  
 }

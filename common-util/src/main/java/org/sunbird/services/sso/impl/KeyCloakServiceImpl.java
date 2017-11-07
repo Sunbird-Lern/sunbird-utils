@@ -97,9 +97,8 @@ public class KeyCloakServiceImpl implements SSOManager {
       result = keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().create(user);
     } catch (Exception e) {
       ProjectLogger.log(e.getMessage(), e);
-      throw new ProjectCommonException(
-          ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(),
-          ResponseCode.SERVER_ERROR.getResponseCode());
+      throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(),
+          ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
     }
     if (request != null) {
       if (result.getStatus() != 201) {
@@ -111,29 +110,29 @@ public class KeyCloakServiceImpl implements SSOManager {
               ResponseCode.emailANDUserNameAlreadyExistError.getErrorMessage(),
               ResponseCode.CLIENT_ERROR.getResponseCode());
         } else {
-          throw new ProjectCommonException(
-              ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(),
+          throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(),
+              ResponseCode.SERVER_ERROR.getErrorMessage(),
               ResponseCode.SERVER_ERROR.getResponseCode());
         }
       } else {
         userId = result.getHeaderString("Location").replaceAll(".*/(.*)$", "$1");
       }
     } else {
-      throw new ProjectCommonException(
-          ResponseCode.SERVER_ERROR.getErrorCode(), ResponseCode.SERVER_ERROR.getErrorMessage(),
-          ResponseCode.SERVER_ERROR.getResponseCode());
+      throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(),
+          ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
     }
 
     // reset the password with same password
     if (!(ProjectUtil.isStringNullOREmpty(userId)) && ((request.get(JsonKey.PASSWORD) != null)
         && !ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.PASSWORD)))) {
       doPasswordUpdate(userId, (String) request.get(JsonKey.PASSWORD));
-      //key cloak setting is change now so key cloak won't 
-      //provide access token id just after create user. because 
+      // key cloak setting is change now so key cloak won't
+      // provide access token id just after create user. because
       // change password is mandatory on keyclaok.
-     /* if (request.get(JsonKey.BULK_USER_UPLOAD) == null) {
-        accessToken = login(user.getUsername(), (String) request.get(JsonKey.PASSWORD));
-      }*/
+      /*
+       * if (request.get(JsonKey.BULK_USER_UPLOAD) == null) { accessToken =
+       * login(user.getUsername(), (String) request.get(JsonKey.PASSWORD)); }
+       */
     }
     Map<String, String> map = new HashMap<>();
     map.put(JsonKey.USER_ID, userId);
@@ -152,8 +151,8 @@ public class KeyCloakServiceImpl implements SSOManager {
       resource = keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
       ur = resource.toRepresentation();
     } catch (Exception e) {
-      throw new ProjectCommonException(
-          ResponseCode.invalidUsrData.getErrorCode(), ResponseCode.invalidUsrData.getErrorMessage(),
+      throw new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(),
+          ResponseCode.invalidUsrData.getErrorMessage(),
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
 
@@ -179,9 +178,17 @@ public class KeyCloakServiceImpl implements SSOManager {
         needTobeUpdate = true;
         ur.setUsername((String) request.get(JsonKey.USERNAME));
       }
-    } if (isNotNull(request.get(JsonKey.PHONE))) {
+    }
+    if (isNotNull(request.get(JsonKey.PHONE))) {
       needTobeUpdate = true;
-        ur = addAttributeToKeyCloak(JsonKey.MOBILE, (String)request.get(JsonKey.PHONE), ur);
+      Map<String, List<String>> map = ur.getAttributes();
+      List<String> list = new ArrayList<>();
+      list.add((String) request.get(JsonKey.PHONE));
+      if (map == null) {
+        map = new HashMap<>();
+      }
+      map.put(JsonKey.MOBILE, list);
+      ur.setAttributes(map);
     }
     try {
       // if user sending any basic profile data
@@ -190,8 +197,8 @@ public class KeyCloakServiceImpl implements SSOManager {
         resource.update(ur);
       }
     } catch (Exception ex) {
-      throw new ProjectCommonException(
-          ResponseCode.invalidUsrData.getErrorCode(), ResponseCode.invalidUsrData.getErrorMessage(),
+      throw new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(),
+          ResponseCode.invalidUsrData.getErrorMessage(),
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
     return JsonKey.SUCCESS;
@@ -214,8 +221,8 @@ public class KeyCloakServiceImpl implements SSOManager {
       try {
         resource.remove();
       } catch (Exception ex) {
-        throw new ProjectCommonException(ex.getMessage(),
-            ex.getMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+        throw new ProjectCommonException(ex.getMessage(), ex.getMessage(),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
       }
 
     }
@@ -243,15 +250,15 @@ public class KeyCloakServiceImpl implements SSOManager {
         } catch (Exception ex) {
           ProjectLogger.log(ex.getMessage(), ex);
           throw new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(),
-                  ResponseCode.invalidUsrData.getErrorMessage(),
-                  ResponseCode.CLIENT_ERROR.getResponseCode());
+              ResponseCode.invalidUsrData.getErrorMessage(),
+              ResponseCode.CLIENT_ERROR.getResponseCode());
         }
 
       }
     } catch (Exception e) {
       ProjectLogger.log(e.getMessage(), e);
-      throw new ProjectCommonException(
-          ResponseCode.invalidUsrData.getErrorCode(), ResponseCode.invalidUsrData.getErrorMessage(),
+      throw new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(),
+          ResponseCode.invalidUsrData.getErrorMessage(),
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
     return JsonKey.SUCCESS;
@@ -278,15 +285,15 @@ public class KeyCloakServiceImpl implements SSOManager {
         } catch (Exception ex) {
           ProjectLogger.log(ex.getMessage(), ex);
           throw new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(),
-                  ResponseCode.invalidUsrData.getErrorMessage(),
-                  ResponseCode.CLIENT_ERROR.getResponseCode());
+              ResponseCode.invalidUsrData.getErrorMessage(),
+              ResponseCode.CLIENT_ERROR.getResponseCode());
         }
 
       }
     } catch (Exception e) {
       ProjectLogger.log(e.getMessage(), e);
-      throw new ProjectCommonException(
-          ResponseCode.invalidUsrData.getErrorCode(), ResponseCode.invalidUsrData.getErrorMessage(),
+      throw new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(),
+          ResponseCode.invalidUsrData.getErrorMessage(),
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
     return JsonKey.SUCCESS;
@@ -347,7 +354,16 @@ public class KeyCloakServiceImpl implements SSOManager {
     if (isNotNull(request.get(JsonKey.EMAIL_VERIFIED))) {
       user.setEmailVerified((Boolean) request.get(JsonKey.EMAIL_VERIFIED));
     }
-
+    if (isNotNull(request.get(JsonKey.PHONE))) {
+      Map<String, List<String>> map = user.getAttributes();
+      List<String> list = new ArrayList<>();
+      list.add((String) request.get(JsonKey.PHONE));
+      if (map == null) {
+        map = new HashMap<>();
+      }
+      map.put(JsonKey.MOBILE, list);
+      user.setAttributes(map);
+    }
     user.setEnabled(true);
     return user;
   }
@@ -374,8 +390,8 @@ public class KeyCloakServiceImpl implements SSOManager {
         verifyEmail(userId);
       }
     } catch (Exception ex) {
-      throw new ProjectCommonException(ex.getMessage(),
-          ex.getMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+      throw new ProjectCommonException(ex.getMessage(), ex.getMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
     }
   }
 
@@ -464,67 +480,5 @@ public class KeyCloakServiceImpl implements SSOManager {
     }
     return response;
   }
-  
-  @Override
-  public boolean addAttributesToKeyCloak(String key,String value,String id) {
-    boolean response = true;
-    try {
-      UserResource resource =
-          keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(id);
-      UserRepresentation ur = resource.toRepresentation();
-      Map<String, List<String>> map = ur.getAttributes();
-      List<String> list = new ArrayList<>();
-      list.add(value);
-      if (map == null) {
-        map = new HashMap<>();
-      }
-      
-      map.put(key, list);
-      ur.setAttributes(map);
-      resource.update(ur);
-    } catch (Exception e) {
-      ProjectLogger.log("Exception occurred while updating "+key+ " with value "+value+" in keycloak."+e.getMessage() , e);
-      response = false;
-    }
-    return response;
-  }
-  
-  @Override
-  public String getAttributesValue(String  key ,String userId) {
-    try {
-      UserResource resource =
-          keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
-      UserRepresentation ur = resource.toRepresentation();
-      Map<String, List<String>> map = ur.getAttributes();
-      if (map == null) {
-        map = new HashMap<>();
-      }
-      List<String> list = map.get(key);
-      if (list != null && !list.isEmpty()) {
-        return list.get(0);
-      }
-    } catch (Exception e) {
-      ProjectLogger.log(e.getMessage(), e);
-    }
-    return "";
-  }
- 
-  
-  public UserRepresentation addAttributeToKeyCloak(String key,String value,UserRepresentation ur) {
-    try {
-      Map<String, List<String>> map = ur.getAttributes();
-      List<String> list = new ArrayList<>();
-      list.add(value);
-      if (map == null) {
-        map = new HashMap<>();
-      }
-      map.put(key, list);
-      ur.setAttributes(map);
-    } catch (Exception e) {
-      ProjectLogger.log("Exception occurred while updating "+key+ " with value "+value+" in keycloak."+e.getMessage() , e);
-    }
-    return ur;
-  }
-  
-  
+
 }

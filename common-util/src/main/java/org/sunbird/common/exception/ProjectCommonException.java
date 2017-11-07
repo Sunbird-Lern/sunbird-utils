@@ -1,26 +1,34 @@
 /**
- * 
  */
 package org.sunbird.common.exception;
 
 /**
- * @author Manzarul.Haque
  *This exception will be used across all backend code.
  *This will send status code and error message
+ *@author Manzarul.Haque
  */
 public class ProjectCommonException extends RuntimeException {
 
   /**
-   * serialVersionUID
+   * serialVersionUID.
    */
   private static final long serialVersionUID = 1L;
+  /**
+   * code String code ResponseCode.
+   */
   private String code;
+  /**
+   * message String ResponseCode.
+   */
   private String message;
+  /**
+   * responseCode int ResponseCode.
+   */
   private int responseCode;
 
   /**
-   * This code is for client to identify the error and based on that do the message localization.
-   * 
+   * This code is for client to identify the error and based on
+   * that do the message localization.
    * @return String
    */
   public String getCode() {
@@ -28,8 +36,7 @@ public class ProjectCommonException extends RuntimeException {
   }
 
   /**
-   * To set the client code
-   * 
+   * To set the client code.
    * @param code String
    */
   public void setCode(String code) {
@@ -38,7 +45,6 @@ public class ProjectCommonException extends RuntimeException {
 
   /**
    * message for client in english.
-   * 
    * @return String
    */
   public String getMessage() {
@@ -46,7 +52,6 @@ public class ProjectCommonException extends RuntimeException {
   }
 
   /**
-   * 
    * @param message String
    */
   public void setMessage(String message) {
@@ -55,8 +60,8 @@ public class ProjectCommonException extends RuntimeException {
 
 
   /**
-   * This method will provide response code, this code will be used in response header.
-   * 
+   * This method will provide response code, this code will be
+   * used in response header.
    * @return int
    */
   public int getResponseCode() {
@@ -64,7 +69,6 @@ public class ProjectCommonException extends RuntimeException {
   }
 
   /**
-   * 
    * @param responseCode int
    */
   public void setResponseCode(int responseCode) {
@@ -73,7 +77,6 @@ public class ProjectCommonException extends RuntimeException {
 
   /**
    * three argument constructor.
-   * 
    * @param code String
    * @param message String
    * @param responseCode int
