@@ -1,18 +1,17 @@
 /**
- * 
  */
 package org.sunbird.common.models.util;
 
 /**
- * 
- * This class will contains all the key related to request and response
- * 
+ * This class will contains all the key related to request and response.
  * @author Manzarul
- *
  */
 
-public class JsonKey {
+public final class JsonKey {
 
+  private JsonKey(){
+
+  }
   public static final String USER_ID = "userId";
   public static final String CONTENT_ID = "contentId";
   public static final String CONTENT_IDS = "contentIds";
@@ -545,8 +544,13 @@ public class JsonKey {
   public static final String CLIENT_INFO_DB = "clientInfo_db";
   public static final String TOPIC_NAME = "topicName";
   public static final String TOPIC = "topic";
+  public static final String TO = "to";
+  public static final String FCM_URL = "fcm.url";
+  public static final String SUNBIRD_FCM_ACCOUNT_KEY = "sunbird_fcm_account_key";
   public static final String LOCATION_ID = "locationId";
   public static final String LOC_ID = "locationId";
+  public static final String MESSAGE_Id = "message_id";
+  public static final String FCM = "fcm";
   public static final String TOPICS ="topics";
 
 }

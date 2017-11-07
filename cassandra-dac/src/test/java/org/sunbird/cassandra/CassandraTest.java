@@ -3,10 +3,14 @@ package org.sunbird.cassandra;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.TableMetadata;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -16,7 +20,6 @@ import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.PropertiesCache;
-import org.sunbird.helper.CassandraConnectionManager;
 import org.sunbird.helper.CassandraConnectionManagerImpl;
 import org.sunbird.helper.CassandraConnectionMngrFactory;
 import org.sunbird.helper.ServiceFactory;
@@ -64,7 +67,6 @@ public class CassandraTest {
     public void testFailedConnection() {
     connectionManager.createConnection("127.0.0.1", "9042", "cassandra", "pass", "eySpace");
     }
-	
     
     @Test(expected=ProjectCommonException.class)
     public void testFailedSessionCheck() {
@@ -244,6 +246,25 @@ public class CassandraTest {
     @Test
     public void testZaDeleteFailedOp() {
       connectionManager.createConnection(cach.getProperty("contactPoint"), cach.getProperty("port"), null, null, cach.getProperty("keyspace"));
+    }
+    
+    @Test
+    public void testZgetTableList() {
+      List<String> tableList = connectionManager.getTableList(cach.getProperty("keyspace"));
+      assertTrue(tableList.contains(JsonKey.USER));
+    }
+    
+    @Test
+    public void testZgetCluster() {
+      Cluster cluster = connectionManager.getCluster(cach.getProperty("keyspace"));
+      Collection<TableMetadata> tables = cluster.getMetadata().getKeyspace(cach.getProperty("keyspace")).getTables();
+      List<String> tableList = tables.stream().map(tm -> tm.getName()).collect(Collectors.toList());
+      assertTrue(tableList.contains(JsonKey.USER));
+    }
+    
+    @Test(expected=ProjectCommonException.class)
+    public void testZgetClusterWithInvalidKeySpace() {
+      connectionManager.getCluster("sun");
     }
 	
 	@AfterClass

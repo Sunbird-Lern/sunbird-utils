@@ -19,84 +19,95 @@ public class Delta implements Serializable {
   private String description;
 
   /**
-   * @return the beforeContentId
+   * the beforeContentId
+   * @return String 
    */
   public String getBeforeContentId() {
     return beforeContentId;
   }
 
   /**
-   * @param beforeContentId the beforeContentId to set
+   * @param beforeContentId String
    */
   public void setBeforeContentId(String beforeContentId) {
     this.beforeContentId = beforeContentId;
   }
 
   /**
-   * @return the afterContnetId
+   * the afterContnetId
+   * @return  String
    */
   public String getAfterContnetId() {
     return afterContentId;
   }
 
   /**
-   * @param afterContnetId the afterContnetId to set
+   * the afterContnetId to set
+   * @param afterContnetId Stirng
    */
   public void setAfterContnetId(String afterContnetId) {
     this.afterContentId = afterContnetId;
   }
 
   /**
-   * @return the contentId
+   * the contentId
+   * @return  String
    */
   public String getContentId() {
     return contentId;
   }
 
   /**
-   * @param contentId the contentId to set
+   * the contentId to set
+   * @param contentId String
    */
   public void setContentId(String contentId) {
     this.contentId = contentId;
   }
 
   /**
-   * @return the date
+   * the date
+   * @return String
    */
   public String getDate() {
     return date;
   }
 
   /**
-   * @param date the date to set
+   * the date to set
+   * @param date String
    */
   public void setDate(String date) {
     this.date = date;
   }
 
   /**
-   * @return the name
+   * the name
+   * @return String
    */
   public String getName() {
     return name;
   }
 
   /**
-   * @param name the name to set
+   * the name to set
+   * @param name String
    */
   public void setName(String name) {
     this.name = name;
   }
 
   /**
-   * @return the description
+   * the description
+   * @return  String
    */
   public String getDescription() {
     return description;
   }
 
   /**
-   * @param description the description to set
+   * the description to set
+   * @param description String
    */
   public void setDescription(String description) {
     this.description = description;
