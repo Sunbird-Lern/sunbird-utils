@@ -199,6 +199,10 @@ public enum ResponseCode {
     invalidHashTagId(ResponseMessage.Key.INVALID_HASHTAG_ID, ResponseMessage.Message.INVALID_HASHTAG_ID),
     invalidUsrOrgData(ResponseMessage.Key.INVALID_USR_ORG_DATA, ResponseMessage.Message.INVALID_USR_ORG_DATA),
     visibilityInvalid(ResponseMessage.Key.INVALID_VISIBILITY_REQUEST,ResponseMessage.Message.INVALID_VISIBILITY_REQUEST),
+    invalidTopic(ResponseMessage.Key.INVALID_TOPIC_NAME,ResponseMessage.Message.INVALID_TOPIC_NAME),
+    invalidTopicData(ResponseMessage.Key.INVALID_TOPIC_DATA,ResponseMessage.Message.INVALID_TOPIC_DATA),
+    invalidNotificationType(ResponseMessage.Key.INVALID_NOTIFICATION_TYPE,ResponseMessage.Message.INVALID_NOTIFICATION_TYPE),
+    notificationTypeSupport(ResponseMessage.Key.INVALID_NOTIFICATION_TYPE_SUPPORT,ResponseMessage.Message.INVALID_NOTIFICATION_TYPE_SUPPORT),
     OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404),UNAUTHORIZED(401),REDIRECTION_REQUIRED(302);
 	
 	private int responseCode;

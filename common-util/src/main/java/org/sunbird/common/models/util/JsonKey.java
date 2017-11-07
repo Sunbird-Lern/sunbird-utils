@@ -549,4 +549,6 @@ public final class JsonKey {
   public static final String SUNBIRD_FCM_ACCOUNT_KEY = "sunbird_fcm_account_key";
   public static final String LOCATION_ID = "locationId";
   public static final String LOC_ID = "locationId";
+  public static final String MESSAGE_Id = "message_id";
+  public static final String FCM = "fcm";
 }
