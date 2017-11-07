@@ -198,8 +198,12 @@ public interface ResponseMessage {
       public static final String INVALID_TYPE_VALUE = "Type value should be organisation OR location .";
       public static final String INVALID_LOCATION_ID = "Please provide valid location id.";
       public static final String INVALID_HASHTAG_ID = "Please provide different hashTagId.This HashTagId is associated with some other organization.";
-      public static final String INVALID_USR_ORG_DATA = "Given User Data doesn't belongs to this organization. Please provide a valid one";
-      public static final String INVALID_VISIBILITY_REQUEST = "Private and Public fields cannot be same";
+      public static final String INVALID_USR_ORG_DATA = "Given User Data doesn't belongs to this organization. Please provide a valid one.";
+      public static final String INVALID_VISIBILITY_REQUEST = "Private and Public fields cannot be same.";
+      public static final String INVALID_TOPIC_NAME = "Please provide a valid toipc.";
+      public static final String INVALID_TOPIC_DATA = "Please provide valid notification data.";
+      public static final String INVALID_NOTIFICATION_TYPE = "Please provide a valid notification type.";
+      public static final String INVALID_NOTIFICATION_TYPE_SUPPORT = "Only notification type FCM is supported.";
     }
     
     public interface Key {
@@ -394,5 +398,9 @@ public interface ResponseMessage {
         public static final String INVALID_HASHTAG_ID = "INVALID_HASHTAG_ID";
         public static final String INVALID_USR_ORG_DATA = "INVALID_USR_ORG_DATA";
         public static final String INVALID_VISIBILITY_REQUEST = "INVALID_VISIBILITY_REQUEST";
+        public static final String INVALID_TOPIC_NAME = "INVALID_TOPIC_NAME";
+        public static final String INVALID_TOPIC_DATA = "INVALID_TOPIC_DATA";
+        public static final String INVALID_NOTIFICATION_TYPE = "INVALID_NOTIFICATION_TYPE";
+        public static final String INVALID_NOTIFICATION_TYPE_SUPPORT = "INVALID_NOTIFICATION_TYPE_SUPPORT";
     }
 }
