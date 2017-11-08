@@ -227,7 +227,7 @@ public final class RequestValidator {
     return true;
   }
 
-  private static void phoneAndEmailValidationForUpdateUser(Request userRequest) {
+  public static void phoneAndEmailValidationForUpdateUser(Request userRequest) {
     if (!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PHONE))) {
       validatePhoneNo((String) userRequest.getRequest().get(JsonKey.PHONE));
     }
@@ -915,13 +915,13 @@ public final class RequestValidator {
   }
 
   /**
-   * 
+   * Either user will send UserId or (provider and externalId).
    * @param request
    */
   public static void validateAssignRole(Request request) {
     if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.USER_ID))) {
-      if (!ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.EXTERNAL_ID))
-          && !ProjectUtil
+      if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.EXTERNAL_ID))
+          || ProjectUtil
               .isStringNullOREmpty((String) request.getRequest().get(JsonKey.PROVIDER))) {
         throw new ProjectCommonException(
             ResponseCode.sourceAndExternalIdValidationError.getErrorCode(),
