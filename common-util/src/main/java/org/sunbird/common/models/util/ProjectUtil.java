@@ -532,9 +532,11 @@ public class ProjectUtil {
   }
 
   public static final String[] excludes =
+      new String[] {JsonKey.COMPLETENESS, JsonKey.MISSING_FIELDS, JsonKey.PROFILE_VISIBILITY};
+  
+  public static final String[] defaultPrivateFields =
       new String[] {JsonKey.EMAIL, JsonKey.PHONE, JsonKey.USERNAME, JsonKey.LOGIN_ID,
-          JsonKey.USER_ID, JsonKey.COMPLETENESS, JsonKey.MISSING_FIELDS, JsonKey.PROFILE_VISIBILITY};
-
+          JsonKey.USER_ID};
   /**
    * 
    * @author Manzarul
