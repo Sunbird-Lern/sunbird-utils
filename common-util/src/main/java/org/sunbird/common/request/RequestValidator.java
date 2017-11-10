@@ -1113,18 +1113,20 @@ public final class RequestValidator {
 
 
   private static void validateEndDate(String startDate, String endDate) {
+    Date batchEndDate = null;
+    Date batchStartDate = null;
     try {
-      Date batchEndDate = format.parse(endDate);
-      Date batchStartDate = format.parse(startDate);
-      if (batchStartDate.getTime() >= batchEndDate.getTime()) {
-        throw new ProjectCommonException(ResponseCode.endDateError.getErrorCode(),
-            ResponseCode.endDateError.getErrorMessage(), ERROR_CODE);
-      }
+      batchEndDate = format.parse(endDate);
+      batchStartDate = format.parse(startDate);
     } catch (Exception e) {
-      throw new ProjectCommonException(ResponseCode.dateFormatError.getErrorCode(),
+      throw new ProjectCommonException(
+          ResponseCode.dateFormatError.getErrorCode(),
           ResponseCode.dateFormatError.getErrorMessage(), ERROR_CODE);
     }
-
+    if (batchStartDate.getTime() >= batchEndDate.getTime()) {
+      throw new ProjectCommonException(ResponseCode.endDateError.getErrorCode(),
+          ResponseCode.endDateError.getErrorMessage(), ERROR_CODE);
+    }
   }
 
 

@@ -10,14 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.ws.rs.core.NewCookie;
 
 import org.junit.Test;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.responsecode.ResponseCode;
-
-import akka.stream.scaladsl.BroadcastHub.NeedWakeup;
 
 /**
  * @author Manzarul
