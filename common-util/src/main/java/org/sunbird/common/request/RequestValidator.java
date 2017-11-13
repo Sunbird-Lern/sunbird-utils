@@ -223,7 +223,7 @@ public final class RequestValidator {
     return true;
   }
 
-  private static void phoneAndEmailValidationForUpdateUser(Request userRequest) {
+  public static void phoneAndEmailValidationForUpdateUser(Request userRequest) {
     if (!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PHONE))) {
       validatePhoneNo((String) userRequest.getRequest().get(JsonKey.PHONE));
     }
@@ -910,13 +910,13 @@ public final class RequestValidator {
   }
 
   /**
-   * 
+   * Either user will send UserId or (provider and externalId).
    * @param request
    */
   public static void validateAssignRole(Request request) {
     if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.USER_ID))) {
-      if (!ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.EXTERNAL_ID))
-          && !ProjectUtil
+      if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.EXTERNAL_ID))
+          || ProjectUtil
               .isStringNullOREmpty((String) request.getRequest().get(JsonKey.PROVIDER))) {
         throw new ProjectCommonException(
             ResponseCode.sourceAndExternalIdValidationError.getErrorCode(),
@@ -1116,18 +1116,20 @@ public final class RequestValidator {
   private static void validateEndDate(String startDate, String endDate) {
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     format.setLenient(false);
+    Date batchEndDate = null;
+    Date batchStartDate = null;
     try {
-      Date batchEndDate = format.parse(endDate);
-      Date batchStartDate = format.parse(startDate);
-      if (batchStartDate.getTime() >= batchEndDate.getTime()) {
-        throw new ProjectCommonException(ResponseCode.endDateError.getErrorCode(),
-            ResponseCode.endDateError.getErrorMessage(), ERROR_CODE);
-      }
+      batchEndDate = format.parse(endDate);
+      batchStartDate = format.parse(startDate);
     } catch (Exception e) {
-      throw new ProjectCommonException(ResponseCode.dateFormatError.getErrorCode(),
+      throw new ProjectCommonException(
+          ResponseCode.dateFormatError.getErrorCode(),
           ResponseCode.dateFormatError.getErrorMessage(), ERROR_CODE);
     }
-
+    if (batchStartDate.getTime() >= batchEndDate.getTime()) {
+      throw new ProjectCommonException(ResponseCode.endDateError.getErrorCode(),
+          ResponseCode.endDateError.getErrorMessage(), ERROR_CODE);
+    }
   }
 
 
