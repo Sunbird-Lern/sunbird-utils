@@ -43,7 +43,7 @@ public class Notification {
    */
   public static String sendNotification(String topic, Map<String, Object> data,
       String url) {
-    if (ProjectUtil.isStringNullOREmpty(FCM_ACCOUNT_KEY) || ProjectUtil.isStringNullOREmpty(FCM_URL)) {
+    if (ProjectUtil.isStringNullOREmpty(FCM_ACCOUNT_KEY) || ProjectUtil.isStringNullOREmpty(url)) {
       ProjectLogger.log("FCM account key or URL is not provided===" + FCM_URL,
           LoggerEnum.INFO.name());
       return JsonKey.FAILURE;

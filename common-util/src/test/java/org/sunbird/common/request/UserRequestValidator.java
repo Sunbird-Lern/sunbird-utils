@@ -5,8 +5,11 @@ package org.sunbird.common.request;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
 
 import org.junit.Test;
 import org.sunbird.common.exception.ProjectCommonException;
@@ -214,5 +217,155 @@ public class UserRequestValidator {
        assertEquals(ResponseCode.passwordRequired.getErrorCode(), e.getCode()); 
      }    
   }
+  
+  @Test
+  public void validateCreateUserSuccessWithAllFields () {
+    Request request = new Request();
+    Map<String, Object> requestObj = new HashMap<>(); 
+    requestObj.put(JsonKey.PHONE, "1234123434");
+    requestObj.put(JsonKey.EMAIL, "test123@test.com");
+    requestObj.put(JsonKey.USERNAME, "manzarul.haque");
+    requestObj.put(JsonKey.FIRST_NAME, "manzarul");
+    List<String> roles = new ArrayList<String>();
+    roles.add("PUBLIC");
+    roles.add("CONTENT-CREATOR");
+    requestObj.put(JsonKey.ROLE, roles);
+    List<String> language = new ArrayList<>();
+    language.add("English");
+    requestObj.put(JsonKey.LANGUAGE, language);
+    List<Map<String,Object>> addressList = new ArrayList<>();
+    Map<String,Object> map = new HashMap<>();
+    map.put(JsonKey.ADDRESS_LINE1, "test");
+    map.put(JsonKey.CITY, "Bangalore");
+    map.put(JsonKey.COUNTRY, "India");
+    map.put(JsonKey.ADD_TYPE, "current");
+    addressList.add(map);
+    requestObj.put(JsonKey.ADDRESS, addressList);
+    
+    List<Map<String,Object>> educationList = new ArrayList<>();
+    Map<String,Object> map1 = new HashMap<>();
+    map1.put(JsonKey.COURSE_NAME, "M.C.A");
+    map1.put(JsonKey.DEGREE, "Master");
+    map1.put(JsonKey.NAME, "CUSAT");
+    educationList.add(map1);
+    requestObj.put(JsonKey.EDUCATION, educationList);
+    
+    List<Map<String,Object>> jobProfileList = new ArrayList<>();
+    map1 = new HashMap<>();
+    map1.put(JsonKey.JOB_NAME, "SE");
+    map1.put(JsonKey.ORGANISATION_NAME, "Tarento");
+    jobProfileList.add(map1);
+    requestObj.put(JsonKey.JOB_PROFILE, jobProfileList);
+    request.setRequest(requestObj);
+    RequestValidator.validateCreateUser(request);
+    assertEquals(true, true);
+  }
+  
+  @Test
+  public void validatePhoneAndEmailUpdateSuccess () {
+    Request request = new Request();
+    Map<String, Object> requestObj = new HashMap<>(); 
+    requestObj.put(JsonKey.PHONE, "1234123434");
+    requestObj.put(JsonKey.EMAIL, "test123@test.com");
+    request.put(JsonKey.PROVIDER, "sunbird");
+    request.put(JsonKey.PHONE_VERIFIED, true);
+    request.put(JsonKey.EMAIL_VERIFIED, true);
+    request.setRequest(requestObj);
+    RequestValidator.phoneAndEmailValidationForUpdateUser(request);
+    assertEquals(true, true);
+  }
+  
+  @Test
+  public void validateUpdateUserSuccess () {
+    Request request = new Request();
+    Map<String, Object> requestObj = new HashMap<>(); 
+    requestObj.put(JsonKey.PHONE, "1234123434");
+    requestObj.put(JsonKey.EMAIL, "test123@test.com");
+    requestObj.put(JsonKey.USERNAME, "manzarul.haque");
+    requestObj.put(JsonKey.FIRST_NAME, "manzarul");
+    requestObj.put(JsonKey.ROOT_ORG_ID, "ORG123");
+    List<String> roles = new ArrayList<String>();
+    roles.add("PUBLIC");
+    roles.add("CONTENT-CREATOR");
+    requestObj.put(JsonKey.ROLE, roles);
+    List<String> language = new ArrayList<>();
+    language.add("English");
+    requestObj.put(JsonKey.LANGUAGE, language);
+    List<Map<String,Object>> addressList = new ArrayList<>();
+    Map<String,Object> map = new HashMap<>();
+    map.put(JsonKey.ADDRESS_LINE1, "test");
+    map.put(JsonKey.CITY, "Bangalore");
+    map.put(JsonKey.COUNTRY, "India");
+    map.put(JsonKey.ADD_TYPE, "current");
+    addressList.add(map);
+    requestObj.put(JsonKey.ADDRESS, addressList);
+    
+    List<Map<String,Object>> educationList = new ArrayList<>();
+    Map<String,Object> map1 = new HashMap<>();
+    map1.put(JsonKey.COURSE_NAME, "M.C.A");
+    map1.put(JsonKey.DEGREE, "Master");
+    map1.put(JsonKey.NAME, "CUSAT");
+    educationList.add(map1);
+    requestObj.put(JsonKey.EDUCATION, educationList);
+    
+    List<Map<String,Object>> jobProfileList = new ArrayList<>();
+    map1 = new HashMap<>(); 
+    map1.put(JsonKey.JOB_NAME, "SE");
+    map1.put(JsonKey.ORGANISATION_NAME, "Tarento");
+    jobProfileList.add(map1);
+    requestObj.put(JsonKey.JOB_PROFILE, jobProfileList);
+    request.setRequest(requestObj);
+    RequestValidator.validateUpdateUser(request);
+    assertEquals(true, true);
+  }
+ 
+  @Test
+  public void validateUploadUserWithOrgId () {
+     Request request = new Request();
+     Map<String, Object> requestObj = new HashMap<>();
+     requestObj.put(JsonKey.ORGANISATION_ID, "ORG-1233");
+     request.setRequest(requestObj);
+     RequestValidator.validateUploadUser(request);
+     assertEquals(true, true);
+  }
+  
+  @Test
+  public void validateUploadUserWithProviderAndExternalId () {
+     Request request = new Request();
+     Map<String, Object> requestObj = new HashMap<>();
+     requestObj.put(JsonKey.PROVIDER, "ORG-provider");
+     requestObj.put(JsonKey.EXTERNAL_ID, "ORG-1233");
+     request.setRequest(requestObj);
+     RequestValidator.validateUploadUser(request);
+     assertEquals(true, true);
+  }
+ 
+  @Test
+  public void validateAssignRoleWithUserId () {
+    Request request = new Request();
+    Map<String, Object> requestObj = new HashMap<>();
+    requestObj.put(JsonKey.USER_ID, "ORG-provider");
+    List<String> roles =  new ArrayList<>();
+    roles.add("PUBLIC");
+    requestObj.put(JsonKey.ROLES, roles);
+    request.setRequest(requestObj);
+    RequestValidator.validateAssignRole(request);
+    assertEquals(true, true); 
+  }
+  
+  @Test
+  public void validateAssignRoleWithProviderAndExternalId () {
+    Request request = new Request();
+    Map<String, Object> requestObj = new HashMap<>();
+    requestObj.put(JsonKey.PROVIDER, "ORG-provider");
+    requestObj.put(JsonKey.EXTERNAL_ID, "ORG-1233");
+    List<String> roles =  new ArrayList<>();
+    roles.add("PUBLIC");
+    requestObj.put(JsonKey.ROLES, roles);
+    request.setRequest(requestObj);
+    RequestValidator.validateAssignRole(request);
+    assertEquals(true, true); 
+  }
+  
   
 }
