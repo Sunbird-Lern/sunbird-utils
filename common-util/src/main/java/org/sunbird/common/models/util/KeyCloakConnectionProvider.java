@@ -19,7 +19,7 @@ public class KeyCloakConnectionProvider {
    private static Keycloak keycloak; 
    private static PropertiesCache cache = PropertiesCache.getInstance();
    public static String SSO_URL = null;
-   public static String SSO_REALM =  null;
+   public static String SSO_REALM = null;
    public static String CLIENT_ID = null;
    static {
 		try {

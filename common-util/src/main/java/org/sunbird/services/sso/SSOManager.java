@@ -19,63 +19,63 @@ public interface SSOManager {
 	 * @param token String JWT access token
 	 * @return String
 	 */
-	public String verifyToken(String token );
+	String verifyToken(String token );
 	
 	/**
 	 * This method will do user creation inside Single sign on server.
 	 * @param request Map<String,Object>
 	 * @return Map<String,String>
 	 */
-	public Map<String,String> createUser(Map<String,Object> request);
+	Map<String,String> createUser(Map<String,Object> request);
 	
 	/**
 	 * Method to update user account in keycloak on basis of userId.
 	 * @param request
 	 * @return
 	 */
-	public String updateUser (Map<String,Object> request);
+	String updateUser (Map<String,Object> request);
 
 	/**
 	 *Method to remove user from keycloak account on basis of userId .
 	 * @param request
 	 * @return
 	 */
-	public String removeUser (Map<String,Object> request);
+	String removeUser (Map<String,Object> request);
 	
 	/**
 	 * This method will check email is verified by user or not.
 	 * @param userId String
 	 * @return boolean
 	 */
-	public boolean isEmailVerified(String userId);
+	boolean isEmailVerified(String userId);
 
 	/**
 	 * Method to deactivate user from keycloak , it is like soft delete .
 	 * @param request
 	 * @return
 	 */
-	public String deactivateUser(Map<String, Object> request);
+	String deactivateUser(Map<String, Object> request);
 
 	/**
 	 * Method to activate user from keycloak , it is like soft delete .
 	 * @param request
 	 * @return
 	 */
-	public String activateUser(Map<String, Object> request);
+	String activateUser(Map<String, Object> request);
 	
 	/**
 	 * This method will read user last login time from key claok.
 	 * @param userId String
 	 * @return String (as epoch value or null)
 	 */
-	public String getLastLoginTime (String userId);
+	String getLastLoginTime (String userId);
 	
 	/**
 	 * This method will add user current login time to keycloak.
 	 * @param userId String
 	 * @return boolean
 	 */
-	public boolean addUserLoginTime (String userId); 
+	boolean addUserLoginTime (String userId);
 	
 	/**
 	 * this method will do the user login with key cloak.
@@ -84,5 +84,5 @@ public interface SSOManager {
 	 * @param password String
 	 * @return String
 	 */
-	public String login(String userName, String password); 
+	String login(String userName, String password);
 }

@@ -37,7 +37,7 @@ public class ProfileCompletenessServiceImpl
       Object value = entry.getValue();
       if (value instanceof List) {
         List list = (List) value;
-        if (list != null && list.size() > 0) {
+        if (list.size() > 0) {
           completedCount = completedCount + getValue(entry.getKey());
         }
       } else if (value instanceof Map) {
@@ -89,7 +89,7 @@ public class ProfileCompletenessServiceImpl
            attribute.add(entry.getKey());
          } else if (val instanceof List) {
             List list = (List) val;
-            if (list == null || list.size()==0){
+            if (list.size()==0){
               attribute.add(entry.getKey()); 
             }
          }else if (val instanceof Map) {

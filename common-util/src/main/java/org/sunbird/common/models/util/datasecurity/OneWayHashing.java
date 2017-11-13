@@ -3,6 +3,7 @@
  */
 package org.sunbird.common.models.util.datasecurity;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
 import org.sunbird.common.models.util.ProjectLogger;
@@ -23,7 +24,7 @@ public class OneWayHashing {
 	public static String encryptVal(String val) {
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
-			md.update(val.getBytes());
+			md.update(val.getBytes(StandardCharsets.UTF_8));
 			byte byteData[] = md.digest();
 			// convert the byte to hex format method 1
 			StringBuffer sb = new StringBuffer();

@@ -108,6 +108,9 @@ public class ProjectLogger {
         case "ERROR":
           error(message, data, e);
           break;
+        default:
+          debug(message, data);
+          break;
       }
     }
   }

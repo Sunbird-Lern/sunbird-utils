@@ -54,7 +54,7 @@ public class AppTest
 		String response=null;
 		try {
 			response = HttpUtil.sendPostRequest("https://dev.ekstep.in/api/learning/v3/content/list", data, headers);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			
 		}
 		Assert.assertNotNull(response);

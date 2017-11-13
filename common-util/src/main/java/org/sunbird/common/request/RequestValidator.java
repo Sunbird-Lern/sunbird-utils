@@ -25,11 +25,7 @@ import org.sunbird.common.responsecode.ResponseCode;
  * @author Manzarul
  */
 public final class RequestValidator {
-  private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
   private static final int ERROR_CODE = ResponseCode.CLIENT_ERROR.getResponseCode();
-  static {
-    format.setLenient(false);
-  }
 
   /**
    * This method will do course enrollment request data validation. if all mandatory data is coming
@@ -576,8 +572,7 @@ public final class RequestValidator {
       throw new ProjectCommonException(ResponseCode.sourceRequired.getErrorCode(),
           ResponseCode.sourceRequired.getErrorMessage(), ERROR_CODE);
     }
-    if (request == null
-        || (ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.PAGE_NAME)))) {
+    if (ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.PAGE_NAME))) {
       throw new ProjectCommonException(ResponseCode.pageNameRequired.getErrorCode(),
           ResponseCode.pageNameRequired.getErrorMessage(), ERROR_CODE);
     }
@@ -901,7 +896,7 @@ public final class RequestValidator {
   /**
    * This method will validate bulk user upload requested data.
    * 
-   * @param request Request
+   * @param reqObj Request
    */
   public static void validateUploadUser(Request reqObj) {
     if (ProjectUtil
@@ -981,6 +976,8 @@ public final class RequestValidator {
   }
 
   public static void validateUpdateCourseBatchReq(Request request) {
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    format.setLenient(false);
     if (null != request.getRequest().get(JsonKey.STATUS)) {
       boolean status = false;
       try {
@@ -1050,6 +1047,8 @@ public final class RequestValidator {
   }
 
   private static boolean validateDateWithTodayDate(String date) {
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    format.setLenient(false);
     try {
       Date reqDate = format.parse(date);
       Date todayDate = format.parse(format.format(new Date()));
@@ -1088,6 +1087,8 @@ public final class RequestValidator {
    * @param startDate
    */
   private static void validateStartDate(String startDate) {
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    format.setLenient(false);
     if (ProjectUtil.isStringNullOREmpty(startDate)) {
       throw new ProjectCommonException(ResponseCode.courseBatchSatrtDateRequired.getErrorCode(),
           ResponseCode.courseBatchSatrtDateRequired.getErrorMessage(), ERROR_CODE);
@@ -1113,6 +1114,8 @@ public final class RequestValidator {
 
 
   private static void validateEndDate(String startDate, String endDate) {
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    format.setLenient(false);
     try {
       Date batchEndDate = format.parse(endDate);
       Date batchStartDate = format.parse(startDate);
@@ -1356,7 +1359,8 @@ public final class RequestValidator {
   
   /**
    * Method to validate the request for updating the client key
-   * @param request
+   * @param clientId
+   * @param masterAccessToken
    */
   public static void validateUpdateClientKey(String clientId, String masterAccessToken){
     validateClientId(clientId);
@@ -1368,7 +1372,7 @@ public final class RequestValidator {
   
   /**
    * Method to validate clientId.
-   * @param request
+   * @param clientId
    */
   public static void validateClientId(String clientId){
     if(ProjectUtil.isStringNullOREmpty(clientId)){

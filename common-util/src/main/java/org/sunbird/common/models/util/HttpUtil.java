@@ -9,11 +9,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.entity.StringEntity;
@@ -29,6 +33,7 @@ import org.sunbird.common.responsecode.ResponseCode;
  */
 public class HttpUtil {
 
+  private static final String UTF_8_ENCODING = "UTF-8";
   /**
    * Makes an HTTP request using GET method to the specified URL.
    *
@@ -71,35 +76,49 @@ public class HttpUtil {
    * @throws IOException thrown if any I/O error occurred
    */
   public static String sendPostRequest(String requestURL, Map<String, String> params,
-      Map<String, String> headers) throws IOException {
+      Map<String, String> headers) {
     long startTime = System.currentTimeMillis();
+    HttpURLConnection httpURLConnection = null;
+    OutputStreamWriter writer =null;
     ProjectLogger.log("HttpUtil sendPostRequest method started at ==" + startTime
         + " for requestURL " + requestURL, LoggerEnum.PERF_LOG);
-    URL url = new URL(requestURL);
-    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-    httpURLConnection.setUseCaches(false);
-    httpURLConnection.setDoInput(true);
-    httpURLConnection.setRequestMethod(ProjectUtil.Method.POST.name());
-    StringBuffer requestParams = new StringBuffer();
-    if (params != null && params.size() > 0) {
-      httpURLConnection.setDoOutput(true);
-      // creates the params string, encode them using URLEncoder
-      Iterator<String> paramIterator = params.keySet().iterator();
-      while (paramIterator.hasNext()) {
-        String key = paramIterator.next();
-        String value = params.get(key);
-        requestParams.append(URLEncoder.encode(key, "UTF-8"));
-        requestParams.append("=").append(URLEncoder.encode(value, "UTF-8"));
-        requestParams.append("&");
+    try {
+      URL url = new URL(requestURL);
+      httpURLConnection = (HttpURLConnection) url.openConnection();
+      httpURLConnection.setUseCaches(false);
+      httpURLConnection.setDoInput(true);
+      httpURLConnection.setRequestMethod(ProjectUtil.Method.POST.name());
+      StringBuffer requestParams = new StringBuffer();
+      if (params != null && params.size() > 0) {
+        httpURLConnection.setDoOutput(true);
+        // creates the params string, encode them using URLEncoder
+        for(Map.Entry<String , String> entry : params.entrySet()){
+          String key = entry.getKey();
+          String value = entry.getValue();
+          requestParams.append(URLEncoder.encode(key, "UTF-8"));
+          requestParams.append("=").append(URLEncoder.encode(value, "UTF-8"));
+          requestParams.append("&");
+        }
       }
-    }
-    if (headers != null && headers.size() > 0) {
-      setHeaders(httpURLConnection, headers);
-    }
-    if (requestParams.length() > 0) {
-      OutputStreamWriter writer = new OutputStreamWriter(httpURLConnection.getOutputStream());
-      writer.write(requestParams.toString());
-      writer.flush();
+      if (headers != null && headers.size() > 0) {
+        setHeaders(httpURLConnection, headers);
+      }
+      if (requestParams.length() > 0) {
+        writer = new OutputStreamWriter(httpURLConnection.getOutputStream(),
+            StandardCharsets.UTF_8);
+        writer.write(requestParams.toString());
+        writer.flush();
+      }
+    }catch (IOException ex){
+      ProjectLogger.log(ex.getMessage() ,ex);
+    }finally {
+      if(null != writer){
+        try {
+          writer.close();
+        } catch (IOException e) {
+          ProjectLogger.log(e.getMessage() ,e);
+        }
+      }
     }
 
     String str = getResponse(httpURLConnection);
@@ -119,12 +138,14 @@ public class HttpUtil {
    * @throws IOException thrown if any I/O error occurred
    */
   public static String sendPostRequest(String requestURL, String params,
-      Map<String, String> headers) throws IOException {
+      Map<String, String> headers)  {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log("HttpUtil sendPostRequest method started at ==" + startTime
         + " for requestURL " + requestURL, LoggerEnum.PERF_LOG);
-    URL url = new URL(requestURL);
-    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+    HttpURLConnection httpURLConnection = null;
+    OutputStreamWriter writer = null;
+    try{
+    URL url = new URL(requestURL);httpURLConnection = (HttpURLConnection) url.openConnection();
     httpURLConnection.setUseCaches(false);
     httpURLConnection.setDoInput(true);
     httpURLConnection.setRequestMethod(ProjectUtil.Method.POST.name());
@@ -132,9 +153,20 @@ public class HttpUtil {
     if (headers != null && headers.size() > 0) {
       setHeaders(httpURLConnection, headers);
     }
-    OutputStreamWriter writer = new OutputStreamWriter(httpURLConnection.getOutputStream());
-    writer.write(params);
-    writer.flush();
+      writer = new OutputStreamWriter(httpURLConnection.getOutputStream(), StandardCharsets.UTF_8);
+      writer.write(params);
+      writer.flush();
+    } catch (IOException e) {
+      ProjectLogger.log(e.getMessage() , e);
+    } finally {
+      if(null != writer){
+        try {
+          writer.close();
+        } catch (IOException e) {
+          ProjectLogger.log(e.getMessage() , e);
+        }
+      }
+    }
 
     String str = getResponse(httpURLConnection);
     long stopTime = System.currentTimeMillis();
@@ -150,7 +182,7 @@ public class HttpUtil {
     StringBuilder builder = new StringBuilder();
     try {
       inStream = httpURLConnection.getInputStream();
-      reader = new BufferedReader(new InputStreamReader(inStream));
+      reader = new BufferedReader(new InputStreamReader(inStream, StandardCharsets.UTF_8));
       String line = null;
       while ((line = reader.readLine()) != null) {
         builder.append(line);
@@ -229,7 +261,7 @@ public class HttpUtil {
   /**
    * Set the header for request.
    * 
-   * @param httpURLConnection HttpURLConnection
+   * @param httpPatch HttpURLConnection
    * @param headers Map<String,String>
    */
   private static void setHeaders(HttpPatch httpPatch, Map<String, String> headers) {

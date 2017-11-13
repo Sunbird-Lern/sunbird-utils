@@ -134,7 +134,7 @@ public class DefaultAssessmentEvaluator implements AssessmentEvaluator {
 				score = (request.get(i).get(JsonKey.ASSESSMENT_SCORE)) != null ? Double.parseDouble((String) request.get(i).get(JsonKey.ASSESSMENT_SCORE)) : 0 ;
 				if(assessmentWithMaxScore.containsKey(tempKey)){
 					Map<String,Object> tempMap = (Map<String, Object>) assessmentWithMaxScore.get(tempKey);
-					if(null!= tempMap.get(JsonKey.ASSESSMENT_SCORE) && score.compareTo(Double.parseDouble((String)tempMap.get(JsonKey.ASSESSMENT_SCORE))) > 0){
+					if(null!= tempMap.get(JsonKey.ASSESSMENT_SCORE) && Double.compare(score, Double.parseDouble((String)tempMap.get(JsonKey.ASSESSMENT_SCORE))) > 0){
 						assessmentWithMaxScore.put(tempKey, request.get(i));
 					}
 				}else{
