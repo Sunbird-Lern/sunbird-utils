@@ -38,8 +38,6 @@ public class AzureConnectionManager {
       ProjectLogger.log(
           "Azure account name and key is not provided by environment variable."
               + name + " " + key);
-      name = PropertiesCache.getInstance().getProperty(JsonKey.ACCOUNT_NAME);
-      key =  PropertiesCache.getInstance().getProperty(JsonKey.ACCOUNT_KEY);
       storageAccountString = "DefaultEndpointsProtocol=https;AccountName="
           + accountName + ";AccountKey=" + accountKey
           + ";EndpointSuffix=core.windows.net";

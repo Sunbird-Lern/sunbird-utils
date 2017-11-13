@@ -4,6 +4,7 @@
 package org.sunbird.common.models.util;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,7 +29,7 @@ public class ProjectUtil {
   /**
    * format the date in YYYY-MM-DD hh:mm:ss:SSZ
    */
-  public static final SimpleDateFormat format = getDateFormatter();
+  private static final SimpleDateFormat format = getDateFormatter();
 
   private static AtomicInteger atomicInteger = new AtomicInteger();
 
@@ -36,11 +37,11 @@ public class ProjectUtil {
   public static final String YEAR_MONTH_DATE_FORMAT = "yyyy-MM-dd";
   private static Map<String, String> templateMap = new HashMap<>();
   private static final int randomPasswordLength = 9;
-  public static final String FILE_NAME[] = {"cassandratablecolumn.properties",
+  protected static final String FILE_NAME[] = {"cassandratablecolumn.properties",
       "elasticsearch.config.properties", "cassandra.config.properties", "dbconfig.properties",
       "externalresource.properties", "sso.properties", "userencryption.properties",
       "profilecompleteness.properties", "mailTemplates.properties"};
-  public static PropertiesCache propertiesCache = PropertiesCache.getInstance();
+  public static final PropertiesCache propertiesCache = PropertiesCache.getInstance();
 
   /**
    * @author Manzarul
@@ -57,7 +58,7 @@ public class ProjectUtil {
       return value;
     }
 
-    public void setValue(int value) {
+    private void setValue(int value) {
       this.value = value;
     }
   }
@@ -214,7 +215,7 @@ public class ProjectUtil {
    * @return
    */
   public static String getFormattedDate() {
-    return format.format(new Date());
+    return getDateFormatter().format(new Date());
   }
 
   /**
@@ -224,7 +225,7 @@ public class ProjectUtil {
    */
   public static String formatDate(Date date) {
     if (null != date)
-      return format.format(date);
+      return getDateFormatter().format(date);
     else
       return null;
   }
@@ -270,7 +271,7 @@ public class ProjectUtil {
    */
   public static String createAuthToken(String name, String source) {
     String data = name + source + System.currentTimeMillis();
-    UUID authId = UUID.nameUUIDFromBytes(data.getBytes());
+    UUID authId = UUID.nameUUIDFromBytes(data.getBytes(StandardCharsets.UTF_8));
     return authId.toString();
   }
 
@@ -318,7 +319,7 @@ public class ProjectUtil {
       return indexName;
     }
 
-    public void setIndexName(String indexName) {
+    private void setIndexName(String indexName) {
       this.indexName = indexName;
     }
   }
@@ -342,7 +343,7 @@ public class ProjectUtil {
       return typeName;
     }
 
-    public void setTypeName(String typeName) {
+    private void setTypeName(String typeName) {
       this.typeName = typeName;
     }
   }
@@ -365,7 +366,7 @@ public class ProjectUtil {
       return typeName;
     }
 
-    public void setTypeName(String typeName) {
+    private void setTypeName(String typeName) {
       this.typeName = typeName;
     }
   }
@@ -389,7 +390,7 @@ public class ProjectUtil {
       return typeName;
     }
 
-    public void setTypeName(String typeName) {
+    private void setTypeName(String typeName) {
       this.typeName = typeName;
     }
   }
@@ -408,7 +409,7 @@ public class ProjectUtil {
       return grade;
     }
 
-    public void setGrade(String grade) {
+    private void setGrade(String grade) {
       this.grade = grade;
     }
 
@@ -416,7 +417,7 @@ public class ProjectUtil {
       return result;
     }
 
-    public void setResult(String result) {
+    private void setResult(String result) {
       this.result = result;
     }
   }
@@ -503,7 +504,7 @@ public class ProjectUtil {
 
   }
 
-  private static SimpleDateFormat getDateFormatter() {
+  public static SimpleDateFormat getDateFormatter() {
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSSZ");
     simpleDateFormat.setLenient(false);
     return simpleDateFormat;
@@ -526,7 +527,7 @@ public class ProjectUtil {
       return val;
     }
 
-    public void setVal(String val) {
+    private void setVal(String val) {
       this.val = val;
     }
   }
@@ -552,7 +553,7 @@ public class ProjectUtil {
       return name;
     }
 
-    public void setName(String name) {
+    private void setName(String name) {
       this.name = name;
     }
   }
@@ -677,7 +678,7 @@ public class ProjectUtil {
           body, header);
       ProjectLogger
           .log("end call for tag registration id and status  ==" + tagId + " " + tagStatus);
-    } catch (IOException e) {
+    } catch (Exception e) {
       throw e;
     }
     return tagStatus;
@@ -696,7 +697,7 @@ public class ProjectUtil {
       return value;
     }
 
-    public void setValue(String value) {
+    private void setValue(String value) {
       this.value = value;
     }
 
