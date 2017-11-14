@@ -187,7 +187,7 @@ public class KeyCloakServiceImpl implements SSOManager {
       if (map == null) {
         map = new HashMap<>();
       }
-      map.put(JsonKey.MOBILE, list);
+      map.put(JsonKey.PHONE, list);
       ur.setAttributes(map);
     }
     try {
@@ -361,7 +361,7 @@ public class KeyCloakServiceImpl implements SSOManager {
       if (map == null) {
         map = new HashMap<>();
       }
-      map.put(JsonKey.MOBILE, list);
+      map.put(JsonKey.PHONE, list);
       user.setAttributes(map);
     }
     user.setEnabled(true);
