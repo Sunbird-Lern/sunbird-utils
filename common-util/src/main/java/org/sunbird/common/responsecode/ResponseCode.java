@@ -332,7 +332,7 @@ public enum ResponseCode {
     ResponseCode responseCodes[] = ResponseCode.values();
     for (ResponseCode response : responseCodes) {
         if (response.getErrorCode().equals(errorCode)) {
-           return  value = response ;
+           return response ;
           
         }
     }

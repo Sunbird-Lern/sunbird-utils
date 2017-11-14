@@ -20,7 +20,6 @@ import org.sunbird.helper.ElasticSearchSettings;
 
 import static org.junit.Assert.*;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-@Ignore
 public class ElasticSearchUtilTest {
     private static Map<String,Object> map = null;
     private static Map<String,Object> map1 = null;

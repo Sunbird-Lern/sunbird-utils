@@ -26,12 +26,10 @@ public abstract class FileUtil {
       format = format.toLowerCase();
     }
     switch (format) {
-      case "excel": {
+      case "excel":
         return (new ExcelFileUtil());
-      }
-      default: {
+      default:
         return (new ExcelFileUtil());
-      }
     }
   }
 

@@ -21,6 +21,6 @@ public interface ProfileCompletenessService {
    * @param profileData Map<String,Object>
    * @return Map<String,Object>
    */
-  public Map<String,Object> computeProfile (Map<String,Object> profileData);
+  Map<String,Object> computeProfile (Map<String,Object> profileData);
   
 }
