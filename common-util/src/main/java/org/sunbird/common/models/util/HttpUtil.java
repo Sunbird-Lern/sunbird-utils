@@ -76,7 +76,7 @@ public class HttpUtil {
    * @throws IOException thrown if any I/O error occurred
    */
   public static String sendPostRequest(String requestURL, Map<String, String> params,
-      Map<String, String> headers) {
+      Map<String, String> headers) throws IOException {
     long startTime = System.currentTimeMillis();
     HttpURLConnection httpURLConnection = null;
     OutputStreamWriter writer =null;
@@ -111,6 +111,7 @@ public class HttpUtil {
       }
     }catch (IOException ex){
       ProjectLogger.log(ex.getMessage() ,ex);
+      throw ex;
     }finally {
       if(null != writer){
         try {
@@ -138,7 +139,7 @@ public class HttpUtil {
    * @throws IOException thrown if any I/O error occurred
    */
   public static String sendPostRequest(String requestURL, String params,
-      Map<String, String> headers)  {
+      Map<String, String> headers) throws IOException {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log("HttpUtil sendPostRequest method started at ==" + startTime
         + " for requestURL " + requestURL, LoggerEnum.PERF_LOG);
@@ -158,6 +159,7 @@ public class HttpUtil {
       writer.flush();
     } catch (IOException e) {
       ProjectLogger.log(e.getMessage() , e);
+      throw e;
     } finally {
       if(null != writer){
         try {
@@ -176,7 +178,7 @@ public class HttpUtil {
     return str;
   }
 
-  private static String getResponse(HttpURLConnection httpURLConnection) {
+  private static String getResponse(HttpURLConnection httpURLConnection) throws IOException {
     InputStream inStream = null;
     BufferedReader reader = null;
     StringBuilder builder = new StringBuilder();
@@ -189,6 +191,7 @@ public class HttpUtil {
       }
     } catch (IOException e) {
       ProjectLogger.log("Error in getResponse HttpUtil:", e);
+      throw e;
     } finally {
       if (reader != null) {
         try {
