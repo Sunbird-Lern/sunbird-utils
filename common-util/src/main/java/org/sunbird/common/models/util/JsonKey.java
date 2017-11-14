@@ -157,7 +157,7 @@ public final class JsonKey {
   public static final String SUNBIRD_ACTOR_IP = "sunbird_learnerstate_actor_host";
   public static final String SUNBIRD_ACTOR_PORT = "sunbird_learnerstate_actor_port";
   public static final String SUNBIRD_ACTOR_SERVICE_IP = "sunbird_learner_actor_host";
-  public static final String ACTOR_SERVICE_INSTANCE = "sunbird_actor_service_name";
+  public static final String ACTOR_SERVICE_INSTANCE = "sunbird_actor_system_name";
   public static final String SUNBIRD_ACTOR_SERVICE_PORT = "sunbird_learner_actor_port";
   public static final String BKG_SUNBIRD_ACTOR_SERVICE_IP = "sunbird_background_actor_host";
   public static final String BKG_SUNBIRD_ACTOR_SERVICE_PORT = "sunbird_background_actor_port";
