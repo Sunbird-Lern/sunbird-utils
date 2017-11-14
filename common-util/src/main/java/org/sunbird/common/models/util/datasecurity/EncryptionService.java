@@ -14,9 +14,9 @@ import java.util.Map;
  */
 public interface EncryptionService {
   
-  public static final String ALGORITHM = "AES";
-  public static final int ITERATIONS = 3;
-  public static final byte[] keyValue = new byte[] { 'T', 'h', 'i', 's',
+  String ALGORITHM = "AES";
+  int ITERATIONS = 3;
+  byte[] keyValue = new byte[] { 'T', 'h', 'i', 's',
       'A', 's', 'I', 'S', 'e', 'r', 'c', 'e', 'K', 't', 'e', 'y'};
   
   /**
@@ -27,7 +27,7 @@ public interface EncryptionService {
    * @return Map<String,Object>
    * @throws Exception
    */
-  public Map<String,Object> encryptData (Map<String,Object> data) throws Exception;
+  Map<String,Object> encryptData (Map<String,Object> data) throws Exception;
   
   /**
    * This method will take list of map as an input to encrypt the data,
@@ -38,7 +38,7 @@ public interface EncryptionService {
    * @return List<Map<String,Object>>
    * @throws Exception
    */
-  public List<Map<String,Object>>  encryptData (List<Map<String,Object>> data) throws Exception;
+  List<Map<String,Object>>  encryptData (List<Map<String,Object>> data) throws Exception;
   
   /**
    * This method will take String as an input and encrypt the String and return back.
@@ -46,6 +46,6 @@ public interface EncryptionService {
    * @return String
    * @throws Exception
    */
-  public String encryptData (String data) throws Exception;
+  String encryptData (String data) throws Exception;
   
 }

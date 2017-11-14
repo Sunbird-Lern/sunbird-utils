@@ -21,13 +21,13 @@ public interface AssessmentEvaluator {
      * @param data Map<String, List<Map<String, Object>>>
      * @return Map<String, List<Map<String, Object>>>
      */
-	public Map<String, List<Map<String, Object>>>evaluateAssessment(Map<String, List<Map<String, Object>>> data);
+	Map<String, List<Map<String, Object>>>evaluateAssessment(Map<String, List<Map<String, Object>>> data);
 	/**
 	 * This  method will take user assessment item id as a key and value as score , max score and some other
 	 * details for that assessment item id. 
 	 * @param evaluatedData Map<String, List<Map<String, Object>>>
 	 * @return List<Map<String,Object>> 
 	 */
-	public List<Map<String,Object>> evaluateResult (Map<String, List<Map<String, Object>>> evaluatedData);
+	List<Map<String,Object>> evaluateResult (Map<String, List<Map<String, Object>>> evaluatedData);
 
 }

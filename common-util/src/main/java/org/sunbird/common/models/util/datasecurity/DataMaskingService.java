@@ -14,20 +14,20 @@ public interface DataMaskingService {
    * @param phone String
    * @return String
    */
-  public String maskPhone (String phone);
+  String maskPhone (String phone);
   
   /**
    * This method will allow user to mask email.
    * @param email String
    * @return String
    */
-  public String maskEmail (String email);
+  String maskEmail (String email);
   
   /**
    * 
    * @param data
    * @return
    */
-  public String maskData (String data);
+  String maskData (String data);
 
 }

@@ -422,7 +422,7 @@ public class KeyCloakServiceImpl implements SSOManager {
         }
 
       }
-    } catch (IOException e) {
+    } catch (Exception e) {
       ProjectLogger.log(e.getMessage(), e);
     }
     return accessTokenId;

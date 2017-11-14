@@ -3,6 +3,7 @@
  */
 package org.sunbird.common.models.util.datasecurity.impl;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Iterator;
 import java.util.List;
@@ -87,7 +88,6 @@ public class DefaultDecryptionServiceImpl implements DecryptionService {
    * this method is used to decrypt password.
    * 
    * @param value encrypted password.
-   * @param sunbird_encryption
    * @return decrypted password.
    */
   public static String decrypt(String value) {

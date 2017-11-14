@@ -44,11 +44,9 @@ public class CloudServiceFactory {
     }
 
     synchronized(CloudServiceFactory.class){
-      if(ProjectUtil.isNull(factory.get(serviceName))){
-        if("Azure".equalsIgnoreCase(serviceName)){
+      if(ProjectUtil.isNull(factory.get(serviceName)) && "Azure".equalsIgnoreCase(serviceName)){
           CloudService service = new AzureCloudService();
           factory.put("Azure" , service);
-        }
       }
     }
     return factory.get(serviceName);

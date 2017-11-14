@@ -57,12 +57,22 @@ public class AzureFileUtility {
       fileName = file.getName();
     }
     // Create or overwrite the "myimage.jpg" blob with contents from a local file.
+    FileInputStream fis =null;
     try {
       CloudBlockBlob blob = container.getBlockBlobReference(fileName);
-      blob.upload(new FileInputStream(file), file.length());
+      fis = new FileInputStream(file);
+      blob.upload(fis, file.length());
       return true;
     } catch (Exception e) {
       ProjectLogger.log(e.getMessage(), e);
+    }finally {
+      if(null != fis){
+        try {
+          fis.close();
+        } catch (IOException e) {
+          ProjectLogger.log(e.getMessage() , e);
+        }
+      }
     }
     return false;
   }
@@ -144,10 +154,12 @@ public class AzureFileUtility {
     // Create or overwrite the "myimage.jpg" blob with contents from a local file.
     CloudBlockBlob blob = null;
     String fileUrl = null;
+    FileInputStream fis =null;
     try {
       blob = container.getBlockBlobReference(blobName);
       File source = new File(fileName);
-      blob.upload(new FileInputStream(source), source.length());
+      fis = new FileInputStream(source);
+      blob.upload(fis, source.length());
       //fileUrl = blob.getStorageUri().getPrimaryUri().getPath();
       fileUrl = blob.getUri().toString();
     } catch (URISyntaxException e) {
@@ -158,6 +170,14 @@ public class AzureFileUtility {
       ProjectLogger.log("Unable to upload file :"+fileName , e);
     } catch (IOException e) {
       ProjectLogger.log("Unable to upload file :"+fileName , e);
+    }finally {
+      if(null != fis){
+        try {
+          fis.close();
+        } catch (IOException e) {
+          ProjectLogger.log(e.getMessage() , e);
+        }
+      }
     }
 
     return fileUrl;
@@ -193,10 +213,12 @@ public class AzureFileUtility {
     // Create or overwrite the "myimage.jpg" blob with contents from a local file.
     CloudBlockBlob blob = null;
     String fileUrl = null;
+    FileInputStream fis = null;
     try {
       blob = container.getBlockBlobReference(filePath+source.getName());
       //File source = new File(fileName);
-      blob.upload(new FileInputStream(source), source.length());
+      fis = new FileInputStream(source);
+      blob.upload(fis, source.length());
       //fileUrl = blob.getStorageUri().getPrimaryUri().getPath();
       fileUrl = blob.getUri().toString();
     } catch (URISyntaxException e) {
@@ -207,6 +229,14 @@ public class AzureFileUtility {
       ProjectLogger.log("Unable to upload file :"+source.getName() , e);
     } catch (IOException e) {
       ProjectLogger.log("Unable to upload file :"+source.getName() , e);
+    }finally {
+      if(null != fis){
+        try {
+          fis.close();
+        } catch (IOException e) {
+          ProjectLogger.log(e.getMessage() , e);
+        }
+      }
     }
     return fileUrl;
 
@@ -218,8 +248,9 @@ public class AzureFileUtility {
 
     boolean flag = false;
     CloudBlobContainer container = AzureConnectionManager.getContainer(containerName,true);
-    // Create or overwrite the "myimage.jpg" blob with contents from a local file.
+    // Create or overwrite  blob with contents .
     CloudBlockBlob blob = null;
+    FileOutputStream fos = null;
 
     try {
       blob = container.getBlockBlobReference(blobName);
@@ -227,7 +258,9 @@ public class AzureFileUtility {
         if(!(downloadFolder.endsWith(("/")))){
           downloadFolder = downloadFolder+"/";
         }
-        blob.download(new FileOutputStream(downloadFolder + blobName));
+        File file = new File(downloadFolder + blobName);
+        fos = new FileOutputStream(file);
+        blob.download(fos);
       }
     } catch (URISyntaxException e) {
       ProjectLogger.log("Unable to upload blobfile :"+blobName , e);
@@ -235,6 +268,14 @@ public class AzureFileUtility {
       ProjectLogger.log("Unable to upload file :"+blobName , e);
     } catch (FileNotFoundException e) {
       ProjectLogger.log("Unable to upload file :"+blobName , e);
+    }finally {
+      if(null != fos){
+        try {
+          fos.close();
+        } catch (IOException e) {
+          ProjectLogger.log(e.getMessage() , e);
+        }
+      }
     }
     return flag;
   }
