@@ -1,6 +1,7 @@
 package org.sunbird.common.request;
 
 
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -348,6 +349,10 @@ public final class RequestValidator {
   public static void validateUpdateOrgStatus(Request request) {
     validateOrg(request);
     if (!request.getRequest().containsKey(JsonKey.STATUS)) {
+      throw new ProjectCommonException(ResponseCode.invalidRequestData.getErrorCode(),
+          ResponseCode.invalidRequestData.getErrorMessage(), ERROR_CODE);
+    }
+    if(!(request.getRequest().get(JsonKey.STATUS) instanceof BigInteger)){
       throw new ProjectCommonException(ResponseCode.invalidRequestData.getErrorCode(),
           ResponseCode.invalidRequestData.getErrorMessage(), ERROR_CODE);
     }
