@@ -37,11 +37,7 @@ public class ProjectUtil {
   public static final String YEAR_MONTH_DATE_FORMAT = "yyyy-MM-dd";
   private static Map<String, String> templateMap = new HashMap<>();
   private static final int randomPasswordLength = 9;
-  protected static final String FILE_NAME[] = {"cassandratablecolumn.properties",
-      "elasticsearch.config.properties", "cassandra.config.properties", "dbconfig.properties",
-      "externalresource.properties", "sso.properties", "userencryption.properties",
-      "profilecompleteness.properties", "mailTemplates.properties"};
-  public static final PropertiesCache propertiesCache = PropertiesCache.getInstance();
+  public static PropertiesCache propertiesCache ;
 
   /**
    * @author Manzarul
@@ -238,6 +234,7 @@ public class ProjectUtil {
   static {
     pattern = Pattern.compile(EMAIL_PATTERN);
     initializeMailTemplateMap();
+    propertiesCache = PropertiesCache.getInstance();
   }
 
   private static void initializeMailTemplateMap() {
@@ -561,6 +558,7 @@ public class ProjectUtil {
   }
 
   public static VelocityContext getContext(Map<String, Object> map) {
+    propertiesCache = PropertiesCache.getInstance();
     VelocityContext context = new VelocityContext();
 
     if (!ProjectUtil.isStringNullOREmpty((String) map.get(JsonKey.ACTION_URL))) {
@@ -581,13 +579,20 @@ public class ProjectUtil {
     context.put(JsonKey.ORG_NAME, (String) map.get(JsonKey.ORG_NAME));
     map.remove(JsonKey.ORG_NAME);
     // add image url in the mail
+    String sunbirdLogUrlFromCache = PropertiesCache.getInstance().getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL);
     if (!ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL))
         || !ProjectUtil
             .isStringNullOREmpty(propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL))) {
-      context.put(JsonKey.ORG_IMAGE_URL,
-          ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL))
-              ? propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL)
-              : System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL));
+      String logoUrl = null;
+      if(!ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL))){
+        logoUrl = System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL);
+      }else if(!JsonKey.SUNBIRD_ENV_LOGO_URL.equalsIgnoreCase(sunbirdLogUrlFromCache)){
+        logoUrl = sunbirdLogUrlFromCache;
+      }
+
+      if(!ProjectUtil.isStringNullOREmpty(logoUrl)){
+        context.put(JsonKey.ORG_IMAGE_URL, logoUrl);
+      }
     }
     context.put(JsonKey.ACTION_NAME, (String) map.get(JsonKey.ACTION_NAME));
     map.remove(JsonKey.ACTION_NAME);
