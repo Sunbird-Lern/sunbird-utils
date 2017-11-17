@@ -555,5 +555,7 @@ public final class JsonKey {
   public static final String MESSAGE_Id = "message_id";
   public static final String FCM = "fcm";
   public static final String TOPICS ="topics";
+  public static final String ENDORSE_DATE = "endorseDate";
+  public static final String ENDORSERS_LIST = "endorsersList";
 
 }
