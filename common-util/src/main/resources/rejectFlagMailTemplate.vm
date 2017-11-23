@@ -103,7 +103,7 @@
                                  <td>
                                     <!-- ADD IMAGE URL AT TOP RIGHT ALIGNED -->
                                     #if ($orgImageUrl)
-                                    <p> <img src="$orgImageUrl" alt="Smiley face" align="right" width="180" height="100"> </p>
+                                    <p> <img src="$orgImageUrl" alt="logo" align="right" width="180" height="100"> </p>
                                     #end
                                  </td>
                               </tr>
