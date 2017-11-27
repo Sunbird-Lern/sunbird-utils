@@ -204,6 +204,8 @@ public interface ResponseMessage {
       String INVALID_TOPIC_DATA = "Please provide valid notification data.";
       String INVALID_NOTIFICATION_TYPE = "Please provide a valid notification type.";
       String INVALID_NOTIFICATION_TYPE_SUPPORT = "Only notification type FCM is supported.";
+      String INVALID_PHONE_NUMBER = "Please send Phone and country code seprately.";
+      String INVALID_COUNTRY_CODE = "Please provide a valid country code.";
     }
     
     interface Key {
@@ -402,5 +404,8 @@ public interface ResponseMessage {
         String INVALID_TOPIC_DATA = "INVALID_TOPIC_DATA";
         String INVALID_NOTIFICATION_TYPE = "INVALID_NOTIFICATION_TYPE";
         String INVALID_NOTIFICATION_TYPE_SUPPORT = "INVALID_NOTIFICATION_TYPE_SUPPORT";
+        String INVALID_PHONE_NUMBER = "INVALID_PHONE_NUMBER";
+        String INVALID_COUNTRY_CODE = "INVALID_COUNTRY_CODE";
+        
     }
 }

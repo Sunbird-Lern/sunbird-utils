@@ -3,6 +3,9 @@
  */
 package org.sunbird.common.models.util;
 
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
@@ -18,6 +21,7 @@ import java.util.regex.Pattern;
 import org.apache.velocity.VelocityContext;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.request.Request;
+import org.sunbird.common.responsecode.ResponseCode;
 
 /**
  * This class will contains all the common utility methods.
@@ -29,7 +33,6 @@ public class ProjectUtil {
   /**
    * format the date in YYYY-MM-DD hh:mm:ss:SSZ
    */
-  private static final SimpleDateFormat format = getDateFormatter();
 
   private static AtomicInteger atomicInteger = new AtomicInteger();
 
@@ -750,4 +753,42 @@ public class ProjectUtil {
        headerMap.put("Content-Type", "application/json");
     return headerMap;
 }
+  
+  public static boolean validatePhone(String phone, String countryCode){
+    PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();  
+    try {  
+        if(isStringNullOREmpty(countryCode)){
+          countryCode = PropertiesCache.getInstance().getProperty("sunbird_default_country_code");
+        }
+         phone = countryCode+"-"+phone;
+         PhoneNumber numberProto = phoneUtil.parse(phone, ""); 
+         //phoneUtil.isValidNumber(number)
+         ProjectLogger.log("Number is of region - " + numberProto.getCountryCode()+" " 
+             + phoneUtil.getRegionCodeForNumber(numberProto));
+         ProjectLogger.log("Is the input number valid - "  
+                             + (phoneUtil.isValidNumber(numberProto) == true ? "Yes"  
+                                       : "No")); 
+         return phoneUtil.isValidNumber(numberProto);
+    } catch (NumberParseException e) { 
+      ProjectLogger.log("Exception occurred while validating phone number : ",e);
+      ProjectLogger.log(phone + "this phone no. is not a valid one.");
+    }
+    return false; 
+  }
+ 
+  public static boolean validateCountryCode(String countryCode){
+    String pattern = "^(?:[+] ?){0,1}(?:[0-9] ?){1,3}";
+    try {
+      Pattern patt = Pattern.compile(pattern);
+      Matcher matcher = patt.matcher(countryCode);
+      return matcher.matches();
+    } catch (RuntimeException e) {
+      return false;
+    }
+  }
+  
+  public static void main(String[] args) {
+    System.out.println(validatePhone("9742507323",""));
+  }
+  
 }
