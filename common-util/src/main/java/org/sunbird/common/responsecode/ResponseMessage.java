@@ -195,6 +195,7 @@ public interface ResponseMessage {
       String INVALID_CLIENT_ID = "Please provide valid client id";
       String USER_PHONE_UPDATE_FAILED = "user phone update is failed.";
       String ES_UPDATE_FAILED = "Data insertion to ES failed.";
+      String UPDATE_FAILED = "Data updation failed due to invalid Request";
       String INVALID_TYPE_VALUE = "Type value should be organisation OR location .";
       String INVALID_LOCATION_ID = "Please provide valid location id.";
       String INVALID_HASHTAG_ID = "Please provide different hashTagId.This HashTagId is associated with some other organization.";
@@ -393,6 +394,7 @@ public interface ResponseMessage {
         String INVALID_CLIENT_ID = "INVALID_CLIENT_ID";
         String USER_PHONE_UPDATE_FAILED = "USER_PHONE_UPDATE_FAILED";
         String ES_UPDATE_FAILED = "ES_UPDATE_FAILED";
+        String UPDATE_FAILED = "UPDATE_FAILED";
         String INVALID_TYPE_VALUE = "INVALID_TYPE_VALUE";
         String INVALID_LOCATION_ID = "INVALID_LOCATION_ID";
         String INVALID_HASHTAG_ID = "INVALID_HASHTAG_ID";
