@@ -61,7 +61,7 @@ public enum ActorOperations {
     GET_GEO_LOCATION("getGeoLocation"),
     UPDATE_GEO_LOCATION("updateGeoLocation"),
     DELETE_GEO_LOCATION("deleteGeoLocation"),
-    SEND_NOTIFICATION("sendNotification");
+    SEND_NOTIFICATION("sendNotification"), SYNC_KEYCLOAK("syncKeycloak");
 
     private String value;
 

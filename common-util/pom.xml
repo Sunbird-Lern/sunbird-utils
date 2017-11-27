@@ -156,6 +156,12 @@
      <version>1.9</version>
      <scope>test</scope>
     </dependency>
+    
+    <dependency>
+	    <groupId>com.googlecode.libphonenumber</groupId>
+	    <artifactId>libphonenumber</artifactId>
+	    <version>3.5</version>
+	</dependency>
   </dependencies>
     <build>
      <pluginManagement>

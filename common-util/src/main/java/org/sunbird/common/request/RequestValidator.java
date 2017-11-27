@@ -9,7 +9,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
@@ -166,9 +165,15 @@ public final class RequestValidator {
   private static void phoneAndEmailValidationForCreateUser(Request userRequest) {
     if (!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PHONE))) {
       String phone = (String) userRequest.getRequest().get(JsonKey.PHONE);
-      validatePhoneNo(phone);
+      validatePhoneNo(phone,(String) userRequest.getRequest().get(JsonKey.COUNTRY_CODE));
     }
-
+    if (!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.COUNTRY_CODE))) {
+      boolean bool = ProjectUtil.validateCountryCode((String) userRequest.getRequest().get(JsonKey.COUNTRY_CODE));
+      if(!bool){
+        throw new ProjectCommonException(ResponseCode.invalidCountryCode.getErrorCode(),
+            ResponseCode.invalidCountryCode.getErrorMessage(), ERROR_CODE);
+      }
+    }
     if (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.EMAIL))
         && ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PHONE))) {
       throw new ProjectCommonException(ResponseCode.emailorPhoneRequired.getErrorCode(),
@@ -202,31 +207,38 @@ public final class RequestValidator {
               ResponseCode.phoneVerifiedError.getErrorMessage(), ERROR_CODE);
         }
       }
-      if (null == userRequest.getRequest().get(JsonKey.EMAIL_VERIFIED)
+      /*if (null == userRequest.getRequest().get(JsonKey.EMAIL_VERIFIED)
           || !((boolean) userRequest.getRequest().get(JsonKey.EMAIL_VERIFIED))) {
         throw new ProjectCommonException(ResponseCode.emailVerifiedError.getErrorCode(),
             ResponseCode.emailVerifiedError.getErrorMessage(), ERROR_CODE);
-      }
+      }*/
+      
     }
   }
 
-  private static boolean validatePhoneNo(String phone) {
+  private static boolean validatePhoneNo(String phone, String countryCode) {
     if (phone.contains("+")) {
-      phone = phone.replace("+", "");
+      throw new ProjectCommonException(ResponseCode.invalidPhoneNumber.getErrorCode(),
+          ResponseCode.invalidPhoneNumber.getErrorMessage(), ERROR_CODE);
     }
-    try {
-      Long.parseLong(phone);
-    } catch (Exception ex) {
-      ProjectLogger.log(phone + "this phone no. is not a valid one.");
+    if( ProjectUtil.validatePhone(phone,countryCode)){
+      return true;
+    }else{
       throw new ProjectCommonException(ResponseCode.phoneNoFormatError.getErrorCode(),
           ResponseCode.phoneNoFormatError.getErrorMessage(), ERROR_CODE);
     }
-    return true;
   }
-
+  
   public static void phoneAndEmailValidationForUpdateUser(Request userRequest) {
     if (!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PHONE))) {
-      validatePhoneNo((String) userRequest.getRequest().get(JsonKey.PHONE));
+      validatePhoneNo((String) userRequest.getRequest().get(JsonKey.PHONE),(String) userRequest.getRequest().get(JsonKey.COUNTRY_CODE));
+    }
+    if (!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.COUNTRY_CODE))) {
+      boolean bool = ProjectUtil.validateCountryCode((String) userRequest.getRequest().get(JsonKey.COUNTRY_CODE));
+      if(!bool){
+        throw new ProjectCommonException(ResponseCode.invalidCountryCode.getErrorCode(),
+            ResponseCode.invalidCountryCode.getErrorMessage(), ERROR_CODE);
+     }
     }
     if (!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PROVIDER))) {
 
@@ -236,11 +248,11 @@ public final class RequestValidator {
           throw new ProjectCommonException(ResponseCode.emailFormatError.getErrorCode(),
               ResponseCode.emailFormatError.getErrorMessage(), ERROR_CODE);
         }
-        if (null == userRequest.getRequest().get(JsonKey.EMAIL_VERIFIED)
+        /*if (null == userRequest.getRequest().get(JsonKey.EMAIL_VERIFIED)
             || !((boolean) userRequest.getRequest().get(JsonKey.EMAIL_VERIFIED))) {
           throw new ProjectCommonException(ResponseCode.emailVerifiedError.getErrorCode(),
               ResponseCode.emailVerifiedError.getErrorMessage(), ERROR_CODE);
-        }
+        }*/
       }
 
       if (!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PHONE))) {
