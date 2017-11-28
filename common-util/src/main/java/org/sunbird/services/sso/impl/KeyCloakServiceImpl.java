@@ -125,7 +125,7 @@ public class KeyCloakServiceImpl implements SSOManager {
     // reset the password with same password
     if (!(ProjectUtil.isStringNullOREmpty(userId)) && ((request.get(JsonKey.PASSWORD) != null)
         && !ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.PASSWORD)))) {
-      doPasswordUpdate(userId, (String) request.get(JsonKey.PASSWORD));
+      //doPasswordUpdate(userId, (String) request.get(JsonKey.PASSWORD));
       // key cloak setting is change now so key cloak won't
       // provide access token id just after create user. because
       // change password is mandatory on keyclaok.
@@ -422,7 +422,7 @@ public class KeyCloakServiceImpl implements SSOManager {
       user.setCredentials(asList(credential));
     }
      user.setEmailVerified(false);
-   /* if (isNotNull(request.get(JsonKey.PHONE))) {
+    if (isNotNull(request.get(JsonKey.PHONE))) {
       Map<String, List<String>> map = user.getAttributes();
       if (map == null) {
         map = new HashMap<>();
@@ -449,7 +449,7 @@ public class KeyCloakServiceImpl implements SSOManager {
       map = new HashMap<>();
     }
     map.put(JsonKey.EMAIL_VERIFIED_UPDATED, list);
-    user.setAttributes(map);*/
+    user.setAttributes(map);
       
     user.setEnabled(true);
     return user;
