@@ -121,7 +121,16 @@ public class KeyCloakServiceImpl implements SSOManager {
       throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(),
           ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
     }
-
+      if (!(ProjectUtil.isStringNullOREmpty(userId)) && !(ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.EMAIL)))){
+        try {
+          if (IS_EMAIL_SETUP_COMPLETE) {
+            verifyEmail(userId);
+          }
+        } catch (Exception ex) {
+          throw new ProjectCommonException(ex.getMessage(), ex.getMessage(),
+              ResponseCode.CLIENT_ERROR.getResponseCode());
+        }
+      }
     // reset the password with same password
     if (!(ProjectUtil.isStringNullOREmpty(userId)) && ((request.get(JsonKey.PASSWORD) != null)
         && !ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.PASSWORD)))) {
