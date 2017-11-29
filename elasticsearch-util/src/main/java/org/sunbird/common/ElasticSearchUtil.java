@@ -5,6 +5,7 @@ package org.sunbird.common;
 
 import static org.sunbird.common.models.util.ProjectUtil.isNotNull;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -44,6 +45,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.index.query.TermsQueryBuilder;
+import org.elasticsearch.index.query.WrapperQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -53,15 +55,24 @@ import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
+import org.json.JSONObject;
+import org.sunbird.common.exception.ProjectCommonException;
+import org.sunbird.common.models.response.Response;
+import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
+import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
 import org.sunbird.helper.ElasticSearchMapping;
 import org.sunbird.helper.ElasticSearchSettings;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
 
 /**
  * This class will provide all required operation
@@ -931,8 +942,46 @@ public class ElasticSearchUtil {
    */
   public static boolean healthCheck() throws InterruptedException, ExecutionException {
     boolean indexResponse = false;
-      indexResponse = ConnectionManager.getClient().admin().indices()
-          .exists(Requests.indicesExistsRequest(ProjectUtil.EsIndex.sunbird.name())).get().isExists();
+    indexResponse = ConnectionManager.getClient().admin().indices()
+        .exists(Requests.indicesExistsRequest(ProjectUtil.EsIndex.sunbird.name())).get().isExists();
     return indexResponse;
+  }
+
+
+  /**
+   * Method to execute ES query with the limitation of size set to 0
+   * Currently this is a rest call
+   * @param index ES indexName
+   * @param type ES type
+   * @param rawQuery actual query to be executed
+   * @return ES response for the query
+   */
+  @SuppressWarnings("unchecked")
+  public static Response searchMetricsData(String index, String type, String rawQuery) {
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log("Metrics search method started at ==" + startTime, LoggerEnum.PERF_LOG);
+    String requestURL = PropertiesCache.getInstance().getProperty(JsonKey.ES_URL) + "/" + index
+        + "/" + type + "/" + "_search";
+    Map<String, String> headers = new HashMap<>();
+    headers.put("Content-Type", "application/json");
+    Map<String, Object> responseData = new HashMap<>();
+    try {
+      // TODO:Currently this is making a rest call but needs to be modified to make the call using
+      // ElasticSearch client
+      String responseStr = HttpUtil.sendPostRequest(requestURL, rawQuery, headers);
+      ObjectMapper mapper = new ObjectMapper();
+      responseData = mapper.readValue(responseStr, Map.class);
+    } catch (IOException e) {
+      throw new ProjectCommonException(ResponseCode.unableToConnectToES.getErrorCode(),
+          ResponseCode.unableToConnectToES.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    Response response = new Response();
+    response.put(JsonKey.RESPONSE, responseData);
+    long stopTime = System.currentTimeMillis();
+    long elapsedTime = stopTime - startTime;
+    ProjectLogger.log("ElasticSearchUtil metrics search method end at == " + stopTime
+        + " ,Total time elapsed = " + elapsedTime, LoggerEnum.PERF_LOG);
+    return response;
   }
 }

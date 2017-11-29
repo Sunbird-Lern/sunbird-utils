@@ -145,6 +145,7 @@ public interface ResponseMessage {
       String COURSE_CREATED_FOR_NULL = "Batch does not belong to any organization .";
       String COURSE_BATCH_START_PASSED_DATE_INVALID = "This Batch already started.";
       String UNABLE_TO_CONNECT_TO_EKSTEP = "Unable to connect to Ekstep Server";
+      String UNABLE_TO_CONNECT_TO_ES = "Unable to connect to Elastic Search";
       String INVALID_JSON = "Unable to process object to JSON/ JSON to Object";
       String EMPTY_CSV_FILE = "CSV file is Empty.";
       String INVALID_ROOT_ORG_DATA = "Root org doesn't exist for this Organization Id and channel {0}";
@@ -346,6 +347,7 @@ public interface ResponseMessage {
 		String INVALID_PROGRESS_STATUS = "INVALID_PROGRESS_STATUS";
 		String COURSE_BATCH_START_PASSED_DATE_INVALID = "COURSE_BATCH_START_PASSED_DATE_INVALID";
 		String UNABLE_TO_CONNECT_TO_EKSTEP = "UNABLE_TO_CONNECT_TO_EKSTEP";
+		String UNABLE_TO_CONNECT_TO_ES = "UNABLE_TO_CONNECT_TO_ES";
 		String INVALID_JSON = "INVALID_JSON";
 		String EMPTY_CSV_FILE = "EMPTY_CSV_FILE";
 		String INVALID_ROOT_ORG_DATA = "INVALID_ROOT_ORG_DATA";
