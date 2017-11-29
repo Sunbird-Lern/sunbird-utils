@@ -213,6 +213,6 @@ public class KeyCloakServiceImplTest {
   @Test
   public void emailVerifiedTest() {
     boolean response = keyCloakService.isEmailVerified(userId.get(JsonKey.USER_ID));
-    Assert.assertEquals(true, response);
+    Assert.assertEquals(false, response);
   }
 }

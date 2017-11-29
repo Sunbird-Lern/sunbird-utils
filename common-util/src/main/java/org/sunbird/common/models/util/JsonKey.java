@@ -562,4 +562,6 @@ public final class JsonKey {
   public static final String VALUE = "value";
   public static final String UNIQUE = "unique";
   public static final String DUPLICATE = "duplicate";
+  public static final String ENDORSE_DATE = "endorseDate";
+  public static final String ENDORSERS_LIST = "endorsersList";
 }
