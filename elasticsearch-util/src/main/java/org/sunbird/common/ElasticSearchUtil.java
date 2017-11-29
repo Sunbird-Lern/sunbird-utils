@@ -966,8 +966,17 @@ public class ElasticSearchUtil {
   public static Response searchMetricsData(String index, String type, String rawQuery) {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log("Metrics search method started at ==" + startTime, LoggerEnum.PERF_LOG);
-    String baseUrl = "http://" + System.getenv(JsonKey.SUNBIRD_ES_IP)+ ":" + System.getenv(JsonKey.SUNBIRD_ES_PORT);
-    if(StringUtils.isBlank(System.getenv(JsonKey.SUNBIRD_ES_IP)) || StringUtils.isBlank(System.getenv(JsonKey.SUNBIRD_ES_PORT))){
+    String baseUrl = "http://" + System.getenv(JsonKey.SUNBIRD_ES_IP) + ":"
+        + System.getenv(JsonKey.SUNBIRD_ES_PORT);
+    if (StringUtils.isBlank(System.getenv(JsonKey.SUNBIRD_ES_IP))
+        || StringUtils.isBlank(System.getenv(JsonKey.SUNBIRD_ES_PORT))) {
+      String envHost = System.getenv(JsonKey.SUNBIRD_ES_IP);
+      String envPort = System.getenv(JsonKey.SUNBIRD_ES_PORT);
+      String[] host = envHost.split(",");
+      String[] port = envPort.split(",");
+      baseUrl = "http://" + host[0] + ":" + port[0];
+    } else {
+      ProjectLogger.log("ES URL from Properties file");
       baseUrl = PropertiesCache.getInstance().getProperty(JsonKey.ES_URL);
     }
     String requestURL = baseUrl + "/" + index + "/" + type + "/" + "_search";
