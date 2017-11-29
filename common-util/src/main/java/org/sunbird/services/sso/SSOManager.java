@@ -95,4 +95,6 @@ public interface SSOManager {
   void setEmailVerifiedUpdatedFlag(String userId, String flag);
 
   String getEmailVerifiedUpdatedFlag(String userId);
+
+  String syncUserData(Map<String, Object> request);
 }

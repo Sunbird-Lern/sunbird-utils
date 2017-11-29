@@ -187,10 +187,7 @@ public class KeyCloakServiceImpl implements SSOManager {
       }
       map.put(JsonKey.EMAIL_VERIFIED_UPDATED, list);
       ur.setAttributes(map);
-      //Operation key will come while sync api for keycloak.  
-      if(ProjectUtil.isStringNullOREmpty((String)request.get(JsonKey.OPERATION))){
-       verifyEmail(userId);
-      }
+      verifyEmail(userId);
     }
     if (isNotNull(request.get(JsonKey.USERNAME))) {
       if (isNotNull(request.get(JsonKey.PROVIDER))) {
@@ -202,7 +199,7 @@ public class KeyCloakServiceImpl implements SSOManager {
         ur.setUsername((String) request.get(JsonKey.USERNAME));
       }
     }
-    if (!ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.COUNTRY_CODE))) {
+    if (!ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.PHONE))) {
       needTobeUpdate = true;
       Map<String, List<String>> map = ur.getAttributes();
       List<String> list = new ArrayList<>();
@@ -224,7 +221,87 @@ public class KeyCloakServiceImpl implements SSOManager {
       if(!ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.COUNTRY_CODE))){
         list.add((String) request.get(JsonKey.COUNTRY_CODE));
       }else{
-        list.add(PropertiesCache.getInstance().getProperty(JsonKey.COUNTRY_CODE));
+        list.add(PropertiesCache.getInstance().getProperty("sunbird_default_country_code"));
+      }
+      map.put(JsonKey.COUNTRY_CODE, list);
+      ur.setAttributes(map);
+    }
+    
+    try {
+      // if user sending any basic profile data
+      // then no need to make api call to keycloak to update profile.
+      if (needTobeUpdate) {
+        resource.update(ur);
+      }
+    } catch (Exception ex) {
+      throw new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(),
+          ResponseCode.invalidUsrData.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    return JsonKey.SUCCESS;
+  }
+  
+  @Override
+  public String syncUserData(Map<String, Object> request) {
+    String userId = (String) request.get(JsonKey.USER_ID);
+    UserRepresentation ur = null;
+    UserResource resource = null;
+    boolean needTobeUpdate = false;
+    try {
+      resource = keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
+      ur = resource.toRepresentation();
+    } catch (Exception e) {
+      throw new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(),
+          ResponseCode.invalidUsrData.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+
+    // set the UserRepresantation with the map value...
+    if (isNotNull(request.get(JsonKey.FIRST_NAME))) {
+      needTobeUpdate = true;
+      ur.setFirstName((String) request.get(JsonKey.FIRST_NAME));
+    }
+    if (isNotNull(request.get(JsonKey.LAST_NAME))) {
+      needTobeUpdate = true;
+      ur.setLastName((String) request.get(JsonKey.LAST_NAME));
+    }
+    if (isNotNull(request.get(JsonKey.EMAIL))) {
+      needTobeUpdate = true;
+      ur.setEmail((String) request.get(JsonKey.EMAIL));
+    }
+    if (isNotNull(request.get(JsonKey.USERNAME))) {
+      if (isNotNull(request.get(JsonKey.PROVIDER))) {
+        needTobeUpdate = true;
+        ur.setUsername((String) request.get(JsonKey.USERNAME) + JsonKey.LOGIN_ID_DELIMETER
+            + (String) request.get(JsonKey.PROVIDER));
+      } else {
+        needTobeUpdate = true;
+        ur.setUsername((String) request.get(JsonKey.USERNAME));
+      }
+    }
+    if (!ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.PHONE))) {
+      needTobeUpdate = true;
+      Map<String, List<String>> map = ur.getAttributes();
+      List<String> list = new ArrayList<>();
+      list.add((String) request.get(JsonKey.PHONE));
+      if (map == null) {
+        map = new HashMap<>();
+      }
+      map.put(JsonKey.PHONE, list);
+      ur.setAttributes(map);
+    }
+    
+    if(!ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.COUNTRY_CODE))){
+      needTobeUpdate = true;
+      Map<String, List<String>> map = ur.getAttributes();
+      if (map == null) {
+        map = new HashMap<>();
+      }
+      List<String> list = new ArrayList<>();
+      if(!ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.COUNTRY_CODE))){
+        list.add((String) request.get(JsonKey.COUNTRY_CODE));
+      }else{
+        list.add(PropertiesCache.getInstance().getProperty("sunbird_default_country_code"));
       }
       map.put(JsonKey.COUNTRY_CODE, list);
       ur.setAttributes(map);
