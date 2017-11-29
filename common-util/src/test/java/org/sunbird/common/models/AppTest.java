@@ -1,5 +1,6 @@
 package org.sunbird.common.models;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +38,7 @@ public class AppTest
 	
 	@Test
 	public void testGetResourceMethod() throws Exception{
-		String response = HttpUtil.sendGetRequest("https://qa.ekstep.in/api/content/v3/read/numeracy_377", headers);
+		String response = HttpUtil.sendGetRequest("https://qa.ekstep.in/api/content/v3/read/test", headers);
 		Assert.assertNotNull(response);
 	}
 	
@@ -54,9 +55,9 @@ public class AppTest
 		try {
 			response = HttpUtil.sendPostRequest("https://qa.ekstep.in/api/content/wrong/v3/list", data, headers);
 		} catch (Exception e) {
-			
+			Assert.assertTrue(e instanceof FileNotFoundException);
 		}
-		Assert.assertNotNull(response);
+		Assert.assertNull(response);
 	}
 	
 	//@Test
