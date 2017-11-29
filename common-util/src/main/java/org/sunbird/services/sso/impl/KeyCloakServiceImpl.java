@@ -187,8 +187,10 @@ public class KeyCloakServiceImpl implements SSOManager {
       }
       map.put(JsonKey.EMAIL_VERIFIED_UPDATED, list);
       ur.setAttributes(map);
-      
-      verifyEmail(userId);
+      //Operation key will come while sync api for keycloak.  
+      if(ProjectUtil.isStringNullOREmpty((String)request.get(JsonKey.OPERATION))){
+       verifyEmail(userId);
+      }
     }
     if (isNotNull(request.get(JsonKey.USERNAME))) {
       if (isNotNull(request.get(JsonKey.PROVIDER))) {
