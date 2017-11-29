@@ -199,6 +199,9 @@ public class ElasticSearchUtil {
     } catch (ExecutionException e) {
       ProjectLogger.log("Error while execution in Elasticsearch", e);
     }
+    if(sr.getHits() == null || sr.getHits().getTotalHits()==0) {
+    	return new HashMap<String, Object>();
+    }
     sr.getHits().getAt(0).getSource();
     long stopTime = System.currentTimeMillis();
     long elapsedTime = stopTime - startTime;
@@ -313,6 +316,7 @@ public class ElasticSearchUtil {
       }
     } else {
       ProjectLogger.log("Data can not be deleted due to invalid input.");
+      return false;
     }
     long stopTime = System.currentTimeMillis();
     long elapsedTime = stopTime - startTime;
