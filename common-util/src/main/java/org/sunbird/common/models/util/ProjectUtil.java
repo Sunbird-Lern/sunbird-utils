@@ -40,6 +40,10 @@ public class ProjectUtil {
   public static final String YEAR_MONTH_DATE_FORMAT = "yyyy-MM-dd";
   private static Map<String, String> templateMap = new HashMap<>();
   private static final int randomPasswordLength = 9;
+  protected static final String FILE_NAME[] = {"cassandratablecolumn.properties",
+      "elasticsearch.config.properties", "cassandra.config.properties", "dbconfig.properties",
+      "externalresource.properties", "sso.properties", "userencryption.properties",
+      "profilecompleteness.properties", "mailTemplates.properties"};
   public static PropertiesCache propertiesCache ;
 
   /**
@@ -585,7 +589,7 @@ public class ProjectUtil {
     String sunbirdLogUrlFromCache = PropertiesCache.getInstance().getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL);
     if (!ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL))
         || !ProjectUtil
-            .isStringNullOREmpty(propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL))) {
+        .isStringNullOREmpty(propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL))) {
       String logoUrl = null;
       if(!ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL))){
         logoUrl = System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL);
@@ -682,8 +686,12 @@ public class ProjectUtil {
     String tagStatus = "";
     try {
       ProjectLogger.log("start call for registering the tag ==" + tagId);
+      String ekStepBaseUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);
+      if (ProjectUtil.isStringNullOREmpty(ekStepBaseUrl)) {
+        ekStepBaseUrl = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_BASE_URL);
+      }
       tagStatus = HttpUtil.sendPostRequest(
-          PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_BASE_URL)
+          ekStepBaseUrl
               + PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_TAG_API_URL) + "/" + tagId,
           body, header);
       ProjectLogger
