@@ -563,4 +563,6 @@ public final class JsonKey {
   public static final String UNIQUE = "unique";
   public static final String DUPLICATE = "duplicate";
   public static final String OPERATION_FOR = "operationFor";
+  public static final String ES_URL = "es_search_url";
+  public static final String SIZE = "size";
 }
