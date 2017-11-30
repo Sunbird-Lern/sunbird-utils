@@ -12,7 +12,11 @@ import org.junit.FixMethodOrder;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+import org.sunbird.common.exception.ProjectCommonException;
+import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.responsecode.ResponseCode;
+import org.sunbird.common.responsecode.ResponseMessage;
 import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
 import org.sunbird.helper.ElasticSearchMapping;
@@ -379,6 +383,27 @@ public class ElasticSearchUtilTest {
   @Test
   public void mappingAddOrUpdateTest () {
     ElasticSearchUtil.addOrUpdateMapping(indexName, typeName, ElasticSearchMapping.createMapping());
+  }
+  
+  @Test
+  public void searchMetricsDataTestSuccess(){
+    String index = "searchindex";
+    String type = "user";
+    String rawQuery = "{\"query\":{\"match_none\":{}}}";
+    Response response = ElasticSearchUtil.searchMetricsData(index, type, rawQuery);
+    assertEquals(ResponseCode.OK, response.getResponseCode());
+  }
+  
+  @Test
+  public void searchMetricsDataTestException(){
+    String index = "searchtest";
+    String type = "usertest";
+    String rawQuery = "{\"query\":{\"match_none\":{}}}";
+    try {
+    ElasticSearchUtil.searchMetricsData(index, type, rawQuery);
+    }catch(ProjectCommonException e){
+      assertEquals(ResponseCode.unableToConnectToES.getErrorCode(), e.getCode());
+    }
   }
   
 }
