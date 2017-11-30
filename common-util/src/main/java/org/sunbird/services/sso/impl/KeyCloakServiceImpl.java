@@ -265,10 +265,35 @@ public class KeyCloakServiceImpl implements SSOManager {
       needTobeUpdate = true;
       ur.setLastName((String) request.get(JsonKey.LAST_NAME));
     }
+    
     if (isNotNull(request.get(JsonKey.EMAIL))) {
       needTobeUpdate = true;
       ur.setEmail((String) request.get(JsonKey.EMAIL));
     }
+    
+    if(!resource.toRepresentation().isEmailVerified()){
+      needTobeUpdate = true;
+      Map<String, List<String>> map = ur.getAttributes();
+      List<String> list = new ArrayList<>();
+      list.add("false");
+      if (map == null) {
+        map = new HashMap<>();
+      }
+      map.put(JsonKey.EMAIL_VERIFIED_UPDATED, list);
+      ur.setAttributes(map);
+      verifyEmail(userId);
+    }else {
+      needTobeUpdate = true;
+      Map<String, List<String>> map = ur.getAttributes();
+      List<String> list = new ArrayList<>();
+      list.add("true");
+      if (map == null) {
+        map = new HashMap<>();
+      }
+      map.put(JsonKey.EMAIL_VERIFIED_UPDATED, list);
+      ur.setAttributes(map);
+    }
+    
     if (isNotNull(request.get(JsonKey.USERNAME))) {
       if (isNotNull(request.get(JsonKey.PROVIDER))) {
         needTobeUpdate = true;
