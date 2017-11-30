@@ -19,7 +19,7 @@ import org.sunbird.common.responsecode.ResponseCode;
  * @author Manzarul
  *
  */
-public class NotificationRequestValidator {
+public class NotificationRequestValidatorTest {
   
   @Test
   public void validateSendNotificationSuccess() {

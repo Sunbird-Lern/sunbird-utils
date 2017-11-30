@@ -20,7 +20,7 @@ import org.sunbird.common.responsecode.ResponseCode;
  * @author Manzarul
  *
  */
-public class CommonRequestValidator {
+public class CommonRequestValidatorTest {
   
   @Test
   public void enrollCourseValidationSuccess() {

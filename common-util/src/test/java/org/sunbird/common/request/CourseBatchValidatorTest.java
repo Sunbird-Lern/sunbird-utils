@@ -22,7 +22,7 @@ import org.sunbird.common.responsecode.ResponseCode;
  * @author Manzarul
  *
  */
-public class CourseBatchValidator {
+public class CourseBatchValidatorTest {
   
   private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
   

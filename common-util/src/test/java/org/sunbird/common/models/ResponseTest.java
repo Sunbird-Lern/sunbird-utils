@@ -14,7 +14,7 @@ import org.sunbird.common.responsecode.ResponseCode;
  * @author Manzarul
  *
  */
-public class Response {
+public class ResponseTest {
   
   @Test
   public void responseCreate () {

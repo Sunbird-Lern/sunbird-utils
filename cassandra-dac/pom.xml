@@ -100,6 +100,7 @@
         <artifactId>clover-maven-plugin</artifactId>
         <version>4.2.0</version>
         <configuration>
+          <contextFilters>try,catch,static</contextFilters>
           <targetPercentage>0%</targetPercentage>
         </configuration>
         <executions>

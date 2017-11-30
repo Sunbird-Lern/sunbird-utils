@@ -13,7 +13,7 @@ import org.sunbird.common.responsecode.ResponseCode;
 /**
  * Test class for notes request validation
  */
-public class NotesRequestValidator {
+public class NotesRequestValidatorTest {
 
   /**
    * Method to test create note when userId in request is empty 
