@@ -20,7 +20,7 @@ import org.sunbird.common.responsecode.ResponseCode;
  * @author Manzarul
  *
  */
-public class UserRequestValidator {
+public class UserRequestValidatorTest {
   
   @Test
   public void validateForgotPasswordSuccess() {
@@ -222,7 +222,7 @@ public class UserRequestValidator {
   public void validateCreateUserSuccessWithAllFields () {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>(); 
-    requestObj.put(JsonKey.PHONE, "1234123434");
+    requestObj.put(JsonKey.PHONE, "9321234123");
     requestObj.put(JsonKey.EMAIL, "test123@test.com");
     requestObj.put(JsonKey.USERNAME, "manzarul.haque");
     requestObj.put(JsonKey.FIRST_NAME, "manzarul");
@@ -265,7 +265,7 @@ public class UserRequestValidator {
   public void validatePhoneAndEmailUpdateSuccess () {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>(); 
-    requestObj.put(JsonKey.PHONE, "1234123434");
+    requestObj.put(JsonKey.PHONE, "9321234123");
     requestObj.put(JsonKey.EMAIL, "test123@test.com");
     request.put(JsonKey.PROVIDER, "sunbird");
     request.put(JsonKey.PHONE_VERIFIED, true);
@@ -279,7 +279,7 @@ public class UserRequestValidator {
   public void validateUpdateUserSuccess () {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>(); 
-    requestObj.put(JsonKey.PHONE, "1234123434");
+    requestObj.put(JsonKey.PHONE, "9321234123");
     requestObj.put(JsonKey.EMAIL, "test123@test.com");
     requestObj.put(JsonKey.USERNAME, "manzarul.haque");
     requestObj.put(JsonKey.FIRST_NAME, "manzarul");
