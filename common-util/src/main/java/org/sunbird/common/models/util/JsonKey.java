@@ -566,5 +566,6 @@ public final class JsonKey {
   public static final String ENDORSERS_LIST = "endorsersList";
   public static final String OPERATION_FOR = "operationFor";
   public static final String ES_URL = "es_search_url";
+  public static final String ES_METRICS_PORT = "es_metrics_port";
   public static final String SIZE = "size";
 }
