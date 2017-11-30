@@ -208,6 +208,7 @@ public interface ResponseMessage {
       String INVALID_NOTIFICATION_TYPE_SUPPORT = "Only notification type FCM is supported.";
       String INVALID_PHONE_NUMBER = "Please send Phone and country code seprately.";
       String INVALID_COUNTRY_CODE = "Please provide a valid country code.";
+      String DUPLICATE_DATA = "System contains duplicate entry for {0}.";
     }
     
     interface Key {
@@ -410,6 +411,7 @@ public interface ResponseMessage {
         String INVALID_NOTIFICATION_TYPE_SUPPORT = "INVALID_NOTIFICATION_TYPE_SUPPORT";
         String INVALID_PHONE_NUMBER = "INVALID_PHONE_NUMBER";
         String INVALID_COUNTRY_CODE = "INVALID_COUNTRY_CODE";
+        String DUPLICATE_DATA = "DUPLICATE_DATA";
         
     }
 }
