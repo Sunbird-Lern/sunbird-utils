@@ -990,6 +990,10 @@ public class ElasticSearchUtil {
       throw new ProjectCommonException(ResponseCode.unableToConnectToES.getErrorCode(),
           ResponseCode.unableToConnectToES.getErrorMessage(),
           ResponseCode.SERVER_ERROR.getResponseCode());
+    }  catch (Exception e) {
+      throw new ProjectCommonException(ResponseCode.unableToParseData.getErrorCode(),
+          ResponseCode.unableToParseData.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
     }
     Response response = new Response();
     response.put(JsonKey.RESPONSE, responseData);
