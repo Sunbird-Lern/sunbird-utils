@@ -121,20 +121,21 @@ public class KeyCloakServiceImpl implements SSOManager {
       throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(),
           ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
     }
-      if (!(ProjectUtil.isStringNullOREmpty(userId)) && !(ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.EMAIL)))){
-        try {
-          if (IS_EMAIL_SETUP_COMPLETE) {
-            verifyEmail(userId);
-          }
-        } catch (Exception ex) {
-          throw new ProjectCommonException(ex.getMessage(), ex.getMessage(),
-              ResponseCode.CLIENT_ERROR.getResponseCode());
+    if (!(ProjectUtil.isStringNullOREmpty(userId))
+        && !(ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.EMAIL)))) {
+      try {
+        if (IS_EMAIL_SETUP_COMPLETE) {
+          verifyEmail(userId);
         }
+      } catch (Exception ex) {
+        throw new ProjectCommonException(ex.getMessage(), ex.getMessage(),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
       }
+    }
     // reset the password with same password
     if (!(ProjectUtil.isStringNullOREmpty(userId)) && ((request.get(JsonKey.PASSWORD) != null)
         && !ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.PASSWORD)))) {
-      //doPasswordUpdate(userId, (String) request.get(JsonKey.PASSWORD));
+      // doPasswordUpdate(userId, (String) request.get(JsonKey.PASSWORD));
       // key cloak setting is change now so key cloak won't
       // provide access token id just after create user. because
       // change password is mandatory on keyclaok.
@@ -178,7 +179,7 @@ public class KeyCloakServiceImpl implements SSOManager {
       needTobeUpdate = true;
       ur.setEmail((String) request.get(JsonKey.EMAIL));
       ur.setEmailVerified(false);
-      
+
       Map<String, List<String>> map = ur.getAttributes();
       List<String> list = new ArrayList<>();
       list.add("false");
@@ -210,23 +211,23 @@ public class KeyCloakServiceImpl implements SSOManager {
       map.put(JsonKey.PHONE, list);
       ur.setAttributes(map);
     }
-    
-    if(!ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.COUNTRY_CODE))){
+
+    if (!ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.COUNTRY_CODE))) {
       needTobeUpdate = true;
       Map<String, List<String>> map = ur.getAttributes();
       if (map == null) {
         map = new HashMap<>();
       }
       List<String> list = new ArrayList<>();
-      if(!ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.COUNTRY_CODE))){
+      if (!ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.COUNTRY_CODE))) {
         list.add((String) request.get(JsonKey.COUNTRY_CODE));
-      }else{
+      } else {
         list.add(PropertiesCache.getInstance().getProperty("sunbird_default_country_code"));
       }
       map.put(JsonKey.COUNTRY_CODE, list);
       ur.setAttributes(map);
     }
-    
+
     try {
       // if user sending any basic profile data
       // then no need to make api call to keycloak to update profile.
@@ -240,7 +241,7 @@ public class KeyCloakServiceImpl implements SSOManager {
     }
     return JsonKey.SUCCESS;
   }
-  
+
   @Override
   public String syncUserData(Map<String, Object> request) {
     String userId = (String) request.get(JsonKey.USER_ID);
@@ -265,13 +266,15 @@ public class KeyCloakServiceImpl implements SSOManager {
       needTobeUpdate = true;
       ur.setLastName((String) request.get(JsonKey.LAST_NAME));
     }
-    
+
     if (isNotNull(request.get(JsonKey.EMAIL))) {
       needTobeUpdate = true;
       ur.setEmail((String) request.get(JsonKey.EMAIL));
     }
-    
-    if(!resource.toRepresentation().isEmailVerified()){
+    ProjectLogger
+        .log("check user email is verified or not ,resource.toRepresentation().isEmailVerified() :"
+            + resource.toRepresentation().isEmailVerified() +" for userId :"+userId);
+    if (!resource.toRepresentation().isEmailVerified()) {
       needTobeUpdate = true;
       Map<String, List<String>> map = ur.getAttributes();
       List<String> list = new ArrayList<>();
@@ -282,7 +285,7 @@ public class KeyCloakServiceImpl implements SSOManager {
       map.put(JsonKey.EMAIL_VERIFIED_UPDATED, list);
       ur.setAttributes(map);
       verifyEmail(userId);
-    }else {
+    } else {
       needTobeUpdate = true;
       Map<String, List<String>> map = ur.getAttributes();
       List<String> list = new ArrayList<>();
@@ -293,7 +296,7 @@ public class KeyCloakServiceImpl implements SSOManager {
       map.put(JsonKey.EMAIL_VERIFIED_UPDATED, list);
       ur.setAttributes(map);
     }
-    
+
     if (isNotNull(request.get(JsonKey.USERNAME))) {
       if (isNotNull(request.get(JsonKey.PROVIDER))) {
         needTobeUpdate = true;
@@ -315,23 +318,28 @@ public class KeyCloakServiceImpl implements SSOManager {
       map.put(JsonKey.PHONE, list);
       ur.setAttributes(map);
     }
-    
-    if(!ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.COUNTRY_CODE))){
+
+    if (!ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.COUNTRY_CODE))) {
       needTobeUpdate = true;
       Map<String, List<String>> map = ur.getAttributes();
       if (map == null) {
         map = new HashMap<>();
       }
       List<String> list = new ArrayList<>();
-      if(!ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.COUNTRY_CODE))){
-        list.add((String) request.get(JsonKey.COUNTRY_CODE));
-      }else{
-        list.add(PropertiesCache.getInstance().getProperty("sunbird_default_country_code"));
+      list.add((String) request.get(JsonKey.COUNTRY_CODE));
+      map.put(JsonKey.COUNTRY_CODE, list);
+      ur.setAttributes(map);
+    } else {
+      Map<String, List<String>> map = ur.getAttributes();
+      if (map == null) {
+        map = new HashMap<>();
       }
+      List<String> list = new ArrayList<>();
+      list.add(PropertiesCache.getInstance().getProperty("sunbird_default_country_code"));
       map.put(JsonKey.COUNTRY_CODE, list);
       ur.setAttributes(map);
     }
-    
+
     try {
       // if user sending any basic profile data
       // then no need to make api call to keycloak to update profile.
@@ -447,12 +455,13 @@ public class KeyCloakServiceImpl implements SSOManager {
    * @param userId key claok id.
    */
   private void verifyEmail(String userId) {
-    try{
-    ProjectLogger.log("Sending mail for Email verification start.");
-    keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId).sendVerifyEmail();
-    ProjectLogger.log("Sending mail for Email verification end.");
-    }catch(Exception ex){
-      ProjectLogger.log("Exception occurred while calling sendVerifyEmail method of keycloak :: ",ex);
+    try {
+      ProjectLogger.log("Sending mail for Email verification start.");
+      keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId).sendVerifyEmail();
+      ProjectLogger.log("Sending mail for Email verification end.");
+    } catch (Exception ex) {
+      ProjectLogger.log("Exception occurred while calling sendVerifyEmail method of keycloak :: ",
+          ex);
     }
   }
 
@@ -466,14 +475,14 @@ public class KeyCloakServiceImpl implements SSOManager {
     }
     return resource.toRepresentation().isEmailVerified();
   }
-  
+
   @Override
   public void setEmailVerifiedAsFalse(String userId) {
     UserResource resource =
         keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
     resource.toRepresentation().setEmailVerified(false);
   }
-  
+
   @Override
   public void setEmailVerifiedUpdatedFlag(String userId, String flag) {
     UserResource resource =
@@ -489,7 +498,7 @@ public class KeyCloakServiceImpl implements SSOManager {
     user.setAttributes(map);
     resource.update(user);
   }
-  
+
   @Override
   public String getEmailVerifiedUpdatedFlag(String userId) {
     UserResource resource =
@@ -497,12 +506,13 @@ public class KeyCloakServiceImpl implements SSOManager {
     UserRepresentation user = resource.toRepresentation();
     Map<String, List<String>> map = user.getAttributes();
     List<String> list = map.get(JsonKey.EMAIL_VERIFIED_UPDATED);
-    if(!list.isEmpty()){
-     return list.get(0);
-    }else{
+    if (!list.isEmpty()) {
+      return list.get(0);
+    } else {
       return "";
     }
   }
+
   /**
    * This method will create user object from in coming map data. it will read only some predefine
    * key from the map.
@@ -534,7 +544,7 @@ public class KeyCloakServiceImpl implements SSOManager {
       credential.setTemporary(true);
       user.setCredentials(asList(credential));
     }
-     user.setEmailVerified(false);
+    user.setEmailVerified(false);
     if (isNotNull(request.get(JsonKey.PHONE))) {
       Map<String, List<String>> map = user.getAttributes();
       if (map == null) {
@@ -542,19 +552,19 @@ public class KeyCloakServiceImpl implements SSOManager {
       }
       List<String> list = new ArrayList<>();
       list.add((String) request.get(JsonKey.PHONE));
-      
+
       map.put(JsonKey.PHONE, list);
       List<String> list2 = new ArrayList<>();
-      if(!ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.COUNTRY_CODE))){
+      if (!ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.COUNTRY_CODE))) {
         list2.add((String) request.get(JsonKey.COUNTRY_CODE));
-      }else{
+      } else {
         list2.add(PropertiesCache.getInstance().getProperty("sunbird_default_country_code"));
       }
       map.put(JsonKey.COUNTRY_CODE, list2);
-      
+
       user.setAttributes(map);
     }
-    
+
     Map<String, List<String>> map = user.getAttributes();
     List<String> list = new ArrayList<>();
     list.add("false");
@@ -563,7 +573,7 @@ public class KeyCloakServiceImpl implements SSOManager {
     }
     map.put(JsonKey.EMAIL_VERIFIED_UPDATED, list);
     user.setAttributes(map);
-      
+
     user.setEnabled(true);
     return user;
   }
