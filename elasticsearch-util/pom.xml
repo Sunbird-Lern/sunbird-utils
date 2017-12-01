@@ -79,7 +79,7 @@
         <version>4.2.0</version>
         <configuration>
           <targetPercentage>0%</targetPercentage>
-          <contextFilters>try,catch,static</contextFilters>
+          <contextFilters>try,catch</contextFilters>
         </configuration>
         <executions>
           <execution>
