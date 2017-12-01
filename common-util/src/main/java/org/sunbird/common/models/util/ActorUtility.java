@@ -25,6 +25,7 @@ public class ActorUtility {
   }
   
   private static void createConnection() {
+    try{
     ProjectLogger.log("ActorUtility createConnection method start....");
     ActorSystem system =
         ActorSystem.create("ActorApplication",ConfigFactory.load().getConfig("ActorConfig"));
@@ -44,6 +45,9 @@ public class ActorUtility {
     }
     selection = system.actorSelection(path);
     ProjectLogger.log("ActorUtility selection reference    : "+selection);
+    }catch(Exception ex){
+      ProjectLogger.log("Exception Occurred while creating remote connection in ActorUtility createConnection method "+ex);
+    }
   }
 
 }
