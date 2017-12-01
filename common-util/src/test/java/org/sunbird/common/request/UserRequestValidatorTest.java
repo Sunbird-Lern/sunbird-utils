@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+import org.junit.Assert;
 import org.junit.Test;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
@@ -368,4 +368,23 @@ public class UserRequestValidatorTest {
   }
   
   
+  @Test
+  public void phoneAndEmailValidationForUpdateUser () {
+    Request request = new Request();
+    boolean response = false;
+    Map<String, Object> requestObj = new HashMap<>();
+    requestObj.put(JsonKey.PHONE, "9878888888");
+    requestObj.put(JsonKey.COUNTRY_CODE, "+91");
+    requestObj.put(JsonKey.PROVIDER, "sunbird");
+    requestObj.put(JsonKey.EMAIL, "test123@test.com");
+    requestObj.put(JsonKey.PHONE_VERIFIED, true);
+    request.setRequest(requestObj);
+    try {
+    RequestValidator.phoneAndEmailValidationForUpdateUser(request);
+     response = true;
+    } catch (ProjectCommonException e) {
+    	Assert.assertNull(e);
+	}
+    assertEquals(true, response); 
+  }
 }
