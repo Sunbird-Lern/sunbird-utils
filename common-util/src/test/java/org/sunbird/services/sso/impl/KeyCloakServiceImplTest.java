@@ -1,5 +1,10 @@
 package org.sunbird.services.sso.impl;
 
+import java.lang.reflect.Constructor;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -10,11 +15,6 @@ import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.services.sso.SSOManager;
 import org.sunbird.services.sso.SSOServiceFactory;
-
-import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * @author arvind
@@ -59,7 +59,7 @@ public class KeyCloakServiceImplTest {
         request.put(JsonKey.PASSWORD , "password");
         request.put(JsonKey.FIRST_NAME , "A");
         request.put(JsonKey.LAST_NAME , "B");
-        request.put(JsonKey.EMAIL_VERIFIED , true);
+        request.put(JsonKey.PHONE , "9870060000");
         request.put(JsonKey.EMAIL , userName.substring(0,10));
         userId = keyCloakService.createUser(request);
         Assert.assertNotNull(userId);
@@ -95,14 +95,42 @@ public class KeyCloakServiceImplTest {
 
     @Test
     public void updateUserTest(){
-
         Map<String , Object> request = new HashMap<String , Object>();
         request.put(JsonKey.USER_ID , userId.get(JsonKey.USER_ID));
         request.put(JsonKey.FIRST_NAME , userName);
+        request.put(JsonKey.PHONE, "9870060000");
+        request.put(JsonKey.EMAIL , userName.substring(0,10));
+        request.put(JsonKey.USERNAME , userName);
+        request.put(JsonKey.PROVIDER, "ntp");
         String result = keyCloakService.updateUser(request);
         Assert.assertNotNull(result);
     }
    
+    @Test
+    public void updateUserWithOutProviderTest(){
+        Map<String , Object> request = new HashMap<String , Object>();
+        request.put(JsonKey.USER_ID , userId.get(JsonKey.USER_ID));
+        request.put(JsonKey.FIRST_NAME , userName);
+        request.put(JsonKey.PHONE, "9870060000");
+        request.put(JsonKey.COUNTRY_CODE, "+91");
+        request.put(JsonKey.EMAIL , userName.substring(0,10));
+        request.put(JsonKey.USERNAME , userName);
+        String result = keyCloakService.updateUser(request);
+        Assert.assertNotNull(result);
+    }
+    
+    
+    @Test
+    public void updateUserWithOutProviderAndCountryCodeTest(){
+        Map<String , Object> request = new HashMap<String , Object>();
+        request.put(JsonKey.USER_ID , userId.get(JsonKey.USER_ID));
+        request.put(JsonKey.FIRST_NAME , userName);
+        request.put(JsonKey.PHONE, "9870060000");
+        request.put(JsonKey.EMAIL , userName.substring(0,10));
+        request.put(JsonKey.USERNAME , userName);
+        String result = keyCloakService.updateUser(request);
+        Assert.assertNotNull(result);
+    }
     
     @Test
     public void updateUserTestWithOutPassingAnyField(){
@@ -215,4 +243,98 @@ public class KeyCloakServiceImplTest {
     boolean response = keyCloakService.isEmailVerified(userId.get(JsonKey.USER_ID));
     Assert.assertEquals(false, response);
   }
+  
+  
+  @Test
+  public void setEmailVerifiedAsFalseTest() {
+    keyCloakService.setEmailVerifiedAsFalse(userId.get(JsonKey.USER_ID));
+    boolean response = keyCloakService.isEmailVerified(userId.get(JsonKey.USER_ID));
+    Assert.assertNotEquals(true, response);
+  }
+  
+  @Test
+  public void setEmailVerifiedUpdatedFlagWithFalse() {
+    keyCloakService.setEmailVerifiedUpdatedFlag(userId.get(JsonKey.USER_ID),"false");
+    String response = keyCloakService.getEmailVerifiedUpdatedFlag(userId.get(JsonKey.USER_ID));
+    Assert.assertEquals(false+"", response);
+  }
+  
+  @Test
+	public void setEmailVerifiedUpdatedFlagWithTrue() {
+		keyCloakService.setEmailVerifiedUpdatedFlag(userId.get(JsonKey.USER_ID), "true");
+		String response = keyCloakService.getEmailVerifiedUpdatedFlag(userId.get(JsonKey.USER_ID));
+		Assert.assertEquals(true + "", response);
+	}
+  
+  @Test
+	public void syncUserDataSuccess() {
+		Map<String, Object> request = new HashMap<String, Object>();
+		request.put(JsonKey.USERNAME, userName);
+		request.put(JsonKey.PROVIDER, "ntp");
+		request.put(JsonKey.PASSWORD, "password");
+		request.put(JsonKey.FIRST_NAME, "A");
+		request.put(JsonKey.LAST_NAME, "B");
+		request.put(JsonKey.PHONE, "9870060000");
+		request.put(JsonKey.COUNTRY_CODE, "+91");
+		request.put(JsonKey.EMAIL, userName.substring(0, 10));
+		request.put(JsonKey.USER_ID, userId.get(JsonKey.USER_ID));
+		String response = keyCloakService.syncUserData(request);
+		Assert.assertEquals(JsonKey.SUCCESS, response);
+	}
+  
+  @Test
+ 	public void syncUserDataSuccessWithOutCountryCode() {
+ 		Map<String, Object> request = new HashMap<String, Object>();
+ 		request.put(JsonKey.USERNAME, userName);
+ 		request.put(JsonKey.PROVIDER, "ntp");
+ 		request.put(JsonKey.PASSWORD, "password");
+ 		request.put(JsonKey.FIRST_NAME, "A");
+ 		request.put(JsonKey.LAST_NAME, "B");
+ 		request.put(JsonKey.PHONE, "9870060000");
+ 		request.put(JsonKey.EMAIL, userName.substring(0, 10));
+ 		request.put(JsonKey.USER_ID, userId.get(JsonKey.USER_ID));
+ 		String response = keyCloakService.syncUserData(request);
+ 		Assert.assertEquals(JsonKey.SUCCESS, response);
+ 	}
+  
+  
+  @Test
+	public void syncUserDataSuccessWithOutProvider() {
+		Map<String, Object> request = new HashMap<String, Object>();
+		request.put(JsonKey.USERNAME, userName);
+		request.put(JsonKey.PASSWORD, "password");
+		request.put(JsonKey.FIRST_NAME, "A");
+		request.put(JsonKey.LAST_NAME, "B");
+		request.put(JsonKey.PHONE, "9870060000");
+		request.put(JsonKey.EMAIL, userName.substring(0, 10));
+		request.put(JsonKey.USER_ID, userId.get(JsonKey.USER_ID));
+		String response = keyCloakService.syncUserData(request);
+		Assert.assertEquals(JsonKey.SUCCESS, response);
+	}
+  
+  @Test
+	public void syncUserDataWithInvalidUser() {
+		Map<String, Object> request = new HashMap<String, Object>();
+		request.put(JsonKey.USERNAME, userName);
+		request.put(JsonKey.PASSWORD, "password");
+		request.put(JsonKey.FIRST_NAME, "A");
+		request.put(JsonKey.LAST_NAME, "B");
+		request.put(JsonKey.PHONE, "9870060000");
+		request.put(JsonKey.EMAIL, userName.substring(0, 10));
+		request.put(JsonKey.USER_ID, "xey123-23sss-cbdsgdgdg");
+		try {
+			String response = keyCloakService.syncUserData(request);
+		} catch (ProjectCommonException e) {
+			Assert.assertEquals(ResponseCode.invalidUsrData.getErrorCode(), e.getCode());
+			Assert.assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+		}
+	}
+  
+  @Test
+  public void passwordUppdateTest() {
+	   boolean response = keyCloakService.doPasswordUpdate(userId.get(JsonKey.USER_ID), "password");
+	   Assert.assertEquals(true, response);
+  }
+  
+  
 }
