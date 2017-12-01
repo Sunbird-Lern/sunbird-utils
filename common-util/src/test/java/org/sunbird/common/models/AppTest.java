@@ -53,11 +53,29 @@ public class AppTest
 		//passing wrong url
 		String response=null;
 		try {
+			Map<String,String> data = new HashMap<>();
+			data.put("search", "\"contentType\": [\"Story\"]");
 			response = HttpUtil.sendPostRequest("https://qa.ekstep.in/api/content/wrong/v3/list", data, headers);
 		} catch (Exception e) {
 			Assert.assertTrue(e instanceof FileNotFoundException);
 		}
 		Assert.assertNull(response);
+	}
+	
+	@Test()
+	public void testPatchMatch() {
+		String response = null;
+		try {
+			String ekStepBaseUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);
+			if (ProjectUtil.isStringNullOREmpty(ekStepBaseUrl)) {
+				ekStepBaseUrl = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_BASE_URL);
+			}
+			response = HttpUtil.sendPatchRequest(ekStepBaseUrl
+					+ PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_TAG_API_URL) + "/" + "testt123", "{}",
+					headers);
+		} catch (Exception e) {
+		}
+		Assert.assertNotNull(response);
 	}
 	
 	//@Test
