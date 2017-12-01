@@ -1160,18 +1160,20 @@ public final class RequestValidator {
 
 
   public static void validateSyncRequest(Request request) {
-    if (request.getRequest().get(JsonKey.OBJECT_TYPE) == null || ProjectUtil
-        .isStringNullOREmpty((String) request.getRequest().get(JsonKey.OBJECT_TYPE))) {
-      throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
-          ResponseCode.dataTypeError.getErrorMessage(), ERROR_CODE);
+    String operation = (String) request.getRequest().get(JsonKey.OPERATION_FOR);
+      if(!operation.equalsIgnoreCase("keycloak")){
+      if (request.getRequest().get(JsonKey.OBJECT_TYPE) == null || ProjectUtil
+          .isStringNullOREmpty((String) request.getRequest().get(JsonKey.OBJECT_TYPE))) {
+        throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
+            ResponseCode.dataTypeError.getErrorMessage(), ERROR_CODE);
+      }
+      List<String> list = new ArrayList<>(Arrays.asList(
+          new String[] {JsonKey.USER, JsonKey.ORGANISATION, JsonKey.BATCH, JsonKey.USER_COURSE}));
+      if (!list.contains(request.getRequest().get(JsonKey.OBJECT_TYPE))) {
+        throw new ProjectCommonException(ResponseCode.invalidObjectType.getErrorCode(),
+            ResponseCode.invalidObjectType.getErrorMessage(), ERROR_CODE);
+      }
     }
-    List<String> list = new ArrayList<>(Arrays.asList(
-        new String[] {JsonKey.USER, JsonKey.ORGANISATION, JsonKey.BATCH, JsonKey.USER_COURSE}));
-    if (!list.contains(request.getRequest().get(JsonKey.OBJECT_TYPE))) {
-      throw new ProjectCommonException(ResponseCode.invalidObjectType.getErrorCode(),
-          ResponseCode.invalidObjectType.getErrorMessage(), ERROR_CODE);
-    }
-
   }
 
   public static void validateUpdateSystemSettingsRequest(Request request) {
