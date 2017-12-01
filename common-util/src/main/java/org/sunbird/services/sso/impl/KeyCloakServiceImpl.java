@@ -188,7 +188,6 @@ public class KeyCloakServiceImpl implements SSOManager {
       }
       map.put(JsonKey.EMAIL_VERIFIED_UPDATED, list);
       ur.setAttributes(map);
-      verifyEmail(userId);
     }
     if (isNotNull(request.get(JsonKey.USERNAME))) {
       if (isNotNull(request.get(JsonKey.PROVIDER))) {
@@ -233,6 +232,9 @@ public class KeyCloakServiceImpl implements SSOManager {
       // then no need to make api call to keycloak to update profile.
       if (needTobeUpdate) {
         resource.update(ur);
+        if (isNotNull(request.get(JsonKey.EMAIL))) {
+          verifyEmail(userId);
+        }
       }
     } catch (Exception ex) {
       throw new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(),
