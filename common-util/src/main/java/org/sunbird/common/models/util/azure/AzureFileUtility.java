@@ -12,6 +12,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URLConnection;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import org.sunbird.common.models.util.ProjectLogger;
@@ -61,6 +63,8 @@ public class AzureFileUtility {
     try {
       CloudBlockBlob blob = container.getBlockBlobReference(fileName);
       fis = new FileInputStream(file);
+      String mimeType = Files.probeContentType(file.toPath());
+      blob.getProperties().setContentType(mimeType);
       blob.upload(fis, file.length());
       return true;
     } catch (Exception e) {
@@ -159,6 +163,8 @@ public class AzureFileUtility {
       blob = container.getBlockBlobReference(blobName);
       File source = new File(fileName);
       fis = new FileInputStream(source);
+      String mimeType = Files.probeContentType(source.toPath());
+      blob.getProperties().setContentType(mimeType);
       blob.upload(fis, source.length());
       //fileUrl = blob.getStorageUri().getPrimaryUri().getPath();
       fileUrl = blob.getUri().toString();
@@ -218,6 +224,8 @@ public class AzureFileUtility {
       blob = container.getBlockBlobReference(filePath+source.getName());
       //File source = new File(fileName);
       fis = new FileInputStream(source);
+      String mimeType = Files.probeContentType(source.toPath());
+      blob.getProperties().setContentType(mimeType);
       blob.upload(fis, source.length());
       //fileUrl = blob.getStorageUri().getPrimaryUri().getPath();
       fileUrl = blob.getUri().toString();
