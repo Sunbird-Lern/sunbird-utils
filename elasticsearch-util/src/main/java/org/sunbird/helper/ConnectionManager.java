@@ -27,7 +27,10 @@ public class ConnectionManager {
 	private static TransportClient client = null;
 	private static List<String> host = new ArrayList<>();
 	private static List<Integer> ports = new ArrayList<>();
-	
+	private static PropertiesCache propertiesCache = PropertiesCache.getInstance();
+	private static String cluster = propertiesCache.getProperty("es.cluster.name");
+	private static String hostName = propertiesCache.getProperty("es.host.name");
+	private static String port = propertiesCache.getProperty("es.host.port");
 	static {
 		initialiseConnection();
 		registerShutDownHook();
@@ -77,10 +80,6 @@ public class ConnectionManager {
         ProjectLogger.log("value found under system variable.");
         return true;
       }
-      PropertiesCache propertiesCache = PropertiesCache.getInstance();
-      String cluster = propertiesCache.getProperty("es.cluster.name");
-      String hostName = propertiesCache.getProperty("es.host.name");
-      String port = propertiesCache.getProperty("es.host.port");
       return initialiseConnectionFromPropertiesFile(cluster, hostName, port);
     } catch (Exception e) {
       ProjectLogger.log("Error while initialising connection", e);
@@ -159,11 +158,9 @@ public class ConnectionManager {
 	 * @author Manzarul
 	 *
 	 */
-	static class ResourceCleanUp extends Thread {
+	public static class ResourceCleanUp extends Thread {
 		  public void run() {
-			  ProjectLogger.log("started resource cleanup.");
 			  client.close(); 
-			  ProjectLogger.log("completed resource cleanup.");
 		  }
 	}
 	

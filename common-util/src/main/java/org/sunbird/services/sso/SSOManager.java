@@ -90,11 +90,33 @@ public interface SSOManager {
 	 * this method will set emailVerified flag of keycloak as false.
 	 * @param userId
 	 */
-  void setEmailVerifiedAsFalse(String userId);
+   void setEmailVerifiedAsFalse(String userId);
+  /**
+   * This method will set email verified flag on keycloak.
+   * @param userId String
+   * @param flag boolean (true/false)
+   */
+   void setEmailVerifiedUpdatedFlag(String userId, String flag);
+  
+  /**
+   * This method will provide the user already set attribute under keycloak.
+   * @param userId String
+   * @return String
+   */
+   String getEmailVerifiedUpdatedFlag(String userId);
+  
+  /**
+   * This method will do the data sync from cassandra db to keyclaok.
+   * @param request Map<String, Object>
+   * @return String
+   */
+   String syncUserData(Map<String, Object> request);
 
-  void setEmailVerifiedUpdatedFlag(String userId, String flag);
-
-  String getEmailVerifiedUpdatedFlag(String userId);
-
-  String syncUserData(Map<String, Object> request);
+   /**
+    * This method will do the user password update.
+    * @param userId String
+    * @param password String
+    * @return boolean true/false
+    */
+  boolean doPasswordUpdate(String userId, String password);
 }

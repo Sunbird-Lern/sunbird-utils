@@ -71,7 +71,6 @@ public class ProjectUtilTest {
     templateMap.put(JsonKey.ACTION_URL, "googli.com");
     templateMap.put(JsonKey.NAME, "userName");
 
-
     boolean envVal = !ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL));
     boolean cacheVal = propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL)!=null;
 
