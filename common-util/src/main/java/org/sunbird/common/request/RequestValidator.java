@@ -374,7 +374,7 @@ public final class RequestValidator {
       throw new ProjectCommonException(ResponseCode.invalidRequestData.getErrorCode(),
           ResponseCode.invalidRequestData.getErrorMessage(), ERROR_CODE);
     }
-    if (!(request.getRequest().get(JsonKey.STATUS) instanceof BigInteger) || !(request.getRequest().get(JsonKey.STATUS) instanceof Integer)) {
+    if (!(request.getRequest().get(JsonKey.STATUS) instanceof BigInteger)) {
       throw new ProjectCommonException(ResponseCode.invalidRequestData.getErrorCode(),
           ResponseCode.invalidRequestData.getErrorMessage(), ERROR_CODE);
     }

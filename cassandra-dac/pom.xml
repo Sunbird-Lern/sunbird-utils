@@ -93,7 +93,7 @@
       </plugins>
     </pluginManagement>
 
-    <plugins>
+   <!--  <plugins>
 
       <plugin>
         <groupId>org.openclover</groupId>
@@ -114,11 +114,11 @@
         </executions>
       </plugin>
 
-    </plugins>
+    </plugins> -->
 
   </build>
 
-  <reporting>
+  <!-- <reporting>
     <plugins>
       <plugin>
         <groupId>org.openclover</groupId>
@@ -129,5 +129,5 @@
         </configuration>
       </plugin>
     </plugins>
-  </reporting>
+  </reporting> -->
 </project>
