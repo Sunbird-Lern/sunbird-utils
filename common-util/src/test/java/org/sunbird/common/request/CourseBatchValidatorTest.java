@@ -341,7 +341,7 @@ public class CourseBatchValidatorTest {
 		Request request = new Request();
 		boolean response = false;
 		Map<String, Object> requestObj = new HashMap<>();
-		requestObj.put(JsonKey.BATCH_ID, "cassandra batch id");
+		requestObj.put(JsonKey.COURSE_ID, "cassandra batch id");
 		request.setRequest(requestObj);
 		try {
 			RequestValidator.validateUpdateCourse(request);

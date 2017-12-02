@@ -11,7 +11,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <versions.jacoco>0.7.6.201602180812</versions.jacoco>
+   <!--  <versions.jacoco>0.7.6.201602180812</versions.jacoco> -->
   </properties>
 
   <dependencies>
@@ -187,7 +187,7 @@
       </plugins>
     </pluginManagement>
 
-    <plugins>
+   <!--  <plugins>
 
       <plugin>
         <groupId>org.openclover</groupId>
@@ -208,10 +208,10 @@
         </executions>
       </plugin>
 
-    </plugins>
+    </plugins> -->
   </build>
 
-  <reporting>
+  <!-- <reporting>
     <plugins>
       <plugin>
         <groupId>org.openclover</groupId>
@@ -222,7 +222,7 @@
         </configuration>
       </plugin>
     </plugins>
-  </reporting>
+  </reporting> -->
 
 
 </project>
