@@ -30,6 +30,7 @@ public class CourseBatchValidatorTest {
 	@Test
 	public void validateCreateBatchSuccess() {
 		Request request = new Request();
+		boolean response = false;
 		Map<String, Object> requestObj = new HashMap<>();
 		requestObj.put(JsonKey.STATUS, 1);
 		requestObj.put(JsonKey.COURSE_ID, "do_123233434");
@@ -43,13 +44,19 @@ public class CourseBatchValidatorTest {
 		userIds.add("test123345");
 		request.put(JsonKey.COURSE_CREATED_FOR, userIds);
 		request.setRequest(requestObj);
+		try {
 		RequestValidator.validateCreateBatchReq(request);
-		assertEquals(true, true);
+		response = true;
+		} catch (ProjectCommonException e) {
+			Assert.assertNull(e);
+		}
+		assertEquals(true, response);
 	}
 
 	@Test
 	public void validateUpdateCourseBatch() {
 		Request request = new Request();
+		boolean response = false;
 		Map<String, Object> requestObj = new HashMap<>();
 		requestObj.put(JsonKey.COURSE_ID, "do_123233434");
 		requestObj.put(JsonKey.NAME, "TestCourse");
@@ -62,8 +69,13 @@ public class CourseBatchValidatorTest {
 		userIds.add("test123345");
 		request.put(JsonKey.COURSE_CREATED_FOR, userIds);
 		request.setRequest(requestObj);
-		RequestValidator.validateUpdateCourseBatchReq(request);
-		assertEquals(true, true);
+		try {
+		  RequestValidator.validateUpdateCourseBatchReq(request);
+		  response = true;
+		} catch (ProjectCommonException e) {
+			Assert.assertNull(e);
+		}
+		assertEquals(true, response);
 	}
 
 	@Test

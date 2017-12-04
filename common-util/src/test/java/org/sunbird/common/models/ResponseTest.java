@@ -44,8 +44,8 @@ public class ResponseTest {
     Assert.assertNotEquals(response.get("Test"), "test");
     response.putAll(new HashMap<String, Object>());
     response.put("test", "test123");
-    response.clone(response);
-    
+    org.sunbird.common.models.response.Response responseClone  = response.clone(response);
+    Assert.assertNotEquals(response, responseClone);
   }
 
 }

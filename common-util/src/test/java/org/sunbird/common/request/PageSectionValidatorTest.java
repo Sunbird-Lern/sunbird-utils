@@ -197,17 +197,6 @@ public class PageSectionValidatorTest {
     assertEquals(null, (String)requestObj.get("ext"));
   }
   
-  /**
-   * 0 toggle  public static void validateCreatePage(Request request) { 
-731  0     if (ProjectUtil 
-732  0         .isStringNullOREmpty((String) (request.getRequest().get(JsonKey.PAGE_NAME) != null 
-733                ? request.getRequest().get(JsonKey.PAGE_NAME) : ""))) { 
-734  0       throw new ProjectCommonException(ResponseCode.pageNameRequired.getErrorCode(), 
-735              ResponseCode.pageNameRequired.getErrorMessage(), ERROR_CODE); 
-736        } 
-737      } 
-738     
-   */
   @Test
   public void validateCreatePageSuccess() {
     Request request = new Request();

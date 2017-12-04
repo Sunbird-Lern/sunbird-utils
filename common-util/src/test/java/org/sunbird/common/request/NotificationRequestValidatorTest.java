@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
@@ -24,6 +25,7 @@ public class NotificationRequestValidatorTest {
   @Test
   public void validateSendNotificationSuccess() {
     Request request = new Request();
+    boolean response = false;
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.TO, "test");
     requestObj.put(JsonKey.TYPE, "FCM");
@@ -31,8 +33,13 @@ public class NotificationRequestValidatorTest {
     data.put("url", "www.google.com");
     requestObj.put(JsonKey.DATA, data);
     request.setRequest(requestObj);
+    try {
     RequestValidator.validateSendNotification(request);
-    assertEquals(true, true);
+    response = true;
+    } catch (ProjectCommonException e) {
+    	Assert.assertNull(e);
+	}
+    assertEquals(true, response);
   }
 
   @Test
