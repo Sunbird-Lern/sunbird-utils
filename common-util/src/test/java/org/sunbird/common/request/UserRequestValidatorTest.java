@@ -25,11 +25,17 @@ public class UserRequestValidatorTest {
   @Test
   public void validateForgotPasswordSuccess() {
     Request request = new Request();
+    boolean response = false;
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.USERNAME, "manzarul07");
     request.setRequest(requestObj);
+    try {
     RequestValidator.validateForgotpassword(request);
-    assertEquals(true, true);
+    response = true;
+    } catch (ProjectCommonException e) {
+    	Assert.assertNull(e);
+	}
+    assertEquals(true, response);
   }
 
   @Test
@@ -63,12 +69,18 @@ public class UserRequestValidatorTest {
   @Test
   public void validateChangePasswordSuccess() {
     Request request = new Request();
+    boolean response = false;
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.NEW_PASSWORD, "password1");
     requestObj.put(JsonKey.PASSWORD, "password");
     request.setRequest(requestObj);
+    try {
     RequestValidator.validateChangePassword(request);
-    assertEquals(true, true);
+    response = true;
+    } catch (ProjectCommonException e) {
+    	Assert.assertNull(e);
+	}
+    assertEquals(true, response);
   }
   
   @Test
@@ -132,13 +144,19 @@ public class UserRequestValidatorTest {
   @Test
   public void validateUserSuccessLogin() {
     Request request = new Request();
+    boolean response = false;
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PASSWORD, "password");
     requestObj.put(JsonKey.USERNAME, "test123@test.com");
     requestObj.put(JsonKey.SOURCE, "web");
     request.setRequest(requestObj);
+    try {
     RequestValidator.validateUserLogin(request);
-    assertEquals(true, true);
+    response = true;
+    } catch (ProjectCommonException e) {
+    	Assert.assertNull(e);
+	}
+    assertEquals(true, response);
   }
   
   @Test
@@ -221,6 +239,7 @@ public class UserRequestValidatorTest {
   @Test
   public void validateCreateUserSuccessWithAllFields () {
     Request request = new Request();
+    boolean response = false;
     Map<String, Object> requestObj = new HashMap<>(); 
     requestObj.put(JsonKey.PHONE, "9321234123");
     requestObj.put(JsonKey.EMAIL, "test123@test.com");
@@ -257,13 +276,19 @@ public class UserRequestValidatorTest {
     jobProfileList.add(map1);
     requestObj.put(JsonKey.JOB_PROFILE, jobProfileList);
     request.setRequest(requestObj);
+    try {
     RequestValidator.validateCreateUser(request);
-    assertEquals(true, true);
+    response = true;
+    } catch (ProjectCommonException e) {
+    	Assert.assertNull(e);
+	}
+    assertEquals(true, response);
   }
   
   @Test
   public void validatePhoneAndEmailUpdateSuccess () {
     Request request = new Request();
+    boolean response = false;
     Map<String, Object> requestObj = new HashMap<>(); 
     requestObj.put(JsonKey.PHONE, "9321234123");
     requestObj.put(JsonKey.EMAIL, "test123@test.com");
@@ -271,8 +296,13 @@ public class UserRequestValidatorTest {
     request.put(JsonKey.PHONE_VERIFIED, true);
     request.put(JsonKey.EMAIL_VERIFIED, true);
     request.setRequest(requestObj);
+    try {
     RequestValidator.phoneAndEmailValidationForUpdateUser(request);
-    assertEquals(true, true);
+    response = true;
+    } catch (ProjectCommonException e) {
+    	 Assert.assertNull(e);
+	}
+    assertEquals(true, response);
   }
   
   @Test
@@ -314,48 +344,73 @@ public class UserRequestValidatorTest {
     map1.put(JsonKey.ORGANISATION_NAME, "Tarento");
     jobProfileList.add(map1);
     requestObj.put(JsonKey.JOB_PROFILE, jobProfileList);
+    boolean response = false;
     request.setRequest(requestObj);
+    try {
     RequestValidator.validateUpdateUser(request);
-    assertEquals(true, true);
+    response = true;
+    } catch (ProjectCommonException e) {
+    	 Assert.assertNull(e);
+	}
+    assertEquals(true, response);
   }
  
   @Test
   public void validateUploadUserWithOrgId () {
      Request request = new Request();
+     boolean response = false;
      Map<String, Object> requestObj = new HashMap<>();
      requestObj.put(JsonKey.ORGANISATION_ID, "ORG-1233");
      request.setRequest(requestObj);
+     try {
      RequestValidator.validateUploadUser(request);
-     assertEquals(true, true);
+     response = true;
+     } catch (ProjectCommonException e) {
+    	 Assert.assertNull(e); 	 
+	}
+     assertEquals(true, response);
   }
   
   @Test
   public void validateUploadUserWithProviderAndExternalId () {
      Request request = new Request();
+     boolean response = false;
      Map<String, Object> requestObj = new HashMap<>();
      requestObj.put(JsonKey.PROVIDER, "ORG-provider");
      requestObj.put(JsonKey.EXTERNAL_ID, "ORG-1233");
      request.setRequest(requestObj);
+     try {
      RequestValidator.validateUploadUser(request);
-     assertEquals(true, true);
+     response = true;
+     } catch (ProjectCommonException e) {
+    	 Assert.assertNull(e); 
+	}
+     assertEquals(true, response);
   }
  
   @Test
   public void validateAssignRoleWithUserId () {
     Request request = new Request();
+    boolean response = false;
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.USER_ID, "ORG-provider");
     List<String> roles =  new ArrayList<>();
     roles.add("PUBLIC");
     requestObj.put(JsonKey.ROLES, roles);
     request.setRequest(requestObj);
+    try {
     RequestValidator.validateAssignRole(request);
-    assertEquals(true, true); 
+    response = true;
+    } catch (ProjectCommonException e) {
+    	Assert.assertNull(e);
+	}
+    assertEquals(true, response); 
   }
   
   @Test
   public void validateAssignRoleWithProviderAndExternalId () {
     Request request = new Request();
+    boolean response = false;
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PROVIDER, "ORG-provider");
     requestObj.put(JsonKey.EXTERNAL_ID, "ORG-1233");
@@ -363,8 +418,13 @@ public class UserRequestValidatorTest {
     roles.add("PUBLIC");
     requestObj.put(JsonKey.ROLES, roles);
     request.setRequest(requestObj);
+    try {
     RequestValidator.validateAssignRole(request);
-    assertEquals(true, true); 
+    response = true;
+    } catch (ProjectCommonException e) {
+    	Assert.assertNull(e);
+	}
+    assertEquals(true, response); 
   }
   
   

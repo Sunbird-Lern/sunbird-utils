@@ -10,10 +10,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
-import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.responsecode.ResponseCode;
 
 /**
@@ -25,11 +25,17 @@ public class CommonRequestValidatorTest {
   @Test
   public void enrollCourseValidationSuccess() {
     Request request = new Request();
+    boolean response = false;
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.COURSE_ID, "do_1233343");
     request.setRequest(requestObj);
+    try {
     RequestValidator.validateEnrollCourse(request);
-    assertEquals(true, true);
+     response = true;
+    } catch (ProjectCommonException e) {
+    	Assert.assertNull(e);
+	}
+    assertEquals(true, response);
   }
 
   @Test
@@ -49,6 +55,7 @@ public class CommonRequestValidatorTest {
   @Test
   public void validateUpdateContentSuccess() {
     Request request = new Request();
+    boolean response = false;
     List<Map<String,Object>> listOfMap = new ArrayList<>();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.CONTENT_ID, "do_1233343");
@@ -57,8 +64,13 @@ public class CommonRequestValidatorTest {
     Map<String, Object> innerMap = new HashMap<>();
     innerMap.put(JsonKey.CONTENTS, listOfMap);
     request.setRequest(innerMap);
+    try {
     RequestValidator.validateUpdateContent(request);
-    assertEquals(true, true);
+    response = true;
+    } catch (ProjectCommonException e) {
+    	Assert.assertNull(e);
+	}
+    assertEquals(true, response);
   }
  
   @Test
