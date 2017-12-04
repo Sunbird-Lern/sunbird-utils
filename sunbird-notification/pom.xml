@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.sunbird</groupId>
-    <artifactId>sunbird-notifications</artifactId>
+    <artifactId>sunbird-notification</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
