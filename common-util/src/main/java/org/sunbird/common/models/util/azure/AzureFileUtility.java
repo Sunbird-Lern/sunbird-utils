@@ -64,6 +64,7 @@ public class AzureFileUtility {
       CloudBlockBlob blob = container.getBlockBlobReference(fileName);
       fis = new FileInputStream(file);
       String mimeType = Files.probeContentType(file.toPath());
+      ProjectLogger.log("File - "+file.getName()+" mimeType "+mimeType);
       blob.getProperties().setContentType(mimeType);
       blob.upload(fis, file.length());
       return true;
@@ -164,6 +165,7 @@ public class AzureFileUtility {
       File source = new File(fileName);
       fis = new FileInputStream(source);
       String mimeType = Files.probeContentType(source.toPath());
+      ProjectLogger.log("File - "+source.getName()+" mimeType "+mimeType);
       blob.getProperties().setContentType(mimeType);
       blob.upload(fis, source.length());
       //fileUrl = blob.getStorageUri().getPrimaryUri().getPath();
@@ -225,6 +227,7 @@ public class AzureFileUtility {
       //File source = new File(fileName);
       fis = new FileInputStream(source);
       String mimeType = Files.probeContentType(source.toPath());
+      ProjectLogger.log("File - "+source.getName()+" mimeType "+mimeType);
       blob.getProperties().setContentType(mimeType);
       blob.upload(fis, source.length());
       //fileUrl = blob.getStorageUri().getPrimaryUri().getPath();
