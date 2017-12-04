@@ -51,7 +51,7 @@ public class Msg91SmsProvider implements ISmsProvider {
       smsMethodType = PropertiesCache.getInstance().getProperty("sunbird.msg.91.method");
       country = PropertiesCache.getInstance().getProperty("sunbird.msg.91.country"); 
       //first read authkey from ENV variable if not found then read it from property file.
-      authKey = System.getenv("sunbird.msg.91.auth");
+      authKey = System.getenv("sunbird_msg_91_auth");
       if(JsonUtil.isStringNullOREmpty(authKey)){
        authKey = PropertiesCache.getInstance().getProperty("sunbird.msg.91.auth");
       }
