@@ -9,5 +9,6 @@
       <module>common-util</module>
       <module>cassandra-dac</module>
       <module>elasticsearch-util</module>
+      <module>sunbird-notification</module>
   </modules>
 </project>
