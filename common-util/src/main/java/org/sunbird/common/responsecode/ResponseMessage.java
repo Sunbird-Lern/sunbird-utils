@@ -211,6 +211,9 @@ public interface ResponseMessage {
       String INVALID_COUNTRY_CODE = "Please provide a valid country code.";
       String DUPLICATE_PHONE_DATA = "System contains duplicate entry for {0}.";
       String DUPLICATE_EMAIL_DATA = "System contains duplicate entry for {0}.";
+      String LOCATION_ID_REQUIRED = "Please provide Location Id.";
+      String NOT_SUPPORTED = "Not Supported.";
+      
     }
     
     interface Key {
@@ -416,6 +419,8 @@ public interface ResponseMessage {
         String INVALID_COUNTRY_CODE = "INVALID_COUNTRY_CODE";
         String DUPLICATE_PHONE_DATA = "DUPLICATE_PHONE_DATA";
         String DUPLICATE_EMAIL_DATA = "DUPLICATE_EMAIL_DATA";
+        String LOCATION_ID_REQUIRED = "LOCATION_ID_REQUIRED";
+        String NOT_SUPPORTED = "NOT_SUPPORTED";
         
     }
 }

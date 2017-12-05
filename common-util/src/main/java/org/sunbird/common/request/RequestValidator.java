@@ -1459,4 +1459,51 @@ public final class RequestValidator {
     }
   }
 
+  public static void validateGetUserCount(Request request) {
+    if (request.getRequest().containsKey(JsonKey.LOCATION_IDS)
+        && null != request.getRequest().get(JsonKey.LOCATION_IDS)
+          && !(request.getRequest().get(JsonKey.LOCATION_IDS) instanceof List)) {
+        throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
+            ProjectUtil.formatMessage(ResponseCode.dataTypeError.getErrorMessage(),
+                JsonKey.LOCATION_IDS, JsonKey.LIST),
+            ERROR_CODE);
+    }
+    
+    if ( null ==  request.getRequest().get(JsonKey.LOCATION_IDS) 
+        && ((List)request.getRequest().get(JsonKey.LOCATION_IDS)).isEmpty()) {
+      throw new ProjectCommonException(ResponseCode.locationIdRequired.getErrorCode(),
+          ResponseCode.locationIdRequired.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    
+    if (request.getRequest().containsKey(JsonKey.USER_LIST_REQ)
+        && null != request.getRequest().get(JsonKey.USER_LIST_REQ)
+          && !(request.getRequest().get(JsonKey.USER_LIST_REQ) instanceof Boolean)) {
+        throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
+            ProjectUtil.formatMessage(ResponseCode.dataTypeError.getErrorMessage(),
+                JsonKey.USER_LIST_REQ, "Boolean"),
+            ERROR_CODE);
+    }
+    
+    if(null != request.getRequest().get(JsonKey.USER_LIST_REQ) && 
+        (Boolean)request.getRequest().get(JsonKey.USER_LIST_REQ)){
+      throw new ProjectCommonException(ResponseCode.functionalityMissing.getErrorCode(),
+          ResponseCode.functionalityMissing.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    
+    if (request.getRequest().containsKey(JsonKey.ESTIMATED_COUNT_REQ)
+        && null != request.getRequest().get(JsonKey.ESTIMATED_COUNT_REQ)
+          && !(request.getRequest().get(JsonKey.ESTIMATED_COUNT_REQ) instanceof Boolean)) {
+        throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
+            ProjectUtil.formatMessage(ResponseCode.dataTypeError.getErrorMessage(),
+                JsonKey.ESTIMATED_COUNT_REQ, "Boolean"),
+            ERROR_CODE);
+    }
+    
+    if(null != request.getRequest().get(JsonKey.ESTIMATED_COUNT_REQ) && 
+        (Boolean)request.getRequest().get(JsonKey.ESTIMATED_COUNT_REQ)){
+      throw new ProjectCommonException(ResponseCode.functionalityMissing.getErrorCode(),
+          ResponseCode.functionalityMissing.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+    }    
+  }
+  
 }
