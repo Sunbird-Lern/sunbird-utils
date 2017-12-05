@@ -15,6 +15,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.tika.Tika;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 
@@ -40,6 +41,7 @@ public class AzureFileUtility {
    */
   public static boolean uploadTheFile(String fileName, String containerName,
       File file) {
+    Tika tika = new Tika();
     if (file == null) {
       ProjectLogger.log("Upload file can not be null");
       return false;
@@ -62,7 +64,7 @@ public class AzureFileUtility {
     try {
       CloudBlockBlob blob = container.getBlockBlobReference(fileName);
       fis = new FileInputStream(file);
-      String mimeType = Files.probeContentType(file.toPath());
+      String mimeType = tika.detect(file);
       ProjectLogger.log("File - "+file.getName()+" mimeType "+mimeType);
       blob.getProperties().setContentType(mimeType);
       blob.upload(fis, file.length());
@@ -159,11 +161,12 @@ public class AzureFileUtility {
     CloudBlockBlob blob = null;
     String fileUrl = null;
     FileInputStream fis =null;
+    Tika tika = new Tika();
     try {
       blob = container.getBlockBlobReference(blobName);
       File source = new File(fileName);
       fis = new FileInputStream(source);
-      String mimeType = Files.probeContentType(source.toPath());
+      String mimeType = tika.detect(source);
       ProjectLogger.log("File - "+source.getName()+" mimeType "+mimeType);
       blob.getProperties().setContentType(mimeType);
       blob.upload(fis, source.length());
@@ -195,6 +198,7 @@ public class AzureFileUtility {
 
     String containerPath ="";
     String filePath="";
+    Tika tika = new Tika();
 
     if(ProjectUtil.isStringNullOREmpty(containerName)){
       containerName = DEFAULT_CONTAINER;
@@ -225,7 +229,7 @@ public class AzureFileUtility {
       blob = container.getBlockBlobReference(filePath+source.getName());
       //File source = new File(fileName);
       fis = new FileInputStream(source);
-      String mimeType = Files.probeContentType(source.toPath());
+      String mimeType = tika.detect(source);
       ProjectLogger.log("File - "+source.getName()+" mimeType "+mimeType);
       blob.getProperties().setContentType(mimeType);
       blob.upload(fis, source.length());

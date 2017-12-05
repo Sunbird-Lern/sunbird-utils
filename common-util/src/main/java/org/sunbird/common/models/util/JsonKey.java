@@ -570,4 +570,8 @@ public final class JsonKey {
   public static final String SIZE = "size";
   public static final String PHONE_UNIQUE = "phoneUnique";
   public static final String EMAIL_UNIQUE = "emailUnique";
+  public static final String LOCATION_IDS = "locationIds";
+  public static final String USER_LIST_REQ = "userListReq";
+  public static final String ESTIMATED_COUNT_REQ = "estimatedCountReq";
+  public static final String LOCATIONS = "locations";
 }
