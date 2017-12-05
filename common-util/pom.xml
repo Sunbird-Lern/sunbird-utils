@@ -193,7 +193,7 @@
       </plugins>
     </pluginManagement>
 
-   <!--  <plugins>
+    <plugins>
 
       <plugin>
         <groupId>org.openclover</groupId>
@@ -202,6 +202,7 @@
         <configuration>
           <targetPercentage>0%</targetPercentage>
           <contextFilters>try,catch,static</contextFilters>
+          <scope>compile</scope>
         </configuration>
         <executions>
           <execution>
@@ -214,10 +215,10 @@
         </executions>
       </plugin>
 
-    </plugins> -->
+    </plugins>
   </build>
 
-  <!-- <reporting>
+   <reporting>
     <plugins>
       <plugin>
         <groupId>org.openclover</groupId>
@@ -228,7 +229,7 @@
         </configuration>
       </plugin>
     </plugins>
-  </reporting> -->
+  </reporting>
 
 
 </project>
