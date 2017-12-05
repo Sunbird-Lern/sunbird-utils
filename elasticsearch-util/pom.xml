@@ -73,7 +73,7 @@
 
     <plugins>
 
-      <plugin>
+      <!-- <plugin>
         <groupId>org.openclover</groupId>
         <artifactId>clover-maven-plugin</artifactId>
         <version>4.2.0</version>
@@ -91,13 +91,13 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
+      </plugin> -->
 
     </plugins>
  
   </build>
 
-  <reporting>
+  <!-- <reporting>
     <plugins>
       <plugin>
         <groupId>org.openclover</groupId>
@@ -108,6 +108,6 @@
         </configuration>
       </plugin>
     </plugins>
-  </reporting>
+  </reporting> -->
 
 </project>
