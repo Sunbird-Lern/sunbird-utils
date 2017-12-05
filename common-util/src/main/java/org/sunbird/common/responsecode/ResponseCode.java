@@ -211,6 +211,8 @@ public enum ResponseCode {
     invalidCountryCode(ResponseMessage.Key.INVALID_COUNTRY_CODE, ResponseMessage.Message.INVALID_COUNTRY_CODE),
     duplicatePhoneData(ResponseMessage.Key.DUPLICATE_PHONE_DATA, ResponseMessage.Message.DUPLICATE_PHONE_DATA),
     duplicateEmailData(ResponseMessage.Key.DUPLICATE_EMAIL_DATA, ResponseMessage.Message.DUPLICATE_EMAIL_DATA),
+    locationIdRequired(ResponseMessage.Key.LOCATION_ID_REQUIRED,ResponseMessage.Message.LOCATION_ID_REQUIRED),
+    functionalityMissing(ResponseMessage.Key.NOT_SUPPORTED,ResponseMessage.Message.NOT_SUPPORTED),
     OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404),UNAUTHORIZED(401),REDIRECTION_REQUIRED(302);
 	
 	private int responseCode;
