@@ -574,4 +574,5 @@ public final class JsonKey {
   public static final String USER_LIST_REQ = "userListReq";
   public static final String ESTIMATED_COUNT_REQ = "estimatedCountReq";
   public static final String LOCATIONS = "locations";
+  public static final String USER_COUNT_TTL = "userCountTTL";
 }
