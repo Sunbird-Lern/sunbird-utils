@@ -193,15 +193,16 @@
       </plugins>
     </pluginManagement>
 
-   <!--  <plugins>
+    <plugins>
 
-      <plugin>
+      <!-- <plugin>
         <groupId>org.openclover</groupId>
         <artifactId>clover-maven-plugin</artifactId>
         <version>4.2.0</version>
         <configuration>
           <targetPercentage>0%</targetPercentage>
           <contextFilters>try,catch,static</contextFilters>
+          <scope>compile</scope>
         </configuration>
         <executions>
           <execution>
@@ -213,11 +214,11 @@
           </execution>
         </executions>
       </plugin>
-
-    </plugins> -->
+ -->
+    </plugins>
   </build>
 
-  <!-- <reporting>
+  <!--  <reporting>
     <plugins>
       <plugin>
         <groupId>org.openclover</groupId>
