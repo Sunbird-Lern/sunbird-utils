@@ -60,7 +60,7 @@ public enum ActorOperations {
     UPDATE_TC_STATUS_OF_USER("updateTCStatusOfUser"), REGISTER_CLIENT("registerClient"), UPDATE_CLIENT_KEY("updateClientKey"), GET_CLIENT_KEY("getClientKey"),CREATE_GEO_LOCATION("createGeoLocation"),
     GET_GEO_LOCATION("getGeoLocation"),
     UPDATE_GEO_LOCATION("updateGeoLocation"),
-    DELETE_GEO_LOCATION("deleteGeoLocation"),GET_USER_COUNT("getUserCount"),
+    DELETE_GEO_LOCATION("deleteGeoLocation"),GET_USER_COUNT("getUserCount"),UPDATE_USER_COUNT_TO_LOCATIONID("updateUserCountToLocationID"),
     SEND_NOTIFICATION("sendNotification"), SYNC_KEYCLOAK("syncKeycloak"), UPDATE_SYSTEM_SETTINGS("updateSystemSettings");
 
     private String value;

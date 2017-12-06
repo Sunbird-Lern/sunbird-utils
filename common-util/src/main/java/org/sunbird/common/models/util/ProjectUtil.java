@@ -769,6 +769,9 @@ public class ProjectUtil {
   
   public static boolean validatePhone(String phone, String countryCode){
     PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();  
+    if((countryCode.charAt(0) != '+')){
+      countryCode = "+"+countryCode;
+    }
     try {  
         if(isStringNullOREmpty(countryCode)){
           countryCode = PropertiesCache.getInstance().getProperty("sunbird_default_country_code");
@@ -799,9 +802,5 @@ public class ProjectUtil {
       return false;
     }
   }
-  
-  public static void main(String[] args) {
-    System.out.println(validatePhone("9742507323",""));
-  }
-  
+ 
 }
