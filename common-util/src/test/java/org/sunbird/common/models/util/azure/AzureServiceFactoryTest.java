@@ -7,6 +7,7 @@ import java.io.File;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -24,8 +25,8 @@ public class AzureServiceFactoryTest {
   private static CloudBlobContainer container = null;
   private static CloudBlobContainer container1 = null;
   private static String containerName ="testcontainer"; 
-  @Test
-  public void getObject() {
+  @BeforeClass
+  public static void getObject() {
    obj = CloudServiceFactory.get("Azure");
    Assert.assertTrue(obj instanceof CloudService);
    Assert.assertNotNull(obj); 
@@ -89,5 +90,6 @@ public class AzureServiceFactoryTest {
   public static void teardown() {
     container1 = null;
     container = null;
+    obj = null;
   }
 }
