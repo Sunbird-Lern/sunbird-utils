@@ -769,7 +769,7 @@ public class ProjectUtil {
   
   public static boolean validatePhone(String phone, String countryCode){
     PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();  
-    if((countryCode.charAt(0) != '+')){
+    if(!ProjectUtil.isStringNullOREmpty(countryCode) && (countryCode.charAt(0) != '+')){
       countryCode = "+"+countryCode;
     }
     try {  
