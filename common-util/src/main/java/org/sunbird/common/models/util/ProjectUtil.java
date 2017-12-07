@@ -61,9 +61,6 @@ public class ProjectUtil {
       return value;
     }
 
-    private void setValue(int value) {
-      this.value = value;
-    }
   }
 
   /**
@@ -323,9 +320,6 @@ public class ProjectUtil {
       return indexName;
     }
 
-    private void setIndexName(String indexName) {
-      this.indexName = indexName;
-    }
   }
 
   /**
@@ -347,9 +341,6 @@ public class ProjectUtil {
       return typeName;
     }
 
-    private void setTypeName(String typeName) {
-      this.typeName = typeName;
-    }
   }
 
   /**
@@ -370,9 +361,6 @@ public class ProjectUtil {
       return typeName;
     }
 
-    private void setTypeName(String typeName) {
-      this.typeName = typeName;
-    }
   }
 
 
@@ -394,9 +382,6 @@ public class ProjectUtil {
       return typeName;
     }
 
-    private void setTypeName(String typeName) {
-      this.typeName = typeName;
-    }
   }
   public enum AssessmentResult {
     gradeA("A", "Pass"), gradeB("B", "Pass"), gradeC("C", "Pass"), gradeD("D", "Pass"), gradeE("E",
@@ -413,17 +398,11 @@ public class ProjectUtil {
       return grade;
     }
 
-    private void setGrade(String grade) {
-      this.grade = grade;
-    }
 
     public String getResult() {
       return result;
     }
 
-    private void setResult(String result) {
-      this.result = result;
-    }
   }
 
   /**
@@ -531,9 +510,6 @@ public class ProjectUtil {
       return val;
     }
 
-    private void setVal(String val) {
-      this.val = val;
-    }
   }
 
   public static final String[] excludes =
@@ -559,9 +535,7 @@ public class ProjectUtil {
       return name;
     }
 
-    private void setName(String name) {
-      this.name = name;
-    }
+
   }
 
   public static VelocityContext getContext(Map<String, Object> map) {
@@ -715,9 +689,6 @@ public class ProjectUtil {
       return value;
     }
 
-    private void setValue(String value) {
-      this.value = value;
-    }
 
 
   }

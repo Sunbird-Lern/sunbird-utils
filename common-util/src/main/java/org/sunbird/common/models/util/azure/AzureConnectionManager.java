@@ -132,26 +132,5 @@ public class AzureConnectionManager {
     return blobClient;
   }
 
-  public static boolean deleteContainer(String containerName){
-    CloudBlobContainer container = null;
-    boolean result = false;
-    if (ProjectUtil.isStringNullOREmpty(containerName)) {
-      ProjectLogger.log("Container name can't be null or empty");
-      return false;
-    }
-    try {
-      // Create the blob client.
-      CloudBlobClient blobClient = getBlobClient();
-      // Retrieve reference to a previously created container.
-      container = blobClient.getContainerReference(containerName);
-      // Delete the blob container.
-      result = container.deleteIfExists();
-    } catch (URISyntaxException e) {
-      ProjectLogger.log(e.getMessage(),e);
-    }  catch (StorageException e) {
-      ProjectLogger.log(e.getMessage(),e);
-    }
-    return result;
-  }
 
 }

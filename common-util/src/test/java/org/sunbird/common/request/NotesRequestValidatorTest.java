@@ -134,4 +134,18 @@ public class NotesRequestValidatorTest {
     }
   }
 
+  /**
+   * Method to test validate node id when note id is null
+   */
+  @Test
+  public void testValidateNoteOperationWithNoteIdAsNull() {
+    try {
+      String noteId = null;
+      RequestValidator.validateNoteId(noteId);
+    } catch (ProjectCommonException e) {
+      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+      assertEquals(ResponseCode.invalidNoteId.getErrorCode(), e.getCode());
+    }
+  }
+
 }
