@@ -215,137 +215,136 @@ public enum ResponseCode {
     functionalityMissing(ResponseMessage.Key.NOT_SUPPORTED,ResponseMessage.Message.NOT_SUPPORTED),
     OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404),UNAUTHORIZED(401),REDIRECTION_REQUIRED(302);
 	
-	private int responseCode;
-	/**
-     * error code contains String value
-     */
-    private String errorCode;
-    /**
-     * errorMessage contains proper error message.
-     */
-    private String errorMessage;
+  private int responseCode;
+  /**
+   * error code contains String value
+   */
+  private String errorCode;
+  /**
+   * errorMessage contains proper error message.
+   */
+  private String errorMessage;
 
-    /**
-     * @param errorCode String
-     * @param errorMessage String
-     */
-    private ResponseCode(String errorCode, String errorMessage) {
+  /**
+   * @param errorCode String
+   * @param errorMessage String
+   */
+  private ResponseCode(String errorCode, String errorMessage) {
     this.errorCode = errorCode;
     this.errorMessage = errorMessage;
-    }
+  }
 
-    /**
-     * 
-     * @param errorCode
-     * @return
-     */
-    public String getMessage(int errorCode) {
+  /**
+   * 
+   * @param errorCode
+   * @return
+   */
+  public String getMessage(int errorCode) {
     return "";
-    }
+  }
 
-    /**
-     * @return
-     */
-    public String getErrorCode() {
+  /**
+   * @return
+   */
+  public String getErrorCode() {
     return errorCode;
-    }
+  }
 
-    /**
-     * @param errorCode
-     */
-    public void setErrorCode(String errorCode) {
+  /**
+   * @param errorCode
+   */
+  public void setErrorCode(String errorCode) {
     this.errorCode = errorCode;
-    }
+  }
 
-    /**
-     * @return
-     */
-    public String getErrorMessage() {
+  /**
+   * @return
+   */
+  public String getErrorMessage() {
     return errorMessage;
-    }
+  }
 
-    /**
-     * @param errorMessage
-     */
-    public void setErrorMessage(String errorMessage) {
+  /**
+   * @param errorMessage
+   */
+  public void setErrorMessage(String errorMessage) {
     this.errorMessage = errorMessage;
-    }
+  }
 
-    /**
-     * This method will provide status message based on code
-     * 
-     * @param code
-     * @return String
-     */
-    public static String getResponseMessage(String code) {
-     if(ProjectUtil.isStringNullOREmpty(code)){
-       return "";
-     }
-    String value = "";
+  /**
+   * This method will provide status message based on code
+   * 
+   * @param code
+   * @return String
+   */
+  public static String getResponseMessage(String code) {
+    if (ProjectUtil.isStringNullOREmpty(code)) {
+      return "";
+    }
     ResponseCode responseCodes[] = ResponseCode.values();
     for (ResponseCode actionState : responseCodes) {
-        if (actionState.getErrorCode().equals(code)) {
-        value = actionState.getErrorMessage();
-        }
+      if (actionState.getErrorCode().equals(code)) {
+        return actionState.getErrorMessage();
+      }
     }
-    return value;
-    }
-    
-    private ResponseCode(int responseCode) {
-        this.responseCode = responseCode;
-    }
+    return "";
+  }
 
-    public int getResponseCode() {
-        return responseCode;
-    }
+  private ResponseCode(int responseCode) {
+    this.responseCode = responseCode;
+  }
 
-    public void setResponseCode(int responseCode) {
-        this.responseCode = responseCode;
-    }
+  public int getResponseCode() {
+    return responseCode;
+  }
+
+  public void setResponseCode(int responseCode) {
+    this.responseCode = responseCode;
+  }
     
-    /**
-     * This method will take header response code as int value and 
-     * it provide matched enum value, if code is not matched or exception occurs
-     * then it will provide SERVER_ERROR
-     * @param code int
-     * @return HeaderResponseCode
-     */
-    public static ResponseCode getHeaderResponseCode(int code) {
-        if (code > 0) {
-            try {
-                ResponseCode[] arr = ResponseCode.values();
-                if (null != arr) {
-                    for (ResponseCode rc : arr) {
-                        if (rc.getResponseCode() == code)
-                            return rc;
-                    }
-                }
-            } catch (Exception e) {
-                return ResponseCode.SERVER_ERROR;
-            }
+  /**
+   * This method will take header response code as int value and it provide matched enum value, if
+   * code is not matched or exception occurs then it will provide SERVER_ERROR
+   * 
+   * @param code int
+   * @return HeaderResponseCode
+   */
+  public static ResponseCode getHeaderResponseCode(int code) {
+    if (code > 0) {
+      try {
+        ResponseCode[] arr = ResponseCode.values();
+        if (null != arr) {
+          for (ResponseCode rc : arr) {
+            if (rc.getResponseCode() == code)
+              return rc;
+          }
         }
+      } catch (Exception e) {
         return ResponseCode.SERVER_ERROR;
+      }
     }
+    return ResponseCode.SERVER_ERROR;
+  }
     
     
-    /**
-     * This method will provide ResponseCode enum based on error code
-     * 
-     * @param errorCode
-     * @return String
-     */
-    public static ResponseCode getResponse(String errorCode) {
-       if(ProjectUtil.isStringNullOREmpty(errorCode)) {
-         return null;
-       }
-        ResponseCode value =null;
+  /**
+   * This method will provide ResponseCode enum based on error code
+   * 
+   * @param errorCode
+   * @return String
+   */
+  public static ResponseCode getResponse(String errorCode) {
+    if (ProjectUtil.isStringNullOREmpty(errorCode)) {
+      return null;
+    }
+    ResponseCode value = null;
     ResponseCode responseCodes[] = ResponseCode.values();
     for (ResponseCode response : responseCodes) {
-        if (response.getErrorCode().equals(errorCode)) {
-           return response ;
-          
-        }
+      if (response.getErrorCode().equals(errorCode)) {
+        return response;
+
+      }
     }
     return value;
-    }
+  }
 }

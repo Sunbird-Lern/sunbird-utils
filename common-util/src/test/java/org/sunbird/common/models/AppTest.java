@@ -78,7 +78,7 @@ public class AppTest
 		Assert.assertNotNull(response);
 	}
 	
-	//@Test
+	@Test
 	public void testEvaluateAssessment(){
 		Map<String, List<Map<String, Object>>> data = createEvaluateAssessmentRequest();
 		AssessmentEvaluator evaluator = new  DefaultAssessmentEvaluator();
@@ -87,7 +87,7 @@ public class AppTest
 		Assert.assertEquals(list.size(),6);
 	}
 
-	//@Test
+	@Test
 	public void testEvaluateResult(){
 		//Map<String, List<Map<String, Object>>> data1 = createEvaluateAssessmentRequest();
 		AssessmentEvaluator evaluator = new  DefaultAssessmentEvaluator();

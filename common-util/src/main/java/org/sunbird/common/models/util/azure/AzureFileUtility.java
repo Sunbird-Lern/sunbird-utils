@@ -29,59 +29,7 @@ import com.microsoft.azure.storage.blob.CloudBlockBlob;
 public class AzureFileUtility {
 
   private static final String DEFAULT_CONTAINER = "default";
-  
-  /**
-   * This method will upload the file inside Azure storage with provided filename
-   * under particular container. if you won't provide the filename then it will
-   * pick the file name from file object and upload the file with that name only.
-   * @param fileName String
-   * @param containerName String
-   * @param file File
-   * @return boolean
-   */
-  public static boolean uploadTheFile(String fileName, String containerName,
-      File file) {
-    Tika tika = new Tika();
-    if (file == null) {
-      ProjectLogger.log("Upload file can not be null");
-      return false;
-    }
-    if (ProjectUtil.isStringNullOREmpty(containerName)) {
-      ProjectLogger.log("Container name can't be null or empty");
-      return false;
-    }
-    CloudBlobContainer container =
-        AzureConnectionManager.getContainer(containerName,true);
-    if (container == null) {
-      ProjectLogger.log("Unable to get Azure contains object");
-      return false;
-    }
-    if (ProjectUtil.isStringNullOREmpty(fileName)) {
-      fileName = file.getName();
-    }
-    // Create or overwrite the "myimage.jpg" blob with contents from a local file.
-    FileInputStream fis =null;
-    try {
-      CloudBlockBlob blob = container.getBlockBlobReference(fileName);
-      fis = new FileInputStream(file);
-      String mimeType = tika.detect(file);
-      ProjectLogger.log("File - "+file.getName()+" mimeType "+mimeType);
-      blob.getProperties().setContentType(mimeType);
-      blob.upload(fis, file.length());
-      return true;
-    } catch (Exception e) {
-      ProjectLogger.log(e.getMessage(), e);
-    }finally {
-      if(null != fis){
-        try {
-          fis.close();
-        } catch (IOException e) {
-          ProjectLogger.log(e.getMessage() , e);
-        }
-      }
-    }
-    return false;
-  }
+
   
   /**
    * This method will remove the file from Azure Storage.

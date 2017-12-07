@@ -447,4 +447,216 @@ public class UserRequestValidatorTest {
 	}
     assertEquals(true, response); 
   }
+  
+  @Test
+  public void profileVisibilityValidatorTest() {
+    Request request = new Request();
+    Map<String, Object> requestObj = new HashMap<>();
+    requestObj.put(JsonKey.USER_ID, "9878888888");
+    List<String> publicList = new ArrayList<>();
+    publicList.add("Education");
+    requestObj.put(JsonKey.PUBLIC, publicList);
+    List<String> privateList = new ArrayList<>();
+    privateList.add("Education");
+    requestObj.put(JsonKey.PRIVATE, privateList);
+    request.setRequest(requestObj);
+    try {
+      RequestValidator.validateProfileVisibility(request);
+    } catch (ProjectCommonException e) {
+        Assert.assertNotNull(e);
+    }
+  }
+  
+  @Test
+  public void profileVisibilityInvalidUserTest() {
+    Request request = new Request();
+    Map<String, Object> requestObj = new HashMap<>();
+    requestObj.put(JsonKey.USER_ID, "");
+    request.setRequest(requestObj);
+    try {
+      RequestValidator.validateProfileVisibility(request);
+    } catch (ProjectCommonException e) {
+        Assert.assertNotNull(e);
+    }
+  }
+  
+  @Test
+  public void profileVisibilityInvalidPrivateFieldsTest() {
+    Request request = new Request();
+    Map<String, Object> requestObj = new HashMap<>();
+    requestObj.put(JsonKey.USER_ID, "123");
+    requestObj.put(JsonKey.PRIVATE, "");
+    request.setRequest(requestObj);
+    try {
+      RequestValidator.validateProfileVisibility(request);
+    } catch (ProjectCommonException e) {
+        Assert.assertNotNull(e);
+    }
+  }
+  
+  @Test
+  public void profileVisibilityInvalidPublicFieldsTest() {
+    Request request = new Request();
+    Map<String, Object> requestObj = new HashMap<>();
+    requestObj.put(JsonKey.USER_ID, "123");
+    requestObj.put(JsonKey.PUBLIC, "");
+    request.setRequest(requestObj);
+    try {
+      RequestValidator.validateProfileVisibility(request);
+    } catch (ProjectCommonException e) {
+        Assert.assertNotNull(e);
+    }
+  }
+  
+  
+  @Test
+  public void validateWebPagesTest(){
+    Request request = new Request();
+    Map<String, Object> requestObj = new HashMap<>();
+    requestObj.put(JsonKey.WEB_PAGES, new ArrayList<>());
+    request.setRequest(requestObj);
+    try {
+      RequestValidator.validateWebPages(request);
+    } catch (ProjectCommonException e) {
+      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+          e.getResponseCode());
+      assertEquals(ResponseCode.invalidWebPageData.getErrorCode(),
+          e.getCode());
+    }
+  }
+  
+  @Test
+  public void validateWebPagesTestWhenNull(){
+    Request request = new Request();
+    Map<String, Object> requestObj = new HashMap<>();
+    requestObj.put(JsonKey.WEB_PAGES, null);
+    request.setRequest(requestObj);
+    try {
+      RequestValidator.validateWebPages(request);
+    } catch (ProjectCommonException e) {
+      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+          e.getResponseCode());
+      assertEquals(ResponseCode.invalidWebPageData.getErrorCode(),
+          e.getCode());
+    }
+  }
+  
+    @Test
+    public void doUserBasicValidationUserNameTest() {
+      Request request = new Request();
+      Map<String, Object> requestObj = new HashMap<>();
+      requestObj.put(JsonKey.USERNAME, "");
+      request.setRequest(requestObj);
+      try {
+        RequestValidator.doUserBasicValidation(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.userNameRequired.getErrorCode(),
+            e.getCode());
+      }
+  }
+    
+    @Test
+    public void doUserBasicValidationFirstNameTest() {
+      Request request = new Request();
+      Map<String, Object> requestObj = new HashMap<>();
+      requestObj.put(JsonKey.USERNAME, "test123");
+      requestObj.put(JsonKey.FIRST_NAME, "");
+      request.setRequest(requestObj);
+      try {
+        RequestValidator.doUserBasicValidation(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.firstNameRequired.getErrorCode(),
+            e.getCode());
+      }
+    }
+    
+    @Test
+    public void doUserBasicValidationRolesTest() {
+      Request request = new Request();
+      Map<String, Object> requestObj = new HashMap<>();
+      requestObj.put(JsonKey.USERNAME, "test123");
+      requestObj.put(JsonKey.FIRST_NAME, "test123");
+      requestObj.put(JsonKey.ROLES, "");
+      request.setRequest(requestObj);
+      try {
+        RequestValidator.doUserBasicValidation(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.dataTypeError.getErrorCode(),
+            e.getCode());
+      }
+    }
+    
+    @Test
+    public void doUserBasicValidationLanguageTest() {
+      Request request = new Request();
+      Map<String, Object> requestObj = new HashMap<>();
+      requestObj.put(JsonKey.PHONE, "9321234123");
+      requestObj.put(JsonKey.EMAIL, "test123@test.com");
+      requestObj.put(JsonKey.USERNAME, "test123");
+      requestObj.put(JsonKey.FIRST_NAME, "test123");
+      requestObj.put(JsonKey.LANGUAGE, "");
+      request.setRequest(requestObj);
+      try {
+        RequestValidator.validateCreateUser(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.dataTypeError.getErrorCode(),
+            e.getCode());
+      }
+    }
+    
+    @Test
+    public void createUserAddressTest() {
+      Request request = new Request();
+      Map<String, Object> requestObj = new HashMap<>();
+      requestObj.put(JsonKey.PHONE, "9321234123");
+      requestObj.put(JsonKey.EMAIL, "test123@test.com");
+      requestObj.put(JsonKey.USERNAME, "test123");
+      requestObj.put(JsonKey.FIRST_NAME, "test123");
+      requestObj.put(JsonKey.ADDRESS, "");
+      request.setRequest(requestObj);
+      try {
+        RequestValidator.validateCreateUser(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.dataTypeError.getErrorCode(),
+            e.getCode());
+      }
+    }
+    
+    @Test
+    public void createUserAddressTypeTest() {
+      Request request = new Request();
+      Map<String, Object> requestObj = new HashMap<>();
+      requestObj.put(JsonKey.PHONE, "9321234123");
+      requestObj.put(JsonKey.EMAIL, "test123@test.com");
+      requestObj.put(JsonKey.USERNAME, "test123");
+      requestObj.put(JsonKey.FIRST_NAME, "test123");
+      List<Map<String,Object>> addressList = new ArrayList<>();
+      Map<String,Object> map = new HashMap<>();
+      map.put(JsonKey.ADDRESS_LINE1, "test");
+      map.put(JsonKey.CITY, "Bangalore");
+      map.put(JsonKey.COUNTRY, "India");
+      map.put(JsonKey.ADD_TYPE, "local");
+      addressList.add(map);
+      requestObj.put(JsonKey.ADDRESS, addressList);
+      request.setRequest(requestObj);
+      try {
+        RequestValidator.validateCreateUser(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.dataTypeError.getErrorCode(),
+            e.getCode());
+      }
+    }
+
 }

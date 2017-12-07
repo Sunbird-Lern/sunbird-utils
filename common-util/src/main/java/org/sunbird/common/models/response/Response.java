@@ -136,7 +136,7 @@ public class Response implements Serializable, Cloneable {
     try {
       return (Response) response.clone();
     } catch (CloneNotSupportedException e) {
+      return null;
     }
-    return null;
   }
 }

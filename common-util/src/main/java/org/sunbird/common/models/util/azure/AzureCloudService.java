@@ -35,6 +35,6 @@ public class AzureCloudService implements CloudService {
 
   @Override
   public boolean deleteContainer(String containerName) {
-    return false;
+    return AzureFileUtility.deleteContainer(containerName);
   }
 }
