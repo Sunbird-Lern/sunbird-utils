@@ -25,7 +25,7 @@ import org.sunbird.helper.CassandraConnectionMngrFactory;
 import org.sunbird.helper.ServiceFactory;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class CassandraTest {
+public class CassandraTestForStandalone {
 
   private CassandraOperation operation = ServiceFactory.getInstance();
   static Map<String,Object> address = null;
@@ -65,8 +65,8 @@ public class CassandraTest {
         .createConnection(host, port, "cassandra", "password", cassandraKeySpace);
     assertEquals(true,bool);
   }
-
-  //@Test(expected=ProjectCommonException.class)
+  
+  @Test(expected=ProjectCommonException.class)
   public void testFailedConnection() {
     connectionManager.createConnection("127.0.0.1", "9042", "cassandra", "pass", "eySpace");
   }
@@ -270,6 +270,7 @@ public class CassandraTest {
     connectionManager.getCluster("sun");
   }
 
+  
   @AfterClass
   public static void shutdownhook() {
     connectionManager.registerShutDownHook();

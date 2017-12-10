@@ -1,5 +1,6 @@
 package org.sunbird.common.models.util;
 
+import com.google.i18n.phonenumbers.NumberParseException;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.velocity.VelocityContext;
@@ -158,4 +159,21 @@ public class ProjectUtilTest {
     Assert.assertNotEquals("Hello user", msg);
   }
 
+  @Test
+  public void testisEmailvalid(){
+    boolean msg = ProjectUtil.isEmailvalid("Hello ");
+    Assert.assertFalse(msg);
+  }
+  
+  @Test
+  public void testsendSMS(){
+    String msg = ProjectUtil.sendSMS("SUNBIRD", "KARNATAKA", "AMIT@BLR", "sunbird.org", "sunbird.com");
+    Assert.assertTrue(msg.contains("KARNATAKA"));
+  }
+  
+  @Test
+  public void testsendSMS2(){
+    String msg = ProjectUtil.sendSMS("", "", "", "", "");
+    Assert.assertTrue(msg.contains("user_name"));
+  }
 }

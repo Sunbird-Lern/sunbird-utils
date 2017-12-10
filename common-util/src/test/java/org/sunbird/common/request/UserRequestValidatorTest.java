@@ -645,10 +645,218 @@ public class UserRequestValidatorTest {
       map.put(JsonKey.ADDRESS_LINE1, "test");
       map.put(JsonKey.CITY, "Bangalore");
       map.put(JsonKey.COUNTRY, "India");
-      map.put(JsonKey.ADD_TYPE, "local");
+      map.put(JsonKey.ADD_TYPE, "localr");
       addressList.add(map);
       requestObj.put(JsonKey.ADDRESS, addressList);
       request.setRequest(requestObj);
+      try {
+        RequestValidator.validateCreateUser(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.addressTypeError.getErrorCode(),
+            e.getCode());
+      }
+    }
+    @Test
+    public void phoneAndEmailValidationForCreateUserTest(){
+      Request request = new Request();
+      request.getRequest().put(JsonKey.COUNTRY_CODE, "+as");
+      try {
+        RequestValidator.validateCreateUser(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.invalidCountryCode.getErrorCode(),
+            e.getCode());
+      }
+    }
+    
+    @Test
+    public void phoneAndEmailValidationForCreateUserTest2(){
+      Request request = new Request();
+      request.getRequest().put(JsonKey.EMAIL, "");
+      request.getRequest().put(JsonKey.PHONE, "");
+      try {
+        RequestValidator.validateCreateUser(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.emailorPhoneRequired.getErrorCode(),
+            e.getCode());
+      }
+    }
+    
+    @Test
+    public void phoneAndEmailValidationForCreateUserTest3(){
+      Request request = new Request();
+      request.getRequest().put(JsonKey.EMAIL, "am@ds@cmo");
+      
+      try {
+        RequestValidator.validateCreateUser(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.emailFormatError.getErrorCode(),
+            e.getCode());
+      }
+    }
+    
+    @Test
+    public void phoneAndEmailValidationForCreateUserTest4(){
+      Request request = new Request();
+      request.getRequest().put(JsonKey.PROVIDER, "BLR");
+      request.getRequest().put(JsonKey.PHONE, "7894561230");
+      try {
+        RequestValidator.validateCreateUser(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.phoneVerifiedError.getErrorCode(),
+            e.getCode());
+      }
+    }
+    
+    @Test
+    public void phoneAndEmailValidationForCreateUserTest5(){
+      Request request = new Request();
+      request.getRequest().put(JsonKey.PROVIDER, "BLR");
+      request.getRequest().put(JsonKey.PHONE, "7894561230");
+      request.getRequest().put(JsonKey.PHONE_VERIFIED, "true");
+      try {
+        RequestValidator.validateCreateUser(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.phoneVerifiedError.getErrorCode(),
+            e.getCode());
+      }
+    }
+    
+    @Test
+    public void phoneAndEmailValidationForCreateUserTest6(){
+      Request request = new Request();
+      request.getRequest().put(JsonKey.PROVIDER, "BLR");
+      request.getRequest().put(JsonKey.PHONE, "7894561230");
+      request.getRequest().put(JsonKey.PHONE_VERIFIED, false);
+      try {
+        RequestValidator.validateCreateUser(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.phoneVerifiedError.getErrorCode(),
+            e.getCode());
+      }
+    }
+    
+    @Test
+    public void educationValidationTest1(){
+      Request request = new Request();
+      request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
+      request.getRequest().put(JsonKey.PHONE, "9874561230");
+      request.getRequest().put(JsonKey.USERNAME, "98745");
+      request.getRequest().put(JsonKey.FIRST_NAME, "98745");
+      Map<String,Object> map = new HashMap<>();
+      map.put(JsonKey.NAME, "");
+      List<Map<String,Object>> list = new ArrayList<>();
+      list.add(map);
+      
+      request.getRequest().put(JsonKey.EDUCATION, list);
+      try {
+        RequestValidator.validateCreateUser(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.educationNameError.getErrorCode(),
+            e.getCode());
+      }
+    }
+    
+    @Test
+    public void educationValidationTest2(){
+      Request request = new Request();
+      request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
+      request.getRequest().put(JsonKey.PHONE, "9874561230");
+      request.getRequest().put(JsonKey.USERNAME, "98745");
+      request.getRequest().put(JsonKey.FIRST_NAME, "98745");
+      Map<String,Object> map = new HashMap<>();
+      map.put(JsonKey.NAME, "name");
+      map.put(JsonKey.DEGREE, "");
+      List<Map<String,Object>> list = new ArrayList<>();
+      list.add(map);
+      
+      request.getRequest().put(JsonKey.EDUCATION, list);
+      try {
+        RequestValidator.validateCreateUser(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.educationDegreeError.getErrorCode(),
+            e.getCode());
+      }
+    }
+    
+    @Test
+    public void educationValidationAddressTest3(){
+      Request request = new Request();
+      request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
+      request.getRequest().put(JsonKey.PHONE, "9874561230");
+      request.getRequest().put(JsonKey.USERNAME, "98745");
+      request.getRequest().put(JsonKey.FIRST_NAME, "98745");
+      Map<String,Object> map = new HashMap<>();
+      map.put(JsonKey.NAME, "name");
+      map.put(JsonKey.DEGREE, "degree");
+      Map<String,Object> address = new HashMap<>();
+      address.put(JsonKey.ADDRESS_LINE1, "");
+      map.put(JsonKey.ADDRESS, address);
+      List<Map<String,Object>> list = new ArrayList<>();
+      list.add(map);
+      request.getRequest().put(JsonKey.EDUCATION, list);
+      try {
+        RequestValidator.validateCreateUser(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.addressError.getErrorCode(),
+            e.getCode());
+      }
+    }
+    
+    @Test
+    public void educationValidationAddressTest4(){
+      Request request = new Request();
+      request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
+      request.getRequest().put(JsonKey.PHONE, "9874561230");
+      request.getRequest().put(JsonKey.USERNAME, "98745");
+      request.getRequest().put(JsonKey.FIRST_NAME, "98745");
+      Map<String,Object> map = new HashMap<>();
+      map.put(JsonKey.NAME, "name");
+      map.put(JsonKey.DEGREE, "degree");
+      Map<String,Object> address = new HashMap<>();
+      address.put(JsonKey.ADDRESS_LINE1, "line1");
+      address.put(JsonKey.CITY, "");
+      map.put(JsonKey.ADDRESS, address);
+      List<Map<String,Object>> list = new ArrayList<>();
+      list.add(map);
+      request.getRequest().put(JsonKey.EDUCATION, list);
+      try {
+        RequestValidator.validateCreateUser(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.addressError.getErrorCode(),
+            e.getCode());
+      }
+    }
+    
+    @Test
+    public void jobProfileValidationTest(){
+      Request request = new Request();
+      request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
+      request.getRequest().put(JsonKey.PHONE, "9874561230");
+      request.getRequest().put(JsonKey.USERNAME, "98745");
+      request.getRequest().put(JsonKey.FIRST_NAME, "98745");
+      request.getRequest().put(JsonKey.JOB_PROFILE, "");
       try {
         RequestValidator.validateCreateUser(request);
       } catch (ProjectCommonException e) {
@@ -658,5 +866,176 @@ public class UserRequestValidatorTest {
             e.getCode());
       }
     }
-
+    
+    @Test
+    public void jobProfileValidationTest1(){
+      Request request = new Request();
+      request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
+      request.getRequest().put(JsonKey.PHONE, "9874561230");
+      request.getRequest().put(JsonKey.USERNAME, "98745");
+      request.getRequest().put(JsonKey.FIRST_NAME, "98745");
+      Map<String,Object> map = new HashMap<>();
+      map.put(JsonKey.JOB_NAME, "");
+      map.put(JsonKey.ORG_NAME, "degree");
+      List<Map<String,Object>> list = new ArrayList<>();
+      list.add(map);
+      request.getRequest().put(JsonKey.JOB_PROFILE, list);
+      try {
+        RequestValidator.validateCreateUser(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.jobNameError.getErrorCode(),
+            e.getCode());
+      }
+    }
+    
+    @Test
+    public void jobProfileValidationTest2(){
+      Request request = new Request();
+      request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
+      request.getRequest().put(JsonKey.PHONE, "9874561230");
+      request.getRequest().put(JsonKey.USERNAME, "98745");
+      request.getRequest().put(JsonKey.FIRST_NAME, "98745");
+      Map<String,Object> map = new HashMap<>();
+      map.put(JsonKey.JOB_NAME, "jabName");
+      map.put(JsonKey.ORG_NAME, "orgName");
+      Map<String,Object> address = new HashMap<>();
+      address.put(JsonKey.ADDRESS_LINE1, "line1");
+      address.put(JsonKey.CITY, "");
+      map.put(JsonKey.ADDRESS, address);
+      List<Map<String,Object>> list = new ArrayList<>();
+      list.add(map);
+      request.getRequest().put(JsonKey.JOB_PROFILE, list);
+      try {
+        RequestValidator.validateCreateUser(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.addressError.getErrorCode(),
+            e.getCode());
+      }
+    }
+    
+    @Test
+    public void validatePhoneNoTest(){
+      Request request = new Request();
+      request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
+      request.getRequest().put(JsonKey.PHONE, "9874561230");
+      request.getRequest().put(JsonKey.COUNTRY_CODE, "+001");
+      request.getRequest().put(JsonKey.USERNAME, "98745");
+      request.getRequest().put(JsonKey.FIRST_NAME, "98745");
+      try {
+        RequestValidator.validateCreateUser(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.phoneNoFormatError.getErrorCode(),
+            e.getCode());
+      }
+    }
+    
+    @Test
+    public void validateGetUserCountTest(){
+      Request request = new Request();
+      request.getRequest().put(JsonKey.LOCATION_IDS, "");
+      
+      try {
+        RequestValidator.validateGetUserCount(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.dataTypeError.getErrorCode(),
+            e.getCode());
+      }
+    }
+    
+    @Test
+    public void validateGetUserCountTest1(){
+      Request request = new Request();
+      List<String> list = new ArrayList<>();
+      list.add("");
+      request.getRequest().put(JsonKey.LOCATION_IDS, list);
+      
+      try {
+        RequestValidator.validateGetUserCount(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.locationIdRequired.getErrorCode(),
+            e.getCode());
+      }
+    }
+    
+    @Test
+    public void validateGetUserCountTest2(){
+      Request request = new Request();
+      List<String> list = new ArrayList<>();
+      list.add("4645");
+      request.getRequest().put(JsonKey.LOCATION_IDS, list);
+      request.getRequest().put(JsonKey.USER_LIST_REQ, null);
+      
+      try {
+        RequestValidator.validateGetUserCount(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.dataTypeError.getErrorCode(),
+            e.getCode());
+      }
+    }
+    
+    @Test
+    public void validateGetUserCountTest3(){
+      Request request = new Request();
+      List<String> list = new ArrayList<>();
+      list.add("4645");
+      request.getRequest().put(JsonKey.LOCATION_IDS, list);
+      request.getRequest().put(JsonKey.USER_LIST_REQ, true);
+      
+      try {
+        RequestValidator.validateGetUserCount(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.functionalityMissing.getErrorCode(),
+            e.getCode());
+      }
+    }
+    
+    @Test
+    public void validateGetUserCountTest4(){
+      Request request = new Request();
+      List<String> list = new ArrayList<>();
+      list.add("4645");
+      request.getRequest().put(JsonKey.LOCATION_IDS, list);
+      request.getRequest().put(JsonKey.ESTIMATED_COUNT_REQ, "");
+      
+      try {
+        RequestValidator.validateGetUserCount(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.dataTypeError.getErrorCode(),
+            e.getCode());
+      }
+    }
+    
+    @Test
+    public void validateGetUserCountTest5(){
+      Request request = new Request();
+      List<String> list = new ArrayList<>();
+      list.add("4645");
+      request.getRequest().put(JsonKey.LOCATION_IDS, list);
+      request.getRequest().put(JsonKey.ESTIMATED_COUNT_REQ, true);
+      
+      try {
+        RequestValidator.validateGetUserCount(request);
+      } catch (ProjectCommonException e) {
+        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(),
+            e.getResponseCode());
+        assertEquals(ResponseCode.functionalityMissing.getErrorCode(),
+            e.getCode());
+      }
+    }
 }

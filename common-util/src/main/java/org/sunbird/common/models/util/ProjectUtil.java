@@ -7,21 +7,24 @@ import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.request.Request;
-import org.sunbird.common.responsecode.ResponseCode;
 
 /**
  * This class will contains all the common utility methods.
@@ -44,7 +47,7 @@ public class ProjectUtil {
       "elasticsearch.config.properties", "cassandra.config.properties", "dbconfig.properties",
       "externalresource.properties", "sso.properties", "userencryption.properties",
       "profilecompleteness.properties", "mailTemplates.properties"};
-  public static PropertiesCache propertiesCache ;
+  public static PropertiesCache propertiesCache;
 
   /**
    * @author Manzarul
@@ -248,7 +251,7 @@ public class ProjectUtil {
     templateMap.put("publishContent", "/publishContentMailTemplate.vm");
     templateMap.put("rejectContent", "/rejectContentMailTemplate.vm");
     templateMap.put("welcome", "/welcomeMailTemplate.vm");
-    templateMap.put("unlistedPublishContent" , "/unlistedPublishContentMailTemplate.vm");
+    templateMap.put("unlistedPublishContent", "/unlistedPublishContentMailTemplate.vm");
   }
 
   /**
@@ -330,7 +333,8 @@ public class ProjectUtil {
    */
   public enum EsType {
     course("course"), content("content"), user("user"), organisation("org"), usercourses(
-        "usercourses"), usernotes("usernotes"), history("history"),userprofilevisibility("userprofilevisibility");
+        "usercourses"), usernotes(
+            "usernotes"), history("history"), userprofilevisibility("userprofilevisibility");
     private String typeName;
 
     private EsType(String name) {
@@ -513,11 +517,11 @@ public class ProjectUtil {
   }
 
   public static final String[] excludes =
-      new String[] {JsonKey.COMPLETENESS, JsonKey.MISSING_FIELDS, JsonKey.PROFILE_VISIBILITY, JsonKey.USERNAME,
-      JsonKey.LOGIN_ID, JsonKey.USER_ID};
-  
-  public static final String[] defaultPrivateFields =
-      new String[] {JsonKey.EMAIL, JsonKey.PHONE};
+      new String[] {JsonKey.COMPLETENESS, JsonKey.MISSING_FIELDS, JsonKey.PROFILE_VISIBILITY,
+          JsonKey.USERNAME, JsonKey.LOGIN_ID, JsonKey.USER_ID};
+
+  public static final String[] defaultPrivateFields = new String[] {JsonKey.EMAIL, JsonKey.PHONE};
+
   /**
    * 
    * @author Manzarul
@@ -560,18 +564,19 @@ public class ProjectUtil {
     context.put(JsonKey.ORG_NAME, (String) map.get(JsonKey.ORG_NAME));
     map.remove(JsonKey.ORG_NAME);
     // add image url in the mail
-    String sunbirdLogUrlFromCache = PropertiesCache.getInstance().getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL);
+    String sunbirdLogUrlFromCache =
+        PropertiesCache.getInstance().getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL);
     if (!ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL))
         || !ProjectUtil
-        .isStringNullOREmpty(propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL))) {
+            .isStringNullOREmpty(propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL))) {
       String logoUrl = null;
-      if(!ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL))){
+      if (!ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL))) {
         logoUrl = System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL);
-      }else if(!JsonKey.SUNBIRD_ENV_LOGO_URL.equalsIgnoreCase(sunbirdLogUrlFromCache)){
+      } else if (!JsonKey.SUNBIRD_ENV_LOGO_URL.equalsIgnoreCase(sunbirdLogUrlFromCache)) {
         logoUrl = sunbirdLogUrlFromCache;
       }
 
-      if(!ProjectUtil.isStringNullOREmpty(logoUrl)){
+      if (!ProjectUtil.isStringNullOREmpty(logoUrl)) {
         context.put(JsonKey.ORG_IMAGE_URL, logoUrl);
       }
     }
@@ -664,9 +669,8 @@ public class ProjectUtil {
       if (ProjectUtil.isStringNullOREmpty(ekStepBaseUrl)) {
         ekStepBaseUrl = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_BASE_URL);
       }
-      tagStatus = HttpUtil.sendPostRequest(
-          ekStepBaseUrl
-              + PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_TAG_API_URL) + "/" + tagId,
+      tagStatus = HttpUtil.sendPostRequest(ekStepBaseUrl
+          + PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_TAG_API_URL) + "/" + tagId,
           body, header);
       ProjectLogger
           .log("end call for tag registration id and status  ==" + tagId + " " + tagStatus);
@@ -704,11 +708,12 @@ public class ProjectUtil {
     String saltStr = salt.toString();
     return saltStr;
   }
-  
+
   /**
    * This method will do the phone number validation check
+   * 
    * @param phoneNo String
-   * @return  boolean
+   * @return boolean
    */
   public static boolean validatePhoneNumber(String phoneNo) {
     phoneNo = phoneNo.replace("+", "");
@@ -724,46 +729,45 @@ public class ProjectUtil {
       return false;
 
   }
-  
-  public static Map<String,String> getEkstepHeader(){
-    Map<String,String> headerMap = new HashMap<>();
+
+  public static Map<String, String> getEkstepHeader() {
+    Map<String, String> headerMap = new HashMap<>();
     String header = System.getenv(JsonKey.EKSTEP_AUTHORIZATION);
-      if (ProjectUtil.isStringNullOREmpty(header)) {
-        header = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_AUTHORIZATION);
-      } else {
-        header = JsonKey.BEARER+header;
-      }
-       headerMap.put(JsonKey.AUTHORIZATION, header);
-       headerMap.put("Content-Type", "application/json");
-    return headerMap;
-}
-  
-  public static boolean validatePhone(String phone, String countryCode){
-    PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();  
-    if(!ProjectUtil.isStringNullOREmpty(countryCode) && (countryCode.charAt(0) != '+')){
-      countryCode = "+"+countryCode;
+    if (ProjectUtil.isStringNullOREmpty(header)) {
+      header = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_AUTHORIZATION);
+    } else {
+      header = JsonKey.BEARER + header;
     }
-    try {  
-        if(isStringNullOREmpty(countryCode)){
-          countryCode = PropertiesCache.getInstance().getProperty("sunbird_default_country_code");
-        }
-         phone = countryCode+"-"+phone;
-         PhoneNumber numberProto = phoneUtil.parse(phone, ""); 
-         //phoneUtil.isValidNumber(number)
-         ProjectLogger.log("Number is of region - " + numberProto.getCountryCode()+" " 
-             + phoneUtil.getRegionCodeForNumber(numberProto));
-         ProjectLogger.log("Is the input number valid - "  
-                             + (phoneUtil.isValidNumber(numberProto) == true ? "Yes"  
-                                       : "No")); 
-         return phoneUtil.isValidNumber(numberProto);
-    } catch (NumberParseException e) { 
-      ProjectLogger.log("Exception occurred while validating phone number : ",e);
+    headerMap.put(JsonKey.AUTHORIZATION, header);
+    headerMap.put("Content-Type", "application/json");
+    return headerMap;
+  }
+
+  public static boolean validatePhone(String phone, String countryCode) {
+    PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+    if (!ProjectUtil.isStringNullOREmpty(countryCode) && (countryCode.charAt(0) != '+')) {
+      countryCode = "+" + countryCode;
+    }
+    try {
+      if (isStringNullOREmpty(countryCode)) {
+        countryCode = PropertiesCache.getInstance().getProperty("sunbird_default_country_code");
+      }
+      phone = countryCode + "-" + phone;
+      PhoneNumber numberProto = phoneUtil.parse(phone, "");
+      // phoneUtil.isValidNumber(number)
+      ProjectLogger.log("Number is of region - " + numberProto.getCountryCode() + " "
+          + phoneUtil.getRegionCodeForNumber(numberProto));
+      ProjectLogger.log("Is the input number valid - "
+          + (phoneUtil.isValidNumber(numberProto) == true ? "Yes" : "No"));
+      return phoneUtil.isValidNumber(numberProto);
+    } catch (NumberParseException e) {
+      ProjectLogger.log("Exception occurred while validating phone number : ", e);
       ProjectLogger.log(phone + "this phone no. is not a valid one.");
     }
-    return false; 
+    return false;
   }
- 
-  public static boolean validateCountryCode(String countryCode){
+
+  public static boolean validateCountryCode(String countryCode) {
     String pattern = "^(?:[+] ?){0,1}(?:[0-9] ?){1,3}";
     try {
       Pattern patt = Pattern.compile(pattern);
@@ -773,5 +777,33 @@ public class ProjectUtil {
       return false;
     }
   }
- 
+
+  public static String sendSMS(String orgName, String state, String userName, String webUrl,
+      String appUrl) {
+    try {
+      Properties props = new Properties();
+      props.put("resource.loader", "class");
+      props.put("class.resource.loader.class",
+          "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+
+      VelocityEngine ve = new VelocityEngine();
+      ve.init(props);
+
+      Map params = new HashMap();
+      params.put("orgName", isStringNullOREmpty(orgName) ? "org_name" : orgName);
+      params.put("state", isStringNullOREmpty(state) ? "state" : state);
+      params.put("userName", isStringNullOREmpty(userName) ? "user_name" : userName);
+      params.put("webUrl", isStringNullOREmpty(webUrl) ? "web_url" : webUrl);
+      params.put("appUrl", isStringNullOREmpty(appUrl) ? "app_url" : appUrl);
+
+      Template t = ve.getTemplate("/welcomeSmsTemplate.vm");
+      VelocityContext context = new VelocityContext(params);
+      StringWriter writer = new StringWriter();
+      t.merge(context, writer);
+      return writer.toString();
+    } catch (Exception ex) {
+      ProjectLogger.log("Exception occurred while formating and sending SMS " + ex);
+    }
+    return "";
+  }
 }
