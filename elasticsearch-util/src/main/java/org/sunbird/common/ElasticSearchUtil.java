@@ -5,6 +5,7 @@ package org.sunbird.common;
 
 import static org.sunbird.common.models.util.ProjectUtil.isNotNull;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -15,6 +16,8 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
@@ -53,15 +56,21 @@ import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
+import org.sunbird.common.exception.ProjectCommonException;
+import org.sunbird.common.models.response.Response;
+import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
+import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
 import org.sunbird.helper.ElasticSearchMapping;
 import org.sunbird.helper.ElasticSearchSettings;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * This class will provide all required operation
@@ -114,14 +123,13 @@ public class ElasticSearchUtil {
           .get();
       ProjectLogger
           .log("Save value==" + response.getId() + " " + response.status(), LoggerEnum.INFO.name());
+      ProjectLogger.log("ElasticSearchUtil createData method end at ==" +System.currentTimeMillis()+" for Type "+type+" ,Total time elapsed = "+calculateEndTime(startTime), LoggerEnum.PERF_LOG);
       return response.getId();
     } catch (Exception e) {
       ProjectLogger.log("Error while saving "+type+" id : "+identifier, e);
+      ProjectLogger.log("ElasticSearchUtil createData method end at ==" +System.currentTimeMillis()+" for Type "+type+" ,Total time elapsed = "+calculateEndTime(startTime), LoggerEnum.PERF_LOG);
+      return "";
     }
-    long stopTime = System.currentTimeMillis();
-    long elapsedTime = stopTime - startTime;
-    ProjectLogger.log("ElasticSearchUtil createData method end at ==" +stopTime+" for Type "+type+" ,Total time elapsed = "+elapsedTime, LoggerEnum.PERF_LOG);
-    return "";
   }
 
   /**
@@ -137,18 +145,12 @@ public class ElasticSearchUtil {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log("ElasticSearchUtil getDataByIdentifier method started at ==" +startTime+" for Type "+type, LoggerEnum.PERF_LOG);
     GetResponse response = null;
-    if (ProjectUtil.isStringNullOREmpty(index) && ProjectUtil.isStringNullOREmpty(type)
-        && ProjectUtil.isStringNullOREmpty(identifier)) {
+    if (ProjectUtil.isStringNullOREmpty(index) || ProjectUtil.isStringNullOREmpty(identifier)) {
       ProjectLogger.log("Invalid request is coming.");
-    } else if (ProjectUtil.isStringNullOREmpty(index)) {
-      ProjectLogger.log("Please provide index value.");
-    } else if (ProjectUtil.isStringNullOREmpty(identifier)){
-      ProjectLogger.log("identifier value is null or empty.");
-    }else if (ProjectUtil.isStringNullOREmpty(type)) {
-      verifyOrCreateIndexAndType(index, type);
+      return new HashMap<>();
+    } else if (ProjectUtil.isStringNullOREmpty(type)) {
       response = ConnectionManager.getClient().prepareGet().setIndex(index).setId(identifier).get();
     } else {
-      verifyOrCreateIndexAndType(index, type);
       response = ConnectionManager.getClient().prepareGet(index, type, identifier).get();
     }
     if (response == null || null == response.getSource()) {
@@ -187,6 +189,9 @@ public class ElasticSearchUtil {
       ProjectLogger.log("Error, interrupted while connecting to Elasticsearch", e);
     } catch (ExecutionException e) {
       ProjectLogger.log("Error while execution in Elasticsearch", e);
+    }
+    if(sr.getHits() == null || sr.getHits().getTotalHits()==0) {
+    	return new HashMap<String, Object>();
     }
     sr.getHits().getAt(0).getSource();
     long stopTime = System.currentTimeMillis();
@@ -251,7 +256,7 @@ public class ElasticSearchUtil {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log("ElasticSearchUtil upsertData method started at ==" +startTime+" for Type "+type, LoggerEnum.PERF_LOG);
     if (!ProjectUtil.isStringNullOREmpty(index) && !ProjectUtil.isStringNullOREmpty(type)
-        && !ProjectUtil.isStringNullOREmpty(identifier) && data != null) {
+        && !ProjectUtil.isStringNullOREmpty(identifier) && data != null && data.size()>0) {
       verifyOrCreateIndexAndType(index, type);
       IndexRequest indexRequest = new IndexRequest(index, type, identifier).source(data);
       UpdateRequest updateRequest = new UpdateRequest(index, type, identifier).doc(data)
@@ -292,7 +297,6 @@ public class ElasticSearchUtil {
     DeleteResponse deleteResponse = null;
     if (!ProjectUtil.isStringNullOREmpty(index) && !ProjectUtil.isStringNullOREmpty(type)
         && !ProjectUtil.isStringNullOREmpty(identifier)) {
-      verifyOrCreateIndexAndType(index, type);
       try {
         deleteResponse = ConnectionManager.getClient()
             .prepareDelete(index, type, identifier).get();
@@ -302,6 +306,7 @@ public class ElasticSearchUtil {
       }
     } else {
       ProjectLogger.log("Data can not be deleted due to invalid input.");
+      return false;
     }
     long stopTime = System.currentTimeMillis();
     long elapsedTime = stopTime - startTime;
@@ -330,6 +335,7 @@ public class ElasticSearchUtil {
     }
     CreateIndexResponse createIndexResponse = null;
     TransportClient client = ConnectionManager.getClient();
+    try {
     CreateIndexRequestBuilder createIndexBuilder = client.admin().indices().prepareCreate(index);
     if (!ProjectUtil.isStringNullOREmpty(settings)) {
       createIndexResponse = createIndexBuilder.setSettings(settings).get();
@@ -358,6 +364,10 @@ public class ElasticSearchUtil {
         }
       }
     }
+    } catch (Exception e) {
+		 ProjectLogger.log(e.getMessage(),e);
+		 response = false;
+	}
     ProjectLogger.log("Index creation status==" + response, LoggerEnum.INFO.name());
     return response;
   }
@@ -931,8 +941,68 @@ public class ElasticSearchUtil {
    */
   public static boolean healthCheck() throws InterruptedException, ExecutionException {
     boolean indexResponse = false;
-      indexResponse = ConnectionManager.getClient().admin().indices()
-          .exists(Requests.indicesExistsRequest(ProjectUtil.EsIndex.sunbird.name())).get().isExists();
+    indexResponse = ConnectionManager.getClient().admin().indices()
+        .exists(Requests.indicesExistsRequest(ProjectUtil.EsIndex.sunbird.name())).get().isExists();
     return indexResponse;
   }
+
+
+  /**
+   * Method to execute ES query with the limitation of size set to 0
+   * Currently this is a rest call
+   * @param index ES indexName
+   * @param type ES type
+   * @param rawQuery actual query to be executed
+   * @return ES response for the query
+   */
+  @SuppressWarnings("unchecked")
+  public static Response searchMetricsData(String index, String type, String rawQuery) {
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log("Metrics search method started at ==" + startTime, LoggerEnum.PERF_LOG);
+    String baseUrl = null;
+    if (!StringUtils.isBlank(System.getenv(JsonKey.SUNBIRD_ES_IP))) {
+      String envHost = System.getenv(JsonKey.SUNBIRD_ES_IP);
+      String[] host = envHost.split(",");
+      baseUrl = "http://" + host[0] + ":" + PropertiesCache.getInstance().getProperty(JsonKey.ES_METRICS_PORT);
+    } else {
+      ProjectLogger.log("ES URL from Properties file");
+      baseUrl = PropertiesCache.getInstance().getProperty(JsonKey.ES_URL);
+    }
+    String requestURL = baseUrl + "/" + index + "/" + type + "/" + "_search";
+    Map<String, String> headers = new HashMap<>();
+    headers.put("Content-Type", "application/json");
+    Map<String, Object> responseData = new HashMap<>();
+    try {
+      // TODO:Currently this is making a rest call but needs to be modified to make the call using
+      // ElasticSearch client
+      String responseStr = HttpUtil.sendPostRequest(requestURL, rawQuery, headers);
+      ObjectMapper mapper = new ObjectMapper();
+      responseData = mapper.readValue(responseStr, Map.class);
+    } catch (IOException e) {
+      throw new ProjectCommonException(ResponseCode.unableToConnectToES.getErrorCode(),
+          ResponseCode.unableToConnectToES.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }  catch (Exception e) {
+      throw new ProjectCommonException(ResponseCode.unableToParseData.getErrorCode(),
+          ResponseCode.unableToParseData.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    Response response = new Response();
+    response.put(JsonKey.RESPONSE, responseData);
+    long stopTime = System.currentTimeMillis();
+    long elapsedTime = stopTime - startTime;
+    ProjectLogger.log("ElasticSearchUtil metrics search method end at == " + stopTime
+        + " ,Total time elapsed = " + elapsedTime, LoggerEnum.PERF_LOG);
+    return response;
+  }
+  
+    /**
+     * this method will take start time and subtract with current 
+     * time to get the time spent in millis.
+     * @param startTime long
+     * @return long
+     */
+	public static long calculateEndTime(long startTime) {
+		return System.currentTimeMillis() - startTime;
+	}
 }

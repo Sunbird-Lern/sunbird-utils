@@ -46,6 +46,8 @@ public enum ResponseCode {
     organisationNameRequired(ResponseMessage.Key.ORGANISATION_NAME_MISSING, ResponseMessage.Message.ORGANISATION_NAME_MISSING),
     channelUniquenessInvalid(ResponseMessage.Key.CHANNEL_SHOULD_BE_UNIQUE, ResponseMessage.Message.CHANNEL_SHOULD_BE_UNIQUE),
     unableToConnect(ResponseMessage.Key.UNABLE_TO_CONNECT_TO_EKSTEP, ResponseMessage.Message.UNABLE_TO_CONNECT_TO_EKSTEP),
+    unableToConnectToES(ResponseMessage.Key.UNABLE_TO_CONNECT_TO_ES, ResponseMessage.Message.UNABLE_TO_CONNECT_TO_ES),
+    unableToParseData(ResponseMessage.Key.UNABLE_TO_PARSE_DATA, ResponseMessage.Message.UNABLE_TO_PARSE_DATA),
     invalidJsonData(ResponseMessage.Key.INVALID_JSON,ResponseMessage.Message.INVALID_JSON),
     invalidOrgData(ResponseMessage.Key.INVALID_ORG_DATA, ResponseMessage.Message.INVALID_ORG_DATA),
     invalidRootOrganisationId(ResponseMessage.Key.INVALID_ROOT_ORGANIZATION, ResponseMessage.Message.INVALID_ROOT_ORGANIZATION),
@@ -194,6 +196,7 @@ public enum ResponseCode {
     invalidClientId(ResponseMessage.Key.INVALID_CLIENT_ID, ResponseMessage.Message.INVALID_CLIENT_ID),
     userPhoneUpdateFailed(ResponseMessage.Key.USER_PHONE_UPDATE_FAILED, ResponseMessage.Message.USER_PHONE_UPDATE_FAILED),
     esUpdateFailed(ResponseMessage.Key.ES_UPDATE_FAILED, ResponseMessage.Message.ES_UPDATE_FAILED),
+    updateFailed(ResponseMessage.Key.UPDATE_FAILED, ResponseMessage.Message.UPDATE_FAILED),
     invalidTypeValue(ResponseMessage.Key.INVALID_TYPE_VALUE , ResponseMessage.Key.INVALID_TYPE_VALUE),
     invalidLocationId(ResponseMessage.Key.INVALID_LOCATION_ID, ResponseMessage.Message.INVALID_LOCATION_ID),
     invalidHashTagId(ResponseMessage.Key.INVALID_HASHTAG_ID, ResponseMessage.Message.INVALID_HASHTAG_ID),
@@ -203,139 +206,145 @@ public enum ResponseCode {
     invalidTopicData(ResponseMessage.Key.INVALID_TOPIC_DATA,ResponseMessage.Message.INVALID_TOPIC_DATA),
     invalidNotificationType(ResponseMessage.Key.INVALID_NOTIFICATION_TYPE,ResponseMessage.Message.INVALID_NOTIFICATION_TYPE),
     notificationTypeSupport(ResponseMessage.Key.INVALID_NOTIFICATION_TYPE_SUPPORT,ResponseMessage.Message.INVALID_NOTIFICATION_TYPE_SUPPORT),
+    emailInUse(ResponseMessage.Key.EMAIL_IN_USE, ResponseMessage.Message.EMAIL_IN_USE),
+    invalidPhoneNumber(ResponseMessage.Key.INVALID_PHONE_NUMBER, ResponseMessage.Message.INVALID_PHONE_NUMBER),
+    invalidCountryCode(ResponseMessage.Key.INVALID_COUNTRY_CODE, ResponseMessage.Message.INVALID_COUNTRY_CODE),
+    duplicatePhoneData(ResponseMessage.Key.DUPLICATE_PHONE_DATA, ResponseMessage.Message.DUPLICATE_PHONE_DATA),
+    duplicateEmailData(ResponseMessage.Key.DUPLICATE_EMAIL_DATA, ResponseMessage.Message.DUPLICATE_EMAIL_DATA),
+    locationIdRequired(ResponseMessage.Key.LOCATION_ID_REQUIRED,ResponseMessage.Message.LOCATION_ID_REQUIRED),
+    functionalityMissing(ResponseMessage.Key.NOT_SUPPORTED,ResponseMessage.Message.NOT_SUPPORTED),
     OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404),UNAUTHORIZED(401),REDIRECTION_REQUIRED(302);
 	
-	private int responseCode;
-	/**
-     * error code contains String value
-     */
-    private String errorCode;
-    /**
-     * errorMessage contains proper error message.
-     */
-    private String errorMessage;
+  private int responseCode;
+  /**
+   * error code contains String value
+   */
+  private String errorCode;
+  /**
+   * errorMessage contains proper error message.
+   */
+  private String errorMessage;
 
-    /**
-     * @param errorCode String
-     * @param errorMessage String
-     */
-    private ResponseCode(String errorCode, String errorMessage) {
+  /**
+   * @param errorCode String
+   * @param errorMessage String
+   */
+  private ResponseCode(String errorCode, String errorMessage) {
     this.errorCode = errorCode;
     this.errorMessage = errorMessage;
-    }
+  }
 
-    /**
-     * 
-     * @param errorCode
-     * @return
-     */
-    public String getMessage(int errorCode) {
+  /**
+   * 
+   * @param errorCode
+   * @return
+   */
+  public String getMessage(int errorCode) {
     return "";
-    }
+  }
 
-    /**
-     * @return
-     */
-    public String getErrorCode() {
+  /**
+   * @return
+   */
+  public String getErrorCode() {
     return errorCode;
-    }
+  }
 
-    /**
-     * @param errorCode
-     */
-    public void setErrorCode(String errorCode) {
+  /**
+   * @param errorCode
+   */
+  public void setErrorCode(String errorCode) {
     this.errorCode = errorCode;
-    }
+  }
 
-    /**
-     * @return
-     */
-    public String getErrorMessage() {
+  /**
+   * @return
+   */
+  public String getErrorMessage() {
     return errorMessage;
-    }
+  }
 
-    /**
-     * @param errorMessage
-     */
-    public void setErrorMessage(String errorMessage) {
+  /**
+   * @param errorMessage
+   */
+  public void setErrorMessage(String errorMessage) {
     this.errorMessage = errorMessage;
-    }
+  }
 
-    /**
-     * This method will provide status message based on code
-     * 
-     * @param code
-     * @return String
-     */
-    public static String getResponseMessage(String code) {
-     if(ProjectUtil.isStringNullOREmpty(code)){
-       return "";
-     }
-    String value = "";
+  /**
+   * This method will provide status message based on code
+   * 
+   * @param code
+   * @return String
+   */
+  public static String getResponseMessage(String code) {
+    if (ProjectUtil.isStringNullOREmpty(code)) {
+      return "";
+    }
     ResponseCode responseCodes[] = ResponseCode.values();
     for (ResponseCode actionState : responseCodes) {
-        if (actionState.getErrorCode().equals(code)) {
-        value = actionState.getErrorMessage();
-        }
+      if (actionState.getErrorCode().equals(code)) {
+        return actionState.getErrorMessage();
+      }
     }
-    return value;
-    }
-    
-    private ResponseCode(int responseCode) {
-        this.responseCode = responseCode;
-    }
+    return "";
+  }
 
-    public int getResponseCode() {
-        return responseCode;
-    }
+  private ResponseCode(int responseCode) {
+    this.responseCode = responseCode;
+  }
 
-    public void setResponseCode(int responseCode) {
-        this.responseCode = responseCode;
-    }
+  public int getResponseCode() {
+    return responseCode;
+  }
+
+  public void setResponseCode(int responseCode) {
+    this.responseCode = responseCode;
+  }
     
-    /**
-     * This method will take header response code as int value and 
-     * it provide matched enum value, if code is not matched or exception occurs
-     * then it will provide SERVER_ERROR
-     * @param code int
-     * @return HeaderResponseCode
-     */
-    public static ResponseCode getHeaderResponseCode(int code) {
-        if (code > 0) {
-            try {
-                ResponseCode[] arr = ResponseCode.values();
-                if (null != arr) {
-                    for (ResponseCode rc : arr) {
-                        if (rc.getResponseCode() == code)
-                            return rc;
-                    }
-                }
-            } catch (Exception e) {
-                return ResponseCode.SERVER_ERROR;
-            }
+  /**
+   * This method will take header response code as int value and it provide matched enum value, if
+   * code is not matched or exception occurs then it will provide SERVER_ERROR
+   * 
+   * @param code int
+   * @return HeaderResponseCode
+   */
+  public static ResponseCode getHeaderResponseCode(int code) {
+    if (code > 0) {
+      try {
+        ResponseCode[] arr = ResponseCode.values();
+        if (null != arr) {
+          for (ResponseCode rc : arr) {
+            if (rc.getResponseCode() == code)
+              return rc;
+          }
         }
+      } catch (Exception e) {
         return ResponseCode.SERVER_ERROR;
+      }
     }
+    return ResponseCode.SERVER_ERROR;
+  }
     
     
-    /**
-     * This method will provide ResponseCode enum based on error code
-     * 
-     * @param errorCode
-     * @return String
-     */
-    public static ResponseCode getResponse(String errorCode) {
-       if(ProjectUtil.isStringNullOREmpty(errorCode)) {
-         return null;
-       }
-        ResponseCode value =null;
+  /**
+   * This method will provide ResponseCode enum based on error code
+   * 
+   * @param errorCode
+   * @return String
+   */
+  public static ResponseCode getResponse(String errorCode) {
+    if (ProjectUtil.isStringNullOREmpty(errorCode)) {
+      return null;
+    }
+    ResponseCode value = null;
     ResponseCode responseCodes[] = ResponseCode.values();
     for (ResponseCode response : responseCodes) {
-        if (response.getErrorCode().equals(errorCode)) {
-           return response ;
-          
-        }
+      if (response.getErrorCode().equals(errorCode)) {
+        return response;
+
+      }
     }
     return value;
-    }
+  }
 }

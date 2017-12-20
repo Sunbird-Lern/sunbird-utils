@@ -12,8 +12,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.tika.Tika;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 
@@ -27,55 +29,7 @@ import com.microsoft.azure.storage.blob.CloudBlockBlob;
 public class AzureFileUtility {
 
   private static final String DEFAULT_CONTAINER = "default";
-  
-  /**
-   * This method will upload the file inside Azure storage with provided filename
-   * under particular container. if you won't provide the filename then it will
-   * pick the file name from file object and upload the file with that name only.
-   * @param fileName String
-   * @param containerName String
-   * @param file File
-   * @return boolean
-   */
-  public static boolean uploadTheFile(String fileName, String containerName,
-      File file) {
-    if (file == null) {
-      ProjectLogger.log("Upload file can not be null");
-      return false;
-    }
-    if (ProjectUtil.isStringNullOREmpty(containerName)) {
-      ProjectLogger.log("Container name can't be null or empty");
-      return false;
-    }
-    CloudBlobContainer container =
-        AzureConnectionManager.getContainer(containerName,true);
-    if (container == null) {
-      ProjectLogger.log("Unable to get Azure contains object");
-      return false;
-    }
-    if (ProjectUtil.isStringNullOREmpty(fileName)) {
-      fileName = file.getName();
-    }
-    // Create or overwrite the "myimage.jpg" blob with contents from a local file.
-    FileInputStream fis =null;
-    try {
-      CloudBlockBlob blob = container.getBlockBlobReference(fileName);
-      fis = new FileInputStream(file);
-      blob.upload(fis, file.length());
-      return true;
-    } catch (Exception e) {
-      ProjectLogger.log(e.getMessage(), e);
-    }finally {
-      if(null != fis){
-        try {
-          fis.close();
-        } catch (IOException e) {
-          ProjectLogger.log(e.getMessage() , e);
-        }
-      }
-    }
-    return false;
-  }
+
   
   /**
    * This method will remove the file from Azure Storage.
@@ -155,10 +109,14 @@ public class AzureFileUtility {
     CloudBlockBlob blob = null;
     String fileUrl = null;
     FileInputStream fis =null;
+    Tika tika = new Tika();
     try {
       blob = container.getBlockBlobReference(blobName);
       File source = new File(fileName);
       fis = new FileInputStream(source);
+      String mimeType = tika.detect(source);
+      ProjectLogger.log("File - "+source.getName()+" mimeType "+mimeType);
+      blob.getProperties().setContentType(mimeType);
       blob.upload(fis, source.length());
       //fileUrl = blob.getStorageUri().getPrimaryUri().getPath();
       fileUrl = blob.getUri().toString();
@@ -188,6 +146,7 @@ public class AzureFileUtility {
 
     String containerPath ="";
     String filePath="";
+    Tika tika = new Tika();
 
     if(ProjectUtil.isStringNullOREmpty(containerName)){
       containerName = DEFAULT_CONTAINER;
@@ -218,6 +177,9 @@ public class AzureFileUtility {
       blob = container.getBlockBlobReference(filePath+source.getName());
       //File source = new File(fileName);
       fis = new FileInputStream(source);
+      String mimeType = tika.detect(source);
+      ProjectLogger.log("File - "+source.getName()+" mimeType "+mimeType);
+      blob.getProperties().setContentType(mimeType);
       blob.upload(fis, source.length());
       //fileUrl = blob.getStorageUri().getPrimaryUri().getPath();
       fileUrl = blob.getUri().toString();

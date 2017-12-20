@@ -13,7 +13,10 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class PropertiesCache {
 
-  private final String[] fileName = ProjectUtil.FILE_NAME;
+  private final String[] fileName = {"cassandratablecolumn.properties",
+      "elasticsearch.config.properties", "cassandra.config.properties", "dbconfig.properties",
+      "externalresource.properties", "sso.properties", "userencryption.properties",
+      "profilecompleteness.properties", "mailTemplates.properties"};
   private final Properties configProp = new Properties();
   public final Map<String, Float> attributePercentageMap = new ConcurrentHashMap<>();
 

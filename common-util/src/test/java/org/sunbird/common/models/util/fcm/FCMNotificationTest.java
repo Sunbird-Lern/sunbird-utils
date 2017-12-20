@@ -20,7 +20,7 @@ import org.sunbird.common.models.util.JsonKey;
  *
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class FCMNotification {
+public class FCMNotificationTest {
   
   @Test
   public void successNotificationWithStringAndObjectData(){

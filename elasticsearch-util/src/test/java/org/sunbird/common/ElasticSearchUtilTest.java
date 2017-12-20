@@ -1,24 +1,34 @@
 package org.sunbird.common;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import org.elasticsearch.client.transport.TransportClient;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+import org.sunbird.common.exception.ProjectCommonException;
+import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
+import org.sunbird.helper.ConnectionManager.ResourceCleanUp;
 import org.sunbird.helper.ElasticSearchMapping;
 import org.sunbird.helper.ElasticSearchSettings;
 
-import static org.junit.Assert.*;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ElasticSearchUtilTest {
     private static Map<String,Object> map = null;
@@ -28,7 +38,7 @@ public class ElasticSearchUtilTest {
     private static final String typeName = "sbtesttype";
     private static final String STARTS_WITH = "startsWith";
     private static final String ENDS_WITH = "endsWith";
-
+    private static long startTime = System.currentTimeMillis();
     @BeforeClass
     public static void init() {
         map = intitialiseMap(5);
@@ -162,11 +172,192 @@ public class ElasticSearchUtilTest {
         //assertNotNull(map);
     }
 
+    
+    @Test
+    public void testComplexSearchWithRangeGreater(){
+        SearchDTO searchDTO = new SearchDTO();
+        Map<String , Object> additionalProperties = new HashMap<String , Object>();
+        List<Integer> sizes = new ArrayList<Integer>();
+        sizes.add(10);
+        sizes.add(20);
+        Map<String , Object> filterMap = new HashMap<String , Object>();
+        filterMap.put("size" , sizes);
+        Map<String, String> innerMap = new HashMap<>();
+        innerMap.put("createdOn", "2017-11-06");
+        filterMap.put(">=", innerMap);
+        additionalProperties.put(JsonKey.FILTERS,filterMap);
+        Map<String, Object> rangeMap = new HashMap<String , Object>();
+        rangeMap.put(">",0);
+        filterMap.put("pkgVersion" , rangeMap);
+        Map<String , Object> lexicalMap = new HashMap<>();
+        lexicalMap.put(STARTS_WITH , "type");
+        filterMap.put("courseType" , lexicalMap);
+        Map<String , Object> lexicalMap1 = new HashMap<>();
+        lexicalMap1.put(ENDS_WITH , "sunbird");
+        filterMap.put("courseAddedByName" , lexicalMap1);
+        //for exact math key value pair
+        filterMap.put("orgName" , "Name of the organisation");
+
+        searchDTO.setAdditionalProperties(additionalProperties);
+        searchDTO.setQuery("organisation");
+        Map map = ElasticSearchUtil.complexSearch(searchDTO,indexName , typeName);
+        List response = (List) map.get(JsonKey.RESPONSE);
+        assertEquals(2 , map.size());
+    }
+
+   
+    @Test
+    public void testComplexSearchWithRangeLessThan(){
+        SearchDTO searchDTO = new SearchDTO();
+        Map<String , Object> additionalProperties = new HashMap<String , Object>();
+        List<Integer> sizes = new ArrayList<Integer>();
+        sizes.add(10);
+        sizes.add(20);
+        Map<String , Object> filterMap = new HashMap<String , Object>();
+        filterMap.put("size" , sizes);
+        Map<String, String> innerMap = new HashMap<>();
+        innerMap.put("createdOn", "2017-11-06");
+        filterMap.put("<=", innerMap);
+        additionalProperties.put(JsonKey.FILTERS,filterMap);
+        Map<String, Object> rangeMap = new HashMap<String , Object>();
+        rangeMap.put(">",0);
+        filterMap.put("pkgVersion" , rangeMap);
+        Map<String , Object> lexicalMap = new HashMap<>();
+        lexicalMap.put(STARTS_WITH , "type");
+        filterMap.put("courseType" , lexicalMap);
+        Map<String , Object> lexicalMap1 = new HashMap<>();
+        lexicalMap1.put(ENDS_WITH , "sunbird");
+        filterMap.put("courseAddedByName" , lexicalMap1);
+        //for exact math key value pair
+        filterMap.put("orgName" , "Name of the organisation");
+
+        searchDTO.setAdditionalProperties(additionalProperties);
+        searchDTO.setQuery("organisation");
+        Map map = ElasticSearchUtil.complexSearch(searchDTO,indexName , typeName);
+        List response = (List) map.get(JsonKey.RESPONSE);
+        assertEquals(2 , map.size());
+    }
+    
+    @Test
+    public void getByIdentifierWithOutIndex() {
+        Map<String,Object> responseMap = ElasticSearchUtil.getDataByIdentifier(null, typeName, (String)map.get("courseId"));
+        assertEquals(0, responseMap.size());
+    }
+   
+    @Test
+    public void getByIdentifierWithOutType() {
+        Map<String,Object> responseMap = ElasticSearchUtil.getDataByIdentifier(indexName, null, "testcourse123");
+        assertEquals(0, responseMap.size());
+    }
+    
+    @Test
+    public void getByIdentifierWithOutTypeIndexIdentifier() {
+        Map<String,Object> responseMap = ElasticSearchUtil.getDataByIdentifier(null, null, "");
+        assertEquals(0, responseMap.size());
+    }
+    
+    
+    @Test
+    public void getDataWithOutIdentifier() {
+        Map<String,Object> responseMap = ElasticSearchUtil.getDataByIdentifier(indexName, typeName, "");
+        assertEquals(0, responseMap.size());
+    }
+    
+    @Test
+    public void updateDataWithOutIdentifier() {
+        Map<String,Object> innermap = new HashMap<>();
+        innermap.put("courseName", "updatedCourese name");
+        innermap.put(   "organisationId","updatedOrgId");
+        boolean response = ElasticSearchUtil.updateData(indexName, typeName, null, innermap);
+        assertFalse(response);
+    }   
+    
+    
+    @Test
+    public void updateWithEmptyMap() {
+        Map<String,Object> innermap = new HashMap<>();
+        boolean response = ElasticSearchUtil.updateData(indexName, typeName, (String)map.get("courseId"), innermap);
+        assertFalse(response);
+    }   
+    
+    @Test
+    public void updateWithNullMap() {
+        boolean response = ElasticSearchUtil.updateData(indexName, typeName, (String)map.get("courseId"), null);
+        assertFalse(response);
+    }  
+    
+    @Test
+    public void upsertDataWithOutIdentifier() {
+        Map<String,Object> innermap = new HashMap<>();
+        innermap.put("courseName", "updatedCourese name");
+        innermap.put(   "organisationId","updatedOrgId");
+        boolean response = ElasticSearchUtil.upsertData(indexName, typeName, null, innermap);
+        assertFalse(response);
+    }   
+    
+    
+    @Test
+    public void upsertDataWithOutIndex() {
+        Map<String,Object> innermap = new HashMap<>();
+        innermap.put("courseName", "updatedCourese name");
+        innermap.put(   "organisationId","updatedOrgId");
+        boolean response = ElasticSearchUtil.upsertData(null, typeName, (String)map.get("courseId"), innermap);
+        assertFalse(response);
+    }  
+    
+    @Test
+    public void upsertDataWithOutIndexType() {
+        Map<String,Object> innermap = new HashMap<>();
+        innermap.put("courseName", "updatedCourese name");
+        innermap.put(   "organisationId","updatedOrgId");
+        boolean response = ElasticSearchUtil.upsertData(null, null, (String)map.get("courseId"), innermap);
+        assertFalse(response);
+    }  
+    
+    @Test
+    public void upsertDataWithEmptyMap() {
+        Map<String,Object> innermap = new HashMap<>();
+        boolean response = ElasticSearchUtil.upsertData(indexName, typeName, (String)map.get("courseId"), innermap);
+        assertFalse(response);
+    }  
+    
+    
+    @Test
+    public void CreateIndexWithEmptyIndexName() {
+        boolean response = ElasticSearchUtil.createIndex("", typeName, ElasticSearchMapping.createMapping(),
+                ElasticSearchSettings.createSettingsForIndex());
+        assertFalse(response);
+    }
+    
+    
+    @Test
+    public void CreateIndexWithEmptyIndexNameAndType() {
+        boolean response = ElasticSearchUtil.createIndex("", null, ElasticSearchMapping.createMapping(),
+                ElasticSearchSettings.createSettingsForIndex());
+        assertFalse(response);
+    }
+    
+    @Test
+    public void CreateIndexWithEmptyMapping() {
+        boolean response = ElasticSearchUtil.createIndex(indexName, typeName, null,
+                ElasticSearchSettings.createSettingsForIndex());
+        assertFalse(response);
+    }
+    
+    @Test
+    public void CreateIndexWithEmptySettings() {
+        boolean response = ElasticSearchUtil.createIndex(indexName, typeName, ElasticSearchMapping.createMapping(),
+                null);
+        assertFalse(response);
+    }
+    
     @AfterClass
     public static void destroy(){
         ElasticSearchUtil.deleteIndex(indexName);
         map = null;
         ConnectionManager.closeClient();
+       ConnectionManager.ResourceCleanUp clean = new ResourceCleanUp();
+       clean.start();
     }
 
 
@@ -297,16 +488,47 @@ public class ElasticSearchUtilTest {
         assertEquals(0, responseMap.size());
     }
    
+  
+    @Test
+    public void searchDtoGetQueryTest() {
+        SearchDTO dto = new SearchDTO();
+        List<Map<String,Object>> list = new ArrayList<>();  
+        Map<String,Object>  map = new HashMap<>();
+        map.put("name", "test1");
+        list.add(map);
+        dto.setGroupQuery(list);
+       list =  dto.getGroupQuery();
+       assertEquals(1, list.size());
+       dto.setOperation("add");
+       assertEquals("add", dto.getOperation());
+       dto.setFuzzySearch(true);
+       assertTrue(dto.isFuzzySearch());
+    }
+    
+    @Test
+    public void searchDtoArgumentedConst() {
+        List<Map> list = new ArrayList<>();  
+        Map  map = new HashMap();
+        map.put("name", "test1");
+        list.add(map);
+        SearchDTO dto = new SearchDTO(list,"add",5);
+        assertEquals(1,  dto.getProperties().size());
+        map.put("city", "mycity");
+        list.add(map);
+        dto.setProperties(list);
+        assertEquals(2, dto.getProperties().get(0).size());
+    }
+    
     @Test
     public void zRemoveDataByIdentifier() {
-         ElasticSearchUtil.removeData(indexName, typeName, (String)map.get("courseId"));
-        assertEquals(true, true);
+        boolean response = ElasticSearchUtil.removeData(indexName, typeName, (String)map.get("courseId"));
+        assertEquals(true, response);
     }
     
     @Test
     public void zyRemoveDataByIdentifierFailure() {
-         ElasticSearchUtil.removeData(indexName, typeName, "");
-        assertEquals(false, false);
+        boolean response = ElasticSearchUtil.removeData(indexName, typeName, "");
+        assertEquals(false, response);
     }
     
    @Test 
@@ -330,7 +552,7 @@ public class ElasticSearchUtilTest {
    
    @Test 
    public void failureConnectionTestFromProperties () {
-    boolean response = ConnectionManager.initialiseConnectionFromPropertiesFile("Test", "localhost", "localhost");
+    boolean response = ConnectionManager.initialiseConnectionFromPropertiesFile("Test", "localhost1,128.0.0.1", "9200,9300");
     assertFalse(response);
    }
    
@@ -371,8 +593,9 @@ public class ElasticSearchUtilTest {
     data.put("test1", "test");
     try {
     Map<String,Object> map = ElasticSearchUtil.searchData(indexName, typeName, data);
+     assertTrue(map != null);
+     assertTrue(map.size()==0);
     } catch (Exception e) {
-      
     }
   }
   @Test
@@ -380,4 +603,29 @@ public class ElasticSearchUtilTest {
     ElasticSearchUtil.addOrUpdateMapping(indexName, typeName, ElasticSearchMapping.createMapping());
   }
   
+  @Test
+  public void searchMetricsDataTestSuccess(){
+    String index = "searchindex";
+    String type = "user";
+    String rawQuery = "{\"query\":{\"match_none\":{}}}";
+    Response response = ElasticSearchUtil.searchMetricsData(index, type, rawQuery);
+    assertEquals(ResponseCode.OK, response.getResponseCode());
+  }
+  
+  @Test
+  public void searchMetricsDataTestException(){
+    String index = "searchtest";
+    String type = "usertest";
+    String rawQuery = "{\"query\":{\"match_none\":{}}}";
+    try {
+    ElasticSearchUtil.searchMetricsData(index, type, rawQuery);
+    }catch(ProjectCommonException e){
+      assertEquals(ResponseCode.unableToConnectToES.getErrorCode(), e.getCode());
+    }
+  }
+  
+  public void testcalculateEndTime() {
+	   long endTime = ElasticSearchUtil.calculateEndTime(startTime);
+	   assertTrue(endTime>startTime);
+  }
 }

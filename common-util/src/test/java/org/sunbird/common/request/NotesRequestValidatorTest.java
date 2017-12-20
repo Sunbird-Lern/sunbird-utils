@@ -13,7 +13,7 @@ import org.sunbird.common.responsecode.ResponseCode;
 /**
  * Test class for notes request validation
  */
-public class NotesRequestValidator {
+public class NotesRequestValidatorTest {
 
   /**
    * Method to test create note when userId in request is empty 
@@ -127,6 +127,20 @@ public class NotesRequestValidator {
   public void testValidateNoteOperationWithOutNoteId() {
     try {
       String noteId = "";
+      RequestValidator.validateNoteId(noteId);
+    } catch (ProjectCommonException e) {
+      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+      assertEquals(ResponseCode.invalidNoteId.getErrorCode(), e.getCode());
+    }
+  }
+
+  /**
+   * Method to test validate node id when note id is null
+   */
+  @Test
+  public void testValidateNoteOperationWithNoteIdAsNull() {
+    try {
+      String noteId = null;
       RequestValidator.validateNoteId(noteId);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());

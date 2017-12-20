@@ -1,6 +1,6 @@
 package org.sunbird.common.models;
 
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,19 +32,19 @@ public class AppTest
 	        if (ProjectUtil.isStringNullOREmpty(header)) {
 	          header = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_AUTHORIZATION);
 	        }
-		headers.put("authorization", "Bearer"+ header);
+		headers.put("authorization", "Bearer "+ header);
 	} 
     
 	
 	@Test
 	public void testGetResourceMethod() throws Exception{
-		String response = HttpUtil.sendGetRequest("https://dev.ekstep.in/api/learning/v3/content/numeracy_377", headers);
+		String response = HttpUtil.sendGetRequest("https://qa.ekstep.in/api/content/v3/read/test", headers);
 		Assert.assertNotNull(response);
 	}
 	
 	@Test
 	public void testPostResourceMethod() throws Exception {
-		String response = HttpUtil.sendPostRequest("https://dev.ekstep.in/api/learning/v3/content/list", data, headers);
+		String response = HttpUtil.sendPostRequest("https://qa.ekstep.in/api/content/v3/list", data, headers);
 		Assert.assertNotNull(response);
 	}
 	
@@ -53,14 +53,32 @@ public class AppTest
 		//passing wrong url
 		String response=null;
 		try {
-			response = HttpUtil.sendPostRequest("https://dev.ekstep.in/api/learning/v3/content/list", data, headers);
+			Map<String,String> data = new HashMap<>();
+			data.put("search", "\"contentType\": [\"Story\"]");
+			response = HttpUtil.sendPostRequest("https://qa.ekstep.in/api/content/wrong/v3/list", data, headers);
 		} catch (Exception e) {
-			
+			Assert.assertTrue(e instanceof FileNotFoundException);
+		}
+		Assert.assertNull(response);
+	}
+	
+	@Test()
+	public void testPatchMatch() {
+		String response = null;
+		try {
+			String ekStepBaseUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);
+			if (ProjectUtil.isStringNullOREmpty(ekStepBaseUrl)) {
+				ekStepBaseUrl = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_BASE_URL);
+			}
+			response = HttpUtil.sendPatchRequest(ekStepBaseUrl
+					+ PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_TAG_API_URL) + "/" + "testt123", "{}",
+					headers);
+		} catch (Exception e) {
 		}
 		Assert.assertNotNull(response);
 	}
 	
-	//@Test
+	@Test
 	public void testEvaluateAssessment(){
 		Map<String, List<Map<String, Object>>> data = createEvaluateAssessmentRequest();
 		AssessmentEvaluator evaluator = new  DefaultAssessmentEvaluator();
@@ -69,7 +87,7 @@ public class AppTest
 		Assert.assertEquals(list.size(),6);
 	}
 
-	//@Test
+	@Test
 	public void testEvaluateResult(){
 		//Map<String, List<Map<String, Object>>> data1 = createEvaluateAssessmentRequest();
 		AssessmentEvaluator evaluator = new  DefaultAssessmentEvaluator();

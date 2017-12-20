@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
@@ -10,7 +11,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <versions.jacoco>0.7.6.201602180812</versions.jacoco>
+   <!--  <versions.jacoco>0.7.6.201602180812</versions.jacoco> -->
   </properties>
 
   <dependencies>
@@ -18,109 +19,109 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>RELEASE</version>
-     <!--  <scope>test</scope> -->
+      <!--  <scope>test</scope> -->
     </dependency>
     <dependency>
-            <groupId>com.typesafe.akka</groupId>
-            <artifactId>akka-actor_2.11</artifactId>
-            <version>2.5.1</version>
+      <groupId>com.typesafe.akka</groupId>
+      <artifactId>akka-actor_2.11</artifactId>
+      <version>2.5.1</version>
     </dependency>
     <dependency>
-            <groupId>com.typesafe.akka</groupId>
-            <artifactId>akka-slf4j_2.11</artifactId>
-            <version>2.5.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.typesafe.akka</groupId>
-            <artifactId>akka-remote_2.11</artifactId>
-            <version>2.5.1</version>
-        </dependency>
+      <groupId>com.typesafe.akka</groupId>
+      <artifactId>akka-slf4j_2.11</artifactId>
+      <version>2.5.1</version>
+    </dependency>
     <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>2.8.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.8.2</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.0</version>
-    	</dependency>
-    	
-    	<!-- https://mvnrepository.com/artifact/org.json/json -->
-		<dependency>
-		    <groupId>org.json</groupId>
-		    <artifactId>json</artifactId>
-		    <version>20090211</version>
-		</dependency>
-		
-		<!-- Adding for Key cloak SSO server. -->
-   <dependency>
-   <groupId>org.keycloak</groupId>
-   <artifactId>keycloak-admin-client</artifactId>
-  <version>3.2.0.Final</version>
-  </dependency>
+      <groupId>com.typesafe.akka</groupId>
+      <artifactId>akka-remote_2.11</artifactId>
+      <version>2.5.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>2.8.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>2.8.2</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.0</version>
+    </dependency>
 
-  <dependency>
-   <groupId>org.jboss.resteasy</groupId>
-   <artifactId>jaxrs-api</artifactId>
-   <version>3.0.11.Final</version>
-  </dependency>
-
-  <dependency>
-   <groupId>org.jboss.resteasy</groupId>
-   <artifactId>resteasy-client</artifactId>
-   <version>3.1.0.Final</version>
-  </dependency>
-  <!-- for Azure file storage -->
-  <dependency>
-	<groupId>com.microsoft.azure</groupId>
-	<artifactId>azure-storage</artifactId>
-	<version>5.4.0</version>
+    <!-- https://mvnrepository.com/artifact/org.json/json -->
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20090211</version>
     </dependency>
-    
-	    <!-- https://mvnrepository.com/artifact/org.apache.velocity/velocity-tools -->
-	<dependency>
-	    <groupId>org.apache.velocity</groupId>
-	    <artifactId>velocity-tools</artifactId>
-	    <version>2.0</version>
-	</dependency>
+
+    <!-- Adding for Key cloak SSO server. -->
+    <dependency>
+      <groupId>org.keycloak</groupId>
+      <artifactId>keycloak-admin-client</artifactId>
+      <version>3.2.0.Final</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.resteasy</groupId>
+      <artifactId>jaxrs-api</artifactId>
+      <version>3.0.11.Final</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.resteasy</groupId>
+      <artifactId>resteasy-client</artifactId>
+      <version>3.1.0.Final</version>
+    </dependency>
+    <!-- for Azure file storage -->
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-storage</artifactId>
+      <version>5.4.0</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.apache.velocity/velocity-tools -->
+    <dependency>
+      <groupId>org.apache.velocity</groupId>
+      <artifactId>velocity-tools</artifactId>
+      <version>2.0</version>
+    </dependency>
     <!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
-<dependency>
-    <groupId>javax.mail</groupId>
-    <artifactId>javax.mail-api</artifactId>
-    <version>1.5.1</version>
-</dependency>
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>javax.mail-api</artifactId>
+      <version>1.5.1</version>
+    </dependency>
     <!-- https://mvnrepository.com/artifact/com.sun.mail/javax.mail -->
-<dependency>
-    <groupId>com.sun.mail</groupId>
-    <artifactId>javax.mail</artifactId>
-    <version>1.6.0</version>
-</dependency>
-    
-  <dependency>
-   <groupId>org.jboss.resteasy</groupId>
-   <artifactId>resteasy-jackson2-provider</artifactId>
-   <version>3.1.3.Final</version>
-              <exclusions>
-		        <exclusion>
-		        	 <groupId>com.fasterxml.jackson.core</groupId>
-		    		 <artifactId>jackson-databind</artifactId>
-		        </exclusion>
-		    </exclusions> 
-  </dependency>
-  
-     <!-- https://mvnrepository.com/artifact/com.moparisthebest/junidecode -->
-	<dependency>
-	    <groupId>com.moparisthebest</groupId>
-	    <artifactId>junidecode</artifactId>
-	    <version>0.1.1</version>
-	</dependency>
+    <dependency>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>javax.mail</artifactId>
+      <version>1.6.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.resteasy</groupId>
+      <artifactId>resteasy-jackson2-provider</artifactId>
+      <version>3.1.3.Final</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.moparisthebest/junidecode -->
+    <dependency>
+      <groupId>com.moparisthebest</groupId>
+      <artifactId>junidecode</artifactId>
+      <version>0.1.1</version>
+    </dependency>
     <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
     <dependency>
       <groupId>org.apache.poi</groupId>
@@ -149,144 +150,86 @@
       <artifactId>commons-csv</artifactId>
       <version>1.4</version>
     </dependency>
-  
-   <dependency>
-         <groupId>org.jvnet.mock-javamail</groupId>
-     <artifactId>mock-javamail</artifactId>
-     <version>1.9</version>
-     <scope>test</scope>
+
+    <dependency>
+      <groupId>org.jvnet.mock-javamail</groupId>
+      <artifactId>mock-javamail</artifactId>
+      <version>1.9</version>
+      <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>com.googlecode.libphonenumber</groupId>
+      <artifactId>libphonenumber</artifactId>
+      <version>3.5</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.tika</groupId>
+      <artifactId>tika-core</artifactId>
+      <version>1.16</version>
+    </dependency>
+
   </dependencies>
-    <build>
-     <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>2.3.2</version>
-                    <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
-                    </configuration>
-                </plugin>
-                
-               <plugin>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>2.3.2</version>
+          <configuration>
+            <source>1.8</source>
+            <target>1.8</target>
+          </configuration>
+        </plugin>
+
+        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
           <version>2.17</version>
         </plugin>
-          
-       <plugin>
-      <groupId>org.jacoco</groupId>
-      <artifactId>jacoco-maven-plugin</artifactId>
-      <version>${versions.jacoco}</version>
-      <executions>
-        <execution>
-          <goals>
-            <goal>prepare-agent</goal>
-          </goals>
-        </execution>
-      </executions>
-    </plugin>
-    
-    <plugin>
-      <artifactId>maven-site-plugin</artifactId>
-      <version>3.5.1</version>
-    </plugin>    
-          
-    <!-- <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.3</version>
-        <executions>
-            <execution>
-                <phase>validate</phase>
-                <goals>
-                    <goal>check</goal>
-                    <goal>cpd-check</goal>
-                </goals>
-            </execution>
-        </executions>
-    </plugin> -->
-              </plugins>
-            </pluginManagement> 
-         </build> 
-         
-         <reporting>
-  <excludeDefaults>true</excludeDefaults>
-  
-  <plugins>
-    <plugin>
-      <groupId>org.codehaus.mojo</groupId>
-      <artifactId>findbugs-maven-plugin</artifactId>
-      <version>3.0.3</version>
-      <configuration>
-        <effort>Max</effort>
-        <!--Restrict analysis to the given comma-separated list of classes and packages-->
-        <!--<onlyAnalyze>com.example.*</onlyAnalyze>-->
-        <plugins>
-          <plugin>
-            <groupId>com.h3xstream.findsecbugs</groupId>
-            <artifactId>findsecbugs-plugin</artifactId>
-            <version>LATEST</version>
-          </plugin>
-        </plugins>
-      </configuration>
-    </plugin>
-    
-    <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-pmd-plugin</artifactId>
-      <version>3.6</version>
-      <configuration>
-       	<!--A list of files to include into checking. Can contain Ant-style wildcards and double wildcards. Defaults to **/*.java.-->
-        <!--<includes>
-          <include>**/*Example.java</include>
-        </includes>-->
-        <!--A list of files to exclude from checking. Can contain Ant-style wildcards and double wildcards.-->
-        <!--<excludes>
-          <exclude>**/*Example.java</exclude>
-        </excludes>-->
-      </configuration>
-    </plugin>
-    
-    <plugin>
-      <groupId>org.owasp</groupId>
-      <artifactId>dependency-check-maven</artifactId>
-      <version>1.3.6</version>
-      <reportSets>
-        <reportSet>
-          <reports>
-            <report>aggregate</report>
-          </reports>
-        </reportSet>
-      </reportSets>
-    </plugin>
-    
-    <plugin>
-      <groupId>org.jacoco</groupId>
-      <artifactId>jacoco-maven-plugin</artifactId>
-      <version>${versions.jacoco}</version>
-    </plugin>
-  </plugins>
-</reporting>
-         
-         
-           
-         <!-- <reporting>
+
+      </plugins>
+    </pluginManagement>
+
     <plugins>
-        <plugin>
-            <artifactId>maven-pmd-plugin</artifactId>
-            <version>3.3</version>
-            <reportSets>
-                <reportSet>
-                    <reports>
-                        <report>pmd</report>
-                        <report>cpd</report>
-                    </reports>
-                </reportSet>
-            </reportSets>
-        </plugin>
+
+      <!-- <plugin>
+        <groupId>org.openclover</groupId>
+        <artifactId>clover-maven-plugin</artifactId>
+        <version>4.2.0</version>
+        <configuration>
+          <targetPercentage>0%</targetPercentage>
+          <contextFilters>try,catch,static</contextFilters>
+          <scope>compile</scope>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>verify</phase>
+            <goals>
+              <goal>instrument</goal>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+ -->
     </plugins>
-</reporting>    -->
+  </build>
+
+  <!--  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.openclover</groupId>
+        <artifactId>clover-maven-plugin</artifactId>
+        <configuration>
+          <generatePdf>true</generatePdf>
+          <generateXml>true</generateXml>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting> -->
+
+
 </project>

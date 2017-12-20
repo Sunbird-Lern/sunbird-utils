@@ -555,7 +555,25 @@ public final class JsonKey {
   public static final String MESSAGE_Id = "message_id";
   public static final String FCM = "fcm";
   public static final String TOPICS ="topics";
+  public static final String EMAIL_VERIFIED_UPDATED = "emailVerifiedUpdated";
+  public static final String COUNTRY_CODE ="countryCode";
+  public static final String SYSTEM_SETTINGS_DB = "system_settings";
+  public static final String FIELD = "field";
+  public static final String VALUE = "value";
+  public static final String UNIQUE = "unique";
+  public static final String DUPLICATE = "duplicate";
   public static final String ENDORSE_DATE = "endorseDate";
   public static final String ENDORSERS_LIST = "endorsersList";
-
+  public static final String OPERATION_FOR = "operationFor";
+  public static final String ES_URL = "es_search_url";
+  public static final String ES_METRICS_PORT = "es_metrics_port";
+  public static final String SIZE = "size";
+  public static final String PHONE_UNIQUE = "phoneUnique";
+  public static final String EMAIL_UNIQUE = "emailUnique";
+  public static final String LOCATION_IDS = "locationIds";
+  public static final String USER_LIST_REQ = "userListReq";
+  public static final String ESTIMATED_COUNT_REQ = "estimatedCountReq";
+  public static final String LOCATIONS = "locations";
+  public static final String USER_COUNT_TTL = "userCountTTL";
+  public static final String AUTH_WITH_MASTER_KEY = "authWithMasterKey";
 }
