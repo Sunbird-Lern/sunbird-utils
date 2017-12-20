@@ -1441,6 +1441,21 @@ public final class RequestValidator {
   }
 
   /**
+   * Method to validate the request for updating the client key
+   *
+   * @param id
+   * @param type
+   */
+  public static void validateGetClientKey(String id, String type) {
+    validateClientId(id);
+    if (ProjectUtil.isStringNullOREmpty(type)) {
+      throw new ProjectCommonException(ResponseCode.invalidRequestData.getErrorCode(),
+          ResponseCode.invalidRequestData.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+  }
+
+  /**
    * Method to validate clientId.
    * 
    * @param clientId
