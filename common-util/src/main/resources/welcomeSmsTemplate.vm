@@ -1,5 +1,6 @@
-You are now a registered user on DIKSHA for $orgName, $state.
-
+You are now a registered user on $instanceName for $orgName$comma $state.
 User Name: $userName
 Web access URL: $webUrl
-APP download: $appUrl
+#if( $appUrl )
+  APP download: $appUrl
+#end
