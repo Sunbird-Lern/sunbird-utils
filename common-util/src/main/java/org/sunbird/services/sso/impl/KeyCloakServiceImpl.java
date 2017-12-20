@@ -479,13 +479,6 @@ public class KeyCloakServiceImpl implements SSOManager {
   }
 
   @Override
-  public void setEmailVerifiedAsFalse(String userId) {
-    UserResource resource =
-        keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
-    resource.toRepresentation().setEmailVerified(false);
-  }
-
-  @Override
   public void setEmailVerifiedUpdatedFlag(String userId, String flag) {
     UserResource resource =
         keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
@@ -689,5 +682,60 @@ public class KeyCloakServiceImpl implements SSOManager {
     }
     return response;
   }
+  
+  
+  @Override
+  public String setEmailVerifiedTrue(String userId) {
+    try {
+      UserResource resource =
+          keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
+      UserRepresentation ur = resource.toRepresentation();
+      ur.setEmailVerified(true);
+      if (isNotNull(resource)) {
+        try {
+          resource.update(ur);
+        } catch (Exception ex) {
+          ProjectLogger.log(ex.getMessage(), ex);
+          throw new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(),
+              ResponseCode.invalidUsrData.getErrorMessage(),
+              ResponseCode.CLIENT_ERROR.getResponseCode());
+        }
 
+      }
+    } catch (Exception e) {
+      ProjectLogger.log(e.getMessage(), e);
+      throw new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(),
+          ResponseCode.invalidUsrData.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    return JsonKey.SUCCESS;
+  }
+  
+  @Override
+  public String setEmailVerifiedAsFalse(String userId) {
+    try {
+      UserResource resource =
+          keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
+      UserRepresentation ur = resource.toRepresentation();
+      ur.setEmailVerified(false);
+      if (isNotNull(resource)) {
+        try {
+          resource.update(ur);
+        } catch (Exception ex) {
+          ProjectLogger.log(ex.getMessage(), ex);
+          throw new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(),
+              ResponseCode.invalidUsrData.getErrorMessage(),
+              ResponseCode.CLIENT_ERROR.getResponseCode());
+        }
+
+      }
+    } catch (Exception e) {
+      ProjectLogger.log(e.getMessage(), e);
+      throw new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(),
+          ResponseCode.invalidUsrData.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    return JsonKey.SUCCESS;
+  }
+  
 }

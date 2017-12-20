@@ -778,8 +778,8 @@ public class ProjectUtil {
     }
   }
 
-  public static String sendSMS(String orgName, String state, String userName, String webUrl,
-      String appUrl) {
+  public static String getSMSBody(String orgName, String state, String userName, String webUrl,
+      String appUrl,String instanceName) {
     try {
       Properties props = new Properties();
       props.put("resource.loader", "class");
@@ -789,18 +789,23 @@ public class ProjectUtil {
       VelocityEngine ve = new VelocityEngine();
       ve.init(props);
 
-      Map params = new HashMap();
-      params.put("orgName", isStringNullOREmpty(orgName) ? "org_name" : orgName);
-      params.put("state", isStringNullOREmpty(state) ? "state" : state);
+      Map<String,String> params = new HashMap<>();
+      params.put("orgName", isStringNullOREmpty(orgName) ? "" : orgName);
+      params.put("state", isStringNullOREmpty(state) ? "" : state);
+      params.put("comma", isStringNullOREmpty(state) ? "" : ",");
       params.put("userName", isStringNullOREmpty(userName) ? "user_name" : userName);
       params.put("webUrl", isStringNullOREmpty(webUrl) ? "web_url" : webUrl);
       params.put("appUrl", isStringNullOREmpty(appUrl) ? "app_url" : appUrl);
-
+      params.put("instanceName", isStringNullOREmpty(instanceName) ? "instance_name" : instanceName);
       Template t = ve.getTemplate("/welcomeSmsTemplate.vm");
       VelocityContext context = new VelocityContext(params);
       StringWriter writer = new StringWriter();
       t.merge(context, writer);
-      return writer.toString();
+      String sms = writer.toString();
+      if(isStringNullOREmpty(orgName)){
+        sms = sms.replace(" for ", "");
+      }
+      return sms;
     } catch (Exception ex) {
       ProjectLogger.log("Exception occurred while formating and sending SMS " + ex);
     }

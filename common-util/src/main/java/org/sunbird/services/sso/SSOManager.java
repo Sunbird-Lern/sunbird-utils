@@ -90,7 +90,7 @@ public interface SSOManager {
 	 * this method will set emailVerified flag of keycloak as false.
 	 * @param userId
 	 */
-   void setEmailVerifiedAsFalse(String userId);
+	String setEmailVerifiedAsFalse(String userId);
   /**
    * This method will set email verified flag on keycloak.
    * @param userId String
@@ -119,4 +119,6 @@ public interface SSOManager {
     * @return boolean true/false
     */
   boolean doPasswordUpdate(String userId, String password);
+
+  String setEmailVerifiedTrue(String userId);
 }
