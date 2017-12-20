@@ -2,5 +2,5 @@ You are now a registered user on $instanceName for $orgName$comma $state.
 User Name: $userName
 Web access URL: $webUrl
 #if( $appUrl )
-  APP download: $appUrl
+APP download: $appUrl
 #end

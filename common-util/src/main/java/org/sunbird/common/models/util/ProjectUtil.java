@@ -794,8 +794,8 @@ public class ProjectUtil {
       params.put("state", isStringNullOREmpty(state) ? "" : state);
       params.put("comma", isStringNullOREmpty(state) ? "" : ",");
       params.put("userName", isStringNullOREmpty(userName) ? "user_name" : userName);
-      params.put("webUrl", isStringNullOREmpty(webUrl) ? "web_url" : webUrl);
-      params.put("appUrl", isStringNullOREmpty(appUrl) ? "app_url" : appUrl);
+      params.put("webUrl", isStringNullOREmpty(webUrl) ? "" : webUrl);
+      params.put("appUrl", isStringNullOREmpty(appUrl) ? "" : appUrl);
       params.put("instanceName", isStringNullOREmpty(instanceName) ? "instance_name" : instanceName);
       Template t = ve.getTemplate("/welcomeSmsTemplate.vm");
       VelocityContext context = new VelocityContext(params);
@@ -804,6 +804,12 @@ public class ProjectUtil {
       String sms = writer.toString();
       if(isStringNullOREmpty(orgName)){
         sms = sms.replace(" for ", "");
+      }
+      if(isStringNullOREmpty(appUrl)){
+        sms = sms.replace("APP download: ", "");
+      }
+      if(isStringNullOREmpty(webUrl)){
+        sms = sms.replace("Web access URL: ", "");
       }
       return sms;
     } catch (Exception ex) {
