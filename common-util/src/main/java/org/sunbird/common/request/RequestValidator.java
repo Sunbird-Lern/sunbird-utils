@@ -58,6 +58,20 @@ public final class RequestValidator {
       List<Map<String, Object>> list =
           (List<Map<String, Object>>) (contentRequestDto.getRequest().get(JsonKey.CONTENTS));
       for (Map<String, Object> map : list) {
+        if(null != map.get(JsonKey.LAST_UPDATED_TIME)){
+          boolean bool = ProjectUtil.isDateValidFormat("yyyy-MM-dd HH:mm:ss:SSSZ", (String)map.get(JsonKey.LAST_UPDATED_TIME));
+          if(!bool){
+            throw new ProjectCommonException(ResponseCode.dateFormatError.getErrorCode(),
+                ResponseCode.dateFormatError.getErrorMessage(), ERROR_CODE);
+          }
+        }
+        if(null != map.get(JsonKey.LAST_COMPLETED_TIME)){
+          boolean bool = ProjectUtil.isDateValidFormat("yyyy-MM-dd HH:mm:ss:SSSZ", (String)map.get(JsonKey.LAST_COMPLETED_TIME));
+          if(!bool){
+            throw new ProjectCommonException(ResponseCode.dateFormatError.getErrorCode(),
+                ResponseCode.dateFormatError.getErrorMessage(), ERROR_CODE);
+          }
+        }
         if (map.containsKey(JsonKey.CONTENT_ID)) {
 
           if (null == map.get(JsonKey.CONTENT_ID)) {
@@ -181,6 +195,14 @@ public final class RequestValidator {
               JsonKey.LIST),
           ERROR_CODE);
     }
+    
+    if(null != userRequest.getRequest().get(JsonKey.DOB)){
+      boolean bool = ProjectUtil.isDateValidFormat(ProjectUtil.YEAR_MONTH_DATE_FORMAT, (String)userRequest.getRequest().get(JsonKey.DOB));
+      if(!bool){
+        throw new ProjectCommonException(ResponseCode.dateFormatError.getErrorCode(),
+            ResponseCode.dateFormatError.getErrorMessage(), ERROR_CODE);
+      }
+    }
   }
   
   /**
@@ -264,6 +286,20 @@ public final class RequestValidator {
             (List<Map<String, Object>>) userRequest.get(JsonKey.JOB_PROFILE);
         for (int i = 0; i < reqList.size(); i++) {
           reqMap = reqList.get(i);
+          if(null != reqMap.get(JsonKey.JOINING_DATE)){
+            boolean bool = ProjectUtil.isDateValidFormat(ProjectUtil.YEAR_MONTH_DATE_FORMAT, (String)reqMap.get(JsonKey.JOINING_DATE));
+            if(!bool){
+              throw new ProjectCommonException(ResponseCode.dateFormatError.getErrorCode(),
+                  ResponseCode.dateFormatError.getErrorMessage(), ERROR_CODE);
+            }
+          }
+          if(null != reqMap.get(JsonKey.END_DATE)){
+            boolean bool = ProjectUtil.isDateValidFormat(ProjectUtil.YEAR_MONTH_DATE_FORMAT, (String)reqMap.get(JsonKey.END_DATE));
+            if(!bool){
+              throw new ProjectCommonException(ResponseCode.dateFormatError.getErrorCode(),
+                  ResponseCode.dateFormatError.getErrorMessage(), ERROR_CODE);
+            }
+          }
           if (ProjectUtil.isStringNullOREmpty((String) reqMap.get(JsonKey.JOB_NAME))) {
             throw new ProjectCommonException(ResponseCode.jobNameError.getErrorCode(),
                 ResponseCode.jobNameError.getErrorMessage(), ERROR_CODE);

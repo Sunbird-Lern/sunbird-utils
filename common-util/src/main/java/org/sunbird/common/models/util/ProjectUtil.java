@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -816,5 +817,19 @@ public class ProjectUtil {
       ProjectLogger.log("Exception occurred while formating and sending SMS " + ex);
     }
     return "";
+  }
+  
+  public static boolean isDateValidFormat(String format, String value) {
+    Date date = null;
+    try {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        date = sdf.parse(value);
+        if (!value.equals(sdf.format(date))) {
+            date = null;
+        }
+    } catch (ParseException ex) {
+        ProjectLogger.log(ex.getMessage(), ex);
+    }
+    return date != null;
   }
 }
