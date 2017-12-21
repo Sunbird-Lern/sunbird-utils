@@ -176,4 +176,28 @@ public class ProjectUtilTest {
     String msg = ProjectUtil.getSMSBody("", "", "", "", "", "");
     Assert.assertTrue(msg.contains("user_name"));
   }
+  
+  @Test
+  public void testisDateValidFormat(){
+    boolean bool = ProjectUtil.isDateValidFormat("yyyy-MM-dd HH:mm:ss:SSSZ", "2017-12-18 10:47:30:707+0530");
+    Assert.assertTrue(bool);
+  }
+  
+  @Test
+  public void testisDateValidFormat2(){
+    boolean bool = ProjectUtil.isDateValidFormat("yyyy-MM-dd", "");
+    Assert.assertFalse(bool);
+  }
+  
+  @Test
+  public void testisDateValidFormat3(){
+    boolean bool = ProjectUtil.isDateValidFormat("yyyy-MM-dd", "2017-12-18");
+    Assert.assertTrue(bool);
+  }
+  
+  @Test
+  public void testisDateValidFormat4(){
+    boolean bool = ProjectUtil.isDateValidFormat("yyyy-MM-dd HH:mm:ss:SSSZ", "");
+    Assert.assertFalse(bool);
+  }
 }
