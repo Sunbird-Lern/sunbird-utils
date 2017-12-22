@@ -46,7 +46,10 @@ public class Msg91SmsProvider implements ISmsProvider {
       baseUrl = PropertiesCache.getInstance().getProperty("sunbird.msg.91.baseurl");
       getUrl = PropertiesCache.getInstance().getProperty("sunbird.msg.91.get.url");
       postUrl = PropertiesCache.getInstance().getProperty("sunbird.msg.91.post.url");
+      sender =  System.getenv("sunbird_msg_sender");
+      if (JsonUtil.isStringNullOREmpty(sender)){
       sender = PropertiesCache.getInstance().getProperty("sunbird.msg.91.sender");
+      }
       smsRoute = PropertiesCache.getInstance().getProperty("sunbird.msg.91.route");
       smsMethodType = PropertiesCache.getInstance().getProperty("sunbird.msg.91.method");
       country = PropertiesCache.getInstance().getProperty("sunbird.msg.91.country"); 
