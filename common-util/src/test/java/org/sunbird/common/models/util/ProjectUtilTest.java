@@ -167,13 +167,13 @@ public class ProjectUtilTest {
   
   @Test
   public void testsendSMS(){
-    String msg = ProjectUtil.getSMSBody("SUNBIRD", "KARNATAKA", "AMIT@BLR", "sunbird.org", "sunbird.com", "msg");
-    Assert.assertTrue(msg.contains("KARNATAKA"));
+    String msg = ProjectUtil.getSMSBody("AMIT@BLR", "sunbird.org", "sunbird.com");
+    Assert.assertTrue(msg.contains("sunbird.org"));
   }
   
   @Test
   public void testsendSMS2(){
-    String msg = ProjectUtil.getSMSBody("", "", "", "", "", "");
+    String msg = ProjectUtil.getSMSBody("", "", "");
     Assert.assertTrue(msg.contains("user_name"));
   }
   

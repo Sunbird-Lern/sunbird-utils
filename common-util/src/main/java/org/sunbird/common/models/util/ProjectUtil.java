@@ -779,8 +779,7 @@ public class ProjectUtil {
     }
   }
 
-  public static String getSMSBody(String orgName, String state, String userName, String webUrl,
-      String appUrl,String instanceName) {
+  public static String getSMSBody(String userName, String webUrl,String instanceName) {
     try {
       Properties props = new Properties();
       props.put("resource.loader", "class");
@@ -791,28 +790,14 @@ public class ProjectUtil {
       ve.init(props);
 
       Map<String,String> params = new HashMap<>();
-      params.put("orgName", isStringNullOREmpty(orgName) ? "" : orgName);
-      params.put("state", isStringNullOREmpty(state) ? "" : state);
-      params.put("comma", isStringNullOREmpty(state) ? "" : ",");
       params.put("userName", isStringNullOREmpty(userName) ? "user_name" : userName);
-      params.put("webUrl", isStringNullOREmpty(webUrl) ? "" : webUrl);
-      params.put("appUrl", isStringNullOREmpty(appUrl) ? "" : appUrl);
+      params.put("webUrl", isStringNullOREmpty(webUrl) ? "web_url" : webUrl);
       params.put("instanceName", isStringNullOREmpty(instanceName) ? "instance_name" : instanceName);
       Template t = ve.getTemplate("/welcomeSmsTemplate.vm");
       VelocityContext context = new VelocityContext(params);
       StringWriter writer = new StringWriter();
       t.merge(context, writer);
-      String sms = writer.toString();
-      if(isStringNullOREmpty(orgName)){
-        sms = sms.replace(" for ", "");
-      }
-      if(isStringNullOREmpty(appUrl)){
-        sms = sms.replace("APP download: ", "");
-      }
-      if(isStringNullOREmpty(webUrl)){
-        sms = sms.replace("Web access URL: ", "");
-      }
-      return sms;
+      return writer.toString();
     } catch (Exception ex) {
       ProjectLogger.log("Exception occurred while formating and sending SMS " + ex);
     }

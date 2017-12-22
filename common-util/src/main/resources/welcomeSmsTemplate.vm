@@ -1,6 +1,1 @@
-You are now a registered user on $instanceName for $orgName$comma $state.
-User Name: $userName
-Web access URL: $webUrl
-#if( $appUrl )
-APP download: $appUrl
-#end
+$userName, Welcome to $instanceName. You can login using your mobile number. Use $webUrl to login using browser, or download the Diksha mobile app from Play Store.
