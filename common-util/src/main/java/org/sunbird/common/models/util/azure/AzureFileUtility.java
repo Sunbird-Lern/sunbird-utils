@@ -128,7 +128,9 @@ public class AzureFileUtility {
       ProjectLogger.log("Unable to upload file :"+fileName , e);
     } catch (IOException e) {
       ProjectLogger.log("Unable to upload file :"+fileName , e);
-    }finally {
+    }catch (Exception e) {
+    	ProjectLogger.log(e.getMessage() , e);
+	}finally {
       if(null != fis){
         try {
           fis.close();
@@ -191,7 +193,9 @@ public class AzureFileUtility {
       ProjectLogger.log("Unable to upload file :"+source.getName() , e);
     } catch (IOException e) {
       ProjectLogger.log("Unable to upload file :"+source.getName() , e);
-    }finally {
+    }catch (Exception e) {
+    	ProjectLogger.log(e.getMessage() , e);
+	}finally {
       if(null != fis){
         try {
           fis.close();
@@ -230,7 +234,9 @@ public class AzureFileUtility {
       ProjectLogger.log("Unable to upload file :"+blobName , e);
     } catch (FileNotFoundException e) {
       ProjectLogger.log("Unable to upload file :"+blobName , e);
-    }finally {
+    }catch (Exception e) {
+    	ProjectLogger.log(e.getMessage() , e); 
+	}finally {
       if(null != fos){
         try {
           fos.close();
@@ -247,6 +253,7 @@ public class AzureFileUtility {
     List<String> blobsList = new ArrayList<>();
     CloudBlobContainer container = AzureConnectionManager.getContainer(containerName,true);
     // Loop over blobs within the container and output the URI to each of them.
+    if(container != null)
     for (ListBlobItem blobItem : container.listBlobs()) {
       blobsList.add(blobItem.getUri().toString());
     }

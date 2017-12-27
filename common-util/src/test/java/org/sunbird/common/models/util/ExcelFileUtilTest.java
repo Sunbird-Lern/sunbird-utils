@@ -28,6 +28,12 @@ public class ExcelFileUtilTest {
     Assert.assertEquals("xlsx", expectedFileName[1]);
   }
   
+  @Test
+  public void testgetFileUtil() {
+	FileUtil util = FileUtil.getFileUtil("Excel"); 
+	Assert.assertNotNull(util);
+  }
+  
   @After
   public void deleteFileGenerated(){
     File  file = new File("test.xlsx");

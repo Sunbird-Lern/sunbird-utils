@@ -6,7 +6,10 @@ package org.sunbird.common.models.util;
 import java.net.URLDecoder;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Locale;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import net.sf.junidecode.Junidecode;
@@ -76,15 +79,17 @@ public class Slug {
   }
 
   public static String removeDuplicateChars(String text) {
+	  Set<Character> set = new LinkedHashSet<Character>();
     StringBuilder ret = new StringBuilder(text.length());
     if (text.length() == 0) {
       return "";
     }
-    ret.append(text.charAt(0));
-    for (int i = 1; i < text.length(); i++) {
-      if (text.charAt(i) != text.charAt(i - 1)) {
-        ret.append(text.charAt(i));
-      }
+    for (int i = 0; i < text.length(); i++) {
+     set.add(text.charAt(i));
+    }	
+    Iterator<Character>  itr= set.iterator();
+    while (itr.hasNext()) {
+    	ret.append(itr.next());
     }
     return ret.toString();
   }
