@@ -12,7 +12,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <scoverage.plugin.version>1.1.1</scoverage.plugin.version>
-    <!--<clover.version>4.1.2</clover.version>-->
   </properties>
   <dependencies>
     <dependency>
@@ -95,40 +94,31 @@
 
      <plugins>
 
-    <!--   <plugin>
-        <groupId>org.openclover</groupId>
-        <artifactId>clover-maven-plugin</artifactId>
-        <version>4.2.0</version>
-        <configuration>
-          <contextFilters>try,catch,static</contextFilters>
-          <targetPercentage>0%</targetPercentage>
-          <scope>compile</scope>
-        </configuration>
-        <executions>
-          <execution>
-            <phase>verify</phase>
-            <goals>
-              <goal>instrument</goal>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
- -->
-    </plugins> 
+    <plugin>
+  <groupId>org.jacoco</groupId>
+  <artifactId>jacoco-maven-plugin</artifactId>
+  <version>0.7.5.201505241946</version>
+  <configuration>
+   <destFile>${basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
+   <dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
+  </configuration>
+  <executions>
+   <execution>
+    <id>jacoco-initialize</id>
+    <goals>
+     <goal>prepare-agent</goal>
+    </goals>
+   </execution>
+   <execution>
+    <id>jacoco-site</id>
+    <phase>package</phase>
+    <goals>
+     <goal>report</goal>
+    </goals>
+   </execution>
+  </executions>
+ </plugin>
+ </plugins> 
 
   </build>
-
-   <!-- <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.openclover</groupId>
-        <artifactId>clover-maven-plugin</artifactId>
-        <configuration>
-          <generatePdf>true</generatePdf>
-          <generateXml>true</generateXml>
-        </configuration>
-      </plugin>
-    </plugins>
-  </reporting> -->
 </project>
