@@ -267,6 +267,13 @@ public class KeyCloakServiceImplTest {
 	}
   
   @Test
+ 	public void setEmailVerifiedFlagWithTrue() {
+	  String response = keyCloakService.setEmailVerifiedTrue(userId.get(JsonKey.USER_ID));
+ 		Assert.assertEquals(JsonKey.SUCCESS, response);
+ 	}
+  
+  
+  @Test
 	public void syncUserDataSuccess() {
 		Map<String, Object> request = new HashMap<String, Object>();
 		request.put(JsonKey.USERNAME, userName);

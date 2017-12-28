@@ -38,12 +38,14 @@ public class URLShortnerImpl implements URLShortner {
     if (!ProjectUtil.isStringNullOREmpty(response)) {
       try {
         map = mapper.readValue(response, HashMap.class);
-      } catch (IOException e) {
+        Map<String, String> dataMap = (Map<String, String>) map.get("data");
+        return dataMap.get("url");
+      } catch (IOException  | ClassCastException e) {
         ProjectLogger.log(e.getMessage(), e);
       }
     }
-    Map<String, String> dataMap = (Map<String, String>) map.get("data");
-    return dataMap.get("url");
+    ProjectLogger.log("unable to do url short");
+    return url;
   }
 
   /**
@@ -60,16 +62,4 @@ public class URLShortnerImpl implements URLShortner {
       return resUrl;
     }
   }
-
-  /**
-   * @param url the url to set
-   */
-  public void setUrl(String url) {
-    this.resUrl = url;
-  }
-
-public static void main(String[] args) {
-  
-}
-
 }

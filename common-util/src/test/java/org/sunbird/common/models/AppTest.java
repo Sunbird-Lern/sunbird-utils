@@ -84,7 +84,7 @@ public class AppTest
 		AssessmentEvaluator evaluator = new  DefaultAssessmentEvaluator();
 		Map<String, List<Map<String, Object>>> response = evaluator.evaluateAssessment(data);
 		List<Map<String, Object>> list = response.get("USR1");
-		Assert.assertEquals(list.size(),6);
+		Assert.assertEquals(list.size(),8);
 	}
 
 	@Test

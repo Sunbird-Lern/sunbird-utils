@@ -845,6 +845,10 @@ public final class RequestValidator {
       @SuppressWarnings("unchecked")
       List<Map<String, Object>> list =
           (List<Map<String, Object>>) request.getRequest().get(JsonKey.ASSESSMENT);
+			if (list == null) {
+				throw new ProjectCommonException(ResponseCode.invalidRequestData.getErrorCode(),
+						ResponseCode.invalidRequestData.getErrorMessage(), ERROR_CODE);
+			}
       for (Map<String, Object> map : list) {
         if (ProjectUtil.isStringNullOREmpty((String) (map.get(JsonKey.ASSESSMENT_ITEM_ID) != null
             ? map.get(JsonKey.ASSESSMENT_ITEM_ID) : ""))) {
@@ -862,7 +866,7 @@ public final class RequestValidator {
               ResponseCode.assessmentAnswersRequired.getErrorMessage(), ERROR_CODE);
         }
         if (ProjectUtil.isStringNullOREmpty((String) (map.get(JsonKey.ASSESSMENT_MAX_SCORE) != null
-            ? map.get(JsonKey.ASSESSMENT_ANSWERS) : ""))) {
+            ? map.get(JsonKey.ASSESSMENT_MAX_SCORE) : ""))) {
           throw new ProjectCommonException(ResponseCode.assessmentmaxScoreRequired.getErrorCode(),
               ResponseCode.assessmentmaxScoreRequired.getErrorMessage(), ERROR_CODE);
         }
@@ -893,13 +897,9 @@ public final class RequestValidator {
    */
   public static void validateUserOrg(Request userRequest) {
     validateOrg(userRequest);
-    if (!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USER_ID))
-        && (!ProjectUtil
-            .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USER_NAME))
-            || !ProjectUtil
-                .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USERNAME)))) {
-      throw new ProjectCommonException(ResponseCode.usernameOrUserIdError.getErrorCode(),
-          ResponseCode.usernameOrUserIdError.getErrorMessage(), ERROR_CODE);
+    if (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USER_ID))) {
+      throw new ProjectCommonException(ResponseCode.userIdRequired.getErrorCode(),
+          ResponseCode.userIdRequired.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -930,18 +930,15 @@ public final class RequestValidator {
   @SuppressWarnings("rawtypes")
   public static void validateAddMember(Request userRequest) {
     validateOrg(userRequest);
-    if (userRequest.getRequest().containsKey(JsonKey.ROLES)
-        && ((List) userRequest.getRequest().get(JsonKey.ROLES)).isEmpty()) {
+    if(userRequest.getRequest().containsKey(JsonKey.ROLES))
+    if ( !(userRequest.getRequest().get(JsonKey.ROLES) instanceof List)
+         || ((List) userRequest.getRequest().get(JsonKey.ROLES)).isEmpty()) {
       throw new ProjectCommonException(ResponseCode.roleRequired.getErrorCode(),
           ResponseCode.roleRequired.getErrorMessage(), ERROR_CODE);
     }
-    if (!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USER_ID))
-        && (!ProjectUtil
-            .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USER_NAME))
-            || !ProjectUtil
-                .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USERNAME)))) {
-      throw new ProjectCommonException(ResponseCode.usernameOrUserIdError.getErrorCode(),
-          ResponseCode.usernameOrUserIdError.getErrorMessage(), ERROR_CODE);
+    if (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USER_ID))) {
+      throw new ProjectCommonException(ResponseCode.userIdRequired.getErrorCode(),
+          ResponseCode.userIdRequired.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -1158,7 +1155,7 @@ public final class RequestValidator {
    * 
    * @param enrolmentType
    */
-  private static void validateEnrolmentType(String enrolmentType) {
+  public static void validateEnrolmentType(String enrolmentType) {
     if (ProjectUtil.isStringNullOREmpty(enrolmentType)) {
       throw new ProjectCommonException(ResponseCode.enrolmentTypeRequired.getErrorCode(),
           ResponseCode.enrolmentTypeRequired.getErrorMessage(), ERROR_CODE);
@@ -1223,8 +1220,7 @@ public final class RequestValidator {
   public static void validateSyncRequest(Request request) {
     String operation = (String) request.getRequest().get(JsonKey.OPERATION_FOR);
       if(!operation.equalsIgnoreCase("keycloak")){
-      if (request.getRequest().get(JsonKey.OBJECT_TYPE) == null || ProjectUtil
-          .isStringNullOREmpty((String) request.getRequest().get(JsonKey.OBJECT_TYPE))) {
+      if (request.getRequest().get(JsonKey.OBJECT_TYPE) == null) {
         throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
             ResponseCode.dataTypeError.getErrorMessage(), ERROR_CODE);
       }

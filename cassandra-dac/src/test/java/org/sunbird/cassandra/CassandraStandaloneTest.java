@@ -25,7 +25,7 @@ import org.sunbird.helper.CassandraConnectionMngrFactory;
 import org.sunbird.helper.ServiceFactory;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class CassandraTestForStandalone {
+public class CassandraStandaloneTest {
 
   private CassandraOperation operation = ServiceFactory.getInstance();
   static Map<String,Object> address = null;
