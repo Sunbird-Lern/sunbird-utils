@@ -61,7 +61,8 @@ public enum ActorOperations {
     GET_GEO_LOCATION("getGeoLocation"),
     UPDATE_GEO_LOCATION("updateGeoLocation"),
     DELETE_GEO_LOCATION("deleteGeoLocation"),GET_USER_COUNT("getUserCount"),UPDATE_USER_COUNT_TO_LOCATIONID("updateUserCountToLocationID"),
-    SEND_NOTIFICATION("sendNotification"), SYNC_KEYCLOAK("syncKeycloak"), UPDATE_SYSTEM_SETTINGS("updateSystemSettings");
+    SEND_NOTIFICATION("sendNotification"), SYNC_KEYCLOAK("syncKeycloak"), UPDATE_SYSTEM_SETTINGS("updateSystemSettings"),
+    CREATE_DATA("createData"),UPDATE_DATA("updateData"),DELETE_DATA("deleteData"),READ_DATA("readData"),READ_ALL_DATA("readAllData"),SEARCH_DATA("searchData"),GET_METRICS("getMetrics");
 
     private String value;
 
