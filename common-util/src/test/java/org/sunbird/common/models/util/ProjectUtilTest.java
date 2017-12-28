@@ -1,6 +1,5 @@
 package org.sunbird.common.models.util;
 
-import com.google.i18n.phonenumbers.NumberParseException;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.velocity.VelocityContext;
@@ -8,9 +7,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sunbird.common.exception.ProjectCommonException;
-import org.sunbird.common.models.util.JsonKey;
-import org.sunbird.common.models.util.ProjectUtil;
-import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 
@@ -167,7 +163,7 @@ public class ProjectUtilTest {
   
   @Test
   public void testsendSMS(){
-    String msg = ProjectUtil.getSMSBody("AMIT@BLR", "sunbird.org", "sunbird.com");
+    String msg = ProjectUtil.getSMSBody("AMIT@BLR", "www.sunbird.org", "sunbird.com");
     Assert.assertTrue(msg.contains("sunbird.org"));
   }
   

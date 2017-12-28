@@ -3,7 +3,6 @@
  */
 package org.sunbird.common.models.util.datasecurity.impl;
 
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Iterator;
 import java.util.List;
