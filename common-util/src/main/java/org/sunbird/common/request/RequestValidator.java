@@ -897,13 +897,9 @@ public final class RequestValidator {
    */
   public static void validateUserOrg(Request userRequest) {
     validateOrg(userRequest);
-    if (!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USER_ID))
-        && (!ProjectUtil
-            .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USER_NAME))
-            || !ProjectUtil
-                .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USERNAME)))) {
-      throw new ProjectCommonException(ResponseCode.usernameOrUserIdError.getErrorCode(),
-          ResponseCode.usernameOrUserIdError.getErrorMessage(), ERROR_CODE);
+    if (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USER_ID))) {
+      throw new ProjectCommonException(ResponseCode.userIdRequired.getErrorCode(),
+          ResponseCode.userIdRequired.getErrorMessage(), ERROR_CODE);
     }
   }
 
@@ -934,18 +930,15 @@ public final class RequestValidator {
   @SuppressWarnings("rawtypes")
   public static void validateAddMember(Request userRequest) {
     validateOrg(userRequest);
-    if (userRequest.getRequest().containsKey(JsonKey.ROLES)
-        && ((List) userRequest.getRequest().get(JsonKey.ROLES)).isEmpty()) {
+    if(userRequest.getRequest().containsKey(JsonKey.ROLES))
+    if ( !(userRequest.getRequest().get(JsonKey.ROLES) instanceof List)
+         || ((List) userRequest.getRequest().get(JsonKey.ROLES)).isEmpty()) {
       throw new ProjectCommonException(ResponseCode.roleRequired.getErrorCode(),
           ResponseCode.roleRequired.getErrorMessage(), ERROR_CODE);
     }
-    if (!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USER_ID))
-        && (!ProjectUtil
-            .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USER_NAME))
-            || !ProjectUtil
-                .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USERNAME)))) {
-      throw new ProjectCommonException(ResponseCode.usernameOrUserIdError.getErrorCode(),
-          ResponseCode.usernameOrUserIdError.getErrorMessage(), ERROR_CODE);
+    if (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USER_ID))) {
+      throw new ProjectCommonException(ResponseCode.userIdRequired.getErrorCode(),
+          ResponseCode.userIdRequired.getErrorMessage(), ERROR_CODE);
     }
   }
 

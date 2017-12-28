@@ -5,6 +5,7 @@ package org.sunbird.common.request;
 
 import static org.junit.Assert.assertEquals;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ import org.junit.Test;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectUtil;
+import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.responsecode.ResponseCode;
 
 /**
@@ -622,4 +624,468 @@ public class CommonRequestValidatorTest {
 		Assert.assertFalse(response);
 	}
 	
+	@Test
+	public void validateAddMembersSuccessTest () {
+		Request request = new Request();
+		Map<String, Object> requestObj = new HashMap<>();
+		requestObj.put(JsonKey.PROVIDER, "Ilimi");
+		requestObj.put(JsonKey.EXTERNAL_ID, "il-01");
+		List<String> roles = new ArrayList<>();
+		roles.add("PUBLIC");roles.add("CONTENT-CREATOR");
+		requestObj.put(JsonKey.ROLES, roles);
+		requestObj.put(JsonKey.USER_ID, "userId");
+		request.setRequest(requestObj);
+		boolean response = false;
+		try {
+			RequestValidator.validateAddMember(request);
+			response = true;
+		} catch (ProjectCommonException e) {
+			Assert.assertNull(e);
+		}
+		Assert.assertTrue(response);
+	}
+	
+	@Test
+	public void validateAddMembersSuccessWithOrgIdTest () {
+		Request request = new Request();
+		Map<String, Object> requestObj = new HashMap<>();
+		requestObj.put(JsonKey.ORGANISATION_ID, "org-test");
+		List<String> roles = new ArrayList<>();
+		roles.add("PUBLIC");roles.add("CONTENT-CREATOR");
+		requestObj.put(JsonKey.ROLES, roles);
+		requestObj.put(JsonKey.USER_ID, "userId");
+		request.setRequest(requestObj);
+		boolean response = false;
+		try {
+			RequestValidator.validateAddMember(request);
+			response = true;
+		} catch (ProjectCommonException e) {
+			Assert.assertNull(e);
+		}
+		Assert.assertTrue(response);
+	}
+	
+	
+	@Test
+	public void validateAddMembersProviderMissingTest () {
+		Request request = new Request();
+		Map<String, Object> requestObj = new HashMap<>();
+		requestObj.put(JsonKey.PROVIDER, "");
+		requestObj.put(JsonKey.EXTERNAL_ID, "il-01");
+		List<String> roles = new ArrayList<>();
+		roles.add("PUBLIC");roles.add("CONTENT-CREATOR");
+		requestObj.put(JsonKey.ROLES, roles);
+		requestObj.put(JsonKey.USER_ID, "userId");
+		request.setRequest(requestObj);
+		boolean response = false;
+		try {
+			RequestValidator.validateAddMember(request);
+			response = true;
+		} catch (ProjectCommonException e) {
+			assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+			assertEquals(ResponseCode.sourceAndExternalIdValidationError.getErrorCode(), e.getCode());
+			
+		}
+		Assert.assertFalse(response);
+	}
+ 	
+ 	
+	@Test
+	public void validateAddMembersInvalidRoleDataTypeTest () {
+		Request request = new Request();
+		Map<String, Object> requestObj = new HashMap<>();
+		requestObj.put(JsonKey.PROVIDER, "ilimi");
+		requestObj.put(JsonKey.EXTERNAL_ID, "il-01");
+		requestObj.put(JsonKey.ROLES, "roles");
+		requestObj.put(JsonKey.USER_ID, "userId");
+		request.setRequest(requestObj);
+		boolean response = false;
+		try {
+			RequestValidator.validateAddMember(request);
+			response = true;
+		} catch (ProjectCommonException e) {
+			assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+			assertEquals(ResponseCode.roleRequired.getErrorCode(), e.getCode());
+			
+		}
+		Assert.assertFalse(response);
+	}
+
+	@Test
+	public void validateAddMembersUserIdMissingTest () {
+		Request request = new Request();
+		Map<String, Object> requestObj = new HashMap<>();
+		requestObj.put(JsonKey.PROVIDER, "ilimi");
+		requestObj.put(JsonKey.EXTERNAL_ID, "il-01");
+		List<String> roles = new ArrayList<>();
+		roles.add("PUBLIC");roles.add("CONTENT-CREATOR");
+		requestObj.put(JsonKey.ROLES, roles);
+		requestObj.put(JsonKey.USER_ID, "");
+		request.setRequest(requestObj);
+		boolean response = false;
+		try {
+			RequestValidator.validateAddMember(request);
+			response = true;
+		} catch (ProjectCommonException e) {
+			assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+			assertEquals(ResponseCode.userIdRequired.getErrorCode(), e.getCode());
+		}
+		Assert.assertFalse(response);
+	}
+	@Test
+	public void validateSystemSettingTest() {
+		Request request = new Request();
+		Map<String, Object> requestObj = new HashMap<>();
+		requestObj.put(JsonKey.PHONE_UNIQUE, true);
+		requestObj.put(JsonKey.EMAIL_UNIQUE, true);
+		request.setRequest(requestObj);
+		boolean response = false;
+		try {
+			RequestValidator.validateUpdateSystemSettingsRequest(request);
+			response = true;
+		} catch (ProjectCommonException e) {
+			Assert.assertNull(e);
+		}
+		Assert.assertTrue(response);
+	}
+	
+	@Test
+	public void validateSystemSettingFailureTest() {
+		Request request = new Request();
+		Map<String, Object> requestObj = new HashMap<>();
+		requestObj.put("notListedSettingVal", true);
+		requestObj.put(JsonKey.EMAIL_UNIQUE, true);
+		request.setRequest(requestObj);
+		boolean response = false;
+		try {
+			RequestValidator.validateUpdateSystemSettingsRequest(request);
+			response = true;
+		} catch (ProjectCommonException e) {
+			assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+			assertEquals(ResponseCode.invalidPropertyError.getErrorCode(), e.getCode());
+		}
+		Assert.assertFalse(response);
+	}
+	
+	
+	
+	
+	@Test
+	public void validateUserOrgSuccessTest () {
+		Request request = new Request();
+		Map<String, Object> requestObj = new HashMap<>();
+		requestObj.put(JsonKey.PROVIDER, "Ilimi");
+		requestObj.put(JsonKey.EXTERNAL_ID, "il-01");
+		requestObj.put(JsonKey.USER_ID, "userId");
+		request.setRequest(requestObj);
+		boolean response = false;
+		try {
+			RequestValidator.validateUserOrg(request);
+			response = true;
+		} catch (ProjectCommonException e) {
+			Assert.assertNull(e);
+		}
+		Assert.assertTrue(response);
+	}
+	
+	@Test
+	public void validateUserOrgSuccessWithOrgIdTest () {
+		Request request = new Request();
+		Map<String, Object> requestObj = new HashMap<>();
+		requestObj.put(JsonKey.ORGANISATION_ID, "org-test");
+		requestObj.put(JsonKey.USER_ID, "userId");
+		request.setRequest(requestObj);
+		boolean response = false;
+		try {
+			RequestValidator.validateUserOrg(request);
+			response = true;
+		} catch (ProjectCommonException e) {
+			Assert.assertNull(e);
+		}
+		Assert.assertTrue(response);
+	}
+	
+	
+	@Test
+	public void validateUserOrgProviderMissingTest () {
+		Request request = new Request();
+		Map<String, Object> requestObj = new HashMap<>();
+		requestObj.put(JsonKey.PROVIDER, "");
+		requestObj.put(JsonKey.EXTERNAL_ID, "il-01");
+		requestObj.put(JsonKey.USER_ID, "userId");
+		request.setRequest(requestObj);
+		boolean response = false;
+		try {
+			RequestValidator.validateUserOrg(request);
+			response = true;
+		} catch (ProjectCommonException e) {
+			assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+			assertEquals(ResponseCode.sourceAndExternalIdValidationError.getErrorCode(), e.getCode());
+			
+		}
+		Assert.assertFalse(response);
+	}
+	@Test
+	public void validateUserOrgUserIdMissingTest () {
+		Request request = new Request();
+		Map<String, Object> requestObj = new HashMap<>();
+		requestObj.put(JsonKey.PROVIDER, "ilimi");
+		requestObj.put(JsonKey.EXTERNAL_ID, "il-01");
+		requestObj.put(JsonKey.USER_ID, "");
+		request.setRequest(requestObj);
+		boolean response = false;
+		try {
+			RequestValidator.validateUserOrg(request);
+			response = true;
+		} catch (ProjectCommonException e) {
+			assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+			assertEquals(ResponseCode.userIdRequired.getErrorCode(), e.getCode());
+		}
+		Assert.assertFalse(response);
+	}
+
+	@Test
+	public void validateupdateOrgType () {
+		Request request = new Request();
+		Map<String, Object> requestObj = new HashMap<>();
+		requestObj.put(JsonKey.NAME, "orgtypeName");
+		requestObj.put(JsonKey.ID, "orgtypeId");
+		request.setRequest(requestObj);
+		boolean response = false;
+		try {
+			RequestValidator.validateUpdateOrgType(request);
+			response = true;
+		} catch (ProjectCommonException e) {
+			Assert.assertNull(e);
+		}
+		Assert.assertTrue(response);
+	}
+	
+	@Test
+	public void validateupdateOrgTypeWithOutName () {
+		Request request = new Request();
+		Map<String, Object> requestObj = new HashMap<>();
+		requestObj.put(JsonKey.NAME, "");
+		requestObj.put(JsonKey.ID, "orgtypeId");
+		request.setRequest(requestObj);
+		boolean response = false;
+		try {
+			RequestValidator.validateUpdateOrgType(request);
+			response = true;
+		} catch (ProjectCommonException e) {
+			assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+			assertEquals(ResponseCode.orgTypeMandatory.getErrorCode(), e.getCode());
+		}
+		Assert.assertFalse(response);
+	}
+	
+	@Test
+	public void validateupdateOrgTypeWithOutID () {
+		Request request = new Request();
+		Map<String, Object> requestObj = new HashMap<>();
+		requestObj.put(JsonKey.NAME, "orgTypeName");
+		requestObj.put(JsonKey.ID, "");
+		request.setRequest(requestObj);
+		boolean response = false;
+		try {
+			RequestValidator.validateUpdateOrgType(request);
+			response = true;
+		} catch (ProjectCommonException e) {
+			assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+			assertEquals(ResponseCode.orgTypeIdRequired.getErrorCode(), e.getCode());
+		}
+		Assert.assertFalse(response);
+	}
+  
+	@Test
+	public void validateAddUserBadgeTest () {
+		Request request = new Request();
+		Map<String, Object> requestObj = new HashMap<>();
+		requestObj.put(JsonKey.BADGE_TYPE_ID, "idOfBadgeType");
+		requestObj.put(JsonKey.RECEIVER_ID, "receiverId");
+		request.setRequest(requestObj);
+		boolean response = false;
+		try {
+			RequestValidator.validateAddUserBadge(request);
+			response = true;
+		} catch (ProjectCommonException e) {
+			Assert.assertNull(e);
+		}
+		Assert.assertTrue(response);
+	}
+	
+	@Test
+	public void validateAddUserBadgeWithOutBadgeTypeIdTest () {
+		Request request = new Request();
+		Map<String, Object> requestObj = new HashMap<>();
+		requestObj.put(JsonKey.BADGE_TYPE_ID, "");
+		requestObj.put(JsonKey.RECEIVER_ID, "receiverId");
+		request.setRequest(requestObj);
+		boolean response = false;
+		try {
+			RequestValidator.validateAddUserBadge(request);
+			response = true;
+		} catch (ProjectCommonException e) {
+			assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+			assertEquals(ResponseCode.badgeTypeIdMandatory.getErrorCode(), e.getCode());
+		}
+		Assert.assertFalse(response);
+	}
+	
+	
+	@Test
+	public void validateAddUserBadgeWithOutReceiverIdTest () {
+		Request request = new Request();
+		Map<String, Object> requestObj = new HashMap<>();
+		requestObj.put(JsonKey.BADGE_TYPE_ID, "idOfBadgeType");
+		request.setRequest(requestObj);
+		boolean response = false;
+		try {
+			RequestValidator.validateAddUserBadge(request);
+			response = true;
+		} catch (ProjectCommonException e) {
+			assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+			assertEquals(ResponseCode.receiverIdMandatory.getErrorCode(), e.getCode());
+		}
+		Assert.assertFalse(response);
+	}
+	
+	@Test
+	public void validateGetAssessmentTest () {
+		Request request = new Request();
+		Map<String, Object> requestObj = new HashMap<>();
+		requestObj.put(JsonKey.COURSE_ID, "courseId");
+		request.setRequest(requestObj);
+		boolean response = false;
+		try {
+			RequestValidator.validateGetAssessment(request);
+			response = true;
+		} catch (ProjectCommonException e) {
+			Assert.assertNull(e);
+		}
+		Assert.assertTrue(response);
+	}
+	
+	@Test
+	public void validateGetAssessmentWithoutCourseIdTest () {
+		Request request = new Request();
+		Map<String, Object> requestObj = new HashMap<>();
+		requestObj.put(JsonKey.COURSE_ID, "");
+		request.setRequest(requestObj);
+		boolean response = false;
+		try {
+			RequestValidator.validateGetAssessment(request);
+			response = true;
+		} catch (ProjectCommonException e) {
+			assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+			assertEquals(ResponseCode.courseIdRequiredError.getErrorCode(), e.getCode());
+		}
+		Assert.assertFalse(response);
+	}
+
+	@Test
+	public void validateVerifyUserTest () {
+		Request request = new Request();
+		Map<String, Object> requestObj = new HashMap<>();
+		requestObj.put(JsonKey.LOGIN_ID, "username@provider");
+		request.setRequest(requestObj);
+		boolean response = false;
+		try {
+			RequestValidator.validateVerifyUser(request);
+			response = true;
+		} catch (ProjectCommonException e) {
+			Assert.assertNull(e);
+		}
+		Assert.assertTrue(response);
+	}
+	
+	
+	@Test
+	public void validateVerifyUserWithOutLoginIdTest () {
+		Request request = new Request();
+		Map<String, Object> requestObj = new HashMap<>();
+		requestObj.put(JsonKey.LOGIN_ID, "");
+		request.setRequest(requestObj);
+		boolean response = false;
+		try {
+			RequestValidator.validateVerifyUser(request);
+			response = true;
+		} catch (ProjectCommonException e) {
+			assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+			assertEquals(ResponseCode.loginIdRequired.getErrorCode(), e.getCode());
+		}
+		Assert.assertFalse(response);
+	}
+
+	@Test
+	public void validateCreateOrgTypeTest () {
+		Request request = new Request();
+		Map<String, Object> requestObj = new HashMap<>();
+		requestObj.put(JsonKey.NAME, "OrgTypeName");
+		request.setRequest(requestObj);
+		boolean response = false;
+		try {
+			RequestValidator.validateCreateOrgType(request);
+			response = true;
+		} catch (ProjectCommonException e) {
+			Assert.assertNull(e);
+		}
+		Assert.assertTrue(response);
+	}
+	
+	@Test
+	public void validateCreateOrgTypeWithOutNameTest () {
+		Request request = new Request();
+		Map<String, Object> requestObj = new HashMap<>();
+		requestObj.put(JsonKey.NAME, null);
+		request.setRequest(requestObj);
+		boolean response = false;
+		try {
+			RequestValidator.validateCreateOrgType(request);
+			response = true;
+		} catch (ProjectCommonException e) {
+			assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+			assertEquals(ResponseCode.orgTypeMandatory.getErrorCode(), e.getCode());
+		}
+		Assert.assertFalse(response);
+	}
+
+	@Test
+	public void validateGetClientKeyTest () {
+		boolean response = false;
+		try {
+			RequestValidator.validateGetClientKey("clientId","clientType");
+			response = true;
+		} catch (ProjectCommonException e) {
+			Assert.assertNull(e);
+		}
+		Assert.assertTrue(response);
+	}
+	
+	@Test
+	public void validateGetClientKeyWithEmptyClientIdTest () {
+		boolean response = false;
+		try {
+			RequestValidator.validateGetClientKey("","clientType");
+			response = true;
+		} catch (ProjectCommonException e) {
+			assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+			assertEquals(ResponseCode.invalidClientId.getErrorCode(), e.getCode());
+		}
+		Assert.assertFalse(response);
+	}
+	
+	
+	@Test
+	public void validateGetClientKeyWithEmptyClientTypeTest () {
+		boolean response = false;
+		try {
+			RequestValidator.validateGetClientKey("clientId","");
+			response = true;
+		} catch (ProjectCommonException e) {
+			assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+			assertEquals(ResponseCode.invalidRequestData.getErrorCode(), e.getCode());
+		}
+		Assert.assertFalse(response);
+	}
 }

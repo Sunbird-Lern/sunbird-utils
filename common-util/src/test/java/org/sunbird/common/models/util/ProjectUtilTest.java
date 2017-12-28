@@ -1,5 +1,7 @@
 package org.sunbird.common.models.util;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -336,6 +338,26 @@ public class ProjectUtilTest {
 	  Assert.assertEquals(true, ProjectUtil.ActiveStatus.ACTIVE.getValue());
 	  Assert.assertEquals("orgimg", ProjectUtil.AzureContainer.orgImage.getName());
 	  Assert.assertEquals("userprofileimg", ProjectUtil.AzureContainer.userProfileImg.getName());
+  }
+  
+  @Test
+  public void serverExceptionTest () {
+	  try {
+		  ProjectUtil.createAndThrowServerError(); 
+	  } catch (ProjectCommonException e) {
+		  assertEquals(ResponseCode.SERVER_ERROR.getResponseCode(), e.getResponseCode());
+			assertEquals(ResponseCode.SERVER_ERROR.getErrorCode(), e.getCode());
+	}
+  }
+  
+  @Test
+  public void invalidUserDataExceptionTest () {
+	  try {
+		  ProjectUtil.createAndThrowInvalidUserDataException(); 
+	  } catch (ProjectCommonException e) {
+		  assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+			assertEquals(ResponseCode.invalidUsrData.getErrorCode(), e.getCode());
+	}
   }
   
 }

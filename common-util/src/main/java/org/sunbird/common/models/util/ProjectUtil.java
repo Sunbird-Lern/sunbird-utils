@@ -26,6 +26,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.request.Request;
+import org.sunbird.common.responsecode.ResponseCode;
 
 /**
  * This class will contains all the common utility methods.
@@ -817,4 +818,21 @@ public class ProjectUtil {
     }
     return date != null;
   }
+  
+  /**
+   * This method will create a new ProjectCommonException of type server Error and throws it.
+   */
+	public static void createAndThrowServerError() {
+		throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(),
+				ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
+	}
+	
+	/**
+	 * This method will create ProjectCommonException of type invalidUserDate exception 
+	 * and throws it.
+	 */
+	public static void createAndThrowInvalidUserDataException () {
+		throw new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(),
+				ResponseCode.invalidUsrData.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+	}
 }

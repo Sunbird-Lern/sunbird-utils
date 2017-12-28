@@ -34,6 +34,18 @@ public class ExcelFileUtilTest {
 	Assert.assertNotNull(util);
   }
   
+  @Test
+  public void testgetListValue () {
+	  List<String> list = new ArrayList<>();
+	  list.add("column1");
+	  list.add("column2");
+	 String response = FileUtil.getListValue(list);
+	 Assert.assertEquals("column1,column2", response);
+	 list.clear();
+	 response = FileUtil.getListValue(list);
+	 Assert.assertEquals("", response);
+  }
+  
   @After
   public void deleteFileGenerated(){
     File  file = new File("test.xlsx");
