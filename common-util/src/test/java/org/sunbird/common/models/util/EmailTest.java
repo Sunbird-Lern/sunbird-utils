@@ -3,17 +3,11 @@
  */
 package org.sunbird.common.models.util;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Properties;
 
-import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Store;
-import javax.mail.internet.AddressException;
 
 import org.apache.velocity.VelocityContext;
 import org.junit.AfterClass;

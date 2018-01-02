@@ -760,7 +760,7 @@ public class ProjectUtil {
       ProjectLogger.log("Number is of region - " + numberProto.getCountryCode() + " "
           + phoneUtil.getRegionCodeForNumber(numberProto));
       ProjectLogger.log("Is the input number valid - "
-          + (phoneUtil.isValidNumber(numberProto) == true ? "Yes" : "No"));
+          + (phoneUtil.isValidNumber(numberProto) ? "Yes" : "No"));
       return phoneUtil.isValidNumber(numberProto);
     } catch (NumberParseException e) {
       ProjectLogger.log("Exception occurred while validating phone number : ", e);

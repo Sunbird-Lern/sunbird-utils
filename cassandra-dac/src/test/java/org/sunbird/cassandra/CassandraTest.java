@@ -14,9 +14,9 @@ import org.sunbird.helper.CassandraConnectionMngrFactory;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CassandraTest {
 
-  static PropertiesCache cach = PropertiesCache.getInstance();
-  static String host = cach.getProperty("contactPoint");
-  static String port = cach.getProperty("port");
+  private static PropertiesCache cach = PropertiesCache.getInstance();
+  private static String host = cach.getProperty("contactPoint");
+  private static String port = cach.getProperty("port");
   private static CassandraConnectionManagerImpl connectionManager = (CassandraConnectionManagerImpl) CassandraConnectionMngrFactory.getObject(JsonKey.EMBEDDED);
   
   @Test

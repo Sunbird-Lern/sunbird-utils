@@ -3,14 +3,6 @@
  */
 package org.sunbird.helper;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.sunbird.common.ElasticSearchUtil;
-import org.sunbird.common.models.util.JsonKey;
-
 /**
  * This class will define Elastic search mapping.
  * 

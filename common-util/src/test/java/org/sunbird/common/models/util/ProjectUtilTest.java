@@ -1,7 +1,5 @@
 package org.sunbird.common.models.util;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
