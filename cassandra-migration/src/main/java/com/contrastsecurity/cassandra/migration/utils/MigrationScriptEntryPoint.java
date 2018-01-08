@@ -2,6 +2,10 @@ package com.contrastsecurity.cassandra.migration.utils;
 
 import com.contrastsecurity.cassandra.migration.CassandraMigration;
 import com.contrastsecurity.cassandra.migration.config.Keyspace;
+import com.contrastsecurity.cassandra.migration.logging.Log;
+import com.contrastsecurity.cassandra.migration.logging.LogFactory;
+import com.contrastsecurity.cassandra.migration.logging.console.ConsoleLog;
+import com.contrastsecurity.cassandra.migration.logging.console.ConsoleLogCreator;
 
 public class MigrationScriptEntryPoint {
 
@@ -16,25 +20,30 @@ public class MigrationScriptEntryPoint {
 	private static final String SUNBIRD_CASSANDRA_PASSWORD = "sunbird_cassandra_password";
 	private static final String SUNBIRD_CASSANDRA_KEYSPACE = "sunbird_cassandra_keyspace";
 	private static final String[] SCRIPT_LOCATIONS = { "db/migration/cassandra" };
-
+    /**
+	 * logging support
+	 */
+	private static Log LOG;
 	/**
 	 * main method to run cassandra migration; |
 	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		System.out.println("Migration started at ==" + System.currentTimeMillis());
+		 initLogging(ConsoleLog.Level.INFO);
+		LOG.info("Migration started at ==" + System.currentTimeMillis());
 		try {
 			init();
 			Keyspace keyspace = createSpaces();
 			CassandraMigration cm = new CassandraMigration();
 			cm.getConfigs().setScriptsLocations(SCRIPT_LOCATIONS);
 			cm.setKeyspace(keyspace);
+			cm.validate();
 			cm.migrate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("Migration Completed at ==" + System.currentTimeMillis());
+		LOG.info("Migration Completed at ==" + System.currentTimeMillis());
 	}
 
 	/**
@@ -79,4 +88,8 @@ public class MigrationScriptEntryPoint {
 		return keyspace;
 	}
 
+	static void initLogging(ConsoleLog.Level level) {
+		LogFactory.setLogCreator(new ConsoleLogCreator(level));
+		LOG = LogFactory.getLog(CommandLine.class);
+	}
 }
