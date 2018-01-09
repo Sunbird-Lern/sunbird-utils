@@ -574,7 +574,8 @@ public final class JsonKey {
 	public static final String USER_COUNT_TTL = "userCountTTL";
 	public static final String AUTH_WITH_MASTER_KEY = "authWithMasterKey";
 	public static final String JOINING_DATE = "joiningDate";
-	
+	public static final String RES_MSG_ID = "resmsgId";
+	public static final String API_ID = "apiId";
 	private JsonKey() {
 
 	}

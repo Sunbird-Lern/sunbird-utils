@@ -1219,7 +1219,7 @@ public final class RequestValidator {
 
   public static void validateSyncRequest(Request request) {
     String operation = (String) request.getRequest().get(JsonKey.OPERATION_FOR);
-      if(!operation.equalsIgnoreCase("keycloak")){
+      if((null != operation) && (!operation.equalsIgnoreCase("keycloak"))){
       if (request.getRequest().get(JsonKey.OBJECT_TYPE) == null) {
         throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
             ResponseCode.dataTypeError.getErrorMessage(), ERROR_CODE);
