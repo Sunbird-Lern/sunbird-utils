@@ -4,7 +4,6 @@ import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -25,8 +24,8 @@ public class KeyCloakServiceImplTest {
     SSOManager keyCloakService = SSOServiceFactory.getInstance();
 
     private static Map<String,String> userId ;
-    final static String userName = UUID.randomUUID().toString().replaceAll("-", "");
-    static Class t  = null;    
+    private final static String userName = UUID.randomUUID().toString().replaceAll("-", "");
+    private static Class t  = null;    
     @BeforeClass
     public static void setUp() {
       try {
@@ -44,11 +43,11 @@ public class KeyCloakServiceImplTest {
             t.getDeclaredConstructor();
         constructor.setAccessible(true);
         SSOServiceFactory application = constructor.newInstance();
-        org.junit.Assert.assertNotNull(application);
+        Assert.assertNotNull(application);
       } catch (Exception e) {
         exp = e;
       }
-      org.junit.Assert.assertNull(exp);
+      Assert.assertNull(exp);
     }
 
     @Test

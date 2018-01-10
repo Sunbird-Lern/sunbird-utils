@@ -1,6 +1,5 @@
 package org.sunbird.cassandraimpl;
 
-import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
 
 import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.PreparedStatement;
@@ -140,7 +139,7 @@ public class CassandraOperationImpl implements CassandraOperation {
     Response response = new Response();
     try {
       Delete.Where delete = QueryBuilder.delete().from(keyspaceName, tableName)
-          .where(eq(Constants.IDENTIFIER, identifier));
+          .where(QueryBuilder.eq(Constants.IDENTIFIER, identifier));
       connectionManager.getSession(keyspaceName).execute(delete);
       response.put(Constants.RESPONSE, Constants.SUCCESS);
     } catch (Exception e) {

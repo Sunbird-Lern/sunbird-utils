@@ -21,4 +21,27 @@ public class Sms implements Serializable{
         this.message = message;
         this.to = to;
     }
+
+    /**
+     * @return the serialversionuid
+     */
+    public static long getSerialversionuid() {
+      return serialVersionUID;
+    }
+
+    /**
+     * @return the message
+     */
+    public String getMessage() {
+      return message;
+    }
+
+    /**
+     * @return the to
+     */
+    public List<String> getTo() {
+      return to;
+    }
+    
+    
 }

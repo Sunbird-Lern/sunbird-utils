@@ -19,15 +19,17 @@ import com.contrastsecurity.cassandra.migration.CassandraMigrationException;
 import com.contrastsecurity.cassandra.migration.logging.Log;
 import com.contrastsecurity.cassandra.migration.logging.LogFactory;
 import com.contrastsecurity.cassandra.migration.utils.ClassUtils;
-import com.contrastsecurity.cassandra.migration.utils.FeatureDetector;
 import com.contrastsecurity.cassandra.migration.utils.UrlUtils;
 import com.contrastsecurity.cassandra.migration.utils.scanner.Resource;
-
 import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class ClassPathScanner {
     private static final Log LOG = LogFactory.getLog(ClassPathScanner.class);
@@ -59,7 +61,7 @@ public class ClassPathScanner {
     public Resource[] scanForResources(String path, String prefix, String suffix) throws IOException {
         LOG.debug("Scanning for classpath resources at '" + path + "' (Prefix: '" + prefix + "', Suffix: '" + suffix + "')");
 
-        Set<Resource> resources = new TreeSet<Resource>();
+        Set<Resource> resources = new TreeSet<>();
 
         Set<String> resourceNames = findResourceNames(path, prefix, suffix);
         for (String resourceName : resourceNames) {
@@ -83,7 +85,7 @@ public class ClassPathScanner {
     public Class<?>[] scanForClasses(String location, Class<?> implementedInterface) throws Exception {
         LOG.debug("Scanning for classes at '" + location + "' (Implementing: '" + implementedInterface.getName() + "')");
 
-        List<Class<?>> classes = new ArrayList<Class<?>>();
+        List<Class<?>> classes = new ArrayList<>();
 
         Set<String> resourceNames = findResourceNames(location, "", ".class");
         for (String resourceName : resourceNames) {
@@ -134,13 +136,13 @@ public class ClassPathScanner {
      * @throws IOException when scanning this location failed.
      */
     private Set<String> findResourceNames(String path, String prefix, String suffix) throws IOException {
-        Set<String> resourceNames = new TreeSet<String>();
+        Set<String> resourceNames = new TreeSet<>();
 
         List<URL> locationsUrls = getLocationUrlsForPath(path);
         for (URL locationUrl : locationsUrls) {
             LOG.debug("Scanning URL: " + locationUrl.toExternalForm());
 
-            UrlResolver urlResolver = createUrlResolver(locationUrl.getProtocol());
+            UrlResolver urlResolver = createUrlResolver();
             URL resolvedUrl = urlResolver.toStandardJavaUrl(locationUrl);
 
             String protocol = resolvedUrl.getProtocol();
@@ -164,7 +166,7 @@ public class ClassPathScanner {
      * @throws IOException when the lookup fails.
      */
     private List<URL> getLocationUrlsForPath(String path) throws IOException {
-        List<URL> locationUrls = new ArrayList<URL>();
+        List<URL> locationUrls = new ArrayList<>();
 
         if (classLoader.getClass().getName().startsWith("com.ibm")) {
             // WebSphere
@@ -197,7 +199,7 @@ public class ClassPathScanner {
      * @param protocol The protocol of the location url to scan.
      * @return The url resolver for this protocol.
      */
-    private UrlResolver createUrlResolver(String protocol) {
+    private UrlResolver createUrlResolver() {
         return new DefaultUrlResolver();
     }
 
@@ -219,8 +221,6 @@ public class ClassPathScanner {
             return new JarFileClassPathLocationScanner();
         }
 
-        FeatureDetector featureDetector = new FeatureDetector(classLoader);
-
         return null;
     }
 
@@ -233,9 +233,9 @@ public class ClassPathScanner {
      * @return The filtered names set.
      */
     private Set<String> filterResourceNames(Set<String> resourceNames, String prefix, String suffix) {
-        Set<String> filteredResourceNames = new TreeSet<String>();
+        Set<String> filteredResourceNames = new TreeSet<>();
         for (String resourceName : resourceNames) {
-            String fileName = resourceName.substring(resourceName.lastIndexOf("/") + 1);
+            String fileName = resourceName.substring(resourceName.lastIndexOf('/') + 1);
             if (fileName.startsWith(prefix) && fileName.endsWith(suffix)
                     && (fileName.length() > (prefix + suffix).length())) {
                 filteredResourceNames.add(resourceName);
