@@ -90,6 +90,6 @@ public class MigrationScriptEntryPoint {
 
 	static void initLogging(ConsoleLog.Level level) {
 		LogFactory.setLogCreator(new ConsoleLogCreator(level));
-		LOG = LogFactory.getLog(CommandLine.class);
+		LOG = LogFactory.getLog(MigrationScriptEntryPoint.class);
 	}
 }
