@@ -4,9 +4,9 @@
 package org.sunbird.helper;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.settings.Settings.Builder;
@@ -53,9 +53,9 @@ public class ConnectionManager {
     * @param host  List<String>
     * @param port List<Integer>
     * @return boolean
-    * @throws Exception
+    * @throws UnknownHostException 
     */
-	private static boolean createClient(String clusterName, List<String> host, List<Integer> port) throws Exception {
+	private static boolean createClient(String clusterName, List<String> host) throws UnknownHostException {
 		Builder builder = Settings.builder();
 		if (clusterName != null && !"".equals(clusterName)) {
 			builder = builder.put("cluster.name", clusterName);
@@ -106,7 +106,7 @@ public class ConnectionManager {
       for (String val : splitedPort) {
         ports.add(Integer.parseInt(val));
       }
-      boolean response = createClient(cluster, host, ports);
+      boolean response = createClient(cluster, host);
       ProjectLogger.log("ELASTIC SEARCH CONNECTION ESTABLISHED " + response,
           LoggerEnum.INFO.name());
     } catch (Exception e) {
@@ -138,7 +138,7 @@ public class ConnectionManager {
 			for (String val : splitedPort) {
 				ports.add(Integer.parseInt(val));
 			}
-			boolean response = createClient(cluster, host, ports);
+			boolean response = createClient(cluster, host);
 			ProjectLogger.log("ELASTIC SEARCH CONNECTION ESTABLISHED " + response, LoggerEnum.INFO.name());
 		} catch (Exception e) {
 		    ProjectLogger.log("Error while initialising connection from the Env",e);

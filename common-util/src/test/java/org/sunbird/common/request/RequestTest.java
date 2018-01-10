@@ -29,7 +29,6 @@ public class RequestTest {
 	 request.setContext(new HashMap<>());
 	 request.setRequest(new HashMap<>());
 	 request.setParams(new RequestParams());
-	 Request request1 = new Request(request);
     Assert.assertEquals(request.getEnv(), 1);
     Assert.assertEquals(request.getId(),val+"");
     Assert.assertEquals(request.getManagerName(), "name");

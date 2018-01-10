@@ -28,12 +28,12 @@ import org.sunbird.helper.ServiceFactory;
 public class CassandraStandaloneTest {
 
   private CassandraOperation operation = ServiceFactory.getInstance();
-  static Map<String,Object> address = null;
-  static Map<String,Object> dummyAddress = null;
-  static PropertiesCache cach = PropertiesCache.getInstance();
-  static String host = cach.getProperty("contactPoint");
-  static String port = cach.getProperty("port");
-  static String cassandraKeySpace = cach.getProperty("keyspace");
+  private static Map<String,Object> address = null;
+  private static Map<String,Object> dummyAddress = null;
+  private static PropertiesCache cach = PropertiesCache.getInstance();
+  private static String host = cach.getProperty("contactPoint");
+  private static String port = cach.getProperty("port");
+  private static String cassandraKeySpace = cach.getProperty("keyspace");
   private static CassandraConnectionManagerImpl connectionManager = (CassandraConnectionManagerImpl) CassandraConnectionMngrFactory.getObject(cach.getProperty(JsonKey.SUNBIRD_CASSANDRA_MODE));
 
   @BeforeClass

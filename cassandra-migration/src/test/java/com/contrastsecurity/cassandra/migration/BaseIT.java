@@ -2,6 +2,7 @@ package com.contrastsecurity.cassandra.migration;
 
 import com.contrastsecurity.cassandra.migration.config.Keyspace;
 import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Cluster.Builder;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.SimpleStatement;
 import com.datastax.driver.core.Statement;
@@ -64,7 +65,7 @@ public abstract class BaseIT {
         if (session != null && !session.isClosed())
             return session;
 
-        com.datastax.driver.core.Cluster.Builder builder = new com.datastax.driver.core.Cluster.Builder();
+        Builder builder = new Builder();
         builder.addContactPoints(CASSANDRA_CONTACT_POINT).withPort(CASSANDRA_PORT);
         builder.withCredentials(keyspace.getCluster().getUsername(), keyspace.getCluster().getPassword());
         Cluster cluster = builder.build();

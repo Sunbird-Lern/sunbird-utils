@@ -25,4 +25,41 @@ public class ProviderDetails implements Serializable {
         this.country = country;
         this.sms = sms;
     }
+
+    /**
+     * @return the serialversionuid
+     */
+    public static long getSerialversionuid() {
+      return serialVersionUID;
+    }
+
+    /**
+     * @return the sender
+     */
+    public String getSender() {
+      return sender;
+    }
+
+    /**
+     * @return the route
+     */
+    public String getRoute() {
+      return route;
+    }
+
+    /**
+     * @return the country
+     */
+    public String getCountry() {
+      return country;
+    }
+
+    /**
+     * @return the sms
+     */
+    public List<Sms> getSms() {
+      return sms;
+    }
+    
+    
 }

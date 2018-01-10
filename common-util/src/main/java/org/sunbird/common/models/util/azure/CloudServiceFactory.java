@@ -12,10 +12,12 @@ import org.sunbird.common.models.util.ProjectUtil;
  */
 public class CloudServiceFactory {
 
-  static Map<String , CloudService> factory = new HashMap<>();
+  private static Map<String , CloudService> factory = new HashMap<>();
   private static List<String> allowedServiceNames = Arrays
       .asList("Azure", "Amazon S3");
 
+  private CloudServiceFactory(){}
+  
   /**
    *
    * @param serviceName

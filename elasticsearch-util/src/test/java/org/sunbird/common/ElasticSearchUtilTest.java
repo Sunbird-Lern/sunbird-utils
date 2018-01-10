@@ -12,13 +12,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-
 import org.elasticsearch.client.transport.TransportClient;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+import org.sunbird.common.ElasticSearchUtil;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.JsonKey;
@@ -167,9 +167,7 @@ public class ElasticSearchUtilTest {
 
         Map map = ElasticSearchUtil.complexSearch(searchDTO,indexName , typeName);
 
-        List response = (List) map.get(JsonKey.RESPONSE);
         assertEquals(3 , map.size());
-        //assertNotNull(map);
     }
 
     

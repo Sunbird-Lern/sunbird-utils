@@ -4,6 +4,28 @@ import com.contrastsecurity.cassandra.migration.info.MigrationVersion;
 import com.contrastsecurity.cassandra.migration.utils.StringUtils;
 
 public class MigrationConfigs {
+  
+
+  /**
+   * The encoding of Cql migration scripts (default: UTF-8)
+   */
+  private String encoding = "UTF-8";
+
+  /**
+   * Locations of the migration scripts in CSV format (default: db/migration)
+   */
+  private String[] scriptsLocations = {"db/migration"};
+
+  /**
+   * Allow out of order migrations (default: false)
+   */
+  private boolean allowOutOfOrder = false;
+
+  /**
+   * The target version. Migrations with a higher version number will be ignored. (default: the latest version)
+   */
+  private MigrationVersion target = MigrationVersion.LATEST;
+  
     public enum MigrationProperty {
         SCRIPTS_ENCODING("cassandra.migration.scripts.encoding", "Encoding for CQL scripts"),
         SCRIPTS_LOCATIONS("cassandra.migration.scripts.locations", "Locations of the migration scripts in CSV format"),
@@ -46,27 +68,6 @@ public class MigrationConfigs {
             setAllowOutOfOrder(allowOutOfOrderProp);
         }
     }
-
-    /**
-     * The encoding of Cql migration scripts (default: UTF-8)
-     */
-    private String encoding = "UTF-8";
-
-    /**
-     * Locations of the migration scripts in CSV format (default: db/migration)
-     */
-    private String[] scriptsLocations = {"db/migration"};
-
-    /**
-     * Allow out of order migrations (default: false)
-     */
-    private boolean allowOutOfOrder = false;
-
-    /**
-     * The target version. Migrations with a higher version number will be ignored. (default: the latest version)
-     */
-    private MigrationVersion target = MigrationVersion.LATEST;
-
     public String getEncoding() {
         return encoding;
     }

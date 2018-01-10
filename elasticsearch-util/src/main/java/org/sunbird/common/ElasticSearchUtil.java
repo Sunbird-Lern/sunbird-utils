@@ -5,6 +5,7 @@ package org.sunbird.common;
 
 import static org.sunbird.common.models.util.ProjectUtil.isNotNull;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +17,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
-
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
@@ -70,8 +70,6 @@ import org.sunbird.helper.ConnectionManager;
 import org.sunbird.helper.ElasticSearchMapping;
 import org.sunbird.helper.ElasticSearchSettings;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 /**
  * This class will provide all required operation
  * for elastic search.
@@ -88,12 +86,12 @@ public class ElasticSearchUtil {
   private static final String ASC_ORDER = "ASC";
   private static final String STARTS_WITH = "startsWith";
   private static final String ENDS_WITH = "endsWith";
-  private static final List<String> upsertResults = new ArrayList<String>(
+  private static final List<String> upsertResults = new ArrayList<>(
       Arrays.asList("CREATED", "UPDATED", "NOOP"));
-  private final static String SOFT_MODE = "soft";
+  private static final String SOFT_MODE = "soft";
   private static final String RAW_APPEND = ".raw";
-  private static ConcurrentHashMap<String, Boolean> indexMap = new ConcurrentHashMap<String, Boolean>();
-  private static ConcurrentHashMap<String, Boolean> typeMap = new ConcurrentHashMap<String, Boolean>();
+  private static ConcurrentHashMap<String, Boolean> indexMap = new ConcurrentHashMap<>();
+  private static ConcurrentHashMap<String, Boolean> typeMap = new ConcurrentHashMap<>();
 
   /**
    * This method will put a new data entry inside Elastic search. identifier
@@ -819,15 +817,6 @@ public class ElasticSearchUtil {
       return rangeQueryBuilder.boost(boost);
     }
     return rangeQueryBuilder;
-  }
-
-  private static CommonTermsQueryBuilder createCommonTermsQuery(String name, Object text,
-      Float boost) {
-    if (isNotNull(boost)) {
-      return QueryBuilders.commonTermsQuery(name, text).boost(boost);
-    } else {
-      return QueryBuilders.commonTermsQuery(name, text);
-    }
   }
 
   private static TermQueryBuilder createTermQuery(String name, Object text, Float boost) {

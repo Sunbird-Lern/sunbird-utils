@@ -28,9 +28,8 @@ public class ObjectUtils {
      * @param o2 second Object to compare
      * @return whether the given objects are equal
      */
-    @SuppressWarnings("SimplifiableIfStatement")
     public static boolean nullSafeEquals(Object o1, Object o2) {
-        if (o1 == o2) {
+        if (o1.equals(o2)) {
             return true;
         }
         if (o1 == null || o2 == null) {

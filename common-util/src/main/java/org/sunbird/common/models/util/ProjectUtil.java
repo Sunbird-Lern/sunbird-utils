@@ -210,8 +210,8 @@ public class ProjectUtil {
   public static boolean isStringNullOREmpty(String value) {
     if (value == null || "".equals(value.trim())) {
       return true;
-    }
-    return false;
+    } 
+      return false;
   }
 
   /**

@@ -63,7 +63,7 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
       String keyspace) {
     boolean connectionCreated = false;
     if (mode.equalsIgnoreCase(JsonKey.EMBEDDED_MODE)) {
-      connectionCreated = createEmbeddedConnection(ip, port, userName, password, keyspace);
+      connectionCreated = createEmbeddedConnection(keyspace);
     } else {
       connectionCreated = createStandaloneConnection(ip, port, userName, password, keyspace);
     }
@@ -184,9 +184,7 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
    * @param keyspace
    * @return
    */
-  private boolean createEmbeddedConnection(String ip, String port, String userName, String password,
-      String keyspace) {
-
+  private boolean createEmbeddedConnection(String keyspace) {
     Session cassandraSession = null;
 
     PropertiesCache propertiesCache = PropertiesCache.getInstance();
