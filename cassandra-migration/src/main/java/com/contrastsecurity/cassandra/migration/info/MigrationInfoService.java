@@ -80,13 +80,13 @@ public class MigrationInfoService {
      * @return The complete list of migrations.
      */
     /* private -> testing */
-    List<MigrationInfo> mergeAvailableAndAppliedMigrations(Collection<ResolvedMigration> resolvedMigrations, List<AppliedMigration> appliedMigrations) {
+    private List<MigrationInfo> mergeAvailableAndAppliedMigrations(Collection<ResolvedMigration> resolvedMigrations, List<AppliedMigration> appliedMigrations) {
         MigrationInfoContext context = new MigrationInfoContext();
         context.outOfOrder = outOfOrder;
         context.pendingOrFuture = pendingOrFuture;
         context.target = target;
 
-        Map<MigrationVersion, ResolvedMigration> resolvedMigrationsMap = new TreeMap<MigrationVersion, ResolvedMigration>();
+        Map<MigrationVersion, ResolvedMigration> resolvedMigrationsMap = new TreeMap<>();
         for (ResolvedMigration resolvedMigration : resolvedMigrations) {
             MigrationVersion version = resolvedMigration.getVersion();
             if (version.compareTo(context.lastResolved) > 0) {
@@ -95,7 +95,7 @@ public class MigrationInfoService {
             resolvedMigrationsMap.put(version, resolvedMigration);
         }
 
-        Map<MigrationVersion, AppliedMigration> appliedMigrationsMap = new TreeMap<MigrationVersion, AppliedMigration>();
+        Map<MigrationVersion, AppliedMigration> appliedMigrationsMap = new TreeMap<>();
         for (AppliedMigration appliedMigration : appliedMigrations) {
             MigrationVersion version = appliedMigration.getVersion();
             if (version.compareTo(context.lastApplied) > 0) {
@@ -110,7 +110,7 @@ public class MigrationInfoService {
             appliedMigrationsMap.put(version, appliedMigration);
         }
 
-        Set<MigrationVersion> allVersions = new HashSet<MigrationVersion>();
+        Set<MigrationVersion> allVersions = new HashSet<>();
         allVersions.addAll(resolvedMigrationsMap.keySet());
         allVersions.addAll(appliedMigrationsMap.keySet());
 
@@ -142,7 +142,7 @@ public class MigrationInfoService {
     }
 
     public MigrationInfo[] pending() {
-        List<MigrationInfo> pendingMigrations = new ArrayList<MigrationInfo>();
+        List<MigrationInfo> pendingMigrations = new ArrayList<>();
         for (MigrationInfo migrationInfo : migrationInfos) {
             if (MigrationState.PENDING == migrationInfo.getState()) {
                 pendingMigrations.add(migrationInfo);
@@ -153,7 +153,7 @@ public class MigrationInfoService {
     }
 
     public MigrationInfo[] applied() {
-        List<MigrationInfo> appliedMigrations = new ArrayList<MigrationInfo>();
+        List<MigrationInfo> appliedMigrations = new ArrayList<>();
         for (MigrationInfo migrationInfo : migrationInfos) {
             if (migrationInfo.getState().isApplied()) {
                 appliedMigrations.add(migrationInfo);
@@ -169,7 +169,7 @@ public class MigrationInfoService {
      * @return The resolved migrations. An empty array if none.
      */
     public MigrationInfo[] resolved() {
-        List<MigrationInfo> resolvedMigrations = new ArrayList<MigrationInfo>();
+        List<MigrationInfo> resolvedMigrations = new ArrayList<>();
         for (MigrationInfo migrationInfo : migrationInfos) {
             if (migrationInfo.getState().isResolved()) {
                 resolvedMigrations.add(migrationInfo);
@@ -185,7 +185,7 @@ public class MigrationInfoService {
      * @return The failed migrations. An empty array if none.
      */
     public MigrationInfo[] failed() {
-        List<MigrationInfo> failedMigrations = new ArrayList<MigrationInfo>();
+        List<MigrationInfo> failedMigrations = new ArrayList<>();
         for (MigrationInfo migrationInfo : migrationInfos) {
             if (migrationInfo.getState().isFailed()) {
                 failedMigrations.add(migrationInfo);
@@ -201,7 +201,7 @@ public class MigrationInfoService {
      * @return The future migrations. An empty array if none.
      */
     public MigrationInfo[] future() {
-        List<MigrationInfo> futureMigrations = new ArrayList<MigrationInfo>();
+        List<MigrationInfo> futureMigrations = new ArrayList<>();
         for (MigrationInfo migrationInfo : migrationInfos) {
             if ((migrationInfo.getState() == MigrationState.FUTURE_SUCCESS)
                     || (migrationInfo.getState() == MigrationState.FUTURE_FAILED)) {
@@ -218,7 +218,7 @@ public class MigrationInfoService {
      * @return The out of order migrations. An empty array if none.
      */
     public MigrationInfo[] outOfOrder() {
-        List<MigrationInfo> outOfOrderMigrations = new ArrayList<MigrationInfo>();
+        List<MigrationInfo> outOfOrderMigrations = new ArrayList<>();
         for (MigrationInfo migrationInfo : migrationInfos) {
             if (migrationInfo.getState() == MigrationState.OUT_OF_ORDER) {
                 outOfOrderMigrations.add(migrationInfo);

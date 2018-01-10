@@ -20,10 +20,8 @@ import com.datastax.driver.core.Metadata;
 import com.datastax.driver.core.ProtocolVersion;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.policies.DefaultRetryPolicy;
-
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import java.util.List;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 
 public class CassandraMigration {

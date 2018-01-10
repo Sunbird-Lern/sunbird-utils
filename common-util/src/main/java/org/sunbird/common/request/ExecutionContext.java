@@ -38,16 +38,16 @@ public class ExecutionContext {
         return (String) ExecutionContext.getCurrent().getGlobalContext().get(HeaderParam.REQUEST_ID.getParamName());
     }
 
-    Stack<String> serviceCallStack = new Stack<String>();
+    Stack<String> serviceCallStack = new Stack<>();
 
-    private Map<String, Map<String, Object>> contextStackValues = new HashMap<String, Map<String, Object>>();
-    private Map<String, Object> globalContext = new HashMap<String, Object>();
+    private Map<String, Map<String, Object>> contextStackValues = new HashMap<>();
+    private Map<String, Object> globalContext = new HashMap<>();
 
     public Map<String, Object> getContextValues() {
         String serviceCallStack = getServiceCallStack();
         Map<String, Object> contextValues = contextStackValues.get(serviceCallStack);
         if (contextValues == null) {
-            contextValues = new HashMap<String, Object>();
+            contextValues = new HashMap<>();
             setContextValues(contextValues, serviceCallStack);
         }
 

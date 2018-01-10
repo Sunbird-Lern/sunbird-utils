@@ -161,7 +161,7 @@ public class CqlStatementBuilder {
             return;
         }
 
-        delimiter = changeDelimiterIfNecessary(lineSimplified, delimiter);
+        delimiter = changeDelimiterIfNecessary(delimiter);
 
         statement.append(line);
 
@@ -209,8 +209,7 @@ public class CqlStatementBuilder {
      * @param delimiter The current delimiter.
      * @return The new delimiter to use (can be the same as the current one) or {@code null} for no delimiter.
      */
-    @SuppressWarnings({"UnusedDeclaration"})
-    protected Delimiter changeDelimiterIfNecessary(String line, Delimiter delimiter) {
+    protected Delimiter changeDelimiterIfNecessary(Delimiter delimiter) {
         return delimiter;
     }
 
