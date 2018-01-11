@@ -53,6 +53,11 @@ public class ProjectUtil {
   private static Pattern pattern;
   private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
       + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+  public static final String[] excludes =
+      new String[] {JsonKey.COMPLETENESS, JsonKey.MISSING_FIELDS, JsonKey.PROFILE_VISIBILITY,
+          JsonKey.USERNAME, JsonKey.LOGIN_ID, JsonKey.USER_ID};
+
+  public static final String[] defaultPrivateFields = new String[] {JsonKey.EMAIL, JsonKey.PHONE};
 
   static {
     pattern = Pattern.compile(EMAIL_PATTERN);
@@ -511,12 +516,6 @@ public class ProjectUtil {
     }
 
   }
-
-  public static final String[] excludes =
-      new String[] {JsonKey.COMPLETENESS, JsonKey.MISSING_FIELDS, JsonKey.PROFILE_VISIBILITY,
-          JsonKey.USERNAME, JsonKey.LOGIN_ID, JsonKey.USER_ID};
-
-  public static final String[] defaultPrivateFields = new String[] {JsonKey.EMAIL, JsonKey.PHONE};
 
   /**
    * 
