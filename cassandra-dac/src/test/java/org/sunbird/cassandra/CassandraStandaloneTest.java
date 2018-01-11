@@ -231,7 +231,7 @@ public class CassandraStandaloneTest {
   @Test(expected=ProjectCommonException.class)
   public void testHUpsertOpFailedWithInvalidParameter() {
     //address.put("Country", "country");
-    Response response=operation.upsertRecord(cassandraKeySpace, "address", dummyAddress);
+    operation.upsertRecord(cassandraKeySpace, "address", dummyAddress);
     //assertEquals("SUCCESS", response.get("response"));
   }
 

@@ -25,7 +25,7 @@ public class OnWayhashingTest {
   
   @Test
   public void validateDataHashingFailure() {
-    Assert.assertEquals(OneWayHashing.encryptVal(null).length(), 0);
+    assertEquals(OneWayHashing.encryptVal(null).length(), 0);
   } 
 
   @Test

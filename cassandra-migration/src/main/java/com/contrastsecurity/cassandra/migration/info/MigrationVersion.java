@@ -136,12 +136,6 @@ public class MigrationVersion implements Comparable<MigrationVersion> {
         return TABLE;
     }
 
-    private void setVersion(String version) {
-        String normalizedVersion = version.replace('_', '.');
-        this.versionParts = tokenize(normalizedVersion);
-        this.displayText = normalizedVersion;
-    }
-
     private List<BigInteger> tokenize(String str) {
         List<BigInteger> numbers = new ArrayList<>();
         for (String number : splitPattern.split(str)) {

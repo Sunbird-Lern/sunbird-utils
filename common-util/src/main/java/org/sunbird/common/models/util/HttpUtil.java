@@ -30,7 +30,6 @@ import org.sunbird.common.responsecode.ResponseCode;
  */
 public class HttpUtil {
 
-  private static final String UTF_8_ENCODING = "UTF-8";
   /**
    * Makes an HTTP request using GET method to the specified URL.
    *

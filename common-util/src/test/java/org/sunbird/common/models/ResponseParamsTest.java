@@ -5,7 +5,6 @@ package org.sunbird.common.models;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.sunbird.common.models.response.Params;
 import org.sunbird.common.models.response.ResponseParams;
 import org.sunbird.common.responsecode.ResponseCode;
 

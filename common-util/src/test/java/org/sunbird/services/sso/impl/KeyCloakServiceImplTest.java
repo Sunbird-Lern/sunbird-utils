@@ -329,7 +329,7 @@ public class KeyCloakServiceImplTest {
 		request.put(JsonKey.EMAIL, userName.substring(0, 10));
 		request.put(JsonKey.USER_ID, "xey123-23sss-cbdsgdgdg");
 		try {
-			String response = keyCloakService.syncUserData(request);
+			keyCloakService.syncUserData(request);
 		} catch (ProjectCommonException e) {
 			Assert.assertEquals(ResponseCode.invalidUsrData.getErrorCode(), e.getCode());
 			Assert.assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());

@@ -199,7 +199,6 @@ public class ElasticSearchUtilTest {
         searchDTO.setAdditionalProperties(additionalProperties);
         searchDTO.setQuery("organisation");
         Map map = ElasticSearchUtil.complexSearch(searchDTO,indexName , typeName);
-        List response = (List) map.get(JsonKey.RESPONSE);
         assertEquals(2 , map.size());
     }
 
