@@ -21,7 +21,7 @@ import org.sunbird.common.services.impl.ProfileCompletenessFactory;
  */
 public class ProfileCompletenessTest {
   
-  ProfileCompletenessService service = ProfileCompletenessFactory.getInstance();
+  private ProfileCompletenessService service = ProfileCompletenessFactory.getInstance();
   
   @Test
   public void allCompleteProfilePercentageTest() {

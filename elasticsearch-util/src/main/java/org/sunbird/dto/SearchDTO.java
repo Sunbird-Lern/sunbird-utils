@@ -19,17 +19,17 @@ public class SearchDTO {
 	private List<Map<String ,String>> facets = new ArrayList<>();
 	private List<String> fields;
 	private List<String> excludedFields;
-	private Map<String, String> sortBy = new HashMap<String, String>();
+	private Map<String, String> sortBy = new HashMap<>();
 	private String operation;
 	private String query;
 	private Integer limit=250;
 	private Integer offset=0;
-	boolean fuzzySearch = false;
+	private boolean fuzzySearch = false;
 	//additional properties will hold , filters, exist , not exist
-	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+	private Map<String, Object> additionalProperties = new HashMap<>();
 	private Map<String, Integer> softConstraints = new HashMap<>();
-	private List<Map<String , Object>> groupQuery = new ArrayList<Map<String , Object>>();
-	private List<String> mode = new ArrayList<String>();
+	private List<Map<String , Object>> groupQuery = new ArrayList<>();
+	private List<String> mode = new ArrayList<>();
 
 	public List<Map<String, Object>> getGroupQuery() {
 		return groupQuery;
