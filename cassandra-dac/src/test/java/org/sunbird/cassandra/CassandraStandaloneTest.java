@@ -248,7 +248,8 @@ public class CassandraStandaloneTest {
 
   @Test
   public void testZaDeleteFailedOp() {
-    connectionManager.createConnection(host, port, null, null, cassandraKeySpace);
+    boolean bool = connectionManager.createConnection(host, port, null, null, cassandraKeySpace);
+    assertTrue(bool);
   }
 
   @Test

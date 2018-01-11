@@ -643,10 +643,10 @@ public final class RequestValidator {
       throw new ProjectCommonException(ResponseCode.newPasswordEmpty.getErrorCode(),
           ResponseCode.newPasswordEmpty.getErrorMessage(), ERROR_CODE);
     }
-    if (((String) userRequest.getRequest().get(JsonKey.NEW_PASSWORD))
+    /*if (((String) userRequest.getRequest().get(JsonKey.NEW_PASSWORD))
         .equals((String) userRequest.getRequest().get(JsonKey.PASSWORD))) {
 
-    }
+    }*/
   }
 
   /**

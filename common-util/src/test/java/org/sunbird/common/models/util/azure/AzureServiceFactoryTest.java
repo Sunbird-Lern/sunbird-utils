@@ -125,7 +125,7 @@ public class AzureServiceFactoryTest {
   }
 
   @AfterClass
-  public static void teardown() {
+  public static void shutDown() {
     container1 = null;
     container = null;
     obj = null;

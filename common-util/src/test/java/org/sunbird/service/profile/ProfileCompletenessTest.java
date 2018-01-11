@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.services.ProfileCompletenessService;
@@ -24,10 +22,6 @@ import org.sunbird.common.services.impl.ProfileCompletenessFactory;
 public class ProfileCompletenessTest {
   
   ProfileCompletenessService service = ProfileCompletenessFactory.getInstance();
-  @BeforeClass
-  public static void setup(){
-
-  }
   
   @Test
   public void allCompleteProfilePercentageTest() {

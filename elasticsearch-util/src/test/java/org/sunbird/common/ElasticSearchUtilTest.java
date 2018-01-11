@@ -53,7 +53,7 @@ public class ElasticSearchUtilTest {
     }
 
     @Test
-    public void CreateIndex() {
+    public void createIndex() {
         boolean response = ElasticSearchUtil.createIndex(indexName, typeName, ElasticSearchMapping.createMapping(),
                 ElasticSearchSettings.createSettingsForIndex());
         assertTrue(response);
@@ -320,7 +320,7 @@ public class ElasticSearchUtilTest {
     
     
     @Test
-    public void CreateIndexWithEmptyIndexName() {
+    public void createIndexWithEmptyIndexName() {
         boolean response = ElasticSearchUtil.createIndex("", typeName, ElasticSearchMapping.createMapping(),
                 ElasticSearchSettings.createSettingsForIndex());
         assertFalse(response);
@@ -328,21 +328,21 @@ public class ElasticSearchUtilTest {
     
     
     @Test
-    public void CreateIndexWithEmptyIndexNameAndType() {
+    public void createIndexWithEmptyIndexNameAndType() {
         boolean response = ElasticSearchUtil.createIndex("", null, ElasticSearchMapping.createMapping(),
                 ElasticSearchSettings.createSettingsForIndex());
         assertFalse(response);
     }
     
     @Test
-    public void CreateIndexWithEmptyMapping() {
+    public void createIndexWithEmptyMapping() {
         boolean response = ElasticSearchUtil.createIndex(indexName, typeName, null,
                 ElasticSearchSettings.createSettingsForIndex());
         assertFalse(response);
     }
     
     @Test
-    public void CreateIndexWithEmptySettings() {
+    public void createIndexWithEmptySettings() {
         boolean response = ElasticSearchUtil.createIndex(indexName, typeName, ElasticSearchMapping.createMapping(),
                 null);
         assertFalse(response);
