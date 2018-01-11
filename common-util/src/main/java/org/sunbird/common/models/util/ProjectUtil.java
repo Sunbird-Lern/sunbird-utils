@@ -50,7 +50,15 @@ public class ProjectUtil {
       "externalresource.properties", "sso.properties", "userencryption.properties",
       "profilecompleteness.properties", "mailTemplates.properties"};
   public static PropertiesCache propertiesCache;
+  private static Pattern pattern;
+  private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+      + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
+  static {
+    pattern = Pattern.compile(EMAIL_PATTERN);
+    initializeMailTemplateMap();
+    propertiesCache = PropertiesCache.getInstance();
+  }
   /**
    * @author Manzarul
    */
@@ -208,10 +216,7 @@ public class ProjectUtil {
    * @return
    */
   public static boolean isStringNullOREmpty(String value) {
-    if (value == null || "".equals(value.trim())) {
-      return true;
-    } 
-      return false;
+     return (value == null || "".equals(value.trim()));
   }
 
   /**
@@ -233,17 +238,6 @@ public class ProjectUtil {
       return getDateFormatter().format(date);
     else
       return null;
-  }
-
-
-  private static Pattern pattern;
-  private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-      + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-
-  static {
-    pattern = Pattern.compile(EMAIL_PATTERN);
-    initializeMailTemplateMap();
-    propertiesCache = PropertiesCache.getInstance();
   }
 
   private static void initializeMailTemplateMap() {
@@ -717,19 +711,17 @@ public class ProjectUtil {
    * @param phoneNo String
    * @return boolean
    */
-  public static boolean validatePhoneNumber(String phoneNo) {
-    phoneNo = phoneNo.replace("+", "");
+  public static boolean validatePhoneNumber(String phone) {
+    String phoneNo = "";
+    phoneNo = phone.replace("+", "");
     if (phoneNo.matches("\\d{10}"))
       return true;
     else if (phoneNo.matches("\\d{3}[-\\.\\s]\\d{3}[-\\.\\s]\\d{4}"))
       return true;
     else if (phoneNo.matches("\\d{3}-\\d{3}-\\d{4}\\s(x|(ext))\\d{3,5}"))
       return true;
-    else if (phoneNo.matches("\\(\\d{3}\\)-\\d{3}-\\d{4}"))
-      return true;
-    else
-      return false;
-
+    else 
+      return (phoneNo.matches("\\(\\d{3}\\)-\\d{3}-\\d{4}"));
   }
 
   public static Map<String, String> getEkstepHeader() {
@@ -747,15 +739,17 @@ public class ProjectUtil {
 
   public static boolean validatePhone(String phone, String countryCode) {
     PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+    String contryCode = "";
+    String phon = "";
     if (!ProjectUtil.isStringNullOREmpty(countryCode) && (countryCode.charAt(0) != '+')) {
-      countryCode = "+" + countryCode;
+      contryCode = "+" + countryCode;
     }
     try {
       if (isStringNullOREmpty(countryCode)) {
-        countryCode = PropertiesCache.getInstance().getProperty("sunbird_default_country_code");
+        contryCode = PropertiesCache.getInstance().getProperty("sunbird_default_country_code");
       }
-      phone = countryCode + "-" + phone;
-      PhoneNumber numberProto = phoneUtil.parse(phone, "");
+      phon = contryCode + "-" + phone;
+      PhoneNumber numberProto = phoneUtil.parse(phon, "");
       // phoneUtil.isValidNumber(number)
       ProjectLogger.log("Number is of region - " + numberProto.getCountryCode() + " "
           + phoneUtil.getRegionCodeForNumber(numberProto));
@@ -764,7 +758,7 @@ public class ProjectUtil {
       return phoneUtil.isValidNumber(numberProto);
     } catch (NumberParseException e) {
       ProjectLogger.log("Exception occurred while validating phone number : ", e);
-      ProjectLogger.log(phone + "this phone no. is not a valid one.");
+      ProjectLogger.log(phon + "this phone no. is not a valid one.");
     }
     return false;
   }

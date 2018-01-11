@@ -13,9 +13,12 @@ import org.sunbird.common.models.response.Response;
  */
 public class ExecutionContext {
 
-    public static String USER_ID = "userId";
-    public static String USER_ROLE = "userRole";
+    public static final String USER_ID = "userId";
+    public static final String USER_ROLE = "userRole";
+    private Stack<String> serviceCallStack = new Stack<>();
 
+    private Map<String, Map<String, Object>> contextStackValues = new HashMap<>();
+    private Map<String, Object> globalContext = new HashMap<>();
     private static ThreadLocal<ExecutionContext> context = new ThreadLocal<ExecutionContext>() {
 
         @Override
@@ -37,11 +40,6 @@ public class ExecutionContext {
     public static String getRequestId() {
         return (String) ExecutionContext.getCurrent().getGlobalContext().get(HeaderParam.REQUEST_ID.getParamName());
     }
-
-    Stack<String> serviceCallStack = new Stack<>();
-
-    private Map<String, Map<String, Object>> contextStackValues = new HashMap<>();
-    private Map<String, Object> globalContext = new HashMap<>();
 
     public Map<String, Object> getContextValues() {
         String serviceCallStack = getServiceCallStack();
@@ -99,7 +97,7 @@ public class ExecutionContext {
     public String getServiceCallStack() {
         String serviceCallPath = "";
         for (String value : serviceCallStack) {
-            if (serviceCallPath.equals(""))
+            if ("".equals(serviceCallPath))
                 serviceCallPath = value;
             else
                 serviceCallPath = serviceCallPath + "/" + value;

@@ -125,19 +125,13 @@ public final class RequestValidator {
           ResponseCode.emailorPhoneRequired.getErrorMessage(), ERROR_CODE);
     }
 
-    // Email is always mandatory for both External as well as our internal portal
-    /*
-     * if (ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
-     * throw new ProjectCommonException(ResponseCode.emailRequired.getErrorCode(),
-     * ResponseCode.emailRequired.getErrorMessage(), ERROR_CODE); }
-     */
     if (!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.EMAIL))
         && !ProjectUtil.isEmailvalid((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
       throw new ProjectCommonException(ResponseCode.emailFormatError.getErrorCode(),
           ResponseCode.emailFormatError.getErrorMessage(), ERROR_CODE);
     }
-    if (!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PROVIDER))) {
-      if (!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PHONE))) {
+    if (!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PROVIDER)) 
+          && !ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PHONE))) {
         if (null != userRequest.getRequest().get(JsonKey.PHONE_VERIFIED)) {
           if (userRequest.getRequest().get(JsonKey.PHONE_VERIFIED) instanceof Boolean) {
             if (!((boolean) userRequest.getRequest().get(JsonKey.PHONE_VERIFIED))) {
@@ -153,15 +147,7 @@ public final class RequestValidator {
               ResponseCode.phoneVerifiedError.getErrorMessage(), ERROR_CODE);
         }
       }
-      /*
-       * if (null == userRequest.getRequest().get(JsonKey.EMAIL_VERIFIED) || !((boolean)
-       * userRequest.getRequest().get(JsonKey.EMAIL_VERIFIED))) { throw new
-       * ProjectCommonException(ResponseCode.emailVerifiedError.getErrorCode(),
-       * ResponseCode.emailVerifiedError.getErrorMessage(), ERROR_CODE); }
-       */
-
-    }
-  }
+   }
   
   /**
    * This method will do basic validation for user request object.
@@ -1000,21 +986,21 @@ public final class RequestValidator {
    * @param request
    */
   public static void validateAssignRole(Request request) {
-    if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.USER_ID))) {
-      if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.EXTERNAL_ID))
-          || ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.PROVIDER))) {
+   if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.USER_ID)) 
+          && (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.EXTERNAL_ID))
+          || ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.PROVIDER)))) {
         throw new ProjectCommonException(
             ResponseCode.sourceAndExternalIdValidationError.getErrorCode(),
             ResponseCode.sourceAndExternalIdValidationError.getErrorMessage(), ERROR_CODE);
       }
-    }
+    
     if (request.getRequest().get(JsonKey.ROLES) == null
         || !(request.getRequest().get(JsonKey.ROLES) instanceof List)) {
       throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(), ProjectUtil
           .formatMessage(ResponseCode.dataTypeError.getErrorMessage(), JsonKey.ROLES, JsonKey.LIST),
           ERROR_CODE);
     }
-  }
+}
 
   /**
    * courseId : Should be a valid courseId under EKStep. name : should not be null or empty

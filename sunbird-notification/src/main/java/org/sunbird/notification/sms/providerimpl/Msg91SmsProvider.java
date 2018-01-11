@@ -78,11 +78,12 @@ public class Msg91SmsProvider implements ISmsProvider {
    
     @Override
   public boolean send(String phoneNumber, String countryCode, String smsText) {
-    countryCode = countryCode.replace("+", "");
+      String ctryCode = "";
+          ctryCode = countryCode.replace("+", "");
     if ("POST".equalsIgnoreCase(smsMethodType)) {
-      return sendSmsUsingPost(phoneNumber, countryCode, smsText);
+      return sendSmsUsingPost(phoneNumber, ctryCode, smsText);
     }
-    return sendSmsGetMethod(phoneNumber, countryCode, smsText);
+    return sendSmsGetMethod(phoneNumber, ctryCode, smsText);
   }
     
   /**

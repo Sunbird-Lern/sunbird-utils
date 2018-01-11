@@ -21,7 +21,7 @@ import org.sunbird.services.sso.SSOServiceFactory;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class KeyCloakServiceImplTest {
 
-    SSOManager keyCloakService = SSOServiceFactory.getInstance();
+    private SSOManager keyCloakService = SSOServiceFactory.getInstance();
 
     private static Map<String,String> userId ;
     private final static String userName = UUID.randomUUID().toString().replaceAll("-", "");

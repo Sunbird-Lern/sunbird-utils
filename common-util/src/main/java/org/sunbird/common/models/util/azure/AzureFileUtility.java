@@ -117,15 +117,9 @@ public class AzureFileUtility {
       blob.upload(fis, source.length());
       //fileUrl = blob.getStorageUri().getPrimaryUri().getPath();
       fileUrl = blob.getUri().toString();
-    } catch (URISyntaxException e) {
+    } catch (URISyntaxException | IOException  e) {
       ProjectLogger.log("Unable to upload file :"+fileName , e);
-    } catch (StorageException e) {
-      ProjectLogger.log("Unable to upload file :"+fileName , e);
-    } catch (FileNotFoundException e) {
-      ProjectLogger.log("Unable to upload file :"+fileName , e);
-    } catch (IOException e) {
-      ProjectLogger.log("Unable to upload file :"+fileName , e);
-    }catch (Exception e) {
+    } catch (Exception e) {
     	ProjectLogger.log(e.getMessage() , e);
 	}finally {
       if(null != fis){
@@ -146,17 +140,18 @@ public class AzureFileUtility {
     String containerPath ="";
     String filePath="";
     Tika tika = new Tika();
+    String contrName = containerName;
 
     if(ProjectUtil.isStringNullOREmpty(containerName)){
-      containerName = DEFAULT_CONTAINER;
+      contrName = DEFAULT_CONTAINER;
     }else{
-      containerName = containerName.toLowerCase();
+      contrName = containerName.toLowerCase();
     }
     if(containerName.startsWith("/")){
-      containerName = containerName.substring(1);
+      contrName = containerName.substring(1);
     }
-    if(containerName.contains("/")){
-      String arr[]=containerName.split("/", 2);
+    if(contrName.contains("/")){
+      String[] arr=contrName.split("/", 2);
       containerPath = arr[0];
       if(arr[1].length()>0 && arr[1].endsWith("/")){
         filePath=arr[1];
@@ -164,7 +159,7 @@ public class AzureFileUtility {
         filePath=arr[1]+"/";
       }
     }else{
-      containerPath = containerName;
+      containerPath = contrName;
     }
 
     CloudBlobContainer container = AzureConnectionManager.getContainer(containerPath,true);
@@ -182,15 +177,9 @@ public class AzureFileUtility {
       blob.upload(fis, source.length());
       //fileUrl = blob.getStorageUri().getPrimaryUri().getPath();
       fileUrl = blob.getUri().toString();
-    } catch (URISyntaxException e) {
+    } catch (URISyntaxException | IOException e) {
       ProjectLogger.log("Unable to upload file :"+source.getName() , e);
-    } catch (StorageException e) {
-      ProjectLogger.log("Unable to upload file :"+source.getName() , e);
-    } catch (FileNotFoundException e) {
-      ProjectLogger.log("Unable to upload file :"+source.getName() , e);
-    } catch (IOException e) {
-      ProjectLogger.log("Unable to upload file :"+source.getName() , e);
-    }catch (Exception e) {
+    } catch (Exception e) {
     	ProjectLogger.log(e.getMessage() , e);
 	}finally {
       if(null != fis){
@@ -208,7 +197,7 @@ public class AzureFileUtility {
 
   public static boolean downloadFile(String containerName , String blobName , String downloadFolder){
 
-
+    String dwnldFolder = "";
     boolean flag = false;
     CloudBlobContainer container = AzureConnectionManager.getContainer(containerName,true);
     // Create or overwrite  blob with contents .
@@ -219,19 +208,15 @@ public class AzureFileUtility {
       blob = container.getBlockBlobReference(blobName);
       if(blob.exists()) {
         if(!(downloadFolder.endsWith(("/")))){
-          downloadFolder = downloadFolder+"/";
+          dwnldFolder = downloadFolder+"/";
         }
-        File file = new File(downloadFolder + blobName);
+        File file = new File(dwnldFolder + blobName);
         fos = new FileOutputStream(file);
         blob.download(fos);
       }
-    } catch (URISyntaxException e) {
+    } catch (URISyntaxException | StorageException | FileNotFoundException e) {
       ProjectLogger.log("Unable to upload blobfile :"+blobName , e);
-    } catch (StorageException e) {
-      ProjectLogger.log("Unable to upload file :"+blobName , e);
-    } catch (FileNotFoundException e) {
-      ProjectLogger.log("Unable to upload file :"+blobName , e);
-    }catch (Exception e) {
+    } catch (Exception e) {
     	ProjectLogger.log(e.getMessage() , e); 
 	}finally {
       if(null != fos){
@@ -250,9 +235,10 @@ public class AzureFileUtility {
     List<String> blobsList = new ArrayList<>();
     CloudBlobContainer container = AzureConnectionManager.getContainer(containerName,true);
     // Loop over blobs within the container and output the URI to each of them.
-    if(container != null)
-    for (ListBlobItem blobItem : container.listBlobs()) {
-      blobsList.add(blobItem.getUri().toString());
+    if(container != null) {
+      for (ListBlobItem blobItem : container.listBlobs()) {
+        blobsList.add(blobItem.getUri().toString());
+      }
     }
     return blobsList;
   }

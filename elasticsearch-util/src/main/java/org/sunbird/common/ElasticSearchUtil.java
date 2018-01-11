@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -39,7 +40,6 @@ import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.CommonTermsQueryBuilder;
 import org.elasticsearch.index.query.ExistsQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -570,16 +570,14 @@ public class ElasticSearchUtil {
 
   private static Map<String, Float> getConstraints(SearchDTO searchDTO) {
 
-    if (!(searchDTO.getMode().isEmpty())) {
-      if (searchDTO.getMode().contains(SOFT_MODE)) {
+      if (!(searchDTO.getMode().isEmpty()) && searchDTO.getMode().contains(SOFT_MODE)) {
         return searchDTO.getSoftConstraints().entrySet().stream()
             .collect(Collectors.toMap(
                 e -> e.getKey(),
                 e -> e.getValue().floatValue()
             ));
       }
-    }
-    return new HashMap<String, Float>();
+    return Collections.emptyMap();
   }
 
   private static SearchRequestBuilder getSearchBuilder(TransportClient client, String index,

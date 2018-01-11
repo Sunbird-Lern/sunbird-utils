@@ -2,9 +2,7 @@ package org.sunbird.notification.sms;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -19,11 +17,6 @@ import org.sunbird.notification.utils.SMSFactory;
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class Message91Test {
-  
-  @BeforeClass
-  public static void setUp() {
-    
-  }
   
   @Test
   public void testSuccessInit() {

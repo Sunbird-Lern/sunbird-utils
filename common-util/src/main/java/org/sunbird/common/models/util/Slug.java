@@ -69,16 +69,17 @@ public class Slug {
 	}
 
 	public static String urlDecode(String input) {
+	  String value = "";
 		try {
-			input = URLDecoder.decode(input, "UTF-8");
+		  value = URLDecoder.decode(input, "UTF-8");
 		} catch (Exception ex) {
 			ProjectLogger.log(ex.getMessage(), ex);
 		}
-		return input;
+		return value;
 	}
 
 	public static String removeDuplicateChars(String text) {
-		Set<Character> set = new LinkedHashSet<Character>();
+		Set<Character> set = new LinkedHashSet<>();
 		StringBuilder ret = new StringBuilder(text.length());
 		if (text.length() == 0) {
 			return "";

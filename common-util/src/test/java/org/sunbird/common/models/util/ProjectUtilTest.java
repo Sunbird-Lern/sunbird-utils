@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.velocity.VelocityContext;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.request.Request;
@@ -22,11 +21,6 @@ import org.sunbird.common.responsecode.ResponseCode;
 public class ProjectUtilTest {
 
   private  PropertiesCache propertiesCache = ProjectUtil.propertiesCache;
-
-  @BeforeClass
-  public static void setUp(){
-
-  }
 
   @Test
   public void testMailTemplateContextNameAsent(){

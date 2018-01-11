@@ -406,10 +406,10 @@ public class CourseBatchValidatorTest {
 			RequestValidator.validatePublishCourse(request);
 			response = true;
 		} catch (ProjectCommonException e) {
-			Assert.assertEquals(ResponseCode.courseIdRequiredError.getErrorCode(), e.getCode());
-			Assert.assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+			assertEquals(ResponseCode.courseIdRequiredError.getErrorCode(), e.getCode());
+			assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
 		}
-		Assert.assertEquals(false, response);
+		assertEquals(false, response);
 	}
 
 	@Test
@@ -425,7 +425,7 @@ public class CourseBatchValidatorTest {
 		} catch (ProjectCommonException e) {
 			Assert.assertNull(e);
 		}
-		Assert.assertEquals(true, response);
+		assertEquals(true, response);
 	}
 
 	@Test
@@ -438,10 +438,10 @@ public class CourseBatchValidatorTest {
 			RequestValidator.validateDeleteCourse(request);
 			response = true;
 		} catch (ProjectCommonException e) {
-			Assert.assertEquals(ResponseCode.courseIdRequiredError.getErrorCode(), e.getCode());
-			Assert.assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+			assertEquals(ResponseCode.courseIdRequiredError.getErrorCode(), e.getCode());
+			assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
 		}
-		Assert.assertEquals(false, response);
+		assertEquals(false, response);
 	}
 
 }
