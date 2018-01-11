@@ -331,21 +331,12 @@ public final class RequestValidator {
       }
     }
     if (!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PROVIDER))) {
-
-      if (!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
-
-        if (!ProjectUtil.isEmailvalid((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
+        if (!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.EMAIL)) 
+            && !ProjectUtil.isEmailvalid((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
           throw new ProjectCommonException(ResponseCode.emailFormatError.getErrorCode(),
               ResponseCode.emailFormatError.getErrorMessage(), ERROR_CODE);
         }
-        /*
-         * if (null == userRequest.getRequest().get(JsonKey.EMAIL_VERIFIED) || !((boolean)
-         * userRequest.getRequest().get(JsonKey.EMAIL_VERIFIED))) { throw new
-         * ProjectCommonException(ResponseCode.emailVerifiedError.getErrorCode(),
-         * ResponseCode.emailVerifiedError.getErrorMessage(), ERROR_CODE); }
-         */
-      }
-
+        
       if (!ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.PHONE))) {
         if (null != userRequest.getRequest().get(JsonKey.PHONE_VERIFIED)) {
           if (userRequest.getRequest().get(JsonKey.PHONE_VERIFIED) instanceof Boolean) {
