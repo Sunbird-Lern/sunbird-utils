@@ -231,7 +231,6 @@ public class ElasticSearchUtilTest {
         searchDTO.setAdditionalProperties(additionalProperties);
         searchDTO.setQuery("organisation");
         Map map = ElasticSearchUtil.complexSearch(searchDTO,indexName , typeName);
-        List response = (List) map.get(JsonKey.RESPONSE);
         assertEquals(2 , map.size());
     }
     
@@ -597,7 +596,8 @@ public class ElasticSearchUtilTest {
   }
   @Test
   public void mappingAddOrUpdateTest () {
-    ElasticSearchUtil.addOrUpdateMapping(indexName, typeName, ElasticSearchMapping.createMapping());
+    boolean bool = ElasticSearchUtil.addOrUpdateMapping(indexName, typeName, ElasticSearchMapping.createMapping());
+    assertTrue(bool);
   }
   
   @Test
