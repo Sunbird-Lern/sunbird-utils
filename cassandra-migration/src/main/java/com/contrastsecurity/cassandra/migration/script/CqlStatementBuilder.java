@@ -16,6 +16,7 @@
 package com.contrastsecurity.cassandra.migration.script;
 
 import com.contrastsecurity.cassandra.migration.utils.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,10 @@ public class CqlStatementBuilder {
      */
     private StringBuilder statement = new StringBuilder();
 
+    /**
+     * The initial line number of this statement.
+     */
+    private int lineNumber;
 
     /**
      * Flag indicating whether the current statement is still empty.
@@ -82,6 +87,13 @@ public class CqlStatementBuilder {
     }
 
     /**
+     * @param lineNumber The initial line number of this statement.
+     */
+    public void setLineNumber(int lineNumber) {
+        this.lineNumber = lineNumber;
+    }
+
+    /**
      * @param delimiter The current delimiter to look for to terminate the statement.
      */
     public void setDelimiter(Delimiter delimiter) {
@@ -114,20 +126,23 @@ public class CqlStatementBuilder {
     }
 
     /**
-     * Analyses this line Ã¡nd extracts the new default delimiter.
+     * Analyses this line ánd extracts the new default delimiter.
      * This method is only called between statements and looks for explicit delimiter change directives.
+     * @param line Line to analyze
      * @return The new delimiter. {@code null} if it is the same as the current one.
      */
-    public Delimiter extractNewDelimiterFromLine() {
+    @SuppressWarnings("UnusedParameters")
+    public Delimiter extractNewDelimiterFromLine(String line) {
         return null;
     }
 
     /**
      * Checks whether this line is in fact a directive disguised as a comment.
      *
+     * @param line The line to analyse.
      * @return {@code true} if it is a directive that should be processed by the database, {@code false} if not.
      */
-    public boolean isCommentDirective() {
+    public boolean isCommentDirective(String line) {
         return false;
     }
 
@@ -161,11 +176,11 @@ public class CqlStatementBuilder {
             return;
         }
 
-        delimiter = changeDelimiterIfNecessary(delimiter);
+        delimiter = changeDelimiterIfNecessary(lineSimplified, delimiter);
 
         statement.append(line);
 
-        if (isCommentDirective()) {
+        if (isCommentDirective(lineSimplified)) {
             nonCommentStatementPartSeen = true;
         }
 
@@ -209,7 +224,8 @@ public class CqlStatementBuilder {
      * @param delimiter The current delimiter.
      * @return The new delimiter to use (can be the same as the current one) or {@code null} for no delimiter.
      */
-    protected Delimiter changeDelimiterIfNecessary(Delimiter delimiter) {
+    @SuppressWarnings({"UnusedDeclaration"})
+    protected Delimiter changeDelimiterIfNecessary(String line, Delimiter delimiter) {
         return delimiter;
     }
 
@@ -256,9 +272,10 @@ public class CqlStatementBuilder {
     /**
      * Extracts the alternate open quote from this token (if any).
      *
+     * @param token The token to check.
      * @return The alternate open quote. {@code null} if none.
      */
-    protected String extractAlternateOpenQuote() {
+    protected String extractAlternateOpenQuote(String token) {
         return null;
     }
 
@@ -321,13 +338,13 @@ public class CqlStatementBuilder {
      * impact on string delimiting are discarded.
      */
     private List<TokenType> extractStringLiteralDelimitingTokens(String[] tokens) {
-        List<TokenType> delimitingTokens = new ArrayList<>();
+        List<TokenType> delimitingTokens = new ArrayList<TokenType>();
         for (String token : tokens) {
             String cleanToken = cleanToken(token);
             boolean handled = false;
 
             if (alternateQuote == null) {
-                String alternateQuoteFromToken = extractAlternateOpenQuote();
+                String alternateQuoteFromToken = extractAlternateOpenQuote(cleanToken);
                 if (alternateQuoteFromToken != null) {
                     String closeQuote = computeAlternateCloseQuote(alternateQuoteFromToken);
                     if (cleanToken.length() >= (alternateQuoteFromToken.length() + closeQuote.length())
@@ -410,7 +427,7 @@ public class CqlStatementBuilder {
     /**
      * The types of tokens relevant for string delimiter related parsing.
      */
-    private enum TokenType {
+    private static enum TokenType {
         /**
          * Some other token.
          */
