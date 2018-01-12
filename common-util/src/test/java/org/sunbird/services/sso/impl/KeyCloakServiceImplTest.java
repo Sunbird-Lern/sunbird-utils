@@ -82,7 +82,7 @@ public class KeyCloakServiceImplTest {
     public void createUserTestWithSameEmailDiffUserName(){
 
         Map<String , Object> request = new HashMap<String , Object>();
-        request.put(JsonKey.USERNAME , userName+"01abc");
+        request.put(JsonKey.USERNAME , userName);
         request.put(JsonKey.PASSWORD , "password");
         request.put(JsonKey.FIRST_NAME , "A");
         request.put(JsonKey.LAST_NAME , "B");
