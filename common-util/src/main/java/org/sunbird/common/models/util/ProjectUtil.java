@@ -552,7 +552,7 @@ public class ProjectUtil {
     context.put(JsonKey.BODY, map.get(JsonKey.BODY));
     map.remove(JsonKey.BODY);
     context.put(JsonKey.FROM_EMAIL,
-        ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.EMAIL_SERVER_FROM)) == false
+        (!ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.EMAIL_SERVER_FROM)))
             ? System.getenv(JsonKey.EMAIL_SERVER_FROM)
             : ((propertiesCache.getProperty(JsonKey.EMAIL_SERVER_FROM) != null)
                 ? propertiesCache.getProperty(JsonKey.EMAIL_SERVER_FROM) : ""));

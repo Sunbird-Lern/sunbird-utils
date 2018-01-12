@@ -11,7 +11,7 @@ public abstract class FileUtil {
   protected static String getListValue(Object obj) {
     List<Object> data = (List<Object>) obj;
     if (!(data.isEmpty())) {
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       for (Object value : data) {
         sb.append((String) value).append(",");
       }
@@ -22,10 +22,11 @@ public abstract class FileUtil {
   }
 
   public static FileUtil getFileUtil(String format) {
+    String tempformat = "";
     if (ProjectUtil.isStringNullOREmpty(format)) {
-      format = format.toLowerCase();
+      tempformat = format.toLowerCase();
     }
-    switch (format) {
+    switch (tempformat) {
       case "excel":
         return (new ExcelFileUtil());
       default:

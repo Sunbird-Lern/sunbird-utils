@@ -103,7 +103,7 @@ public class ExecutionContext {
                 serviceCallPath = serviceCallPath + "/" + value;
         }
 
-        if (serviceCallPath.equals("")) {
+        if ("".equals(serviceCallPath)) {
             serviceCallStack.push("default");
             return "default";
         }
