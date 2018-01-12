@@ -18,14 +18,15 @@ public class DefaultDataMaskServiceImpl implements DataMaskingService {
     if (ProjectUtil.isStringNullOREmpty(phone) || phone.length() < 10) {
       return phone;
     }
+    String tempPhone = "";
     StringBuilder builder = new StringBuilder();
-    phone = phone.trim().replace("-", "");
-    int length = phone.length();
+    tempPhone = phone.trim().replace("-", "");
+    int length = tempPhone.length();
     for (int i = 0; i < length; i++) {
       if (i < length - 4) {
         builder.append(JsonKey.REPLACE_WITH_ASTERISK);
       } else {
-        builder.append(phone.charAt(i));
+        builder.append(tempPhone.charAt(i));
       }
     }
     return builder.toString();
@@ -37,7 +38,7 @@ public class DefaultDataMaskServiceImpl implements DataMaskingService {
       return email;
     }
     StringBuilder builder = new StringBuilder();
-    String emails[] = email.split("@");
+    String[] emails = email.split("@");
     int length = emails[0].length();
     for (int i = 0; i < email.length(); i++) {
       if (i < 2 || i >= length) {
