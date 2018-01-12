@@ -106,7 +106,7 @@ public class CassandraMigration {
     		}
     	});
     
-    	if (validationError != null) {
+    	if (validationError != null && ! validationError.contains("Detected resolved migration not applied to database:")) {
     		throw new CassandraMigrationException("Validation failed. " + validationError);
     	}
     }
