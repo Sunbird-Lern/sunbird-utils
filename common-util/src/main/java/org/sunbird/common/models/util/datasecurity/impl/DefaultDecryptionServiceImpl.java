@@ -41,12 +41,9 @@ public class DefaultDecryptionServiceImpl implements DecryptionService {
       Iterator<Entry<String, Object>> itr = data.entrySet().iterator();
       while (itr.hasNext()) {
         Entry<String, Object> entry = itr.next();
-        if (entry.getValue() instanceof Map || entry.getValue() instanceof List) {
-          // Do Nothing
-        } else {
-          if (null != entry.getValue()) {
-            data.put(entry.getKey(), decrypt(entry.getValue() + ""));
-          }
+        if (!(entry.getValue() instanceof Map || entry.getValue() instanceof List)
+            && null != entry.getValue()) {
+          data.put(entry.getKey(), decrypt(entry.getValue() + ""));
         }
       }
     }
@@ -111,7 +108,7 @@ public class DefaultDecryptionServiceImpl implements DecryptionService {
     return value;
   }
 
-  private static Key generateKey(){
+  private static Key generateKey() {
     return new SecretKeySpec(keyValue, ALGORITHM);
   }
 }

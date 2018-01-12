@@ -1,5 +1,7 @@
 package org.sunbird.common.models;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,7 +59,7 @@ public class AppTest
 			data.put("search", "\"contentType\": [\"Story\"]");
 			response = HttpUtil.sendPostRequest("https://qa.ekstep.in/api/content/wrong/v3/list", data, headers);
 		} catch (Exception e) {
-			Assert.assertTrue(e instanceof FileNotFoundException);
+			assertTrue(e instanceof FileNotFoundException);
 		}
 		Assert.assertNull(response);
 	}
@@ -101,7 +103,7 @@ public class AppTest
 	@Test
 	public void testEmailValidation(){
 		boolean bool = ProjectUtil.isEmailvalid("amit.kumar@tarento.com");
-		Assert.assertTrue(bool);
+		assertTrue(bool);
 	}
 	
 	@Test

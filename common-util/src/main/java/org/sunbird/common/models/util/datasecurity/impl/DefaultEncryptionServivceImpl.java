@@ -54,12 +54,9 @@ public class DefaultEncryptionServivceImpl implements EncryptionService {
       Iterator<Entry<String, Object>> itr = data.entrySet().iterator();
       while (itr.hasNext()) {
         Entry<String, Object> entry = itr.next();
-        if (entry.getValue() instanceof Map || entry.getValue() instanceof List) {
-          // do nothing
-        } else {
-          if (null != entry.getValue()) {
-            data.put(entry.getKey(), encrypt(entry.getValue() + ""));
-          }
+        if (!(entry.getValue() instanceof Map || entry.getValue() instanceof List)
+            && null != entry.getValue()) {
+          data.put(entry.getKey(), encrypt(entry.getValue() + ""));
         }
       }
     }
