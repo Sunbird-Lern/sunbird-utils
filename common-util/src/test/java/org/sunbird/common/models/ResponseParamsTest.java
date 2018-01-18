@@ -27,9 +27,9 @@ public class ResponseParamsTest {
     Assert.assertEquals(params.getMsgid(), "test");
     Assert.assertEquals(params.getResmsgid(), "test-1");
     Assert.assertEquals(params.getStatus(), "OK");
-    Assert.assertEquals(ResponseParams.StatusType.failed.name(), "failed");
-    Assert.assertEquals(ResponseParams.StatusType.successful.name(), "successful");
-    Assert.assertEquals(ResponseParams.StatusType.warning.name(), "warning");
+    Assert.assertEquals(ResponseParams.StatusType.FAILED.name(), "FAILED");
+    Assert.assertEquals(ResponseParams.StatusType.SUCCESSFUL.name(), "SUCCESSFUL");
+    Assert.assertEquals(ResponseParams.StatusType.WARNING.name(), "WARNING");
     Assert.assertNotNull(params.toString());
   }
 }

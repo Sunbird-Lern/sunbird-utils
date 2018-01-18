@@ -18,7 +18,7 @@ public class ResponseParams implements Serializable {
 
   public enum StatusType {
 
-    successful, warning, failed;
+    SUCCESSFUL, WARNING, FAILED;
   }
 
   /**
