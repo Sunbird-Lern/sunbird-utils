@@ -192,10 +192,7 @@ public class UserRequestValidator {
    * 
    * @param userRequest
    */
-  @SuppressWarnings("unchecked")
   private static void jobProfileValidation(Request userRequest) {
-    Map<String, Object> addrReqMap = null;
-    Map<String, Object> reqMap = null;
     if (userRequest.getRequest().containsKey(JsonKey.JOB_PROFILE)
         && null != userRequest.getRequest().get(JsonKey.JOB_PROFILE)) {
       if (!(userRequest.getRequest().get(JsonKey.JOB_PROFILE) instanceof List)) {
@@ -204,41 +201,48 @@ public class UserRequestValidator {
                 JsonKey.JOB_PROFILE, JsonKey.LIST),
             ERROR_CODE);
       } else if (userRequest.getRequest().get(JsonKey.JOB_PROFILE) instanceof List) {
-        List<Map<String, Object>> reqList =
-            (List<Map<String, Object>>) userRequest.get(JsonKey.JOB_PROFILE);
-        for (int i = 0; i < reqList.size(); i++) {
-          reqMap = reqList.get(i);
-          if (null != reqMap.get(JsonKey.JOINING_DATE)) {
-            boolean bool = ProjectUtil.isDateValidFormat(ProjectUtil.YEAR_MONTH_DATE_FORMAT,
-                (String) reqMap.get(JsonKey.JOINING_DATE));
-            if (!bool) {
-              throw new ProjectCommonException(ResponseCode.dateFormatError.getErrorCode(),
-                  ResponseCode.dateFormatError.getErrorMessage(), ERROR_CODE);
-            }
-          }
-          if (null != reqMap.get(JsonKey.END_DATE)) {
-            boolean bool = ProjectUtil.isDateValidFormat(ProjectUtil.YEAR_MONTH_DATE_FORMAT,
-                (String) reqMap.get(JsonKey.END_DATE));
-            if (!bool) {
-              throw new ProjectCommonException(ResponseCode.dateFormatError.getErrorCode(),
-                  ResponseCode.dateFormatError.getErrorMessage(), ERROR_CODE);
-            }
-          }
-          if (ProjectUtil.isStringNullOREmpty((String) reqMap.get(JsonKey.JOB_NAME))) {
-            throw new ProjectCommonException(ResponseCode.jobNameError.getErrorCode(),
-                ResponseCode.jobNameError.getErrorMessage(), ERROR_CODE);
-          }
-          if (ProjectUtil.isStringNullOREmpty((String) reqMap.get(JsonKey.ORG_NAME))) {
-            throw new ProjectCommonException(ResponseCode.organisationNameError.getErrorCode(),
-                ResponseCode.organisationNameError.getErrorMessage(), ERROR_CODE);
-          }
-          if (reqMap.containsKey(JsonKey.ADDRESS) && null != reqMap.get(JsonKey.ADDRESS)) {
-            addrReqMap = (Map<String, Object>) reqMap.get(JsonKey.ADDRESS);
-            validateAddress(addrReqMap, JsonKey.JOB_PROFILE);
-          }
-        }
+        validateJob(userRequest);
       }
     }
+  }
+
+  private static void validateJob(Request userRequest) {
+    Map<String, Object> addrReqMap = null;
+    Map<String, Object> reqMap = null;
+    List<Map<String, Object>> reqList =
+        (List<Map<String, Object>>) userRequest.get(JsonKey.JOB_PROFILE);
+    for (int i = 0; i < reqList.size(); i++) {
+      reqMap = reqList.get(i);
+      if (null != reqMap.get(JsonKey.JOINING_DATE)) {
+        boolean bool = ProjectUtil.isDateValidFormat(ProjectUtil.YEAR_MONTH_DATE_FORMAT,
+            (String) reqMap.get(JsonKey.JOINING_DATE));
+        if (!bool) {
+          throw new ProjectCommonException(ResponseCode.dateFormatError.getErrorCode(),
+              ResponseCode.dateFormatError.getErrorMessage(), ERROR_CODE);
+        }
+      }
+      if (null != reqMap.get(JsonKey.END_DATE)) {
+        boolean bool = ProjectUtil.isDateValidFormat(ProjectUtil.YEAR_MONTH_DATE_FORMAT,
+            (String) reqMap.get(JsonKey.END_DATE));
+        if (!bool) {
+          throw new ProjectCommonException(ResponseCode.dateFormatError.getErrorCode(),
+              ResponseCode.dateFormatError.getErrorMessage(), ERROR_CODE);
+        }
+      }
+      if (ProjectUtil.isStringNullOREmpty((String) reqMap.get(JsonKey.JOB_NAME))) {
+        throw new ProjectCommonException(ResponseCode.jobNameError.getErrorCode(),
+            ResponseCode.jobNameError.getErrorMessage(), ERROR_CODE);
+      }
+      if (ProjectUtil.isStringNullOREmpty((String) reqMap.get(JsonKey.ORG_NAME))) {
+        throw new ProjectCommonException(ResponseCode.organisationNameError.getErrorCode(),
+            ResponseCode.organisationNameError.getErrorMessage(), ERROR_CODE);
+      }
+      if (reqMap.containsKey(JsonKey.ADDRESS) && null != reqMap.get(JsonKey.ADDRESS)) {
+        addrReqMap = (Map<String, Object>) reqMap.get(JsonKey.ADDRESS);
+        validateAddress(addrReqMap, JsonKey.JOB_PROFILE);
+      }
+    }
+
   }
 
   @SuppressWarnings("unchecked")
@@ -307,7 +311,7 @@ public class UserRequestValidator {
    * 
    * @param userRequest Request
    */
-  @SuppressWarnings({"rawtypes", "unchecked"})
+  @SuppressWarnings({"rawtypes"})
   public static void validateUpdateUser(Request userRequest) {
 
     phoneValidation(userRequest);
@@ -330,70 +334,80 @@ public class UserRequestValidator {
 
     if (userRequest.getRequest().get(JsonKey.ADDRESS) != null
         && (!((List) userRequest.getRequest().get(JsonKey.ADDRESS)).isEmpty())) {
-
-      List<Map<String, Object>> reqList =
-          (List<Map<String, Object>>) userRequest.get(JsonKey.ADDRESS);
-      for (int i = 0; i < reqList.size(); i++) {
-        Map<String, Object> reqMap = reqList.get(i);
-
-        if (reqMap.containsKey(JsonKey.IS_DELETED) && null != reqMap.get(JsonKey.IS_DELETED)
-            && ((boolean) reqMap.get(JsonKey.IS_DELETED))
-            && ProjectUtil.isStringNullOREmpty((String) reqMap.get(JsonKey.ID))) {
-          throw new ProjectCommonException(ResponseCode.idRequired.getErrorCode(),
-              ResponseCode.idRequired.getErrorMessage(), ERROR_CODE);
-        }
-        if (!reqMap.containsKey(JsonKey.IS_DELETED)
-            || (reqMap.containsKey(JsonKey.IS_DELETED) && (null == reqMap.get(JsonKey.IS_DELETED)
-                || !(boolean) reqMap.get(JsonKey.IS_DELETED)))) {
-          validateAddress(reqMap, JsonKey.ADDRESS);
-        }
-      }
+      validateUpdateUserAddress(userRequest);
     }
 
     if (userRequest.getRequest().get(JsonKey.JOB_PROFILE) != null
         && (!((List) userRequest.getRequest().get(JsonKey.JOB_PROFILE)).isEmpty())) {
-
-      List<Map<String, Object>> reqList =
-          (List<Map<String, Object>>) userRequest.get(JsonKey.JOB_PROFILE);
-      for (int i = 0; i < reqList.size(); i++) {
-        Map<String, Object> reqMap = reqList.get(i);
-        if (reqMap.containsKey(JsonKey.IS_DELETED) && null != reqMap.get(JsonKey.IS_DELETED)
-            && ((boolean) reqMap.get(JsonKey.IS_DELETED))
-            && ProjectUtil.isStringNullOREmpty((String) reqMap.get(JsonKey.ID))) {
-          throw new ProjectCommonException(ResponseCode.idRequired.getErrorCode(),
-              ResponseCode.idRequired.getErrorMessage(), ERROR_CODE);
-        }
-        if (!reqMap.containsKey(JsonKey.IS_DELETED)
-            || (reqMap.containsKey(JsonKey.IS_DELETED) && (null == reqMap.get(JsonKey.IS_DELETED)
-                || !(boolean) reqMap.get(JsonKey.IS_DELETED)))) {
-          jobProfileValidation(userRequest);
-        }
-      }
+      validateUpdateUserJobProfile(userRequest);
     }
     if (userRequest.getRequest().get(JsonKey.EDUCATION) != null
         && (!((List) userRequest.getRequest().get(JsonKey.EDUCATION)).isEmpty())) {
-
-      List<Map<String, Object>> reqList =
-          (List<Map<String, Object>>) userRequest.get(JsonKey.EDUCATION);
-      for (int i = 0; i < reqList.size(); i++) {
-        Map<String, Object> reqMap = reqList.get(i);
-        if (reqMap.containsKey(JsonKey.IS_DELETED) && null != reqMap.get(JsonKey.IS_DELETED)
-            && ((boolean) reqMap.get(JsonKey.IS_DELETED))
-            && ProjectUtil.isStringNullOREmpty((String) reqMap.get(JsonKey.ID))) {
-          throw new ProjectCommonException(ResponseCode.idRequired.getErrorCode(),
-              ResponseCode.idRequired.getErrorMessage(), ERROR_CODE);
-        }
-        if (!reqMap.containsKey(JsonKey.IS_DELETED)
-            || (reqMap.containsKey(JsonKey.IS_DELETED) && (null == reqMap.get(JsonKey.IS_DELETED)
-                || !(boolean) reqMap.get(JsonKey.IS_DELETED)))) {
-          educationValidation(userRequest);
-        }
-      }
+      validateUpdateUserEducation(userRequest);
     }
     if (userRequest.getRequest().containsKey(JsonKey.ROOT_ORG_ID) && ProjectUtil
         .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.ROOT_ORG_ID))) {
       throw new ProjectCommonException(ResponseCode.invalidRootOrganisationId.getErrorCode(),
           ResponseCode.invalidRootOrganisationId.getErrorMessage(), ERROR_CODE);
+    }
+  }
+
+  private static void validateUpdateUserEducation(Request userRequest) {
+    List<Map<String, Object>> reqList =
+        (List<Map<String, Object>>) userRequest.get(JsonKey.EDUCATION);
+    for (int i = 0; i < reqList.size(); i++) {
+      Map<String, Object> reqMap = reqList.get(i);
+      if (reqMap.containsKey(JsonKey.IS_DELETED) && null != reqMap.get(JsonKey.IS_DELETED)
+          && ((boolean) reqMap.get(JsonKey.IS_DELETED))
+          && ProjectUtil.isStringNullOREmpty((String) reqMap.get(JsonKey.ID))) {
+        throw new ProjectCommonException(ResponseCode.idRequired.getErrorCode(),
+            ResponseCode.idRequired.getErrorMessage(), ERROR_CODE);
+      }
+      if (!reqMap.containsKey(JsonKey.IS_DELETED)
+          || (reqMap.containsKey(JsonKey.IS_DELETED) && (null == reqMap.get(JsonKey.IS_DELETED)
+              || !(boolean) reqMap.get(JsonKey.IS_DELETED)))) {
+        educationValidation(userRequest);
+      }
+    }
+  }
+
+  private static void validateUpdateUserJobProfile(Request userRequest) {
+    List<Map<String, Object>> reqList =
+        (List<Map<String, Object>>) userRequest.get(JsonKey.JOB_PROFILE);
+    for (int i = 0; i < reqList.size(); i++) {
+      Map<String, Object> reqMap = reqList.get(i);
+      if (reqMap.containsKey(JsonKey.IS_DELETED) && null != reqMap.get(JsonKey.IS_DELETED)
+          && ((boolean) reqMap.get(JsonKey.IS_DELETED))
+          && ProjectUtil.isStringNullOREmpty((String) reqMap.get(JsonKey.ID))) {
+        throw new ProjectCommonException(ResponseCode.idRequired.getErrorCode(),
+            ResponseCode.idRequired.getErrorMessage(), ERROR_CODE);
+      }
+      if (!reqMap.containsKey(JsonKey.IS_DELETED)
+          || (reqMap.containsKey(JsonKey.IS_DELETED) && (null == reqMap.get(JsonKey.IS_DELETED)
+              || !(boolean) reqMap.get(JsonKey.IS_DELETED)))) {
+        jobProfileValidation(userRequest);
+      }
+    }
+
+  }
+
+  private static void validateUpdateUserAddress(Request userRequest) {
+    List<Map<String, Object>> reqList =
+        (List<Map<String, Object>>) userRequest.get(JsonKey.ADDRESS);
+    for (int i = 0; i < reqList.size(); i++) {
+      Map<String, Object> reqMap = reqList.get(i);
+
+      if (reqMap.containsKey(JsonKey.IS_DELETED) && null != reqMap.get(JsonKey.IS_DELETED)
+          && ((boolean) reqMap.get(JsonKey.IS_DELETED))
+          && ProjectUtil.isStringNullOREmpty((String) reqMap.get(JsonKey.ID))) {
+        throw new ProjectCommonException(ResponseCode.idRequired.getErrorCode(),
+            ResponseCode.idRequired.getErrorMessage(), ERROR_CODE);
+      }
+      if (!reqMap.containsKey(JsonKey.IS_DELETED)
+          || (reqMap.containsKey(JsonKey.IS_DELETED) && (null == reqMap.get(JsonKey.IS_DELETED)
+              || !(boolean) reqMap.get(JsonKey.IS_DELETED)))) {
+        validateAddress(reqMap, JsonKey.ADDRESS);
+      }
     }
   }
 
@@ -414,30 +428,28 @@ public class UserRequestValidator {
 
     if (userRequest.getRequest().containsKey(JsonKey.ROLES)
         && null != userRequest.getRequest().get(JsonKey.ROLES)) {
-      if (!(userRequest.getRequest().get(JsonKey.ROLES) instanceof List)) {
+      if (userRequest.getRequest().get(JsonKey.ROLES) instanceof List
+          && ((List) userRequest.getRequest().get(JsonKey.ROLES)).isEmpty()) {
+        throw new ProjectCommonException(ResponseCode.rolesRequired.getErrorCode(),
+            ResponseCode.rolesRequired.getErrorMessage(), ERROR_CODE);
+      } else {
         throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
             ProjectUtil.formatMessage(ResponseCode.dataTypeError.getErrorMessage(), JsonKey.ROLES,
                 JsonKey.LIST),
             ERROR_CODE);
       }
-      if (userRequest.getRequest().get(JsonKey.ROLES) instanceof List
-          && ((List) userRequest.getRequest().get(JsonKey.ROLES)).isEmpty()) {
-        throw new ProjectCommonException(ResponseCode.rolesRequired.getErrorCode(),
-            ResponseCode.rolesRequired.getErrorMessage(), ERROR_CODE);
-      }
     }
     if (userRequest.getRequest().containsKey(JsonKey.LANGUAGE)
         && null != userRequest.getRequest().get(JsonKey.LANGUAGE)) {
-      if (!(userRequest.getRequest().get(JsonKey.LANGUAGE) instanceof List)) {
-        throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
-            ProjectUtil.formatMessage(ResponseCode.dataTypeError.getErrorMessage(),
-                JsonKey.LANGUAGE, JsonKey.LIST),
-            ERROR_CODE);
-      }
       if (userRequest.getRequest().get(JsonKey.LANGUAGE) instanceof List
           && ((List) userRequest.getRequest().get(JsonKey.LANGUAGE)).isEmpty()) {
         throw new ProjectCommonException(ResponseCode.languageRequired.getErrorCode(),
             ResponseCode.languageRequired.getErrorMessage(), ERROR_CODE);
+      } else {
+        throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
+            ProjectUtil.formatMessage(ResponseCode.dataTypeError.getErrorMessage(),
+                JsonKey.LANGUAGE, JsonKey.LIST),
+            ERROR_CODE);
       }
     }
   }

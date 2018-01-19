@@ -30,6 +30,5 @@ public class ResponseParamsTest {
     Assert.assertEquals(ResponseParams.StatusType.FAILED.name(), "FAILED");
     Assert.assertEquals(ResponseParams.StatusType.SUCCESSFUL.name(), "SUCCESSFUL");
     Assert.assertEquals(ResponseParams.StatusType.WARNING.name(), "WARNING");
-    Assert.assertNotNull(params.toString());
   }
 }

@@ -64,6 +64,7 @@ public class ProjectUtil {
     initializeMailTemplateMap();
     propertiesCache = PropertiesCache.getInstance();
   }
+
   /**
    * @author Manzarul
    */
@@ -221,7 +222,7 @@ public class ProjectUtil {
    * @return
    */
   public static boolean isStringNullOREmpty(String value) {
-     return (value == null || "".equals(value.trim()));
+    return (value == null || "".equals(value.trim()));
   }
 
   /**
@@ -540,55 +541,54 @@ public class ProjectUtil {
   public static VelocityContext getContext(Map<String, Object> map) {
     propertiesCache = PropertiesCache.getInstance();
     VelocityContext context = new VelocityContext();
-
     if (!ProjectUtil.isStringNullOREmpty((String) map.get(JsonKey.ACTION_URL))) {
-      context.put(JsonKey.ACTION_URL, map.get(JsonKey.ACTION_URL));
-      map.remove(JsonKey.ACTION_URL);
+      context.put(JsonKey.ACTION_URL, getValue(map, JsonKey.ACTION_URL));
     }
     if (!ProjectUtil.isStringNullOREmpty((String) map.get(JsonKey.NAME))) {
-      context.put(JsonKey.NAME, (String) map.get(JsonKey.NAME));
-      map.remove(JsonKey.NAME);
+      context.put(JsonKey.NAME, getValue(map, JsonKey.NAME));
     }
-    context.put(JsonKey.BODY, map.get(JsonKey.BODY));
-    map.remove(JsonKey.BODY);
-    context.put(JsonKey.FROM_EMAIL,
-        (!ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.EMAIL_SERVER_FROM)))
-            ? System.getenv(JsonKey.EMAIL_SERVER_FROM)
-            : ((propertiesCache.getProperty(JsonKey.EMAIL_SERVER_FROM) != null)
-                ? propertiesCache.getProperty(JsonKey.EMAIL_SERVER_FROM) : ""));
-    context.put(JsonKey.ORG_NAME, (String) map.get(JsonKey.ORG_NAME));
-    map.remove(JsonKey.ORG_NAME);
-    // add image url in the mail
-    String sunbirdLogUrlFromCache =
-        PropertiesCache.getInstance().getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL);
-    if (!ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL))
-        || !ProjectUtil
-            .isStringNullOREmpty(propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL))) {
-      String logoUrl = null;
-      if (!ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL))) {
-        logoUrl = System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL);
-      } else if (!JsonKey.SUNBIRD_ENV_LOGO_URL.equalsIgnoreCase(sunbirdLogUrlFromCache)) {
-        logoUrl = sunbirdLogUrlFromCache;
-      }
-
-      if (!ProjectUtil.isStringNullOREmpty(logoUrl)) {
-        context.put(JsonKey.ORG_IMAGE_URL, logoUrl);
-      }
+    context.put(JsonKey.BODY, getValue(map, JsonKey.BODY));
+    context.put(JsonKey.FROM_EMAIL, getFromEmail());
+    context.put(JsonKey.ORG_NAME, getValue(map, JsonKey.ORG_NAME));
+    String logoUrl = getSunbirdLogoUrl();
+    if (!ProjectUtil.isStringNullOREmpty(logoUrl)) {
+      context.put(JsonKey.ORG_IMAGE_URL, logoUrl);
     }
-    context.put(JsonKey.ACTION_NAME, (String) map.get(JsonKey.ACTION_NAME));
-    map.remove(JsonKey.ACTION_NAME);
-
-    context.put(JsonKey.USERNAME, (String) map.get(JsonKey.USERNAME));
-    map.remove(JsonKey.USERNAME);
-    context.put(JsonKey.TEMPORARY_PASSWORD, (String) map.get(JsonKey.TEMPORARY_PASSWORD));
-    map.remove(JsonKey.TEMPORARY_PASSWORD);
+    context.put(JsonKey.ACTION_NAME, getValue(map, JsonKey.ACTION_NAME));
+    context.put(JsonKey.USERNAME, getValue(map, JsonKey.USERNAME));
+    context.put(JsonKey.TEMPORARY_PASSWORD, getValue(map, JsonKey.TEMPORARY_PASSWORD));
 
 
     for (Map.Entry<String, Object> entry : map.entrySet()) {
       context.put(entry.getKey(), entry.getValue());
     }
-
     return context;
+  }
+
+  private static String getSunbirdLogoUrl() {
+    if (!ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL))) {
+      return System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL);
+    } else if (!ProjectUtil
+        .isStringNullOREmpty(propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL))) {
+      return propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL);
+    }
+    return "";
+  }
+
+  private static String getFromEmail() {
+    if (!ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.EMAIL_SERVER_FROM))) {
+      return System.getenv(JsonKey.EMAIL_SERVER_FROM);
+    } else if (!ProjectUtil
+        .isStringNullOREmpty(propertiesCache.getProperty(JsonKey.EMAIL_SERVER_FROM))) {
+      return propertiesCache.getProperty(JsonKey.EMAIL_SERVER_FROM);
+    }
+    return "";
+  }
+
+  private static Object getValue(Map<String, Object> map, String key) {
+    Object value = map.get(key);
+    map.remove(key);
+    return value;
   }
 
   public static String getTemplate(Map<String, Object> map) {
@@ -719,7 +719,7 @@ public class ProjectUtil {
       return true;
     else if (phoneNo.matches("\\d{3}-\\d{3}-\\d{4}\\s(x|(ext))\\d{3,5}"))
       return true;
-    else 
+    else
       return (phoneNo.matches("\\(\\d{3}\\)-\\d{3}-\\d{4}"));
   }
 
@@ -752,8 +752,8 @@ public class ProjectUtil {
       // phoneUtil.isValidNumber(number)
       ProjectLogger.log("Number is of region - " + numberProto.getCountryCode() + " "
           + phoneUtil.getRegionCodeForNumber(numberProto));
-      ProjectLogger.log("Is the input number valid - "
-          + (phoneUtil.isValidNumber(numberProto) ? "Yes" : "No"));
+      ProjectLogger.log(
+          "Is the input number valid - " + (phoneUtil.isValidNumber(numberProto) ? "Yes" : "No"));
       return phoneUtil.isValidNumber(numberProto);
     } catch (NumberParseException e) {
       ProjectLogger.log("Exception occurred while validating phone number : ", e);
@@ -773,7 +773,7 @@ public class ProjectUtil {
     }
   }
 
-  public static String getSMSBody(String userName, String webUrl,String instanceName) {
+  public static String getSMSBody(String userName, String webUrl, String instanceName) {
     try {
       Properties props = new Properties();
       props.put("resource.loader", "class");
@@ -783,10 +783,11 @@ public class ProjectUtil {
       VelocityEngine ve = new VelocityEngine();
       ve.init(props);
 
-      Map<String,String> params = new HashMap<>();
+      Map<String, String> params = new HashMap<>();
       params.put("userName", isStringNullOREmpty(userName) ? "user_name" : userName);
       params.put("webUrl", isStringNullOREmpty(webUrl) ? "web_url" : webUrl);
-      params.put("instanceName", isStringNullOREmpty(instanceName) ? "instance_name" : instanceName);
+      params.put("instanceName",
+          isStringNullOREmpty(instanceName) ? "instance_name" : instanceName);
       Template t = ve.getTemplate("/welcomeSmsTemplate.vm");
       VelocityContext context = new VelocityContext(params);
       StringWriter writer = new StringWriter();
@@ -797,35 +798,34 @@ public class ProjectUtil {
     }
     return "";
   }
-  
+
   public static boolean isDateValidFormat(String format, String value) {
     Date date = null;
     try {
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
-        date = sdf.parse(value);
-        if (!value.equals(sdf.format(date))) {
-            date = null;
-        }
+      SimpleDateFormat sdf = new SimpleDateFormat(format);
+      date = sdf.parse(value);
+      if (!value.equals(sdf.format(date))) {
+        date = null;
+      }
     } catch (ParseException ex) {
-        ProjectLogger.log(ex.getMessage(), ex);
+      ProjectLogger.log(ex.getMessage(), ex);
     }
     return date != null;
   }
-  
+
   /**
    * This method will create a new ProjectCommonException of type server Error and throws it.
    */
-	public static void createAndThrowServerError() {
-		throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(),
-				ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
-	}
-	
-	/**
-	 * This method will create ProjectCommonException of type invalidUserDate exception 
-	 * and throws it.
-	 */
-	public static void createAndThrowInvalidUserDataException () {
-		throw new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(),
-				ResponseCode.invalidUsrData.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-	}
+  public static void createAndThrowServerError() {
+    throw new ProjectCommonException(ResponseCode.SERVER_ERROR.getErrorCode(),
+        ResponseCode.SERVER_ERROR.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());
+  }
+
+  /**
+   * This method will create ProjectCommonException of type invalidUserDate exception and throws it.
+   */
+  public static void createAndThrowInvalidUserDataException() {
+    throw new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(),
+        ResponseCode.invalidUsrData.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+  }
 }
