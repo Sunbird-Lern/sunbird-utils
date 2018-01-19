@@ -11,6 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.services.AssessmentEvaluator;
@@ -61,7 +62,7 @@ public class AppTest {
       response =
           HttpUtil.sendPostRequest("https://qa.ekstep.in/api/content/wrong/v3/list", data, headers);
     } catch (Exception e) {
-      assertTrue(e instanceof Exception);
+      ProjectLogger.log(e.getMessage(),e);
     }
     Assert.assertNull(response);
   }
