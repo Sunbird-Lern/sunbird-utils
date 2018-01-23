@@ -46,7 +46,7 @@ public class CqlMigrationResolver implements MigrationResolver {
     /**
      * The separator for cql migrations
      */
-    private final static String CQL_MIGRATION_SEPARATOR = "__";
+    private final static String CQL_MIGRATION_SEPARATOR = "_";
 
     /**
      * The suffix for cql migrations
