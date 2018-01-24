@@ -576,7 +576,11 @@ public final class JsonKey {
 	public static final String JOINING_DATE = "joiningDate";
 	public static final String RES_MSG_ID = "resmsgId";
 	public static final String API_ID = "apiId";
-	private JsonKey() {
-
-	}
+	public static final String EKSTEP_CHANNEL_REG_API_URL = "ekstep.channel.reg.api.url";
+	public static final String EKSTEP_GET_CHANNEL_LIST = "ekstep.channel.list.api.url";
+	public static final String CODE = "code";
+	public static final String CHANNEL_REG_STATUS_ID = "003";
+	public static final String CHANNEL_REG_STATUS = "channelRegStatus";
+	public static final String CHANNELS = "channels";
+	private JsonKey() {}
 }

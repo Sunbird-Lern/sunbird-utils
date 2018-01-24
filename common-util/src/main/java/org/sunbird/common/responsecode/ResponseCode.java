@@ -214,6 +214,7 @@ public enum ResponseCode {
     locationIdRequired(ResponseMessage.Key.LOCATION_ID_REQUIRED,ResponseMessage.Message.LOCATION_ID_REQUIRED),
     functionalityMissing(ResponseMessage.Key.NOT_SUPPORTED,ResponseMessage.Message.NOT_SUPPORTED),
     userNameOrUserIdRequired(ResponseMessage.Key.USERNAME_USERID_MISSING, ResponseMessage.Message.USERNAME_USERID_MISSING),
+    channelRegFailed(ResponseMessage.Key.CHANNEL_REG_FAILED, ResponseMessage.Message.CHANNEL_REG_FAILED),
     OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404),UNAUTHORIZED(401),REDIRECTION_REQUIRED(302);
 	
   private int responseCode;
