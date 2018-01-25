@@ -10,9 +10,13 @@ import java.util.UUID;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.request.ExecutionContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.sunbird.common.request.Request;
+import org.sunbird.common.responsecode.ResponseCode;
+import org.sunbird.telemetry.util.lmaxdisruptor.LMAXWriter;
 
 /**
  * This class will used to log the project
@@ -27,6 +31,8 @@ public class ProjectLogger {
   private static String dataId = "Sunbird";
   private static ObjectMapper mapper = new ObjectMapper();
   private static Logger rootLogger = (Logger) LogManager.getLogger("defaultLogger");
+  private static LMAXWriter lmaxWriter = LMAXWriter.getInstance();
+
 
   /**
    * To log only message.
@@ -37,6 +43,40 @@ public class ProjectLogger {
 
   public static void log(String message, Throwable e) {
     log(message, null, e);
+  }
+
+  public static void log(String message, Throwable e, Map<String, Object> telemetryInfo) {
+    log(message, null, e);
+    telemetryProcess(telemetryInfo , e);
+  }
+
+  private static void telemetryProcess(Map<String, Object> telemetryInfo, Throwable e) {
+
+    ProjectCommonException projectCommonException = null;
+    if(e instanceof ProjectCommonException) {
+      projectCommonException = (ProjectCommonException) e;
+    }else{
+      new ProjectCommonException(ResponseCode.internalError.getErrorCode(),
+          ResponseCode.internalError.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    Request request = new Request();
+    telemetryInfo.put(JsonKey.TELEMETRY_EVENT_TYPE , "ERROR");
+
+    Map<String , Object> params = (Map<String, Object>) telemetryInfo.get(JsonKey.PARAMS);
+    params.put("err", projectCommonException.getCode());
+    params.put("stacktrace", generateStackTrace(e.getStackTrace()));
+    request.setRequest(telemetryInfo);
+    lmaxWriter.submitMessage(request);
+
+  }
+
+  private static String generateStackTrace(StackTraceElement[] elements){
+    StringBuilder builder = new StringBuilder("");
+    for(StackTraceElement element : elements){
+      builder.append(element.toString());
+    }
+    return builder.toString();
   }
 
   public static void log(String message, String logLevel) {

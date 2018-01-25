@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Stack;
 
 import org.sunbird.common.models.response.Response;
+import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.PropertiesCache;
 
 /**
  * 
@@ -19,6 +21,17 @@ public class ExecutionContext {
 
     private Map<String, Map<String, Object>> contextStackValues = new HashMap<>();
     private Map<String, Object> globalContext = new HashMap<>();
+    private Map<String, Object> requestContext = new HashMap<>();
+
+    public Map<String, Object> getRequestContext() {
+        return requestContext;
+    }
+
+    public void setRequestContext(Map<String, Object> requestContext) {
+        this.requestContext = requestContext;
+        initializeGlobalContext(ExecutionContext.getCurrent());
+    }
+
     private static ThreadLocal<ExecutionContext> context = new ThreadLocal<ExecutionContext>() {
 
         @Override
@@ -28,6 +41,21 @@ public class ExecutionContext {
         }
 
     };
+
+    private static void initializeGlobalContext(ExecutionContext context) {
+
+        Map<String , Object> map = new HashMap<>();
+        String pdataId = System.getenv(JsonKey.PDATA_ID);
+        String pid = PropertiesCache.getInstance().getProperty(JsonKey.PID);
+        String pdataVersion = PropertiesCache.getInstance().getProperty(JsonKey.PDATA_VERSION);
+        //TODO: read all from env and props and set accordingly ...
+        map.put(JsonKey.PRODUCER_ID, pid);
+        map.put(JsonKey.PRODUCER_INSTTANCE_ID, "PRD_INST_1");
+        map.put(JsonKey.PRODUCER_VERSION , "1.4");
+
+        context.getGlobalContext().putAll(map);
+
+    }
 
     public static ExecutionContext getCurrent() {
         return context.get();
