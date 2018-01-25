@@ -31,7 +31,7 @@ public class TelemetryDispatcherFactory {
 
     TelemetryDispatcher dispatcher = null;
     if(dispatcherName.equalsIgnoreCase("EK-STEP")){
-      TelemetryDispatcher telemetryDispatcher = new TelemetryDispatcherEkstep();
+      dispatcher = new TelemetryDispatcherEkstep();
     }
     return dispatcher;
   }

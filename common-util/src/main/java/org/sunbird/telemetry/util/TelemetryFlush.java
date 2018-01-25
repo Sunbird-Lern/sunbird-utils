@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.ProjectUtil;
+import org.sunbird.common.models.util.PropertiesCache;
 
 /**
  * Created by arvind on 11/1/18.
@@ -12,11 +15,19 @@ public class TelemetryFlush {
 
   /*TODO: move to the util class so all threads will access the same queue only bcoz this queue can have multiple instances ...*/
   Queue<String> queue = new ConcurrentLinkedQueue<String>();
+
   int thresholdSize = 2;
 
   private static TelemetryFlush telemetryFlush;
 
   TelemetryDispatcher telemetryDispatcher = TelemetryDispatcherFactory.get("EK-STEP");
+
+  public TelemetryFlush(){
+    /*String queueThreshold = PropertiesCache.getInstance().getProperty(JsonKey.TELEMETRY_QUEUE_THRESHOLD_VALUE);
+    if(!ProjectUtil.isStringNullOREmpty(queueThreshold) && !queueThreshold.equalsIgnoreCase(JsonKey.TELEMETRY_QUEUE_THRESHOLD_VALUE)){
+      thresholdSize = Integer.parseInt(queueThreshold);
+    }*/
+  }
 
   public static TelemetryFlush getInstance(){
 
@@ -35,9 +46,7 @@ public class TelemetryFlush {
   }
 
   private void writeToQueue(String message) {
-    System.out.println("INSIDE TELEMETRY FLUSH ");
     queue.offer(message);
-    System.out.println("MESSAGE WRITE TO QUEUE IS "+message+ " QUEUE SIZE IS "+queue.size());
 
     if(queue.size()>=thresholdSize){
       List<String> list = new ArrayList();

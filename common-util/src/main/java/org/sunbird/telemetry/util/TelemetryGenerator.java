@@ -301,7 +301,8 @@ public class TelemetryGenerator {
 		edata.put("errtype", errorType);
 		edata.put(JsonKey.STACKTRACE, stackTrace);
 		if(!ProjectUtil.isStringNullOREmpty(object)){
-			edata.put("object", object);
+			//TODO:  "error": "Invalid type. Expected: object, given: string" from telemetry api ..
+			//edata.put("object", object);
 		}
 
 		return edata;

@@ -621,6 +621,7 @@ public final class JsonKey {
 	public static final String ANNOUNCEMENT = "announcement";
 	public static final String NOTIFICATION = "notification";
 	public static final String DASHBOARD = "dashboard";
+	public static final String TELEMETRY_QUEUE_THRESHOLD_VALUE = "telemetry_queue_threshold_value";
 
 	private JsonKey() {}
 }

@@ -56,7 +56,7 @@ public class ProjectLogger {
     if(e instanceof ProjectCommonException) {
       projectCommonException = (ProjectCommonException) e;
     }else{
-      new ProjectCommonException(ResponseCode.internalError.getErrorCode(),
+      projectCommonException = new ProjectCommonException(ResponseCode.internalError.getErrorCode(),
           ResponseCode.internalError.getErrorMessage(),
           ResponseCode.SERVER_ERROR.getResponseCode());
     }
