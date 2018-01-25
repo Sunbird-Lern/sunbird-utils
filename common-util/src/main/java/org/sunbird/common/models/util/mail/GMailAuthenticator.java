@@ -11,8 +11,8 @@ import javax.mail.PasswordAuthentication;
  *
  */
 public class GMailAuthenticator  extends Authenticator{
-	 String user;
-     String pw;
+	 private String user;
+     private String pw;
      /**
       * this method is used to authenticate gmail user name and password. 
       * @param username
@@ -27,6 +27,7 @@ public class GMailAuthenticator  extends Authenticator{
     /**
      *  
      */
+    @Override
     public PasswordAuthentication getPasswordAuthentication()
     {
        return new PasswordAuthentication(this.user, this.pw);

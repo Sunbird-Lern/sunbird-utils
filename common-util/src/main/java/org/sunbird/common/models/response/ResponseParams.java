@@ -18,7 +18,7 @@ public class ResponseParams implements Serializable {
 
   public enum StatusType {
 
-    successful, warning, failed;
+    SUCCESSFUL, WARNING, FAILED;
   }
 
   /**
@@ -101,11 +101,4 @@ public class ResponseParams implements Serializable {
     this.errmsg = message;
   }
 
-  @Override
-  public String toString() {
-    return "Params [" + (resmsgid != null ? "resmsgid=" + resmsgid + ", " : "")
-        + (msgid != null ? "msgid=" + msgid + ", " : "") + (err != null ? "err=" + err + ", " : "")
-        + (status != null ? "status=" + status + ", " : "")
-        + (errmsg != null ? "errmsg=" + errmsg : "") + "]";
-  }
 }

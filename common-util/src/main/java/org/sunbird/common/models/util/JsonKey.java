@@ -612,7 +612,11 @@ public final class JsonKey {
 	public static final String EKSTEP_TELEMETRY_V3_URL = "eksetp_telemetry_V3_url";
 	public static final String SEARCH_TOP_N = "searchTopN";
 
-	private JsonKey() {
-
-	}
+	public static final String EKSTEP_CHANNEL_REG_API_URL = "ekstep.channel.reg.api.url";
+	public static final String EKSTEP_GET_CHANNEL_LIST = "ekstep.channel.list.api.url";
+	public static final String CODE = "code";
+	public static final String CHANNEL_REG_STATUS_ID = "003";
+	public static final String CHANNEL_REG_STATUS = "channelRegStatus";
+	public static final String CHANNELS = "channels";
+	private JsonKey() {}
 }

@@ -27,34 +27,34 @@ public class Slug {
 
 	public static String makeSlug(String input, boolean transliterate) {
 		String origInput = input;
+		String tempInputValue = "";
 		// Validate the input
 		if (input == null) {
 			ProjectLogger.log("Provided input value is null");
 			return input;
 		}
 		// Remove extra spaces
-		input = input.trim();
+		tempInputValue = input.trim();
 		// Remove URL encoding
-		input = urlDecode(input);
+		tempInputValue = urlDecode(tempInputValue);
 		// If transliterate is required
 		if (transliterate) {
 			// Tranlisterate & cleanup
-			String transliterated = transliterate(input);
-			// transliterated = removeDuplicateChars(transliterated);
-			input = transliterated;
+			String transliterated = transliterate(tempInputValue);
+			tempInputValue = transliterated;
 		}
 		// Replace all whitespace with dashes
-		input = WHITESPACE.matcher(input).replaceAll("-");
+		tempInputValue = WHITESPACE.matcher(tempInputValue).replaceAll("-");
 		// Remove all accent chars
-		input = Normalizer.normalize(input, Form.NFD);
+		tempInputValue = Normalizer.normalize(tempInputValue, Form.NFD);
 		// Remove all non-latin special characters
-		input = NONLATIN.matcher(input).replaceAll("");
+		tempInputValue = NONLATIN.matcher(tempInputValue).replaceAll("");
 		// Remove any consecutive dashes
-		input = normalizeDashes(input);
+		tempInputValue = normalizeDashes(tempInputValue);
 		// Validate before returning
-		validateResult(input, origInput);
+		validateResult(tempInputValue, origInput);
 		// Slug is always lowercase
-		return input.toLowerCase(Locale.ENGLISH);
+		return tempInputValue.toLowerCase(Locale.ENGLISH);
 	}
 
 	private static void validateResult(String input, String origInput) {

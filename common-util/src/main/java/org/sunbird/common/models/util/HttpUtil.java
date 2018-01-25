@@ -75,7 +75,7 @@ public class HttpUtil {
       Map<String, String> headers) throws IOException {
     long startTime = System.currentTimeMillis();
     HttpURLConnection httpURLConnection = null;
-    OutputStreamWriter writer =null;
+    OutputStreamWriter writer = null;
     ProjectLogger.log("HttpUtil sendPostRequest method started at ==" + startTime
         + " for requestURL " + requestURL, LoggerEnum.PERF_LOG);
     try {
@@ -84,11 +84,11 @@ public class HttpUtil {
       httpURLConnection.setUseCaches(false);
       httpURLConnection.setDoInput(true);
       httpURLConnection.setRequestMethod(ProjectUtil.Method.POST.name());
-      StringBuffer requestParams = new StringBuffer();
+      StringBuilder requestParams = new StringBuilder();
       if (params != null && params.size() > 0) {
         httpURLConnection.setDoOutput(true);
         // creates the params string, encode them using URLEncoder
-        for(Map.Entry<String , String> entry : params.entrySet()){
+        for (Map.Entry<String, String> entry : params.entrySet()) {
           String key = entry.getKey();
           String value = entry.getValue();
           requestParams.append(URLEncoder.encode(key, "UTF-8"));
@@ -100,20 +100,20 @@ public class HttpUtil {
         setHeaders(httpURLConnection, headers);
       }
       if (requestParams.length() > 0) {
-        writer = new OutputStreamWriter(httpURLConnection.getOutputStream(),
-            StandardCharsets.UTF_8);
+        writer =
+            new OutputStreamWriter(httpURLConnection.getOutputStream(), StandardCharsets.UTF_8);
         writer.write(requestParams.toString());
         writer.flush();
       }
-    }catch (IOException ex){
-      ProjectLogger.log(ex.getMessage() ,ex);
+    } catch (IOException ex) {
+      ProjectLogger.log(ex.getMessage(), ex);
       throw ex;
-    }finally {
-      if(null != writer){
+    } finally {
+      if (null != writer) {
         try {
           writer.close();
         } catch (IOException e) {
-          ProjectLogger.log(e.getMessage() ,e);
+          ProjectLogger.log(e.getMessage(), e);
         }
       }
     }
@@ -141,27 +141,28 @@ public class HttpUtil {
         + " for requestURL " + requestURL, LoggerEnum.PERF_LOG);
     HttpURLConnection httpURLConnection = null;
     OutputStreamWriter writer = null;
-    try{
-    URL url = new URL(requestURL);httpURLConnection = (HttpURLConnection) url.openConnection();
-    httpURLConnection.setUseCaches(false);
-    httpURLConnection.setDoInput(true);
-    httpURLConnection.setRequestMethod(ProjectUtil.Method.POST.name());
-    httpURLConnection.setDoOutput(true);
-    if (headers != null && headers.size() > 0) {
-      setHeaders(httpURLConnection, headers);
-    }
+    try {
+      URL url = new URL(requestURL);
+      httpURLConnection = (HttpURLConnection) url.openConnection();
+      httpURLConnection.setUseCaches(false);
+      httpURLConnection.setDoInput(true);
+      httpURLConnection.setRequestMethod(ProjectUtil.Method.POST.name());
+      httpURLConnection.setDoOutput(true);
+      if (headers != null && headers.size() > 0) {
+        setHeaders(httpURLConnection, headers);
+      }
       writer = new OutputStreamWriter(httpURLConnection.getOutputStream(), StandardCharsets.UTF_8);
       writer.write(params);
       writer.flush();
     } catch (IOException e) {
-      ProjectLogger.log(e.getMessage() , e);
+      ProjectLogger.log(e.getMessage(), e);
       throw e;
     } finally {
-      if(null != writer){
+      if (null != writer) {
         try {
           writer.close();
         } catch (IOException e) {
-          ProjectLogger.log(e.getMessage() , e);
+          ProjectLogger.log(e.getMessage(), e);
         }
       }
     }

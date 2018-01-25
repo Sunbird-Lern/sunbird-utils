@@ -214,6 +214,7 @@ public interface ResponseMessage {
       String LOCATION_ID_REQUIRED = "Please provide Location Id.";
       String NOT_SUPPORTED = "Not Supported.";
       String USERNAME_USERID_MISSING = "Please provide either userName or userId.";
+      String CHANNEL_REG_FAILED = "Channel Registration failed.";
     }
     
     interface Key {
@@ -422,5 +423,6 @@ public interface ResponseMessage {
         String LOCATION_ID_REQUIRED = "LOCATION_ID_REQUIRED";
         String NOT_SUPPORTED = "NOT_SUPPORTED";
         String USERNAME_USERID_MISSING = "USERNAME_USERID_MISSING";
+        String CHANNEL_REG_FAILED = "CHANNEL_REG_FAILED";
     }
 }
