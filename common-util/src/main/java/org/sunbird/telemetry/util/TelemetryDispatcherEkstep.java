@@ -53,8 +53,8 @@ public class TelemetryDispatcherEkstep implements TelemetryDispatcher {
       String response = HttpUtil.sendPostRequest(baseSearchUrl+PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_TELEMETRY_API_URL), event,headers);
       ProjectLogger.log("FLUSH RESPONSE : "+response);
 
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (Exception ex) {
+      ProjectLogger.log(ex.getMessage(), ex);
     }
     return false;
   }
