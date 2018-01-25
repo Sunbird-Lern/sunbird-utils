@@ -618,5 +618,9 @@ public final class JsonKey {
 	public static final String CHANNEL_REG_STATUS_ID = "003";
 	public static final String CHANNEL_REG_STATUS = "channelRegStatus";
 	public static final String CHANNELS = "channels";
+	public static final String ANNOUNCEMENT = "announcement";
+	public static final String NOTIFICATION = "notification";
+	public static final String DASHBOARD = "dashboard";
+
 	private JsonKey() {}
 }

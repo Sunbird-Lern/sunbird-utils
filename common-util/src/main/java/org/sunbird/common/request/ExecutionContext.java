@@ -6,6 +6,7 @@ import java.util.Stack;
 
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 
 /**
@@ -45,16 +46,25 @@ public class ExecutionContext {
     private static void initializeGlobalContext(ExecutionContext context) {
 
         Map<String , Object> map = new HashMap<>();
-        String pdataId = System.getenv(JsonKey.PDATA_ID);
-        String pid = PropertiesCache.getInstance().getProperty(JsonKey.PID);
-        String pdataVersion = PropertiesCache.getInstance().getProperty(JsonKey.PDATA_VERSION);
-        //TODO: read all from env and props and set accordingly ...
+        String producerInstanceId = System.getenv(JsonKey.PRODUCER_INSTTANCE_ID);
+        if(ProjectUtil.isStringNullOREmpty(producerInstanceId)){
+            producerInstanceId = PropertiesCache.getInstance().getProperty(JsonKey.PRODUCER_INSTTANCE_ID);
+        }
+
+        String pid = System.getenv(JsonKey.PRODUCER_ID);
+        if(ProjectUtil.isStringNullOREmpty(pid)) {
+            pid =PropertiesCache.getInstance().getProperty(JsonKey.PRODUCER_ID);
+        }
+        String pdataVersion = System.getenv(JsonKey.PDATA_VERSION);
+        if(ProjectUtil.isStringNullOREmpty(pdataVersion)){
+            pdataVersion = PropertiesCache.getInstance().getProperty(JsonKey.PDATA_VERSION);
+        }
+
         map.put(JsonKey.PRODUCER_ID, pid);
-        map.put(JsonKey.PRODUCER_INSTTANCE_ID, "PRD_INST_1");
-        map.put(JsonKey.PRODUCER_VERSION , "1.4");
+        map.put(JsonKey.PRODUCER_INSTTANCE_ID, producerInstanceId);
+        map.put(JsonKey.PRODUCER_VERSION , pdataVersion);
 
         context.getGlobalContext().putAll(map);
-
     }
 
     public static ExecutionContext getCurrent() {
