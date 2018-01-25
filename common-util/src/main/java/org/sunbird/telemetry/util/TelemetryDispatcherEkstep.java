@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 
@@ -41,6 +42,7 @@ public class TelemetryDispatcherEkstep implements TelemetryDispatcher {
 
       String event = getTelemetryEvent(map);
       System.out.println("EVENTS IS ### "+event);
+      ProjectLogger.log("EVEVTS TO FLUSH : "+event);
 
       Map<String, String> headers = new HashMap<>();
       headers.put("Content-Type", "application/json");
@@ -51,6 +53,7 @@ public class TelemetryDispatcherEkstep implements TelemetryDispatcher {
       }
       String response = HttpUtil.sendPostRequest(baseSearchUrl+PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_TELEMETRY_API_URL), event,headers);
       System.out.println("HTTP RESPONSE IS "+response);
+      ProjectLogger.log("FLUSH RESPONSE : "+response);
 
     } catch (Exception e) {
       e.printStackTrace();
