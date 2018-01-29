@@ -24,14 +24,8 @@ public class TelemetryDispatcherEkstep implements TelemetryDispatcher {
       List<Map<String, Object>> jsonList = mapper.readValue(eventList.toString(), new TypeReference<List<Map<String, Object>>>(){});
 
       Map<String, Object> map = new HashMap<>();
-      //TODO ; read these value from config file ...
-      map.put(JsonKey.ID , "ekstep.telemetry");
-      map.put(JsonKey.VER , "2.0");
       map.put("ets", System.currentTimeMillis());
 
-      Map<String, Object> params = new HashMap<>();
-
-      map.put(JsonKey.PARAMS , params);
       map.put(JsonKey.EVENTS , jsonList);
 
       String baseSearchUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);

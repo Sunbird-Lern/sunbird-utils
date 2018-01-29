@@ -23,10 +23,10 @@ public class TelemetryFlush {
   TelemetryDispatcher telemetryDispatcher = TelemetryDispatcherFactory.get("EK-STEP");
 
   public TelemetryFlush(){
-    /*String queueThreshold = PropertiesCache.getInstance().getProperty(JsonKey.TELEMETRY_QUEUE_THRESHOLD_VALUE);
+    String queueThreshold = PropertiesCache.getInstance().getProperty(JsonKey.TELEMETRY_QUEUE_THRESHOLD_VALUE);
     if(!ProjectUtil.isStringNullOREmpty(queueThreshold) && !queueThreshold.equalsIgnoreCase(JsonKey.TELEMETRY_QUEUE_THRESHOLD_VALUE)){
       thresholdSize = Integer.parseInt(queueThreshold);
-    }*/
+    }
   }
 
   public static TelemetryFlush getInstance(){

@@ -15,6 +15,7 @@ import org.sunbird.telemetry.dto.Context;
 import org.sunbird.telemetry.dto.Producer;
 import org.sunbird.telemetry.dto.Target;
 import org.sunbird.telemetry.dto.Telemetry;
+import org.sunbird.telemetry.util.lmaxdisruptor.TelemetryEvents;
 
 /**
  * class to generate the telemetry events and convert the final event oject to string ...
@@ -50,12 +51,11 @@ public class TelemetryGenerator {
 			eventContext.getCdata().add(map);
 		}
 
-
 		Map<String, Object> edata = new HashMap<String, Object>();
 		edata = generateAuditEdata(params);
 
 		setOjectStateToParams((Map<String, Object>) params.get(JsonKey.TARGET_OBJECT) , edata);
-		Telemetry telemetry = new Telemetry("AUDIT", actor, eventContext, edata, targetObject);
+		Telemetry telemetry = new Telemetry(TelemetryEvents.AUDIT.getName(), actor, eventContext, edata, targetObject);
 		return getTelemetry(telemetry);
 	}
 
@@ -102,24 +102,13 @@ public class TelemetryGenerator {
 
 	}
 
-	
-	public static String search(Map<String, String> context) {
-		return null;
-	}
-	
-	public static String audit(Map<String, String> context) {
-		return null;
-	}
 
 	private static Context getContext(Map<String, Object> context) {
 		String channel = (String) context.get(JsonKey.CHANNEL);
 		String env = (String)context.get(JsonKey.ENV);
 		Producer producer = getProducer(context);
 		Context eventContext = new Context(channel, env, producer);
-		String did = (String)context.get("did");
-		if (StringUtils.isNotBlank(did)) {
-			eventContext.setDid(did);
-		}
+
 		if(context.get(JsonKey.ROLLUP) != null && !((Map<String, String>) context.get(JsonKey.ROLLUP)).isEmpty()){
 			eventContext.setRollup((Map<String, String>) context.get(JsonKey.ROLLUP));
 		}
@@ -175,7 +164,7 @@ public class TelemetryGenerator {
 		}
 		Map<String, Object> edata = new HashMap<String, Object>();
 		edata = generateSearchEdata(params);
-		Telemetry telemetry = new Telemetry("SEARCH", actor, eventContext, edata);
+		Telemetry telemetry = new Telemetry(TelemetryEvents.SEARCH.getName(), actor, eventContext, edata);
 		return getTelemetry(telemetry);
 	}
 
@@ -220,7 +209,7 @@ public class TelemetryGenerator {
 		Map<String, Object> edata = new HashMap<String, Object>();
 		edata = generateLogEdata(params);
 
-		Telemetry telemetry = new Telemetry("LOG", actor, eventContext, edata);
+		Telemetry telemetry = new Telemetry(TelemetryEvents.LOG.getName(), actor, eventContext, edata);
 		return getTelemetry(telemetry);
 
 	}
@@ -236,12 +225,11 @@ public class TelemetryGenerator {
 		long endTime = (long) params.get(JsonKey.END_TIME);
 		String method = (String) params.get(JsonKey.METHOD);
 		String status = (String) params.get(JsonKey.STATUS);
-		String message = (String) params.get(JsonKey.MESSAGE);
 		String stackTrace = (String) params.get(JsonKey.STACKTRACE);
 
 		edata.put(JsonKey.TYPE, logType);
 		edata.put(JsonKey.LEVEL, logLevel);
-		edata.put(JsonKey.MESSAGE, message);
+		edata.put(JsonKey.MESSAGE, "");
 
 		Map<String, Object> additionalParams = new HashMap<>();
 		additionalParams.put(JsonKey.START_TIME, startTime);
@@ -269,7 +257,6 @@ public class TelemetryGenerator {
 		Actor actor = new Actor(actorId, actorType);
 
 		Context eventContext = getContext(context);
-
 		// assign request id into context cdata ...
 		String reqId = (String) context.get(JsonKey.REQUEST_ID);
 		//String reqType = (String)context.get(JsonKey.REQUEST_TYPE);
@@ -283,7 +270,7 @@ public class TelemetryGenerator {
 		Map<String, Object> edata = new HashMap<String, Object>();
 		edata = generateErrorEdata(params);
 
-		Telemetry telemetry = new Telemetry("ERROR", actor, eventContext, edata);
+		Telemetry telemetry = new Telemetry(TelemetryEvents.ERROR.getName(), actor, eventContext, edata);
 		return getTelemetry(telemetry);
 
 	}
@@ -291,20 +278,13 @@ public class TelemetryGenerator {
 	private static Map<String,Object> generateErrorEdata(Map<String, Object> params) {
 
 		Map<String, Object> edata = new HashMap<>();
-		String error = (String) params.get("err");
-		String errorType = (String) params.get("errtype");
+		String error = (String) params.get(JsonKey.ERROR);
+		String errorType = (String) params.get(JsonKey.ERR_TYPE);
 		String stackTrace = (String) params.get(JsonKey.STACKTRACE);
 
-		String object = (String) params.get(JsonKey.OBJECT_TYPE);
-
-		edata.put("err", error);
-		edata.put("errtype", errorType);
+		edata.put(JsonKey.ERROR, error);
+		edata.put(JsonKey.ERR_TYPE, errorType);
 		edata.put(JsonKey.STACKTRACE, stackTrace);
-		if(!ProjectUtil.isStringNullOREmpty(object)){
-			//TODO:  "error": "Invalid type. Expected: object, given: string" from telemetry api ..
-			//edata.put("object", object);
-		}
-
 		return edata;
 
 	}

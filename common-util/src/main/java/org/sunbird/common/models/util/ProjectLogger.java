@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.telemetry.util.lmaxdisruptor.LMAXWriter;
+import org.sunbird.telemetry.util.lmaxdisruptor.TelemetryEvents;
 
 /**
  * This class will used to log the project
@@ -61,11 +62,11 @@ public class ProjectLogger {
           ResponseCode.SERVER_ERROR.getResponseCode());
     }
     Request request = new Request();
-    telemetryInfo.put(JsonKey.TELEMETRY_EVENT_TYPE , "ERROR");
+    telemetryInfo.put(JsonKey.TELEMETRY_EVENT_TYPE , TelemetryEvents.ERROR.getName());
 
     Map<String , Object> params = (Map<String, Object>) telemetryInfo.get(JsonKey.PARAMS);
-    params.put("err", projectCommonException.getCode());
-    params.put("stacktrace", generateStackTrace(e.getStackTrace()));
+    params.put(JsonKey.ERROR, projectCommonException.getCode());
+    params.put(JsonKey.STACKTRACE, generateStackTrace(e.getStackTrace()));
     request.setRequest(telemetryInfo);
     lmaxWriter.submitMessage(request);
 

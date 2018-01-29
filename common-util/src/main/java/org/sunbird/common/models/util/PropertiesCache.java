@@ -19,6 +19,7 @@ public class PropertiesCache {
       "profilecompleteness.properties", "mailTemplates.properties"};
   private final Properties configProp = new Properties();
   public final Map<String, Float> attributePercentageMap = new ConcurrentHashMap<>();
+  private static PropertiesCache propertiesCache = null;
 
   /**
    * private default constructor
@@ -35,12 +36,17 @@ public class PropertiesCache {
     loadWeighted();
   }
 
-  private static class LazyHolder {
-    private static final PropertiesCache INSTANCE = new PropertiesCache();
-  }
-
   public static PropertiesCache getInstance() {
-    return LazyHolder.INSTANCE;
+
+    // change the lazy holder implementation to simple singleton implementation ...
+    if(null == propertiesCache){
+      synchronized (PropertiesCache.class){
+        if(null == propertiesCache){
+          propertiesCache = new PropertiesCache();
+        }
+      }
+    }
+    return propertiesCache;
   }
 
   public String getProperty(String key) {
