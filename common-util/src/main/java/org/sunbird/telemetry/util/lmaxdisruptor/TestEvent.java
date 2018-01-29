@@ -5,7 +5,7 @@ package org.sunbird.telemetry.util.lmaxdisruptor;
  */
 public class TestEvent {
 
-  String name;
+  private String name;
 
   public String getName() {
     return name;

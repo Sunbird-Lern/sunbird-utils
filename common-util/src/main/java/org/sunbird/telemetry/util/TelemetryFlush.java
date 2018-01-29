@@ -10,13 +10,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class TelemetryFlush {
 
-  Queue<String> queue = new ConcurrentLinkedQueue<>();
+  private Queue<String> queue = new ConcurrentLinkedQueue<>();
 
-  int thresholdSize = 2;
+  private int thresholdSize = 2;
 
   private static TelemetryFlush telemetryFlush;
 
-  TelemetryDispatcher telemetryDispatcher = TelemetryDispatcherFactory.get("EK-STEP");
+  private TelemetryDispatcher telemetryDispatcher = TelemetryDispatcherFactory.get("EK-STEP");
 
   public static TelemetryFlush getInstance() {
 
