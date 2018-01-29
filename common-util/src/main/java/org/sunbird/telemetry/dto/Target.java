@@ -7,61 +7,67 @@ import java.util.Map;
 
 @JsonInclude(Include.NON_NULL)
 public class Target {
-	
-	public Target(String id, String type) {
-		super();
-		this.id = id;
-		this.type = type;
-	}
-	
-	private String id;
-	private String type;
-	private String ver;
-	private Map<String, String> rollup ;
 
-	public Map<String, String> getRollup() {
-		return rollup;
-	}
+  private String id;
+  private String type;
+  private String ver;
+  private Map<String, String> rollup;
 
-	public void setRollup(Map<String, String> rollup) {
-		this.rollup = rollup;
-	}
+  public Target(String id, String type) {
+    super();
+    this.id = id;
+    this.type = type;
+  }
 
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
-	/**
-	 * @return the type
-	 */
-	public String getType() {
-		return type;
-	}
-	/**
-	 * @param type the type to set
-	 */
-	public void setType(String type) {
-		this.type = type;
-	}
-	/**
-	 * @return the ver
-	 */
-	public String getVer() {
-		return ver;
-	}
-	/**
-	 * @param ver the ver to set
-	 */
-	public void setVer(String ver) {
-		this.ver = ver;
-	}
-	
+
+  public Map<String, String> getRollup() {
+    return rollup;
+  }
+
+  public void setRollup(Map<String, String> rollup) {
+    this.rollup = rollup;
+  }
+
+  /**
+   * @return the id
+   */
+  public String getId() {
+    return id;
+  }
+
+  /**
+   * @param id the id to set
+   */
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  /**
+   * @return the type
+   */
+  public String getType() {
+    return type;
+  }
+
+  /**
+   * @param type the type to set
+   */
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  /**
+   * @return the ver
+   */
+  public String getVer() {
+    return ver;
+  }
+
+  /**
+   * @param ver the ver to set
+   */
+  public void setVer(String ver) {
+    this.ver = ver;
+  }
+
 }
