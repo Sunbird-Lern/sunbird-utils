@@ -12,15 +12,22 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.sunbird.common.request.ExecutionContext;
+import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
+import org.sunbird.telemetry.util.lmaxdisruptor.LMAXWriter;
+import org.sunbird.telemetry.util.lmaxdisruptor.TelemetryEvents;
 
 /**
  * This utility method will handle external http call
@@ -30,6 +37,8 @@ import org.sunbird.common.responsecode.ResponseCode;
  */
 public class HttpUtil {
 
+
+  private static LMAXWriter lmaxWriter = LMAXWriter.getInstance();
   /**
    * Makes an HTTP request using GET method to the specified URL.
    *
@@ -41,6 +50,8 @@ public class HttpUtil {
   public static String sendGetRequest(String requestURL, Map<String, String> headers)
       throws IOException {
     long startTime = System.currentTimeMillis();
+    Map<String, Object> logInfo =
+        genarateLogInfo(JsonKey.API_CALL, "API CALL : "+requestURL);
     ProjectLogger.log("HttpUtil sendGetRequest method started at ==" + startTime
         + " for requestURL " + requestURL, LoggerEnum.PERF_LOG);
     URL url = new URL(requestURL);
@@ -56,6 +67,8 @@ public class HttpUtil {
     String str = getResponse(httpURLConnection);
     long stopTime = System.currentTimeMillis();
     long elapsedTime = stopTime - startTime;
+
+    telemetryProcessingCall(logInfo);
     ProjectLogger.log("HttpUtil sendGetRequest method end at ==" + stopTime + " for requestURL "
         + requestURL + " ,Total time elapsed = " + elapsedTime, LoggerEnum.PERF_LOG);
     return str;
@@ -74,6 +87,8 @@ public class HttpUtil {
   public static String sendPostRequest(String requestURL, Map<String, String> params,
       Map<String, String> headers) throws IOException {
     long startTime = System.currentTimeMillis();
+    Map<String, Object> logInfo =
+        genarateLogInfo(JsonKey.API_CALL, "API CALL : "+requestURL);
     HttpURLConnection httpURLConnection = null;
     OutputStreamWriter writer = null;
     ProjectLogger.log("HttpUtil sendPostRequest method started at ==" + startTime
@@ -121,6 +136,7 @@ public class HttpUtil {
     String str = getResponse(httpURLConnection);
     long stopTime = System.currentTimeMillis();
     long elapsedTime = stopTime - startTime;
+    telemetryProcessingCall(logInfo);
     ProjectLogger.log("HttpUtil sendPostRequest method end at ==" + stopTime + " for requestURL "
         + requestURL + " ,Total time elapsed = " + elapsedTime, LoggerEnum.PERF_LOG);
     return str;
@@ -137,6 +153,8 @@ public class HttpUtil {
   public static String sendPostRequest(String requestURL, String params,
       Map<String, String> headers) throws IOException {
     long startTime = System.currentTimeMillis();
+    Map<String, Object> logInfo =
+        genarateLogInfo(JsonKey.API_CALL, "API CALL : "+requestURL);
     ProjectLogger.log("HttpUtil sendPostRequest method started at ==" + startTime
         + " for requestURL " + requestURL, LoggerEnum.PERF_LOG);
     HttpURLConnection httpURLConnection = null;
@@ -170,6 +188,7 @@ public class HttpUtil {
     String str = getResponse(httpURLConnection);
     long stopTime = System.currentTimeMillis();
     long elapsedTime = stopTime - startTime;
+    telemetryProcessingCall(logInfo);
     ProjectLogger.log("HttpUtil sendPostRequest method end at ==" + stopTime + " for requestURL "
         + requestURL + " ,Total time elapsed = " + elapsedTime, LoggerEnum.PERF_LOG);
     return str;
@@ -223,6 +242,8 @@ public class HttpUtil {
   public static String sendPatchRequest(String requestURL, String params,
       Map<String, String> headers) throws IOException {
     long startTime = System.currentTimeMillis();
+    Map<String, Object> logInfo =
+        genarateLogInfo(JsonKey.API_CALL, "API CALL : "+requestURL);
     ProjectLogger.log("HttpUtil sendPatchRequest method started at ==" + startTime
         + " for requestURL " + requestURL, LoggerEnum.PERF_LOG);
 
@@ -252,6 +273,7 @@ public class HttpUtil {
     }
     long stopTime = System.currentTimeMillis();
     long elapsedTime = stopTime - startTime;
+    telemetryProcessingCall(logInfo);
     ProjectLogger.log("HttpUtil sendPatchRequest method end at ==" + stopTime + " for requestURL "
         + requestURL + " ,Total time elapsed = " + elapsedTime, LoggerEnum.PERF_LOG);
     return "Failure";
@@ -285,5 +307,41 @@ public class HttpUtil {
       Entry<String, String> entry = itr.next();
       httpURLConnection.setRequestProperty(entry.getKey(), entry.getValue());
     }
+  }
+
+  private static Map<String, Object> genarateLogInfo(String logType, String message) {
+
+    Map<String, Object> info = new HashMap<>();
+    info.put(JsonKey.LOG_TYPE, logType);
+    long startTime = System.currentTimeMillis();
+    info.put(JsonKey.START_TIME, startTime);
+    info.put(JsonKey.MESSAGE, message);
+    info.put(JsonKey.LOG_LEVEL , JsonKey.INFO);
+    return info;
+  }
+
+  public static void telemetryProcessingCall(Map<String, Object> request) {
+
+      Map<String, Object> logInfo = request;
+      long endTime = System.currentTimeMillis();
+      logInfo.put(JsonKey.END_TIME, endTime);
+      Request req = new Request();
+      req.setRequest(
+          generateTelemetryRequest(TelemetryEvents.LOG.getName(), logInfo));
+      lmaxWriter.submitMessage(req);
+
+  }
+
+  private static Map<String, Object> generateTelemetryRequest(String eventType,
+      Map<String, Object> params) {
+
+    Map<String, Object> context = new HashMap<>();
+    context.putAll(ExecutionContext.getCurrent().getRequestContext());
+    context.putAll(ExecutionContext.getCurrent().getGlobalContext());
+    Map<String, Object> map = new HashMap<>();
+    map.put(JsonKey.TELEMETRY_EVENT_TYPE, eventType);
+    map.put(JsonKey.CONTEXT, context);
+    map.put(JsonKey.PARAMS, params);
+    return map;
   }
 }

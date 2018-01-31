@@ -5,6 +5,8 @@ public class Actor {
   private String id;
   private String type;
 
+  public Actor(){}
+
   public Actor(String id, String type) {
     super();
     this.id = id;

@@ -6,7 +6,6 @@ package org.sunbird.telemetry.util.lmaxdisruptor;
 public enum TelemetryEvents {
 
   AUDIT("AUDIT"),SEARCH("SEARCH"),LOG("LOG"),ERROR("ERROR");
-
   private String name;
 
   TelemetryEvents(String name){
