@@ -16,6 +16,8 @@ import org.sunbird.telemetry.dto.Producer;
 import org.sunbird.telemetry.dto.Target;
 import org.sunbird.telemetry.dto.Telemetry;
 import org.sunbird.telemetry.util.lmaxdisruptor.TelemetryEvents;
+import org.sunbird.telemetry.util.validator.TelemetryObjectValidator;
+import org.sunbird.telemetry.util.validator.TelemetryObjectValidatorV3;
 
 /**
  * class to generate the telemetry events and convert the final event oject to string ...
@@ -35,6 +37,9 @@ public class TelemetryGenerator {
    * @return
    */
   public static String audit(Map<String, Object> context, Map<String, Object> params) {
+    if(!validateRequest(context, params)){
+      return "";
+    }
     String actorId = (String) context.get(JsonKey.ACTOR_ID);
     String actorType = (String) context.get(JsonKey.ACTOR_TYPE);
     Actor actor = new Actor(actorId, actorType);
@@ -58,7 +63,7 @@ public class TelemetryGenerator {
 
     Map<String, Object> edata = generateAuditEdata(params);
 
-		setOjectStateToParams((Map<String, Object>) params.get(JsonKey.TARGET_OBJECT) , edata);
+		//setOjectStateToParams((Map<String, Object>) params.get(JsonKey.TARGET_OBJECT) , edata);
 		Telemetry telemetry = new Telemetry(TelemetryEvents.AUDIT.getName(), actor, eventContext, edata, targetObject);
 		return getTelemetry(telemetry);
 	}
@@ -101,6 +106,11 @@ public class TelemetryGenerator {
     Map<String, Object> props = (Map<String, Object>) params.get(JsonKey.PROPS);
     edata.put(JsonKey.PROPS,
         props.entrySet().stream().map(entry -> entry.getKey()).collect(Collectors.toList()));
+
+    Map<String, Object> target = (Map<String, Object>) params.get(JsonKey.TARGET_OBJECT);
+    if (target.get(JsonKey.CURRENT_STATE) != null) {
+      edata.put(JsonKey.STATE, target.get(JsonKey.CURRENT_STATE));
+    }
     return edata;
 
   }
@@ -138,6 +148,9 @@ public class TelemetryGenerator {
 
   public static String search(Map<String, Object> context, Map<String, Object> params) {
 
+    if(!validateRequest(context, params)){
+      return "";
+    }
     String actorId = (String) context.get(JsonKey.ACTOR_ID);
     String actorType = (String) context.get(JsonKey.ACTOR_TYPE);
     Actor actor = new Actor(actorId, actorType);
@@ -168,6 +181,9 @@ public class TelemetryGenerator {
     List<Map> topn = (List<Map>) params.get(JsonKey.TOPN);
 
     edata.put(JsonKey.TYPE, type);
+    if(null == query){
+      query="";
+    }
     edata.put(JsonKey.QUERY, query);
     edata.put(JsonKey.FILTERS, filters);
     edata.put(JsonKey.SORT, sort);
@@ -179,6 +195,9 @@ public class TelemetryGenerator {
 
   public static String log(Map<String, Object> context, Map<String, Object> params) {
 
+    if(!validateRequest(context, params)){
+      return "";
+    }
     String actorId = (String) context.get(JsonKey.ACTOR_ID);
     String actorType = (String) context.get(JsonKey.ACTOR_TYPE);
     Actor actor = new Actor(actorId, actorType);
@@ -205,21 +224,25 @@ public class TelemetryGenerator {
     Map<String, Object> edata = new HashMap<>();
     String logType = (String) params.get(JsonKey.LOG_TYPE);
     String logLevel = (String) params.get(JsonKey.LOG_LEVEL);
+    String message = (String) params.get(JsonKey.MESSAGE);
+    Map<String, Object> additionalParams = new HashMap<>();
 
-
-    long startTime = (long) params.get(JsonKey.START_TIME);
-    long endTime = (long) params.get(JsonKey.END_TIME);
+    if(null != params.get(JsonKey.START_TIME)) {
+      long startTime = (long) params.get(JsonKey.START_TIME);
+      additionalParams.put(JsonKey.START_TIME, startTime);
+    }
+    if(null != params.get(JsonKey.END_TIME)) {
+      long endTime = (long) params.get(JsonKey.END_TIME);
+      additionalParams.put(JsonKey.END_TIME, endTime);
+    }
     String method = (String) params.get(JsonKey.METHOD);
     String status = (String) params.get(JsonKey.STATUS);
     String stackTrace = (String) params.get(JsonKey.STACKTRACE);
 
     edata.put(JsonKey.TYPE, logType);
     edata.put(JsonKey.LEVEL, logLevel);
-    edata.put(JsonKey.MESSAGE, "");
+    edata.put(JsonKey.MESSAGE, message);
 
-    Map<String, Object> additionalParams = new HashMap<>();
-    additionalParams.put(JsonKey.START_TIME, startTime);
-    additionalParams.put(JsonKey.END_TIME, endTime);
     if (!ProjectUtil.isStringNullOREmpty(method)) {
       additionalParams.put(JsonKey.METHOD, method);
     }
@@ -238,6 +261,9 @@ public class TelemetryGenerator {
 
   public static String error(Map<String, Object> context, Map<String, Object> params) {
 
+    if(!validateRequest(context, params)){
+      return "";
+    }
     String actorId = (String) context.get(JsonKey.ACTOR_ID);
     String actorType = (String) context.get(JsonKey.ACTOR_TYPE);
     Actor actor = new Actor(actorId, actorType);
@@ -268,5 +294,15 @@ public class TelemetryGenerator {
     edata.put(JsonKey.ERR_TYPE, errorType);
     edata.put(JsonKey.STACKTRACE, stackTrace);
     return edata;
+  }
+
+  private static boolean validateRequest(Map<String , Object> context, Map<String, Object> params){
+
+    boolean flag = true;
+    if(null == context || context.isEmpty() || params == null || params.isEmpty()){
+      flag = false;
+    }
+    return flag;
+
   }
 }

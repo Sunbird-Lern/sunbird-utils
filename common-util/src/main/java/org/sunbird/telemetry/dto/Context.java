@@ -21,6 +21,8 @@ public class Context {
   private List<Map<String, Object>> cdata = new ArrayList<>();
   private Map<String, String> rollup = new HashMap<>();
 
+  public Context(){}
+
   public Context(String channel, String env, Producer pdata) {
     super();
     this.channel = channel;

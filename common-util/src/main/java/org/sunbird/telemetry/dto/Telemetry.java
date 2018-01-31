@@ -25,6 +25,10 @@ public class Telemetry {
   private Map<String, Object> edata;
   private List<String> tags;
 
+  public Telemetry(){
+
+  }
+
   public Telemetry(String eid, Actor actor, Context context, Map<String, Object> edata,
       Target object) {
     super();

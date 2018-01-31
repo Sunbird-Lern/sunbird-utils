@@ -10,6 +10,8 @@ public class Producer {
   private String pid;
   private String ver;
 
+  public Producer(){}
+
   public Producer(String id, String ver) {
     super();
     this.id = id;

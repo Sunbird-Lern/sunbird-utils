@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 
@@ -15,7 +16,7 @@ public class TelemetryFlush {
 
   private Queue<String> queue = new ConcurrentLinkedQueue<>();
 
-  private int thresholdSize = 2;
+  private int thresholdSize = 20;
 
   private static TelemetryFlush telemetryFlush;
 
@@ -34,7 +35,11 @@ public class TelemetryFlush {
   public TelemetryFlush(){
     String queueThreshold = PropertiesCache.getInstance().getProperty(JsonKey.TELEMETRY_QUEUE_THRESHOLD_VALUE);
     if(!ProjectUtil.isStringNullOREmpty(queueThreshold) && !queueThreshold.equalsIgnoreCase(JsonKey.TELEMETRY_QUEUE_THRESHOLD_VALUE)){
-      this.thresholdSize = Integer.parseInt(queueThreshold);
+      try {
+        this.thresholdSize = Integer.parseInt(queueThreshold.trim());
+      }catch (Exception ex){
+        ProjectLogger.log("Threshold size from config is not integer", ex);
+      }
     }
   }
 

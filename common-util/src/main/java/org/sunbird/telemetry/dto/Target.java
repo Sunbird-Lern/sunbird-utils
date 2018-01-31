@@ -13,6 +13,8 @@ public class Target {
   private String ver;
   private Map<String, String> rollup;
 
+  public Target(){}
+
   public Target(String id, String type) {
     super();
     this.id = id;
