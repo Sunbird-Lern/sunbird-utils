@@ -51,9 +51,9 @@ public class ExecutionContext {
             producerInstanceId = PropertiesCache.getInstance().getProperty(JsonKey.PRODUCER_INSTTANCE_ID);
         }
 
-        String pid = System.getenv(JsonKey.PRODUCER_ID);
+        String pid = System.getenv(JsonKey.SUNBIRD_INSTALLATION);
         if(ProjectUtil.isStringNullOREmpty(pid)) {
-            pid =PropertiesCache.getInstance().getProperty(JsonKey.PRODUCER_ID);
+            pid =PropertiesCache.getInstance().getProperty(JsonKey.SUNBIRD_INSTALLATION)+"-"+JsonKey.LEARNER_SERVICE;
         }
         String pdataVersion = System.getenv(JsonKey.PDATA_VERSION);
         if(ProjectUtil.isStringNullOREmpty(pdataVersion)){
