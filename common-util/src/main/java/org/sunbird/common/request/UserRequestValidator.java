@@ -445,7 +445,7 @@ public class UserRequestValidator {
           && ((List) userRequest.getRequest().get(JsonKey.LANGUAGE)).isEmpty()) {
         throw new ProjectCommonException(ResponseCode.languageRequired.getErrorCode(),
             ResponseCode.languageRequired.getErrorMessage(), ERROR_CODE);
-      } else {
+      } else if(!(userRequest.getRequest().get(JsonKey.LANGUAGE) instanceof List)) {
         throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
             ProjectUtil.formatMessage(ResponseCode.dataTypeError.getErrorMessage(),
                 JsonKey.LANGUAGE, JsonKey.LIST),
