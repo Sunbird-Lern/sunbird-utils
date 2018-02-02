@@ -9,6 +9,7 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.telemetry.dto.Actor;
 import org.sunbird.telemetry.dto.Context;
 import org.sunbird.telemetry.dto.Telemetry;
@@ -52,7 +53,7 @@ public class TelemetryObjectValidatorV3Test {
     try {
       result = validatorV3.validateAudit(mapper.writeValueAsString(telemetry));
     } catch (JsonProcessingException e) {
-      //e.printStackTrace();
+      ProjectLogger.log(e.getMessage(),e);
     }
     Assert.assertTrue(result);
 
@@ -83,7 +84,7 @@ public class TelemetryObjectValidatorV3Test {
     try {
       result = validatorV3.validateAudit(mapper.writeValueAsString(telemetry));
     } catch (JsonProcessingException e) {
-      //e.printStackTrace();
+      ProjectLogger.log(e.getMessage(),e);
     }
     Assert.assertFalse(result);
 
@@ -119,7 +120,7 @@ public class TelemetryObjectValidatorV3Test {
     try {
       result = validatorV3.validateAudit(mapper.writeValueAsString(telemetry));
     } catch (JsonProcessingException e) {
-      //e.printStackTrace();
+      ProjectLogger.log(e.getMessage(),e);
     }
     Assert.assertFalse(result);
 
@@ -155,7 +156,7 @@ public class TelemetryObjectValidatorV3Test {
     try {
       result = validatorV3.validateAudit(mapper.writeValueAsString(telemetry));
     } catch (JsonProcessingException e) {
-      //e.printStackTrace();
+      ProjectLogger.log(e.getMessage(),e);
     }
     Assert.assertFalse(result);
 
@@ -184,7 +185,7 @@ public class TelemetryObjectValidatorV3Test {
     try {
       result = validatorV3.validateAudit(mapper.writeValueAsString(telemetry));
     } catch (JsonProcessingException e) {
-      //e.printStackTrace();
+      ProjectLogger.log(e.getMessage(),e);
     }
     Assert.assertFalse(result);
   }
@@ -222,7 +223,7 @@ public class TelemetryObjectValidatorV3Test {
     try {
       result = validatorV3.validateSearch(mapper.writeValueAsString(telemetry));
     } catch (JsonProcessingException e) {
-      //e.printStackTrace();
+      ProjectLogger.log(e.getMessage(),e);
     }
     Assert.assertTrue(result);
 
@@ -255,7 +256,7 @@ public class TelemetryObjectValidatorV3Test {
     try {
       result = validatorV3.validateSearch(mapper.writeValueAsString(telemetry));
     } catch (JsonProcessingException e) {
-      //e.printStackTrace();
+      ProjectLogger.log(e.getMessage(),e);
     }
     Assert.assertFalse(result);
 
@@ -290,7 +291,7 @@ public class TelemetryObjectValidatorV3Test {
     try {
       result = validatorV3.validateLog(mapper.writeValueAsString(telemetry));
     } catch (JsonProcessingException e) {
-      //e.printStackTrace();
+      ProjectLogger.log(e.getMessage(),e);
     }
     Assert.assertTrue(result);
 
@@ -316,8 +317,6 @@ public class TelemetryObjectValidatorV3Test {
     telemetry.setContext(context);
 
     Map<String, Object> logEdata = new HashMap<>();
-    //logEdata.put(JsonKey.TYPE , "info");
-    //logEdata.put(JsonKey.LEVEL , JsonKey.API_ACCESS);
     logEdata.put(JsonKey.MESSAGE, "");
     telemetry.setEdata(logEdata);
 
@@ -325,7 +324,7 @@ public class TelemetryObjectValidatorV3Test {
     try {
       result = validatorV3.validateLog(mapper.writeValueAsString(telemetry));
     } catch (JsonProcessingException e) {
-      //e.printStackTrace();
+      ProjectLogger.log(e.getMessage(),e);
     }
     Assert.assertFalse(result);
 
@@ -359,7 +358,7 @@ public class TelemetryObjectValidatorV3Test {
     try {
       result = validatorV3.validateError(mapper.writeValueAsString(telemetry));
     } catch (JsonProcessingException e) {
-      //e.printStackTrace();
+      ProjectLogger.log(e.getMessage(),e);
     }
     Assert.assertTrue(result);
 
@@ -384,16 +383,13 @@ public class TelemetryObjectValidatorV3Test {
     telemetry.setContext(context);
 
     Map<String, Object> errorEdata = new HashMap<>();
-    //errorEdata.put(JsonKey.ERROR , "invalid user");
-    //errorEdata.put(JsonKey.ERR_TYPE , JsonKey.API_ACCESS);
-    //errorEdata.put(JsonKey.STACKTRACE, "error msg");
     telemetry.setEdata(errorEdata);
 
     boolean result = true;
     try {
       result = validatorV3.validateError(mapper.writeValueAsString(telemetry));
     } catch (JsonProcessingException e) {
-      //e.printStackTrace();
+      ProjectLogger.log(e.getMessage(),e);
     }
     Assert.assertFalse(result);
 
