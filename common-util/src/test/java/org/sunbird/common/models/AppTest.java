@@ -40,27 +40,39 @@ public class AppTest {
 
   @Test
   public void testGetResourceMethod() throws Exception {
+    String ekStepBaseUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);
+    if(ProjectUtil.isStringNullOREmpty(ekStepBaseUrl)){
+      ekStepBaseUrl = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_BASE_URL);
+    }
     String response =
-        HttpUtil.sendGetRequest("https://qa.ekstep.in/api/content/v3/read/test", headers);
+        HttpUtil.sendGetRequest(ekStepBaseUrl+"/search/health", headers);
     Assert.assertNotNull(response);
   }
 
   @Test
   public void testPostResourceMethod() throws Exception {
+    String ekStepBaseUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);
+    if(ProjectUtil.isStringNullOREmpty(ekStepBaseUrl)){
+      ekStepBaseUrl = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_BASE_URL);
+    }
     String response =
-        HttpUtil.sendPostRequest("https://qa.ekstep.in/api/content/v3/list", data, headers);
+        HttpUtil.sendPostRequest(ekStepBaseUrl+"/content/v3/list", data, headers);
     Assert.assertNotNull(response);
   }
 
   @Test()
   public void testPostFailureResourceMethod() {
     // passing wrong url
+    String ekStepBaseUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);
+    if(ProjectUtil.isStringNullOREmpty(ekStepBaseUrl)){
+      ekStepBaseUrl = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_BASE_URL);
+    }
     String response = null;
     try {
       Map<String, String> data = new HashMap<>();
       data.put("search", "\"contentType\": [\"Story\"]");
       response =
-          HttpUtil.sendPostRequest("https://qa.ekstep.in/api/content/wrong/v3/list", data, headers);
+          HttpUtil.sendPostRequest(ekStepBaseUrl+"/content/wrong/v3/list", data, headers);
     } catch (Exception e) {
       ProjectLogger.log(e.getMessage(),e);
     }

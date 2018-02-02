@@ -54,9 +54,14 @@ public class ElasticSearchUtilTest {
     }
 
     @Test
-    public void createIndex() {
+    public void acreateIndex() {
         boolean response = ElasticSearchUtil.createIndex(indexName, typeName, ElasticSearchMapping.createMapping(),
                 ElasticSearchSettings.createSettingsForIndex());
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            ProjectLogger.log("Index creation time out");
+        }
         assertTrue(response);
     }
 
