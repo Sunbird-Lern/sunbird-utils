@@ -19,8 +19,8 @@ import org.sunbird.telemetry.util.lmaxdisruptor.TelemetryEvents;
  */
 public class TelemetryObjectValidatorV3Test {
 
-  TelemetryObjectValidatorV3 validatorV3 =  new TelemetryObjectValidatorV3();
-  ObjectMapper mapper = new ObjectMapper();
+  private TelemetryObjectValidatorV3 validatorV3 =  new TelemetryObjectValidatorV3();
+  private ObjectMapper mapper = new ObjectMapper();
 
   @Test
   public void testAuditWithValidData(){
