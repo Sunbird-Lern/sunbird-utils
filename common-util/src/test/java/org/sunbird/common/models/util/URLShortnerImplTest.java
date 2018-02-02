@@ -16,8 +16,16 @@ public class URLShortnerImplTest {
 
 	@Test 
 	public void getShortUrlTest() {
+
+		String SUNBIRD_WEB_URL = "sunbird_web_url";
+
+		String webUrl = System.getenv(SUNBIRD_WEB_URL);
+		if(ProjectUtil.isStringNullOREmpty(webUrl)){
+			webUrl = PropertiesCache.getInstance().getProperty(SUNBIRD_WEB_URL);
+		}
+
 		URLShortnerImpl shortnerImpl = new URLShortnerImpl();
 		String url = shortnerImpl.getUrl();
-		Assert.assertEquals(url, "sunbird_web_url");
+		Assert.assertEquals(url, webUrl);
 	}
 }
