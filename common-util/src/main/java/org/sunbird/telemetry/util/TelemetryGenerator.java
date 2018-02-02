@@ -15,8 +15,6 @@ import org.sunbird.telemetry.dto.Producer;
 import org.sunbird.telemetry.dto.Target;
 import org.sunbird.telemetry.dto.Telemetry;
 import org.sunbird.telemetry.util.lmaxdisruptor.TelemetryEvents;
-import org.sunbird.telemetry.util.validator.TelemetryObjectValidator;
-import org.sunbird.telemetry.util.validator.TelemetryObjectValidatorV3;
 
 /**
  * class to generate the telemetry events and convert the final event oject to string ...
@@ -36,7 +34,7 @@ public class TelemetryGenerator {
    * @return
    */
   public static String audit(Map<String, Object> context, Map<String, Object> params) {
-    if(!validateRequest(context, params)){
+    if (!validateRequest(context, params)) {
       return "";
     }
     String actorId = (String) context.get(JsonKey.ACTOR_ID);
@@ -62,10 +60,11 @@ public class TelemetryGenerator {
 
     Map<String, Object> edata = generateAuditEdata(params);
 
-		//setOjectStateToParams((Map<String, Object>) params.get(JsonKey.TARGET_OBJECT) , edata);
-		Telemetry telemetry = new Telemetry(TelemetryEvents.AUDIT.getName(), actor, eventContext, edata, targetObject);
-		return getTelemetry(telemetry);
-	}
+    // setOjectStateToParams((Map<String, Object>) params.get(JsonKey.TARGET_OBJECT) , edata);
+    Telemetry telemetry =
+        new Telemetry(TelemetryEvents.AUDIT.getName(), actor, eventContext, edata, targetObject);
+    return getTelemetry(telemetry);
+  }
 
   private static void setOjectStateToParams(Map<String, Object> target, Map<String, Object> edata) {
 
@@ -147,7 +146,7 @@ public class TelemetryGenerator {
 
   public static String search(Map<String, Object> context, Map<String, Object> params) {
 
-    if(!validateRequest(context, params)){
+    if (!validateRequest(context, params)) {
       return "";
     }
     String actorId = (String) context.get(JsonKey.ACTOR_ID);
@@ -165,7 +164,8 @@ public class TelemetryGenerator {
       eventContext.getCdata().add(map);
     }
     Map<String, Object> edata = generateSearchEdata(params);
-    Telemetry telemetry = new Telemetry(TelemetryEvents.SEARCH.getName(), actor, eventContext, edata);
+    Telemetry telemetry =
+        new Telemetry(TelemetryEvents.SEARCH.getName(), actor, eventContext, edata);
     return getTelemetry(telemetry);
   }
 
@@ -180,8 +180,8 @@ public class TelemetryGenerator {
     List<Map> topn = (List<Map>) params.get(JsonKey.TOPN);
 
     edata.put(JsonKey.TYPE, type);
-    if(null == query){
-      query="";
+    if (null == query) {
+      query = "";
     }
     edata.put(JsonKey.QUERY, query);
     edata.put(JsonKey.FILTERS, filters);
@@ -194,7 +194,7 @@ public class TelemetryGenerator {
 
   public static String log(Map<String, Object> context, Map<String, Object> params) {
 
-    if(!validateRequest(context, params)){
+    if (!validateRequest(context, params)) {
       return "";
     }
     String actorId = (String) context.get(JsonKey.ACTOR_ID);
@@ -226,11 +226,11 @@ public class TelemetryGenerator {
     String message = (String) params.get(JsonKey.MESSAGE);
     Map<String, Object> additionalParams = new HashMap<>();
 
-    if(null != params.get(JsonKey.START_TIME)) {
+    if (null != params.get(JsonKey.START_TIME)) {
       long startTime = (long) params.get(JsonKey.START_TIME);
       additionalParams.put(JsonKey.START_TIME, startTime);
     }
-    if(null != params.get(JsonKey.END_TIME)) {
+    if (null != params.get(JsonKey.END_TIME)) {
       long endTime = (long) params.get(JsonKey.END_TIME);
       additionalParams.put(JsonKey.END_TIME, endTime);
     }
@@ -260,7 +260,7 @@ public class TelemetryGenerator {
 
   public static String error(Map<String, Object> context, Map<String, Object> params) {
 
-    if(!validateRequest(context, params)){
+    if (!validateRequest(context, params)) {
       return "";
     }
     String actorId = (String) context.get(JsonKey.ACTOR_ID);
@@ -279,7 +279,8 @@ public class TelemetryGenerator {
     }
 
     Map<String, Object> edata = generateErrorEdata(params);
-    Telemetry telemetry = new Telemetry(TelemetryEvents.ERROR.getName(), actor, eventContext, edata);
+    Telemetry telemetry =
+        new Telemetry(TelemetryEvents.ERROR.getName(), actor, eventContext, edata);
     return getTelemetry(telemetry);
 
   }
@@ -295,10 +296,10 @@ public class TelemetryGenerator {
     return edata;
   }
 
-  private static boolean validateRequest(Map<String , Object> context, Map<String, Object> params){
+  private static boolean validateRequest(Map<String, Object> context, Map<String, Object> params) {
 
     boolean flag = true;
-    if(null == context || context.isEmpty() || params == null || params.isEmpty()){
+    if (null == context || context.isEmpty() || params == null || params.isEmpty()) {
       flag = false;
     }
     return flag;
