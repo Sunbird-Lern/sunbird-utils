@@ -52,7 +52,7 @@ public final class RequestValidator {
   @SuppressWarnings("unchecked")
   public static void validateUpdateContent(Request contentRequestDto) {
     if (((List<Map<String, Object>>) (contentRequestDto.getRequest().get(JsonKey.CONTENTS)))
-        .size() == 0) {
+        .isEmpty()) {
       throw new ProjectCommonException(ResponseCode.contentIdRequired.getErrorCode(),
           ResponseCode.contentIdRequiredError.getErrorMessage(), ERROR_CODE);
     } else {
@@ -416,8 +416,8 @@ public final class RequestValidator {
   public static void validateAddMember(Request userRequest) {
     validateOrg(userRequest);
     if (userRequest.getRequest().containsKey(JsonKey.ROLES)
-        && !(userRequest.getRequest().get(JsonKey.ROLES) instanceof List)
-        || ((List) userRequest.getRequest().get(JsonKey.ROLES)).isEmpty()) {
+        && (!(userRequest.getRequest().get(JsonKey.ROLES) instanceof List)
+        || ((List) userRequest.getRequest().get(JsonKey.ROLES)).isEmpty())) {
       throw new ProjectCommonException(ResponseCode.roleRequired.getErrorCode(),
           ResponseCode.roleRequired.getErrorMessage(), ERROR_CODE);
     }

@@ -75,7 +75,7 @@ public class ElasticSearchUtilTest {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+          ProjectLogger.log(e.getMessage(),e);
         }
     }
 

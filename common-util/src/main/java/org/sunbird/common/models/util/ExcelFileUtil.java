@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
-
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -59,7 +58,7 @@ public class ExcelFileUtil extends FileUtil {
         try {
           out.close();
         } catch (IOException e) {
-          e.printStackTrace();
+          ProjectLogger.log(e.getMessage(),e);
         }
       }
     }

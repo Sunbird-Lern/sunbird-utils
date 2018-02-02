@@ -3,25 +3,23 @@
  */
 package org.sunbird.common.models.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.request.ExecutionContext;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.telemetry.util.lmaxdisruptor.LMAXWriter;
 import org.sunbird.telemetry.util.lmaxdisruptor.TelemetryEvents;
 
 /**
- * This class will used to log the project
- * message in any level.
+ * This class will used to log the project message in any level.
+ * 
  * @author Manzarul
  *
  */
@@ -48,23 +46,23 @@ public class ProjectLogger {
 
   public static void log(String message, Throwable e, Map<String, Object> telemetryInfo) {
     log(message, null, e);
-    telemetryProcess(telemetryInfo , e);
+    telemetryProcess(telemetryInfo, e);
   }
 
   private static void telemetryProcess(Map<String, Object> telemetryInfo, Throwable e) {
 
     ProjectCommonException projectCommonException = null;
-    if(e instanceof ProjectCommonException) {
+    if (e instanceof ProjectCommonException) {
       projectCommonException = (ProjectCommonException) e;
-    }else{
+    } else {
       projectCommonException = new ProjectCommonException(ResponseCode.internalError.getErrorCode(),
           ResponseCode.internalError.getErrorMessage(),
           ResponseCode.SERVER_ERROR.getResponseCode());
     }
     Request request = new Request();
-    telemetryInfo.put(JsonKey.TELEMETRY_EVENT_TYPE , TelemetryEvents.ERROR.getName());
+    telemetryInfo.put(JsonKey.TELEMETRY_EVENT_TYPE, TelemetryEvents.ERROR.getName());
 
-    Map<String , Object> params = (Map<String, Object>) telemetryInfo.get(JsonKey.PARAMS);
+    Map<String, Object> params = (Map<String, Object>) telemetryInfo.get(JsonKey.PARAMS);
     params.put(JsonKey.ERROR, projectCommonException.getCode());
     params.put(JsonKey.STACKTRACE, generateStackTrace(e.getStackTrace()));
     request.setRequest(telemetryInfo);
@@ -72,9 +70,9 @@ public class ProjectLogger {
 
   }
 
-  private static String generateStackTrace(StackTraceElement[] elements){
+  private static String generateStackTrace(StackTraceElement[] elements) {
     StringBuilder builder = new StringBuilder("");
-    for(StackTraceElement element : elements){
+    for (StackTraceElement element : elements) {
       builder.append(element.toString());
     }
     return builder.toString();
@@ -83,14 +81,14 @@ public class ProjectLogger {
   public static void log(String message, String logLevel) {
     log(message, null, logLevel);
   }
-  
+
   /**
    * To log message, data in used defined log level.
    */
   public static void log(String message, LoggerEnum logEnum) {
     info(message, null, logEnum);
   }
-  
+
   /**
    * To log message, data in used defined log level.
    */
@@ -115,12 +113,12 @@ public class ProjectLogger {
   private static void info(String message, Object data) {
     rootLogger.info(getBELogEvent(LoggerEnum.INFO.name(), message, data));
   }
-  
-  private static void info(String message, Object data,LoggerEnum loggerEnum) {
-    rootLogger.info(getBELogEvent(LoggerEnum.INFO.name(), message, data,loggerEnum));
+
+  private static void info(String message, Object data, LoggerEnum loggerEnum) {
+    rootLogger.info(getBELogEvent(LoggerEnum.INFO.name(), message, data, loggerEnum));
   }
-  
-  
+
+
   private static void debug(String message, Object data) {
     rootLogger.debug(getBELogEvent(LoggerEnum.DEBUG.name(), message, data));
   }
@@ -135,7 +133,7 @@ public class ProjectLogger {
 
   private static void backendLog(String message, Object data, Throwable e, String logLevel) {
     if (!ProjectUtil.isStringNullOREmpty(logLevel)) {
-      
+
       switch (logLevel) {
         case "INFO":
           info(message, data);
@@ -156,23 +154,24 @@ public class ProjectLogger {
     }
   }
 
-  private static String getBELogEvent(String logLevel, String message, Object data,LoggerEnum logEnum) {
-    String logData = getBELog(logLevel, message, data, null,logEnum);
+  private static String getBELogEvent(String logLevel, String message, Object data,
+      LoggerEnum logEnum) {
+    String logData = getBELog(logLevel, message, data, null, logEnum);
     return logData;
   }
-  
+
   private static String getBELogEvent(String logLevel, String message, Object data) {
-    String logData = getBELog(logLevel, message, data, null,null);
+    String logData = getBELog(logLevel, message, data, null, null);
     return logData;
   }
 
   private static String getBELogEvent(String logLevel, String message, Object data, Throwable e) {
-    String logData = getBELog(logLevel, message, data, e,null);
+    String logData = getBELog(logLevel, message, data, e, null);
     return logData;
   }
 
-  private static String getBELog(String logLevel, String message, Object data,
-      Throwable exception,LoggerEnum logEnum) {
+  private static String getBELog(String logLevel, String message, Object data, Throwable exception,
+      LoggerEnum logEnum) {
     String mid = dataId + "." + System.currentTimeMillis() + "." + UUID.randomUUID();
     long unixTime = System.currentTimeMillis();
     LogEvent te = new LogEvent();
@@ -180,7 +179,7 @@ public class ProjectLogger {
     eks.put(JsonKey.LEVEL, logLevel);
     eks.put(JsonKey.MESSAGE, message);
     String msgId = ExecutionContext.getRequestId();
-    if(null != msgId) {
+    if (null != msgId) {
       eks.put(JsonKey.REQUEST_MESSAGE_ID, msgId);
     }
     if (null != data) {
@@ -189,10 +188,10 @@ public class ProjectLogger {
     if (null != exception) {
       eks.put(JsonKey.STACKTRACE, ExceptionUtils.getStackTrace(exception));
     }
-    if(logEnum != null) {
+    if (logEnum != null) {
       te.setEid(logEnum.name());
-    }else{
-    te.setEid(LoggerEnum.BE_LOG.name());
+    } else {
+      te.setEid(LoggerEnum.BE_LOG.name());
     }
     te.setEts(unixTime);
     te.setMid(mid);
@@ -203,7 +202,7 @@ public class ProjectLogger {
       te.setEdata(eks);
       jsonMessage = mapper.writeValueAsString(te);
     } catch (Exception e) {
-      e.printStackTrace();
+      ProjectLogger.log(e.getMessage(), e);
     }
     return jsonMessage;
   }
