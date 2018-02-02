@@ -20,7 +20,7 @@ public class Response implements Serializable, Cloneable {
   private String ts;
   private ResponseParams params;
   private ResponseCode responseCode = ResponseCode.OK;
-  private Map<String, Object> result = new HashMap<String, Object>();
+  private Map<String, Object> result = new HashMap<>();
 
   /**
    * This will provide request unique id.

@@ -828,4 +828,8 @@ public class ProjectUtil {
     throw new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(),
         ResponseCode.invalidUsrData.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
   }
+  
+  public static void main(String[] args) {
+    System.out.println(validatePhone("8297211569", "+91"));
+  }
 }
