@@ -60,17 +60,9 @@ public class TelemetryGenerator {
 
     Map<String, Object> edata = generateAuditEdata(params);
 
-    // setOjectStateToParams((Map<String, Object>) params.get(JsonKey.TARGET_OBJECT) , edata);
     Telemetry telemetry =
         new Telemetry(TelemetryEvents.AUDIT.getName(), actor, eventContext, edata, targetObject);
     return getTelemetry(telemetry);
-  }
-
-  private static void setOjectStateToParams(Map<String, Object> target, Map<String, Object> edata) {
-
-    if (target.get(JsonKey.CURRENT_STATE) != null) {
-      edata.put(JsonKey.STATE, target.get(JsonKey.CURRENT_STATE));
-    }
   }
 
   private static void setCorrelatedDataToContext(Object correlatedObjects, Context eventContext) {

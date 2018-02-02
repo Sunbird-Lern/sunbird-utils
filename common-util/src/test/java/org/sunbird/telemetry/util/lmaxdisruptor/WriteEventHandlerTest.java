@@ -16,36 +16,36 @@ import org.sunbird.common.responsecode.ResponseCode;
 public class WriteEventHandlerTest {
 
 
-  WriteEventHandler writeEventHandler = new WriteEventHandler();
+  private WriteEventHandler writeEventHandler = new WriteEventHandler();
 
   @Test
-  public void testAuditSuccess(){
+  public void testAuditSuccess() {
 
     Request request = new Request();
     Map<String, Object> context = new HashMap<>();
-    Map<String , Object> params = new HashMap<>();
+    Map<String, Object> params = new HashMap<>();
 
     Map<String, Object> targetObject = new HashMap<>();
     targetObject.put(JsonKey.ID, "org123");
-    targetObject.put(JsonKey.TYPE , JsonKey.ORGANISATION);
+    targetObject.put(JsonKey.TYPE, JsonKey.ORGANISATION);
 
     context.put(JsonKey.ACTOR_ID, "123");
-    context.put(JsonKey.ACTOR_TYPE , JsonKey.USER);
+    context.put(JsonKey.ACTOR_TYPE, JsonKey.USER);
     context.put(JsonKey.CHANNEL, "channel001");
-    context.put(JsonKey.ENV , "orgEnv");
+    context.put(JsonKey.ENV, "orgEnv");
 
-    context.put(JsonKey.PRODUCER_ID , "PID 01");
+    context.put(JsonKey.PRODUCER_ID, "PID 01");
     context.put(JsonKey.PRODUCER_INSTTANCE_ID, "INSTANCE 01");
-    context.put(JsonKey.PRODUCER_VERSION , "1.4");
+    context.put(JsonKey.PRODUCER_VERSION, "1.4");
 
-    Map<String , Object> props = new HashMap<String , Object>();
-    props.put(JsonKey.ID , "4849");
-    props.put(JsonKey.STATE , "active");
+    Map<String, Object> props = new HashMap<String, Object>();
+    props.put(JsonKey.ID, "4849");
+    props.put(JsonKey.STATE, "active");
     params.put(JsonKey.PROPS, props);
 
-    request.getRequest().put(JsonKey.TARGET_OBJECT , targetObject);
-    request.getRequest().put(JsonKey.PARAMS , params);
-    request.getRequest().put(JsonKey.CONTEXT , context);
+    request.getRequest().put(JsonKey.TARGET_OBJECT, targetObject);
+    request.getRequest().put(JsonKey.PARAMS, params);
+    request.getRequest().put(JsonKey.CONTEXT, context);
 
     boolean result = writeEventHandler.processAuditEvent(request);
     Assert.assertTrue(result);
@@ -53,31 +53,31 @@ public class WriteEventHandlerTest {
   }
 
   @Test
-  public void testAuditSuccessWithoutChannelEnv(){
+  public void testAuditSuccessWithoutChannelEnv() {
 
     Request request = new Request();
     Map<String, Object> context = new HashMap<>();
-    Map<String , Object> params = new HashMap<>();
+    Map<String, Object> params = new HashMap<>();
 
     Map<String, Object> targetObject = new HashMap<>();
     targetObject.put(JsonKey.ID, "org123");
-    targetObject.put(JsonKey.TYPE , JsonKey.ORGANISATION);
+    targetObject.put(JsonKey.TYPE, JsonKey.ORGANISATION);
 
     context.put(JsonKey.ACTOR_ID, "123");
-    context.put(JsonKey.ACTOR_TYPE , JsonKey.USER);
+    context.put(JsonKey.ACTOR_TYPE, JsonKey.USER);
 
-    context.put(JsonKey.PRODUCER_ID , "PID 01");
+    context.put(JsonKey.PRODUCER_ID, "PID 01");
     context.put(JsonKey.PRODUCER_INSTTANCE_ID, "INSTANCE 01");
-    context.put(JsonKey.PRODUCER_VERSION , "1.4");
+    context.put(JsonKey.PRODUCER_VERSION, "1.4");
 
-    Map<String , Object> props = new HashMap<String , Object>();
-    props.put(JsonKey.ID , "4849");
-    props.put(JsonKey.STATE , "active");
+    Map<String, Object> props = new HashMap<String, Object>();
+    props.put(JsonKey.ID, "4849");
+    props.put(JsonKey.STATE, "active");
     params.put(JsonKey.PROPS, props);
 
-    request.getRequest().put(JsonKey.TARGET_OBJECT , targetObject);
-    request.getRequest().put(JsonKey.PARAMS , params);
-    request.getRequest().put(JsonKey.CONTEXT , context);
+    request.getRequest().put(JsonKey.TARGET_OBJECT, targetObject);
+    request.getRequest().put(JsonKey.PARAMS, params);
+    request.getRequest().put(JsonKey.CONTEXT, context);
 
     boolean result = writeEventHandler.processAuditEvent(request);
     Assert.assertFalse(result);
@@ -85,31 +85,31 @@ public class WriteEventHandlerTest {
   }
 
   @Test
-  public void testAuditSuccessWithoutActorInfo(){
+  public void testAuditSuccessWithoutActorInfo() {
 
     Request request = new Request();
     Map<String, Object> context = new HashMap<>();
-    Map<String , Object> params = new HashMap<>();
+    Map<String, Object> params = new HashMap<>();
 
     Map<String, Object> targetObject = new HashMap<>();
     targetObject.put(JsonKey.ID, "org123");
-    targetObject.put(JsonKey.TYPE , JsonKey.ORGANISATION);
+    targetObject.put(JsonKey.TYPE, JsonKey.ORGANISATION);
 
     context.put(JsonKey.CHANNEL, "channel001");
-    context.put(JsonKey.ENV , "orgEnv");
+    context.put(JsonKey.ENV, "orgEnv");
 
-    context.put(JsonKey.PRODUCER_ID , "PID 01");
+    context.put(JsonKey.PRODUCER_ID, "PID 01");
     context.put(JsonKey.PRODUCER_INSTTANCE_ID, "INSTANCE 01");
-    context.put(JsonKey.PRODUCER_VERSION , "1.4");
+    context.put(JsonKey.PRODUCER_VERSION, "1.4");
 
-    Map<String , Object> props = new HashMap<String , Object>();
-    props.put(JsonKey.ID , "4849");
-    props.put(JsonKey.STATE , "active");
+    Map<String, Object> props = new HashMap<String, Object>();
+    props.put(JsonKey.ID, "4849");
+    props.put(JsonKey.STATE, "active");
     params.put(JsonKey.PROPS, props);
 
-    request.getRequest().put(JsonKey.TARGET_OBJECT , targetObject);
-    request.getRequest().put(JsonKey.PARAMS , params);
-    request.getRequest().put(JsonKey.CONTEXT , context);
+    request.getRequest().put(JsonKey.TARGET_OBJECT, targetObject);
+    request.getRequest().put(JsonKey.PARAMS, params);
+    request.getRequest().put(JsonKey.CONTEXT, context);
 
     boolean result = writeEventHandler.processAuditEvent(request);
     Assert.assertFalse(result);
@@ -117,32 +117,32 @@ public class WriteEventHandlerTest {
   }
 
   @Test
-  public void testSearchSuccess(){
+  public void testSearchSuccess() {
 
     Request request = new Request();
     Map<String, Object> context = new HashMap<>();
-    Map<String , Object> params = new HashMap<>();
+    Map<String, Object> params = new HashMap<>();
 
     context.put(JsonKey.ACTOR_ID, "123");
-    context.put(JsonKey.ACTOR_TYPE , JsonKey.USER);
+    context.put(JsonKey.ACTOR_TYPE, JsonKey.USER);
     context.put(JsonKey.CHANNEL, "channel001");
-    context.put(JsonKey.ENV , "orgEnv");
+    context.put(JsonKey.ENV, "orgEnv");
 
-    context.put(JsonKey.PRODUCER_ID , "PID 01");
+    context.put(JsonKey.PRODUCER_ID, "PID 01");
     context.put(JsonKey.PRODUCER_INSTTANCE_ID, "INSTANCE 01");
-    context.put(JsonKey.PRODUCER_VERSION , "1.4");
+    context.put(JsonKey.PRODUCER_VERSION, "1.4");
 
-    params.put(JsonKey.TYPE , JsonKey.USER);
-    params.put(JsonKey.QUERY,"hello");
-    Map<String , Object> sort = new HashMap<>();
-    sort.put("date","desc");
-    params.put(JsonKey.SORT,sort);
-    params.put(JsonKey.SIZE,new Long(10));
+    params.put(JsonKey.TYPE, JsonKey.USER);
+    params.put(JsonKey.QUERY, "hello");
+    Map<String, Object> sort = new HashMap<>();
+    sort.put("date", "desc");
+    params.put(JsonKey.SORT, sort);
+    params.put(JsonKey.SIZE, new Long(10));
 
     List<Map> topn = new ArrayList<>();
-    params.put(JsonKey.TOPN , topn);
-    request.getRequest().put(JsonKey.PARAMS , params);
-    request.getRequest().put(JsonKey.CONTEXT , context);
+    params.put(JsonKey.TOPN, topn);
+    request.getRequest().put(JsonKey.PARAMS, params);
+    request.getRequest().put(JsonKey.CONTEXT, context);
 
     boolean result = writeEventHandler.processSearchEvent(request);
     Assert.assertTrue(result);
@@ -150,27 +150,27 @@ public class WriteEventHandlerTest {
   }
 
   @Test
-  public void testSearchWithoutRequiredEdata(){
+  public void testSearchWithoutRequiredEdata() {
 
     Request request = new Request();
     Map<String, Object> context = new HashMap<>();
-    Map<String , Object> params = new HashMap<>();
+    Map<String, Object> params = new HashMap<>();
 
     context.put(JsonKey.ACTOR_ID, "123");
-    context.put(JsonKey.ACTOR_TYPE , JsonKey.USER);
+    context.put(JsonKey.ACTOR_TYPE, JsonKey.USER);
     context.put(JsonKey.CHANNEL, "channel001");
-    context.put(JsonKey.ENV , "orgEnv");
+    context.put(JsonKey.ENV, "orgEnv");
 
-    context.put(JsonKey.PRODUCER_ID , "PID 01");
+    context.put(JsonKey.PRODUCER_ID, "PID 01");
     context.put(JsonKey.PRODUCER_INSTTANCE_ID, "INSTANCE 01");
-    context.put(JsonKey.PRODUCER_VERSION , "1.4");
+    context.put(JsonKey.PRODUCER_VERSION, "1.4");
 
-    Map<String , Object> sort = new HashMap<>();
-    sort.put("date","desc");
-    params.put(JsonKey.SORT,sort);
+    Map<String, Object> sort = new HashMap<>();
+    sort.put("date", "desc");
+    params.put(JsonKey.SORT, sort);
 
-    request.getRequest().put(JsonKey.PARAMS , params);
-    request.getRequest().put(JsonKey.CONTEXT , context);
+    request.getRequest().put(JsonKey.PARAMS, params);
+    request.getRequest().put(JsonKey.CONTEXT, context);
 
     boolean result = writeEventHandler.processSearchEvent(request);
     Assert.assertFalse(result);
@@ -178,27 +178,27 @@ public class WriteEventHandlerTest {
   }
 
   @Test
-  public void testLogSuccess(){
+  public void testLogSuccess() {
 
     Request request = new Request();
     Map<String, Object> context = new HashMap<>();
-    Map<String , Object> params = new HashMap<>();
+    Map<String, Object> params = new HashMap<>();
 
     context.put(JsonKey.ACTOR_ID, "123");
-    context.put(JsonKey.ACTOR_TYPE , JsonKey.USER);
+    context.put(JsonKey.ACTOR_TYPE, JsonKey.USER);
     context.put(JsonKey.CHANNEL, "channel001");
-    context.put(JsonKey.ENV , "orgEnv");
+    context.put(JsonKey.ENV, "orgEnv");
 
-    context.put(JsonKey.PRODUCER_ID , "PID 01");
+    context.put(JsonKey.PRODUCER_ID, "PID 01");
     context.put(JsonKey.PRODUCER_INSTTANCE_ID, "INSTANCE 01");
-    context.put(JsonKey.PRODUCER_VERSION , "1.4");
+    context.put(JsonKey.PRODUCER_VERSION, "1.4");
 
-    params.put(JsonKey.LOG_TYPE , JsonKey.API_ACCESS);
-    params.put(JsonKey.LOG_LEVEL,JsonKey.INFO);
-    params.put(JsonKey.MESSAGE," log message");
+    params.put(JsonKey.LOG_TYPE, JsonKey.API_ACCESS);
+    params.put(JsonKey.LOG_LEVEL, JsonKey.INFO);
+    params.put(JsonKey.MESSAGE, " log message");
 
-    request.getRequest().put(JsonKey.PARAMS , params);
-    request.getRequest().put(JsonKey.CONTEXT , context);
+    request.getRequest().put(JsonKey.PARAMS, params);
+    request.getRequest().put(JsonKey.CONTEXT, context);
 
     boolean result = writeEventHandler.processLogEvent(request);
     Assert.assertTrue(result);
@@ -206,23 +206,23 @@ public class WriteEventHandlerTest {
   }
 
   @Test
-  public void testLogWithoutEdataRequiredFields(){
+  public void testLogWithoutEdataRequiredFields() {
 
     Request request = new Request();
     Map<String, Object> context = new HashMap<>();
-    Map<String , Object> params = new HashMap<>();
+    Map<String, Object> params = new HashMap<>();
 
     context.put(JsonKey.ACTOR_ID, "123");
-    context.put(JsonKey.ACTOR_TYPE , JsonKey.USER);
+    context.put(JsonKey.ACTOR_TYPE, JsonKey.USER);
     context.put(JsonKey.CHANNEL, "channel001");
-    context.put(JsonKey.ENV , "orgEnv");
+    context.put(JsonKey.ENV, "orgEnv");
 
-    context.put(JsonKey.PRODUCER_ID , "PID 01");
+    context.put(JsonKey.PRODUCER_ID, "PID 01");
     context.put(JsonKey.PRODUCER_INSTTANCE_ID, "INSTANCE 01");
-    context.put(JsonKey.PRODUCER_VERSION , "1.4");
+    context.put(JsonKey.PRODUCER_VERSION, "1.4");
 
-    request.getRequest().put(JsonKey.PARAMS , params);
-    request.getRequest().put(JsonKey.CONTEXT , context);
+    request.getRequest().put(JsonKey.PARAMS, params);
+    request.getRequest().put(JsonKey.CONTEXT, context);
 
     boolean result = writeEventHandler.processLogEvent(request);
     Assert.assertFalse(result);
@@ -230,27 +230,27 @@ public class WriteEventHandlerTest {
   }
 
   @Test
-  public void testErrorSuccess(){
+  public void testErrorSuccess() {
 
     Request request = new Request();
     Map<String, Object> context = new HashMap<>();
-    Map<String , Object> params = new HashMap<>();
+    Map<String, Object> params = new HashMap<>();
 
     context.put(JsonKey.ACTOR_ID, "123");
-    context.put(JsonKey.ACTOR_TYPE , JsonKey.USER);
+    context.put(JsonKey.ACTOR_TYPE, JsonKey.USER);
     context.put(JsonKey.CHANNEL, "channel001");
-    context.put(JsonKey.ENV , "orgEnv");
+    context.put(JsonKey.ENV, "orgEnv");
 
-    context.put(JsonKey.PRODUCER_ID , "PID 01");
+    context.put(JsonKey.PRODUCER_ID, "PID 01");
     context.put(JsonKey.PRODUCER_INSTTANCE_ID, "INSTANCE 01");
-    context.put(JsonKey.PRODUCER_VERSION , "1.4");
+    context.put(JsonKey.PRODUCER_VERSION, "1.4");
 
-    params.put(JsonKey.ERROR , ResponseCode.invalidTypeValue.getErrorCode());
-    params.put(JsonKey.ERR_TYPE,JsonKey.API_ACCESS);
-    params.put(JsonKey.STACKTRACE," stacktrace");
+    params.put(JsonKey.ERROR, ResponseCode.invalidTypeValue.getErrorCode());
+    params.put(JsonKey.ERR_TYPE, JsonKey.API_ACCESS);
+    params.put(JsonKey.STACKTRACE, " stacktrace");
 
-    request.getRequest().put(JsonKey.PARAMS , params);
-    request.getRequest().put(JsonKey.CONTEXT , context);
+    request.getRequest().put(JsonKey.PARAMS, params);
+    request.getRequest().put(JsonKey.CONTEXT, context);
 
     boolean result = writeEventHandler.processErrorEvent(request);
     Assert.assertTrue(result);
@@ -258,64 +258,63 @@ public class WriteEventHandlerTest {
   }
 
   @Test
-  public void testErrorWithoutEdataRequiredFields(){
+  public void testErrorWithoutEdataRequiredFields() {
 
     Request request = new Request();
     Map<String, Object> context = new HashMap<>();
-    Map<String , Object> params = new HashMap<>();
+    Map<String, Object> params = new HashMap<>();
     context.put(JsonKey.ACTOR_ID, "123");
-    context.put(JsonKey.ACTOR_TYPE , JsonKey.USER);
+    context.put(JsonKey.ACTOR_TYPE, JsonKey.USER);
     context.put(JsonKey.CHANNEL, "channel001");
-    context.put(JsonKey.ENV , "orgEnv");
+    context.put(JsonKey.ENV, "orgEnv");
 
-    context.put(JsonKey.PRODUCER_ID , "PID 01");
+    context.put(JsonKey.PRODUCER_ID, "PID 01");
     context.put(JsonKey.PRODUCER_INSTTANCE_ID, "INSTANCE 01");
-    context.put(JsonKey.PRODUCER_VERSION , "1.4");
+    context.put(JsonKey.PRODUCER_VERSION, "1.4");
 
-    request.getRequest().put(JsonKey.PARAMS , params);
-    request.getRequest().put(JsonKey.CONTEXT , context);
+    request.getRequest().put(JsonKey.PARAMS, params);
+    request.getRequest().put(JsonKey.CONTEXT, context);
 
     boolean result = writeEventHandler.processErrorEvent(request);
     Assert.assertFalse(result);
   }
 
   @Test
-  public void testErrorWithoutParams(){
+  public void testErrorWithoutParams() {
 
     Request request = new Request();
     Map<String, Object> context = new HashMap<>();
-    Map<String , Object> params = new HashMap<>();
     context.put(JsonKey.ACTOR_ID, "123");
-    context.put(JsonKey.ACTOR_TYPE , JsonKey.USER);
+    context.put(JsonKey.ACTOR_TYPE, JsonKey.USER);
     context.put(JsonKey.CHANNEL, "channel001");
-    context.put(JsonKey.ENV , "orgEnv");
+    context.put(JsonKey.ENV, "orgEnv");
 
-    context.put(JsonKey.PRODUCER_ID , "PID 01");
+    context.put(JsonKey.PRODUCER_ID, "PID 01");
     context.put(JsonKey.PRODUCER_INSTTANCE_ID, "INSTANCE 01");
-    context.put(JsonKey.PRODUCER_VERSION , "1.4");
+    context.put(JsonKey.PRODUCER_VERSION, "1.4");
 
-    request.getRequest().put(JsonKey.CONTEXT , context);
+    request.getRequest().put(JsonKey.CONTEXT, context);
 
     boolean result = writeEventHandler.processErrorEvent(request);
     Assert.assertFalse(result);
   }
 
   @Test
-  public void testErrorWithoutContext(){
+  public void testErrorWithoutContext() {
 
     Request request = new Request();
     Map<String, Object> context = new HashMap<>();
-    Map<String , Object> params = new HashMap<>();
+    Map<String, Object> params = new HashMap<>();
     context.put(JsonKey.ACTOR_ID, "123");
-    context.put(JsonKey.ACTOR_TYPE , JsonKey.USER);
+    context.put(JsonKey.ACTOR_TYPE, JsonKey.USER);
     context.put(JsonKey.CHANNEL, "channel001");
-    context.put(JsonKey.ENV , "orgEnv");
+    context.put(JsonKey.ENV, "orgEnv");
 
-    context.put(JsonKey.PRODUCER_ID , "PID 01");
+    context.put(JsonKey.PRODUCER_ID, "PID 01");
     context.put(JsonKey.PRODUCER_INSTTANCE_ID, "INSTANCE 01");
-    context.put(JsonKey.PRODUCER_VERSION , "1.4");
+    context.put(JsonKey.PRODUCER_VERSION, "1.4");
 
-    request.getRequest().put(JsonKey.PARAMS , params);
+    request.getRequest().put(JsonKey.PARAMS, params);
     boolean result = writeEventHandler.processErrorEvent(request);
     Assert.assertFalse(result);
   }
