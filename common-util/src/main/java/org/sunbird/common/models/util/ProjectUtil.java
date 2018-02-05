@@ -5,7 +5,7 @@ package org.sunbird.common.models.util;
 
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
-import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
+import com.google.i18n.phonenumbers.Phonenumber;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
@@ -736,28 +736,23 @@ public class ProjectUtil {
     return headerMap;
   }
 
-  public static boolean validatePhone(String phone, String countryCode) {
-    PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+  public static boolean validatePhone(String phNumber, String countryCode) {
+    PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
     String contryCode = countryCode;
-    String phon = "";
     if (!ProjectUtil.isStringNullOREmpty(countryCode) && (countryCode.charAt(0) != '+')) {
       contryCode = "+" + countryCode;
     }
+    Phonenumber.PhoneNumber phoneNumber = null;
     try {
       if (isStringNullOREmpty(countryCode)) {
         contryCode = PropertiesCache.getInstance().getProperty("sunbird_default_country_code");
       }
-      phon = contryCode + "-" + phone;
-      PhoneNumber numberProto = phoneUtil.parse(phon, "");
-      // phoneUtil.isValidNumber(number)
-      ProjectLogger.log("Number is of region - " + numberProto.getCountryCode() + " "
-          + phoneUtil.getRegionCodeForNumber(numberProto));
-      ProjectLogger.log(
-          "Is the input number valid - " + (phoneUtil.isValidNumber(numberProto) ? "Yes" : "No"));
-      return phoneUtil.isValidNumber(numberProto);
+      String isoCode = phoneNumberUtil.getRegionCodeForCountryCode(Integer.parseInt(contryCode));
+      phoneNumber = phoneNumberUtil.parse(phNumber, isoCode);
+      return phoneNumberUtil.isValidNumber(phoneNumber);
     } catch (NumberParseException e) {
       ProjectLogger.log("Exception occurred while validating phone number : ", e);
-      ProjectLogger.log(phon + "this phone no. is not a valid one.");
+      ProjectLogger.log(phNumber + "this phone no. is not a valid one.");
     }
     return false;
   }
@@ -827,9 +822,5 @@ public class ProjectUtil {
   public static void createAndThrowInvalidUserDataException() {
     throw new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(),
         ResponseCode.invalidUsrData.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
-  }
-  
-  public static void main(String[] args) {
-    System.out.println(validatePhone("8297211569", "+91"));
   }
 }
