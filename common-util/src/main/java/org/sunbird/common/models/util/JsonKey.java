@@ -625,6 +625,6 @@ public final class JsonKey {
 	public static final String API_ACCESS = "API_ACCESS";
 	public static final String ADDITIONAL_INFO = "ADDITIONAL_INFO";
 	public static final String API_CALL = "API_CALL";
-
+	public static final String DEFAULT_CONSUMER_ID = "internal";
 	private JsonKey() {}
 }
