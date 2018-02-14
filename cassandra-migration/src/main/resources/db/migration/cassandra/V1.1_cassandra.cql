@@ -1,0 +1,1 @@
+DELETE FROM sunbird.role WHERE id="ORG_MODERATOR" IF EXISTS;
