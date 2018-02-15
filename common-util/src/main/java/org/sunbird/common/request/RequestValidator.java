@@ -910,11 +910,8 @@ public final class RequestValidator {
      * @return boolean
      */
 	private static boolean validateListType(Request request, String key) {
-		if (request.getRequest().containsKey(key) && null != request.getRequest().get(key)
-				&& !(request.getRequest().get(key) instanceof List)) {
-			return false;
-		}
-		return true;
+		return !(request.getRequest().containsKey(key) && null != request.getRequest().get(key)
+				&& !(request.getRequest().get(key) instanceof List));
 	}
 	
   /**
@@ -924,15 +921,11 @@ public final class RequestValidator {
    * @param key String
    * @return boolean
    */
-   private static boolean validateBooleanType (Request request , String key) {
-	   if (request.getRequest().containsKey(key)
-		        && null != request.getRequest().get(key)
-		        && !(request.getRequest().get(key) instanceof Boolean)) {
-		   return false;
-	   }
-	   return true;
-	   
-   }
+	private static boolean validateBooleanType(Request request, String key) {
+		return !(request.getRequest().containsKey(key) && null != request.getRequest().get(key)
+				&& !(request.getRequest().get(key) instanceof Boolean));
+
+	}
    
 	private static ProjectCommonException createDataTypeException(String errorCode, String key1, String key2) {
 		return new ProjectCommonException(ResponseCode.getResponse(errorCode).getErrorCode(),
