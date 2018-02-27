@@ -9,8 +9,9 @@ node('build-slave') {
             sh '''
             cd cassandra-migration
             mvn clean install -DskipTests
-            archive includes: "cassandra-migration/target/cassandra-migration-0.0.1-SNAPSHOT-jar-with-dependencies.jar"
+          
           '''
+            archive includes: "cassandra-migration/target/cassandra-migration-0.0.1-SNAPSHOT-jar-with-dependencies.jar"
         }
     }
     catch (err) {
