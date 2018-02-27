@@ -1,0 +1,20 @@
+#!groovy
+
+node('build-slave') {
+
+    currentBuild.result = "SUCCESS"
+
+    try {
+        stage('Build') {
+            sh '''
+            cd cassandra-migration
+            mvn clean install -DskipTests
+          '''
+        }
+    }
+    catch (err) {
+        currentBuild.result = "FAILURE"
+        throw err
+    }
+
+}
