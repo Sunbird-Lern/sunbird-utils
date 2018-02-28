@@ -215,6 +215,7 @@ public interface ResponseMessage {
       String NOT_SUPPORTED = "Not Supported.";
       String USERNAME_USERID_MISSING = "Please provide either userName or userId.";
       String CHANNEL_REG_FAILED = "Channel Registration failed.";
+      String SLUG_IS_NOT_UNIQUE = "Please provide different channel value. This channel value already exist.";
     }
     
     interface Key {
@@ -424,5 +425,6 @@ public interface ResponseMessage {
         String NOT_SUPPORTED = "NOT_SUPPORTED";
         String USERNAME_USERID_MISSING = "USERNAME_USERID_MISSING";
         String CHANNEL_REG_FAILED = "CHANNEL_REG_FAILED";
+        String SLUG_IS_NOT_UNIQUE = "SLUG_IS_NOT_UNIQUE";
     }
 }
