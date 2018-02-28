@@ -215,6 +215,8 @@ public interface ResponseMessage {
       String NOT_SUPPORTED = "Not Supported.";
       String USERNAME_USERID_MISSING = "Please provide either userName or userId.";
       String CHANNEL_REG_FAILED = "Channel Registration failed.";
+      String INVALID_COURSE_CREATOR_ID = "Course creator id does not exist .";
+      String USER_NOT_ASSOCIATED_TO_ROOT_ORG = "User not associated to course creator root org.";
     }
     
     interface Key {
@@ -424,5 +426,7 @@ public interface ResponseMessage {
         String NOT_SUPPORTED = "NOT_SUPPORTED";
         String USERNAME_USERID_MISSING = "USERNAME_USERID_MISSING";
         String CHANNEL_REG_FAILED = "CHANNEL_REG_FAILED";
+        String INVALID_COURSE_CREATOR_ID = "INVALID_COURSE_CREATOR_ID";
+        String USER_NOT_ASSOCIATED_TO_ROOT_ORG = "USER_NOT_ASSOCIATED_TO_ROOT_ORG";
     }
 }

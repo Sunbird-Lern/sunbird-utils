@@ -215,6 +215,8 @@ public enum ResponseCode {
     functionalityMissing(ResponseMessage.Key.NOT_SUPPORTED,ResponseMessage.Message.NOT_SUPPORTED),
     userNameOrUserIdRequired(ResponseMessage.Key.USERNAME_USERID_MISSING, ResponseMessage.Message.USERNAME_USERID_MISSING),
     channelRegFailed(ResponseMessage.Key.CHANNEL_REG_FAILED, ResponseMessage.Message.CHANNEL_REG_FAILED),
+  invalidCourseCreatorId(ResponseMessage.Key.INVALID_COURSE_CREATOR_ID, ResponseMessage.Message.INVALID_COURSE_CREATOR_ID),
+  userNotAssociatedToRootOrg(ResponseMessage.Key.USER_NOT_ASSOCIATED_TO_ROOT_ORG, ResponseMessage.Message.USER_NOT_ASSOCIATED_TO_ROOT_ORG),
     OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404),UNAUTHORIZED(401),REDIRECTION_REQUIRED(302);
 	
   private int responseCode;
@@ -349,4 +351,5 @@ public enum ResponseCode {
     }
     return value;
   }
+
 }
