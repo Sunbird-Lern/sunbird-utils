@@ -52,7 +52,7 @@ public final class RequestValidator {
   @SuppressWarnings("unchecked")
   public static void validateUpdateContent(Request contentRequestDto) {
     if (((List<Map<String, Object>>) (contentRequestDto.getRequest().get(JsonKey.CONTENTS)))
-        .size() == 0) {
+        .isEmpty()) {
       throw new ProjectCommonException(ResponseCode.contentIdRequired.getErrorCode(),
           ResponseCode.contentIdRequiredError.getErrorMessage(), ERROR_CODE);
     } else {
@@ -416,8 +416,8 @@ public final class RequestValidator {
   public static void validateAddMember(Request userRequest) {
     validateOrg(userRequest);
     if (userRequest.getRequest().containsKey(JsonKey.ROLES)
-        && !(userRequest.getRequest().get(JsonKey.ROLES) instanceof List)
-        || ((List) userRequest.getRequest().get(JsonKey.ROLES)).isEmpty()) {
+        && (!(userRequest.getRequest().get(JsonKey.ROLES) instanceof List)
+        || ((List) userRequest.getRequest().get(JsonKey.ROLES)).isEmpty())) {
       throw new ProjectCommonException(ResponseCode.roleRequired.getErrorCode(),
           ResponseCode.roleRequired.getErrorMessage(), ERROR_CODE);
     }
@@ -489,15 +489,7 @@ public final class RequestValidator {
 
   public static void validateUpdateCourseBatchReq(Request request) {
     if (null != request.getRequest().get(JsonKey.STATUS)) {
-      boolean status = false;
-      try {
-        status =
-            checkProgressStatus(Integer.parseInt("" + request.getRequest().get(JsonKey.STATUS)));
-      } catch (Exception e) {
-        ProjectLogger.log(e.getMessage(), e);
-        throw new ProjectCommonException(ResponseCode.progressStatusError.getErrorCode(),
-            ResponseCode.progressStatusError.getErrorMessage(), ERROR_CODE);
-      }
+      boolean status = validateBatchStatus(request);
       if (!status) {
         throw new ProjectCommonException(ResponseCode.progressStatusError.getErrorCode(),
             ResponseCode.progressStatusError.getErrorMessage(), ERROR_CODE);
@@ -532,6 +524,19 @@ public final class RequestValidator {
       throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
           ResponseCode.dataTypeError.getErrorMessage(), ERROR_CODE);
     }
+  }
+  
+  
+  private static boolean validateBatchStatus (Request request) {
+	  boolean status = false;
+      try {
+        status =
+            checkProgressStatus(Integer.parseInt("" + request.getRequest().get(JsonKey.STATUS)));
+        
+      } catch (Exception e) {
+        ProjectLogger.log(e.getMessage(), e);
+      }
+      return status;
   }
 
   private static void validateUpdateBatchEndDate(Request request) {
@@ -716,12 +721,10 @@ public final class RequestValidator {
   public static void validateAddUserBadge(Request reqObj) {
 
     if (ProjectUtil.isStringNullOREmpty((String) reqObj.get(JsonKey.BADGE_TYPE_ID))) {
-      throw new ProjectCommonException(ResponseCode.badgeTypeIdMandatory.getErrorCode(),
-          ResponseCode.badgeTypeIdMandatory.getErrorMessage(), ERROR_CODE);
+      throw createExceptionInstance(ResponseCode.badgeTypeIdMandatory.getErrorCode());	
     }
     if (ProjectUtil.isStringNullOREmpty((String) reqObj.get(JsonKey.RECEIVER_ID))) {
-      throw new ProjectCommonException(ResponseCode.receiverIdMandatory.getErrorCode(),
-          ResponseCode.receiverIdMandatory.getErrorMessage(), ERROR_CODE);
+      throw createExceptionInstance(ResponseCode.receiverIdMandatory.getErrorCode());	
     }
 
   }
@@ -732,8 +735,7 @@ public final class RequestValidator {
    */
   public static void validateCreateOrgType(Request reqObj) {
     if (ProjectUtil.isStringNullOREmpty((String) reqObj.getRequest().get(JsonKey.NAME))) {
-      throw new ProjectCommonException(ResponseCode.orgTypeMandatory.getErrorCode(),
-          ResponseCode.orgTypeMandatory.getErrorMessage(), ERROR_CODE);
+      throw createExceptionInstance(ResponseCode.orgTypeMandatory.getErrorCode());	
     }
   }
 
@@ -743,12 +745,10 @@ public final class RequestValidator {
    */
   public static void validateUpdateOrgType(Request reqObj) {
     if (ProjectUtil.isStringNullOREmpty((String) reqObj.getRequest().get(JsonKey.NAME))) {
-      throw new ProjectCommonException(ResponseCode.orgTypeMandatory.getErrorCode(),
-          ResponseCode.orgTypeMandatory.getErrorMessage(), ERROR_CODE);
+      throw createExceptionInstance(ResponseCode.orgTypeMandatory.getErrorCode()); 	
     }
     if (ProjectUtil.isStringNullOREmpty((String) reqObj.getRequest().get(JsonKey.ID))) {
-      throw new ProjectCommonException(ResponseCode.orgTypeIdRequired.getErrorCode(),
-          ResponseCode.orgTypeIdRequired.getErrorMessage(), ERROR_CODE);
+      throw createExceptionInstance(ResponseCode.orgTypeIdRequired.getErrorCode());	
     }
   }
 
@@ -794,8 +794,7 @@ public final class RequestValidator {
    */
   public static void validateNoteId(String noteId) {
     if (ProjectUtil.isStringNullOREmpty(noteId)) {
-      throw new ProjectCommonException(ResponseCode.invalidNoteId.getErrorCode(),
-          ResponseCode.invalidNoteId.getErrorMessage(), ERROR_CODE);
+      throw createExceptionInstance(ResponseCode.invalidNoteId.getErrorCode());		
     }
   }
 
@@ -807,9 +806,7 @@ public final class RequestValidator {
   public static void validateRegisterClient(Request request) {
 
     if (StringUtils.isBlank((String) request.getRequest().get(JsonKey.CLIENT_NAME))) {
-      throw new ProjectCommonException(ResponseCode.invalidClientName.getErrorCode(),
-          ResponseCode.invalidClientName.getErrorMessage(),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
+      throw createExceptionInstance(ResponseCode.invalidClientName.getErrorCode());	
     }
   }
 
@@ -822,9 +819,7 @@ public final class RequestValidator {
   public static void validateUpdateClientKey(String clientId, String masterAccessToken) {
     validateClientId(clientId);
     if (ProjectUtil.isStringNullOREmpty(masterAccessToken)) {
-      throw new ProjectCommonException(ResponseCode.invalidRequestData.getErrorCode(),
-          ResponseCode.invalidRequestData.getErrorMessage(),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
+    	throw createExceptionInstance(ResponseCode.invalidRequestData.getErrorCode());	
     }
   }
 
@@ -837,9 +832,7 @@ public final class RequestValidator {
   public static void validateGetClientKey(String id, String type) {
     validateClientId(id);
     if (ProjectUtil.isStringNullOREmpty(type)) {
-      throw new ProjectCommonException(ResponseCode.invalidRequestData.getErrorCode(),
-          ResponseCode.invalidRequestData.getErrorMessage(),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
+      throw createExceptionInstance(ResponseCode.invalidRequestData.getErrorCode());	
     }
   }
 
@@ -850,9 +843,7 @@ public final class RequestValidator {
    */
   public static void validateClientId(String clientId) {
     if (ProjectUtil.isStringNullOREmpty(clientId)) {
-      throw new ProjectCommonException(ResponseCode.invalidClientId.getErrorCode(),
-          ResponseCode.invalidClientId.getErrorMessage(),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
+    	throw createExceptionInstance(ResponseCode.invalidClientId.getErrorCode());	
     }
   }
 
@@ -864,78 +855,86 @@ public final class RequestValidator {
   @SuppressWarnings("unchecked")
   public static void validateSendNotification(Request request) {
     if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.TO))) {
-      throw new ProjectCommonException(ResponseCode.invalidTopic.getErrorCode(),
-          ResponseCode.invalidTopic.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+      throw createExceptionInstance(ResponseCode.invalidTopic.getErrorCode());	
     }
     if (request.getRequest().get(JsonKey.DATA) == null
         || !(request.getRequest().get(JsonKey.DATA) instanceof Map)
         || ((Map<String, Object>) request.getRequest().get(JsonKey.DATA)).size() == 0) {
-      throw new ProjectCommonException(ResponseCode.invalidTopicData.getErrorCode(),
-          ResponseCode.invalidTopicData.getErrorMessage(),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
+      throw createExceptionInstance(ResponseCode.invalidTopicData.getErrorCode());
     }
 
     if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.TYPE))) {
-      throw new ProjectCommonException(ResponseCode.invalidNotificationType.getErrorCode(),
-          ResponseCode.invalidNotificationType.getErrorMessage(),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
+      throw createExceptionInstance(ResponseCode.invalidNotificationType.getErrorCode());
     }
     if (!(JsonKey.FCM.equalsIgnoreCase((String) request.getRequest().get(JsonKey.TYPE)))) {
-      throw new ProjectCommonException(ResponseCode.notificationTypeSupport.getErrorCode(),
-          ResponseCode.notificationTypeSupport.getErrorMessage(),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
+      throw createExceptionInstance(ResponseCode.notificationTypeSupport.getErrorCode());
+     
     }
   }
 
   @SuppressWarnings("rawtypes")
-  public static void validateGetUserCount(Request request) {
-    if (request.getRequest().containsKey(JsonKey.LOCATION_IDS)
-        && null != request.getRequest().get(JsonKey.LOCATION_IDS)
-        && !(request.getRequest().get(JsonKey.LOCATION_IDS) instanceof List)) {
-      throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
-          ProjectUtil.formatMessage(ResponseCode.dataTypeError.getErrorMessage(),
-              JsonKey.LOCATION_IDS, JsonKey.LIST),
-          ERROR_CODE);
-    }
+	public static void validateGetUserCount(Request request) {
+		if (!validateListType(request, JsonKey.LOCATION_IDS)) {
+			throw createDataTypeException(ResponseCode.dataTypeError.getErrorCode(), JsonKey.LOCATION_IDS,
+					JsonKey.LIST);
+		}
+		if (null == request.getRequest().get(JsonKey.LOCATION_IDS)
+				&& ((List) request.getRequest().get(JsonKey.LOCATION_IDS)).isEmpty()) {
+			throw createExceptionInstance(ResponseCode.locationIdRequired.getErrorCode());
+		}
 
-    if (null == request.getRequest().get(JsonKey.LOCATION_IDS)
-        && ((List) request.getRequest().get(JsonKey.LOCATION_IDS)).isEmpty()) {
-      throw new ProjectCommonException(ResponseCode.locationIdRequired.getErrorCode(),
-          ResponseCode.locationIdRequired.getErrorMessage(),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
-    }
+		if (!validateBooleanType(request, JsonKey.USER_LIST_REQ)) {
+			throw createDataTypeException(ResponseCode.dataTypeError.getErrorCode(), JsonKey.USER_LIST_REQ, "Boolean");
+		}
 
-    if (request.getRequest().containsKey(JsonKey.USER_LIST_REQ)
-        && null != request.getRequest().get(JsonKey.USER_LIST_REQ)
-        && !(request.getRequest().get(JsonKey.USER_LIST_REQ) instanceof Boolean)) {
-      throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
-          ProjectUtil.formatMessage(ResponseCode.dataTypeError.getErrorMessage(),
-              JsonKey.USER_LIST_REQ, "Boolean"),
-          ERROR_CODE);
-    }
+		if (null != request.getRequest().get(JsonKey.USER_LIST_REQ)
+				&& (Boolean) request.getRequest().get(JsonKey.USER_LIST_REQ)) {
+			throw createExceptionInstance(ResponseCode.functionalityMissing.getErrorCode());
+		}
 
-    if (null != request.getRequest().get(JsonKey.USER_LIST_REQ)
-        && (Boolean) request.getRequest().get(JsonKey.USER_LIST_REQ)) {
-      throw new ProjectCommonException(ResponseCode.functionalityMissing.getErrorCode(),
-          ResponseCode.functionalityMissing.getErrorMessage(),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
-    }
+		if (!validateBooleanType(request, JsonKey.ESTIMATED_COUNT_REQ)) {
+			throw createDataTypeException(ResponseCode.dataTypeError.getErrorCode(), JsonKey.ESTIMATED_COUNT_REQ,
+					"Boolean");
+		}
 
-    if (request.getRequest().containsKey(JsonKey.ESTIMATED_COUNT_REQ)
-        && null != request.getRequest().get(JsonKey.ESTIMATED_COUNT_REQ)
-        && !(request.getRequest().get(JsonKey.ESTIMATED_COUNT_REQ) instanceof Boolean)) {
-      throw new ProjectCommonException(ResponseCode.dataTypeError.getErrorCode(),
-          ProjectUtil.formatMessage(ResponseCode.dataTypeError.getErrorMessage(),
-              JsonKey.ESTIMATED_COUNT_REQ, "Boolean"),
-          ERROR_CODE);
-    }
+		if (null != request.getRequest().get(JsonKey.ESTIMATED_COUNT_REQ)
+				&& (Boolean) request.getRequest().get(JsonKey.ESTIMATED_COUNT_REQ)) {
+			throw createExceptionInstance(ResponseCode.functionalityMissing.getErrorCode());
+		}
+	}
+    /**
+     * if the request contains that key and key is not instance of List then it
+     * will return false. other cases it will return true.
+     * @param request Request
+     * @param key String
+     * @return boolean
+     */
+	private static boolean validateListType(Request request, String key) {
+		return !(request.getRequest().containsKey(key) && null != request.getRequest().get(key)
+				&& !(request.getRequest().get(key) instanceof List));
+	}
+	
+  /**
+   * If the request contains the key and key value is not Boolean type then it will 
+   * return false , for any other case it will return true.
+   * @param request Request
+   * @param key String
+   * @return boolean
+   */
+	private static boolean validateBooleanType(Request request, String key) {
+		return !(request.getRequest().containsKey(key) && null != request.getRequest().get(key)
+				&& !(request.getRequest().get(key) instanceof Boolean));
 
-    if (null != request.getRequest().get(JsonKey.ESTIMATED_COUNT_REQ)
-        && (Boolean) request.getRequest().get(JsonKey.ESTIMATED_COUNT_REQ)) {
-      throw new ProjectCommonException(ResponseCode.functionalityMissing.getErrorCode(),
-          ResponseCode.functionalityMissing.getErrorMessage(),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
-    }
-  }
-
+	}
+   
+	private static ProjectCommonException createDataTypeException(String errorCode, String key1, String key2) {
+		return new ProjectCommonException(ResponseCode.getResponse(errorCode).getErrorCode(),
+				ProjectUtil.formatMessage(ResponseCode.getResponse(errorCode).getErrorMessage(), key1, key2),
+				ERROR_CODE);
+	}
+	
+	private static ProjectCommonException createExceptionInstance(String errorCode) {
+		return new ProjectCommonException(ResponseCode.getResponse(errorCode).getErrorCode(),
+				ResponseCode.getResponse(errorCode).getErrorMessage(), ERROR_CODE);
+	}
 }

@@ -217,6 +217,7 @@ public interface ResponseMessage {
       String CHANNEL_REG_FAILED = "Channel Registration failed.";
       String INVALID_COURSE_CREATOR_ID = "Course creator id does not exist .";
       String USER_NOT_ASSOCIATED_TO_ROOT_ORG = "User not associated to course creator root org.";
+      String SLUG_IS_NOT_UNIQUE = "Please provide different channel value. This channel value already exist.";
     }
     
     interface Key {
@@ -428,5 +429,6 @@ public interface ResponseMessage {
         String CHANNEL_REG_FAILED = "CHANNEL_REG_FAILED";
         String INVALID_COURSE_CREATOR_ID = "INVALID_COURSE_CREATOR_ID";
         String USER_NOT_ASSOCIATED_TO_ROOT_ORG = "USER_NOT_ASSOCIATED_TO_ROOT_ORG";
+        String SLUG_IS_NOT_UNIQUE = "SLUG_IS_NOT_UNIQUE";
     }
 }

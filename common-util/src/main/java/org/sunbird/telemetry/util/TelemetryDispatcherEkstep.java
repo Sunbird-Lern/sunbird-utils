@@ -58,7 +58,7 @@ public class TelemetryDispatcherEkstep implements TelemetryDispatcher {
     try {
       event = mapper.writeValueAsString(map);
     } catch (Exception e) {
-      e.printStackTrace();
+      ProjectLogger.log(e.getMessage(),e);
     }
     return event;
   }

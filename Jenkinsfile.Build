@@ -1,0 +1,23 @@
+#!groovy
+
+node('build-slave') {
+
+    currentBuild.result = "SUCCESS"
+
+    try {
+        stage('Build') {
+            cleanWs()
+            sh '''
+            cd cassandra-migration
+            mvn clean install -DskipTests
+          
+          '''
+            archive includes: "cassandra-migration/target/cassandra-migration-0.0.1-SNAPSHOT-jar-with-dependencies.jar"
+        }
+    }
+    catch (err) {
+        currentBuild.result = "FAILURE"
+        throw err
+    }
+
+}

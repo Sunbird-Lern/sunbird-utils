@@ -516,13 +516,10 @@ public class UserRequestValidator {
    * @param request
    */
   public static void validateAssignRole(Request request) {
-    if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.USER_ID))
-        && (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.EXTERNAL_ID))
-            || ProjectUtil
-                .isStringNullOREmpty((String) request.getRequest().get(JsonKey.PROVIDER)))) {
+    if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.USER_ID))){
       throw new ProjectCommonException(
-          ResponseCode.sourceAndExternalIdValidationError.getErrorCode(),
-          ResponseCode.sourceAndExternalIdValidationError.getErrorMessage(), ERROR_CODE);
+          ResponseCode.userIdRequired.getErrorCode(),
+          ResponseCode.userIdRequired.getErrorMessage(), ERROR_CODE);
     }
 
     if (request.getRequest().get(JsonKey.ROLES) == null
