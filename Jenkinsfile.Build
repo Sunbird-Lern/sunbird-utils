@@ -3,6 +3,9 @@
 node('build-slave') {
 
     currentBuild.result = "SUCCESS"
+    stage('Checkout'){
+          checkout scm
+       }
 
     try {
         stage('Build') {
