@@ -13,9 +13,9 @@ import akka.actor.ActorSelection;
  *
  */
 public class ActorUtilTest {
-	
+
 	@Test
-	public void getActorSelectionTest () {
+	public void getActorSelectionTest() {
 		ActorSelection selection = ActorUtility.getActorSelection();
 		Assert.assertNotNull(selection);
 	}

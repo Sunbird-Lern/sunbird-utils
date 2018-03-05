@@ -210,6 +210,8 @@ public class HttpUtil {
         StringBuilder builder = new StringBuilder();
         try {
             inStream = httpURLConnection.getInputStream();
+            // httpURLConnection.getContent();
+            // httpURLConnection.getOutputStream();
             reader = new BufferedReader(new InputStreamReader(inStream, StandardCharsets.UTF_8));
             String line = null;
             while ((line = reader.readLine()) != null) {
@@ -360,7 +362,7 @@ public class HttpUtil {
     }
 
     /**
-     * @description this method will post the form data
+     * @description this metod will post the form data
      * @param reqData (Map<String,String>)
      * @param fileData (Map<fileName,FileObject>)
      * @param headers (Map<fileName,String>)

@@ -45,8 +45,8 @@ public class CourseBatchValidatorTest {
 		request.put(JsonKey.COURSE_CREATED_FOR, userIds);
 		request.setRequest(requestObj);
 		try {
-		RequestValidator.validateCreateBatchReq(request);
-		response = true;
+			RequestValidator.validateCreateBatchReq(request);
+			response = true;
 		} catch (ProjectCommonException e) {
 			Assert.assertNull(e);
 		}
@@ -70,8 +70,8 @@ public class CourseBatchValidatorTest {
 		request.put(JsonKey.COURSE_CREATED_FOR, userIds);
 		request.setRequest(requestObj);
 		try {
-		  RequestValidator.validateUpdateCourseBatchReq(request);
-		  response = true;
+			RequestValidator.validateUpdateCourseBatchReq(request);
+			response = true;
 		} catch (ProjectCommonException e) {
 			Assert.assertNull(e);
 		}
