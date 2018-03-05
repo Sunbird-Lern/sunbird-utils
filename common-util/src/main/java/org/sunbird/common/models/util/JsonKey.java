@@ -584,11 +584,11 @@ public final class JsonKey {
 	public static final String TELEMETRY_EVENT_TYPE = "telemetryEventType";
 	public static final String PDATA_ID = "pdataId";
 	public static final String PID = "pid";
-	public static final String PRODUCER_ID ="producerId";
+	public static final String PRODUCER_ID = "producerId";
 	public static final String PRODUCER_INSTTANCE_ID = "producerInstanceId";
 	public static final String PRODUCER_VERSION = "pdataVersion";
 	public static final String CONTEXT = "context";
-	public static final String ENV ="env";
+	public static final String ENV = "env";
 	public static final String REQUEST_TYPE = "requestType";
 	public static final String ROLLUP = "rollup";
 	public static final String DELETE = "delete";
@@ -596,12 +596,12 @@ public final class JsonKey {
 	public static final String LOG_TYPE = "logType";
 	public static final String END_TIME = "endTime";
 	public static final String LOG_LEVEL = "logLevel";
-	public static final String INFO ="info";
+	public static final String INFO = "info";
 	public static final String ERR_TYPE = "errtype";
 	public static final String ACTOR_ID = "actorId";
 	public static final String ACTOR_TYPE = "actorType";
 	public static final String METHOD_NAME = "methodName";
-	public static final String START_TIME ="startTime";
+	public static final String START_TIME = "startTime";
 	public static final String CONSUMER = "consumer";
 	public static final String SYSTEM = "system";
 	public static final String SCHEDULER_JOB = "scheduler";
@@ -627,5 +627,7 @@ public final class JsonKey {
 	public static final String API_CALL = "API_CALL";
 	public static final String DEFAULT_CONSUMER_ID = "internal";
 	public static final String EKSTEP_CHANNEL_UPDATE_API_URL = "ekstep.channel.update.api.url";
-	private JsonKey() {}
+
+	private JsonKey() {
+	}
 }

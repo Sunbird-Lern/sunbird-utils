@@ -10,24 +10,24 @@ import com.lmax.disruptor.dsl.Disruptor;
  */
 public class WriteEventProducer {
 
-  //private static Logger logger = LoggerFactory.getLogger(WriteEventProducer.class);
+	// private static Logger logger =
+	// LoggerFactory.getLogger(WriteEventProducer.class);
 
-  private final Disruptor<Request> disruptor;
+	private final Disruptor<Request> disruptor;
 
-  public WriteEventProducer(Disruptor<Request> disruptor) {
-    this.disruptor = disruptor;
-  }
+	public WriteEventProducer(Disruptor<Request> disruptor) {
+		this.disruptor = disruptor;
+	}
 
-  private static final EventTranslatorOneArg<Request, Request> TRANSLATOR_ONE_ARG =
-      new EventTranslatorOneArg<Request, Request>() {
-        @Override
-        public void translateTo(Request writeEvent, long sequence, Request message) {
-          writeEvent.setRequest(message.getRequest());
-        }
-      };
+	private static final EventTranslatorOneArg<Request, Request> TRANSLATOR_ONE_ARG = new EventTranslatorOneArg<Request, Request>() {
+		@Override
+		public void translateTo(Request writeEvent, long sequence, Request message) {
+			writeEvent.setRequest(message.getRequest());
+		}
+	};
 
-  public void onData(Request message) {
-    disruptor.publishEvent(TRANSLATOR_ONE_ARG, message);
-  }
+	public void onData(Request message) {
+		disruptor.publishEvent(TRANSLATOR_ONE_ARG, message);
+	}
 
 }

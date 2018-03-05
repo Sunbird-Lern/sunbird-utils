@@ -9,18 +9,17 @@ import java.io.Serializable;
  */
 public class RequestParams implements Serializable {
 
-    private static final long serialVersionUID = -759588115950763188L;
+	private static final long serialVersionUID = -759588115950763188L;
 
-    private String did;
-    private String key;
-    private String msgid;
-    private String uid;
-    private String cid;
-    private String sid;
-    private String authToken;
+	private String did;
+	private String key;
+	private String msgid;
+	private String uid;
+	private String cid;
+	private String sid;
+	private String authToken;
 
-    
-    /**
+	/**
 	 * @return the authToken
 	 */
 	public String getAuthToken() {
@@ -28,7 +27,8 @@ public class RequestParams implements Serializable {
 	}
 
 	/**
-	 * @param authToken the authToken to set
+	 * @param authToken
+	 *            the authToken to set
 	 */
 	public void setAuthToken(String authToken) {
 		this.authToken = authToken;
@@ -43,28 +43,28 @@ public class RequestParams implements Serializable {
 	}
 
 	public String getDid() {
-        return did;
-    }
+		return did;
+	}
 
-    public void setDid(String did) {
-        this.did = did;
-    }
+	public void setDid(String did) {
+		this.did = did;
+	}
 
-    public String getKey() {
-        return key;
-    }
+	public String getKey() {
+		return key;
+	}
 
-    public void setKey(String key) {
-        this.key = key;
-    }
+	public void setKey(String key) {
+		this.key = key;
+	}
 
-    public String getMsgid() {
-        return msgid;
-    }
+	public String getMsgid() {
+		return msgid;
+	}
 
-    public void setMsgid(String msgid) {
-        this.msgid = msgid;
-    }
+	public void setMsgid(String msgid) {
+		this.msgid = msgid;
+	}
 
 	public String getCid() {
 		return cid;

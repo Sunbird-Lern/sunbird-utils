@@ -18,50 +18,55 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class TelemetryDispatcherEkstep implements TelemetryDispatcher {
 
-  private static ObjectMapper mapper = new ObjectMapper();
-  @Override
-  public boolean dispatchTelemetryEvent(List<String> eventList) {
+	private static ObjectMapper mapper = new ObjectMapper();
 
-    try {
-      List<Map<String, Object>> jsonList = mapper.readValue(eventList.toString(), new TypeReference<List<Map<String, Object>>>(){});
+	@Override
+	public boolean dispatchTelemetryEvent(List<String> eventList) {
 
-      Map<String, Object> map = new HashMap<>();
-      map.put("ets", System.currentTimeMillis());
+		try {
+			List<Map<String, Object>> jsonList = mapper.readValue(eventList.toString(),
+					new TypeReference<List<Map<String, Object>>>() {
+					});
 
-      map.put(JsonKey.EVENTS , jsonList);
+			Map<String, Object> map = new HashMap<>();
+			map.put("ets", System.currentTimeMillis());
 
-      String baseSearchUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);
-      if(ProjectUtil.isStringNullOREmpty(baseSearchUrl)){
-        baseSearchUrl = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_BASE_URL);
-      }
+			map.put(JsonKey.EVENTS, jsonList);
 
+			String baseSearchUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);
+			if (ProjectUtil.isStringNullOREmpty(baseSearchUrl)) {
+				baseSearchUrl = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_BASE_URL);
+			}
 
-      String event = getTelemetryEvent(map);
-      ProjectLogger.log("EVEVTS TO FLUSH : "+event);
+			String event = getTelemetryEvent(map);
+			ProjectLogger.log("EVEVTS TO FLUSH : " + event);
 
-      Map<String, String> headers = new HashMap<>();
-      headers.put("Content-Type", "application/json");
-      headers.put("accept", "application/json");
-      headers.put(JsonKey.AUTHORIZATION, JsonKey.BEARER+System.getenv(JsonKey.EKSTEP_AUTHORIZATION));
-      if(ProjectUtil.isStringNullOREmpty((String)headers.get(JsonKey.AUTHORIZATION))){
-        headers.put(JsonKey.AUTHORIZATION, PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_AUTHORIZATION));
-      }
-      String response = HttpUtil.sendPostRequest(baseSearchUrl+PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_TELEMETRY_API_URL), event,headers);
-      ProjectLogger.log("FLUSH RESPONSE : "+response);
+			Map<String, String> headers = new HashMap<>();
+			headers.put("Content-Type", "application/json");
+			headers.put("accept", "application/json");
+			headers.put(JsonKey.AUTHORIZATION, JsonKey.BEARER + System.getenv(JsonKey.EKSTEP_AUTHORIZATION));
+			if (ProjectUtil.isStringNullOREmpty((String) headers.get(JsonKey.AUTHORIZATION))) {
+				headers.put(JsonKey.AUTHORIZATION,
+						PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_AUTHORIZATION));
+			}
+			String response = HttpUtil.sendPostRequest(
+					baseSearchUrl + PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_TELEMETRY_API_URL), event,
+					headers);
+			ProjectLogger.log("FLUSH RESPONSE : " + response);
 
-    } catch (Exception ex) {
-      ProjectLogger.log(ex.getMessage(), ex);
-    }
-    return false;
-  }
+		} catch (Exception ex) {
+			ProjectLogger.log(ex.getMessage(), ex);
+		}
+		return false;
+	}
 
-  private static String getTelemetryEvent(Map<String, Object> map) {
-    String event = "";
-    try {
-      event = mapper.writeValueAsString(map);
-    } catch (Exception e) {
-      ProjectLogger.log(e.getMessage(),e);
-    }
-    return event;
-  }
+	private static String getTelemetryEvent(Map<String, Object> map) {
+		String event = "";
+		try {
+			event = mapper.writeValueAsString(map);
+		} catch (Exception e) {
+			ProjectLogger.log(e.getMessage(), e);
+		}
+		return event;
+	}
 }
