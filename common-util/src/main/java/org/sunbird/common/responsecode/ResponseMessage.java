@@ -215,6 +215,8 @@ public interface ResponseMessage {
       String NOT_SUPPORTED = "Not Supported.";
       String USERNAME_USERID_MISSING = "Please provide either userName or userId.";
       String CHANNEL_REG_FAILED = "Channel Registration failed.";
+      String INVALID_COURSE_CREATOR_ID = "Course creator id does not exist .";
+      String USER_NOT_ASSOCIATED_TO_ROOT_ORG = "User not associated to course creator root org.";
       String SLUG_IS_NOT_UNIQUE = "Please provide different channel value. This channel value already exist.";
 	  String ISSUER_SLUG_REQUIRED = "Please provide issuer slug.";
 	  String BADGE_SLUG_REQUIRED = "Please provide bage class slug.";
@@ -429,6 +431,8 @@ public interface ResponseMessage {
         String NOT_SUPPORTED = "NOT_SUPPORTED";
         String USERNAME_USERID_MISSING = "USERNAME_USERID_MISSING";
         String CHANNEL_REG_FAILED = "CHANNEL_REG_FAILED";
+        String INVALID_COURSE_CREATOR_ID = "INVALID_COURSE_CREATOR_ID";
+        String USER_NOT_ASSOCIATED_TO_ROOT_ORG = "USER_NOT_ASSOCIATED_TO_ROOT_ORG";
         String SLUG_IS_NOT_UNIQUE = "SLUG_IS_NOT_UNIQUE";
 		String ISSUER_SLUG_REQUIRED = "ISSUER_SLUG_REQUIRED";
 		String BADGE_SLUG_REQUIRED = "BADGE_SLUG_REQUIRED";

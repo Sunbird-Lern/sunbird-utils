@@ -215,6 +215,8 @@ public enum ResponseCode {
     functionalityMissing(ResponseMessage.Key.NOT_SUPPORTED,ResponseMessage.Message.NOT_SUPPORTED),
     userNameOrUserIdRequired(ResponseMessage.Key.USERNAME_USERID_MISSING, ResponseMessage.Message.USERNAME_USERID_MISSING),
     channelRegFailed(ResponseMessage.Key.CHANNEL_REG_FAILED, ResponseMessage.Message.CHANNEL_REG_FAILED),
+    invalidCourseCreatorId(ResponseMessage.Key.INVALID_COURSE_CREATOR_ID, ResponseMessage.Message.INVALID_COURSE_CREATOR_ID),
+    userNotAssociatedToRootOrg(ResponseMessage.Key.USER_NOT_ASSOCIATED_TO_ROOT_ORG, ResponseMessage.Message.USER_NOT_ASSOCIATED_TO_ROOT_ORG),
     slugIsNotUnique(ResponseMessage.Key.SLUG_IS_NOT_UNIQUE, ResponseMessage.Message.SLUG_IS_NOT_UNIQUE),
     issuerSlugRequired (ResponseMessage.Key.ISSUER_SLUG_REQUIRED, ResponseMessage.Message.ISSUER_SLUG_REQUIRED),
     badgeSlugRequired (ResponseMessage.Key.BADGE_SLUG_REQUIRED, ResponseMessage.Message.BADGE_SLUG_REQUIRED),
@@ -354,4 +356,5 @@ public enum ResponseCode {
     }
     return value;
   }
+
 }
