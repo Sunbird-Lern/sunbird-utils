@@ -216,6 +216,10 @@ public interface ResponseMessage {
       String USERNAME_USERID_MISSING = "Please provide either userName or userId.";
       String CHANNEL_REG_FAILED = "Channel Registration failed.";
       String SLUG_IS_NOT_UNIQUE = "Please provide different channel value. This channel value already exist.";
+	  String ISSUER_SLUG_REQUIRED = "Please provide issuer slug.";
+	  String BADGE_SLUG_REQUIRED = "Please provide bage class slug.";
+	  String RECIPIENT_EMAIL_REQUIRED = "Please provide recipient email.";
+	  String ASSERTION_EVIDENCE_REQUIRED = "Please provide valid assertion url as an evidence.";
     }
     
     interface Key {
@@ -426,5 +430,9 @@ public interface ResponseMessage {
         String USERNAME_USERID_MISSING = "USERNAME_USERID_MISSING";
         String CHANNEL_REG_FAILED = "CHANNEL_REG_FAILED";
         String SLUG_IS_NOT_UNIQUE = "SLUG_IS_NOT_UNIQUE";
+		String ISSUER_SLUG_REQUIRED = "ISSUER_SLUG_REQUIRED";
+		String BADGE_SLUG_REQUIRED = "BADGE_SLUG_REQUIRED";
+		String RECIPIENT_EMAIL_REQUIRED = "RECIPIENT_EMAIL_REQUIRED";
+		String ASSERTION_EVIDENCE_REQUIRED = "ASSERTION_EVIDENCE_REQUIRED";
     }
 }

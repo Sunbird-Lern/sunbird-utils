@@ -216,6 +216,10 @@ public enum ResponseCode {
     userNameOrUserIdRequired(ResponseMessage.Key.USERNAME_USERID_MISSING, ResponseMessage.Message.USERNAME_USERID_MISSING),
     channelRegFailed(ResponseMessage.Key.CHANNEL_REG_FAILED, ResponseMessage.Message.CHANNEL_REG_FAILED),
     slugIsNotUnique(ResponseMessage.Key.SLUG_IS_NOT_UNIQUE, ResponseMessage.Message.SLUG_IS_NOT_UNIQUE),
+    issuerSlugRequired (ResponseMessage.Key.ISSUER_SLUG_REQUIRED, ResponseMessage.Message.ISSUER_SLUG_REQUIRED),
+    badgeSlugRequired (ResponseMessage.Key.BADGE_SLUG_REQUIRED, ResponseMessage.Message.BADGE_SLUG_REQUIRED),
+    recipientEmailRequired (ResponseMessage.Key.RECIPIENT_EMAIL_REQUIRED, ResponseMessage.Message.RECIPIENT_EMAIL_REQUIRED),
+    evidenceRequired(ResponseMessage.Key.ASSERTION_EVIDENCE_REQUIRED, ResponseMessage.Message.ASSERTION_EVIDENCE_REQUIRED),
     OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404),UNAUTHORIZED(401),REDIRECTION_REQUIRED(302);
 	
   private int responseCode;

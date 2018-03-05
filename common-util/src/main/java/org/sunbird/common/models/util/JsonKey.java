@@ -627,5 +627,10 @@ public final class JsonKey {
 	public static final String API_CALL = "API_CALL";
 	public static final String DEFAULT_CONSUMER_ID = "internal";
 	public static final String EKSTEP_CHANNEL_UPDATE_API_URL = "ekstep.channel.update.api.url";
+	public static final String ISSUER_SLUG = "issuerSlug";
+	public static final String BADGE_CLASS_SLUG = "badgeSlug";
+	public static final String RECIPIENT_EMAIL = "recipientEmail";
+	public static final String EVIDENCE = "evidence";
+	public static final String NOTIFY = "notify";
 	private JsonKey() {}
 }
