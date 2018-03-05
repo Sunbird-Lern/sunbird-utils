@@ -1,22 +1,12 @@
 package org.sunbird.helper;
 
-import com.datastax.driver.core.AtomicMonotonicTimestampGenerator;
-import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.Host;
-import com.datastax.driver.core.HostDistance;
-import com.datastax.driver.core.Metadata;
-import com.datastax.driver.core.PoolingOptions;
-import com.datastax.driver.core.ProtocolVersion;
-import com.datastax.driver.core.QueryLogger;
-import com.datastax.driver.core.Session;
-import com.datastax.driver.core.TableMetadata;
-import com.datastax.driver.core.policies.DefaultRetryPolicy;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import org.apache.thrift.transport.TTransportException;
 import org.cassandraunit.CQLDataLoader;
 import org.cassandraunit.dataset.cql.ClassPathCQLDataSet;
@@ -28,6 +18,18 @@ import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.responsecode.ResponseCode;
+
+import com.datastax.driver.core.AtomicMonotonicTimestampGenerator;
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Host;
+import com.datastax.driver.core.HostDistance;
+import com.datastax.driver.core.Metadata;
+import com.datastax.driver.core.PoolingOptions;
+import com.datastax.driver.core.ProtocolVersion;
+import com.datastax.driver.core.QueryLogger;
+import com.datastax.driver.core.Session;
+import com.datastax.driver.core.TableMetadata;
+import com.datastax.driver.core.policies.DefaultRetryPolicy;
 
 /**
  * @author Amit Kumar

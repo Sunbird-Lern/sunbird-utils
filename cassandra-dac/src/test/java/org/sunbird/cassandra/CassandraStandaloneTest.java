@@ -3,14 +3,13 @@ package org.sunbird.cassandra;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.TableMetadata;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -23,6 +22,9 @@ import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.helper.CassandraConnectionManagerImpl;
 import org.sunbird.helper.CassandraConnectionMngrFactory;
 import org.sunbird.helper.ServiceFactory;
+
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.TableMetadata;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CassandraStandaloneTest {

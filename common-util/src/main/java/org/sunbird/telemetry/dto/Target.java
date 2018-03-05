@@ -1,8 +1,9 @@
 package org.sunbird.telemetry.dto;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import java.util.Map;
 
 
 @JsonInclude(Include.NON_NULL)

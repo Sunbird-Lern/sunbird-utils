@@ -1,15 +1,17 @@
 package org.sunbird.telemetry.util.validator;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.telemetry.dto.Telemetry;
 import org.sunbird.telemetry.util.lmaxdisruptor.TelemetryEvents;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Created by arvind on 30/1/18.

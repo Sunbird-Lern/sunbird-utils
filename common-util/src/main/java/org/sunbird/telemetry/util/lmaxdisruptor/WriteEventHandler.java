@@ -1,8 +1,8 @@
 package org.sunbird.telemetry.util.lmaxdisruptor;
 
-import com.lmax.disruptor.EventHandler;
 import java.util.List;
 import java.util.Map;
+
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.request.Request;
 import org.sunbird.telemetry.collector.TelemetryAssemblerFactory;
@@ -10,6 +10,8 @@ import org.sunbird.telemetry.collector.TelemetryDataAssembler;
 import org.sunbird.telemetry.util.TelemetryFlush;
 import org.sunbird.telemetry.util.validator.TelemetryObjectValidator;
 import org.sunbird.telemetry.util.validator.TelemetryObjectValidatorV3;
+
+import com.lmax.disruptor.EventHandler;
 
 /**
  * Created by arvind on 10/1/18.

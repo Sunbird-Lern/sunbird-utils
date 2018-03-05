@@ -1,8 +1,7 @@
 package org.sunbird.common.models.util;
 
-import org.junit.Test;
-
 import org.junit.Assert;
+import org.junit.Test;
 
 public class SlugTest {
 	

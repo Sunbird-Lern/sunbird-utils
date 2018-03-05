@@ -1,13 +1,15 @@
 package org.sunbird.common.models.util.url;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * 

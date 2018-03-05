@@ -5,7 +5,6 @@ package org.sunbird.common;
 
 import static org.sunbird.common.models.util.ProjectUtil.isNotNull;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +17,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
@@ -69,6 +69,8 @@ import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
 import org.sunbird.helper.ElasticSearchMapping;
 import org.sunbird.helper.ElasticSearchSettings;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * This class will provide all required operation for elastic search.

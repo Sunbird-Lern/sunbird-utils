@@ -1,19 +1,21 @@
 package org.sunbird.common;
 
-import com.datastax.driver.core.ResultSet;
-import com.datastax.driver.core.Row;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.responsecode.ResponseCode;
+
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Row;
 
 /**
  * @desc This class will provide all required helper method for cassandra db operation.

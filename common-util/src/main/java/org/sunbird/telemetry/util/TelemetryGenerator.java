@@ -1,11 +1,11 @@
 package org.sunbird.telemetry.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
@@ -15,6 +15,8 @@ import org.sunbird.telemetry.dto.Producer;
 import org.sunbird.telemetry.dto.Target;
 import org.sunbird.telemetry.dto.Telemetry;
 import org.sunbird.telemetry.util.lmaxdisruptor.TelemetryEvents;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * class to generate the telemetry events and convert the final event oject to string ...

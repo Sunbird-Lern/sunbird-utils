@@ -3,7 +3,6 @@
  */
 package org.sunbird.common.models.util.azure;
 
-import com.microsoft.azure.storage.StorageException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.Locale;
@@ -14,6 +13,7 @@ import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 
 import com.microsoft.azure.storage.CloudStorageAccount;
+import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.BlobContainerPermissions;
 import com.microsoft.azure.storage.blob.BlobContainerPublicAccessType;
 import com.microsoft.azure.storage.blob.CloudBlobClient;

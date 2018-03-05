@@ -1,10 +1,11 @@
 package org.sunbird.telemetry.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * Telemetry V3 POJO to generate telemetry event.

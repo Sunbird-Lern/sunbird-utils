@@ -1,11 +1,13 @@
 package org.sunbird.common.models.util.datasecurity.impl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;

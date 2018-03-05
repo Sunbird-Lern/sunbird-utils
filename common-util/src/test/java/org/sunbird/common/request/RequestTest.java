@@ -7,7 +7,6 @@ import java.util.HashMap;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.sunbird.common.request.RequestParams;
 
 /**
  * @author Manzarul

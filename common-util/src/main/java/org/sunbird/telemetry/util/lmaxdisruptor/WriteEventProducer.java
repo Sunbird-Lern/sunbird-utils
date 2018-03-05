@@ -1,8 +1,9 @@
 package org.sunbird.telemetry.util.lmaxdisruptor;
 
+import org.sunbird.common.request.Request;
+
 import com.lmax.disruptor.EventTranslatorOneArg;
 import com.lmax.disruptor.dsl.Disruptor;
-import org.sunbird.common.request.Request;
 
 /**
  * Created by arvind on 10/1/18.

@@ -1,8 +1,9 @@
 package org.sunbird.helper;
 
+import java.util.List;
+
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
-import java.util.List;
 
 /**
  * Interface for cassandra connection manager , implementation would be Standalone and Embedde cassandra connection manager .
