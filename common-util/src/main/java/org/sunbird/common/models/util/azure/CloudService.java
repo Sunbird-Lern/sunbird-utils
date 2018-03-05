@@ -8,16 +8,16 @@ import java.util.List;
  */
 public interface CloudService {
 
-  String uploadFile(String containerName , String filName , String fileLocation);
+	String uploadFile(String containerName, String filName, String fileLocation);
 
-  boolean downLoadFile(String containerName , String fileName, String downloadFolder);
+	boolean downLoadFile(String containerName, String fileName, String downloadFolder);
 
-  String uploadFile(String containerName , File file);
+	String uploadFile(String containerName, File file);
 
-  boolean deleteFile(String containerName , String fileName);
+	boolean deleteFile(String containerName, String fileName);
 
-  List<String> listAllFiles(String containerName);
+	List<String> listAllFiles(String containerName);
 
-  boolean deleteContainer(String containerName);
+	boolean deleteContainer(String containerName);
 
 }
