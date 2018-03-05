@@ -629,6 +629,7 @@ public final class JsonKey {
     public static final String EKSTEP_CHANNEL_UPDATE_API_URL = "ekstep.channel.update.api.url";
     public static final String BADGING_AUTHORIZATION_KEY = "badging.authorization.key";
     public static final String BADGING_TOKEN = "Token ";
+    public static final String IMAGE = "image";
 
     private JsonKey() {}
 }
