@@ -424,6 +424,9 @@ public class HttpUtil {
      */
     public static String sendDeleteRequest(Map<String, String> headers, String url)
             throws IOException {
+        long startTime = System.currentTimeMillis();
+        ProjectLogger.log("HttpUtil sendDeleteRequest method started at ==" + startTime
+                + " for requestURL " + url, LoggerEnum.PERF_LOG);
         try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
             HttpDelete httpDelete = new HttpDelete(url);
             ProjectLogger.log("Executing sendDeleteRequest " + httpDelete.getRequestLine());
@@ -441,7 +444,15 @@ public class HttpUtil {
                     throw new ClientProtocolException("Status: " + status);
                 }
             };
+            long stopTime = System.currentTimeMillis();
+            long elapsedTime = stopTime - startTime;
+            ProjectLogger.log("HttpUtil sendDeleteRequest method end at ==" + stopTime
+                    + " for requestURL " + url + " ,Total time elapsed = " + elapsedTime,
+                    LoggerEnum.PERF_LOG);
             return httpclient.execute(httpDelete, responseHandler);
+        } catch (Exception ex) {
+            ProjectLogger.log("Exception occurred while calling sendDeleteRequest method.", ex);
+            throw ex;
         }
     }
 
