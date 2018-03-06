@@ -375,6 +375,7 @@ public class HttpUtil {
     public static String postFormData(Map<String, String> reqData, Map<String, byte[]> fileData,
             Map<String, String> headers, String url) throws IOException {
         long startTime = System.currentTimeMillis();
+        Map<String, Object> logInfo = genarateLogInfo(JsonKey.API_CALL, "API CALL : " + url);
         ProjectLogger.log(
                 "HttpUtil postFormData method started at ==" + startTime + " for requestURL " + url,
                 LoggerEnum.PERF_LOG);
@@ -407,13 +408,16 @@ public class HttpUtil {
                     + " for requestURL " + url + " ,Total time elapsed = " + elapsedTime,
                     LoggerEnum.PERF_LOG);
             HttpResponse httpResponse = client.execute(httpPost);
-            return generateResponse(httpResponse);
+            String res = generateResponse(httpResponse);
+            telemetryProcessingCall(logInfo);
+            return res;
         } catch (Exception ex) {
             ProjectLogger.log("Exception occurred while calling postFormData method.", ex);
             throw ex;
         } finally {
             client.close();
         }
+
     }
 
     private static String generateResponse(HttpResponse httpResponse) throws IOException {
@@ -442,6 +446,7 @@ public class HttpUtil {
         try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
             HttpDelete httpDelete = new HttpDelete(url);
             ProjectLogger.log("Executing sendDeleteRequest " + httpDelete.getRequestLine());
+            Map<String, Object> logInfo = genarateLogInfo(JsonKey.API_CALL, "API CALL : " + url);
             Set<Entry<String, String>> headerEntry = headers.entrySet();
             for (Entry<String, String> headerObj : headerEntry) {
                 httpDelete.addHeader(headerObj.getKey(), headerObj.getValue());
@@ -461,10 +466,13 @@ public class HttpUtil {
             ProjectLogger.log("HttpUtil sendDeleteRequest method end at ==" + stopTime
                     + " for requestURL " + url + " ,Total time elapsed = " + elapsedTime,
                     LoggerEnum.PERF_LOG);
-            return httpclient.execute(httpDelete, responseHandler);
+          String res = httpclient.execute(httpDelete, responseHandler);
+          telemetryProcessingCall(logInfo);
+          return res;
         } catch (Exception ex) {
             ProjectLogger.log("Exception occurred while calling sendDeleteRequest method.", ex);
             throw ex;
+
         }
     }
 
