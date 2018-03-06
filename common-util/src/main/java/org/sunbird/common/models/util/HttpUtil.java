@@ -20,7 +20,10 @@ import java.util.Map.Entry;
 import java.util.Set;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
@@ -28,6 +31,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.sunbird.common.request.ExecutionContext;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
@@ -210,8 +214,6 @@ public class HttpUtil {
         StringBuilder builder = new StringBuilder();
         try {
             inStream = httpURLConnection.getInputStream();
-            // httpURLConnection.getContent();
-            // httpURLConnection.getOutputStream();
             reader = new BufferedReader(new InputStreamReader(inStream, StandardCharsets.UTF_8));
             String line = null;
             while ((line = reader.readLine()) != null) {
@@ -424,4 +426,35 @@ public class HttpUtil {
         }
         return builder1.toString();
     }
+
+    /**
+     *
+     * @param headers
+     * @param url
+     * @return String
+     * @throws IOException
+     */
+    public static String sendDeleteRequest(Map<String, String> headers, String url)
+            throws IOException {
+        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+            HttpDelete httpDelete = new HttpDelete(url);
+            ProjectLogger.log("Executing sendDeleteRequest " + httpDelete.getRequestLine());
+            Set<Entry<String, String>> headerEntry = headers.entrySet();
+            for (Entry<String, String> headerObj : headerEntry) {
+                httpDelete.addHeader(headerObj.getKey(), headerObj.getValue());
+            }
+            // Create a custom response handler
+            ResponseHandler<String> responseHandler = response -> {
+                int status = response.getStatusLine().getStatusCode();
+                if (status == 200) {
+                    HttpEntity entity = response.getEntity();
+                    return entity != null ? EntityUtils.toString(entity) : null;
+                } else {
+                    throw new ClientProtocolException("Status: " + status);
+                }
+            };
+            return httpclient.execute(httpDelete, responseHandler);
+        }
+    }
+
 }
