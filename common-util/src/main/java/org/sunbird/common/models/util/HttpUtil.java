@@ -369,10 +369,10 @@ public class HttpUtil {
      * @param fileData (Map<fileName,FileObject>)
      * @param headers (Map<fileName,String>)
      * @param url
-     * @return CloseableHttpResponse
+     * @return String
      * @throws IOException
      */
-    public static HttpResponse postFormData(Map<String, String> reqData, Map<String, File> fileData,
+    public static String postFormData(Map<String, String> reqData, Map<String, byte[]> fileData,
             Map<String, String> headers, String url) throws IOException {
         long startTime = System.currentTimeMillis();
         ProjectLogger.log(
@@ -391,10 +391,10 @@ public class HttpUtil {
             for (Entry<String, String> entryObj : entry) {
                 builder.addTextBody(entryObj.getKey(), entryObj.getValue());
             }
-            Set<Entry<String, File>> fileEntry = fileData.entrySet();
-            for (Entry<String, File> entryObj : fileEntry) {
+            Set<Entry<String, byte[]>> fileEntry = fileData.entrySet();
+            for (Entry<String, byte[]> entryObj : fileEntry) {
                 if (!ProjectUtil.isStringNullOREmpty(entryObj.getKey())
-                        && null != entryObj.getValue() && entryObj.getValue() instanceof File) {
+                        && null != entryObj.getValue()) {
                     builder.addBinaryBody(entryObj.getKey(), entryObj.getValue(),
                             ContentType.APPLICATION_OCTET_STREAM, entryObj.getKey());
                 }
@@ -406,7 +406,8 @@ public class HttpUtil {
             ProjectLogger.log("HttpUtil postFormData method end at ==" + stopTime
                     + " for requestURL " + url + " ,Total time elapsed = " + elapsedTime,
                     LoggerEnum.PERF_LOG);
-            return client.execute(httpPost);
+            HttpResponse httpResponse = client.execute(httpPost);
+            return generateResponse(httpResponse);
         } catch (Exception ex) {
             ProjectLogger.log("Exception occurred while calling postFormData method.", ex);
             throw ex;
@@ -415,8 +416,19 @@ public class HttpUtil {
         }
     }
 
+    private static String generateResponse(HttpResponse httpResponse) throws IOException {
+        StringBuilder builder1 = new StringBuilder();
+        BufferedReader br = new BufferedReader(
+            new InputStreamReader((httpResponse.getEntity().getContent())));
+        String output;
+        while ((output = br.readLine()) != null) {
+            builder1.append(output);
+        }
+        return builder1.toString();
+    }
+
     /**
-     * 
+     *
      * @param headers
      * @param url
      * @return String
