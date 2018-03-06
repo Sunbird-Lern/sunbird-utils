@@ -219,6 +219,7 @@ public interface ResponseMessage {
 		String INVALID_COURSE_CREATOR_ID = "Course creator id does not exist .";
 		String USER_NOT_ASSOCIATED_TO_ROOT_ORG = "User not associated to course creator root org.";
 		String SLUG_IS_NOT_UNIQUE = "Please provide different channel value. This channel value already exist.";
+		String INVALID_CREATE_BADGE_ISSUER_DATA = "Invalid request data for create adge issuer .";
 	}
 
 	interface Key {
@@ -431,5 +432,6 @@ public interface ResponseMessage {
 		String INVALID_COURSE_CREATOR_ID = "INVALID_COURSE_CREATOR_ID";
 		String USER_NOT_ASSOCIATED_TO_ROOT_ORG = "USER_NOT_ASSOCIATED_TO_ROOT_ORG";
 		String SLUG_IS_NOT_UNIQUE = "SLUG_IS_NOT_UNIQUE";
+		String INVALID_CREATE_BADGE_ISSUER_DATA = "INVALID_CREATE_BADGE_ISSUER_DATA";
 	}
 }

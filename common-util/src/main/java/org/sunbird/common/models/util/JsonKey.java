@@ -630,6 +630,7 @@ public final class JsonKey {
     public static final String BADGING_AUTHORIZATION_KEY = "badging.authorization.key";
     public static final String BADGING_TOKEN = "Token ";
     public static final String IMAGE = "image";
+    public static final String BADGER_BASE_URL = "badgerBaseUrl";
 
     private JsonKey() {}
 }
