@@ -222,6 +222,7 @@ public interface ResponseMessage {
 	  String BADGE_SLUG_REQUIRED = "Please provide bage class slug.";
 	  String RECIPIENT_EMAIL_REQUIRED = "Please provide recipient email.";
 	  String ASSERTION_EVIDENCE_REQUIRED = "Please provide valid assertion url as an evidence.";
+	  String ASSERTION_SLUG_REQUIRED = "Please provide assertion slug.";
     }
     
     interface Key {
@@ -438,5 +439,6 @@ public interface ResponseMessage {
 		String BADGE_SLUG_REQUIRED = "BADGE_SLUG_REQUIRED";
 		String RECIPIENT_EMAIL_REQUIRED = "RECIPIENT_EMAIL_REQUIRED";
 		String ASSERTION_EVIDENCE_REQUIRED = "ASSERTION_EVIDENCE_REQUIRED";
+		String ASSERTION_SLUG_REQUIRED = "ASSERTION_SLUG_REQUIRED";
     }
 }

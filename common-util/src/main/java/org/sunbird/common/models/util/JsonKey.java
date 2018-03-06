@@ -632,5 +632,8 @@ public final class JsonKey {
 	public static final String RECIPIENT_EMAIL = "recipientEmail";
 	public static final String EVIDENCE = "evidence";
 	public static final String NOTIFY = "notify";
+	public static final String ASSERTION_SLUG = "assertionSlug";
+	public static final String RECIPIENT_IDENTIFIER = "recipient_identifier";
+	public static final String CREATE_NOTIFICATION  = "create_notification" ;
 	private JsonKey() {}
 }

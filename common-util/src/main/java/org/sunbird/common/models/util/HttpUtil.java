@@ -342,4 +342,17 @@ public class HttpUtil {
     map.put(JsonKey.PARAMS, params);
     return map;
   }
+  
+  public static void main(String[] args) {
+	 Map<String,String> headermap = new HashMap<>();
+	 headermap.put("Content-Type", "application/json");
+	 headermap.put("Authorization", "Token c6d0bdb8ce2425b26c2840bdca0f7b64e39be5fe");
+	 try {
+		String response = sendPostRequest("http://localhost:8000/v1/issuer/issuers/haque/badges/db-design-expert/assertions?format=json", "{\"recipient_identifier\":\"manzarul.haque@tarento.com\",\"evidence\":\"http://localhost:8000/public/badges/db-design-expert\",\"create_notification\":false}", headermap);
+	   System.out.println(response);
+	 } catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+}
 }

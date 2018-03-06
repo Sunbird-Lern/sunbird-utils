@@ -52,5 +52,29 @@ public class BadgeAssertionValidator {
 		}
 
 	}
+	
+	/**
+	 * This method will verify null and empty check for requested param.
+	 * if any param is null or empty then it will throw exception
+	 * @param issuerSlug String
+	 * @param badgeSlug String
+	 * @param assertionSlug String
+	 */
+	public static void validategetBadgeAssertion(String issuerSlug, String badgeSlug, String assertionSlug) {
+		if (ProjectUtil.isStringNullOREmpty(badgeSlug)) {
+			throw new ProjectCommonException(ResponseCode.issuerSlugRequired.getErrorCode(),
+					ResponseCode.issuerSlugRequired.getErrorMessage(), ERROR_CODE);
+		}
+		if (ProjectUtil.isStringNullOREmpty(badgeSlug)) {
+			throw new ProjectCommonException(ResponseCode.badgeSlugRequired.getErrorCode(),
+					ResponseCode.badgeSlugRequired.getErrorMessage(), ERROR_CODE);
+
+		}
+		if (ProjectUtil.isStringNullOREmpty(assertionSlug)) {
+			throw new ProjectCommonException(ResponseCode.assertionSlugRequired.getErrorCode(),
+					ResponseCode.assertionSlugRequired.getErrorMessage(), ERROR_CODE);
+
+		}
+	}
 
 }
