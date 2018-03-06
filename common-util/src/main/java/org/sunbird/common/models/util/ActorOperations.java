@@ -159,7 +159,9 @@ public enum ActorOperations {
     GET_BADGE_CLASS("getBadgeClass"),
     LIST_BADGE_CLASS("listBadgeClass"),
     DELETE_BADGE_CLASS("deleteBadgeClass"),
-	  CREATE_BADGE_ISSUER("createBadgeIssuer");
+	CREATE_BADGE_ISSUER("createBadgeIssuer"),
+	ASSIGN_BADGE_MESSAGE("assignBadgeMessage"), 
+	REVOKE_BADGE_MESSAGE("revokeBadgeMessage");
 
     private String value;
 
