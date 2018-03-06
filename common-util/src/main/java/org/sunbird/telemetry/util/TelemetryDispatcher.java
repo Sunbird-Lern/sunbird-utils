@@ -7,6 +7,6 @@ import java.util.List;
  */
 public interface TelemetryDispatcher {
 
-  public boolean dispatchTelemetryEvent(List<String> eventList);
+	public boolean dispatchTelemetryEvent(List<String> eventList);
 
 }
