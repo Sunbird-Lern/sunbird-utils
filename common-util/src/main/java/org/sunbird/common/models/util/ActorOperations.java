@@ -153,19 +153,7 @@ public enum ActorOperations {
     SEARCH_DATA("searchData"),
     GET_METRICS("getMetrics"),
     REG_CHANNEL("channelReg"),
-    TELEMETRY_PROCESSING("telemetryProcessing"),
-    // Badge Class Operations
-    CREATE_BADGE_CLASS("createBadgeClass"),
-    GET_BADGE_CLASS("getBadgeClass"),
-    LIST_BADGE_CLASS("listBadgeClass"),
-    DELETE_BADGE_CLASS("deleteBadgeClass"),
-	CREATE_BADGE_ISSUER("createBadgeIssuer"),
-	ASSIGN_BADGE_MESSAGE("assignBadgeMessage"), 
-	REVOKE_BADGE_MESSAGE("revokeBadgeMessage"),
-    CREATE_BADGE_ASSERTION("createBageAssertion"),
-    GET_BADGE_ASSERTION("getBadgeAssertion"),
-    GET_BADGE_ASSERTION_LIST("getBadgeAssertionList"),
-    REVOKE_BADGE("revokeBadge");
+    TELEMETRY_PROCESSING("telemetryProcessing");
     private String value;
 
     /**
