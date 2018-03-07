@@ -631,5 +631,14 @@ public final class JsonKey {
     public static final String BADGING_TOKEN = "Token ";
     public static final String IMAGE = "image";
 
+    public static final String FORM_PARAMS="formParams";
+    public static final String FILE_PARAMS="fileParams";
+
+    // Badging
+    public static final String ISSUER_SLUG="issuerSlug";
+
+    public static final String BADGE_CRITERIA="criteria";
+    public static final String BADGE_IMAGE="image";
+
     private JsonKey() {}
 }
