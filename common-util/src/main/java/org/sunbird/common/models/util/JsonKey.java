@@ -4,7 +4,7 @@ package org.sunbird.common.models.util;
 
 /**
  * This class will contains all the key related to request and response.
- * 
+ *
  * @author Manzarul
  */
 
@@ -627,10 +627,11 @@ public final class JsonKey {
     public static final String API_CALL = "API_CALL";
     public static final String DEFAULT_CONSUMER_ID = "internal";
     public static final String EKSTEP_CHANNEL_UPDATE_API_URL = "ekstep.channel.update.api.url";
-    public static final String BADGING_AUTHORIZATION_KEY = "badging.authorization.key";
-    public static final String BADGING_TOKEN = "Token ";
-    public static final String IMAGE = "image";
-    public static final String BADGER_BASE_URL = "badgerBaseUrl";
 
-    private JsonKey() {}
+    public static final String FORM_PARAMS = "formParams";
+    public static final String FILE_PARAMS = "fileParams";
+
+
+    private JsonKey() {
+    }
 }

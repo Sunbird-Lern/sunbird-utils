@@ -8,7 +8,7 @@ import org.sunbird.common.responsecode.ResponseCode;
 /**
  * Created by arvind on 2/3/18.
  */
-public class BadgeRequestValidator {
+public class BadgeIssuerRequestValidator {
 
   private static final int ERROR_CODE = ResponseCode.CLIENT_ERROR.getResponseCode();
   private static final String COMMA_SEPERATOR = ",";
@@ -41,6 +41,13 @@ public class BadgeRequestValidator {
     if(flag){
       builder.deleteCharAt(builder.length()-1);
       throw createExceptionInstance(ResponseCode.invalidDataForCreateBadgeIssuer.getErrorCode(),builder.toString() );
+    }
+  }
+
+  public static void validateGetBadgeIssuerDetail(Request request){
+    if(ProjectUtil.isStringNullOREmpty((String)request.getRequest().get(JsonKey.SLUG))){
+      throw new ProjectCommonException(ResponseCode.slugIsNotUnique.getErrorCode(),
+          ResponseCode.slugIsNotUnique.getErrorMessage(), ERROR_CODE);
     }
   }
 

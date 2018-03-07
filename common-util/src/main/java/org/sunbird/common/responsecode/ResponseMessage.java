@@ -116,6 +116,11 @@ public interface ResponseMessage {
 		String JOB_NAME_ERROR = "Job Name is required.";
 		String NAME_OF_ORGANISATION_ERROR = "Organization Name is required.";
 		String ROLES_MISSING = "user role is required.";
+		String CHANNEL_REG_FAILED = "Channel Registration failed.";
+		String INVALID_COURSE_CREATOR_ID = "Course creator id does not exist .";
+		String USER_NOT_ASSOCIATED_TO_ROOT_ORG = "User not associated to course creator root org.";
+		String SLUG_IS_NOT_UNIQUE = "Please provide different channel value. This channel value already exist.";
+		String INVALID_CREATE_BADGE_ISSUER_DATA = "Invalid request data for create adge issuer .";
 		String INVALID_DATE_FORMAT = "Invalid Date format . Date format should be : yyyy-MM-dd hh:mm:ss:SSSZ";
 		String SRC_EXTERNAL_ID_ALREADY_EXIST = "PROVIDER WITH EXTERNAL ID ALREADY EXIST .";
 		String ALREADY_ENROLLED_COURSE = "User has already Enrolled this course .";
@@ -215,15 +220,14 @@ public interface ResponseMessage {
 		String LOCATION_ID_REQUIRED = "Please provide Location Id.";
 		String NOT_SUPPORTED = "Not Supported.";
 		String USERNAME_USERID_MISSING = "Please provide either userName or userId.";
-		String CHANNEL_REG_FAILED = "Channel Registration failed.";
-		String INVALID_COURSE_CREATOR_ID = "Course creator id does not exist .";
-		String USER_NOT_ASSOCIATED_TO_ROOT_ORG = "User not associated to course creator root org.";
-		String SLUG_IS_NOT_UNIQUE = "Please provide different channel value. This channel value already exist.";
-		String INVALID_CREATE_BADGE_ISSUER_DATA = "Invalid request data for create adge issuer .";
+		String ISSUER_SLUG_REQUIRED = "Please provide issuer slug.";
+		String BADGE_SLUG_REQUIRED = "Please provide bage class slug.";
+		String RECIPIENT_EMAIL_REQUIRED = "Please provide recipient email.";
+		String ASSERTION_EVIDENCE_REQUIRED = "Please provide valid assertion url as an evidence.";
+		String ASSERTION_SLUG_REQUIRED = "Please provide assertion slug.";
 	}
 
 	interface Key {
-
 		String UNAUTHORISE_USER = "UNAUTHORIZE_USER";
 		String INVALID_USER_CREDENTIALS = "INVALID_USER_CREDENTIALS";
 		String INVALID_OPERATION_NAME = "INVALID_OPERATION_NAME";
@@ -370,6 +374,11 @@ public interface ResponseMessage {
 		String EMAIL_SUBJECT_ERROR = "EMAIL_SUBJECT_ERROR";
 		String EMAIL_BODY_ERROR = "EMAIL_BODY_ERROR";
 		String RECIPIENT_ADDRESS_ERROR = "RECIPIENT_ADDRESS_ERROR";
+		String ISSUER_SLUG_REQUIRED = "ISSUER_SLUG_REQUIRED";
+		String BADGE_SLUG_REQUIRED = "BADGE_SLUG_REQUIRED";
+		String RECIPIENT_EMAIL_REQUIRED = "RECIPIENT_EMAIL_REQUIRED";
+		String ASSERTION_EVIDENCE_REQUIRED = "ASSERTION_EVIDENCE_REQUIRED";
+		String ASSERTION_SLUG_REQUIRED = "ASSERTION_SLUG_REQUIRED";
 		String STORAGE_CONTAINER_NAME_MANDATORY = "STORAGE_CONTAINER_NAME_MANDATORY";
 		String USER_REG_ORG_ERROR = "USER_REG_ORG_ERROR";
 		String CLOUD_SERVICE_ERROR = "CLOUD_SERVICE_ERROR";
