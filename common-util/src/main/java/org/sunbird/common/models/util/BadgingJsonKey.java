@@ -19,6 +19,9 @@ public class BadgingJsonKey {
   public static final String BADGE_CRITERIA = "criteria";
   public static final String BADGE_IMAGE = "image";
   public static final String BADGER_BASE_URL = "sunbird_badger_baseurl";
+  public static final String ISSUER_LIST = "issuerList";
+  public static final String CONTEXT = "context";
+  public static final String BADGES = "badges";
 
 
   private BadgingJsonKey(){}
