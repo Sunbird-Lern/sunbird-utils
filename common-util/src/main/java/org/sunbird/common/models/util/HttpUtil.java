@@ -48,6 +48,8 @@ public class HttpUtil {
 
     private static LMAXWriter lmaxWriter = LMAXWriter.getInstance();
 
+    private HttpUtil() {}
+
     /**
      * Makes an HTTP request using GET method to the specified URL.
      *
@@ -366,7 +368,7 @@ public class HttpUtil {
      * @description this method will post the form data
      * @param reqData (Map<String,String>)
      * @param fileData (Map<fileName,byte[]>)
-     * @param headers (Map<fileName,String>)
+     * @param headers (Map<String,String>)
      * @param url
      * @return String
      * @throws IOException
