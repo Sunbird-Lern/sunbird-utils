@@ -612,21 +612,29 @@ public final class JsonKey {
     public static final String EKSTEP_TELEMETRY_V3_URL = "eksetp_telemetry_V3_url";
     public static final String SEARCH_TOP_N = "searchTopN";
 
-    public static final String EKSTEP_CHANNEL_REG_API_URL = "ekstep.channel.reg.api.url";
-    public static final String EKSTEP_GET_CHANNEL_LIST = "ekstep.channel.list.api.url";
-    public static final String CODE = "code";
-    public static final String CHANNEL_REG_STATUS_ID = "003";
-    public static final String CHANNEL_REG_STATUS = "channelRegStatus";
-    public static final String CHANNELS = "channels";
-    public static final String ANNOUNCEMENT = "announcement";
-    public static final String NOTIFICATION = "notification";
-    public static final String DASHBOARD = "dashboard";
-    public static final String TELEMETRY_QUEUE_THRESHOLD_VALUE = "telemetry_queue_threshold_value";
-    public static final String API_ACCESS = "API_ACCESS";
-    public static final String ADDITIONAL_INFO = "ADDITIONAL_INFO";
-    public static final String API_CALL = "API_CALL";
-    public static final String DEFAULT_CONSUMER_ID = "internal";
-    public static final String EKSTEP_CHANNEL_UPDATE_API_URL = "ekstep.channel.update.api.url";
+	public static final String EKSTEP_CHANNEL_REG_API_URL = "ekstep.channel.reg.api.url";
+	public static final String EKSTEP_GET_CHANNEL_LIST = "ekstep.channel.list.api.url";
+	public static final String CODE = "code";
+	public static final String CHANNEL_REG_STATUS_ID = "003";
+	public static final String CHANNEL_REG_STATUS = "channelRegStatus";
+	public static final String CHANNELS = "channels";
+	public static final String ANNOUNCEMENT = "announcement";
+	public static final String NOTIFICATION = "notification";
+	public static final String DASHBOARD = "dashboard";
+	public static final String TELEMETRY_QUEUE_THRESHOLD_VALUE = "telemetry_queue_threshold_value";
+	public static final String API_ACCESS = "API_ACCESS";
+	public static final String ADDITIONAL_INFO = "ADDITIONAL_INFO";
+	public static final String API_CALL = "API_CALL";
+	public static final String DEFAULT_CONSUMER_ID = "internal";
+	public static final String EKSTEP_CHANNEL_UPDATE_API_URL = "ekstep.channel.update.api.url";
+	public static final String ISSUER_SLUG = "issuerSlug";
+	public static final String BADGE_CLASS_SLUG = "badgeSlug";
+	public static final String RECIPIENT_EMAIL = "recipientEmail";
+	public static final String EVIDENCE = "evidence";
+	public static final String NOTIFY = "notify";
+	public static final String ASSERTION_SLUG = "assertionSlug";
+	public static final String RECIPIENT_IDENTIFIER = "recipient_identifier";
+	public static final String CREATE_NOTIFICATION  = "create_notification" ;
     public static final String BADGING_AUTHORIZATION_KEY = "badging.authorization.key";
     public static final String BADGING_TOKEN = "Token ";
     public static final String IMAGE = "image";
@@ -639,6 +647,8 @@ public final class JsonKey {
 
     public static final String BADGE_CRITERIA="criteria";
     public static final String BADGE_IMAGE="image";
+
+    public static final String BADGER_BASE_URL = "badgerBaseUrl";
 
     private JsonKey() {}
 }
