@@ -363,9 +363,9 @@ public class HttpUtil {
     }
 
     /**
-     * @description this metod will post the form data
+     * @description this method will post the form data
      * @param reqData (Map<String,String>)
-     * @param fileData (Map<fileName,FileObject>)
+     * @param fileData (Map<fileName,byte[]>)
      * @param headers (Map<fileName,String>)
      * @param url
      * @return String
