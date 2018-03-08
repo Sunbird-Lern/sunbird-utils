@@ -152,7 +152,6 @@ public enum ActorOperations {
     READ_ALL_DATA("readAllData"),
     SEARCH_DATA("searchData"),
     GET_METRICS("getMetrics"),
-    REG_CHANNEL("channelReg"),
 
     // Badge Class Operations
     CREATE_BADGE_CLASS("createBadgeClass"),
