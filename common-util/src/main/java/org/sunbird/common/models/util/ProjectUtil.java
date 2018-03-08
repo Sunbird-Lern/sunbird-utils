@@ -19,6 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.validator.UrlValidator;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -823,5 +824,16 @@ public class ProjectUtil {
 	public static void createAndThrowInvalidUserDataException() {
 		throw new ProjectCommonException(ResponseCode.invalidUsrData.getErrorCode(),
 				ResponseCode.invalidUsrData.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode());
+	}
+	
+	/**
+	 * Method to verify url is valid or not.
+	 * @param url String
+	 * @return boolean
+	 */
+	public static boolean isUrlvalid(String url) {
+		String[] schemes = { "http", "https" };
+		UrlValidator urlValidator = new UrlValidator(schemes);
+		return urlValidator.isValid(url);
 	}
 }

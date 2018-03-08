@@ -224,6 +224,9 @@ public enum ResponseCode {
 	    recipientEmailRequired (ResponseMessage.Key.RECIPIENT_EMAIL_REQUIRED, ResponseMessage.Message.RECIPIENT_EMAIL_REQUIRED),
 	    evidenceRequired(ResponseMessage.Key.ASSERTION_EVIDENCE_REQUIRED, ResponseMessage.Message.ASSERTION_EVIDENCE_REQUIRED),
 	    assertionSlugRequired (ResponseMessage.Key.ASSERTION_SLUG_REQUIRED, ResponseMessage.Message.ASSERTION_SLUG_REQUIRED),
+	    recipientIdRequired (ResponseMessage.Key.RECIPIENT_ID_REQUIRED, ResponseMessage.Message.RECIPIENT_ID_REQUIRED),
+	    recipientTypeRequired (ResponseMessage.Key.RECIPIENT_TYPE_REQUIRED, ResponseMessage.Message.RECIPIENT_TYPE_REQUIRED),
+	    badgingserverError(ResponseMessage.Key.BADGING_SERVER_ERROR, ResponseMessage.Message.BADGING_SERVER_ERROR),
 	    OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404),UNAUTHORIZED(401),REDIRECTION_REQUIRED(302);
 	private int responseCode;
 	/**
