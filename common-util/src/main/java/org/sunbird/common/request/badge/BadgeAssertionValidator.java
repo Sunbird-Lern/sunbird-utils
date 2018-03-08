@@ -2,7 +2,6 @@ package org.sunbird.common.request.badge;
 
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.BadgingJsonKey;
-import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
@@ -38,18 +37,29 @@ public class BadgeAssertionValidator {
 					ResponseCode.badgeSlugRequired.getErrorMessage(), ERROR_CODE);
 
 		}
-		if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(BadgingJsonKey.RECIPIENT_EMAIL))) {
+		if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(BadgingJsonKey.RECIPIENT_IDENTIFIER))) {
 			throw new ProjectCommonException(ResponseCode.recipientEmailRequired.getErrorCode(),
 					ResponseCode.recipientEmailRequired.getErrorMessage(), ERROR_CODE);
 		}
-		if (!ProjectUtil.isEmailvalid((String) request.getRequest().get(BadgingJsonKey.RECIPIENT_EMAIL))) {
+		if (!ProjectUtil.isEmailvalid((String) request.getRequest().get(BadgingJsonKey.RECIPIENT_IDENTIFIER))) {
 			throw new ProjectCommonException(ResponseCode.emailFormatError.getErrorCode(),
 					ResponseCode.emailFormatError.getErrorMessage(), ERROR_CODE);
 
 		}
-		if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(BadgingJsonKey.EVIDENCE))) {
-			throw new ProjectCommonException(ResponseCode.evidenceRequired.getErrorCode(),
-					ResponseCode.evidenceRequired.getErrorMessage(), ERROR_CODE);
+		if (!ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(BadgingJsonKey.EVIDENCE))) {
+			boolean response = ProjectUtil.isUrlvalid((String) request.getRequest().get(BadgingJsonKey.EVIDENCE));
+			if (!response) {
+				throw new ProjectCommonException(ResponseCode.evidenceRequired.getErrorCode(),
+						ResponseCode.evidenceRequired.getErrorMessage(), ERROR_CODE);
+			}
+		}
+		if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(BadgingJsonKey.RECIPIENT_CUSTOM_ID))) {
+			throw new ProjectCommonException(ResponseCode.recipientIdRequired.getErrorCode(),
+					ResponseCode.recipientIdRequired.getErrorMessage(), ERROR_CODE);
+		}
+		if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(BadgingJsonKey.RECIPIENT_CUSTOM_TYPE))) {
+			throw new ProjectCommonException(ResponseCode.recipientTypeRequired.getErrorCode(),
+					ResponseCode.recipientTypeRequired.getErrorMessage(), ERROR_CODE);
 		}
 
 	}

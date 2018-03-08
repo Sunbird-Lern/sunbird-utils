@@ -225,6 +225,9 @@ public interface ResponseMessage {
 		String RECIPIENT_EMAIL_REQUIRED = "Please provide recipient email.";
 		String ASSERTION_EVIDENCE_REQUIRED = "Please provide valid assertion url as an evidence.";
 		String ASSERTION_SLUG_REQUIRED = "Please provide assertion slug.";
+		String RECIPIENT_ID_REQUIRED = "Please provide a recipient id.";
+		String RECIPIENT_TYPE_REQUIRED = "Please provide recipient type.";
+		String BADGING_SERVER_ERROR = "Badging server is down or on high load";
 		String SLUG_REQUIRED = "Slug is required .";
 	}
 
@@ -443,6 +446,9 @@ public interface ResponseMessage {
 		String USER_NOT_ASSOCIATED_TO_ROOT_ORG = "USER_NOT_ASSOCIATED_TO_ROOT_ORG";
 		String SLUG_IS_NOT_UNIQUE = "SLUG_IS_NOT_UNIQUE";
 		String INVALID_CREATE_BADGE_ISSUER_DATA = "INVALID_CREATE_BADGE_ISSUER_DATA";
+		String RECIPIENT_ID_REQUIRED = "RECIPIENT_ID_REQUIRED";
+		String RECIPIENT_TYPE_REQUIRED = "RECIPIENT_TYPE_REQUIRED";
+		String BADGING_SERVER_ERROR = "BADGING_SERVER_ERROR";
 		String SLUG_REQUIRED = "SLUG_REQUIRED";
 	}
 }
