@@ -4,7 +4,6 @@
 package org.sunbird.common.models.util;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -48,6 +47,8 @@ public class HttpUtil {
 
 
     private static LMAXWriter lmaxWriter = LMAXWriter.getInstance();
+
+    private HttpUtil() {}
 
     /**
      * Makes an HTTP request using GET method to the specified URL.
@@ -364,10 +365,10 @@ public class HttpUtil {
     }
 
     /**
-     * @description this metod will post the form data
+     * @description this method will post the form data
      * @param reqData (Map<String,String>)
-     * @param fileData (Map<fileName,FileObject>)
-     * @param headers (Map<fileName,String>)
+     * @param fileData (Map<fileName,byte[]>)
+     * @param headers (Map<String,String>)
      * @param url
      * @return String
      * @throws IOException
@@ -379,8 +380,7 @@ public class HttpUtil {
         ProjectLogger.log(
                 "HttpUtil postFormData method started at ==" + startTime + " for requestURL " + url,
                 LoggerEnum.PERF_LOG);
-        CloseableHttpClient client = HttpClients.createDefault();
-        try {
+        try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpPost httpPost = new HttpPost(url);
             Set<Entry<String, String>> headerEntry = headers.entrySet();
             for (Entry<String, String> headerObj : headerEntry) {
@@ -414,16 +414,13 @@ public class HttpUtil {
         } catch (Exception ex) {
             ProjectLogger.log("Exception occurred while calling postFormData method.", ex);
             throw ex;
-        } finally {
-            client.close();
         }
-
     }
 
     private static String generateResponse(HttpResponse httpResponse) throws IOException {
         StringBuilder builder1 = new StringBuilder();
-        BufferedReader br = new BufferedReader(
-            new InputStreamReader((httpResponse.getEntity().getContent())));
+        BufferedReader br =
+                new BufferedReader(new InputStreamReader((httpResponse.getEntity().getContent())));
         String output;
         while ((output = br.readLine()) != null) {
             builder1.append(output);
@@ -466,13 +463,12 @@ public class HttpUtil {
             ProjectLogger.log("HttpUtil sendDeleteRequest method end at ==" + stopTime
                     + " for requestURL " + url + " ,Total time elapsed = " + elapsedTime,
                     LoggerEnum.PERF_LOG);
-          String res = httpclient.execute(httpDelete, responseHandler);
-          telemetryProcessingCall(logInfo);
-          return res;
+            String res = httpclient.execute(httpDelete, responseHandler);
+            telemetryProcessingCall(logInfo);
+            return res;
         } catch (Exception ex) {
             ProjectLogger.log("Exception occurred while calling sendDeleteRequest method.", ex);
             throw ex;
-
         }
     }
 
