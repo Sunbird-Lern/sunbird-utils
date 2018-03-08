@@ -225,6 +225,7 @@ public interface ResponseMessage {
 		String RECIPIENT_EMAIL_REQUIRED = "Please provide recipient email.";
 		String ASSERTION_EVIDENCE_REQUIRED = "Please provide valid assertion url as an evidence.";
 		String ASSERTION_SLUG_REQUIRED = "Please provide assertion slug.";
+		String SLUG_REQUIRED = "Slug is required .";
 	}
 
 	interface Key {
@@ -442,5 +443,6 @@ public interface ResponseMessage {
 		String USER_NOT_ASSOCIATED_TO_ROOT_ORG = "USER_NOT_ASSOCIATED_TO_ROOT_ORG";
 		String SLUG_IS_NOT_UNIQUE = "SLUG_IS_NOT_UNIQUE";
 		String INVALID_CREATE_BADGE_ISSUER_DATA = "INVALID_CREATE_BADGE_ISSUER_DATA";
+		String SLUG_REQUIRED = "SLUG_REQUIRED";
 	}
 }

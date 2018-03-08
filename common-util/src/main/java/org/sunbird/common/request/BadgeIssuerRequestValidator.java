@@ -46,8 +46,8 @@ public class BadgeIssuerRequestValidator {
 
   public static void validateGetBadgeIssuerDetail(Request request){
     if(ProjectUtil.isStringNullOREmpty((String)request.getRequest().get(JsonKey.SLUG))){
-      throw new ProjectCommonException(ResponseCode.slugIsNotUnique.getErrorCode(),
-          ResponseCode.slugIsNotUnique.getErrorMessage(), ERROR_CODE);
+      throw new ProjectCommonException(ResponseCode.slugRequired.getErrorCode(),
+          ResponseCode.slugRequired.getErrorMessage(), ERROR_CODE);
     }
   }
 
