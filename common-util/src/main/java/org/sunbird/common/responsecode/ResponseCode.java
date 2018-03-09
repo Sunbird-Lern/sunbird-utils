@@ -228,6 +228,7 @@ public enum ResponseCode {
 	    recipientTypeRequired (ResponseMessage.Key.RECIPIENT_TYPE_REQUIRED, ResponseMessage.Message.RECIPIENT_TYPE_REQUIRED),
 	    badgingserverError(ResponseMessage.Key.BADGING_SERVER_ERROR, ResponseMessage.Message.BADGING_SERVER_ERROR),
 	    slugRequired(ResponseMessage.Key.SLUG_REQUIRED, ResponseMessage.Message.SLUG_REQUIRED),
+	   invalidIssuerSlug(ResponseMessage.Key.INVALID_ISSUER_SLUG, ResponseMessage.Message.INVALID_ISSUER_SLUG),
 	    OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404),UNAUTHORIZED(401),REDIRECTION_REQUIRED(302);
 	private int responseCode;
 	/**

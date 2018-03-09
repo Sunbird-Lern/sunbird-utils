@@ -229,6 +229,7 @@ public interface ResponseMessage {
 		String RECIPIENT_TYPE_REQUIRED = "Please provide recipient type.";
 		String BADGING_SERVER_ERROR = "Badging server is down or on high load";
 		String SLUG_REQUIRED = "Slug is required .";
+		String INVALID_ISSUER_SLUG = "Invalid issuer slug .";
 	}
 
 	interface Key {
@@ -450,5 +451,6 @@ public interface ResponseMessage {
 		String RECIPIENT_TYPE_REQUIRED = "RECIPIENT_TYPE_REQUIRED";
 		String BADGING_SERVER_ERROR = "BADGING_SERVER_ERROR";
 		String SLUG_REQUIRED = "SLUG_REQUIRED";
+		String INVALID_ISSUER_SLUG = "INVALID_ISSUER_SLUG";
 	}
 }
