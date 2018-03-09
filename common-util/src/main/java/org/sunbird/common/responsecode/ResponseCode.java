@@ -229,6 +229,8 @@ public enum ResponseCode {
 	    badgingserverError(ResponseMessage.Key.BADGING_SERVER_ERROR, ResponseMessage.Message.BADGING_SERVER_ERROR),
 	    resourceNotFound (ResponseMessage.Key.RESOURCE_NOT_FOUND, ResponseMessage.Message.RESOURCE_NOT_FOUND),
 	    sizeLimitExceed (ResponseMessage.Key.MAX_ALLOWED_SIZE_LIMIT_EXCEED, ResponseMessage.Message.MAX_ALLOWED_SIZE_LIMIT_EXCEED),
+	    slugRequired(ResponseMessage.Key.SLUG_REQUIRED, ResponseMessage.Message.SLUG_REQUIRED),
+	   invalidIssuerSlug(ResponseMessage.Key.INVALID_ISSUER_SLUG, ResponseMessage.Message.INVALID_ISSUER_SLUG),
 	    OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404),UNAUTHORIZED(401),REDIRECTION_REQUIRED(302);
 	private int responseCode;
 	/**

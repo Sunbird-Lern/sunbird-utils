@@ -14,7 +14,7 @@ public class BadgingJsonKey {
   public static final String RECIPIENT_IDENTIFIER = "recipient_identifier";
   public static final String CREATE_NOTIFICATION = "create_notification";
   public static final String IMAGE = "image";
-  public static final String BADGING_AUTHORIZATION_KEY = "badging.authorization.key";
+  public static final String BADGING_AUTHORIZATION_KEY = "badging_authorization_key";
   public static final String BADGING_TOKEN = "Token ";
   public static final String BADGE_CRITERIA = "criteria";
   public static final String BADGE_IMAGE = "image";
@@ -29,6 +29,7 @@ public class BadgingJsonKey {
   public static final String BADGING_ASSERTION_LIST_SIZE = "badging_assertion_list_size";
   public static final String ISSUER_ID = "issuerId";
   public static final String BADGE_CLASS_ID = "badgeId";
-  
+  public static final String ISSUERS = "issuers";
+
   private BadgingJsonKey(){}
 }

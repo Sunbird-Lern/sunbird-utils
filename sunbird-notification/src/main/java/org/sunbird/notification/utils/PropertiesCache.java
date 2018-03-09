@@ -31,7 +31,21 @@ public class PropertiesCache {
 		return LazyHolder.INSTANCE;
 	}
 
+	/**
+	 * Method to read value from resource file and if key not found then by default return key values itself.
+	 * @param key
+	 * @return
+	 */
 	public String getProperty(String key) {
 		return configProp.getProperty(key) != null ? configProp.getProperty(key) : null;
+	}
+
+	/**
+	 * Method to read value from resource file .
+	 * @param key
+	 * @return
+	 */
+	public String readProperty(String key) {
+		return configProp.getProperty(key);
 	}
 }

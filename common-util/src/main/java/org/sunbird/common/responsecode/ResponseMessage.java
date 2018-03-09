@@ -230,7 +230,9 @@ public interface ResponseMessage {
 		String BADGING_SERVER_ERROR = "Badging server is down or on high load";
 		String RESOURCE_NOT_FOUND = "Requested resource not found";
 		String MAX_ALLOWED_SIZE_LIMIT_EXCEED = "Max allowed size is {0}";
-	}
+		String SLUG_REQUIRED = "Slug is required .";
+		String INVALID_ISSUER_SLUG = "Invalid issuer slug .";
+	 }
 
 	interface Key {
 		String UNAUTHORISE_USER = "UNAUTHORIZE_USER";
@@ -452,5 +454,7 @@ public interface ResponseMessage {
 		String BADGING_SERVER_ERROR = "BADGING_SERVER_ERROR";
 		String RESOURCE_NOT_FOUND = "RESOURCE_NOT_FOUND";
 		String MAX_ALLOWED_SIZE_LIMIT_EXCEED = "MAX_ALLOWED_SIZE_LIMIT_EXCEED";
+		String SLUG_REQUIRED = "SLUG_REQUIRED";
+		String INVALID_ISSUER_SLUG = "INVALID_ISSUER_SLUG";
 	}
 }
