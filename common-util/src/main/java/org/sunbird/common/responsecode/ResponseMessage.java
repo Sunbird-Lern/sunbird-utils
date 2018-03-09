@@ -220,14 +220,16 @@ public interface ResponseMessage {
 		String LOCATION_ID_REQUIRED = "Please provide Location Id.";
 		String NOT_SUPPORTED = "Not Supported.";
 		String USERNAME_USERID_MISSING = "Please provide either userName or userId.";
-		String ISSUER_SLUG_REQUIRED = "Please provide issuer slug.";
-		String BADGE_SLUG_REQUIRED = "Please provide bage class slug.";
+		String ISSUER_SLUG_REQUIRED = "Please provide issuer id.";
+		String BADGE_SLUG_REQUIRED = "Please provide bage class id.";
 		String RECIPIENT_EMAIL_REQUIRED = "Please provide recipient email.";
 		String ASSERTION_EVIDENCE_REQUIRED = "Please provide valid assertion url as an evidence.";
-		String ASSERTION_SLUG_REQUIRED = "Please provide assertion slug.";
+		String ASSERTION_SLUG_REQUIRED = "Please provide assertion id.";
 		String RECIPIENT_ID_REQUIRED = "Please provide a recipient id.";
 		String RECIPIENT_TYPE_REQUIRED = "Please provide recipient type.";
 		String BADGING_SERVER_ERROR = "Badging server is down or on high load";
+		String RESOURCE_NOT_FOUND = "Requested resource not found";
+		String MAX_ALLOWED_SIZE_LIMIT_EXCEED = "Max allowed size is {0}";
 	}
 
 	interface Key {
@@ -377,11 +379,11 @@ public interface ResponseMessage {
 		String EMAIL_SUBJECT_ERROR = "EMAIL_SUBJECT_ERROR";
 		String EMAIL_BODY_ERROR = "EMAIL_BODY_ERROR";
 		String RECIPIENT_ADDRESS_ERROR = "RECIPIENT_ADDRESS_ERROR";
-		String ISSUER_SLUG_REQUIRED = "ISSUER_SLUG_REQUIRED";
-		String BADGE_SLUG_REQUIRED = "BADGE_SLUG_REQUIRED";
+		String ISSUER_SLUG_REQUIRED = "ISSUER_ID_REQUIRED";
+		String BADGE_SLUG_REQUIRED = "BADGE_ID_REQUIRED";
 		String RECIPIENT_EMAIL_REQUIRED = "RECIPIENT_EMAIL_REQUIRED";
 		String ASSERTION_EVIDENCE_REQUIRED = "ASSERTION_EVIDENCE_REQUIRED";
-		String ASSERTION_SLUG_REQUIRED = "ASSERTION_SLUG_REQUIRED";
+		String ASSERTION_SLUG_REQUIRED = "ASSERTION_ID_REQUIRED";
 		String STORAGE_CONTAINER_NAME_MANDATORY = "STORAGE_CONTAINER_NAME_MANDATORY";
 		String USER_REG_ORG_ERROR = "USER_REG_ORG_ERROR";
 		String CLOUD_SERVICE_ERROR = "CLOUD_SERVICE_ERROR";
@@ -448,5 +450,7 @@ public interface ResponseMessage {
 		String RECIPIENT_ID_REQUIRED = "RECIPIENT_ID_REQUIRED";
 		String RECIPIENT_TYPE_REQUIRED = "RECIPIENT_TYPE_REQUIRED";
 		String BADGING_SERVER_ERROR = "BADGING_SERVER_ERROR";
+		String RESOURCE_NOT_FOUND = "RESOURCE_NOT_FOUND";
+		String MAX_ALLOWED_SIZE_LIMIT_EXCEED = "MAX_ALLOWED_SIZE_LIMIT_EXCEED";
 	}
 }

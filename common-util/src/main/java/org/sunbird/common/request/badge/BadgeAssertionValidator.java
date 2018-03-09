@@ -1,8 +1,13 @@
 package org.sunbird.common.request.badge;
 
+import java.text.MessageFormat;
+import java.util.List;
+import java.util.Map;
+
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.BadgingJsonKey;
 import org.sunbird.common.models.util.ProjectUtil;
+import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 
@@ -28,20 +33,20 @@ public class BadgeAssertionValidator {
 	 */
 	public static void validateBadgeAssertion(Request request) {
 
-		if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(BadgingJsonKey.ISSUER_SLUG))) {
+		if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(BadgingJsonKey.ISSUER_ID))) {
 			throw new ProjectCommonException(ResponseCode.issuerSlugRequired.getErrorCode(),
 					ResponseCode.issuerSlugRequired.getErrorMessage(), ERROR_CODE);
 		}
-		if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(BadgingJsonKey.BADGE_CLASS_SLUG))) {
+		if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(BadgingJsonKey.BADGE_CLASS_ID))) {
 			throw new ProjectCommonException(ResponseCode.badgeSlugRequired.getErrorCode(),
 					ResponseCode.badgeSlugRequired.getErrorMessage(), ERROR_CODE);
 
 		}
-		if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(BadgingJsonKey.RECIPIENT_IDENTIFIER))) {
+		if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(BadgingJsonKey.RECIPIENT_EMAIL))) {
 			throw new ProjectCommonException(ResponseCode.recipientEmailRequired.getErrorCode(),
 					ResponseCode.recipientEmailRequired.getErrorMessage(), ERROR_CODE);
 		}
-		if (!ProjectUtil.isEmailvalid((String) request.getRequest().get(BadgingJsonKey.RECIPIENT_IDENTIFIER))) {
+		if (!ProjectUtil.isEmailvalid((String) request.getRequest().get(BadgingJsonKey.RECIPIENT_EMAIL))) {
 			throw new ProjectCommonException(ResponseCode.emailFormatError.getErrorCode(),
 					ResponseCode.emailFormatError.getErrorMessage(), ERROR_CODE);
 
@@ -53,11 +58,11 @@ public class BadgeAssertionValidator {
 						ResponseCode.evidenceRequired.getErrorMessage(), ERROR_CODE);
 			}
 		}
-		if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(BadgingJsonKey.RECIPIENT_CUSTOM_ID))) {
+		if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(BadgingJsonKey.RECIPIENT_ID))) {
 			throw new ProjectCommonException(ResponseCode.recipientIdRequired.getErrorCode(),
 					ResponseCode.recipientIdRequired.getErrorMessage(), ERROR_CODE);
 		}
-		if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(BadgingJsonKey.RECIPIENT_CUSTOM_TYPE))) {
+		if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(BadgingJsonKey.RECIPIENT_TYPE))) {
 			throw new ProjectCommonException(ResponseCode.recipientTypeRequired.getErrorCode(),
 					ResponseCode.recipientTypeRequired.getErrorMessage(), ERROR_CODE);
 		}
@@ -85,6 +90,32 @@ public class BadgeAssertionValidator {
 			throw new ProjectCommonException(ResponseCode.assertionSlugRequired.getErrorCode(),
 					ResponseCode.assertionSlugRequired.getErrorMessage(), ERROR_CODE);
 
+		}
+	}
+	
+	/**
+	 * This method will validate get assertion list requested data.
+	 * expected data 
+	 *    "assertions": [{
+     *      "issuerSlug": "oracle-university",
+     *     "badgeSlug": "java-se-8-programmer",
+     *       "assertionSlug": "1ebceaf1-b63b-4edb-97c0-bfc6e3235408"
+      *    }]
+	 * @param request
+	 */
+	public static void validateGetAssertionList(Request request) {
+		Object obj = request.getRequest().get(BadgingJsonKey.ASSERTIONS);
+		if (obj == null || !(obj instanceof List)) {
+			throw new ProjectCommonException(ResponseCode.invalidRequestData.getErrorCode(),
+					ResponseCode.invalidRequestData.getErrorMessage(), ERROR_CODE);
+		}
+
+		List<Map<String, Object>> assertionData = (List<Map<String, Object>>) obj;
+		int size = Integer
+				.parseInt(PropertiesCache.getInstance().getProperty(BadgingJsonKey.BADGING_ASSERTION_LIST_SIZE));
+		if (assertionData.size() > size) {
+			throw new ProjectCommonException(ResponseCode.sizeLimitExceed.getErrorCode(),
+					MessageFormat.format(ResponseCode.sizeLimitExceed.getErrorMessage(), size), ERROR_CODE);
 		}
 	}
 

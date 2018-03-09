@@ -19,11 +19,16 @@ public class BadgingJsonKey {
   public static final String BADGE_CRITERIA = "criteria";
   public static final String BADGE_IMAGE = "image";
   public static final String BADGER_BASE_URL = "sunbird_badger_baseurl";
-  public static final String RECIPIENT_CUSTOM_ID = "recipient_custom_id";
-  public static final String RECIPIENT_CUSTOM_TYPE = "recipient_custom_type";
+  public static final String RECIPIENT_ID = "recipientId";
+  public static final String RECIPIENT_TYPE = "recipientType";
   public static final String ISSUER_LIST = "issuerList";
   public static final String CONTEXT = "context";
   public static final String BADGES = "badges";
-
+  public static final String CREATED_BY = "created_by";
+  public static final String ASSERTIONS = "assertions";
+  public static final String BADGING_ASSERTION_LIST_SIZE = "badging_assertion_list_size";
+  public static final String ISSUER_ID = "issuerId";
+  public static final String BADGE_CLASS_ID = "badgeId";
+  
   private BadgingJsonKey(){}
 }
