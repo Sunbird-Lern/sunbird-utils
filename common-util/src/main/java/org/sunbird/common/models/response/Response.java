@@ -114,6 +114,27 @@ public class Response implements Serializable, Cloneable {
 		result.putAll(map);
 	}
 
+	public void put(Map<String, Object> inputMap, String inputKey, String mapKey) {
+		String[] inputKeys = inputKey.split("\\.");
+		String lastKey = inputKeys[inputKeys.length - 1];
+
+		Map<String, Object> map = inputMap;
+
+		for (int i = 0; i < (inputKeys.length - 1); i++) {
+			if (map.containsKey(inputKeys[i])) {
+				map = (Map<String, Object>) inputMap.get(inputKeys[i]);
+			}
+		}
+
+		if (map.containsKey(lastKey)) {
+			put(mapKey, map.get(lastKey));
+		}
+	}
+
+	public boolean containsKey(String key) {
+		return result.containsKey(key);
+	}
+
 	/**
 	 * This will provide response parameter object.
 	 * 
