@@ -221,9 +221,9 @@ public interface ResponseMessage {
 		String NOT_SUPPORTED = "Not Supported.";
 		String USERNAME_USERID_MISSING = "Please provide either userName or userId.";
 		String ISSUER_ID_REQUIRED = "Please provide issuer ID.";
+		String ISSUER_LIST_REQUIRED = "Please provide issuer list.";
 		String BADGE_ID_REQUIRED = "Please provide badge class ID.";
 		String BADGE_TYPE_REQUIRED = "Please provide badge class type.";
-		String BADGE_SUBTYPE_REQUIRED = "Please provide badge class subtype.";
 		String BADGE_ROLES_REQUIRED = "Please provide authorised roles for badge class.";
 		String ROOT_ORG_ID_REQUIRED = "Please provide root organisation ID.";
 		String BADGE_NAME_REQUIRED = "Please provide badge class name.";
@@ -390,6 +390,7 @@ public interface ResponseMessage {
 		String EMAIL_BODY_ERROR = "EMAIL_BODY_ERROR";
 		String RECIPIENT_ADDRESS_ERROR = "RECIPIENT_ADDRESS_ERROR";
 		String ISSUER_ID_REQUIRED = "ISSUER_ID_REQUIRED";
+		String ISSUER_LIST_REQUIRED = "ISSUER_LIST_REQUIRED";
 		String BADGE_ID_REQUIRED = "BADGE_ID_REQUIRED";
 		String ROOT_ORG_ID_REQUIRED = "BADGE_ROOT_ORG_ID_REQUIRED";
 		String BADGE_TYPE_REQUIRED = "BADGE_TYPE_REQUIRED";

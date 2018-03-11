@@ -220,6 +220,7 @@ public enum ResponseCode {
 	    slugIsNotUnique(ResponseMessage.Key.SLUG_IS_NOT_UNIQUE, ResponseMessage.Message.SLUG_IS_NOT_UNIQUE),
 	    invalidDataForCreateBadgeIssuer(ResponseMessage.Key.INVALID_CREATE_BADGE_ISSUER_DATA,ResponseMessage.Message.INVALID_CREATE_BADGE_ISSUER_DATA),
 	    issuerIdRequired (ResponseMessage.Key.ISSUER_ID_REQUIRED, ResponseMessage.Message.ISSUER_ID_REQUIRED),
+	    issuerListRequired (ResponseMessage.Key.ISSUER_LIST_REQUIRED, ResponseMessage.Message.ISSUER_LIST_REQUIRED),
 	    badgeIdRequired (ResponseMessage.Key.BADGE_ID_REQUIRED, ResponseMessage.Message.BADGE_ID_REQUIRED),
 	    badgeNameRequired (ResponseMessage.Key.BADGE_NAME_REQUIRED, ResponseMessage.Message.BADGE_NAME_REQUIRED),
 	    badgeDescriptionRequired (ResponseMessage.Key.BADGE_DESCRIPTION_REQUIRED, ResponseMessage.Message.BADGE_DESCRIPTION_REQUIRED),
