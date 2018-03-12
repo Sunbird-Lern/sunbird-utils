@@ -36,5 +36,9 @@ public class BadgingJsonKey {
   public static final String RECIPIENT_TYPE = "recipientType";
   public static final String SLUG = "slug";
   public static final String BADGE_CLASS_ID = "badgeId";
+  public static final String JSON_URL = "json.url";
+  public static final String JSON_EMAIL = "json.email";
+  public static final String ISSUER_URL = "issuerUrl";
+
   private BadgingJsonKey(){}
 }
