@@ -30,6 +30,7 @@ public class BadgingJsonKey {
   public static final String ISSUER_ID = "issuerId";
   public static final String BADGE_CLASS_ID = "badgeId";
   public static final String ISSUERS = "issuers";
+  public static final String ASSERTION_ID = "assertionId";
 
   private BadgingJsonKey(){}
 }

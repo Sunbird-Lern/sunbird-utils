@@ -72,21 +72,19 @@ public class BadgeAssertionValidator {
 	/**
 	 * This method will verify null and empty check for requested param.
 	 * if any param is null or empty then it will throw exception
-	 * @param issuerSlug String
-	 * @param badgeSlug String
-	 * @param assertionSlug String
+	 * @param request Request
 	 */
-	public static void validategetBadgeAssertion(String issuerSlug, String badgeSlug, String assertionSlug) {
-		if (ProjectUtil.isStringNullOREmpty(badgeSlug)) {
+	public static void validategetBadgeAssertion(Request request) {
+		if (ProjectUtil.isStringNullOREmpty((String)request.getRequest().get(BadgingJsonKey.ISSUER_ID))) {
 			throw new ProjectCommonException(ResponseCode.issuerSlugRequired.getErrorCode(),
 					ResponseCode.issuerSlugRequired.getErrorMessage(), ERROR_CODE);
 		}
-		if (ProjectUtil.isStringNullOREmpty(badgeSlug)) {
+		if (ProjectUtil.isStringNullOREmpty((String)request.getRequest().get(BadgingJsonKey.BADGE_CLASS_ID))) {
 			throw new ProjectCommonException(ResponseCode.badgeSlugRequired.getErrorCode(),
 					ResponseCode.badgeSlugRequired.getErrorMessage(), ERROR_CODE);
 
 		}
-		if (ProjectUtil.isStringNullOREmpty(assertionSlug)) {
+		if (ProjectUtil.isStringNullOREmpty((String)request.getRequest().get(BadgingJsonKey.ASSERTION_ID))) {
 			throw new ProjectCommonException(ResponseCode.assertionSlugRequired.getErrorCode(),
 					ResponseCode.assertionSlugRequired.getErrorMessage(), ERROR_CODE);
 
