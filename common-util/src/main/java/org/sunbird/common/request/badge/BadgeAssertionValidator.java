@@ -76,17 +76,17 @@ public class BadgeAssertionValidator {
 	 */
 	public static void validategetBadgeAssertion(Request request) {
 		if (ProjectUtil.isStringNullOREmpty((String)request.getRequest().get(BadgingJsonKey.ISSUER_ID))) {
-			throw new ProjectCommonException(ResponseCode.issuerSlugRequired.getErrorCode(),
-					ResponseCode.issuerSlugRequired.getErrorMessage(), ERROR_CODE);
+			throw new ProjectCommonException(ResponseCode.issuerIdRequired.getErrorCode(),
+					ResponseCode.issuerIdRequired.getErrorMessage(), ERROR_CODE);
 		}
 		if (ProjectUtil.isStringNullOREmpty((String)request.getRequest().get(BadgingJsonKey.BADGE_CLASS_ID))) {
-			throw new ProjectCommonException(ResponseCode.badgeSlugRequired.getErrorCode(),
-					ResponseCode.badgeSlugRequired.getErrorMessage(), ERROR_CODE);
+			throw new ProjectCommonException(ResponseCode.badgeIdRequired.getErrorCode(),
+					ResponseCode.badgeIdRequired.getErrorMessage(), ERROR_CODE);
 
 		}
 		if (ProjectUtil.isStringNullOREmpty((String)request.getRequest().get(BadgingJsonKey.ASSERTION_ID))) {
-			throw new ProjectCommonException(ResponseCode.assertionSlugRequired.getErrorCode(),
-					ResponseCode.assertionSlugRequired.getErrorMessage(), ERROR_CODE);
+			throw new ProjectCommonException(ResponseCode.assertionIdRequired.getErrorCode(),
+					ResponseCode.assertionIdRequired.getErrorMessage(), ERROR_CODE);
 
 		}
 	}

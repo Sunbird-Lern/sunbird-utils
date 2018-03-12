@@ -35,6 +35,6 @@ public class BadgingJsonKey {
   public static final String RECIPIENT_IDENTIFIER = "recipient_identifier";
   public static final String RECIPIENT_TYPE = "recipientType";
   public static final String SLUG = "slug";
-
+  public static final String BADGE_CLASS_ID = "badgeId";
   private BadgingJsonKey(){}
 }
