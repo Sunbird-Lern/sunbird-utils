@@ -114,6 +114,10 @@ public class Response implements Serializable, Cloneable {
 		result.putAll(map);
 	}
 
+	public boolean containsKey(String key) {
+		return result.containsKey(key);
+	}
+
 	/**
 	 * This will provide response parameter object.
 	 * 

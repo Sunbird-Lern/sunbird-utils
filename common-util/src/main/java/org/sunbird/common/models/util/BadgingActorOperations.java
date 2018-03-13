@@ -12,11 +12,12 @@ public enum BadgingActorOperations {
   CREATE_BADGE_ISSUER("createBadgeIssuer"),
   ASSIGN_BADGE_MESSAGE("assignBadgeMessage"),
   REVOKE_BADGE_MESSAGE("revokeBadgeMessage"),
-  CREATE_BADGE_ASSERTION("createBageAssertion"),
+  CREATE_BADGE_ASSERTION("createBadgeAssertion"),
   GET_BADGE_ASSERTION("getBadgeAssertion"),
   GET_BADGE_ASSERTION_LIST("getBadgeAssertionList"),
   REVOKE_BADGE("revokeBadge"),
-  GET_BADGE_ISSUER("getBadgeIssuer");
+  GET_BADGE_ISSUER("getBadgeIssuer"),
+  GET_ALL_ISSUER("getAllIssuer");
 
   private String value;
 

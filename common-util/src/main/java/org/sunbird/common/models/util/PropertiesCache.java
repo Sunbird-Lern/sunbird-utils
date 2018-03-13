@@ -74,4 +74,14 @@ public class PropertiesCache {
 			}
 		}
 	}
+
+	/**
+	 * Method to read value from resource file .
+	 * @param key
+	 * @return
+	 */
+	public String readProperty(String key) {
+		return configProp.getProperty(key);
+	}
+
 }

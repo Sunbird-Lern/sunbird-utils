@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -597,6 +598,18 @@ public class HttpUtil {
             throw ex;
         }
     }
+    
+    public static void main(String[] args) {
+		Map<String,String> map = new HashMap<>();
+		map.put("Accept", "application/json");
+		map.put("Authorization", "Token c6d0bdb8ce2425b26c2840bdca0f7b64e39be5fe");
+		try {
+			System.out.println(sendGetRequest("http://localhost:8000/v1/issuer/issuers/haque/badges/haque-2/assertions/73a304dd-2364-4bfd-88ce-a8a908e55133?format=json", map));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
     private static Map<String, Object> getResponseMap(HttpResponse httpResponse)
             throws IOException {

@@ -9,7 +9,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.BadgingJsonKey;
-import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 
@@ -27,7 +26,7 @@ public class BadgeAssertionTest {
 		boolean response = false;
 		Map<String, Object> requestObj = new HashMap<>();
 		requestObj.put(BadgingJsonKey.ISSUER_SLUG, "slug12");
-		requestObj.put(BadgingJsonKey.BADGE_CLASS_SLUG, "classslug");
+		requestObj.put(BadgingJsonKey.BADGE_SLUG, "classslug");
 		requestObj.put(BadgingJsonKey.RECIPIENT_EMAIL, "manzarul.haque@tarento.com");
 		requestObj.put(BadgingJsonKey.EVIDENCE, "http://localhost:8000/public/badges/db-design-expert");
 		requestObj.put(BadgingJsonKey.NOTIFY, false);
@@ -47,7 +46,7 @@ public class BadgeAssertionTest {
 		boolean response = false;
 		Map<String, Object> requestObj = new HashMap<>();
 		requestObj.put(BadgingJsonKey.ISSUER_SLUG, "");
-		requestObj.put(BadgingJsonKey.BADGE_CLASS_SLUG, "classslug");
+		requestObj.put(BadgingJsonKey.BADGE_SLUG, "classslug");
 		requestObj.put(BadgingJsonKey.RECIPIENT_EMAIL, "manzarul.haque@tarento.com");
 		requestObj.put(BadgingJsonKey.EVIDENCE, "http://localhost:8000/public/badges/db-design-expert");
 		requestObj.put(BadgingJsonKey.NOTIFY, false);
@@ -57,7 +56,7 @@ public class BadgeAssertionTest {
 			response = true;
 		} catch (ProjectCommonException e) {
 			assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
-			assertEquals(ResponseCode.issuerSlugRequired.getErrorCode(), e.getCode());
+			assertEquals(ResponseCode.issuerIdRequired.getErrorCode(), e.getCode());
 		}
 		assertEquals(false, response);
 	}
@@ -67,7 +66,7 @@ public class BadgeAssertionTest {
 		Request request = new Request();
 		boolean response = false;
 		Map<String, Object> requestObj = new HashMap<>();
-		requestObj.put(BadgingJsonKey.BADGE_CLASS_SLUG, "classslug");
+		requestObj.put(BadgingJsonKey.BADGE_SLUG, "classslug");
 		requestObj.put(BadgingJsonKey.RECIPIENT_EMAIL, "manzarul.haque@tarento.com");
 		requestObj.put(BadgingJsonKey.EVIDENCE, "http://localhost:8000/public/badges/db-design-expert");
 		requestObj.put(BadgingJsonKey.NOTIFY, false);
@@ -77,7 +76,7 @@ public class BadgeAssertionTest {
 			response = true;
 		} catch (ProjectCommonException e) {
 			assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
-			assertEquals(ResponseCode.issuerSlugRequired.getErrorCode(), e.getCode());
+			assertEquals(ResponseCode.issuerIdRequired.getErrorCode(), e.getCode());
 		}
 		assertEquals(false, response);
 	}
@@ -88,7 +87,7 @@ public class BadgeAssertionTest {
 		boolean response = false;
 		Map<String, Object> requestObj = new HashMap<>();
 		requestObj.put(BadgingJsonKey.ISSUER_SLUG, "issuerSlug");
-		requestObj.put(BadgingJsonKey.BADGE_CLASS_SLUG, "");
+		requestObj.put(BadgingJsonKey.BADGE_SLUG, "");
 		requestObj.put(BadgingJsonKey.RECIPIENT_EMAIL, "manzarul.haque@tarento.com");
 		requestObj.put(BadgingJsonKey.EVIDENCE, "http://localhost:8000/public/badges/db-design-expert");
 		requestObj.put(BadgingJsonKey.NOTIFY, false);
@@ -98,7 +97,7 @@ public class BadgeAssertionTest {
 			response = true;
 		} catch (ProjectCommonException e) {
 			assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
-			assertEquals(ResponseCode.badgeSlugRequired.getErrorCode(), e.getCode());
+			assertEquals(ResponseCode.badgeIdRequired.getErrorCode(), e.getCode());
 		}
 		assertEquals(false, response);
 	}
@@ -118,7 +117,7 @@ public class BadgeAssertionTest {
 			response = true;
 		} catch (ProjectCommonException e) {
 			assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
-			assertEquals(ResponseCode.badgeSlugRequired.getErrorCode(), e.getCode());
+			assertEquals(ResponseCode.badgeIdRequired.getErrorCode(), e.getCode());
 		}
 		assertEquals(false, response);
 	}
@@ -129,7 +128,7 @@ public class BadgeAssertionTest {
 		boolean response = false;
 		Map<String, Object> requestObj = new HashMap<>();
 		requestObj.put(BadgingJsonKey.ISSUER_SLUG, "issuerSlug");
-		requestObj.put(BadgingJsonKey.BADGE_CLASS_SLUG, "classslug");
+		requestObj.put(BadgingJsonKey.BADGE_SLUG, "classslug");
 		requestObj.put(BadgingJsonKey.RECIPIENT_EMAIL, "");
 		requestObj.put(BadgingJsonKey.EVIDENCE, "http://localhost:8000/public/badges/db-design-expert");
 		requestObj.put(BadgingJsonKey.NOTIFY, false);
@@ -150,7 +149,7 @@ public class BadgeAssertionTest {
 		boolean response = false;
 		Map<String, Object> requestObj = new HashMap<>();
 		requestObj.put(BadgingJsonKey.ISSUER_SLUG, "issuerSlug");
-		requestObj.put(BadgingJsonKey.BADGE_CLASS_SLUG, "classslug");
+		requestObj.put(BadgingJsonKey.BADGE_SLUG, "classslug");
 		requestObj.put(BadgingJsonKey.RECIPIENT_EMAIL, "manzarul");
 		requestObj.put(BadgingJsonKey.EVIDENCE, "http://localhost:8000/public/badges/db-design-expert");
 		requestObj.put(BadgingJsonKey.NOTIFY, false);
@@ -171,7 +170,7 @@ public class BadgeAssertionTest {
 		boolean response = false;
 		Map<String, Object> requestObj = new HashMap<>();
 		requestObj.put(BadgingJsonKey.ISSUER_SLUG, "issuerSlug");
-		requestObj.put(BadgingJsonKey.BADGE_CLASS_SLUG, "classslug");
+		requestObj.put(BadgingJsonKey.BADGE_SLUG, "classslug");
 		requestObj.put(BadgingJsonKey.RECIPIENT_EMAIL, "manzarul.haque@tarento.com");
 		requestObj.put(BadgingJsonKey.NOTIFY, false);
 		request.setRequest(requestObj);
@@ -191,7 +190,7 @@ public class BadgeAssertionTest {
 		boolean response = false;
 		Map<String, Object> requestObj = new HashMap<>();
 		requestObj.put(BadgingJsonKey.ISSUER_SLUG, "issuerSlug");
-		requestObj.put(BadgingJsonKey.BADGE_CLASS_SLUG, "classslug");
+		requestObj.put(BadgingJsonKey.BADGE_SLUG, "classslug");
 		requestObj.put(BadgingJsonKey.RECIPIENT_EMAIL, "manzarul.haque@tarento.com");
 		requestObj.put(BadgingJsonKey.EVIDENCE, "  ");
 		requestObj.put(BadgingJsonKey.NOTIFY, false);
