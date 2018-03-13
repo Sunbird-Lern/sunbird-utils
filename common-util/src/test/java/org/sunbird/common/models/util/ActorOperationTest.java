@@ -28,7 +28,6 @@ public class ActorOperationTest {
 		Assert.assertEquals("updateSystemSettings", ActorOperations.UPDATE_SYSTEM_SETTINGS.getValue());
 		Assert.assertEquals("deleteGeoLocation", ActorOperations.DELETE_GEO_LOCATION.getValue());
 		Assert.assertEquals("getUserCount", ActorOperations.GET_USER_COUNT.getValue());
-		Assert.assertEquals("updateUserCountToLocationID", ActorOperations.UPDATE_USER_COUNT_TO_LOCATIONID.getValue());
 		Assert.assertEquals("updateGeoLocation", ActorOperations.UPDATE_GEO_LOCATION.getValue());
 		Assert.assertEquals("getGeoLocation", ActorOperations.GET_GEO_LOCATION.getValue());
 		Assert.assertEquals("updateTCStatusOfUser", ActorOperations.UPDATE_TC_STATUS_OF_USER.getValue());
@@ -121,7 +120,6 @@ public class ActorOperationTest {
 				ActorOperations.COURSE_CREATION_METRICS_REPORT.getValue());
 		Assert.assertEquals("orgCreationMetricsReport", ActorOperations.ORG_CREATION_METRICS_REPORT.getValue());
 		Assert.assertEquals("orgConsumptionMetricsReport", ActorOperations.ORG_CONSUMPTION_METRICS_REPORT.getValue());
-		Assert.assertEquals("emailService", ActorOperations.EMAIL_SERVICE.getValue());
 		Assert.assertEquals("fileStorageService", ActorOperations.FILE_STORAGE_SERVICE.getValue());
 		Assert.assertEquals("getAllBadge", ActorOperations.GET_ALL_BADGE.getValue());
 		Assert.assertEquals("addUserBadge", ActorOperations.ADD_USER_BADGE.getValue());
