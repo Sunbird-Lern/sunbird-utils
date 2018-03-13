@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS sunbird.badge_class_extension(badgeId text, issuerId text, rootOrgId text, type text, subtype text, roles list<text>, PRIMARY KEY (badgeId));
