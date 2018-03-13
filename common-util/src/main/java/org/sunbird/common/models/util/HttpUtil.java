@@ -34,6 +34,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.sunbird.common.models.response.HttpUtilResponse;
 import org.sunbird.common.request.ExecutionContext;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
@@ -83,15 +84,16 @@ public class HttpUtil {
      *
      * @param requestURL the URL of the remote server
      * @param headers the Map <String,String>
-     * @return Map<String,Object>
+     * @return HttpUtilResponse
      * @throws IOException thrown if any I/O error occurred
      */
-    public static Map<String, Object> doGetRequest(String requestURL, Map<String, String> headers)
+    public static HttpUtilResponse doGetRequest(String requestURL, Map<String, String> headers)
             throws IOException {
         long startTime = System.currentTimeMillis();
         Map<String, Object> logInfo = genarateLogInfo(JsonKey.API_CALL, "API CALL : " + requestURL);
         HttpURLConnection httpURLConnection = getRequest(requestURL, headers, startTime);
-        Map<String, Object> map = getResponseMap(httpURLConnection);
+        HttpUtilResponse response = new HttpUtilResponse(getResponse(httpURLConnection),
+                httpURLConnection.getResponseCode());
         long stopTime = System.currentTimeMillis();
         long elapsedTime = stopTime - startTime;
         telemetryProcessingCall(logInfo);
@@ -99,7 +101,7 @@ public class HttpUtil {
                 "HttpUtil doGetRequest method end at ==" + stopTime + " for requestURL "
                         + requestURL + " ,Total time elapsed = " + elapsedTime,
                 LoggerEnum.PERF_LOG);
-        return map;
+        return response;
     }
 
     /**
@@ -157,15 +159,16 @@ public class HttpUtil {
      *
      * @param requestURL the URL of the remote server
      * @param params A map containing POST data in form of key-value pairs
-     * @return Map<String, Object>
+     * @return HttpUtilResponse
      * @throws IOException thrown if any I/O error occurred
      */
-    public static Map<String, Object> doPostRequest(String requestURL, Map<String, String> params,
+    public static HttpUtilResponse doPostRequest(String requestURL, Map<String, String> params,
             Map<String, String> headers) throws IOException {
         long startTime = System.currentTimeMillis();
         Map<String, Object> logInfo = genarateLogInfo(JsonKey.API_CALL, "API CALL : " + requestURL);
         HttpURLConnection httpURLConnection = postRequest(requestURL, params, headers, startTime);
-        Map<String, Object> map = getResponseMap(httpURLConnection);
+        HttpUtilResponse response = new HttpUtilResponse(getResponse(httpURLConnection),
+                httpURLConnection.getResponseCode());
         long stopTime = System.currentTimeMillis();
         long elapsedTime = stopTime - startTime;
         telemetryProcessingCall(logInfo);
@@ -173,7 +176,7 @@ public class HttpUtil {
                 "HttpUtil doPostRequest method end at ==" + stopTime + " for requestURL "
                         + requestURL + " ,Total time elapsed = " + elapsedTime,
                 LoggerEnum.PERF_LOG);
-        return map;
+        return response;
     }
 
     private static HttpURLConnection postRequest(String requestURL, Map<String, String> params,
@@ -289,15 +292,16 @@ public class HttpUtil {
      *
      * @param requestURL the URL of the remote server
      * @param params A map containing POST data in form of key-value pairs
-     * @return Map<String,Object>
+     * @return HttpUtilResponse
      * @throws IOException thrown if any I/O error occurred
      */
-    public static Map<String, Object> doPostRequest(String requestURL, String params,
+    public static HttpUtilResponse doPostRequest(String requestURL, String params,
             Map<String, String> headers) throws IOException {
         long startTime = System.currentTimeMillis();
         Map<String, Object> logInfo = genarateLogInfo(JsonKey.API_CALL, "API CALL : " + requestURL);
         HttpURLConnection httpURLConnection = postRequest(requestURL, params, headers, startTime);
-        Map<String, Object> map = getResponseMap(httpURLConnection);
+        HttpUtilResponse response = new HttpUtilResponse(getResponse(httpURLConnection),
+                httpURLConnection.getResponseCode());
         long stopTime = System.currentTimeMillis();
         long elapsedTime = stopTime - startTime;
         telemetryProcessingCall(logInfo);
@@ -305,7 +309,7 @@ public class HttpUtil {
                 "HttpUtil doPostRequest method end at ==" + stopTime + " for requestURL "
                         + requestURL + " ,Total time elapsed = " + elapsedTime,
                 LoggerEnum.PERF_LOG);
-        return map;
+        return response;
     }
 
     private static String getResponse(HttpURLConnection httpURLConnection) throws IOException {
@@ -468,10 +472,10 @@ public class HttpUtil {
      * @param requestURL
      * @param params
      * @param headers (Map<String,String>)
-     * @return Map<String,Object>
+     * @return HttpUtilResponse
      * @throws IOException
      */
-    public static Map<String, Object> doPatchRequest(String requestURL, String params,
+    public static HttpUtilResponse doPatchRequest(String requestURL, String params,
             Map<String, String> headers) throws IOException {
         long startTime = System.currentTimeMillis();
         Map<String, Object> logInfo = genarateLogInfo(JsonKey.API_CALL, "API CALL : " + requestURL);
@@ -485,7 +489,8 @@ public class HttpUtil {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             ProjectLogger.log("response code for Patch Resques");
             HttpResponse httpResponse = httpClient.execute(patch);
-            Map<String, Object> map = getResponseMap(httpResponse);
+            HttpUtilResponse response = new HttpUtilResponse(generateResponse(httpResponse),
+                    httpResponse.getStatusLine().getStatusCode());
             long stopTime = System.currentTimeMillis();
             long elapsedTime = stopTime - startTime;
             ProjectLogger.log(
@@ -493,7 +498,7 @@ public class HttpUtil {
                             + requestURL + " ,Total time elapsed = " + elapsedTime,
                     LoggerEnum.PERF_LOG);
             telemetryProcessingCall(logInfo);
-            return map;
+            return response;
         } catch (Exception e) {
             ProjectLogger.log(e.getMessage(), e);
             throw e;
@@ -507,10 +512,10 @@ public class HttpUtil {
      * @param fileData (Map<fileName,byte[]>)
      * @param headers (Map<String,String>)
      * @param url
-     * @return Map<String,Object>
+     * @return HttpUtilResponse
      * @throws IOException
      */
-    public static Map<String, Object> postFormData(Map<String, String> reqData,
+    public static HttpUtilResponse postFormData(Map<String, String> reqData,
             Map<String, byte[]> fileData, Map<String, String> headers, String url)
             throws IOException {
         long startTime = System.currentTimeMillis();
@@ -546,9 +551,10 @@ public class HttpUtil {
                     + " for requestURL " + url + " ,Total time elapsed = " + elapsedTime,
                     LoggerEnum.PERF_LOG);
             HttpResponse httpResponse = client.execute(httpPost);
-            Map<String, Object> map = getResponseMap(httpResponse);
+            HttpUtilResponse response = new HttpUtilResponse(generateResponse(httpResponse),
+                    httpResponse.getStatusLine().getStatusCode());
             telemetryProcessingCall(logInfo);
-            return map;
+            return response;
         } catch (Exception ex) {
             ProjectLogger.log("Exception occurred while calling postFormData method.", ex);
             throw ex;
@@ -571,10 +577,10 @@ public class HttpUtil {
      *              of status code with post response in String format
      * @param headers
      * @param url
-     * @return Map<String,Object>
+     * @return HttpUtilResponse
      * @throws IOException
      */
-    public static Map<String, Object> sendDeleteRequest(Map<String, String> headers, String url)
+    public static HttpUtilResponse sendDeleteRequest(Map<String, String> headers, String url)
             throws IOException {
         long startTime = System.currentTimeMillis();
         ProjectLogger.log("HttpUtil sendDeleteRequest method started at ==" + startTime
@@ -593,9 +599,10 @@ public class HttpUtil {
                     + " for requestURL " + url + " ,Total time elapsed = " + elapsedTime,
                     LoggerEnum.PERF_LOG);
             HttpResponse httpResponse = httpclient.execute(httpDelete);
-            Map<String, Object> map = getResponseMap(httpResponse);
+            HttpUtilResponse response = new HttpUtilResponse(generateResponse(httpResponse),
+                    httpResponse.getStatusLine().getStatusCode());
             telemetryProcessingCall(logInfo);
-            return map;
+            return response;
         } catch (Exception ex) {
             ProjectLogger.log("Exception occurred while calling sendDeleteRequest method.", ex);
             throw ex;
@@ -608,10 +615,10 @@ public class HttpUtil {
      * @param headers
      * @param url
      * @param reqBody Map<String,Object>
-     * @return Map<String,Object>
+     * @return HttpUtilResponse
      * @throws IOException
      */
-    public static Map<String, Object> sendDeleteRequest(Map<String, Object> reqBody,
+    public static HttpUtilResponse sendDeleteRequest(Map<String, Object> reqBody,
             Map<String, String> headers, String url) throws IOException {
         long startTime = System.currentTimeMillis();
         ProjectLogger.log("HttpUtil sendDeleteRequest method started at ==" + startTime
@@ -634,9 +641,10 @@ public class HttpUtil {
                     + " for requestURL " + url + " ,Total time elapsed = " + elapsedTime,
                     LoggerEnum.PERF_LOG);
             HttpResponse httpResponse = httpclient.execute(httpDelete);
-            Map<String, Object> map = getResponseMap(httpResponse);
+            HttpUtilResponse response = new HttpUtilResponse(generateResponse(httpResponse),
+                    httpResponse.getStatusLine().getStatusCode());
             telemetryProcessingCall(logInfo);
-            return map;
+            return response;
         } catch (Exception ex) {
             ProjectLogger.log("Exception occurred while calling sendDeleteRequest method.", ex);
             throw ex;
@@ -649,10 +657,10 @@ public class HttpUtil {
      * @param headers
      * @param url
      * @param reqBody as JSON String
-     * @return Map<String,Object>
+     * @return HttpUtilResponse
      * @throws IOException
      */
-    public static Map<String, Object> sendDeleteRequest(String reqBody, Map<String, String> headers,
+    public static HttpUtilResponse sendDeleteRequest(String reqBody, Map<String, String> headers,
             String url) throws IOException {
         long startTime = System.currentTimeMillis();
         ProjectLogger.log("HttpUtil sendDeleteRequest method started at ==" + startTime
@@ -673,32 +681,22 @@ public class HttpUtil {
                     + " for requestURL " + url + " ,Total time elapsed = " + elapsedTime,
                     LoggerEnum.PERF_LOG);
             HttpResponse httpResponse = httpclient.execute(httpDelete);
-            Map<String, Object> map = getResponseMap(httpResponse);
+            HttpUtilResponse response = new HttpUtilResponse(generateResponse(httpResponse),
+                    httpResponse.getStatusLine().getStatusCode());
             telemetryProcessingCall(logInfo);
-            return map;
+            return response;
         } catch (Exception ex) {
             ProjectLogger.log("Exception occurred while calling sendDeleteRequest method.", ex);
             throw ex;
         }
     }
 
-    private static Map<String, Object> getResponseMap(HttpResponse httpResponse)
-            throws IOException {
-        String res = generateResponse(httpResponse);
-        Map<String, Object> map = new HashMap<>();
-        map.put(JsonKey.BODY, res);
-        map.put(JsonKey.STATUS_CODE, httpResponse.getStatusLine().getStatusCode());
-        return map;
-    }
-
-    private static Map<String, Object> getResponseMap(HttpURLConnection urlConnection)
-            throws IOException {
-        String res = getResponse(urlConnection);
-        Map<String, Object> map = new HashMap<>();
-        map.put(JsonKey.BODY, res);
-        map.put(JsonKey.STATUS_CODE, urlConnection.getResponseCode());
-        return map;
-    }
+    /*
+     * private static Map<String, Object> getResponseMap(HttpURLConnection urlConnection) throws
+     * IOException { String res = getResponse(urlConnection); Map<String, Object> map = new
+     * HashMap<>(); map.put(JsonKey.BODY, res); map.put(JsonKey.STATUS_CODE,
+     * urlConnection.getResponseCode()); return map; }
+     */
 }
 
 
