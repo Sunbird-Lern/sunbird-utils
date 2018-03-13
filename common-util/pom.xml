@@ -187,6 +187,28 @@
 			<artifactId>httpmime</artifactId>
 			<version>4.5.2</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.powermock/powermock-api-easymock -->
+	    <dependency>
+	      <groupId>org.powermock</groupId>
+	      <artifactId>powermock-module-junit4</artifactId>
+	      <version>1.6.5</version>
+	      <!--<scope>test</scope>-->
+	    </dependency>
+	
+	    <dependency>
+	      <groupId>org.powermock</groupId>
+	      <artifactId>powermock-api-mockito</artifactId>
+	      <version>1.6.5</version>
+	      <!--<scope>test</scope>-->
+	    </dependency>
+	    
+		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore -->
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpcore</artifactId>
+		    <version>4.4.4</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<pluginManagement>
