@@ -11,6 +11,7 @@ package org.sunbird.common.models.util;
 public final class JsonKey {
 	public static final String MW_SYSTEM_HOST = "sunbird_mw_system_host";
 	public static final String MW_SYSTEM_PORT = "sunbird_mw_system_port";
+	public static final String MW_SYSTEM_CLIENT_PORT = "sunbird_mw_system_client_port";
     public static final String ACCESS_TOKEN = "access_token";
     public static final String ACCESSTOKEN = "accessToken";
     public static final String ACCOUNT_KEY = "sunbird_account_key";
