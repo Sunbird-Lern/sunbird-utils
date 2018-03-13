@@ -3,6 +3,7 @@
  */
 package org.sunbird.common.models.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +12,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -19,11 +21,12 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.annotation.NotThreadSafe;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
@@ -598,18 +601,86 @@ public class HttpUtil {
             throw ex;
         }
     }
-    
-    public static void main(String[] args) {
-		Map<String,String> map = new HashMap<>();
-		map.put("Accept", "application/json");
-		map.put("Authorization", "Token c6d0bdb8ce2425b26c2840bdca0f7b64e39be5fe");
-		try {
-			System.out.println(sendGetRequest("http://localhost:8000/v1/issuer/issuers/haque/badges/haque-2/assertions/73a304dd-2364-4bfd-88ce-a8a908e55133?format=json", map));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+
+    /**
+     * @description this method will process send delete request and in response it will return Map
+     *              of status code with post response in String format
+     * @param headers
+     * @param url
+     * @param reqBody Map<String,Object>
+     * @return Map<String,Object>
+     * @throws IOException
+     */
+    public static Map<String, Object> sendDeleteRequest(Map<String, Object> reqBody,
+            Map<String, String> headers, String url) throws IOException {
+        long startTime = System.currentTimeMillis();
+        ProjectLogger.log("HttpUtil sendDeleteRequest method started at ==" + startTime
+                + " for requestURL " + url, LoggerEnum.PERF_LOG);
+        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+            ObjectMapper mapper = new ObjectMapper();
+            String reqString = mapper.writeValueAsString(reqBody);
+            HttpDeleteWithBody httpDelete = new HttpDeleteWithBody(url);
+            StringEntity input = new StringEntity(reqString, ContentType.APPLICATION_JSON);
+            httpDelete.setEntity(input);
+            ProjectLogger.log("Executing sendDeleteRequest " + httpDelete.getRequestLine());
+            Map<String, Object> logInfo = genarateLogInfo(JsonKey.API_CALL, "API CALL : " + url);
+            Set<Entry<String, String>> headerEntry = headers.entrySet();
+            for (Entry<String, String> headerObj : headerEntry) {
+                httpDelete.addHeader(headerObj.getKey(), headerObj.getValue());
+            }
+            long stopTime = System.currentTimeMillis();
+            long elapsedTime = stopTime - startTime;
+            ProjectLogger.log("HttpUtil sendDeleteRequest method end at ==" + stopTime
+                    + " for requestURL " + url + " ,Total time elapsed = " + elapsedTime,
+                    LoggerEnum.PERF_LOG);
+            HttpResponse httpResponse = httpclient.execute(httpDelete);
+            Map<String, Object> map = getResponseMap(httpResponse);
+            telemetryProcessingCall(logInfo);
+            return map;
+        } catch (Exception ex) {
+            ProjectLogger.log("Exception occurred while calling sendDeleteRequest method.", ex);
+            throw ex;
+        }
+    }
+
+    /**
+     * @description this method will process send delete request and in response it will return Map
+     *              of status code with post response in String format
+     * @param headers
+     * @param url
+     * @param reqBody as JSON String
+     * @return Map<String,Object>
+     * @throws IOException
+     */
+    public static Map<String, Object> sendDeleteRequest(String reqBody, Map<String, String> headers,
+            String url) throws IOException {
+        long startTime = System.currentTimeMillis();
+        ProjectLogger.log("HttpUtil sendDeleteRequest method started at ==" + startTime
+                + " for requestURL " + url, LoggerEnum.PERF_LOG);
+        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+            HttpDeleteWithBody httpDelete = new HttpDeleteWithBody(url);
+            StringEntity input = new StringEntity(reqBody, ContentType.APPLICATION_JSON);
+            httpDelete.setEntity(input);
+            ProjectLogger.log("Executing sendDeleteRequest " + httpDelete.getRequestLine());
+            Map<String, Object> logInfo = genarateLogInfo(JsonKey.API_CALL, "API CALL : " + url);
+            Set<Entry<String, String>> headerEntry = headers.entrySet();
+            for (Entry<String, String> headerObj : headerEntry) {
+                httpDelete.addHeader(headerObj.getKey(), headerObj.getValue());
+            }
+            long stopTime = System.currentTimeMillis();
+            long elapsedTime = stopTime - startTime;
+            ProjectLogger.log("HttpUtil sendDeleteRequest method end at ==" + stopTime
+                    + " for requestURL " + url + " ,Total time elapsed = " + elapsedTime,
+                    LoggerEnum.PERF_LOG);
+            HttpResponse httpResponse = httpclient.execute(httpDelete);
+            Map<String, Object> map = getResponseMap(httpResponse);
+            telemetryProcessingCall(logInfo);
+            return map;
+        } catch (Exception ex) {
+            ProjectLogger.log("Exception occurred while calling sendDeleteRequest method.", ex);
+            throw ex;
+        }
+    }
 
     private static Map<String, Object> getResponseMap(HttpResponse httpResponse)
             throws IOException {
@@ -628,5 +699,29 @@ public class HttpUtil {
         map.put(JsonKey.STATUS_CODE, urlConnection.getResponseCode());
         return map;
     }
+}
 
+
+@NotThreadSafe
+class HttpDeleteWithBody extends HttpEntityEnclosingRequestBase {
+    public static final String METHOD_NAME = "DELETE";
+
+    @Override
+    public String getMethod() {
+        return METHOD_NAME;
+    }
+
+    public HttpDeleteWithBody(final String uri) {
+        super();
+        setURI(URI.create(uri));
+    }
+
+    public HttpDeleteWithBody(final URI uri) {
+        super();
+        setURI(uri);
+    }
+
+    public HttpDeleteWithBody() {
+        super();
+    }
 }
