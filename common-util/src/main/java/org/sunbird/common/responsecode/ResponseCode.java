@@ -227,6 +227,8 @@ public enum ResponseCode {
 	    badgeCriteriaRequired (ResponseMessage.Key.BADGE_CRITERIA_REQUIRED, ResponseMessage.Message.BADGE_CRITERIA_REQUIRED),
 	    rootOrgIdRequired (ResponseMessage.Key.ROOT_ORG_ID_REQUIRED, ResponseMessage.Message.ROOT_ORG_ID_REQUIRED),
 	    badgeTypeRequired (ResponseMessage.Key.BADGE_TYPE_REQUIRED, ResponseMessage.Message.BADGE_TYPE_REQUIRED),
+	    invalidBadgeType (ResponseMessage.Key.INVALID_BADGE_TYPE, ResponseMessage.Message.INVALID_BADGE_SUBTYPE),
+	    invalidBadgeSubtype (ResponseMessage.Key.INVALID_BADGE_SUBTYPE, ResponseMessage.Message.INVALID_BADGE_SUBTYPE),
 	    badgeRolesRequired (ResponseMessage.Key.BADGE_ROLES_REQUIRED, ResponseMessage.Message.BADGE_ROLES_REQUIRED),
 	    badgeImageRequired (ResponseMessage.Key.BADGE_IMAGE_REQUIRED, ResponseMessage.Message.BADGE_IMAGE_REQUIRED),
 	    recipientEmailRequired (ResponseMessage.Key.RECIPIENT_EMAIL_REQUIRED, ResponseMessage.Message.RECIPIENT_EMAIL_REQUIRED),
