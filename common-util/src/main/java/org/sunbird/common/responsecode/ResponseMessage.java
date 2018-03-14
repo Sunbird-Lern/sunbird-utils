@@ -243,6 +243,8 @@ public interface ResponseMessage {
 		String SLUG_REQUIRED = "Slug is required .";
 		String INVALID_ISSUER_SLUG = "Invalid issuer slug .";
 		String REVOCATION_REASON_REQUIRED = "Please provide revocation reason.";
+		String ALREADY_REVOKED = "Assertion is already revoked.";
+		String INVALID_RECIPIENT_TYPE = "Please provide a valid recipient type.";
 	 }
 
 	interface Key {
@@ -478,5 +480,7 @@ public interface ResponseMessage {
 		String SLUG_REQUIRED = "SLUG_REQUIRED";
 		String INVALID_ISSUER_SLUG = "INVALID_ISSUER_SLUG";
 		String REVOCATION_REASON_REQUIRED = "REVOCATION_REASON_REQUIRED";
+		String ALREADY_REVOKED = "ALREADY_REVOKED";
+		String INVALID_RECIPIENT_TYPE = "INVALID_RECIPIENT_TYPE";
 	}
 }

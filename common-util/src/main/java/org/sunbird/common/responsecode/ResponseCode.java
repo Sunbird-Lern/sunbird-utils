@@ -242,6 +242,8 @@ public enum ResponseCode {
 	    slugRequired(ResponseMessage.Key.SLUG_REQUIRED, ResponseMessage.Message.SLUG_REQUIRED),
 	    invalidIssuerSlug(ResponseMessage.Key.INVALID_ISSUER_SLUG, ResponseMessage.Message.INVALID_ISSUER_SLUG),
 	    revocationReasonRequired (ResponseMessage.Key.REVOCATION_REASON_REQUIRED, ResponseMessage.Message.REVOCATION_REASON_REQUIRED),
+	    badgeAssertionAlreadyRevoked (ResponseMessage.Key.ALREADY_REVOKED, ResponseMessage.Message.ALREADY_REVOKED),
+	    invalidRecipientType (ResponseMessage.Key.INVALID_RECIPIENT_TYPE, ResponseMessage.Message.INVALID_RECIPIENT_TYPE),
 	    OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404),UNAUTHORIZED(401),REDIRECTION_REQUIRED(302);
 	private int responseCode;
 	/**
