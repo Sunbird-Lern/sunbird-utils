@@ -9,9 +9,9 @@ package org.sunbird.common.models.util;
  */
 
 public final class JsonKey {
-	public static final String MW_SYSTEM_HOST = "sunbird_mw_system_host";
-	public static final String MW_SYSTEM_PORT = "sunbird_mw_system_port";
-	public static final String MW_SYSTEM_CLIENT_PORT = "sunbird_mw_system_client_port";
+    public static final String MW_SYSTEM_HOST = "sunbird_mw_system_host";
+    public static final String MW_SYSTEM_PORT = "sunbird_mw_system_port";
+    public static final String MW_SYSTEM_CLIENT_PORT = "sunbird_mw_system_client_port";
     public static final String ACCESS_TOKEN = "access_token";
     public static final String ACCESSTOKEN = "accessToken";
     public static final String ACCOUNT_KEY = "sunbird_account_key";
@@ -425,7 +425,7 @@ public final class JsonKey {
     public static final String PUBLISH_COURSE = "publishCourse";
     public static final String QUERY = "query";
     public static final String RECEIVER_ID = "receiverId";
-    public static final String RECIPIENT_COUNT="recipientCount";
+    public static final String RECIPIENT_COUNT = "recipientCount";
     public static final String RECIPIENT_EMAILS = "recipientEmails";
     public static final String RECIPIENT_USERIDS = "recipientUserIds";
     public static final String RECOMMEND_TYPE = "recommendType";
@@ -615,7 +615,8 @@ public final class JsonKey {
     public static final String WELCOME_MESSAGE = "welcomeMessage";
     public static final String YEAR_OF_PASSING = "yearOfPassing";
     public static final String ZIPCODE = "zipcode";
+    public static final String SUNBIRD_CONTENT_SERVICE_BASE_URL="sunbird_content_service_base_url";
+    public static final String SUNBIRD_CONTENT_SERVICE_AUTHORIZATION="sunbird_content_service_authorization";
 
-    private JsonKey() {
-    }
+    private JsonKey() {}
 }
