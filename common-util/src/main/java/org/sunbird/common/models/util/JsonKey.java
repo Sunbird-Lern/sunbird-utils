@@ -615,8 +615,6 @@ public final class JsonKey {
     public static final String WELCOME_MESSAGE = "welcomeMessage";
     public static final String YEAR_OF_PASSING = "yearOfPassing";
     public static final String ZIPCODE = "zipcode";
-    public static final String USER_BADGE_ASSERTION_DB = "user_badge_assertion";
-    public static final String BADGE_ASSERTIONS = "badgeAssertions";
 
     private JsonKey() {}
 }
