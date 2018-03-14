@@ -615,6 +615,8 @@ public final class JsonKey {
     public static final String WELCOME_MESSAGE = "welcomeMessage";
     public static final String YEAR_OF_PASSING = "yearOfPassing";
     public static final String ZIPCODE = "zipcode";
+    public static final String SUNBIRD_CONTENT_SERVICE_BASE_URL="sunbird_content_service_base_url";
+    public static final String SUNBIRD_CONTENT_SERVICE_AUTHORIZATION="sunbird_content_service_authorization";
 
     private JsonKey() {}
 }
