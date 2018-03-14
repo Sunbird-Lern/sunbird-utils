@@ -12,7 +12,7 @@ public interface ResponseMessage {
 
 		String UNAUTHORISE_USER = "You are not authorized.";
 		String INVALID_USER_CREDENTIALS = "Please check your credentials";
-		String INVALID_OPERATION_NAME = "Operation name is invalid.Please provide a valid operation name";
+		String INVALID_OPERATION_NAME = "Operation name is invalid. Please provide a valid operation name";
 		String INVALID_REQUESTED_DATA = "Requested data for this operation is not valid.";
 		String CONSUMER_ID_MISSING_ERROR = "Consumer id is mandatory.";
 		String CONSUMER_ID_INVALID_ERROR = "Consumer id is invalid.";
