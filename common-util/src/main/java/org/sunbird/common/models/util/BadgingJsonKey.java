@@ -40,5 +40,23 @@ public class BadgingJsonKey {
   public static final String JSON_EMAIL = "json.email";
   public static final String ISSUER_URL = "issuerUrl";
   public static final String REVOCATION_REASON = "revocationReason";
+  public static final String JSON_ISSUED_ON = "json.issuedOn";
+  public static final String JSON_IMAGE = "json.image";
+  public static final String JSON_BADGE = "json.badge";
+  public static final String BADGE_CLASS = "badge_class";
+  public static final String ISSUER = "issuer";
+  public static final String JSON_RECIPIENT = "json.recipient";
+  public static final String JSON_VERIFY  = "json.verify";
+  public static final String REVOCATION_REASON_BADGE = "revocation_reason";
+  public static final String ASSERTION_DATE = "assertionDate";
+  public static final String ASSERTION_ID_URL = "assertionIdUrl";
+  public static final String ASSERTION_IMAGE_URL = "assertionImageUrl";
+  public static final String RECIPIENT = "recipient";
+  public static final String VERIFY = "verify";
+  public static final String REVOKED = "revoked";
+  public static final String CREATED_TS = "createdTS";
+  public static final String BADGE_CLASS_NANE = "badgeClassName";
+  public static final String BADGE_CLASS_IMAGE = "badgeClassImage";
+  public static final String  BADGE_ASSERTION = "badgeAssertion";
   private BadgingJsonKey(){}
 }
