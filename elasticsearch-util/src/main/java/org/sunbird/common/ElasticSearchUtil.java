@@ -594,8 +594,7 @@ public class ElasticSearchUtil {
     }
 
     private static Map<String, Float> getConstraints(SearchDTO searchDTO) {
-
-        if (!(searchDTO.getMode().isEmpty()) && searchDTO.getMode().contains(SOFT_MODE)) {
+        if (null != searchDTO.getSoftConstraints() && !searchDTO.getSoftConstraints().isEmpty()) {
             return searchDTO.getSoftConstraints().entrySet().stream()
                     .collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().floatValue()));
         }
