@@ -10,6 +10,8 @@ public class BadgingJsonKey {
   public static final String BADGE_ID = "badgeId";
   public static final String BADGE_ID_URL = "badgeIdUrl";
   public static final String BADGE_SLUG = "badgeSlug";
+  public static final String BADGE_TYPE_USER = "user";
+  public static final String BADGE_TYPE_CONTENT = "content";
   public static final String BADGER_BASE_URL = "sunbird_badger_baseurl";
   public static final String BADGES = "badges";
   public static final String BADGING_ASSERTION_LIST_SIZE = "badging_assertion_list_size";
@@ -22,23 +24,21 @@ public class BadgingJsonKey {
   public static final String ISSUER_ID_URL = "issuerIdUrl";
   public static final String ISSUER_LIST = "issuerList";
   public static final String ISSUER_SLUG = "issuerSlug";
+  public static final String ISSUER_URL = "issuerUrl";
   public static final String ISSUERS = "issuers";
   public static final String ASSERTION_ID = "assertionId";
   public static final String JSON_CRITERIA = "json.criteria";
+  public static final String JSON_DESCRIPTION = "json.description";
+  public static final String JSON_EMAIL = "json.email";
   public static final String JSON_ID = "json.id";
   public static final String JSON_ISSUER = "json.issuer";
-  public static final String JSON_DESCRIPTION = "json.description";
+  public static final String JSON_URL = "json.url";
   public static final String NOTIFY = "notify";
   public static final String RECIPIENT_COUNT = "recipient_count";
   public static final String RECIPIENT_EMAIL = "recipientEmail";
   public static final String RECIPIENT_ID = "recipientId";
   public static final String RECIPIENT_IDENTIFIER = "recipient_identifier";
   public static final String RECIPIENT_TYPE = "recipientType";
-  public static final String SLUG = "slug";
-  public static final String BADGE_CLASS_ID = "badgeId";
-  public static final String JSON_URL = "json.url";
-  public static final String JSON_EMAIL = "json.email";
-  public static final String ISSUER_URL = "issuerUrl";
   public static final String REVOCATION_REASON = "revocationReason";
   public static final String JSON_ISSUED_ON = "json.issuedOn";
   public static final String JSON_IMAGE = "json.image";
@@ -58,5 +58,8 @@ public class BadgingJsonKey {
   public static final String BADGE_CLASS_NANE = "badgeClassName";
   public static final String BADGE_CLASS_IMAGE = "badgeClassImage";
   public static final String  BADGE_ASSERTION = "badgeAssertion";
+  public static final String SLUG = "slug";
+  public static final String VALID_BADGE_SUBTYPES = "sunbird_valid_badge_subtypes";
+
   private BadgingJsonKey(){}
 }
