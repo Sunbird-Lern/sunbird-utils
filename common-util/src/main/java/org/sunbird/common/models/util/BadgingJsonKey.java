@@ -39,6 +39,6 @@ public class BadgingJsonKey {
   public static final String JSON_URL = "json.url";
   public static final String JSON_EMAIL = "json.email";
   public static final String ISSUER_URL = "issuerUrl";
-
+  public static final String REVOCATION_REASON = "revocationReason";
   private BadgingJsonKey(){}
 }

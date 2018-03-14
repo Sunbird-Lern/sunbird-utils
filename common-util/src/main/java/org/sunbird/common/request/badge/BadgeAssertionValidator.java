@@ -95,9 +95,9 @@ public class BadgeAssertionValidator {
 	 * This method will validate get assertion list requested data.
 	 * expected data 
 	 *    "assertions": [{
-     *      "issuerSlug": "oracle-university",
-     *     "badgeSlug": "java-se-8-programmer",
-     *       "assertionSlug": "1ebceaf1-b63b-4edb-97c0-bfc6e3235408"
+     *      "issuerId": "oracle-university",
+     *     "badgeId": "java-se-8-programmer",
+     *       "assertionId": "1ebceaf1-b63b-4edb-97c0-bfc6e3235408"
       *    }]
 	 * @param request
 	 */
@@ -115,6 +115,24 @@ public class BadgeAssertionValidator {
 			throw new ProjectCommonException(ResponseCode.sizeLimitExceed.getErrorCode(),
 					MessageFormat.format(ResponseCode.sizeLimitExceed.getErrorMessage(), size), ERROR_CODE);
 		}
-	}
 
+		for (Map<String, Object> map : assertionData) {
+			Request temp = new Request();
+			temp.getRequest().putAll(map);
+			validategetBadgeAssertion(temp);
+		}
+	}
+	
+	
+	/**
+	 * This method will validate revoke assertion request data.
+	 * @param request Request
+	 */
+	public static void validateRevokeAssertion(Request request) {
+		validateBadgeAssertion(request);
+		if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(BadgingJsonKey.REVOCATION_REASON))) {
+			throw new ProjectCommonException(ResponseCode.revocationReasonRequired.getErrorCode(),
+					ResponseCode.revocationReasonRequired.getErrorMessage(), ERROR_CODE);
+		}
+	}
 }

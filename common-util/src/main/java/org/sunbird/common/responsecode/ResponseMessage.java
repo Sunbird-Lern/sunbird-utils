@@ -240,6 +240,7 @@ public interface ResponseMessage {
 		String MAX_ALLOWED_SIZE_LIMIT_EXCEED = "Max allowed size is {0}";
 		String SLUG_REQUIRED = "Slug is required .";
 		String INVALID_ISSUER_SLUG = "Invalid issuer slug .";
+		String REVOCATION_REASON_REQUIRED = "Please provide revocation reason.";
 	 }
 
 	interface Key {
@@ -472,5 +473,6 @@ public interface ResponseMessage {
 		String MAX_ALLOWED_SIZE_LIMIT_EXCEED = "MAX_ALLOWED_SIZE_LIMIT_EXCEED";
 		String SLUG_REQUIRED = "SLUG_REQUIRED";
 		String INVALID_ISSUER_SLUG = "INVALID_ISSUER_SLUG";
+		String REVOCATION_REASON_REQUIRED = "REVOCATION_REASON_REQUIRED";
 	}
 }
