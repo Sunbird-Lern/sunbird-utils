@@ -501,9 +501,6 @@ public final class JsonKey {
     public static final String SUCCESS_RESULT = "successResult";
     public static final String SUMMARY = "summary";
     public static final String SUNBIRD = "sunbird";
-    public static final String SUNBIRD_ACTOR_FILE_PATH = "sunbird_actor_file_path";
-    public static final String SUNBIRD_ACTOR_IP = "sunbird_learnerstate_actor_host";
-    public static final String SUNBIRD_ACTOR_PORT = "sunbird_learnerstate_actor_port";
     public static final String SUNBIRD_APP_URL = "sunbird_app_url";
     public static final String SUNBIRD_CASSANDRA_IP = "sunbird_cassandra_host";
     public static final String SUNBIRD_CASSANDRA_KEYSPACE = "sunbird_cassandra_keyspace";
