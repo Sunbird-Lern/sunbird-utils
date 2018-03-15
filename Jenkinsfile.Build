@@ -6,7 +6,6 @@ node('build-slave') {
 
     try {
         stage('Build') {
-            cleanWs()
             sh '''
             cd cassandra-migration
             mvn clean install -DskipTests
