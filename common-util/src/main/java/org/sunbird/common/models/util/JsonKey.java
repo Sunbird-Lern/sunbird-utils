@@ -24,7 +24,6 @@ public final class JsonKey {
     public static final String ACTIVE = "active";
     public static final String ACTOR_ID = "actorId";
     public static final String ACTOR_SERVICE = "Actor service";
-    public static final String ACTOR_SERVICE_INSTANCE = "sunbird_actor_system_name";
     public static final String ACTOR_TYPE = "actorType";
     public static final String ADD_TYPE = "addType";
     public static final String ADDED_AT = "addedAt";
@@ -80,8 +79,6 @@ public final class JsonKey {
     public static final String BATCH_ID = "batchId";
     public static final String BATCH_RELATIONS = "batch_relations";
     public static final String BEARER = "Bearer ";
-    public static final String BKG_SUNBIRD_ACTOR_SERVICE_IP = "sunbird_background_actor_host";
-    public static final String BKG_SUNBIRD_ACTOR_SERVICE_PORT = "sunbird_background_actor_port";
     public static final String BLOCKED = "blocked";
     public static final String BODY = "body";
     public static final String BULK_OP_DB = "BulkOpDb";
@@ -507,8 +504,6 @@ public final class JsonKey {
     public static final String SUNBIRD_ACTOR_FILE_PATH = "sunbird_actor_file_path";
     public static final String SUNBIRD_ACTOR_IP = "sunbird_learnerstate_actor_host";
     public static final String SUNBIRD_ACTOR_PORT = "sunbird_learnerstate_actor_port";
-    public static final String SUNBIRD_ACTOR_SERVICE_IP = "sunbird_learner_actor_host";
-    public static final String SUNBIRD_ACTOR_SERVICE_PORT = "sunbird_learner_actor_port";
     public static final String SUNBIRD_APP_URL = "sunbird_app_url";
     public static final String SUNBIRD_CASSANDRA_IP = "sunbird_cassandra_host";
     public static final String SUNBIRD_CASSANDRA_KEYSPACE = "sunbird_cassandra_keyspace";
