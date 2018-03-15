@@ -615,8 +615,9 @@ public final class JsonKey {
     public static final String WELCOME_MESSAGE = "welcomeMessage";
     public static final String YEAR_OF_PASSING = "yearOfPassing";
     public static final String ZIPCODE = "zipcode";
-    public static final String SUNBIRD_CONTENT_SERVICE_BASE_URL="sunbird_content_service_base_url";
-    public static final String SUNBIRD_CONTENT_SERVICE_AUTHORIZATION="sunbird_content_service_authorization";
-
+    public static final String SUNBIRD_API_BASE_URL="sunbird_api_base_url";
+    public static final String SUNBIRD_AUTHORIZATION="sunbird_authorization";
+    public static final String SUNBIRD_CONTENT_BADGE_ASSIGN_URL="sunbird.content.badge.assign.url";
+    public static final String SUNBIRD_CONTENT_BADGE_REVOKE_URL="sunbird.content.badge.revoke.url";
     private JsonKey() {}
 }
