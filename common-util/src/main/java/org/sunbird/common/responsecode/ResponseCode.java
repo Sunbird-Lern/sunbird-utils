@@ -240,10 +240,13 @@ public enum ResponseCode {
 	    resourceNotFound (ResponseMessage.Key.RESOURCE_NOT_FOUND, ResponseMessage.Message.RESOURCE_NOT_FOUND),
 	    sizeLimitExceed (ResponseMessage.Key.MAX_ALLOWED_SIZE_LIMIT_EXCEED, ResponseMessage.Message.MAX_ALLOWED_SIZE_LIMIT_EXCEED),
 	    slugRequired(ResponseMessage.Key.SLUG_REQUIRED, ResponseMessage.Message.SLUG_REQUIRED),
-	    invalidIssuerSlug(ResponseMessage.Key.INVALID_ISSUER_SLUG, ResponseMessage.Message.INVALID_ISSUER_SLUG),
+	    invalidIssuerId(ResponseMessage.Key.INVALID_ISSUER_ID, ResponseMessage.Message.INVALID_ISSUER_ID),
 	    revocationReasonRequired (ResponseMessage.Key.REVOCATION_REASON_REQUIRED, ResponseMessage.Message.REVOCATION_REASON_REQUIRED),
 	    badgeAssertionAlreadyRevoked (ResponseMessage.Key.ALREADY_REVOKED, ResponseMessage.Message.ALREADY_REVOKED),
 	    invalidRecipientType (ResponseMessage.Key.INVALID_RECIPIENT_TYPE, ResponseMessage.Message.INVALID_RECIPIENT_TYPE),
+	    customClientError(ResponseMessage.Key.CUSTOM_CLIENT_ERROR, ResponseMessage.Message.CUSTOM_CLIENT_ERROR),
+	    customResourceNotFound(ResponseMessage.Key.CUSTOM_RESOURCE_NOT_FOUND_ERROR, ResponseMessage.Message.CUSTOM_RESOURCE_NOT_FOUND_ERROR),
+	    customServerError(ResponseMessage.Key.CUSTOM_SERVER_ERROR, ResponseMessage.Message.CUSTOM_SERVER_ERROR),
 	    OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404),UNAUTHORIZED(401),REDIRECTION_REQUIRED(302);
 	private int responseCode;
 	/**
@@ -264,6 +267,12 @@ public enum ResponseCode {
 	private ResponseCode(String errorCode, String errorMessage) {
 		this.errorCode = errorCode;
 		this.errorMessage = errorMessage;
+	}
+
+	private ResponseCode(String errorCode, String errorMessage, int responseCode) {
+		this.errorCode = errorCode;
+		this.errorMessage = errorMessage;
+		this.responseCode = responseCode;
 	}
 
 	/**

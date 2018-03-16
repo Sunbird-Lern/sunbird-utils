@@ -241,11 +241,14 @@ public interface ResponseMessage {
 		String RESOURCE_NOT_FOUND = "Requested resource not found";
 		String MAX_ALLOWED_SIZE_LIMIT_EXCEED = "Max allowed size is {0}";
 		String SLUG_REQUIRED = "Slug is required .";
-		String INVALID_ISSUER_SLUG = "Invalid issuer slug .";
+		String INVALID_ISSUER_ID = "Invalid issuer ID.";
 		String REVOCATION_REASON_REQUIRED = "Please provide revocation reason.";
 		String ALREADY_REVOKED = "Assertion is already revoked.";
 		String INVALID_RECIPIENT_TYPE = "Please provide a valid recipient type.";
-	 }
+		String CUSTOM_CLIENT_ERROR = "Invalid client request: {0}";
+		String CUSTOM_RESOURCE_NOT_FOUND_ERROR = "Resource not found: {0}";
+		String CUSTOM_SERVER_ERROR = "Server error: {0}";
+	}
 
 	interface Key {
 		String UNAUTHORISE_USER = "UNAUTHORIZE_USER";
@@ -478,9 +481,12 @@ public interface ResponseMessage {
 		String RESOURCE_NOT_FOUND = "RESOURCE_NOT_FOUND";
 		String MAX_ALLOWED_SIZE_LIMIT_EXCEED = "MAX_ALLOWED_SIZE_LIMIT_EXCEED";
 		String SLUG_REQUIRED = "SLUG_REQUIRED";
-		String INVALID_ISSUER_SLUG = "INVALID_ISSUER_SLUG";
+		String INVALID_ISSUER_ID = "INVALID_ISSUER_ID";
 		String REVOCATION_REASON_REQUIRED = "REVOCATION_REASON_REQUIRED";
 		String ALREADY_REVOKED = "ALREADY_REVOKED";
 		String INVALID_RECIPIENT_TYPE = "INVALID_RECIPIENT_TYPE";
+		String CUSTOM_CLIENT_ERROR = "CUSTOM_CLIENT_ERROR";
+		String CUSTOM_RESOURCE_NOT_FOUND_ERROR = "CUSTOM_RESOURCE_NOT_FOUND_ERROR";
+		String CUSTOM_SERVER_ERROR = "CUSTOM_SERVER_ERROR";
 	}
 }
