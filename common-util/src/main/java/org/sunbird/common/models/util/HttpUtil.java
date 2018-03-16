@@ -92,8 +92,13 @@ public class HttpUtil {
         long startTime = System.currentTimeMillis();
         Map<String, Object> logInfo = genarateLogInfo(JsonKey.API_CALL, "API CALL : " + requestURL);
         HttpURLConnection httpURLConnection = getRequest(requestURL, headers, startTime);
-        HttpUtilResponse response = new HttpUtilResponse(getResponse(httpURLConnection),
-                httpURLConnection.getResponseCode());
+        HttpUtilResponse response = null;
+        String body = "";
+        if (200 <= httpURLConnection.getResponseCode()
+                && httpURLConnection.getResponseCode() < 300) {
+            body = getResponse(httpURLConnection);
+        }
+        response = new HttpUtilResponse(body, httpURLConnection.getResponseCode());
         long stopTime = System.currentTimeMillis();
         long elapsedTime = stopTime - startTime;
         telemetryProcessingCall(logInfo);
@@ -167,8 +172,13 @@ public class HttpUtil {
         long startTime = System.currentTimeMillis();
         Map<String, Object> logInfo = genarateLogInfo(JsonKey.API_CALL, "API CALL : " + requestURL);
         HttpURLConnection httpURLConnection = postRequest(requestURL, params, headers, startTime);
-        HttpUtilResponse response = new HttpUtilResponse(getResponse(httpURLConnection),
-                httpURLConnection.getResponseCode());
+        HttpUtilResponse response = null;
+        String body = "";
+        if (200 <= httpURLConnection.getResponseCode()
+                && httpURLConnection.getResponseCode() < 300) {
+            body = getResponse(httpURLConnection);
+        }
+        response = new HttpUtilResponse(body, httpURLConnection.getResponseCode());
         long stopTime = System.currentTimeMillis();
         long elapsedTime = stopTime - startTime;
         telemetryProcessingCall(logInfo);
@@ -300,8 +310,13 @@ public class HttpUtil {
         long startTime = System.currentTimeMillis();
         Map<String, Object> logInfo = genarateLogInfo(JsonKey.API_CALL, "API CALL : " + requestURL);
         HttpURLConnection httpURLConnection = postRequest(requestURL, params, headers, startTime);
-        HttpUtilResponse response = new HttpUtilResponse(getResponse(httpURLConnection),
-                httpURLConnection.getResponseCode());
+        HttpUtilResponse response = null;
+        String body = "";
+        if (200 <= httpURLConnection.getResponseCode()
+                && httpURLConnection.getResponseCode() < 300) {
+            body = getResponse(httpURLConnection);
+        }
+        response = new HttpUtilResponse(body, httpURLConnection.getResponseCode());
         long stopTime = System.currentTimeMillis();
         long elapsedTime = stopTime - startTime;
         telemetryProcessingCall(logInfo);
@@ -489,8 +504,13 @@ public class HttpUtil {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             ProjectLogger.log("response code for Patch Resques");
             HttpResponse httpResponse = httpClient.execute(patch);
-            HttpUtilResponse response = new HttpUtilResponse(generateResponse(httpResponse),
-                    httpResponse.getStatusLine().getStatusCode());
+            HttpUtilResponse response = null;
+            String body = "";
+            if (200 <= httpResponse.getStatusLine().getStatusCode()
+                    && httpResponse.getStatusLine().getStatusCode() < 300) {
+                body = generateResponse(httpResponse);
+            }
+            response = new HttpUtilResponse(body, httpResponse.getStatusLine().getStatusCode());
             long stopTime = System.currentTimeMillis();
             long elapsedTime = stopTime - startTime;
             ProjectLogger.log(
@@ -551,8 +571,13 @@ public class HttpUtil {
                     + " for requestURL " + url + " ,Total time elapsed = " + elapsedTime,
                     LoggerEnum.PERF_LOG);
             HttpResponse httpResponse = client.execute(httpPost);
-            HttpUtilResponse response = new HttpUtilResponse(generateResponse(httpResponse),
-                    httpResponse.getStatusLine().getStatusCode());
+            HttpUtilResponse response = null;
+            String body = "";
+            if (200 <= httpResponse.getStatusLine().getStatusCode()
+                    && httpResponse.getStatusLine().getStatusCode() < 300) {
+                body = generateResponse(httpResponse);
+            }
+            response = new HttpUtilResponse(body, httpResponse.getStatusLine().getStatusCode());
             telemetryProcessingCall(logInfo);
             return response;
         } catch (Exception ex) {
@@ -599,8 +624,13 @@ public class HttpUtil {
                     + " for requestURL " + url + " ,Total time elapsed = " + elapsedTime,
                     LoggerEnum.PERF_LOG);
             HttpResponse httpResponse = httpclient.execute(httpDelete);
-            HttpUtilResponse response = new HttpUtilResponse(generateResponse(httpResponse),
-                    httpResponse.getStatusLine().getStatusCode());
+            HttpUtilResponse response = null;
+            String body = "";
+            if (200 <= httpResponse.getStatusLine().getStatusCode()
+                    && httpResponse.getStatusLine().getStatusCode() < 300) {
+                body = generateResponse(httpResponse);
+            }
+            response = new HttpUtilResponse(body, httpResponse.getStatusLine().getStatusCode());
             telemetryProcessingCall(logInfo);
             return response;
         } catch (Exception ex) {
@@ -641,8 +671,13 @@ public class HttpUtil {
                     + " for requestURL " + url + " ,Total time elapsed = " + elapsedTime,
                     LoggerEnum.PERF_LOG);
             HttpResponse httpResponse = httpclient.execute(httpDelete);
-            HttpUtilResponse response = new HttpUtilResponse(generateResponse(httpResponse),
-                    httpResponse.getStatusLine().getStatusCode());
+            HttpUtilResponse response = null;
+            String body = "";
+            if (200 <= httpResponse.getStatusLine().getStatusCode()
+                    && httpResponse.getStatusLine().getStatusCode() < 300) {
+                body = generateResponse(httpResponse);
+            }
+            response = new HttpUtilResponse(body, httpResponse.getStatusLine().getStatusCode());
             telemetryProcessingCall(logInfo);
             return response;
         } catch (Exception ex) {
@@ -681,8 +716,13 @@ public class HttpUtil {
                     + " for requestURL " + url + " ,Total time elapsed = " + elapsedTime,
                     LoggerEnum.PERF_LOG);
             HttpResponse httpResponse = httpclient.execute(httpDelete);
-            HttpUtilResponse response = new HttpUtilResponse(generateResponse(httpResponse),
-                    httpResponse.getStatusLine().getStatusCode());
+            HttpUtilResponse response = null;
+            String body = "";
+            if (200 <= httpResponse.getStatusLine().getStatusCode()
+                    && httpResponse.getStatusLine().getStatusCode() < 300) {
+                body = generateResponse(httpResponse);
+            }
+            response = new HttpUtilResponse(body, httpResponse.getStatusLine().getStatusCode());
             telemetryProcessingCall(logInfo);
             return response;
         } catch (Exception ex) {
@@ -691,12 +731,6 @@ public class HttpUtil {
         }
     }
 
-    /*
-     * private static Map<String, Object> getResponseMap(HttpURLConnection urlConnection) throws
-     * IOException { String res = getResponse(urlConnection); Map<String, Object> map = new
-     * HashMap<>(); map.put(JsonKey.BODY, res); map.put(JsonKey.STATUS_CODE,
-     * urlConnection.getResponseCode()); return map; }
-     */
 }
 
 
