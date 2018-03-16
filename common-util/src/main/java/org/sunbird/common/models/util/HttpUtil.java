@@ -94,9 +94,10 @@ public class HttpUtil {
         HttpURLConnection httpURLConnection = getRequest(requestURL, headers, startTime);
         HttpUtilResponse response = null;
         String body = "";
-        if (200 <= httpURLConnection.getResponseCode()
-                && httpURLConnection.getResponseCode() < 300) {
+        try {
             body = getResponse(httpURLConnection);
+        } catch (Exception ex) {
+            ProjectLogger.log("Exception occured while reading body" + ex);
         }
         response = new HttpUtilResponse(body, httpURLConnection.getResponseCode());
         long stopTime = System.currentTimeMillis();
@@ -174,9 +175,10 @@ public class HttpUtil {
         HttpURLConnection httpURLConnection = postRequest(requestURL, params, headers, startTime);
         HttpUtilResponse response = null;
         String body = "";
-        if (200 <= httpURLConnection.getResponseCode()
-                && httpURLConnection.getResponseCode() < 300) {
+        try {
             body = getResponse(httpURLConnection);
+        } catch (Exception ex) {
+            ProjectLogger.log("Exception occured while reading body" + ex);
         }
         response = new HttpUtilResponse(body, httpURLConnection.getResponseCode());
         long stopTime = System.currentTimeMillis();
@@ -312,9 +314,10 @@ public class HttpUtil {
         HttpURLConnection httpURLConnection = postRequest(requestURL, params, headers, startTime);
         HttpUtilResponse response = null;
         String body = "";
-        if (200 <= httpURLConnection.getResponseCode()
-                && httpURLConnection.getResponseCode() < 300) {
+        try {
             body = getResponse(httpURLConnection);
+        } catch (Exception ex) {
+            ProjectLogger.log("Exception occured while reading body" + ex);
         }
         response = new HttpUtilResponse(body, httpURLConnection.getResponseCode());
         long stopTime = System.currentTimeMillis();
@@ -506,9 +509,10 @@ public class HttpUtil {
             HttpResponse httpResponse = httpClient.execute(patch);
             HttpUtilResponse response = null;
             String body = "";
-            if (200 <= httpResponse.getStatusLine().getStatusCode()
-                    && httpResponse.getStatusLine().getStatusCode() < 300) {
+            try {
                 body = generateResponse(httpResponse);
+            } catch (Exception ex) {
+                ProjectLogger.log("Exception occured while reading body" + ex);
             }
             response = new HttpUtilResponse(body, httpResponse.getStatusLine().getStatusCode());
             long stopTime = System.currentTimeMillis();
@@ -573,9 +577,10 @@ public class HttpUtil {
             HttpResponse httpResponse = client.execute(httpPost);
             HttpUtilResponse response = null;
             String body = "";
-            if (200 <= httpResponse.getStatusLine().getStatusCode()
-                    && httpResponse.getStatusLine().getStatusCode() < 300) {
+            try {
                 body = generateResponse(httpResponse);
+            } catch (Exception ex) {
+                ProjectLogger.log("Exception occured while reading body" + ex);
             }
             response = new HttpUtilResponse(body, httpResponse.getStatusLine().getStatusCode());
             telemetryProcessingCall(logInfo);
@@ -626,9 +631,10 @@ public class HttpUtil {
             HttpResponse httpResponse = httpclient.execute(httpDelete);
             HttpUtilResponse response = null;
             String body = "";
-            if (200 <= httpResponse.getStatusLine().getStatusCode()
-                    && httpResponse.getStatusLine().getStatusCode() < 300) {
+            try {
                 body = generateResponse(httpResponse);
+            } catch (Exception ex) {
+                ProjectLogger.log("Exception occured while reading body" + ex);
             }
             response = new HttpUtilResponse(body, httpResponse.getStatusLine().getStatusCode());
             telemetryProcessingCall(logInfo);
@@ -673,9 +679,10 @@ public class HttpUtil {
             HttpResponse httpResponse = httpclient.execute(httpDelete);
             HttpUtilResponse response = null;
             String body = "";
-            if (200 <= httpResponse.getStatusLine().getStatusCode()
-                    && httpResponse.getStatusLine().getStatusCode() < 300) {
+            try {
                 body = generateResponse(httpResponse);
+            } catch (Exception ex) {
+                ProjectLogger.log("Exception occured while reading body" + ex);
             }
             response = new HttpUtilResponse(body, httpResponse.getStatusLine().getStatusCode());
             telemetryProcessingCall(logInfo);
@@ -718,9 +725,10 @@ public class HttpUtil {
             HttpResponse httpResponse = httpclient.execute(httpDelete);
             HttpUtilResponse response = null;
             String body = "";
-            if (200 <= httpResponse.getStatusLine().getStatusCode()
-                    && httpResponse.getStatusLine().getStatusCode() < 300) {
+            try {
                 body = generateResponse(httpResponse);
+            } catch (Exception ex) {
+                ProjectLogger.log("Exception occured while reading body" + ex);
             }
             response = new HttpUtilResponse(body, httpResponse.getStatusLine().getStatusCode());
             telemetryProcessingCall(logInfo);
