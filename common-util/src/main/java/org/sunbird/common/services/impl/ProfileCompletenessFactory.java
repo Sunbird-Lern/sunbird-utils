@@ -10,13 +10,13 @@ import org.sunbird.common.services.ProfileCompletenessService;
  *
  */
 public class ProfileCompletenessFactory {
-  
-  /**
-   * 
-   * @return
-   */
-  public static ProfileCompletenessService getInstance () {
-    return new ProfileCompletenessServiceImpl();
-  }
+
+	/**
+	 * 
+	 * @return
+	 */
+	public static ProfileCompletenessService getInstance() {
+		return new ProfileCompletenessServiceImpl();
+	}
 
 }
