@@ -101,7 +101,7 @@ public class ProjectCommonException extends RuntimeException {
 		this.responseCode = responseCode;
 	}
 
-	public ProjectCommonException(String code, String messageWithPlaceholder, int responseCode, String placeholderValue) {
+	public ProjectCommonException(String code, String messageWithPlaceholder, int responseCode, String... placeholderValue) {
 		super();
 		this.code = code;
 		this.message = MessageFormat.format(messageWithPlaceholder, placeholderValue);

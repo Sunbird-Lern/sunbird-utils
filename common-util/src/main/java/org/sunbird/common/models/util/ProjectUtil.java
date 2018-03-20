@@ -264,6 +264,9 @@ public class ProjectUtil {
 	 * @return true valid email, false invalid email
 	 */
 	public static boolean isEmailvalid(final String email) {
+		if(isStringNullOREmpty(email)){
+			return false;
+		}
 		Matcher matcher = pattern.matcher(email);
 		return matcher.matches();
 

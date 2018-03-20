@@ -127,7 +127,7 @@ public interface ResponseMessage {
         String USER_NOT_ASSOCIATED_TO_ROOT_ORG = "User not associated to course creator root org.";
         String SLUG_IS_NOT_UNIQUE =
                 "Please provide different channel value. This channel value already exist.";
-        String INVALID_CREATE_BADGE_ISSUER_DATA = "Invalid request data for create adge issuer .";
+        String INVALID_CREATE_BADGE_ISSUER_DATA = "Provide valid values for - {0}";
         String INVALID_DATE_FORMAT =
                 "Invalid Date format . Date format should be : yyyy-MM-dd hh:mm:ss:SSSZ";
         String SRC_EXTERNAL_ID_ALREADY_EXIST = "PROVIDER WITH EXTERNAL ID ALREADY EXIST .";
