@@ -154,6 +154,8 @@ public final class JsonKey {
     public static final String CURRENT_STATE = "CURRENT_STATE";
     public static final String DASHBOARD = "dashboard";
     public static final String DATA = "data";
+    public static final String KEY = "key";
+    public static final String KEYS = "keys";
     public static final String DATE = "date";
     public static final String DATE_HISTOGRAM = "DATE_HISTOGRAM";
     public static final String DATE_TIME = "dateTime";
