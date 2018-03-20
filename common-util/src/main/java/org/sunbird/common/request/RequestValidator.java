@@ -414,10 +414,15 @@ public final class RequestValidator {
      */
     public static void validateUserOrg(Request userRequest) {
         validateOrg(userRequest);
-        if (ProjectUtil
-                .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USER_ID))) {
-            throw new ProjectCommonException(ResponseCode.userIdRequired.getErrorCode(),
-                    ResponseCode.userIdRequired.getErrorMessage(), ERROR_CODE);
+        if ((ProjectUtil
+                .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USERNAME))
+                || ProjectUtil.isStringNullOREmpty(
+                        (String) userRequest.getRequest().get(JsonKey.PROVIDER)))
+                && ProjectUtil.isStringNullOREmpty(
+                        (String) userRequest.getRequest().get(JsonKey.USER_ID))) {
+            throw new ProjectCommonException(ResponseCode.usrValidationError.getErrorCode(),
+                    ResponseCode.usrValidationError.getErrorMessage(),
+                    ResponseCode.CLIENT_ERROR.getResponseCode());
         }
     }
 
@@ -435,10 +440,15 @@ public final class RequestValidator {
             throw new ProjectCommonException(ResponseCode.roleRequired.getErrorCode(),
                     ResponseCode.roleRequired.getErrorMessage(), ERROR_CODE);
         }
-        if (ProjectUtil
-                .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USER_ID))) {
-            throw new ProjectCommonException(ResponseCode.userIdRequired.getErrorCode(),
-                    ResponseCode.userIdRequired.getErrorMessage(), ERROR_CODE);
+        if ((ProjectUtil
+                .isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USERNAME))
+                || ProjectUtil.isStringNullOREmpty(
+                        (String) userRequest.getRequest().get(JsonKey.PROVIDER)))
+                && ProjectUtil.isStringNullOREmpty(
+                        (String) userRequest.getRequest().get(JsonKey.USER_ID))) {
+            throw new ProjectCommonException(ResponseCode.usrValidationError.getErrorCode(),
+                    ResponseCode.usrValidationError.getErrorMessage(),
+                    ResponseCode.CLIENT_ERROR.getResponseCode());
         }
     }
 
