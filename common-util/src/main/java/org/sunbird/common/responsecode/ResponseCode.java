@@ -247,6 +247,8 @@ public enum ResponseCode {
 	    customClientError(ResponseMessage.Key.CUSTOM_CLIENT_ERROR, ResponseMessage.Message.CUSTOM_CLIENT_ERROR),
 	    customResourceNotFound(ResponseMessage.Key.CUSTOM_RESOURCE_NOT_FOUND_ERROR, ResponseMessage.Message.CUSTOM_RESOURCE_NOT_FOUND_ERROR),
 	    customServerError(ResponseMessage.Key.CUSTOM_SERVER_ERROR, ResponseMessage.Message.CUSTOM_SERVER_ERROR),
+	    inactiveUser(ResponseMessage.Key.INACTIVE_USER, ResponseMessage.Message.INACTIVE_USER),
+	    userInactiveForThisOrg(ResponseMessage.Key.USER_INACTIVE_FOR_THIS_ORG, ResponseMessage.Message.USER_INACTIVE_FOR_THIS_ORG),
 	    OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404),UNAUTHORIZED(401),REDIRECTION_REQUIRED(302);
 	private int responseCode;
 	/**
