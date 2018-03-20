@@ -269,6 +269,7 @@ public interface ResponseMessage {
         String INACTIVE_USER = "User is Inactive. Please make it active to proceed.";
         String USER_INACTIVE_FOR_THIS_ORG =
                 "User is Inactive for this org. Please make it active to proceed.";
+        String USER_UPDATE_FAILED_FOR_THIS_ORG = "user updation failed for this org.";
     }
 
     interface Key {
@@ -511,5 +512,6 @@ public interface ResponseMessage {
         String CUSTOM_SERVER_ERROR = "CUSTOM_SERVER_ERROR";
         String INACTIVE_USER = "INACTIVE_USER";
         String USER_INACTIVE_FOR_THIS_ORG = "USER_INACTIVE_FOR_THIS_ORG";
+        String USER_UPDATE_FAILED_FOR_THIS_ORG = "USER_UPDATE_FAILED_FOR_THIS_ORG";
     }
 }
