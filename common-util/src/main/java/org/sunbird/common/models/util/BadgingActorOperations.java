@@ -7,7 +7,7 @@ public enum BadgingActorOperations {
 
   CREATE_BADGE_CLASS("createBadgeClass"),
   GET_BADGE_CLASS("getBadgeClass"),
-  LIST_BADGE_CLASS("listBadgeClass"),
+  SEARCH_BADGE_CLASS("searchBadgeClass"),
   DELETE_BADGE_CLASS("deleteBadgeClass"),
   CREATE_BADGE_ISSUER("createBadgeIssuer"),
   ASSIGN_BADGE_MESSAGE("assignBadgeMessage"),
