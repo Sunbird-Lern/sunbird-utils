@@ -55,8 +55,8 @@ public class BadgingJsonKey {
     public static final String VERIFY = "verify";
     public static final String REVOKED = "revoked";
     public static final String CREATED_TS = "createdTS";
-    public static final String BADGE_CLASS_NANE = "name";
-    public static final String BADGE_CLASS_IMAGE = "image";
+    public static final String BADGE_CLASS_NANE = "badgeClassName";
+    public static final String BADGE_CLASS_IMAGE = "badgeClassImage";
     public static final String BADGE_ASSERTION = "badgeAssertion";
     public static final String SLUG = "slug";
     public static final String VALID_BADGE_SUBTYPES = "sunbird_valid_badge_subtypes";
