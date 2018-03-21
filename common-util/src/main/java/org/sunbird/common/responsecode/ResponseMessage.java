@@ -127,7 +127,7 @@ public interface ResponseMessage {
         String USER_NOT_ASSOCIATED_TO_ROOT_ORG = "User not associated to course creator root org.";
         String SLUG_IS_NOT_UNIQUE =
                 "Please provide different channel value. This channel value already exist.";
-        String INVALID_CREATE_BADGE_ISSUER_DATA = "Provide valid values for - {0}";
+        String INVALID_CREATE_BADGE_ISSUER_DATA = "{0}";
         String INVALID_DATE_FORMAT =
                 "Invalid Date format . Date format should be : yyyy-MM-dd hh:mm:ss:SSSZ";
         String SRC_EXTERNAL_ID_ALREADY_EXIST = "PROVIDER WITH EXTERNAL ID ALREADY EXIST .";
@@ -263,9 +263,9 @@ public interface ResponseMessage {
         String REVOCATION_REASON_REQUIRED = "Please provide revocation reason.";
         String ALREADY_REVOKED = "Assertion is already revoked.";
         String INVALID_RECIPIENT_TYPE = "Please provide a valid recipient type.";
-        String CUSTOM_CLIENT_ERROR = "Invalid client request: {0}";
-        String CUSTOM_RESOURCE_NOT_FOUND_ERROR = "Resource not found: {0}";
-        String CUSTOM_SERVER_ERROR = "Server error: {0}";
+        String CUSTOM_CLIENT_ERROR = "{0}";
+        String CUSTOM_RESOURCE_NOT_FOUND_ERROR = "{0}";
+        String CUSTOM_SERVER_ERROR = "{0}";
         String INACTIVE_USER = "User is Inactive. Please make it active to proceed.";
         String USER_INACTIVE_FOR_THIS_ORG =
                 "User is Inactive for this org. Please make it active to proceed.";
@@ -507,9 +507,9 @@ public interface ResponseMessage {
         String REVOCATION_REASON_REQUIRED = "REVOCATION_REASON_REQUIRED";
         String ALREADY_REVOKED = "ALREADY_REVOKED";
         String INVALID_RECIPIENT_TYPE = "INVALID_RECIPIENT_TYPE";
-        String CUSTOM_CLIENT_ERROR = "CUSTOM_CLIENT_ERROR";
-        String CUSTOM_RESOURCE_NOT_FOUND_ERROR = "CUSTOM_RESOURCE_NOT_FOUND_ERROR";
-        String CUSTOM_SERVER_ERROR = "CUSTOM_SERVER_ERROR";
+        String CUSTOM_CLIENT_ERROR = "CLIENT_ERROR";
+        String CUSTOM_RESOURCE_NOT_FOUND_ERROR = "RESOURCE_NOT_FOUND";
+        String CUSTOM_SERVER_ERROR = "SERVER_ERROR";
         String INACTIVE_USER = "INACTIVE_USER";
         String USER_INACTIVE_FOR_THIS_ORG = "USER_INACTIVE_FOR_THIS_ORG";
         String USER_UPDATE_FAILED_FOR_THIS_ORG = "USER_UPDATE_FAILED_FOR_THIS_ORG";
