@@ -244,6 +244,7 @@ public interface ResponseMessage {
         String BADGE_TYPE_REQUIRED = "Please provide badge class type.";
         String INVALID_BADGE_TYPE = "Please provide valid badge class type.";
         String INVALID_BADGE_SUBTYPE = "Please provide valid badge class subtype.";
+        String INVALID_BADGE_ROLE = "Please provide valid badge class role(s).";
         String BADGE_ROLES_REQUIRED = "Please provide authorised roles for badge class.";
         String ROOT_ORG_ID_REQUIRED = "Please provide root organisation ID.";
         String BADGE_NAME_REQUIRED = "Please provide badge class name.";
@@ -426,6 +427,7 @@ public interface ResponseMessage {
         String BADGE_TYPE_REQUIRED = "BADGE_TYPE_REQUIRED";
         String INVALID_BADGE_TYPE = "INVALID_BADGE_TYPE";
         String INVALID_BADGE_SUBTYPE = "INVALID_BADGE_SUBTYPE";
+        String INVALID_BADGE_ROLE = "INVALID_BADGE_ROLE";
         String BADGE_ROLES_REQUIRED = "BADGE_ROLES_REQUIRED";
         String BADGE_NAME_REQUIRED = "BADGE_NAME_REQUIRED";
         String BADGE_DESCRIPTION_REQUIRED = "BADGE_DESCRIPTION_REQUIRED";
