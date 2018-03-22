@@ -67,6 +67,7 @@ public class BadgingJsonKey {
     // this email will be set while sunbird installation and used to send the email
     // in case of assertion , if user email is absent.
     public static final String SUNBIRD_INSTALLATION_EMAIL = "sunbird_installation_email";
+    public static final String BADGE_ISSUER = "BadgeIssuer";
 
     private BadgingJsonKey() {}
 }
