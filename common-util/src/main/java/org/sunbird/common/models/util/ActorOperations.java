@@ -154,8 +154,8 @@ public enum ActorOperations {
     GET_METRICS("getMetrics"),
     REG_CHANNEL("channelReg"),
     TELEMETRY_PROCESSING("telemetryProcessing"),
-    UPDATE_LEARNER_STATE("updateLearnerState");
-
+    UPDATE_LEARNER_STATE("updateLearnerState"),
+    SAVE_TELEMETRY ("saveTelemetry");
     private String value;
 
     /**
