@@ -19,6 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.validator.UrlValidator;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -849,5 +850,12 @@ public class ProjectUtil {
 		String[] schemes = { "http", "https" };
 		UrlValidator urlValidator = new UrlValidator(schemes);
 		return urlValidator.isValid(url);
+	}
+
+	public static String getConfigValue(String key) {
+		if (StringUtils.isNotBlank(System.getenv(key))) {
+			return System.getenv(key);
+		}
+		return propertiesCache.readProperty(key);
 	}
 }
