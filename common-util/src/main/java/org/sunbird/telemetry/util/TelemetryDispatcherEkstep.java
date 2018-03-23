@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
@@ -38,7 +39,7 @@ public class TelemetryDispatcherEkstep implements TelemetryDispatcher {
 			String response = HttpUtil.sendPostRequest(
 					getCompleteUrl(JsonKey.EKSTEP_BASE_URL, JsonKey.EKSTEP_TELEMETRY_API_URL), event,
 					getEkstepHeaders());
-			ProjectLogger.log("FLUSH RESPONSE : " + response);
+			ProjectLogger.log("Ekstep Telemetry flush response.", response, LoggerEnum.INFO.name());
 
 		} catch (Exception ex) {
 			ProjectLogger.log(ex.getMessage(), ex);
