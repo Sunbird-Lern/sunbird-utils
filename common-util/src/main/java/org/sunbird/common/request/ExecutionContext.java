@@ -53,7 +53,7 @@ public class ExecutionContext {
 	private static String getContextValue(String key) {
 		String value = System.getenv(key);
 		if (StringUtils.isBlank(value)) {
-			value = PropertiesCache.getInstance().getProperty(value);
+			value = PropertiesCache.getInstance().getProperty(key);
 		}
 		return value;
 	}
