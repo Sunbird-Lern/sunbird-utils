@@ -1,6 +1,7 @@
 package org.sunbird.telemetry.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -213,26 +214,24 @@ public class TelemetryGenerator {
 		String logType = (String) params.get(JsonKey.LOG_TYPE);
 		String logLevel = (String) params.get(JsonKey.LOG_LEVEL);
 		String message = (String) params.get(JsonKey.MESSAGE);
-		params.remove(JsonKey.LOG_TYPE);
-		params.remove(JsonKey.LOG_LEVEL);
-		params.remove(JsonKey.MESSAGE);
 
 		edata.put(JsonKey.TYPE, logType);
 		edata.put(JsonKey.LEVEL, logLevel);
 		edata.put(JsonKey.MESSAGE, message);
 
-		edata.put(JsonKey.PARAMS, getParamsList(params));
+		edata.put(JsonKey.PARAMS, getParamsList(params, Arrays.asList(JsonKey.LOG_TYPE, JsonKey.LOG_LEVEL, JsonKey.MESSAGE)));
 		return edata;
-
 	}
 	
-	private static List<Map<String, Object>> getParamsList(Map<String, Object> params) {
+	private static List<Map<String, Object>> getParamsList(Map<String, Object> params, List<String> ignore) {
 		List<Map<String, Object>> paramsList = new ArrayList<Map<String, Object>>();
 		if (null != params && !params.isEmpty()) {
 			for (Entry<String, Object> entry : params.entrySet()) {
-				Map<String, Object> param = new HashMap<String, Object>();
-				param.put(entry.getKey(), entry.getValue());
-				paramsList.add(param);
+				if (!ignore.contains(entry.getKey())) {
+					Map<String, Object> param = new HashMap<String, Object>();
+					param.put(entry.getKey(), entry.getValue());
+					paramsList.add(param);
+				}
 			}
 		}
 		return paramsList;
