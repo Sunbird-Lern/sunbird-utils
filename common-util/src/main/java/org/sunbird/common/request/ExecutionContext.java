@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
+import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectUtil;
@@ -44,28 +45,17 @@ public class ExecutionContext {
 	};
 
 	private static void initializeGlobalContext(ExecutionContext context) {
+		context.getGlobalContext().put(JsonKey.PDATA_ID, getContextValue(JsonKey.PDATA_ID));
+		context.getGlobalContext().put(JsonKey.PDATA_PID, getContextValue(JsonKey.PDATA_PID));
+		context.getGlobalContext().put(JsonKey.PDATA_VERSION, getContextValue(JsonKey.PDATA_VERSION));
+	}
 
-		Map<String, Object> map = new HashMap<>();
-		String producerInstanceId = System.getenv(JsonKey.PRODUCER_INSTTANCE_ID);
-		if (ProjectUtil.isStringNullOREmpty(producerInstanceId)) {
-			producerInstanceId = PropertiesCache.getInstance().getProperty(JsonKey.PRODUCER_INSTTANCE_ID);
+	private static String getContextValue(String key) {
+		String value = System.getenv(key);
+		if (StringUtils.isBlank(value)) {
+			value = PropertiesCache.getInstance().getProperty(key);
 		}
-
-		String pid = System.getenv(JsonKey.SUNBIRD_INSTALLATION);
-		if (ProjectUtil.isStringNullOREmpty(pid)) {
-			pid = PropertiesCache.getInstance().getProperty(JsonKey.SUNBIRD_INSTALLATION);
-		}
-		pid = pid + "-" + JsonKey.LEARNER_SERVICE;
-		String pdataVersion = System.getenv(JsonKey.PDATA_VERSION);
-		if (ProjectUtil.isStringNullOREmpty(pdataVersion)) {
-			pdataVersion = PropertiesCache.getInstance().getProperty(JsonKey.PDATA_VERSION);
-		}
-
-		map.put(JsonKey.PRODUCER_ID, pid);
-		map.put(JsonKey.PRODUCER_INSTTANCE_ID, producerInstanceId);
-		map.put(JsonKey.PRODUCER_VERSION, pdataVersion);
-
-		context.getGlobalContext().putAll(map);
+		return value;
 	}
 
 	public static ExecutionContext getCurrent() {

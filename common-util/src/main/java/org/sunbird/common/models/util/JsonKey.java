@@ -39,7 +39,7 @@ public final class JsonKey {
     public static final String AGGREGATIONS = "aggregations";
     public static final String ALL = "all";
     public static final String ANNOUNCEMENT = "announcement";
-    public static final String API_ACCESS = "API_ACCESS";
+    public static final String API_ACCESS = "api_access";
     public static final String API_ACTOR_PROVIDER = "api_actor_provider";
     public static final String API_CALL = "API_CALL";
     public static final String API_ID = "apiId";
@@ -391,8 +391,7 @@ public final class JsonKey {
     public static final String PARTICIPANT = "participant";
     public static final String PASSWORD = "password";
     public static final String PDATA = "pdata";
-    public static final String PDATA_ID = "pdataId";
-    public static final String PDATA_VERSION = "pdataVersion";
+    
     public static final String PERCENTAGE = "percentage";
     public static final String PERIOD = "period";
     public static final String PHONE = "phone";
@@ -411,9 +410,9 @@ public final class JsonKey {
     public static final String PROCESS_ID = "processId";
     public static final String PROCESS_START_TIME = "processStartTime";
     public static final String PROCESSING_STATUS = "processingStatus";
-    public static final String PRODUCER_ID = "producerId";
-    public static final String PRODUCER_INSTTANCE_ID = "producerInstanceId";
-    public static final String PRODUCER_VERSION = "pdataVersion";
+    public static final String PDATA_ID = "telemetry_pdata_id";
+    public static final String PDATA_PID = "telemetry_pdata_pid";
+    public static final String PDATA_VERSION = "telemetry_pdata_ver";
     public static final String PROFILE_SUMMARY = "profileSummary";
     public static final String PROFILE_VISIBILITY = "profileVisibility";
     public static final String PROGRESS = "progress";

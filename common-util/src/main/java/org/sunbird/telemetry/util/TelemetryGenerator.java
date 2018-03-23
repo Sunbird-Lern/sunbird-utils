@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.sunbird.common.models.util.JsonKey;
@@ -117,9 +118,9 @@ public class TelemetryGenerator {
 
 	private static Producer getProducer(Map<String, Object> context) {
 
-		String id = (String) context.get(JsonKey.PRODUCER_ID);
-		String pid = (String) context.get(JsonKey.PRODUCER_INSTTANCE_ID);
-		String ver = (String) context.get(JsonKey.PRODUCER_VERSION);
+		String id = (String) context.get(JsonKey.PDATA_ID);
+		String pid = (String) context.get(JsonKey.PDATA_PID);
+		String ver = (String) context.get(JsonKey.PDATA_VERSION);
 		return new Producer(id, pid, ver);
 	}
 
@@ -212,38 +213,29 @@ public class TelemetryGenerator {
 		String logType = (String) params.get(JsonKey.LOG_TYPE);
 		String logLevel = (String) params.get(JsonKey.LOG_LEVEL);
 		String message = (String) params.get(JsonKey.MESSAGE);
-		Map<String, Object> additionalParams = new HashMap<>();
-
-		if (null != params.get(JsonKey.START_TIME)) {
-			long startTime = (long) params.get(JsonKey.START_TIME);
-			additionalParams.put(JsonKey.START_TIME, startTime);
-		}
-		if (null != params.get(JsonKey.END_TIME)) {
-			long endTime = (long) params.get(JsonKey.END_TIME);
-			additionalParams.put(JsonKey.END_TIME, endTime);
-		}
-		String method = (String) params.get(JsonKey.METHOD);
-		String status = (String) params.get(JsonKey.STATUS);
-		String stackTrace = (String) params.get(JsonKey.STACKTRACE);
+		params.remove(JsonKey.LOG_TYPE);
+		params.remove(JsonKey.LOG_LEVEL);
+		params.remove(JsonKey.MESSAGE);
 
 		edata.put(JsonKey.TYPE, logType);
 		edata.put(JsonKey.LEVEL, logLevel);
 		edata.put(JsonKey.MESSAGE, message);
 
-		if (!ProjectUtil.isStringNullOREmpty(method)) {
-			additionalParams.put(JsonKey.METHOD, method);
-		}
-		if (!ProjectUtil.isStringNullOREmpty(status)) {
-			additionalParams.put(JsonKey.STATUS, status);
-		}
-		if (!ProjectUtil.isStringNullOREmpty(stackTrace)) {
-			additionalParams.put(JsonKey.STACKTRACE, stackTrace);
-		}
-		List list = new ArrayList();
-		list.add(additionalParams);
-		edata.put(JsonKey.PARAMS, list);
+		edata.put(JsonKey.PARAMS, getParamsList(params));
 		return edata;
 
+	}
+	
+	private static List<Map<String, Object>> getParamsList(Map<String, Object> params) {
+		List<Map<String, Object>> paramsList = new ArrayList<Map<String, Object>>();
+		if (null != params && !params.isEmpty()) {
+			for (Entry<String, Object> entry : params.entrySet()) {
+				Map<String, Object> param = new HashMap<String, Object>();
+				param.put(entry.getKey(), entry.getValue());
+				paramsList.add(param);
+			}
+		}
+		return paramsList;
 	}
 
 	public static String error(Map<String, Object> context, Map<String, Object> params) {
