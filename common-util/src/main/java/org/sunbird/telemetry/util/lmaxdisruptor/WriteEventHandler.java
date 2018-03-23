@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.LoggerEnum;
+import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.request.Request;
 import org.sunbird.telemetry.collector.TelemetryAssemblerFactory;
 import org.sunbird.telemetry.collector.TelemetryDataAssembler;
@@ -47,9 +49,10 @@ public class WriteEventHandler implements EventHandler<Request> {
 		if (StringUtils.isNotBlank(telemetry) && telemetryObjectValidator.validateLog(telemetry)) {
 			telemetryFlush.flushTelemetry(telemetry);
 			success = true;
+		} else {
+			ProjectLogger.log("Telemetry validation failed.", request.getRequest(), LoggerEnum.WARN.name());
 		}
 		return success;
-
 	}
 
 	public boolean processErrorEvent(Request request) {
