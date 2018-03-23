@@ -620,6 +620,12 @@ public final class JsonKey {
             "sunbird.content.badge.assign.url";
     public static final String SUNBIRD_CONTENT_BADGE_REVOKE_URL =
             "sunbird.content.badge.revoke.url";
+    public static final String SUNBIRD_LMS_BASE_URL = "sunbird_lms_base_url";
+    public static final String SUNBIRD_LMS_TELEMETRY_API_URL= "sunbird_lms_telemetry_api_url";
+    public static final String SUNBIRD_LMS_TELEMETRY = "Sunbird_LMS_Telemetry";
+    public static final String SUNBIRD_LMS_AUTHORIZATION = "sunbird_lms_authorization";
+    public static final String ETS = "ets";
+    public static final String CHANNEL_ID = "x-channel-id";
 
     private JsonKey() {}
 }

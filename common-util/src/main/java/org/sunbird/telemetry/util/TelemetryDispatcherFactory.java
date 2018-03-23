@@ -2,6 +2,7 @@ package org.sunbird.telemetry.util;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.sunbird.common.models.util.JsonKey;
 
 /**
  * Created by arvind on 9/1/18.
@@ -32,6 +33,8 @@ public class TelemetryDispatcherFactory {
 		TelemetryDispatcher dispatcher = null;
 		if (dispatcherName.equalsIgnoreCase("EK-STEP")) {
 			dispatcher = new TelemetryDispatcherEkstep();
+		} else if(dispatcherName.equalsIgnoreCase(JsonKey.SUNBIRD_LMS_TELEMETRY)) {
+			dispatcher = new TelemetryDispatcherSunbirdLMS();
 		}
 		return dispatcher;
 	}

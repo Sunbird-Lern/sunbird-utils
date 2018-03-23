@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class TelemetryDispatcherEkstep implements TelemetryDispatcher {
 
 	private static ObjectMapper mapper = new ObjectMapper();
+	PropertiesCache propertiesCache = PropertiesCache.getInstance();
 
 	@Override
 	public boolean dispatchTelemetryEvent(List<String> eventList) {
@@ -30,28 +31,13 @@ public class TelemetryDispatcherEkstep implements TelemetryDispatcher {
 
 			Map<String, Object> map = new HashMap<>();
 			map.put("ets", System.currentTimeMillis());
-
 			map.put(JsonKey.EVENTS, jsonList);
-
-			String baseSearchUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);
-			if (ProjectUtil.isStringNullOREmpty(baseSearchUrl)) {
-				baseSearchUrl = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_BASE_URL);
-			}
-
 			String event = getTelemetryEvent(map);
 			ProjectLogger.log("EVEVTS TO FLUSH : " + event);
 
-			Map<String, String> headers = new HashMap<>();
-			headers.put("Content-Type", "application/json");
-			headers.put("accept", "application/json");
-			headers.put(JsonKey.AUTHORIZATION, JsonKey.BEARER + System.getenv(JsonKey.EKSTEP_AUTHORIZATION));
-			if (ProjectUtil.isStringNullOREmpty((String) headers.get(JsonKey.AUTHORIZATION))) {
-				headers.put(JsonKey.AUTHORIZATION,
-						PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_AUTHORIZATION));
-			}
 			String response = HttpUtil.sendPostRequest(
-					baseSearchUrl + PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_TELEMETRY_API_URL), event,
-					headers);
+					getCompleteUrl(JsonKey.EKSTEP_BASE_URL, JsonKey.EKSTEP_TELEMETRY_API_URL), event,
+					getEkstepHeaders());
 			ProjectLogger.log("FLUSH RESPONSE : " + response);
 
 		} catch (Exception ex) {
@@ -68,5 +54,28 @@ public class TelemetryDispatcherEkstep implements TelemetryDispatcher {
 			ProjectLogger.log(e.getMessage(), e);
 		}
 		return event;
+	}
+
+
+	public String getCompleteUrl(String baseUrlKey , String uriKey){
+
+		String baseSearchUrl = System.getenv(baseUrlKey);
+		if (ProjectUtil.isStringNullOREmpty(baseSearchUrl)) {
+			baseSearchUrl = propertiesCache.readProperty(baseUrlKey);
+		}
+		String uri = propertiesCache.readProperty(uriKey);
+		return baseSearchUrl+uri;
+	}
+
+	public Map<String, String> getEkstepHeaders(){
+		Map<String, String> headers = new HashMap<>();
+		headers.put("Content-Type", "application/json");
+		headers.put("accept", "application/json");
+		headers.put(JsonKey.AUTHORIZATION, JsonKey.BEARER + System.getenv(JsonKey.EKSTEP_AUTHORIZATION));
+		if (ProjectUtil.isStringNullOREmpty((String) headers.get(JsonKey.AUTHORIZATION))) {
+			headers.put(JsonKey.AUTHORIZATION,
+					PropertiesCache.getInstance().readProperty(JsonKey.EKSTEP_AUTHORIZATION));
+		}
+		return headers;
 	}
 }

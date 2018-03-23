@@ -21,7 +21,7 @@ public class TelemetryFlush {
 
 	private static TelemetryFlush telemetryFlush;
 
-	private TelemetryDispatcher telemetryDispatcher = TelemetryDispatcherFactory.get("EK-STEP");
+	private TelemetryDispatcher telemetryDispatcher = TelemetryDispatcherFactory.get(JsonKey.SUNBIRD_LMS_TELEMETRY);
 
 	public static TelemetryFlush getInstance() {
 		if (telemetryFlush == null) {
