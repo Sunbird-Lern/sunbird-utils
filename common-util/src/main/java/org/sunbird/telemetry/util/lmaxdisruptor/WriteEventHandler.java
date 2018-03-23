@@ -3,6 +3,7 @@ package org.sunbird.telemetry.util.lmaxdisruptor;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.request.Request;
 import org.sunbird.telemetry.collector.TelemetryAssemblerFactory;
@@ -40,10 +41,10 @@ public class WriteEventHandler implements EventHandler<Request> {
 	public boolean processLogEvent(Request request) {
 
 		boolean success = false;
-		Map<String, Object> context = (Map<String, Object>) request.get(JsonKey.CONTEXT);
-		Map<String, Object> params = (Map<String, Object>) request.get(JsonKey.PARAMS);
+		Map<String, Object> context = (Map<String, Object>) request.getRequest().get(JsonKey.CONTEXT);
+		Map<String, Object> params = (Map<String, Object>) request.getRequest().get(JsonKey.PARAMS);
 		String telemetry = telemetryDataAssembler.log(context, params);
-		if (telemetryObjectValidator.validateLog(telemetry)) {
+		if (StringUtils.isNotBlank(telemetry) && telemetryObjectValidator.validateLog(telemetry)) {
 			telemetryFlush.flushTelemetry(telemetry);
 			success = true;
 		}
