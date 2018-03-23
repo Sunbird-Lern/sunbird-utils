@@ -9,6 +9,7 @@ public class BadgingJsonKey {
     public static final String BADGE_CRITERIA = "criteria";
     public static final String BADGE_ID = "badgeId";
     public static final String BADGE_ID_URL = "badgeIdUrl";
+    public static final String BADGE_LIST = "badgeList";
     public static final String BADGE_SLUG = "badgeSlug";
     public static final String BADGE_TYPE_USER = "user";
     public static final String BADGE_TYPE_CONTENT = "content";
