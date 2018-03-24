@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.PropertiesCache;
@@ -35,7 +35,7 @@ public class TelemetryFlush {
 	}
 
 	public TelemetryFlush() {
-		String queueThreshold = PropertiesCache.getInstance().getProperty(JsonKey.TELEMETRY_QUEUE_THRESHOLD_VALUE);
+ 	String queueThreshold = PropertiesCache.getInstance().getProperty(JsonKey.TELEMETRY_QUEUE_THRESHOLD_VALUE);
 		if (!StringUtils.isBlank(queueThreshold)
 				&& !queueThreshold.equalsIgnoreCase(JsonKey.TELEMETRY_QUEUE_THRESHOLD_VALUE)) {
 			try {
@@ -52,7 +52,6 @@ public class TelemetryFlush {
 
 	private void writeToQueue(String message) {
 		queue.offer(message);
-
 		if (queue.size() >= thresholdSize) {
 			List<String> list = new ArrayList<>();
 			for (int i = 1; i <= thresholdSize; i++) {
@@ -66,6 +65,8 @@ public class TelemetryFlush {
 			for (TelemetryDispatcher dispatch : telemetryDispatcher) {
 				if (dispatch != null) {
 					dispatch.dispatchTelemetryEvent(list);
+				}else {
+					ProjectLogger.log("TelemetryDispatcher instance is coming as null " + dispatch);
 				}
 			}
 		}
