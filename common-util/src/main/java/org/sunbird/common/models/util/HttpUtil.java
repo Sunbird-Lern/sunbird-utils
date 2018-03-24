@@ -3,10 +3,13 @@
  */
 package org.sunbird.common.models.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -20,7 +23,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -41,8 +43,6 @@ import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.telemetry.util.lmaxdisruptor.LMAXWriter;
 import org.sunbird.telemetry.util.lmaxdisruptor.TelemetryEvents;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * This utility method will handle external http call
@@ -564,8 +564,7 @@ public class HttpUtil {
             }
             Set<Entry<String, byte[]>> fileEntry = fileData.entrySet();
             for (Entry<String, byte[]> entryObj : fileEntry) {
-                if (!StringUtils.isBlank(entryObj.getKey())
-                        && null != entryObj.getValue()) {
+                if (!StringUtils.isBlank(entryObj.getKey()) && null != entryObj.getValue()) {
                     builder.addBinaryBody(entryObj.getKey(), entryObj.getValue(),
                             ContentType.APPLICATION_OCTET_STREAM, entryObj.getKey());
                 }
@@ -693,6 +692,57 @@ public class HttpUtil {
         } catch (Exception ex) {
             ProjectLogger.log("Exception occurred while calling sendDeleteRequest method.", ex);
             throw ex;
+        }
+    }
+
+    public static HttpUtilResponse postInputStream(InputStream stream, Map<String, String> headers,
+            String url) throws IOException {
+        File targetFile = null;
+        OutputStream outStream = null;
+        InputStream initialStream = null;
+        try (CloseableHttpClient client = HttpClients.createDefault()) {
+            HttpPost httpPost = new HttpPost(url);
+            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+            /*
+             * String filename = String.valueOf(System.currentTimeMillis()); initialStream = new
+             * FileInputStream(new File(filename + ".txt")); byte[] buffer = new
+             * byte[initialStream.available()]; initialStream.read(buffer);
+             * 
+             * targetFile = new File(filename + ".tmp"); outStream = new
+             * FileOutputStream(targetFile); outStream.write(buffer);
+             */
+            builder.addBinaryBody("file", stream, ContentType.APPLICATION_OCTET_STREAM, "filename");
+            Set<Entry<String, String>> headerEntry = headers.entrySet();
+            for (Entry<String, String> headerObj : headerEntry) {
+                httpPost.addHeader(headerObj.getKey(), headerObj.getValue());
+            }
+            HttpEntity multipart = builder.build();
+
+            httpPost.setEntity(multipart);
+
+            HttpResponse httpResponse = client.execute(httpPost);
+            HttpUtilResponse response = null;
+            String body = "";
+            try {
+                body = generateResponse(httpResponse);
+            } catch (Exception ex) {
+                ProjectLogger.log("Exception occured while reading body" + ex);
+            }
+            response = new HttpUtilResponse(body, httpResponse.getStatusLine().getStatusCode());
+            return response;
+        } catch (Exception ex) {
+            ProjectLogger.log("Exception occurred while calling posting inputStream data method.",
+                    ex);
+            throw ex;
+        } finally {
+            if (null != initialStream)
+                initialStream.close();
+            if (null != outStream)
+                outStream.close();
+            if (null != stream)
+                stream.close();
+            if (null != targetFile)
+                targetFile.delete();
         }
     }
 
