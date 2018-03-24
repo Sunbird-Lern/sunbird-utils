@@ -21,7 +21,7 @@ public class TelemetryFlush {
 
 	private static TelemetryFlush telemetryFlush;
 
-	private TelemetryDispatcher telemetryDispatcher = TelemetryDispatcherFactory.get(JsonKey.SUNBIRD_LMS_TELEMETRY);
+	private TelemetryDispatcher telemetryDispatcher = TelemetryDispatcherFactory.get("EK-STEP");
 
 	public static TelemetryFlush getInstance() {
 		if (telemetryFlush == null) {
@@ -35,15 +35,16 @@ public class TelemetryFlush {
 	}
 
 	public TelemetryFlush() {
-		String queueThreshold = PropertiesCache.getInstance().getProperty(JsonKey.TELEMETRY_QUEUE_THRESHOLD_VALUE);
-		if (!StringUtils.isBlank(queueThreshold)
-				&& !queueThreshold.equalsIgnoreCase(JsonKey.TELEMETRY_QUEUE_THRESHOLD_VALUE)) {
-			try {
-				this.thresholdSize = Integer.parseInt(queueThreshold.trim());
-			} catch (Exception ex) {
-				ProjectLogger.log("Threshold size from config is not integer", ex);
-			}
-		}
+//		String queueThreshold = PropertiesCache.getInstance().getProperty(JsonKey.TELEMETRY_QUEUE_THRESHOLD_VALUE);
+//		if (!StringUtils.isBlank(queueThreshold)
+//				&& !queueThreshold.equalsIgnoreCase(JsonKey.TELEMETRY_QUEUE_THRESHOLD_VALUE)) {
+//			try {
+//				this.thresholdSize = Integer.parseInt(queueThreshold.trim());
+//			} catch (Exception ex) {
+//				ProjectLogger.log("Threshold size from config is not integer", ex);
+//			}
+//		}
+		this.thresholdSize = 1;
 	}
 
 	public void flushTelemetry(String message) {
@@ -51,8 +52,8 @@ public class TelemetryFlush {
 	}
 
 	private void writeToQueue(String message) {
+		System.out.println("Got message to put in queue. thresholdSize:"+ thresholdSize + " :: queue size: "+ queue.size());
 		queue.offer(message);
-
 		if (queue.size() >= thresholdSize) {
 			List<String> list = new ArrayList<>();
 			for (int i = 1; i <= thresholdSize; i++) {
