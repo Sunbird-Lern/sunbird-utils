@@ -265,7 +265,7 @@ public class ProjectUtil {
 	 * @return true valid email, false invalid email
 	 */
 	public static boolean isEmailvalid(final String email) {
-		if(isStringNullOREmpty(email)){
+		if(StringUtils.isBlank(email)){
 			return false;
 		}
 		Matcher matcher = pattern.matcher(email);
@@ -749,7 +749,7 @@ public class ProjectUtil {
 		}
 		Phonenumber.PhoneNumber phoneNumber = null;
 		try {
-			if (isStringNullOREmpty(countryCode)) {
+			if (StringUtils.isBlank(countryCode)) {
 				contryCode = PropertiesCache.getInstance().getProperty("sunbird_default_country_code");
 			}
 			String isoCode = phoneNumberUtil.getRegionCodeForCountryCode(Integer.parseInt(contryCode));
@@ -784,9 +784,9 @@ public class ProjectUtil {
 			ve.init(props);
 
 			Map<String, String> params = new HashMap<>();
-			params.put("userName", isStringNullOREmpty(userName) ? "user_name" : userName);
-			params.put("webUrl", isStringNullOREmpty(webUrl) ? "web_url" : webUrl);
-			params.put("instanceName", isStringNullOREmpty(instanceName) ? "instance_name" : instanceName);
+			params.put("userName", StringUtils.isBlank(userName) ? "user_name" : userName);
+			params.put("webUrl", StringUtils.isBlank(webUrl) ? "web_url" : webUrl);
+			params.put("instanceName", StringUtils.isBlank(instanceName) ? "instance_name" : instanceName);
 			Template t = ve.getTemplate("/welcomeSmsTemplate.vm");
 			VelocityContext context = new VelocityContext(params);
 			StringWriter writer = new StringWriter();
