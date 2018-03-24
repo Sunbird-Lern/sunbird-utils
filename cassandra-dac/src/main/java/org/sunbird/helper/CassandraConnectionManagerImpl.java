@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.thrift.transport.TTransportException;
 import org.cassandraunit.CQLDataLoader;
 import org.cassandraunit.dataset.cql.ClassPathCQLDataSet;
@@ -15,7 +16,6 @@ import org.sunbird.common.Constants;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
-import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.responsecode.ResponseCode;
 
@@ -104,7 +104,7 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
 				poolingOptions
 						.setHeartbeatIntervalSeconds(Integer.parseInt(cache.getProperty(Constants.HEARTBEAT_INTERVAL)));
 				poolingOptions.setPoolTimeoutMillis(Integer.parseInt(cache.getProperty(Constants.POOL_TIMEOUT)));
-				if (!ProjectUtil.isStringNullOREmpty(userName) && !ProjectUtil.isStringNullOREmpty(password)) {
+				if (!StringUtils.isBlank(userName) && !StringUtils.isBlank(password)) {
 					cluster = createCluster(ip, port, userName, password, poolingOptions);
 				} else {
 					cluster = createCluster(ip, port, poolingOptions);

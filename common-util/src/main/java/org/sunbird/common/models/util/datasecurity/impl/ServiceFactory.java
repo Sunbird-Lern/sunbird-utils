@@ -3,7 +3,7 @@
  */
 package org.sunbird.common.models.util.datasecurity.impl;
 
-import org.sunbird.common.models.util.ProjectUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.datasecurity.DataMaskingService;
 import org.sunbird.common.models.util.datasecurity.DecryptionService;
 import org.sunbird.common.models.util.datasecurity.EncryptionService;
@@ -37,7 +37,7 @@ public class ServiceFactory {
 	 * @return EncryptionService
 	 */
 	public static EncryptionService getEncryptionServiceInstance(String val) {
-		if (ProjectUtil.isStringNullOREmpty(val)) {
+		if (StringUtils.isBlank(val)) {
 			return encryptionService;
 		}
 		switch (val) {
@@ -58,7 +58,7 @@ public class ServiceFactory {
 	 * @return DecryptionService
 	 */
 	public static DecryptionService getDecryptionServiceInstance(String val) {
-		if (ProjectUtil.isStringNullOREmpty(val)) {
+		if (StringUtils.isBlank(val)) {
 			return decryptionService;
 		}
 		switch (val) {
@@ -70,7 +70,7 @@ public class ServiceFactory {
 	}
 
 	public static DataMaskingService getMaskingServiceInstance(String val) {
-		if (ProjectUtil.isStringNullOREmpty(val)) {
+		if (StringUtils.isBlank(val)) {
 			return maskingService;
 		}
 		switch (val) {

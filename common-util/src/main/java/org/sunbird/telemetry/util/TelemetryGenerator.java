@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
-import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.telemetry.dto.Actor;
 import org.sunbird.telemetry.dto.Context;
 import org.sunbird.telemetry.dto.Producer;
@@ -55,7 +55,7 @@ public class TelemetryGenerator {
 
 		// assign request id into context cdata ...
 		String reqId = (String) context.get(JsonKey.REQUEST_ID);
-		if (!ProjectUtil.isStringNullOREmpty(reqId)) {
+		if (!StringUtils.isBlank(reqId)) {
 			Map<String, Object> map = new HashMap<>();
 			map.put(JsonKey.ID, reqId);
 			map.put(JsonKey.TYPE, JsonKey.REQUEST);
@@ -148,7 +148,7 @@ public class TelemetryGenerator {
 
 		// assign request id into context cdata ...
 		String reqId = (String) context.get(JsonKey.REQUEST_ID);
-		if (!ProjectUtil.isStringNullOREmpty(reqId)) {
+		if (!StringUtils.isBlank(reqId)) {
 			Map<String, Object> map = new HashMap<>();
 			map.put(JsonKey.ID, reqId);
 			map.put(JsonKey.TYPE, JsonKey.REQUEST);
@@ -195,7 +195,7 @@ public class TelemetryGenerator {
 
 		// assign request id into context cdata ...
 		String reqId = (String) context.get(JsonKey.REQUEST_ID);
-		if (!ProjectUtil.isStringNullOREmpty(reqId)) {
+		if (!StringUtils.isBlank(reqId)) {
 			Map<String, Object> map = new HashMap<>();
 			map.put(JsonKey.ID, reqId);
 			map.put(JsonKey.TYPE, JsonKey.REQUEST);
@@ -250,7 +250,7 @@ public class TelemetryGenerator {
 
 		// assign request id into context cdata ...
 		String reqId = (String) context.get(JsonKey.REQUEST_ID);
-		if (!ProjectUtil.isStringNullOREmpty(reqId)) {
+		if (!StringUtils.isBlank(reqId)) {
 			Map<String, Object> map = new HashMap<>();
 			map.put(JsonKey.ID, reqId);
 			map.put(JsonKey.TYPE, JsonKey.REQUEST);

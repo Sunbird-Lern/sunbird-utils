@@ -17,13 +17,13 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
-import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 
 /**
@@ -47,9 +47,9 @@ public class SendMail {
 		userName = System.getenv(JsonKey.EMAIL_SERVER_USERNAME);
 		password = System.getenv(JsonKey.EMAIL_SERVER_PASSWORD);
 		fromEmail = System.getenv(JsonKey.EMAIL_SERVER_FROM);
-		if (ProjectUtil.isStringNullOREmpty(host) || ProjectUtil.isStringNullOREmpty(port)
-				|| ProjectUtil.isStringNullOREmpty(userName) || ProjectUtil.isStringNullOREmpty(password)
-				|| ProjectUtil.isStringNullOREmpty(fromEmail)) {
+		if (StringUtils.isBlank(host) || StringUtils.isBlank(port)
+				|| StringUtils.isBlank(userName) || StringUtils.isBlank(password)
+				|| StringUtils.isBlank(fromEmail)) {
 			ProjectLogger.log(
 					"Email setting value is not provided by Env variable==" + host + " " + port + " " + fromEmail,
 					LoggerEnum.INFO.name());

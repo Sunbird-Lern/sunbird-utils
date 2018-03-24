@@ -3,7 +3,6 @@
  */
 package org.sunbird.common.models.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +20,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.annotation.NotThreadSafe;
@@ -40,6 +41,8 @@ import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.telemetry.util.lmaxdisruptor.LMAXWriter;
 import org.sunbird.telemetry.util.lmaxdisruptor.TelemetryEvents;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * This utility method will handle external http call
@@ -561,7 +564,7 @@ public class HttpUtil {
             }
             Set<Entry<String, byte[]>> fileEntry = fileData.entrySet();
             for (Entry<String, byte[]> entryObj : fileEntry) {
-                if (!ProjectUtil.isStringNullOREmpty(entryObj.getKey())
+                if (!StringUtils.isBlank(entryObj.getKey())
                         && null != entryObj.getValue()) {
                     builder.addBinaryBody(entryObj.getKey(), entryObj.getValue(),
                             ContentType.APPLICATION_OCTET_STREAM, entryObj.getKey());

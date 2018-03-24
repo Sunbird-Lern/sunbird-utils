@@ -3,6 +3,7 @@
  */
 package org.sunbird.common.models.util.datasecurity.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.datasecurity.DataMaskingService;
@@ -15,7 +16,7 @@ public class DefaultDataMaskServiceImpl implements DataMaskingService {
 
 	@Override
 	public String maskPhone(String phone) {
-		if (ProjectUtil.isStringNullOREmpty(phone) || phone.length() < 10) {
+		if (StringUtils.isBlank(phone) || phone.length() < 10) {
 			return phone;
 		}
 		String tempPhone = "";
@@ -34,7 +35,7 @@ public class DefaultDataMaskServiceImpl implements DataMaskingService {
 
 	@Override
 	public String maskEmail(String email) {
-		if ((ProjectUtil.isStringNullOREmpty(email)) || (!ProjectUtil.isEmailvalid(email))) {
+		if ((StringUtils.isBlank(email)) || (!ProjectUtil.isEmailvalid(email))) {
 			return email;
 		}
 		StringBuilder builder = new StringBuilder();
@@ -52,7 +53,7 @@ public class DefaultDataMaskServiceImpl implements DataMaskingService {
 
 	@Override
 	public String maskData(String data) {
-		if (ProjectUtil.isStringNullOREmpty(data) || data.length() <= 3) {
+		if (StringUtils.isBlank(data) || data.length() <= 3) {
 			return data;
 		}
 		int lenght = data.length() - 4;

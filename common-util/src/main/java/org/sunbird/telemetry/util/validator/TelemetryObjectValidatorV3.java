@@ -8,7 +8,6 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
-import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.telemetry.dto.Telemetry;
 import org.sunbird.telemetry.util.lmaxdisruptor.TelemetryEvents;
 
@@ -90,23 +89,23 @@ public class TelemetryObjectValidatorV3 implements TelemetryObjectValidator {
 
 	private void validateBasics(Telemetry telemetryObj, List<String> missingFields) {
 
-		if (ProjectUtil.isStringNullOREmpty(telemetryObj.getEid())) {
+		if (StringUtils.isBlank(telemetryObj.getEid())) {
 			missingFields.add("eid");
 		}
-		if (ProjectUtil.isStringNullOREmpty(telemetryObj.getMid())) {
+		if (StringUtils.isBlank(telemetryObj.getMid())) {
 			missingFields.add("mid");
 		}
-		if (ProjectUtil.isStringNullOREmpty(telemetryObj.getVer())) {
+		if (StringUtils.isBlank(telemetryObj.getVer())) {
 			missingFields.add("ver");
 		}
 
 		if (null == telemetryObj.getActor()) {
 			missingFields.add("actor");
 		} else {
-			if (ProjectUtil.isStringNullOREmpty(telemetryObj.getActor().getId())) {
+			if (StringUtils.isBlank(telemetryObj.getActor().getId())) {
 				missingFields.add("actor.id");
 			}
-			if (ProjectUtil.isStringNullOREmpty(telemetryObj.getActor().getType())) {
+			if (StringUtils.isBlank(telemetryObj.getActor().getType())) {
 				missingFields.add("actor.type");
 			}
 		}
@@ -114,10 +113,10 @@ public class TelemetryObjectValidatorV3 implements TelemetryObjectValidator {
 		if (null == telemetryObj.getContext()) {
 			missingFields.add(JsonKey.CONTEXT);
 		} else {
-			if (ProjectUtil.isStringNullOREmpty(telemetryObj.getContext().getChannel())) {
+			if (StringUtils.isBlank(telemetryObj.getContext().getChannel())) {
 				missingFields.add(JsonKey.CONTEXT + "." + JsonKey.CHANNEL);
 			}
-			if (ProjectUtil.isStringNullOREmpty(telemetryObj.getContext().getEnv())) {
+			if (StringUtils.isBlank(telemetryObj.getContext().getEnv())) {
 				missingFields.add(JsonKey.CONTEXT + "." + JsonKey.ENV);
 			}
 		}
@@ -190,13 +189,13 @@ public class TelemetryObjectValidatorV3 implements TelemetryObjectValidator {
 		if (edata == null || edata.isEmpty()) {
 			missingFields.add("edata");
 		} else {
-			if (ProjectUtil.isStringNullOREmpty((String) edata.get(JsonKey.ERROR))) {
+			if (StringUtils.isBlank((String) edata.get(JsonKey.ERROR))) {
 				missingFields.add(JsonKey.ERROR);
 			}
-			if (ProjectUtil.isStringNullOREmpty((String) edata.get(JsonKey.ERR_TYPE))) {
+			if (StringUtils.isBlank((String) edata.get(JsonKey.ERR_TYPE))) {
 				missingFields.add(JsonKey.ERR_TYPE);
 			}
-			if (ProjectUtil.isStringNullOREmpty((String) edata.get(JsonKey.STACKTRACE))) {
+			if (StringUtils.isBlank((String) edata.get(JsonKey.STACKTRACE))) {
 				missingFields.add(JsonKey.STACKTRACE);
 			}
 		}

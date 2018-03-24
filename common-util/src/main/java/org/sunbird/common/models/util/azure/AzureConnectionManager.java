@@ -7,9 +7,9 @@ import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.Locale;
 
+import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
-import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 
 import com.microsoft.azure.storage.CloudStorageAccount;
@@ -34,7 +34,7 @@ public class AzureConnectionManager {
 	static {
 		String name = System.getenv(JsonKey.ACCOUNT_NAME);
 		String key = System.getenv(JsonKey.ACCOUNT_KEY);
-		if (ProjectUtil.isStringNullOREmpty(name) || ProjectUtil.isStringNullOREmpty(key)) {
+		if (StringUtils.isBlank(name) || StringUtils.isBlank(key)) {
 			ProjectLogger.log("Azure account name and key is not provided by environment variable." + name + " " + key);
 			accountName = PropertiesCache.getInstance().getProperty(JsonKey.ACCOUNT_NAME);
 			accountKey = PropertiesCache.getInstance().getProperty(JsonKey.ACCOUNT_KEY);

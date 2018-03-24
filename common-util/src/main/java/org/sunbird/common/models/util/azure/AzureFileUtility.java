@@ -12,9 +12,9 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tika.Tika;
 import org.sunbird.common.models.util.ProjectLogger;
-import org.sunbird.common.models.util.ProjectUtil;
 
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
@@ -41,7 +41,7 @@ public class AzureFileUtility {
 			ProjectLogger.log("File name can not be null");
 			return false;
 		}
-		if (ProjectUtil.isStringNullOREmpty(containerName)) {
+		if (StringUtils.isBlank(containerName)) {
 			ProjectLogger.log("Container name can't be null or empty");
 			return false;
 		}
@@ -72,7 +72,7 @@ public class AzureFileUtility {
 	 * @return boolean
 	 */
 	public static boolean deleteContainer(String containerName) {
-		if (ProjectUtil.isStringNullOREmpty(containerName)) {
+		if (StringUtils.isBlank(containerName)) {
 			ProjectLogger.log("Container name can't be null or empty");
 			return false;
 		}
@@ -138,7 +138,7 @@ public class AzureFileUtility {
 		Tika tika = new Tika();
 		String contrName = containerName;
 
-		if (ProjectUtil.isStringNullOREmpty(containerName)) {
+		if (StringUtils.isBlank(containerName)) {
 			contrName = DEFAULT_CONTAINER;
 		} else {
 			contrName = containerName.toLowerCase();

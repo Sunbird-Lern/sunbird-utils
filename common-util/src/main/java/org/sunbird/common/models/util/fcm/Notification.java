@@ -6,12 +6,12 @@ package org.sunbird.common.models.util.fcm;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
-import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 
 /**
@@ -46,7 +46,7 @@ public class Notification {
 	 * @return String as Json.{"message_id": 7253391319867149192}
 	 */
 	public static String sendNotification(String topic, Map<String, Object> data, String url) {
-		if (ProjectUtil.isStringNullOREmpty(FCM_ACCOUNT_KEY) || ProjectUtil.isStringNullOREmpty(url)) {
+		if (StringUtils.isBlank(FCM_ACCOUNT_KEY) || StringUtils.isBlank(url)) {
 			ProjectLogger.log("FCM account key or URL is not provided===" + FCM_URL, LoggerEnum.INFO.name());
 			return JsonKey.FAILURE;
 		}

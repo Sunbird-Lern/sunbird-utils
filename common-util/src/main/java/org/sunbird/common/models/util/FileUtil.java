@@ -3,6 +3,8 @@ package org.sunbird.common.models.util;
 import java.io.File;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 public abstract class FileUtil {
 
 	public abstract File writeToFile(String fileName, List<List<Object>> dataValues);
@@ -23,7 +25,7 @@ public abstract class FileUtil {
 
 	public static FileUtil getFileUtil(String format) {
 		String tempformat = "";
-		if (!ProjectUtil.isStringNullOREmpty(format)) {
+		if (!StringUtils.isBlank(format)) {
 			tempformat = format.toLowerCase();
 		}
 		switch (tempformat) {

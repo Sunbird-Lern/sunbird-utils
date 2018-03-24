@@ -5,7 +5,6 @@ package org.sunbird.common;
 
 import static org.sunbird.common.models.util.ProjectUtil.isNotNull;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +17,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
@@ -70,6 +70,8 @@ import org.sunbird.helper.ConnectionManager;
 import org.sunbird.helper.ElasticSearchMapping;
 import org.sunbird.helper.ElasticSearchSettings;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 /**
  * This class will provide all required operation for elastic search.
  *
@@ -109,8 +111,8 @@ public class ElasticSearchUtil {
         long startTime = System.currentTimeMillis();
         ProjectLogger.log("ElasticSearchUtil createData method started at ==" + startTime
                 + " for Type " + type, LoggerEnum.PERF_LOG);
-        if (ProjectUtil.isStringNullOREmpty(identifier) || ProjectUtil.isStringNullOREmpty(type)
-                || ProjectUtil.isStringNullOREmpty(index)) {
+        if (StringUtils.isBlank(identifier) || StringUtils.isBlank(type)
+                || StringUtils.isBlank(index)) {
             ProjectLogger.log("Identifier value is null or empty ,not able to save data.");
             return "ERROR";
         }
@@ -148,10 +150,10 @@ public class ElasticSearchUtil {
         ProjectLogger.log("ElasticSearchUtil getDataByIdentifier method started at ==" + startTime
                 + " for Type " + type, LoggerEnum.PERF_LOG);
         GetResponse response = null;
-        if (ProjectUtil.isStringNullOREmpty(index) || ProjectUtil.isStringNullOREmpty(identifier)) {
+        if (StringUtils.isBlank(index) || StringUtils.isBlank(identifier)) {
             ProjectLogger.log("Invalid request is coming.");
             return new HashMap<>();
-        } else if (ProjectUtil.isStringNullOREmpty(type)) {
+        } else if (StringUtils.isBlank(type)) {
             response = ConnectionManager.getClient().prepareGet().setIndex(index).setId(identifier)
                     .get();
         } else {
@@ -224,8 +226,8 @@ public class ElasticSearchUtil {
         long startTime = System.currentTimeMillis();
         ProjectLogger.log("ElasticSearchUtil updateData method started at ==" + startTime
                 + " for Type " + type, LoggerEnum.PERF_LOG);
-        if (!ProjectUtil.isStringNullOREmpty(index) && !ProjectUtil.isStringNullOREmpty(type)
-                && !ProjectUtil.isStringNullOREmpty(identifier) && data != null) {
+        if (!StringUtils.isBlank(index) && !StringUtils.isBlank(type)
+                && !StringUtils.isBlank(identifier) && data != null) {
             verifyOrCreateIndexAndType(index, type);
             try {
                 UpdateResponse response = ConnectionManager.getClient()
@@ -269,8 +271,8 @@ public class ElasticSearchUtil {
         long startTime = System.currentTimeMillis();
         ProjectLogger.log("ElasticSearchUtil upsertData method started at ==" + startTime
                 + " for Type " + type, LoggerEnum.PERF_LOG);
-        if (!ProjectUtil.isStringNullOREmpty(index) && !ProjectUtil.isStringNullOREmpty(type)
-                && !ProjectUtil.isStringNullOREmpty(identifier) && data != null
+        if (!StringUtils.isBlank(index) && !StringUtils.isBlank(type)
+                && !StringUtils.isBlank(identifier) && data != null
                 && data.size() > 0) {
             verifyOrCreateIndexAndType(index, type);
             IndexRequest indexRequest = new IndexRequest(index, type, identifier).source(data);
@@ -315,8 +317,8 @@ public class ElasticSearchUtil {
         ProjectLogger.log("ElasticSearchUtil removeData method started at ==" + startTime,
                 LoggerEnum.PERF_LOG);
         DeleteResponse deleteResponse = null;
-        if (!ProjectUtil.isStringNullOREmpty(index) && !ProjectUtil.isStringNullOREmpty(type)
-                && !ProjectUtil.isStringNullOREmpty(identifier)) {
+        if (!StringUtils.isBlank(index) && !StringUtils.isBlank(type)
+                && !StringUtils.isBlank(identifier)) {
             try {
                 deleteResponse =
                         ConnectionManager.getClient().prepareDelete(index, type, identifier).get();
@@ -349,7 +351,7 @@ public class ElasticSearchUtil {
     @SuppressWarnings("deprecation")
     public static boolean createIndex(String index, String type, String mappings, String settings) {
         boolean response = false;
-        if (ProjectUtil.isStringNullOREmpty(index)) {
+        if (StringUtils.isBlank(index)) {
             return response;
         }
         CreateIndexResponse createIndexResponse = null;
@@ -357,15 +359,15 @@ public class ElasticSearchUtil {
         try {
             CreateIndexRequestBuilder createIndexBuilder =
                     client.admin().indices().prepareCreate(index);
-            if (!ProjectUtil.isStringNullOREmpty(settings)) {
+            if (!StringUtils.isBlank(settings)) {
                 createIndexResponse = createIndexBuilder.setSettings(settings).get();
             } else {
                 createIndexResponse = createIndexBuilder.get();
             }
             if (createIndexResponse != null && createIndexResponse.isAcknowledged()) {
                 response = true;
-                if (!ProjectUtil.isStringNullOREmpty(mappings)
-                        && !ProjectUtil.isStringNullOREmpty(type)) {
+                if (!StringUtils.isBlank(mappings)
+                        && !StringUtils.isBlank(type)) {
                     PutMappingResponse mappingResponse = client.admin().indices()
                             .preparePutMapping(index).setType(type).setSource(mappings).get();
                     if (mappingResponse.isAcknowledged()) {
@@ -373,7 +375,7 @@ public class ElasticSearchUtil {
                     } else {
                         response = false;
                     }
-                } else if (!ProjectUtil.isStringNullOREmpty(type)) {
+                } else if (!StringUtils.isBlank(type)) {
                     PutMappingResponse mappingResponse =
                             client.admin().indices().preparePutMapping(index).setType(type).get();
                     if (mappingResponse.isAcknowledged()) {
@@ -452,14 +454,14 @@ public class ElasticSearchUtil {
 
         // add channel field as mandatory
         String channel = PropertiesCache.getInstance().getProperty(JsonKey.SUNBIRD_ES_CHANNEL);
-        if (!(ProjectUtil.isStringNullOREmpty(channel)
+        if (!(StringUtils.isBlank(channel)
                 || JsonKey.SUNBIRD_ES_CHANNEL.equals(channel))) {
             query.must(createMatchQuery(JsonKey.CHANNEL, channel,
                     constraintsMap.get(JsonKey.CHANNEL)));
         }
 
         // apply simple query string
-        if (!ProjectUtil.isStringNullOREmpty(searchDTO.getQuery())) {
+        if (!StringUtils.isBlank(searchDTO.getQuery())) {
             query.must(
                     QueryBuilders.simpleQueryStringQuery(searchDTO.getQuery()).field("all_fields"));
         }

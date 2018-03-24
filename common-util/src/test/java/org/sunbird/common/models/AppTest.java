@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -31,7 +32,7 @@ public class AppTest {
 		headers.put("accept", "application/json");
 		headers.put("user-id", "mahesh");
 		String header = System.getenv(JsonKey.EKSTEP_AUTHORIZATION);
-		if (ProjectUtil.isStringNullOREmpty(header)) {
+		if (StringUtils.isBlank(header)) {
 			header = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_AUTHORIZATION);
 		}
 		headers.put("authorization", "Bearer " + header);
@@ -40,7 +41,7 @@ public class AppTest {
 	@Test
 	public void testGetResourceMethod() throws Exception {
 		String ekStepBaseUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);
-		if (ProjectUtil.isStringNullOREmpty(ekStepBaseUrl)) {
+		if (StringUtils.isBlank(ekStepBaseUrl)) {
 			ekStepBaseUrl = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_BASE_URL);
 		}
 		String response = HttpUtil.sendGetRequest(ekStepBaseUrl + "/search/health", headers);
@@ -50,7 +51,7 @@ public class AppTest {
 	@Test
 	public void testPostResourceMethod() throws Exception {
 		String ekStepBaseUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);
-		if (ProjectUtil.isStringNullOREmpty(ekStepBaseUrl)) {
+		if (StringUtils.isBlank(ekStepBaseUrl)) {
 			ekStepBaseUrl = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_BASE_URL);
 		}
 		String response = HttpUtil.sendPostRequest(ekStepBaseUrl + "/content/v3/list", data, headers);
@@ -61,7 +62,7 @@ public class AppTest {
 	public void testPostFailureResourceMethod() {
 		// passing wrong url
 		String ekStepBaseUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);
-		if (ProjectUtil.isStringNullOREmpty(ekStepBaseUrl)) {
+		if (StringUtils.isBlank(ekStepBaseUrl)) {
 			ekStepBaseUrl = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_BASE_URL);
 		}
 		String response = null;
@@ -80,7 +81,7 @@ public class AppTest {
 		String response = null;
 		try {
 			String ekStepBaseUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);
-			if (ProjectUtil.isStringNullOREmpty(ekStepBaseUrl)) {
+			if (StringUtils.isBlank(ekStepBaseUrl)) {
 				ekStepBaseUrl = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_BASE_URL);
 			}
 			response = HttpUtil.sendPatchRequest(ekStepBaseUrl

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -131,7 +132,7 @@ public class ProjectLogger {
 	}
 
 	private static void backendLog(String message, Object data, Throwable e, String logLevel) {
-		if (!ProjectUtil.isStringNullOREmpty(logLevel)) {
+		if (!StringUtils.isBlank(logLevel)) {
 
 			switch (logLevel) {
 			case "INFO":

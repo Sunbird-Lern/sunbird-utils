@@ -7,6 +7,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.settings.Settings.Builder;
@@ -15,7 +17,6 @@ import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
-import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 
 /**
@@ -133,8 +134,8 @@ public class ConnectionManager {
             String cluster = System.getenv(JsonKey.SUNBIRD_ES_CLUSTER);
             String hostName = System.getenv(JsonKey.SUNBIRD_ES_IP);
             String port = System.getenv(JsonKey.SUNBIRD_ES_PORT);
-            if (ProjectUtil.isStringNullOREmpty(hostName)
-                    || ProjectUtil.isStringNullOREmpty(port)) {
+            if (StringUtils.isBlank(hostName)
+                    || StringUtils.isBlank(port)) {
                 return false;
             }
             String[] splitedHost = hostName.split(",");

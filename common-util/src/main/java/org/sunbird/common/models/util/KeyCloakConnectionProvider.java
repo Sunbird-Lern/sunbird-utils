@@ -3,6 +3,7 @@
  */
 package org.sunbird.common.models.util;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
@@ -70,9 +71,9 @@ public class KeyCloakConnectionProvider {
 		String cleintId = System.getenv(JsonKey.SUNBIRD_SSO_CLIENT_ID);
 		String cleintSecret = System.getenv(JsonKey.SUNBIRD_SSO_CLIENT_SECRET);
 		String relam = System.getenv(JsonKey.SUNBIRD_SSO_RELAM);
-		if (ProjectUtil.isStringNullOREmpty(url) || ProjectUtil.isStringNullOREmpty(username)
-				|| ProjectUtil.isStringNullOREmpty(password) || ProjectUtil.isStringNullOREmpty(cleintId)
-				|| ProjectUtil.isStringNullOREmpty(relam)) {
+		if (StringUtils.isBlank(url) || StringUtils.isBlank(username)
+				|| StringUtils.isBlank(password) || StringUtils.isBlank(cleintId)
+				|| StringUtils.isBlank(relam)) {
 			ProjectLogger.log("key cloak connection is not provided by Environment variable.", LoggerEnum.INFO.name());
 			return null;
 		}
@@ -84,7 +85,7 @@ public class KeyCloakConnectionProvider {
 				.password(password).clientId(cleintId).resteasyClient(new ResteasyClientBuilder()
 						.connectionPoolSize(Integer.parseInt(cache.getProperty(JsonKey.SSO_POOL_SIZE))).build());
 
-		if (!ProjectUtil.isStringNullOREmpty(cleintSecret)) {
+		if (!StringUtils.isBlank(cleintSecret)) {
 			keycloakBuilder.clientSecret(cache.getProperty(JsonKey.SSO_CLIENT_SECRET));
 		}
 		keycloak = keycloakBuilder.build();

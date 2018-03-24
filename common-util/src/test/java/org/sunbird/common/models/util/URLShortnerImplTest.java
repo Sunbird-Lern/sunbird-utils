@@ -1,5 +1,6 @@
 package org.sunbird.common.models.util;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.sunbird.common.models.util.url.URLShortner;
@@ -20,7 +21,7 @@ public class URLShortnerImplTest {
 		String SUNBIRD_WEB_URL = "sunbird_web_url";
 
 		String webUrl = System.getenv(SUNBIRD_WEB_URL);
-		if (ProjectUtil.isStringNullOREmpty(webUrl)) {
+		if (StringUtils.isBlank(webUrl)) {
 			webUrl = PropertiesCache.getInstance().getProperty(SUNBIRD_WEB_URL);
 		}
 

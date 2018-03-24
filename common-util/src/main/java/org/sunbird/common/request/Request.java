@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.sunbird.common.models.util.ProjectUtil;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 
@@ -53,11 +53,11 @@ public class Request implements Serializable {
 		this.params = request.getParams();
 		if (null == this.params)
 			this.params = new RequestParams();
-		else if (!ProjectUtil.isStringNullOREmpty(this.params.getMsgid())) {
+		else if (!StringUtils.isBlank(this.params.getMsgid())) {
 			ExecutionContext.setRequestId(this.params.getMsgid());
 			this.requestId = this.params.getMsgid();
 		}
-		if (ProjectUtil.isStringNullOREmpty(this.params.getMsgid()) && !ProjectUtil.isStringNullOREmpty(requestId))
+		if (StringUtils.isBlank(this.params.getMsgid()) && !StringUtils.isBlank(requestId))
 			this.params.setMsgid(requestId);
 		this.context.putAll(request.getContext());
 	}

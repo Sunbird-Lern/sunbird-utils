@@ -18,6 +18,7 @@ import java.util.Map;
 
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.keycloak.RSATokenVerifier;
 import org.keycloak.admin.client.Keycloak;
@@ -115,8 +116,8 @@ public class KeyCloakServiceImpl implements SSOManager {
 		} else {
 			ProjectUtil.createAndThrowServerError();
 		}
-		if ((!(ProjectUtil.isStringNullOREmpty(userId))
-				&& !(ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.EMAIL))))
+		if ((!(StringUtils.isBlank(userId))
+				&& !(StringUtils.isBlank((String) request.get(JsonKey.EMAIL))))
 				&& IS_EMAIL_SETUP_COMPLETE) {
 			verifyEmail(userId);
 		}
@@ -172,7 +173,7 @@ public class KeyCloakServiceImpl implements SSOManager {
 				ur.setUsername((String) request.get(JsonKey.USERNAME));
 			}
 		}
-		if (!ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.PHONE))) {
+		if (!StringUtils.isBlank((String) request.get(JsonKey.PHONE))) {
 			needTobeUpdate = true;
 			Map<String, List<String>> map = ur.getAttributes();
 			List<String> list = new ArrayList<>();
@@ -184,7 +185,7 @@ public class KeyCloakServiceImpl implements SSOManager {
 			ur.setAttributes(map);
 		}
 
-		if (!ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.COUNTRY_CODE))) {
+		if (!StringUtils.isBlank((String) request.get(JsonKey.COUNTRY_CODE))) {
 			needTobeUpdate = true;
 			Map<String, List<String>> map = ur.getAttributes();
 			if (map == null) {
@@ -192,7 +193,7 @@ public class KeyCloakServiceImpl implements SSOManager {
 			}
 			List<String> list = new ArrayList<>();
 			list.add(PropertiesCache.getInstance().getProperty("sunbird_default_country_code"));
-			if (!ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.COUNTRY_CODE))) {
+			if (!StringUtils.isBlank((String) request.get(JsonKey.COUNTRY_CODE))) {
 				list.add(0, (String) request.get(JsonKey.COUNTRY_CODE));
 			}
 			map.put(JsonKey.COUNTRY_CODE, list);
@@ -276,7 +277,7 @@ public class KeyCloakServiceImpl implements SSOManager {
 				ur.setUsername((String) request.get(JsonKey.USERNAME));
 			}
 		}
-		if (!ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.PHONE))) {
+		if (!StringUtils.isBlank((String) request.get(JsonKey.PHONE))) {
 			needTobeUpdate = true;
 			Map<String, List<String>> map = ur.getAttributes();
 			List<String> list = new ArrayList<>();
@@ -294,7 +295,7 @@ public class KeyCloakServiceImpl implements SSOManager {
 		List<String> list = new ArrayList<>();
 		list.add(PropertiesCache.getInstance().getProperty("sunbird_default_country_code"));
 		map.put(JsonKey.COUNTRY_CODE, list);
-		if (!ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.COUNTRY_CODE))) {
+		if (!StringUtils.isBlank((String) request.get(JsonKey.COUNTRY_CODE))) {
 			needTobeUpdate = true;
 			list.add(0, (String) request.get(JsonKey.COUNTRY_CODE));
 			map.put(JsonKey.COUNTRY_CODE, list);
@@ -396,7 +397,7 @@ public class KeyCloakServiceImpl implements SSOManager {
 	 * @throws ProjectCommonException
 	 */
 	private void validateUserId(String userId) {
-		if (ProjectUtil.isStringNullOREmpty(userId)) {
+		if (StringUtils.isBlank(userId)) {
 			ProjectUtil.createAndThrowInvalidUserDataException();
 		}
 	}
@@ -497,7 +498,7 @@ public class KeyCloakServiceImpl implements SSOManager {
 
 			map.put(JsonKey.PHONE, list);
 			List<String> list2 = new ArrayList<>();
-			if (!ProjectUtil.isStringNullOREmpty((String) request.get(JsonKey.COUNTRY_CODE))) {
+			if (!StringUtils.isBlank((String) request.get(JsonKey.COUNTRY_CODE))) {
 				list2.add((String) request.get(JsonKey.COUNTRY_CODE));
 			} else {
 				list2.add(PropertiesCache.getInstance().getProperty("sunbird_default_country_code"));
@@ -565,7 +566,7 @@ public class KeyCloakServiceImpl implements SSOManager {
 		headerMap.put("Content-Type", "application/x-www-form-urlencoded");
 		try {
 			String response = HttpUtil.sendPostRequest(URL, builder.toString(), headerMap);
-			if (!ProjectUtil.isStringNullOREmpty(response)) {
+			if (!StringUtils.isBlank(response)) {
 				JSONObject object = new JSONObject(response);
 				accessTokenId = object.getString(JsonKey.ACCESS_TOKEN);
 			}

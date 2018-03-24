@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
-import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -61,7 +61,7 @@ public class TelemetryDispatcherEkstep implements TelemetryDispatcher {
 	public String getCompleteUrl(String baseUrlKey , String uriKey){
 
 		String baseSearchUrl = System.getenv(baseUrlKey);
-		if (ProjectUtil.isStringNullOREmpty(baseSearchUrl)) {
+		if (StringUtils.isBlank(baseSearchUrl)) {
 			baseSearchUrl = propertiesCache.readProperty(baseUrlKey);
 		}
 		String uri = propertiesCache.readProperty(uriKey);
@@ -73,7 +73,7 @@ public class TelemetryDispatcherEkstep implements TelemetryDispatcher {
 		headers.put("Content-Type", "application/json");
 		headers.put("accept", "application/json");
 		headers.put(JsonKey.AUTHORIZATION, JsonKey.BEARER + System.getenv(JsonKey.EKSTEP_AUTHORIZATION));
-		if (ProjectUtil.isStringNullOREmpty((String) headers.get(JsonKey.AUTHORIZATION))) {
+		if (StringUtils.isBlank((String) headers.get(JsonKey.AUTHORIZATION))) {
 			headers.put(JsonKey.AUTHORIZATION,
 					PropertiesCache.getInstance().readProperty(JsonKey.EKSTEP_AUTHORIZATION));
 		}

@@ -551,17 +551,17 @@ public class ProjectUtil {
 	public static VelocityContext getContext(Map<String, Object> map) {
 		propertiesCache = PropertiesCache.getInstance();
 		VelocityContext context = new VelocityContext();
-		if (!ProjectUtil.isStringNullOREmpty((String) map.get(JsonKey.ACTION_URL))) {
+		if (!StringUtils.isBlank((String) map.get(JsonKey.ACTION_URL))) {
 			context.put(JsonKey.ACTION_URL, getValue(map, JsonKey.ACTION_URL));
 		}
-		if (!ProjectUtil.isStringNullOREmpty((String) map.get(JsonKey.NAME))) {
+		if (!StringUtils.isBlank((String) map.get(JsonKey.NAME))) {
 			context.put(JsonKey.NAME, getValue(map, JsonKey.NAME));
 		}
 		context.put(JsonKey.BODY, getValue(map, JsonKey.BODY));
 		context.put(JsonKey.FROM_EMAIL, getFromEmail());
 		context.put(JsonKey.ORG_NAME, getValue(map, JsonKey.ORG_NAME));
 		String logoUrl = getSunbirdLogoUrl();
-		if (!ProjectUtil.isStringNullOREmpty(logoUrl)) {
+		if (!StringUtils.isBlank(logoUrl)) {
 			context.put(JsonKey.ORG_IMAGE_URL, logoUrl);
 		}
 		context.put(JsonKey.ACTION_NAME, getValue(map, JsonKey.ACTION_NAME));
@@ -575,18 +575,18 @@ public class ProjectUtil {
 	}
 
 	private static String getSunbirdLogoUrl() {
-		if (!ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL))) {
+		if (!StringUtils.isBlank(System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL))) {
 			return System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL);
-		} else if (!ProjectUtil.isStringNullOREmpty(propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL))) {
+		} else if (!StringUtils.isBlank(propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL))) {
 			return propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL);
 		}
 		return "";
 	}
 
 	private static String getFromEmail() {
-		if (!ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.EMAIL_SERVER_FROM))) {
+		if (!StringUtils.isBlank(System.getenv(JsonKey.EMAIL_SERVER_FROM))) {
 			return System.getenv(JsonKey.EMAIL_SERVER_FROM);
-		} else if (!ProjectUtil.isStringNullOREmpty(propertiesCache.getProperty(JsonKey.EMAIL_SERVER_FROM))) {
+		} else if (!StringUtils.isBlank(propertiesCache.getProperty(JsonKey.EMAIL_SERVER_FROM))) {
 			return propertiesCache.getProperty(JsonKey.EMAIL_SERVER_FROM);
 		}
 		return "";
@@ -599,7 +599,7 @@ public class ProjectUtil {
 	}
 
 	public static String getTemplate(Map<String, Object> map) {
-		if (ProjectUtil.isStringNullOREmpty(templateMap.get(map.get(JsonKey.EMAIL_TEMPLATE_TYPE)))) {
+		if (StringUtils.isBlank(templateMap.get(map.get(JsonKey.EMAIL_TEMPLATE_TYPE)))) {
 			return "/emailtemplate.vm";
 		}
 		return templateMap.get(map.get(JsonKey.EMAIL_TEMPLATE_TYPE));
@@ -668,7 +668,7 @@ public class ProjectUtil {
 		try {
 			ProjectLogger.log("start call for registering the tag ==" + tagId);
 			String ekStepBaseUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);
-			if (ProjectUtil.isStringNullOREmpty(ekStepBaseUrl)) {
+			if (StringUtils.isBlank(ekStepBaseUrl)) {
 				ekStepBaseUrl = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_BASE_URL);
 			}
 			tagStatus = HttpUtil.sendPostRequest(
@@ -731,7 +731,7 @@ public class ProjectUtil {
 	public static Map<String, String> getEkstepHeader() {
 		Map<String, String> headerMap = new HashMap<>();
 		String header = System.getenv(JsonKey.EKSTEP_AUTHORIZATION);
-		if (ProjectUtil.isStringNullOREmpty(header)) {
+		if (StringUtils.isBlank(header)) {
 			header = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_AUTHORIZATION);
 		} else {
 			header = JsonKey.BEARER + header;
@@ -744,7 +744,7 @@ public class ProjectUtil {
 	public static boolean validatePhone(String phNumber, String countryCode) {
 		PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
 		String contryCode = countryCode;
-		if (!ProjectUtil.isStringNullOREmpty(countryCode) && (countryCode.charAt(0) != '+')) {
+		if (!StringUtils.isBlank(countryCode) && (countryCode.charAt(0) != '+')) {
 			contryCode = "+" + countryCode;
 		}
 		Phonenumber.PhoneNumber phoneNumber = null;

@@ -17,11 +17,11 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
-import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.models.util.datasecurity.EncryptionService;
 import org.sunbird.common.responsecode.ResponseCode;
@@ -40,7 +40,7 @@ public class DefaultEncryptionServivceImpl implements EncryptionService {
 
 	public DefaultEncryptionServivceImpl() {
 		sunbirdEncryption = System.getenv(JsonKey.SUNBIRD_ENCRYPTION);
-		if (ProjectUtil.isStringNullOREmpty(sunbirdEncryption)) {
+		if (StringUtils.isBlank(sunbirdEncryption)) {
 			sunbirdEncryption = PropertiesCache.getInstance().getProperty(JsonKey.SUNBIRD_ENCRYPTION);
 		}
 	}
@@ -79,7 +79,7 @@ public class DefaultEncryptionServivceImpl implements EncryptionService {
 	@Override
 	public String encryptData(String data) throws Exception {
 		if (JsonKey.ON.equalsIgnoreCase(sunbirdEncryption)) {
-			if (ProjectUtil.isStringNullOREmpty(data)) {
+			if (StringUtils.isBlank(data)) {
 				return data;
 			}
 			if (null != data) {
@@ -132,16 +132,16 @@ public class DefaultEncryptionServivceImpl implements EncryptionService {
 	 * @return
 	 */
 	public static String getSalt() {
-		if (!ProjectUtil.isStringNullOREmpty(encryption_key)) {
+		if (!StringUtils.isBlank(encryption_key)) {
 			return encryption_key;
 		} else {
 			encryption_key = System.getenv(JsonKey.ENCRYPTION_KEY);
-			if (ProjectUtil.isStringNullOREmpty(encryption_key)) {
+			if (StringUtils.isBlank(encryption_key)) {
 				ProjectLogger.log("Salt value is not provided by Env");
 				encryption_key = PropertiesCache.getInstance().getProperty(JsonKey.ENCRYPTION_KEY);
 			}
 		}
-		if (ProjectUtil.isStringNullOREmpty(encryption_key)) {
+		if (StringUtils.isBlank(encryption_key)) {
 			ProjectLogger.log("throwing exception for invalid salt==", LoggerEnum.INFO.name());
 			throw new ProjectCommonException(ResponseCode.saltValue.getErrorCode(),
 					ResponseCode.saltValue.getErrorMessage(), ResponseCode.SERVER_ERROR.getResponseCode());

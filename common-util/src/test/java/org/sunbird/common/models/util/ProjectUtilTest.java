@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.VelocityContext;
 import org.junit.Test;
 import org.sunbird.common.exception.ProjectCommonException;
@@ -52,7 +53,7 @@ public class ProjectUtilTest {
 		templateMap.put(JsonKey.ACTION_URL, "googli.com");
 		templateMap.put(JsonKey.NAME, "userName");
 
-		boolean envVal = !ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.EMAIL_SERVER_FROM));
+		boolean envVal = !StringUtils.isBlank(System.getenv(JsonKey.EMAIL_SERVER_FROM));
 		boolean cacheVal = propertiesCache.getProperty(JsonKey.EMAIL_SERVER_FROM) != null;
 
 		VelocityContext context = ProjectUtil.getContext(templateMap);
@@ -72,7 +73,7 @@ public class ProjectUtilTest {
 		templateMap.put(JsonKey.ACTION_URL, "googli.com");
 		templateMap.put(JsonKey.NAME, "userName");
 
-		boolean envVal = !ProjectUtil.isStringNullOREmpty(System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL));
+		boolean envVal = !StringUtils.isBlank(System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL));
 		boolean cacheVal = propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL) != null;
 
 		VelocityContext context = ProjectUtil.getContext(templateMap);

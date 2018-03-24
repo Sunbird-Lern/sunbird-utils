@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.lang3.StringUtils;
+
 /*
  * @author Amit Kumar 
  * 
@@ -55,7 +57,7 @@ public class PropertiesCache {
 	private void loadWeighted() {
 		String key = configProp.getProperty("user.profile.attribute");
 		String value = configProp.getProperty("user.profile.weighted");
-		if (ProjectUtil.isStringNullOREmpty(key)) {
+		if (StringUtils.isBlank(key)) {
 			ProjectLogger.log("Profile completeness value is not set==", LoggerEnum.INFO.name());
 		} else {
 			String keys[] = key.split(",");

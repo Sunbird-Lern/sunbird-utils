@@ -8,12 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.sunbird.common.models.util.JsonKey;
-import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.models.util.datasecurity.DataMaskingService;
 import org.sunbird.common.models.util.datasecurity.DecryptionService;
@@ -42,7 +42,7 @@ public class EncryptionDecriptionServiceTest {
 	@BeforeClass
 	public static void setUp() {
 		sunbirdEncryption = System.getenv(JsonKey.SUNBIRD_ENCRYPTION);
-		if (ProjectUtil.isStringNullOREmpty(sunbirdEncryption)) {
+		if (StringUtils.isBlank(sunbirdEncryption)) {
 			sunbirdEncryption = PropertiesCache.getInstance().getProperty(JsonKey.SUNBIRD_ENCRYPTION);
 		}
 		map = new HashMap<>();

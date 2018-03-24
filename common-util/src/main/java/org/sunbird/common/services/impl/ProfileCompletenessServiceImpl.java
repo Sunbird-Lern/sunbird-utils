@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.JsonKey;
-import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.services.ProfileCompletenessService;
 
@@ -45,7 +45,7 @@ public class ProfileCompletenessServiceImpl implements ProfileCompletenessServic
 					completedCount = completedCount + getValue(entry.getKey());
 				}
 			} else {
-				if (value != null && !ProjectUtil.isStringNullOREmpty(value.toString())) {
+				if (value != null && !StringUtils.isBlank(value.toString())) {
 					completedCount = completedCount + getValue(entry.getKey());
 				}
 			}
@@ -97,7 +97,7 @@ public class ProfileCompletenessServiceImpl implements ProfileCompletenessServic
 						attribute.add(entry.getKey());
 					}
 				} else {
-					if (ProjectUtil.isStringNullOREmpty(val.toString())) {
+					if (StringUtils.isBlank(val.toString())) {
 						attribute.add(entry.getKey());
 					}
 				}
