@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
@@ -150,14 +151,15 @@ public class TelemetryObjectValidatorV3 implements TelemetryObjectValidator {
 		if (edata == null || edata.isEmpty()) {
 			missingFields.add("edata");
 		} else {
-			if (ProjectUtil.isStringNullOREmpty((String) edata.get(JsonKey.TYPE))) {
+			if (StringUtils.isBlank((String) edata.get(JsonKey.TYPE))) {
 				missingFields.add(JsonKey.TYPE);
 			}
-			if (ProjectUtil.isStringNullOREmpty((String) edata.get(JsonKey.LEVEL))) {
+			if (StringUtils.isBlank((String) edata.get(JsonKey.LEVEL))) {
 				missingFields.add(JsonKey.LEVEL);
 			}
-			if (null == edata.get(JsonKey.MESSAGE)) {
-				missingFields.add(JsonKey.MESSAGE);
+			// TODO: remember and make this change at the time of re-factoring.
+			if (StringUtils.isBlank((String) edata.get(JsonKey.MESSAGE))) {
+				edata.remove(JsonKey.MESSAGE);
 			}
 		}
 	}
