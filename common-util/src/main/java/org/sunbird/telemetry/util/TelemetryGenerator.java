@@ -96,7 +96,7 @@ public class TelemetryGenerator {
 
 		Map<String, Object> edata = new HashMap<>();
 		Map<String, Object> props = (Map<String, Object>) params.get(JsonKey.PROPS);
-		edata.put(JsonKey.PROPS, props.entrySet().stream().map(entry -> entry.getKey()).collect(Collectors.toList()));
+		edata.put(JsonKey.PROPS, getProps(props));
 
 		Map<String, Object> target = (Map<String, Object>) params.get(JsonKey.TARGET_OBJECT);
 		if (target.get(JsonKey.CURRENT_STATE) != null) {
@@ -104,6 +104,19 @@ public class TelemetryGenerator {
 		}
 		return edata;
 
+	}
+	
+	private static List<String> getProps(Map<String, Object> map) {
+		return (List<String>) map.entrySet().stream()
+		.map(entry -> entry.getKey())
+		.map(key -> {
+			if (map.get(key) instanceof Map) {
+				List<String> keys = getProps((Map<String, Object>) map.get(key));
+				return keys.stream().map(childKey -> key + "." + childKey).collect(Collectors.toList());
+			} else {
+				return Arrays.asList(key);
+			}
+		}).flatMap(List::stream).collect(Collectors.toList());
 	}
 
 	private static Context getContext(Map<String, Object> context) {
