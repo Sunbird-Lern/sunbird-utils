@@ -21,7 +21,7 @@ public class TelemetryFlush {
 
 	private static TelemetryFlush telemetryFlush;
 
-	private TelemetryDispatcher telemetryDispatcher = TelemetryDispatcherFactory.get(JsonKey.SUNBIRD_LMS_TELEMETRY);
+	private List<TelemetryDispatcher> telemetryDispatcher = TelemetryDispatcherFactory.getInstanceList(JsonKey.SUNBIRD_LMS_TELEMETRY);
 
 	public static TelemetryFlush getInstance() {
 		if (telemetryFlush == null) {
@@ -63,7 +63,11 @@ public class TelemetryFlush {
 					list.add(obj);
 				}
 			}
-			telemetryDispatcher.dispatchTelemetryEvent(list);
+			for (TelemetryDispatcher dispatch : telemetryDispatcher) {
+				if (dispatch != null) {
+					dispatch.dispatchTelemetryEvent(list);
+				}
+			}
 		}
 
 	}

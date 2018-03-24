@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,7 +61,7 @@ public class ProjectUtil {
 			JsonKey.PROFILE_VISIBILITY, JsonKey.USERNAME, JsonKey.LOGIN_ID, JsonKey.USER_ID };
 
 	public static final String[] defaultPrivateFields = new String[] { JsonKey.EMAIL, JsonKey.PHONE };
-
+	private static final String INDEX_NAME = "telemetry.raw";
 	static {
 		pattern = Pattern.compile(EMAIL_PATTERN);
 		initializeMailTemplateMap();
@@ -857,5 +858,19 @@ public class ProjectUtil {
 			return System.getenv(key);
 		}
 		return propertiesCache.readProperty(key);
+	}
+	
+	/**
+	 * This method will create index for Elastic search as follow
+	 * "telemetry.raw.yyyy.mm"
+	 * 
+	 * @return
+	 */
+	public static String createIndex() {
+		Calendar cal = Calendar.getInstance();
+		return new StringBuffer().append(INDEX_NAME).append("." + cal.get(Calendar.YEAR))
+				.append("." + ((cal.get(Calendar.MONTH) + 1) > 9 ? (cal.get(Calendar.MONTH) + 1)
+						: "0" + (cal.get(Calendar.MONTH) + 1)))
+				.toString();
 	}
 }
