@@ -5,11 +5,9 @@ package org.sunbird.common.models.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -32,6 +30,7 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
@@ -695,31 +694,16 @@ public class HttpUtil {
         }
     }
 
-    public static HttpUtilResponse postInputStream(InputStream stream, Map<String, String> headers,
+    public static HttpUtilResponse postInputStream(byte[] byteArr, Map<String, String> headers,
             String url) throws IOException {
-        File targetFile = null;
-        OutputStream outStream = null;
-        InputStream initialStream = null;
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpPost httpPost = new HttpPost(url);
-            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-            /*
-             * String filename = String.valueOf(System.currentTimeMillis()); initialStream = new
-             * FileInputStream(new File(filename + ".txt")); byte[] buffer = new
-             * byte[initialStream.available()]; initialStream.read(buffer);
-             * 
-             * targetFile = new File(filename + ".tmp"); outStream = new
-             * FileOutputStream(targetFile); outStream.write(buffer);
-             */
-            builder.addBinaryBody("file", stream, ContentType.APPLICATION_OCTET_STREAM, "filename");
+            HttpEntity entity = new ByteArrayEntity(byteArr);
+            httpPost.setEntity(entity);
             Set<Entry<String, String>> headerEntry = headers.entrySet();
             for (Entry<String, String> headerObj : headerEntry) {
                 httpPost.addHeader(headerObj.getKey(), headerObj.getValue());
             }
-            HttpEntity multipart = builder.build();
-
-            httpPost.setEntity(multipart);
-
             HttpResponse httpResponse = client.execute(httpPost);
             HttpUtilResponse response = null;
             String body = "";
@@ -734,15 +718,6 @@ public class HttpUtil {
             ProjectLogger.log("Exception occurred while calling posting inputStream data method.",
                     ex);
             throw ex;
-        } finally {
-            if (null != initialStream)
-                initialStream.close();
-            if (null != outStream)
-                outStream.close();
-            if (null != stream)
-                stream.close();
-            if (null != targetFile)
-                targetFile.delete();
         }
     }
 
