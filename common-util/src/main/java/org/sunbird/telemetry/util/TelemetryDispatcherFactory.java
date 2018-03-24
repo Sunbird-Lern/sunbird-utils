@@ -50,11 +50,11 @@ public class TelemetryDispatcherFactory {
 			ProjectLogger.log("Please provide the instance name ", LoggerEnum.INFO.name());
 			return null;
 		}
-		List<TelemetryDispatcher> ObjectsList = new ArrayList<>();
+		List<TelemetryDispatcher> objectList = new ArrayList<>();
 		for (String name : dispatcherName) {
-			ObjectsList.add(get(name));
+			objectList.add(get(name));
 		}
-		return ObjectsList;
+		return objectList;
 	}
 
 }
