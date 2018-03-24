@@ -50,7 +50,7 @@ public class WriteEventHandler implements EventHandler<Request> {
 			telemetryFlush.flushTelemetry(telemetry);
 			success = true;
 		} else {
-			ProjectLogger.log("Telemetry validation failed.", request.getRequest(), LoggerEnum.WARN.name());
+			ProjectLogger.log("Telemetry validation failed: LOG", request.getRequest(), LoggerEnum.WARN.name());
 		}
 		return success;
 	}
@@ -93,9 +93,11 @@ public class WriteEventHandler implements EventHandler<Request> {
 		params.put(JsonKey.TARGET_OBJECT, targetObject);
 		params.put(JsonKey.CORRELATED_OBJECTS, correlatedObjects);
 		String telemetry = telemetryDataAssembler.audit(context, params);
-		if (telemetryObjectValidator.validateAudit(telemetry)) {
+		if (StringUtils.isNotBlank(telemetry)) {
 			telemetryFlush.flushTelemetry(telemetry);
 			success = true;
+		} else {
+			ProjectLogger.log("Telemetry validation failed: AUDIT", request.getRequest(), LoggerEnum.WARN.name());
 		}
 		return success;
 	}
