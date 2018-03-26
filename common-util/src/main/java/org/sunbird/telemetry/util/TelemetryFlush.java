@@ -56,8 +56,7 @@ public class TelemetryFlush {
 		queue.offer(message);
 		if (queue.size() >= thresholdSize) {
 			List<String> list = new ArrayList<>();
-			int size = queue.size();
-			for (int i = 1; i <= size; i++) {
+			for (int i = 1; i <= thresholdSize; i++) {
 				String obj = queue.poll(); 
 				if (obj == null) {
 					break;
