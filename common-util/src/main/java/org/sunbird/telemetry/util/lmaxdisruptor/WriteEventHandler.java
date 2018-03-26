@@ -93,7 +93,7 @@ public class WriteEventHandler implements EventHandler<Request> {
 		params.put(JsonKey.TARGET_OBJECT, targetObject);
 		params.put(JsonKey.CORRELATED_OBJECTS, correlatedObjects);
 		String telemetry = telemetryDataAssembler.audit(context, params);
-		System.out.println("Audit event: "+ telemetry);
+		ProjectLogger.log("Audit event: "+ telemetry, LoggerEnum.INFO.name());
 		if (StringUtils.isNotBlank(telemetry)) {
 			telemetryFlush.flushTelemetry(telemetry);
 			success = true;
