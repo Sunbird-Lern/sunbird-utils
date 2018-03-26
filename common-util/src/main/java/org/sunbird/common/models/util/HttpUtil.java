@@ -694,6 +694,15 @@ public class HttpUtil {
         }
     }
 
+    /**
+     * this method call the http post method which accept post body as byte[]
+     * 
+     * @param byteArr
+     * @param headers
+     * @param url
+     * @return
+     * @throws IOException
+     */
     public static HttpUtilResponse postInputStream(byte[] byteArr, Map<String, String> headers,
             String url) throws IOException {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
