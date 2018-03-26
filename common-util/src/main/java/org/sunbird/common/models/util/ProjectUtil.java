@@ -859,11 +859,11 @@ public class ProjectUtil {
 		}
 		return propertiesCache.readProperty(key);
 	}
-	
+
 	/**
 	 * This method will create index for Elastic search as follow
 	 * "telemetry.raw.yyyy.mm"
-	 * 
+	 *
 	 * @return
 	 */
 	public static String createIndex() {
@@ -873,4 +873,19 @@ public class ProjectUtil {
 						: "0" + (cal.get(Calendar.MONTH) + 1)))
 				.toString();
 	}
+
+	/**
+	 * Method to get property values from System env if absent then fetch from
+	 * properties file .
+	 * @param key
+	 * @return
+	 */
+	public static String getValue(String key){
+		String value = System.getenv(key);
+		if(StringUtils.isEmpty(value)){
+			value = propertiesCache.readProperty(key);
+		}
+		return value;
+	}
+
 }
