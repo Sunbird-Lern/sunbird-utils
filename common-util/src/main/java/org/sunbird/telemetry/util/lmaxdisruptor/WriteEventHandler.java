@@ -94,8 +94,7 @@ public class WriteEventHandler implements EventHandler<Request> {
 		params.put(JsonKey.CORRELATED_OBJECTS, correlatedObjects);
 		String telemetry = telemetryDataAssembler.audit(context, params);
 		if (StringUtils.isNotBlank(telemetry)) {
-			ProjectLogger.log("Audit event: "+ telemetry, LoggerEnum.INFO.name());
-			telemetryFlush.flushTelemetry(telemetry, true);
+			telemetryFlush.flushTelemetry(telemetry);
 			success = true;
 		} else {
 			ProjectLogger.log("Telemetry validation failed: AUDIT", request.getRequest(), LoggerEnum.WARN.name());

@@ -37,24 +37,18 @@ public class TelemetryFlush {
 	}
 
 	public TelemetryFlush() {
-//		String queueThreshold = PropertiesCache.getInstance().getProperty(JsonKey.TELEMETRY_QUEUE_THRESHOLD_VALUE);
-//		if (!StringUtils.isBlank(queueThreshold)
-//				&& !queueThreshold.equalsIgnoreCase(JsonKey.TELEMETRY_QUEUE_THRESHOLD_VALUE)) {
-//			try {
-//				this.thresholdSize = Integer.parseInt(queueThreshold.trim());
-//			} catch (Exception ex) {
-//				ProjectLogger.log("Threshold size from config is not integer", ex);
-//			}
-//		}
-		this.thresholdSize = 1;
+		String queueThreshold = PropertiesCache.getInstance().getProperty(JsonKey.TELEMETRY_QUEUE_THRESHOLD_VALUE);
+		if (!StringUtils.isBlank(queueThreshold)
+				&& !queueThreshold.equalsIgnoreCase(JsonKey.TELEMETRY_QUEUE_THRESHOLD_VALUE)) {
+			try {
+				this.thresholdSize = Integer.parseInt(queueThreshold.trim());
+			} catch (Exception ex) {
+				ProjectLogger.log("Threshold size from config is not integer", ex);
+			}
+		}
 	}
 
 	public void flushTelemetry(String message) {
-		writeToQueue(message);
-	}
-	
-	public void flushTelemetry(String message, boolean audit) {
-		ProjectLogger.log("Audit event pushed to queue.", LoggerEnum.INFO.name());
 		writeToQueue(message);
 	}
 
