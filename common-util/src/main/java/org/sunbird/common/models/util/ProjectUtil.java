@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,7 +61,7 @@ public class ProjectUtil {
 			JsonKey.PROFILE_VISIBILITY, JsonKey.USERNAME, JsonKey.LOGIN_ID, JsonKey.USER_ID };
 
 	public static final String[] defaultPrivateFields = new String[] { JsonKey.EMAIL, JsonKey.PHONE };
-
+	private static final String INDEX_NAME = "telemetry.raw";
 	static {
 		pattern = Pattern.compile(EMAIL_PATTERN);
 		initializeMailTemplateMap();
@@ -265,7 +266,7 @@ public class ProjectUtil {
 	 * @return true valid email, false invalid email
 	 */
 	public static boolean isEmailvalid(final String email) {
-		if(isStringNullOREmpty(email)){
+		if(StringUtils.isBlank(email)){
 			return false;
 		}
 		Matcher matcher = pattern.matcher(email);
@@ -749,7 +750,7 @@ public class ProjectUtil {
 		}
 		Phonenumber.PhoneNumber phoneNumber = null;
 		try {
-			if (isStringNullOREmpty(countryCode)) {
+			if (StringUtils.isBlank(countryCode)) {
 				contryCode = PropertiesCache.getInstance().getProperty("sunbird_default_country_code");
 			}
 			String isoCode = phoneNumberUtil.getRegionCodeForCountryCode(Integer.parseInt(contryCode));
@@ -784,9 +785,9 @@ public class ProjectUtil {
 			ve.init(props);
 
 			Map<String, String> params = new HashMap<>();
-			params.put("userName", isStringNullOREmpty(userName) ? "user_name" : userName);
-			params.put("webUrl", isStringNullOREmpty(webUrl) ? "web_url" : webUrl);
-			params.put("instanceName", isStringNullOREmpty(instanceName) ? "instance_name" : instanceName);
+			params.put("userName", StringUtils.isBlank(userName) ? "user_name" : userName);
+			params.put("webUrl", StringUtils.isBlank(webUrl) ? "web_url" : webUrl);
+			params.put("instanceName", StringUtils.isBlank(instanceName) ? "instance_name" : instanceName);
 			Template t = ve.getTemplate("/welcomeSmsTemplate.vm");
 			VelocityContext context = new VelocityContext(params);
 			StringWriter writer = new StringWriter();
@@ -858,4 +859,33 @@ public class ProjectUtil {
 		}
 		return propertiesCache.readProperty(key);
 	}
+
+	/**
+	 * This method will create index for Elastic search as follow
+	 * "telemetry.raw.yyyy.mm"
+	 *
+	 * @return
+	 */
+	public static String createIndex() {
+		Calendar cal = Calendar.getInstance();
+		return new StringBuffer().append(INDEX_NAME).append("." + cal.get(Calendar.YEAR))
+				.append("." + ((cal.get(Calendar.MONTH) + 1) > 9 ? (cal.get(Calendar.MONTH) + 1)
+						: "0" + (cal.get(Calendar.MONTH) + 1)))
+				.toString();
+	}
+
+	/**
+	 * Method to get property values from System env if absent then fetch from
+	 * properties file .
+	 * @param key
+	 * @return
+	 */
+	public static String getValue(String key){
+		String value = System.getenv(key);
+		if(StringUtils.isEmpty(value)){
+			value = propertiesCache.readProperty(key);
+		}
+		return value;
+	}
+
 }

@@ -5,8 +5,9 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.PropertiesCache;
 
@@ -21,7 +22,8 @@ public class TelemetryFlush {
 
 	private static TelemetryFlush telemetryFlush;
 
-	private TelemetryDispatcher telemetryDispatcher = TelemetryDispatcherFactory.get(JsonKey.SUNBIRD_LMS_TELEMETRY);
+	private List<TelemetryDispatcher> telemetryDispatcher = TelemetryDispatcherFactory
+			.getInstanceList(JsonKey.EK_STEP);
 
 	public static TelemetryFlush getInstance() {
 		if (telemetryFlush == null) {
@@ -52,18 +54,23 @@ public class TelemetryFlush {
 
 	private void writeToQueue(String message) {
 		queue.offer(message);
-
 		if (queue.size() >= thresholdSize) {
 			List<String> list = new ArrayList<>();
 			for (int i = 1; i <= thresholdSize; i++) {
-				String obj = queue.poll();
+				String obj = queue.poll(); 
 				if (obj == null) {
 					break;
 				} else {
 					list.add(obj);
 				}
 			}
-			telemetryDispatcher.dispatchTelemetryEvent(list);
+			for (TelemetryDispatcher dispatch : telemetryDispatcher) {
+				if (dispatch != null) {
+					dispatch.dispatchTelemetryEvent(list);
+				} else {
+					ProjectLogger.log("TelemetryDispatcher instance is coming as null " + dispatch);
+				}
+			}
 		}
 
 	}
