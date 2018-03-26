@@ -62,8 +62,7 @@ public class TelemetryDispatcherSunbirdLMS implements TelemetryDispatcher {
 
 
   public String getCompleteUrl(String baseUrlKey , String uriKey){
-
-    String baseSearchUrl = "https://dev.open-sunbird.org/api";//System.getenv(baseUrlKey);
+    String baseSearchUrl = System.getenv(baseUrlKey);
     if (StringUtils.isBlank(baseSearchUrl)) {
       baseSearchUrl = propertiesCache.readProperty(baseUrlKey);
     }
