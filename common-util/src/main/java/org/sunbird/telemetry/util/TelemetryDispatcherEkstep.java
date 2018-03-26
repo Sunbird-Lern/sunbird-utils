@@ -33,8 +33,8 @@ public class TelemetryDispatcherEkstep implements TelemetryDispatcher {
 			Map<String, Object> map = new HashMap<>();
 			map.put("ets", System.currentTimeMillis());
 			map.put(JsonKey.EVENTS, jsonList);
+			ProjectLogger.log("Audit events count: " + jsonList.stream().filter(event -> "AUDIT".equals((String) event.get("eid"))).count(), LoggerEnum.INFO.name());
 			String event = getTelemetryEvent(map);
-			ProjectLogger.log("EVEVTS TO FLUSH : " + event);
 
 			String response = HttpUtil.sendPostRequest(
 					getCompleteUrl(JsonKey.EKSTEP_BASE_URL, JsonKey.EKSTEP_TELEMETRY_API_URL), event,
