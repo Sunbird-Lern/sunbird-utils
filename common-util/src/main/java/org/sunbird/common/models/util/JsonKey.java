@@ -391,7 +391,7 @@ public final class JsonKey {
     public static final String PARTICIPANT = "participant";
     public static final String PASSWORD = "password";
     public static final String PDATA = "pdata";
-    
+
     public static final String PERCENTAGE = "percentage";
     public static final String PERIOD = "period";
     public static final String PHONE = "phone";
@@ -620,11 +620,13 @@ public final class JsonKey {
     public static final String SUNBIRD_CONTENT_BADGE_REVOKE_URL =
             "sunbird.content.badge.revoke.url";
     public static final String SUNBIRD_LMS_BASE_URL = "sunbird_lms_base_url";
-    public static final String SUNBIRD_LMS_TELEMETRY_API_URL= "sunbird_lms_telemetry_api_url";
+    public static final String SUNBIRD_LMS_TELEMETRY_API_URL = "sunbird_lms_telemetry_api_url";
     public static final String SUNBIRD_LMS_TELEMETRY = "Sunbird_LMS_Telemetry";
     public static final String SUNBIRD_LMS_AUTHORIZATION = "sunbird_authorization";
     public static final String ETS = "ets";
     public static final String CHANNEL_ID = "x-channel-id";
+    public static final String CONTENT_ENCODING = "Content-Encoding";
     public static final String EK_STEP = "EK-STEP";
+
     private JsonKey() {}
 }

@@ -69,6 +69,15 @@ public class BadgingJsonKey {
     // in case of assertion , if user email is absent.
     public static final String SUNBIRD_INSTALLATION_EMAIL = "sunbird_installation_email";
     public static final String BADGE_ISSUER = "BadgeIssuer";
+    public static final String TELEMETRY_DB = "telemetry_raw_data";
+
+    public static final String TELE_MID = "mid";
+    public static final String TELE_TS = "ts";
+    public static final String TELE_EVENT_DATA = "eventData";
+    public static final String TELE_PDATA_ID = "pdataId";
+    public static final String TELE_EID = "eid";
+    public static final String TELE_ETS = "ets";
+    public static final String TELE_PDATA = "pdata";
 
     private BadgingJsonKey() {}
 }

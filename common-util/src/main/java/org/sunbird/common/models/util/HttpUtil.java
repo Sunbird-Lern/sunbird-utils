@@ -3,6 +3,7 @@
  */
 package org.sunbird.common.models.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,7 +21,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -30,6 +30,7 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
@@ -39,10 +40,7 @@ import org.sunbird.common.models.response.HttpUtilResponse;
 import org.sunbird.common.request.ExecutionContext;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
-import org.sunbird.telemetry.util.lmaxdisruptor.LMAXWriter;
 import org.sunbird.telemetry.util.lmaxdisruptor.TelemetryEvents;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * This utility method will handle external http call
@@ -53,7 +51,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class HttpUtil {
 
 
-    private static LMAXWriter lmaxWriter = LMAXWriter.getInstance();
+//    private static TelemetryLmaxWriter lmaxWriter = TelemetryLmaxWriter.getInstance();
 
     private HttpUtil() {}
 
@@ -470,7 +468,7 @@ public class HttpUtil {
         logInfo.put(JsonKey.END_TIME, endTime);
         Request req = new Request();
         req.setRequest(generateTelemetryRequest(TelemetryEvents.LOG.getName(), logInfo));
-        lmaxWriter.submitMessage(req);
+//        lmaxWriter.submitMessage(req);
 
     }
 
@@ -524,7 +522,7 @@ public class HttpUtil {
                     "HttpUtil doPatchRequest method end at ==" + stopTime + " for requestURL "
                             + requestURL + " ,Total time elapsed = " + elapsedTime,
                     LoggerEnum.PERF_LOG);
-            telemetryProcessingCall(logInfo);
+//            telemetryProcessingCall(logInfo);
             return response;
         } catch (Exception e) {
             ProjectLogger.log(e.getMessage(), e);
@@ -564,8 +562,7 @@ public class HttpUtil {
             }
             Set<Entry<String, byte[]>> fileEntry = fileData.entrySet();
             for (Entry<String, byte[]> entryObj : fileEntry) {
-                if (!StringUtils.isBlank(entryObj.getKey())
-                        && null != entryObj.getValue()) {
+                if (!StringUtils.isBlank(entryObj.getKey()) && null != entryObj.getValue()) {
                     builder.addBinaryBody(entryObj.getKey(), entryObj.getValue(),
                             ContentType.APPLICATION_OCTET_STREAM, entryObj.getKey());
                 }
@@ -692,6 +689,42 @@ public class HttpUtil {
             return response;
         } catch (Exception ex) {
             ProjectLogger.log("Exception occurred while calling sendDeleteRequest method.", ex);
+            throw ex;
+        }
+    }
+
+    /**
+     * this method call the http post method which accept post body as byte[]
+     * 
+     * @param byteArr
+     * @param headers
+     * @param url
+     * @return
+     * @throws IOException
+     */
+    public static HttpUtilResponse postInputStream(byte[] byteArr, Map<String, String> headers,
+            String url) throws IOException {
+        try (CloseableHttpClient client = HttpClients.createDefault()) {
+            HttpPost httpPost = new HttpPost(url);
+            HttpEntity entity = new ByteArrayEntity(byteArr);
+            httpPost.setEntity(entity);
+            Set<Entry<String, String>> headerEntry = headers.entrySet();
+            for (Entry<String, String> headerObj : headerEntry) {
+                httpPost.addHeader(headerObj.getKey(), headerObj.getValue());
+            }
+            HttpResponse httpResponse = client.execute(httpPost);
+            HttpUtilResponse response = null;
+            String body = "";
+            try {
+                body = generateResponse(httpResponse);
+            } catch (Exception ex) {
+                ProjectLogger.log("Exception occured while reading body" + ex);
+            }
+            response = new HttpUtilResponse(body, httpResponse.getStatusLine().getStatusCode());
+            return response;
+        } catch (Exception ex) {
+            ProjectLogger.log("Exception occurred while calling posting inputStream data method.",
+                    ex);
             throw ex;
         }
     }
