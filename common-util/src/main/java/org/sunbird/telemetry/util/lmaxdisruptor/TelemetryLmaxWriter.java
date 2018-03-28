@@ -11,25 +11,25 @@ import com.lmax.disruptor.dsl.Disruptor;
 /**
  * Created by arvind on 10/1/18.
  */
-public class LMAXWriter {
+public class TelemetryLmaxWriter {
 
 	static private Disruptor<Request> disruptor;
 	private WriteEventProducer writeEventProducer;
 	private int ringBufferSize;
-	private static LMAXWriter lmaxWriter;
+	private static TelemetryLmaxWriter lmaxWriter;
 
-	private LMAXWriter() {
+	private TelemetryLmaxWriter() {
 		init();
 		registerShutDownHook();
 	}
 
-	public static LMAXWriter getInstance() {
+	public static TelemetryLmaxWriter getInstance() {
 		if (lmaxWriter != null) {
 			return lmaxWriter;
 		}
-		synchronized (LMAXWriter.class) {
+		synchronized (TelemetryLmaxWriter.class) {
 			if (null == lmaxWriter) {
-				lmaxWriter = new LMAXWriter();
+				lmaxWriter = new TelemetryLmaxWriter();
 				lmaxWriter.setRingBufferSize(8);
 			}
 		}

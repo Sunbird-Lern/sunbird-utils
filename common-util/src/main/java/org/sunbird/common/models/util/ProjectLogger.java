@@ -15,7 +15,6 @@ import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.request.ExecutionContext;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
-import org.sunbird.telemetry.util.lmaxdisruptor.LMAXWriter;
 import org.sunbird.telemetry.util.lmaxdisruptor.TelemetryEvents;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,7 +32,7 @@ public class ProjectLogger {
 	private static String dataId = "Sunbird";
 	private static ObjectMapper mapper = new ObjectMapper();
 	private static Logger rootLogger = (Logger) LogManager.getLogger("defaultLogger");
-	private static LMAXWriter lmaxWriter = LMAXWriter.getInstance();
+//	private static TelemetryLmaxWriter lmaxWriter = TelemetryLmaxWriter.getInstance();
 
 	/**
 	 * To log only message.
@@ -67,7 +66,7 @@ public class ProjectLogger {
 		params.put(JsonKey.ERROR, projectCommonException.getCode());
 		params.put(JsonKey.STACKTRACE, generateStackTrace(e.getStackTrace()));
 		request.setRequest(telemetryInfo);
-		lmaxWriter.submitMessage(request);
+//		lmaxWriter.submitMessage(request);
 
 	}
 

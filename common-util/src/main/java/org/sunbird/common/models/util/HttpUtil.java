@@ -40,7 +40,6 @@ import org.sunbird.common.models.response.HttpUtilResponse;
 import org.sunbird.common.request.ExecutionContext;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
-import org.sunbird.telemetry.util.lmaxdisruptor.LMAXWriter;
 import org.sunbird.telemetry.util.lmaxdisruptor.TelemetryEvents;
 
 /**
@@ -52,7 +51,7 @@ import org.sunbird.telemetry.util.lmaxdisruptor.TelemetryEvents;
 public class HttpUtil {
 
 
-    private static LMAXWriter lmaxWriter = LMAXWriter.getInstance();
+//    private static TelemetryLmaxWriter lmaxWriter = TelemetryLmaxWriter.getInstance();
 
     private HttpUtil() {}
 
@@ -469,7 +468,7 @@ public class HttpUtil {
         logInfo.put(JsonKey.END_TIME, endTime);
         Request req = new Request();
         req.setRequest(generateTelemetryRequest(TelemetryEvents.LOG.getName(), logInfo));
-        lmaxWriter.submitMessage(req);
+//        lmaxWriter.submitMessage(req);
 
     }
 
@@ -523,7 +522,7 @@ public class HttpUtil {
                     "HttpUtil doPatchRequest method end at ==" + stopTime + " for requestURL "
                             + requestURL + " ,Total time elapsed = " + elapsedTime,
                     LoggerEnum.PERF_LOG);
-            telemetryProcessingCall(logInfo);
+//            telemetryProcessingCall(logInfo);
             return response;
         } catch (Exception e) {
             ProjectLogger.log(e.getMessage(), e);
