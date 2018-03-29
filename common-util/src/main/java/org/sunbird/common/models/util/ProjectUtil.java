@@ -874,18 +874,4 @@ public class ProjectUtil {
 				.toString();
 	}
 
-	/**
-	 * Method to get property values from System env if absent then fetch from
-	 * properties file .
-	 * @param key
-	 * @return
-	 */
-	public static String getValue(String key){
-		String value = System.getenv(key);
-		if(StringUtils.isEmpty(value)){
-			value = propertiesCache.readProperty(key);
-		}
-		return value;
-	}
-
 }

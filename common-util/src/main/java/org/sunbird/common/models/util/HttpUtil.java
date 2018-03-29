@@ -33,6 +33,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.MIME;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -558,7 +559,7 @@ public class HttpUtil {
             MultipartEntityBuilder builder = MultipartEntityBuilder.create();
             Set<Entry<String, String>> entry = reqData.entrySet();
             for (Entry<String, String> entryObj : entry) {
-                builder.addTextBody(entryObj.getKey(), entryObj.getValue());
+                builder.addTextBody(entryObj.getKey(), entryObj.getValue(), ContentType.create("text/plain", MIME.UTF8_CHARSET));
             }
             Set<Entry<String, byte[]>> fileEntry = fileData.entrySet();
             for (Entry<String, byte[]> entryObj : fileEntry) {
