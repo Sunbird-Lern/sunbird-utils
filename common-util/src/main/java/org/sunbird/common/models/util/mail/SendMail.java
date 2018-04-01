@@ -89,6 +89,7 @@ public class SendMail {
 	 *            subject
 	 */
 	public static boolean sendMail(String[] receipent, String subject, VelocityContext context, String templateName) {
+		ProjectLogger.log("Mail Template name - "+templateName, LoggerEnum.INFO.name());
 		Transport transport = null;
 		boolean flag = true;
 		if (context != null) {
@@ -151,6 +152,7 @@ public class SendMail {
 	 */
 	public static void sendMail(String[] receipent, String subject, VelocityContext context, String templateName,
 			String[] ccList) {
+		ProjectLogger.log("Mail Template name - "+templateName, LoggerEnum.INFO.name());
 		Transport transport = null;
 		try {
 			Session session = Session.getInstance(props, new GMailAuthenticator(userName, password));
