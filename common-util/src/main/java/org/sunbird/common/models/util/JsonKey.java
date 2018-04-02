@@ -628,6 +628,8 @@ public final class JsonKey {
     public static final String CONTENT_ENCODING = "Content-Encoding";
     public static final String EK_STEP = "EK-STEP";
     public static final String RESOURCE_NAME = "resourceName";
+    public static final String BADGE_ASSERTIONS = "badgeAssertions";
+    public static final String USER_BADGE_ASSERTION_DB = "user_badge_assertion";
 
     private JsonKey() {}
 }
