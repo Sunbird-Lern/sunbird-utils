@@ -627,6 +627,7 @@ public final class JsonKey {
     public static final String CHANNEL_ID = "x-channel-id";
     public static final String CONTENT_ENCODING = "Content-Encoding";
     public static final String EK_STEP = "EK-STEP";
+    public static final String RESOURCE_NAME = "resourceName";
 
     private JsonKey() {}
 }

@@ -576,10 +576,14 @@ public class ProjectUtil {
 	}
 
 	private static String getSunbirdLogoUrl() {
-		if (!StringUtils.isBlank(System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL))) {
-			return System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL);
+		String envLogoUrl = System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL);
+		ProjectLogger.log("Sunbird env logo url from Environment - "+envLogoUrl, LoggerEnum.INFO.name());
+		if (!StringUtils.isBlank(envLogoUrl)) {
+			return envLogoUrl;
 		} else if (!StringUtils.isBlank(propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL))) {
-			return propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL);
+			envLogoUrl = propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL);
+			ProjectLogger.log("Sunbird env logo url from Properties file - "+envLogoUrl, LoggerEnum.INFO.name());
+			return envLogoUrl;
 		}
 		return "";
 	}
@@ -712,7 +716,7 @@ public class ProjectUtil {
 	/**
 	 * This method will do the phone number validation check
 	 * 
-	 * @param phoneNo
+	 * @param phone
 	 *            String
 	 * @return boolean
 	 */
