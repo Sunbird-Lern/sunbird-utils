@@ -14,9 +14,9 @@ import org.junit.Test;
  *
  */
 public class AuditLogTest {
-	
+
 	@Test
-	public void createAuditLog () {
+	public void createAuditLog() {
 		AuditLog log = new AuditLog();
 		log.setDate("2017-12-29");
 		log.setObjectId("objectId");
@@ -24,7 +24,7 @@ public class AuditLogTest {
 		log.setOperationType("create");
 		log.setRequestId("requesterId");
 		log.setUserId("userId");
-		Map<String,Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>();
 		log.setLogRecord(map);
 		Assert.assertEquals("2017-12-29", log.getDate());
 		Assert.assertEquals("objectId", log.getObjectId());
