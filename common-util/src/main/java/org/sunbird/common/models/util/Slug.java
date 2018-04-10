@@ -69,9 +69,9 @@ public class Slug {
 	}
 
 	public static String urlDecode(String input) {
-	  String value = "";
+		String value = "";
 		try {
-		  value = URLDecoder.decode(input, "UTF-8");
+			value = URLDecoder.decode(input, "UTF-8");
 		} catch (Exception ex) {
 			ProjectLogger.log(ex.getMessage(), ex);
 		}
