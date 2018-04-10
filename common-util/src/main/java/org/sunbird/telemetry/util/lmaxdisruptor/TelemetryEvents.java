@@ -5,15 +5,15 @@ package org.sunbird.telemetry.util.lmaxdisruptor;
  */
 public enum TelemetryEvents {
 
-  AUDIT("AUDIT"),SEARCH("SEARCH"),LOG("LOG"),ERROR("ERROR");
-  private String name;
+	AUDIT("AUDIT"), SEARCH("SEARCH"), LOG("LOG"), ERROR("ERROR");
+	private String name;
 
-  TelemetryEvents(String name){
-    this.name = name;
-  }
+	TelemetryEvents(String name) {
+		this.name = name;
+	}
 
-  public String getName() {
-    return name;
-  }
+	public String getName() {
+		return name;
+	}
 
 }
