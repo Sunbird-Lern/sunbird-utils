@@ -631,6 +631,7 @@ public final class JsonKey {
     public static final String BADGE_ASSERTIONS = "badgeAssertions";
     public static final String USER_BADGE_ASSERTION_DB = "user_badge_assertion";
     public static final String DURATION = "duration";
+    public static final String OBJECT_STORE = "object-store";
 
     private JsonKey() {}
 }
