@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.telemetry.dto.Actor;
@@ -96,16 +97,28 @@ public class TelemetryGenerator {
 
 		Map<String, Object> edata = new HashMap<>();
 		Map<String, Object> props = (Map<String, Object>) params.get(JsonKey.PROPS);
-		edata.put(JsonKey.PROPS, getProps(props));
+		//TODO: need to rethink about this one .. if map is null then what to do
+		if(null != props) {
+			edata.put(JsonKey.PROPS, getProps(props));
+		}
 
 		Map<String, Object> target = (Map<String, Object>) params.get(JsonKey.TARGET_OBJECT);
 		if (target.get(JsonKey.CURRENT_STATE) != null) {
 			edata.put(JsonKey.STATE, target.get(JsonKey.CURRENT_STATE));
+			if(JsonKey.UPDATE.equalsIgnoreCase((String)target.get(JsonKey.CURRENT_STATE)) && edata.get(props)!= null){
+				removeAttributes((Map<String, Object>)edata.get(props) , JsonKey.ID);
+			}
 		}
 		return edata;
 
 	}
-	
+
+	private static void removeAttributes(Map<String, Object> map, String... properties) {
+		for(String property: properties){
+			map.remove(property);
+		}
+	}
+
 	private static List<String> getProps(Map<String, Object> map) {
 		return (List<String>) map.entrySet().stream()
 		.map(entry -> entry.getKey())
