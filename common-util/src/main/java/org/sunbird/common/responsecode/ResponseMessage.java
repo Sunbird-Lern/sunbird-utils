@@ -271,6 +271,8 @@ public interface ResponseMessage {
         String USER_INACTIVE_FOR_THIS_ORG =
                 "User is Inactive for this org. Please make it active to proceed.";
         String USER_UPDATE_FAILED_FOR_THIS_ORG = "user updation failed for this org.";
+        String PAGE_NOT_EXIST = "Requested page does not exist .";
+        String ORG_NOT_EXIST = "Requested organisation does not exist .";
     }
 
     interface Key {
@@ -516,5 +518,7 @@ public interface ResponseMessage {
         String USER_INACTIVE_FOR_THIS_ORG = "USER_INACTIVE_FOR_THIS_ORG";
         String USER_UPDATE_FAILED_FOR_THIS_ORG = "USER_UPDATE_FAILED_FOR_THIS_ORG";
         String PREFERENCE_KEY_MISSING = "PREFERENCE_KEY_MISSING";
+        String PAGE_NOT_EXIST = "PAGE_NOT_EXIST";
+        String ORG_NOT_EXIST = "ORG_NOT_EXIST";
     }
 }

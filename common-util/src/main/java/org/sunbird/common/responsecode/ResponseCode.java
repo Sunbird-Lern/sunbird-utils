@@ -251,6 +251,8 @@ public enum ResponseCode {
 	    userInactiveForThisOrg(ResponseMessage.Key.USER_INACTIVE_FOR_THIS_ORG, ResponseMessage.Message.USER_INACTIVE_FOR_THIS_ORG),
 	    userUpdateToOrgFailed(ResponseMessage.Key.USER_UPDATE_FAILED_FOR_THIS_ORG, ResponseMessage.Message.USER_UPDATE_FAILED_FOR_THIS_ORG),
 	    preferenceKeyMissing(ResponseMessage.Key.USER_UPDATE_FAILED_FOR_THIS_ORG, ResponseMessage.Message.USER_UPDATE_FAILED_FOR_THIS_ORG),
+	    pageDoesNotExist(ResponseMessage.Key.PAGE_NOT_EXIST, ResponseMessage.Message.PAGE_NOT_EXIST),
+	    orgDoesNotExist(ResponseMessage.Key.ORG_NOT_EXIST, ResponseMessage.Message.ORG_NOT_EXIST),
 	    OK(200), CLIENT_ERROR(400), SERVER_ERROR(500), RESOURCE_NOT_FOUND(404),UNAUTHORIZED(401),REDIRECTION_REQUIRED(302);
 	private int responseCode;
 	/**
