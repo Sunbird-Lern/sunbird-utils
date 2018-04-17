@@ -3,6 +3,9 @@
  */
 package org.sunbird.common.models.util;
 
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
@@ -19,7 +22,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.validator.UrlValidator;
 import org.apache.velocity.Template;
@@ -28,10 +30,6 @@ import org.apache.velocity.app.VelocityEngine;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
-
-import com.google.i18n.phonenumbers.NumberParseException;
-import com.google.i18n.phonenumbers.PhoneNumberUtil;
-import com.google.i18n.phonenumbers.Phonenumber;
 
 /**
  * This class will contains all the common utility methods.
@@ -431,7 +429,7 @@ public class ProjectUtil {
 	 */
 	public static double calculatePercentage(double score, double maxScore) {
 		double percentage = (score * 100) / (maxScore * 1.0);
-		return (double) Math.round(percentage);
+		return Math.round(percentage);
 	}
 
 	/**
@@ -442,7 +440,7 @@ public class ProjectUtil {
 	 * @return AssessmentResult
 	 */
 	public static AssessmentResult calcualteAssessmentResult(double percentage) {
-		switch ((int) (Math.round(Float.valueOf(String.valueOf(percentage))) / 10)) {
+		switch (Math.round(Float.valueOf(String.valueOf(percentage))) / 10) {
 		case 10:
 			return AssessmentResult.gradeA;
 		case 9:
@@ -877,5 +875,18 @@ public class ProjectUtil {
 						: "0" + (cal.get(Calendar.MONTH) + 1)))
 				.toString();
 	}
+
+    /**
+     * @param nextLine
+     * @return
+     */
+    public static boolean isNotEmptyStringArray(String[] nextLine) {
+        for (String str : nextLine) {
+            if (StringUtils.isNotEmpty(str)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 }
