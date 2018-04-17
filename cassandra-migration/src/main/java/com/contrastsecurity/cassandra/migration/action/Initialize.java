@@ -6,8 +6,8 @@ import com.datastax.driver.core.Session;
 
 public class Initialize {
 
-    public void run(Session session, Keyspace keyspace, String migrationVersionTableName) {
-        SchemaVersionDAO dao = new SchemaVersionDAO(session, keyspace, migrationVersionTableName);
-        dao.createTablesIfNotExist();
-    }
+  public void run(Session session, Keyspace keyspace, String migrationVersionTableName) {
+    SchemaVersionDAO dao = new SchemaVersionDAO(session, keyspace, migrationVersionTableName);
+    dao.createTablesIfNotExist();
+  }
 }

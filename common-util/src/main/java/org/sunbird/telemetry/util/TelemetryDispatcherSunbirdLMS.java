@@ -1,9 +1,10 @@
 package org.sunbird.telemetry.util;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
@@ -11,12 +12,7 @@ import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.request.Request;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-/**
- * Created by arvind on 23/3/18.
- */
+/** Created by arvind on 23/3/18. */
 public class TelemetryDispatcherSunbirdLMS implements TelemetryDispatcher {
 
   private static ObjectMapper mapper = new ObjectMapper();
@@ -25,14 +21,15 @@ public class TelemetryDispatcherSunbirdLMS implements TelemetryDispatcher {
   @Override
   public boolean dispatchTelemetryEvent(List<String> eventList) {
     try {
-      List<Map<String, Object>> jsonList = mapper.readValue(eventList.toString(),
-          new TypeReference<List<Map<String, Object>>>() {
-          });
+      List<Map<String, Object>> jsonList =
+          mapper.readValue(eventList.toString(), new TypeReference<List<Map<String, Object>>>() {});
       String eventReq = getTelemetryEvent(createTelemetryRequest(jsonList));
       ProjectLogger.log("EVEVTS TO FLUSH : " + eventReq);
-      String response = HttpUtil.sendPostRequest(
-          getCompleteUrl(JsonKey.SUNBIRD_LMS_BASE_URL, JsonKey.SUNBIRD_LMS_TELEMETRY_API_URL), eventReq,
-          getSunbirdLMSHeaders());
+      String response =
+          HttpUtil.sendPostRequest(
+              getCompleteUrl(JsonKey.SUNBIRD_LMS_BASE_URL, JsonKey.SUNBIRD_LMS_TELEMETRY_API_URL),
+              eventReq,
+              getSunbirdLMSHeaders());
       ProjectLogger.log("FLUSH RESPONSE : " + response);
     } catch (Exception ex) {
       ProjectLogger.log(ex.getMessage(), ex);
@@ -60,24 +57,22 @@ public class TelemetryDispatcherSunbirdLMS implements TelemetryDispatcher {
     return event;
   }
 
-
-  public String getCompleteUrl(String baseUrlKey , String uriKey){
+  public String getCompleteUrl(String baseUrlKey, String uriKey) {
     String baseSearchUrl = System.getenv(baseUrlKey);
     if (StringUtils.isBlank(baseSearchUrl)) {
       baseSearchUrl = propertiesCache.readProperty(baseUrlKey);
     }
     String uri = propertiesCache.readProperty(uriKey);
-    return baseSearchUrl+uri;
+    return baseSearchUrl + uri;
   }
 
-  public Map<String, String> getSunbirdLMSHeaders(){
+  public Map<String, String> getSunbirdLMSHeaders() {
     Map<String, String> headers = new HashMap<>();
     headers.put("Content-Type", "application/json");
     headers.put("accept", "application/json");
     String authKey = System.getenv(JsonKey.SUNBIRD_LMS_AUTHORIZATION);
     if (StringUtils.isBlank(authKey)) {
-      authKey =
-          PropertiesCache.getInstance().readProperty(JsonKey.SUNBIRD_LMS_AUTHORIZATION);
+      authKey = PropertiesCache.getInstance().readProperty(JsonKey.SUNBIRD_LMS_AUTHORIZATION);
     }
     headers.put(JsonKey.AUTHORIZATION, JsonKey.BEARER + authKey);
     return headers;

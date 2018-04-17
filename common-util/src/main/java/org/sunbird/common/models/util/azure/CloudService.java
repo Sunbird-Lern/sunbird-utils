@@ -3,21 +3,18 @@ package org.sunbird.common.models.util.azure;
 import java.io.File;
 import java.util.List;
 
-/**
- * Created by arvind on 24/8/17.
- */
+/** Created by arvind on 24/8/17. */
 public interface CloudService {
 
-	String uploadFile(String containerName, String filName, String fileLocation);
+  String uploadFile(String containerName, String filName, String fileLocation);
 
-	boolean downLoadFile(String containerName, String fileName, String downloadFolder);
+  boolean downLoadFile(String containerName, String fileName, String downloadFolder);
 
-	String uploadFile(String containerName, File file);
+  String uploadFile(String containerName, File file);
 
-	boolean deleteFile(String containerName, String fileName);
+  boolean deleteFile(String containerName, String fileName);
 
-	List<String> listAllFiles(String containerName);
+  List<String> listAllFiles(String containerName);
 
-	boolean deleteContainer(String containerName);
-
+  boolean deleteContainer(String containerName);
 }

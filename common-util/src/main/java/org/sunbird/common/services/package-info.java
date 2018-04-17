@@ -1,8 +1,3 @@
-/**
- * 
- */
-/**
- * @author Manzarul
- *
- */
+/** */
+/** @author Manzarul */
 package org.sunbird.common.services;

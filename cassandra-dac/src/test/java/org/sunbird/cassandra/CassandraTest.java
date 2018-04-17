@@ -14,26 +14,26 @@ import org.sunbird.helper.CassandraConnectionMngrFactory;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CassandraTest {
 
-	private static PropertiesCache cach = PropertiesCache.getInstance();
-	private static String host = cach.getProperty("contactPoint");
-	private static String port = cach.getProperty("port");
-	private static CassandraConnectionManagerImpl connectionManager = (CassandraConnectionManagerImpl) CassandraConnectionMngrFactory
-			.getObject(JsonKey.EMBEDDED);
+  private static PropertiesCache cach = PropertiesCache.getInstance();
+  private static String host = cach.getProperty("contactPoint");
+  private static String port = cach.getProperty("port");
+  private static CassandraConnectionManagerImpl connectionManager =
+      (CassandraConnectionManagerImpl) CassandraConnectionMngrFactory.getObject(JsonKey.EMBEDDED);
 
-	@Test
-	public void testConnection() {
-		boolean bool = connectionManager.createConnection(host, port, "", "", "sunbird1");
-		assertEquals(true, bool);
-	}
+  @Test
+  public void testConnection() {
+    boolean bool = connectionManager.createConnection(host, port, "", "", "sunbird1");
+    assertEquals(true, bool);
+  }
 
-	@Test
-	public void testConnectionB() {
-		boolean bool = connectionManager.createConnection(host, port, "", "", "sunbird12");
-		assertEquals(true, bool);
-	}
+  @Test
+  public void testConnectionB() {
+    boolean bool = connectionManager.createConnection(host, port, "", "", "sunbird12");
+    assertEquals(true, bool);
+  }
 
-	@AfterClass
-	public static void shutdownhook() {
-		connectionManager.registerShutDownHook();
-	}
+  @AfterClass
+  public static void shutdownhook() {
+    connectionManager.registerShutDownHook();
+  }
 }

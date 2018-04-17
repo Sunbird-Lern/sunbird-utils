@@ -1,10 +1,7 @@
 package org.sunbird.common.models.util;
 
-/**
- * Created by arvind on 7/3/18.
- */
+/** Created by arvind on 7/3/18. */
 public enum BadgingActorOperations {
-
   CREATE_BADGE_CLASS("createBadgeClass"),
   GET_BADGE_CLASS("getBadgeClass"),
   SEARCH_BADGE_CLASS("searchBadgeClass"),
@@ -38,6 +35,4 @@ public enum BadgingActorOperations {
   public String getValue() {
     return this.value;
   }
-
-
 }

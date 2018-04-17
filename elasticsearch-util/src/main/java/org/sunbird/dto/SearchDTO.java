@@ -1,6 +1,4 @@
-/**
- * 
- */
+/** */
 package org.sunbird.dto;
 
 import java.util.ArrayList;
@@ -10,160 +8,160 @@ import java.util.Map;
 
 /**
  * This class will take input for elastic search query
- * 
- * @author Manzarul
  *
+ * @author Manzarul
  */
 public class SearchDTO {
 
-	@SuppressWarnings("rawtypes")
-	private List<Map> properties;
-	private List<Map<String, String>> facets = new ArrayList<>();
-	private List<String> fields;
-	private List<String> excludedFields;
-	private Map<String, String> sortBy = new HashMap<>();
-	private String operation;
-	private String query;
-	private Integer limit = 250;
-	private Integer offset = 0;
-	private boolean fuzzySearch = false;
-	// additional properties will hold , filters, exist , not exist
-	private Map<String, Object> additionalProperties = new HashMap<>();
-	private Map<String, Integer> softConstraints = new HashMap<>();
-	private List<Map<String, Object>> groupQuery = new ArrayList<>();
-	private List<String> mode = new ArrayList<>();
+  @SuppressWarnings("rawtypes")
+  private List<Map> properties;
 
-	public List<Map<String, Object>> getGroupQuery() {
-		return groupQuery;
-	}
+  private List<Map<String, String>> facets = new ArrayList<>();
+  private List<String> fields;
+  private List<String> excludedFields;
+  private Map<String, String> sortBy = new HashMap<>();
+  private String operation;
+  private String query;
+  private Integer limit = 250;
+  private Integer offset = 0;
+  private boolean fuzzySearch = false;
+  // additional properties will hold , filters, exist , not exist
+  private Map<String, Object> additionalProperties = new HashMap<>();
+  private Map<String, Integer> softConstraints = new HashMap<>();
+  private List<Map<String, Object>> groupQuery = new ArrayList<>();
+  private List<String> mode = new ArrayList<>();
 
-	public void setGroupQuery(List<Map<String, Object>> groupQuery) {
-		this.groupQuery = groupQuery;
-	}
+  public List<Map<String, Object>> getGroupQuery() {
+    return groupQuery;
+  }
 
-	public SearchDTO() {
-		super();
-	}
+  public void setGroupQuery(List<Map<String, Object>> groupQuery) {
+    this.groupQuery = groupQuery;
+  }
 
-	@SuppressWarnings("rawtypes")
-	public SearchDTO(List<Map> properties, String operation, int limit) {
-		super();
-		this.properties = properties;
-		this.operation = operation;
-		this.limit = limit;
-	}
+  public SearchDTO() {
+    super();
+  }
 
-	@SuppressWarnings("rawtypes")
-	public List<Map> getProperties() {
-		return properties;
-	}
+  @SuppressWarnings("rawtypes")
+  public SearchDTO(List<Map> properties, String operation, int limit) {
+    super();
+    this.properties = properties;
+    this.operation = operation;
+    this.limit = limit;
+  }
 
-	@SuppressWarnings("rawtypes")
-	public void setProperties(List<Map> properties) {
-		this.properties = properties;
-	}
+  @SuppressWarnings("rawtypes")
+  public List<Map> getProperties() {
+    return properties;
+  }
 
-	public String getOperation() {
-		return operation;
-	}
+  @SuppressWarnings("rawtypes")
+  public void setProperties(List<Map> properties) {
+    this.properties = properties;
+  }
 
-	public void setOperation(String operation) {
-		this.operation = operation;
-	}
+  public String getOperation() {
+    return operation;
+  }
 
-	public Integer getLimit() {
-		return limit;
-	}
+  public void setOperation(String operation) {
+    this.operation = operation;
+  }
 
-	public void setLimit(Integer limit) {
-		this.limit = limit;
-	}
+  public Integer getLimit() {
+    return limit;
+  }
 
-	public List<Map<String, String>> getFacets() {
-		return facets;
-	}
+  public void setLimit(Integer limit) {
+    this.limit = limit;
+  }
 
-	public void setFacets(List<Map<String, String>> facets) {
-		this.facets = facets;
-	}
+  public List<Map<String, String>> getFacets() {
+    return facets;
+  }
 
-	public Map<String, String> getSortBy() {
-		return sortBy;
-	}
+  public void setFacets(List<Map<String, String>> facets) {
+    this.facets = facets;
+  }
 
-	public void setSortBy(Map<String, String> sortBy) {
-		this.sortBy = sortBy;
-	}
+  public Map<String, String> getSortBy() {
+    return sortBy;
+  }
 
-	public boolean isFuzzySearch() {
-		return fuzzySearch;
-	}
+  public void setSortBy(Map<String, String> sortBy) {
+    this.sortBy = sortBy;
+  }
 
-	public void setFuzzySearch(boolean fuzzySearch) {
-		this.fuzzySearch = fuzzySearch;
-	}
+  public boolean isFuzzySearch() {
+    return fuzzySearch;
+  }
 
-	public Map<String, Object> getAdditionalProperties() {
-		return additionalProperties;
-	}
+  public void setFuzzySearch(boolean fuzzySearch) {
+    this.fuzzySearch = fuzzySearch;
+  }
 
-	public void setAdditionalProperties(Map<String, Object> additionalProperties) {
-		this.additionalProperties = additionalProperties;
-	}
+  public Map<String, Object> getAdditionalProperties() {
+    return additionalProperties;
+  }
 
-	public Object getAdditionalProperty(String key) {
-		return additionalProperties.get(key);
-	}
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) {
+    this.additionalProperties = additionalProperties;
+  }
 
-	public void addAdditionalProperty(String key, Object value) {
-		this.additionalProperties.put(key, value);
-	}
+  public Object getAdditionalProperty(String key) {
+    return additionalProperties.get(key);
+  }
 
-	public List<String> getFields() {
-		return fields;
-	}
+  public void addAdditionalProperty(String key, Object value) {
+    this.additionalProperties.put(key, value);
+  }
 
-	public void setFields(List<String> fields) {
-		this.fields = fields;
-	}
+  public List<String> getFields() {
+    return fields;
+  }
 
-	public Integer getOffset() {
-		return offset;
-	}
+  public void setFields(List<String> fields) {
+    this.fields = fields;
+  }
 
-	public void setOffset(Integer offset) {
-		this.offset = offset;
-	}
+  public Integer getOffset() {
+    return offset;
+  }
 
-	public Map<String, Integer> getSoftConstraints() {
-		return softConstraints;
-	}
+  public void setOffset(Integer offset) {
+    this.offset = offset;
+  }
 
-	public void setSoftConstraints(Map<String, Integer> softConstraints) {
-		this.softConstraints = softConstraints;
-	}
+  public Map<String, Integer> getSoftConstraints() {
+    return softConstraints;
+  }
 
-	public String getQuery() {
-		return query;
-	}
+  public void setSoftConstraints(Map<String, Integer> softConstraints) {
+    this.softConstraints = softConstraints;
+  }
 
-	public void setQuery(String query) {
-		this.query = query;
-	}
+  public String getQuery() {
+    return query;
+  }
 
-	public List<String> getMode() {
-		return mode;
-	}
+  public void setQuery(String query) {
+    this.query = query;
+  }
 
-	public void setMode(List<String> mode) {
-		this.mode = mode;
-	}
+  public List<String> getMode() {
+    return mode;
+  }
 
-	public List<String> getExcludedFields() {
-		return excludedFields;
-	}
+  public void setMode(List<String> mode) {
+    this.mode = mode;
+  }
 
-	public void setExcludedFields(List<String> excludedFields) {
-		this.excludedFields = excludedFields;
-	}
+  public List<String> getExcludedFields() {
+    return excludedFields;
+  }
+
+  public void setExcludedFields(List<String> excludedFields) {
+    this.excludedFields = excludedFields;
+  }
 }

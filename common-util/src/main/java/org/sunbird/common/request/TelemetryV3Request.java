@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by arvind on 23/3/18.
- */
+/** Created by arvind on 23/3/18. */
 public class TelemetryV3Request implements Serializable {
 
   private String id;
@@ -17,11 +15,11 @@ public class TelemetryV3Request implements Serializable {
 
   private List<Map<String, Object>> events = new ArrayList<>();
 
-  public TelemetryV3Request(){
+  public TelemetryV3Request() {
     params = new Params();
   }
 
-  class Params implements Serializable{
+  class Params implements Serializable {
 
     private String did;
     private String key;

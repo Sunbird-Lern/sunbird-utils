@@ -4,87 +4,92 @@ import com.contrastsecurity.cassandra.migration.CassandraMigrationException;
 
 public final class ScriptsLocation implements Comparable<ScriptsLocation> {
 
-    private static final String CLASSPATH_PREFIX = "classpath:";
-    public static final String FILESYSTEM_PREFIX = "filesystem:";
+  private static final String CLASSPATH_PREFIX = "classpath:";
+  public static final String FILESYSTEM_PREFIX = "filesystem:";
 
-    private String prefix; //classpath or filesystem
-    private String path;
+  private String prefix; // classpath or filesystem
+  private String path;
 
-    public ScriptsLocation(String descriptor) {
-        String normalizedDescriptor = descriptor.trim().replace("\\", "/");
+  public ScriptsLocation(String descriptor) {
+    String normalizedDescriptor = descriptor.trim().replace("\\", "/");
 
-        if (normalizedDescriptor.contains(":")) {
-            prefix = normalizedDescriptor.substring(0, normalizedDescriptor.indexOf(":") + 1);
-            path = normalizedDescriptor.substring(normalizedDescriptor.indexOf(":") + 1);
-        } else {
-            prefix = CLASSPATH_PREFIX;
-            path = normalizedDescriptor;
-        }
-
-        if (isClassPath()) {
-            path = path.replace(".", "/");
-            if (path.startsWith("/")) {
-                path = path.substring(1);
-            }
-        } else {
-            if (!isFileSystem()) {
-                throw new CassandraMigrationException("Unknown prefix for location. " +
-                        "Must be " + CLASSPATH_PREFIX + " or " + FILESYSTEM_PREFIX + "."
-                        + normalizedDescriptor);
-            }
-        }
-
-        if (path.endsWith("/")) {
-            path = path.substring(0, path.length() - 1);
-        }
+    if (normalizedDescriptor.contains(":")) {
+      prefix = normalizedDescriptor.substring(0, normalizedDescriptor.indexOf(":") + 1);
+      path = normalizedDescriptor.substring(normalizedDescriptor.indexOf(":") + 1);
+    } else {
+      prefix = CLASSPATH_PREFIX;
+      path = normalizedDescriptor;
     }
 
-    public boolean isClassPath() {
-        return CLASSPATH_PREFIX.equals(prefix);
+    if (isClassPath()) {
+      path = path.replace(".", "/");
+      if (path.startsWith("/")) {
+        path = path.substring(1);
+      }
+    } else {
+      if (!isFileSystem()) {
+        throw new CassandraMigrationException(
+            "Unknown prefix for location. "
+                + "Must be "
+                + CLASSPATH_PREFIX
+                + " or "
+                + FILESYSTEM_PREFIX
+                + "."
+                + normalizedDescriptor);
+      }
     }
 
-    public boolean isFileSystem() {
-        return FILESYSTEM_PREFIX.equals(prefix);
+    if (path.endsWith("/")) {
+      path = path.substring(0, path.length() - 1);
     }
+  }
 
-    public boolean isParentOf(ScriptsLocation other) {
-        return (other.getDescriptor() + "/").startsWith(getDescriptor() + "/");
-    }
+  public boolean isClassPath() {
+    return CLASSPATH_PREFIX.equals(prefix);
+  }
 
-    public String getPrefix() {
-        return prefix;
-    }
+  public boolean isFileSystem() {
+    return FILESYSTEM_PREFIX.equals(prefix);
+  }
 
-    public String getPath() {
-        return path;
-    }
+  public boolean isParentOf(ScriptsLocation other) {
+    return (other.getDescriptor() + "/").startsWith(getDescriptor() + "/");
+  }
 
-    public String getDescriptor() {
-        return prefix + path;
-    }
+  public String getPrefix() {
+    return prefix;
+  }
 
-    @SuppressWarnings("NullableProblems")
-    public int compareTo(ScriptsLocation o) {
-        return getDescriptor().compareTo(o.getDescriptor());
-    }
+  public String getPath() {
+    return path;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+  public String getDescriptor() {
+    return prefix + path;
+  }
 
-        ScriptsLocation location = (ScriptsLocation) o;
+  @SuppressWarnings("NullableProblems")
+  public int compareTo(ScriptsLocation o) {
+    return getDescriptor().compareTo(o.getDescriptor());
+  }
 
-        return getDescriptor().equals(location.getDescriptor());
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
 
-    @Override
-    public int hashCode() {
-        return getDescriptor().hashCode();
-    }
+    ScriptsLocation location = (ScriptsLocation) o;
 
-    @Override
-    public String toString() {
-        return getDescriptor();
-    }
+    return getDescriptor().equals(location.getDescriptor());
+  }
+
+  @Override
+  public int hashCode() {
+    return getDescriptor().hashCode();
+  }
+
+  @Override
+  public String toString() {
+    return getDescriptor();
+  }
 }
