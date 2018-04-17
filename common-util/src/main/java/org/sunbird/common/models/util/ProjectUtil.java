@@ -877,11 +877,11 @@ public class ProjectUtil {
 	}
 
     /**
-     * @param nextLine
+     * @param strArray
      * @return
      */
-    public static boolean isNotEmptyStringArray(String[] nextLine) {
-        for (String str : nextLine) {
+    public static boolean isNotEmptyStringArray(String[] strArray) {
+        for (String str : strArray) {
             if (StringUtils.isNotEmpty(str)) {
                 return false;
             }
