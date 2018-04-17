@@ -877,8 +877,10 @@ public class ProjectUtil {
 	}
 
     /**
-     * @param strArray
-     * @return
+     * This method will check whether Array contains only empty string or not
+     * 
+     * @param strArray String[]
+     * @return boolean
      */
     public static boolean isNotEmptyStringArray(String[] strArray) {
         for (String str : strArray) {
