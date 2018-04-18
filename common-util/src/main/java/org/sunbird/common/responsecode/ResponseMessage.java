@@ -267,8 +267,8 @@ public interface ResponseMessage {
     String USER_INACTIVE_FOR_THIS_ORG =
         "User is Inactive for this org. Please make it active to proceed.";
     String USER_UPDATE_FAILED_FOR_THIS_ORG = "user updation failed for this org.";
-    String PAGE_NOT_EXIST = "Requested page does not exist .";
-    String ORG_NOT_EXIST = "Requested organisation does not exist .";
+    String PAGE_NOT_EXIST = "Requested page does not exist.";
+    String ORG_NOT_EXIST = "Requested organisation does not exist.";
   }
 
   interface Key {
