@@ -3,7 +3,6 @@
  */
 package org.sunbird.common.models.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +20,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -42,6 +42,8 @@ import org.sunbird.common.request.ExecutionContext;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.telemetry.util.lmaxdisruptor.TelemetryEvents;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * This utility method will handle external http call
@@ -408,7 +410,7 @@ public class HttpUtil {
                     LoggerEnum.PERF_LOG);
             return "Failure";
         } catch (Exception e) {
-            ProjectLogger.log(e.getMessage(), e);
+            ProjectLogger.log("HttpUtil call fails == "+e.getMessage(), e);
         }
         long stopTime = System.currentTimeMillis();
         long elapsedTime = stopTime - startTime;
