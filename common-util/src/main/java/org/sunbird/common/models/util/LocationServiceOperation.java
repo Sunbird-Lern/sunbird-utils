@@ -5,7 +5,9 @@ public enum LocationServiceOperation {
   CREATE_LOCATION("createLocation"),
   UPDATE_LOCATION("updateLocation"),
   SEARCH_LOCATION("searchLocation"),
-  DELETE_LOCATION("deleteclLocation");
+  DELETE_LOCATION("deleteclLocation"),
+  READ_LOCATION_TYPE("readLocationType"),
+  UPSERT_LOCATION_TO_ES("upsertLocationDataToES");
 
   private String value;
 

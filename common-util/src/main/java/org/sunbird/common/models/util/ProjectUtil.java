@@ -362,7 +362,8 @@ public class ProjectUtil {
     usernotes("usernotes"),
     history("history"),
     userprofilevisibility("userprofilevisibility"),
-    telemetry("telemetry");
+    telemetry("telemetry"),
+    location("location");
     private String typeName;
 
     private EsType(String name) {
