@@ -270,7 +270,7 @@ public interface ResponseMessage {
     String PAGE_NOT_EXIST = "Requested page does not exist.";
     String ORG_NOT_EXIST = "Requested organisation does not exist.";
     String LOCATION_TYPE_REQUIRED = "Location type required.";
-    String INVALID_REQUEST_DATA_CREATE_LOCATION = "{0} required for create location.";
+    String INVALID_REQUEST_DATA_FOR_LOCATION = "{0} field required.";
   }
 
   interface Key {
@@ -519,6 +519,6 @@ public interface ResponseMessage {
     String PAGE_NOT_EXIST = "PAGE_NOT_EXIST";
     String ORG_NOT_EXIST = "ORG_NOT_EXIST";
     String LOCATION_TYPE_REQUIRED = "LOCATION_TYPE_REQUIRED";
-    String INVALID_REQUEST_DATA_CREATE_LOCATION = "INVALID_REQUEST_DATA_CREATE_LOCATION";
+    String INVALID_REQUEST_DATA_FOR_LOCATION = "INVALID_REQUEST_DATA_CREATE_LOCATION";
   }
 }
