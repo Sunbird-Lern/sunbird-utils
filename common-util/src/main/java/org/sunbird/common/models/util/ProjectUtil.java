@@ -199,7 +199,8 @@ public class ProjectUtil {
   public enum Source {
     WEB("web"),
     ANDROID("android"),
-    IOS("ios");
+    IOS("ios"),
+    APP("app");
 
     private String value;
 
