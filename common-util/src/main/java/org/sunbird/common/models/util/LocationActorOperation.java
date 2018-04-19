@@ -1,7 +1,7 @@
 package org.sunbird.common.models.util;
 
 /** Created by arvind on 18/4/18. */
-public enum LocationServiceOperation {
+public enum LocationActorOperation {
   CREATE_LOCATION("createLocation"),
   UPDATE_LOCATION("updateLocation"),
   SEARCH_LOCATION("searchLocation"),
@@ -16,7 +16,7 @@ public enum LocationServiceOperation {
    *
    * @param value String
    */
-  LocationServiceOperation(String value) {
+  LocationActorOperation(String value) {
     this.value = value;
   }
 

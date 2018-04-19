@@ -496,6 +496,9 @@ public enum ResponseCode {
   orgDoesNotExist(ResponseMessage.Key.ORG_NOT_EXIST, ResponseMessage.Message.ORG_NOT_EXIST),
   locationTypeRequired(
       ResponseMessage.Key.LOCATION_TYPE_REQUIRED, ResponseMessage.Message.LOCATION_TYPE_REQUIRED),
+  invalidRequestDataCreateLocation(
+      ResponseMessage.Key.INVALID_REQUEST_DATA_CREATE_LOCATION,
+      ResponseMessage.Message.INVALID_REQUEST_DATA_CREATE_LOCATION),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
