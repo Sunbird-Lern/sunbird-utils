@@ -7,7 +7,8 @@ public enum LocationActorOperation {
   SEARCH_LOCATION("searchLocation"),
   DELETE_LOCATION("deleteclLocation"),
   READ_LOCATION_TYPE("readLocationType"),
-  UPSERT_LOCATION_TO_ES("upsertLocationDataToES");
+  UPSERT_LOCATION_TO_ES("upsertLocationDataToES"),
+  DELETE_LOCATION_FROM_ES("deleteLocationDataFromES");
 
   private String value;
 
