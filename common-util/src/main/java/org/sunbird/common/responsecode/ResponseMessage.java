@@ -269,6 +269,7 @@ public interface ResponseMessage {
     String USER_UPDATE_FAILED_FOR_THIS_ORG = "user updation failed for this org.";
     String PAGE_NOT_EXIST = "Requested page does not exist.";
     String ORG_NOT_EXIST = "Requested organisation does not exist.";
+    String LOCATION_TYPE_REQUIRED = "Location type required.";
   }
 
   interface Key {
@@ -516,5 +517,6 @@ public interface ResponseMessage {
     String PREFERENCE_KEY_MISSING = "PREFERENCE_KEY_MISSING";
     String PAGE_NOT_EXIST = "PAGE_NOT_EXIST";
     String ORG_NOT_EXIST = "ORG_NOT_EXIST";
+    String LOCATION_TYPE_REQUIRED = "LOCATION_TYPE_REQUIRED";
   }
 }
