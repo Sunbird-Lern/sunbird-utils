@@ -281,6 +281,7 @@ public interface ResponseMessage {
         "Multiple sub-location associated with this location,so cann't delete this location.";
     String LOCATION_TYPE_CONFLICTS = "Location type conflicts with its parent location type.";
     String MANDATORY_PARAMETER_MISSING = "Mandatory parameter {0} is missing.";
+    String INVALID_LOCN_ID = "Please provide valid locationId.";
   }
 
   interface Key {
@@ -538,5 +539,6 @@ public interface ResponseMessage {
     String INVALID_LOCATION_DELETE_REQUEST = "INVALID_LOCATION_DELETE_REQUEST";
     String LOCATION_TYPE_CONFLICTS = "LOCATION_TYPE_CONFLICTS";
     String MANDATORY_PARAMETER_MISSING = "MANDATORY_PARAMETER_MISSING";
+    String INVALID_LOCN_ID = "INVALID_LOCATION_ID";
   }
 }
