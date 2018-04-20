@@ -503,8 +503,7 @@ public enum ResponseCode {
       ResponseMessage.Key.LOCATION_CODE_ALREADY_EXIST,
       ResponseMessage.Message.LOCATION_CODE_ALREADY_EXIST),
   invalidLocationType(
-      ResponseMessage.Key.LOCATION_CODE_ALREADY_EXIST,
-      ResponseMessage.Message.LOCATION_CODE_ALREADY_EXIST),
+      ResponseMessage.Key.INVALID_LOCATION_TYPE, ResponseMessage.Message.INVALID_LOCATION_TYPE),
   parentCodeAndIdValidationError(
       ResponseMessage.Key.PARENT_CODE_AND_PARENT_ID_MISSING,
       ResponseMessage.Message.PARENT_CODE_AND_PARENT_ID_MISSING),
