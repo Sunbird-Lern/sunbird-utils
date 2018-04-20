@@ -496,9 +496,9 @@ public enum ResponseCode {
   orgDoesNotExist(ResponseMessage.Key.ORG_NOT_EXIST, ResponseMessage.Message.ORG_NOT_EXIST),
   locationTypeRequired(
       ResponseMessage.Key.LOCATION_TYPE_REQUIRED, ResponseMessage.Message.LOCATION_TYPE_REQUIRED),
-  invalidRequestDataForLocation(
-      ResponseMessage.Key.INVALID_REQUEST_DATA_FOR_LOCATION,
-      ResponseMessage.Message.INVALID_REQUEST_DATA_FOR_LOCATION),
+  mandatoryParamsMissing(
+      ResponseMessage.Key.MANDATORY_PARAMETER_MISSING,
+      ResponseMessage.Message.MANDATORY_PARAMETER_MISSING),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

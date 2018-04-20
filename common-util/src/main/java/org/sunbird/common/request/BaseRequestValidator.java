@@ -1,7 +1,11 @@
 package org.sunbird.common.request;
 
+import java.util.Arrays;
+import java.util.Map;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
+import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.responsecode.ResponseCode;
 
 /**
@@ -23,5 +27,31 @@ public class BaseRequestValidator {
           error.getErrorMessage(),
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
+  }
+
+  /**
+   * Method to check whether given mandatory fields is in given map or not .
+   *
+   * @param data Map contains the key value,
+   * @param keys List of string reprents the mandatory fields .
+   */
+  public void checkMandatoryFieldsPresent(Map<String, Object> data, String... keys) {
+    if (MapUtils.isEmpty(data)) {
+      throw new ProjectCommonException(
+          ResponseCode.invalidRequestData.getErrorCode(),
+          ResponseCode.invalidRequestData.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    Arrays.stream(keys)
+        .forEach(
+            key -> {
+              if (StringUtils.isEmpty((String) data.get(key))) {
+                throw new ProjectCommonException(
+                    ResponseCode.mandatoryParamsMissing.getErrorCode(),
+                    ResponseCode.mandatoryParamsMissing.getErrorMessage(),
+                    ResponseCode.CLIENT_ERROR.getResponseCode(),
+                    JsonKey.NAME);
+              }
+            });
   }
 }
