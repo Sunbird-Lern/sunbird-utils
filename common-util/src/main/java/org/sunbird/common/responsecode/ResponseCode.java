@@ -499,6 +499,24 @@ public enum ResponseCode {
   invalidRequestDataForLocation(
       ResponseMessage.Key.INVALID_REQUEST_DATA_FOR_LOCATION,
       ResponseMessage.Message.INVALID_REQUEST_DATA_FOR_LOCATION),
+  locationCodeAlreadyExist(
+      ResponseMessage.Key.LOCATION_CODE_ALREADY_EXIST,
+      ResponseMessage.Message.LOCATION_CODE_ALREADY_EXIST),
+  invalidLocationType(
+      ResponseMessage.Key.LOCATION_CODE_ALREADY_EXIST,
+      ResponseMessage.Message.LOCATION_CODE_ALREADY_EXIST),
+  parentCodeAndIdValidationError(
+      ResponseMessage.Key.PARENT_CODE_AND_PARENT_ID_MISSING,
+      ResponseMessage.Message.PARENT_CODE_AND_PARENT_ID_MISSING),
+  invalidLocationParentId(
+      ResponseMessage.Key.INVALID_PARENT_ID, ResponseMessage.Message.INVALID_PARENT_ID),
+  invalidLocationParentCode(
+      ResponseMessage.Key.INVALID_PARENT_CODE, ResponseMessage.Message.INVALID_PARENT_CODE),
+  invalidLocationDeleteRequest(
+      ResponseMessage.Key.INVALID_LOCATION_DELETE_REQUEST,
+      ResponseMessage.Message.INVALID_LOCATION_DELETE_REQUEST),
+  locationTypeConflicts(
+      ResponseMessage.Key.LOCATION_TYPE_CONFLICTS, ResponseMessage.Message.LOCATION_TYPE_CONFLICTS),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

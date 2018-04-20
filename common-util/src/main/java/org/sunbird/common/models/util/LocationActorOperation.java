@@ -5,7 +5,7 @@ public enum LocationActorOperation {
   CREATE_LOCATION("createLocation"),
   UPDATE_LOCATION("updateLocation"),
   SEARCH_LOCATION("searchLocation"),
-  DELETE_LOCATION("deleteclLocation"),
+  DELETE_LOCATION("deleteLocation"),
   READ_LOCATION_TYPE("readLocationType"),
   UPSERT_LOCATION_TO_ES("upsertLocationDataToES"),
   DELETE_LOCATION_FROM_ES("deleteLocationDataFromES");
