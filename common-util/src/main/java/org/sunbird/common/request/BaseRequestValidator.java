@@ -5,7 +5,6 @@ import java.util.Map;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
-import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.responsecode.ResponseCode;
 
 /**
@@ -33,7 +32,7 @@ public class BaseRequestValidator {
    * Method to check whether given mandatory fields is in given map or not .
    *
    * @param data Map contains the key value,
-   * @param keys List of string reprents the mandatory fields .
+   * @param keys List of string reprents the mandatory fields .mvn
    */
   public void checkMandatoryFieldsPresent(Map<String, Object> data, String... keys) {
     if (MapUtils.isEmpty(data)) {
@@ -50,7 +49,7 @@ public class BaseRequestValidator {
                     ResponseCode.mandatoryParamsMissing.getErrorCode(),
                     ResponseCode.mandatoryParamsMissing.getErrorMessage(),
                     ResponseCode.CLIENT_ERROR.getResponseCode(),
-                    JsonKey.NAME);
+                    key);
               }
             });
   }
