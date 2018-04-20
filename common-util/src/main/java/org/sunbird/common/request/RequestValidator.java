@@ -208,7 +208,7 @@ public final class RequestValidator {
 
     Boolean isValidSource = false;
     for (Source src : ProjectUtil.Source.values()) {
-      if (src.getValue().equals(source)) {
+      if (src.getValue().equalsIgnoreCase(source)) {
         isValidSource = true;
         break;
       }
