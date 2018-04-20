@@ -959,7 +959,7 @@ public class ElasticSearchUtil {
     public static boolean healthCheck() throws InterruptedException, ExecutionException {
         boolean indexResponse = false;
         indexResponse = ConnectionManager.getClient().admin().indices()
-                .exists(Requests.indicesExistsRequest(ProjectUtil.EsIndex.sunbird.name())).get()
+                .exists(Requests.indicesExistsRequest(ProjectUtil.EsIndex.sunbird.getIndexName())).get()
                 .isExists();
         return indexResponse;
     }
