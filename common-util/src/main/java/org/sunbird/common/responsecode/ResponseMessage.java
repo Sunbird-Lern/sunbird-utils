@@ -280,6 +280,8 @@ public interface ResponseMessage {
         "One or more locations have a parent reference to given location and hence cannot be deleted.";
     String LOCATION_TYPE_CONFLICTS = "Location type conflicts with its parent location type.";
     String MANDATORY_PARAMETER_MISSING = "Mandatory parameter {0} is missing.";
+    String INVALID_LOCN_ID = "Please provide valid locationId.";
+    String UNUPDATABLE_FIELD = "Can not update field - {0}";
   }
 
   interface Key {
@@ -537,5 +539,7 @@ public interface ResponseMessage {
     String INVALID_LOCATION_DELETE_REQUEST = "INVALID_LOCATION_DELETE_REQUEST";
     String LOCATION_TYPE_CONFLICTS = "LOCATION_TYPE_CONFLICTS";
     String MANDATORY_PARAMETER_MISSING = "MANDATORY_PARAMETER_MISSING";
+    String INVALID_LOCN_ID = "INVALID_LOCATION_ID";
+    String UNUPDATABLE_FIELD = "UNUPDATABLE_FIELD";
   }
 }
