@@ -75,8 +75,8 @@ public class BaseRequestValidator {
             key -> {
               if (data.containsKey(key)) {
                 throw new ProjectCommonException(
-                    ResponseCode.mandatoryParamsMissing.getErrorCode(),
-                    ResponseCode.mandatoryParamsMissing.getErrorMessage(),
+                    ResponseCode.unupdatableField.getErrorCode(),
+                    ResponseCode.unupdatableField.getErrorMessage(),
                     ResponseCode.CLIENT_ERROR.getResponseCode(),
                     key);
               }
