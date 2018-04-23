@@ -271,17 +271,15 @@ public interface ResponseMessage {
     String ORG_NOT_EXIST = "Requested organisation does not exist.";
     String LOCATION_TYPE_REQUIRED = "Location type required.";
     String INVALID_REQUEST_DATA_FOR_LOCATION = "{0} field required.";
-    String LOCATION_CODE_ALREADY_EXIST =
-        "This Location code already exist.Please provide unique code.";
-    String INVALID_LOCATION_TYPE = "Please provide valid location type.";
+    String ALREADY_EXIST = "This {0} already exists. Please retry with a valid unique value.";
+    String INVALID_VALUE = "Invalid {0} for {1}. Valid values are: {2}.";
     String PARENT_CODE_AND_PARENT_ID_MISSING = "Please provide either parentCode or parentId.";
-    String INVALID_PARENT_CODE = "Please provide valid parentCode.";
+    String INVALID_PARAMETER = "Please provide valid {0}.";
     String INVALID_PARENT_ID = "Please provide valid parentId.";
     String INVALID_LOCATION_DELETE_REQUEST =
-        "Multiple sub-location associated with this location,so cann't delete this location.";
+        "One or more locations have a parent reference to given location and hence cannot be deleted.";
     String LOCATION_TYPE_CONFLICTS = "Location type conflicts with its parent location type.";
     String MANDATORY_PARAMETER_MISSING = "Mandatory parameter {0} is missing.";
-    String INVALID_LOCN_ID = "Please provide valid locationId.";
   }
 
   interface Key {
@@ -531,14 +529,13 @@ public interface ResponseMessage {
     String ORG_NOT_EXIST = "ORG_NOT_EXIST";
     String LOCATION_TYPE_REQUIRED = "LOCATION_TYPE_REQUIRED";
     String INVALID_REQUEST_DATA_FOR_LOCATION = "INVALID_REQUEST_DATA_CREATE_LOCATION";
-    String LOCATION_CODE_ALREADY_EXIST = "LOCATION_CODE_ALREADY_EXIST";
-    String INVALID_LOCATION_TYPE = "INVALID_LOCATION_TYPE";
+    String ALREADY_EXIST = "ALREADY_EXIST";
+    String INVALID_VALUE = "INVALID_VALUE";
     String PARENT_CODE_AND_PARENT_ID_MISSING = "PARENT_CODE_AND_PARENT_ID_MISSING";
-    String INVALID_PARENT_CODE = "INVALID_PARENT_CODE";
+    String INVALID_PARAMETER = "INVALID_PARAMETER";
     String INVALID_PARENT_ID = "INVALID_PARENT_ID";
     String INVALID_LOCATION_DELETE_REQUEST = "INVALID_LOCATION_DELETE_REQUEST";
     String LOCATION_TYPE_CONFLICTS = "LOCATION_TYPE_CONFLICTS";
     String MANDATORY_PARAMETER_MISSING = "MANDATORY_PARAMETER_MISSING";
-    String INVALID_LOCN_ID = "INVALID_LOCATION_ID";
   }
 }
