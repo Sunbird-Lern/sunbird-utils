@@ -5,6 +5,6 @@ public class GeoLocationJsonKey {
 
   public static final String PARENT_CODE = "parentCode";
   public static final String CODE = "code";
-  public static final String LOCATION_TYPE = "location_type";
+  public static final String LOCATION_TYPE = "locationType";
   public static final String PARENT_ID = "parentId";
 }
