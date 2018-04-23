@@ -508,7 +508,7 @@ public enum ResponseCode {
       ResponseMessage.Key.PARENT_CODE_AND_PARENT_ID_MISSING,
       ResponseMessage.Message.PARENT_CODE_AND_PARENT_ID_MISSING),
   invalidLocationParentId(
-      ResponseMessage.Key.INVALID_PARENT_ID, ResponseMessage.Message.INVALID_PARENT_ID),
+      ResponseMessage.Key.INVALID_LOCN_ID, ResponseMessage.Message.INVALID_LOCN_ID),
   invalidLocationParentCode(
       ResponseMessage.Key.INVALID_PARENT_CODE, ResponseMessage.Message.INVALID_PARENT_CODE),
   invalidLocationDeleteRequest(
