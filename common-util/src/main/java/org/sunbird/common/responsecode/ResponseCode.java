@@ -519,6 +519,8 @@ public enum ResponseCode {
   mandatoryParamsMissing(
       ResponseMessage.Key.MANDATORY_PARAMETER_MISSING,
       ResponseMessage.Message.MANDATORY_PARAMETER_MISSING),
+  unupdatableField(
+      ResponseMessage.Key.UNUPDATABLE_FIELD, ResponseMessage.Message.UNUPDATABLE_FIELD),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
