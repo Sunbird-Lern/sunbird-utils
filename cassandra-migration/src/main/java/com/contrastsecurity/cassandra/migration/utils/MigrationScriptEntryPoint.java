@@ -36,7 +36,7 @@ public class MigrationScriptEntryPoint {
       CassandraMigration cm = new CassandraMigration();
       cm.getConfigs().setScriptsLocations(SCRIPT_LOCATIONS);
       cm.setKeyspace(keyspace);
-      cm.validate();
+      // cm.validate();
       cm.migrate();
     } catch (Exception e) {
       e.printStackTrace();
