@@ -3,6 +3,7 @@ package org.sunbird.common.request;
 import java.util.Arrays;
 import java.util.Map;
 import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.responsecode.ResponseCode;
@@ -77,6 +78,32 @@ public class BaseRequestValidator {
                 throw new ProjectCommonException(
                     ResponseCode.unupdatableField.getErrorCode(),
                     ResponseCode.unupdatableField.getErrorMessage(),
+                    ResponseCode.CLIENT_ERROR.getResponseCode(),
+                    key);
+              }
+            });
+  }
+
+  /**
+   * Method to check whether given header fields present or not.
+   *
+   * @param data Map contains the header as key value,
+   * @param keys List of string reprents the headers fields.
+   */
+  public void checkMandatoryHeaderssPresent(Map<String, String[]> data, String... keys) {
+    if (MapUtils.isEmpty(data)) {
+      throw new ProjectCommonException(
+          ResponseCode.invalidRequestData.getErrorCode(),
+          ResponseCode.invalidRequestData.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    Arrays.stream(keys)
+        .forEach(
+            key -> {
+              if (ArrayUtils.isEmpty(data.get(key))) {
+                throw new ProjectCommonException(
+                    ResponseCode.mandatoryHeadersMissing.getErrorCode(),
+                    ResponseCode.mandatoryHeadersMissing.getErrorMessage(),
                     ResponseCode.CLIENT_ERROR.getResponseCode(),
                     key);
               }

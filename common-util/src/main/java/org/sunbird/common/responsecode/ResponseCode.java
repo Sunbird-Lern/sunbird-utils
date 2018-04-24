@@ -516,6 +516,9 @@ public enum ResponseCode {
       ResponseMessage.Message.MANDATORY_PARAMETER_MISSING),
   unupdatableField(
       ResponseMessage.Key.UNUPDATABLE_FIELD, ResponseMessage.Message.UNUPDATABLE_FIELD),
+  mandatoryHeadersMissing(
+      ResponseMessage.Key.MANDATORY_HEADER_MISSING,
+      ResponseMessage.Message.MANDATORY_HEADER_MISSING),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
