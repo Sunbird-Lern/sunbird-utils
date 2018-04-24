@@ -45,7 +45,10 @@ public class ConnectionManager {
    */
   public static TransportClient getClient() {
     if (client == null) {
+      ProjectLogger.log("ELastic search clinet is null " + client, LoggerEnum.INFO.name());
       initialiseConnection();
+      ProjectLogger.log(
+          "After calling initialiseConnection ES client value " + client, LoggerEnum.INFO.name());
     }
     return client;
   }
@@ -71,6 +74,9 @@ public class ConnectionManager {
     for (int i = 0; i < host.size(); i++) {
       client.addTransportAddress(
           new InetSocketTransportAddress(InetAddress.getByName(host.get(i)), ports.get(i)));
+      ProjectLogger.log(
+          "ES Client is adding hsot and Port  " + host.get(i) + " ," + ports.get(i),
+          LoggerEnum.INFO.name());
     }
     return true;
   }
@@ -83,12 +89,12 @@ public class ConnectionManager {
   private static boolean initialiseConnection() {
     try {
       if (initialiseConnectionFromEnv()) {
-        ProjectLogger.log("value found under system variable.");
+        ProjectLogger.log("value found under system variable.", LoggerEnum.INFO.name());
         return true;
       }
       return initialiseConnectionFromPropertiesFile(cluster, hostName, port);
     } catch (Exception e) {
-      ProjectLogger.log("Error while initialising connection", e);
+      ProjectLogger.log("Error while initialising elastic search connection", e);
       return false;
     }
   }
@@ -114,9 +120,17 @@ public class ConnectionManager {
       }
       boolean response = createClient(cluster, host);
       ProjectLogger.log(
-          "ELASTIC SEARCH CONNECTION ESTABLISHED " + response, LoggerEnum.INFO.name());
+          "ES Connection Established from Properties file Cluster  "
+              + cluster
+              + " host "
+              + hostName
+              + " port "
+              + port
+              + " Response "
+              + response,
+          LoggerEnum.INFO.name());
     } catch (Exception e) {
-      ProjectLogger.log("Error while initialising connection", e);
+      ProjectLogger.log("Error while initialising connection From Properties File", e);
       return false;
     }
     return true;
@@ -128,6 +142,7 @@ public class ConnectionManager {
    * @return boolean
    */
   private static boolean initialiseConnectionFromEnv() {
+    boolean response = false;
     try {
       String cluster = System.getenv(JsonKey.SUNBIRD_ES_CLUSTER);
       String hostName = System.getenv(JsonKey.SUNBIRD_ES_IP);
@@ -143,14 +158,21 @@ public class ConnectionManager {
       for (String val : splitedPort) {
         ports.add(Integer.parseInt(val));
       }
-      boolean response = createClient(cluster, host);
+      response = createClient(cluster, host);
       ProjectLogger.log(
-          "ELASTIC SEARCH CONNECTION ESTABLISHED " + response, LoggerEnum.INFO.name());
+          "ELASTIC SEARCH CONNECTION ESTABLISHED from EVN with Following Details cluster "
+              + cluster
+              + "  hostName"
+              + hostName
+              + " port "
+              + port
+              + response,
+          LoggerEnum.INFO.name());
     } catch (Exception e) {
       ProjectLogger.log("Error while initialising connection from the Env", e);
       return false;
     }
-    return true;
+    return response;
   }
 
   public static void closeClient() {
