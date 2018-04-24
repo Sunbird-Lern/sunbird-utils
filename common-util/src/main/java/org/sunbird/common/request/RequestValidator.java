@@ -190,7 +190,7 @@ public final class RequestValidator {
           ResponseCode.sourceRequired.getErrorMessage(),
           ERROR_CODE);
     }
-    if (validPageSourceType((String) request.get(JsonKey.SOURCE))) {
+    if (!validPageSourceType((String) request.get(JsonKey.SOURCE))) {
       throw new ProjectCommonException(
           ResponseCode.invalidPageSource.getErrorCode(),
           ResponseCode.invalidPageSource.getErrorMessage(),
