@@ -1,6 +1,7 @@
 /** */
 package org.sunbird.common.models.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
@@ -13,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
@@ -925,5 +927,21 @@ public class ProjectUtil {
       }
     }
     return true;
+  }
+
+  /**
+   * Method to convert List of map to Json String.
+   *
+   * @param mapList List of map.
+   * @return String List of map converted as Json string.
+   */
+  public static String convertMapToJsonString(List<Map<String, Object>> mapList) {
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+      return mapper.writeValueAsString(mapList);
+    } catch (IOException e) {
+      ProjectLogger.log(e.getMessage(), e);
+    }
+    return null;
   }
 }
