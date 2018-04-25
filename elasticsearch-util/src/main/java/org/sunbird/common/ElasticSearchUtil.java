@@ -1047,7 +1047,7 @@ public class ElasticSearchUtil {
         ConnectionManager.getClient()
             .admin()
             .indices()
-            .exists(Requests.indicesExistsRequest(ProjectUtil.EsIndex.sunbird.name()))
+            .exists(Requests.indicesExistsRequest(ProjectUtil.EsIndex.sunbird.getIndexName()))
             .get()
             .isExists();
     return indexResponse;

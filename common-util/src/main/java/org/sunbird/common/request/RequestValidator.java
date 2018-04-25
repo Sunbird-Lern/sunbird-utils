@@ -15,6 +15,7 @@ import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.ProjectUtil.ProgressStatus;
+import org.sunbird.common.models.util.ProjectUtil.Source;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.responsecode.ResponseCode;
 
@@ -117,7 +118,7 @@ public final class RequestValidator {
     }
     if ((null != request.getRequest().get(JsonKey.IS_ROOT_ORG)
             && (Boolean) request.getRequest().get(JsonKey.IS_ROOT_ORG))
-        && ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.CHANNEL))) {
+        && StringUtils.isEmpty((String) request.getRequest().get(JsonKey.CHANNEL))) {
       throw new ProjectCommonException(
           ResponseCode.channelIdRequiredForRootOrg.getErrorCode(),
           ResponseCode.channelIdRequiredForRootOrg.getErrorMessage(),
@@ -126,8 +127,8 @@ public final class RequestValidator {
   }
 
   public static void validateOrg(Request request) {
-    if (ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.ORGANISATION_ID))
-        && ((ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.PROVIDER)))
+    if (StringUtils.isEmpty((String) request.getRequest().get(JsonKey.ORGANISATION_ID))
+        && ((StringUtils.isEmpty((String) request.getRequest().get(JsonKey.PROVIDER)))
             || (StringUtils.isBlank((String) request.getRequest().get(JsonKey.EXTERNAL_ID))))) {
       throw new ProjectCommonException(
           ResponseCode.sourceAndExternalIdValidationError.getErrorCode(),
@@ -139,8 +140,7 @@ public final class RequestValidator {
   public static void validateUpdateOrg(Request request) {
     validateOrg(request);
     if (request.getRequest().containsKey(JsonKey.ROOT_ORG_ID)
-        && ProjectUtil.isStringNullOREmpty(
-            (String) request.getRequest().get(JsonKey.ROOT_ORG_ID))) {
+        && StringUtils.isEmpty((String) request.getRequest().get(JsonKey.ROOT_ORG_ID))) {
       throw new ProjectCommonException(
           ResponseCode.invalidRootOrganisationId.getErrorCode(),
           ResponseCode.invalidRootOrganisationId.getErrorMessage(),
@@ -154,7 +154,7 @@ public final class RequestValidator {
     }
     if ((null != request.getRequest().get(JsonKey.IS_ROOT_ORG)
             && (Boolean) request.getRequest().get(JsonKey.IS_ROOT_ORG))
-        && ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.CHANNEL))) {
+        && StringUtils.isEmpty((String) request.getRequest().get(JsonKey.CHANNEL))) {
       throw new ProjectCommonException(
           ResponseCode.channelIdRequiredForRootOrg.getErrorCode(),
           ResponseCode.channelIdRequiredForRootOrg.getErrorMessage(),
@@ -190,12 +190,30 @@ public final class RequestValidator {
           ResponseCode.sourceRequired.getErrorMessage(),
           ERROR_CODE);
     }
+    if (!validPageSourceType((String) request.get(JsonKey.SOURCE))) {
+      throw new ProjectCommonException(
+          ResponseCode.invalidPageSource.getErrorCode(),
+          ResponseCode.invalidPageSource.getErrorMessage(),
+          ERROR_CODE);
+    }
     if (StringUtils.isBlank((String) request.get(JsonKey.PAGE_NAME))) {
       throw new ProjectCommonException(
           ResponseCode.pageNameRequired.getErrorCode(),
           ResponseCode.pageNameRequired.getErrorMessage(),
           ERROR_CODE);
     }
+  }
+
+  private static boolean validPageSourceType(String source) {
+
+    Boolean isValidSource = false;
+    for (Source src : ProjectUtil.Source.values()) {
+      if (src.getValue().equalsIgnoreCase(source)) {
+        isValidSource = true;
+        break;
+      }
+    }
+    return isValidSource;
   }
 
   /**
@@ -351,7 +369,7 @@ public final class RequestValidator {
    * @param request Request
    */
   public static void validateCreatePage(Request request) {
-    if (ProjectUtil.isStringNullOREmpty(
+    if (StringUtils.isEmpty(
         (String)
             (request.getRequest().get(JsonKey.PAGE_NAME) != null
                 ? request.getRequest().get(JsonKey.PAGE_NAME)
@@ -370,7 +388,7 @@ public final class RequestValidator {
    */
   public static void validateUpdatepage(Request request) {
     if (request.getRequest().containsKey(JsonKey.PAGE_NAME)
-        && ProjectUtil.isStringNullOREmpty(
+        && StringUtils.isEmpty(
             (String)
                 (request.getRequest().get(JsonKey.PAGE_NAME) != null
                     ? request.getRequest().get(JsonKey.PAGE_NAME)
@@ -398,7 +416,7 @@ public final class RequestValidator {
    * @param request Request
    */
   public static void validateSaveAssessment(Request request) {
-    if (ProjectUtil.isStringNullOREmpty(
+    if (StringUtils.isEmpty(
         (String)
             (request.getRequest().get(JsonKey.COURSE_ID) != null
                 ? request.getRequest().get(JsonKey.COURSE_ID)
@@ -408,7 +426,7 @@ public final class RequestValidator {
           ResponseCode.courseIdRequired.getErrorMessage(),
           ERROR_CODE);
     }
-    if (ProjectUtil.isStringNullOREmpty(
+    if (StringUtils.isEmpty(
         (String)
             (request.getRequest().get(JsonKey.CONTENT_ID) != null
                 ? request.getRequest().get(JsonKey.CONTENT_ID)
@@ -418,7 +436,7 @@ public final class RequestValidator {
           ResponseCode.contentIdRequired.getErrorMessage(),
           ERROR_CODE);
     }
-    if (ProjectUtil.isStringNullOREmpty(
+    if (StringUtils.isEmpty(
         (String)
             (request.getRequest().get(JsonKey.ATTEMPT_ID) != null
                 ? request.getRequest().get(JsonKey.ATTEMPT_ID)
@@ -444,7 +462,7 @@ public final class RequestValidator {
 
   private static void validateAssessment(List<Map<String, Object>> list) {
     for (Map<String, Object> map : list) {
-      if (ProjectUtil.isStringNullOREmpty(
+      if (StringUtils.isEmpty(
           (String)
               (map.get(JsonKey.ASSESSMENT_ITEM_ID) != null
                   ? map.get(JsonKey.ASSESSMENT_ITEM_ID)
@@ -462,7 +480,7 @@ public final class RequestValidator {
             ResponseCode.assessmentTypeRequired.getErrorMessage(),
             ERROR_CODE);
       }
-      if (ProjectUtil.isStringNullOREmpty(
+      if (StringUtils.isEmpty(
           (String)
               (map.get(JsonKey.ASSESSMENT_ANSWERS) != null
                   ? map.get(JsonKey.ASSESSMENT_ANSWERS)
@@ -472,7 +490,7 @@ public final class RequestValidator {
             ResponseCode.assessmentAnswersRequired.getErrorMessage(),
             ERROR_CODE);
       }
-      if (ProjectUtil.isStringNullOREmpty(
+      if (StringUtils.isEmpty(
           (String)
               (map.get(JsonKey.ASSESSMENT_MAX_SCORE) != null
                   ? map.get(JsonKey.ASSESSMENT_MAX_SCORE)
@@ -491,7 +509,7 @@ public final class RequestValidator {
    * @param request Request
    */
   public static void validateGetAssessment(Request request) {
-    if (ProjectUtil.isStringNullOREmpty(
+    if (StringUtils.isEmpty(
         (String)
             (request.getRequest().get(JsonKey.COURSE_ID) != null
                 ? request.getRequest().get(JsonKey.COURSE_ID)
@@ -510,7 +528,7 @@ public final class RequestValidator {
    */
   public static void validateUserOrg(Request userRequest) {
     validateOrg(userRequest);
-    if ((ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USERNAME))
+    if ((StringUtils.isEmpty((String) userRequest.getRequest().get(JsonKey.USERNAME))
             || StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PROVIDER)))
         && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.USER_ID))) {
       throw new ProjectCommonException(
@@ -536,7 +554,7 @@ public final class RequestValidator {
           ResponseCode.roleRequired.getErrorMessage(),
           ERROR_CODE);
     }
-    if ((ProjectUtil.isStringNullOREmpty((String) userRequest.getRequest().get(JsonKey.USERNAME))
+    if ((StringUtils.isEmpty((String) userRequest.getRequest().get(JsonKey.USERNAME))
             || StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PROVIDER)))
         && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.USER_ID))) {
       throw new ProjectCommonException(
@@ -552,8 +570,8 @@ public final class RequestValidator {
    * @param reqObj Request
    */
   public static void validateUploadUser(Request reqObj) {
-    if (ProjectUtil.isStringNullOREmpty((String) reqObj.getRequest().get(JsonKey.ORGANISATION_ID))
-        && (ProjectUtil.isStringNullOREmpty((String) reqObj.getRequest().get(JsonKey.EXTERNAL_ID))
+    if (StringUtils.isEmpty((String) reqObj.getRequest().get(JsonKey.ORGANISATION_ID))
+        && (StringUtils.isEmpty((String) reqObj.getRequest().get(JsonKey.EXTERNAL_ID))
             || StringUtils.isBlank((String) reqObj.getRequest().get(JsonKey.PROVIDER)))) {
       throw new ProjectCommonException(
           ResponseCode.bulkUserUploadError.getErrorCode(),
@@ -590,7 +608,7 @@ public final class RequestValidator {
     String startDate = (String) request.getRequest().get(JsonKey.START_DATE);
     validateStartDate(startDate);
     if (request.getRequest().containsKey(JsonKey.END_DATE)
-        && !ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.END_DATE))) {
+        && !StringUtils.isEmpty((String) request.getRequest().get(JsonKey.END_DATE))) {
       validateEndDate(startDate, (String) request.getRequest().get(JsonKey.END_DATE));
     }
     if (request.getRequest().containsKey(JsonKey.COURSE_CREATED_FOR)
@@ -622,7 +640,7 @@ public final class RequestValidator {
       }
     }
     if (request.getRequest().containsKey(JsonKey.NAME)
-        && ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.NAME))) {
+        && StringUtils.isEmpty((String) request.getRequest().get(JsonKey.NAME))) {
       throw new ProjectCommonException(
           ResponseCode.courseNameRequired.getErrorCode(),
           ResponseCode.courseNameRequired.getErrorMessage(),
@@ -633,7 +651,7 @@ public final class RequestValidator {
       validateEnrolmentType(enrolmentType);
     }
     if (request.getRequest().containsKey(JsonKey.END_DATE)
-        && !ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.END_DATE))) {
+        && !StringUtils.isEmpty((String) request.getRequest().get(JsonKey.END_DATE))) {
       boolean bool = validateDateWithTodayDate((String) request.getRequest().get(JsonKey.END_DATE));
       if (!bool) {
         throw new ProjectCommonException(
@@ -675,7 +693,7 @@ public final class RequestValidator {
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     format.setLenient(false);
     if (request.getRequest().containsKey(JsonKey.END_DATE)
-        && !ProjectUtil.isStringNullOREmpty((String) request.getRequest().get(JsonKey.END_DATE))
+        && !StringUtils.isEmpty((String) request.getRequest().get(JsonKey.END_DATE))
         && request.getRequest().containsKey(JsonKey.START_DATE)
         && !StringUtils.isBlank((String) request.getRequest().get(JsonKey.START_DATE))) {
       Date batchStartDate = null;

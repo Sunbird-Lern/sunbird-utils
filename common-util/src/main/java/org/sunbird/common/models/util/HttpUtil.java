@@ -418,8 +418,10 @@ public class HttpUtil {
     ProjectLogger.log(
         "HttpUtil sendPatchRequest method started at =="
             + startTime
-            + " for requestURL "
-            + requestURL,
+            + " for requestURL and params "
+            + requestURL
+            + " param=="
+            + params,
         LoggerEnum.PERF_LOG);
 
     try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
@@ -428,7 +430,6 @@ public class HttpUtil {
       StringEntity entity = new StringEntity(params);
       patch.setEntity(entity);
       CloseableHttpResponse response = httpClient.execute(patch);
-      ProjectLogger.log("response code for Patch Resques");
       if (response.getStatusLine().getStatusCode() == ResponseCode.OK.getResponseCode()) {
         long stopTime = System.currentTimeMillis();
         long elapsedTime = stopTime - startTime;
@@ -445,7 +446,8 @@ public class HttpUtil {
       long stopTime = System.currentTimeMillis();
       long elapsedTime = stopTime - startTime;
       ProjectLogger.log(
-          "HttpUtil sendPatchRequest method end at =="
+          "Patch request failure status code =="
+              + response.getStatusLine().getStatusCode()
               + stopTime
               + " for requestURL "
               + requestURL
@@ -454,7 +456,7 @@ public class HttpUtil {
           LoggerEnum.PERF_LOG);
       return "Failure";
     } catch (Exception e) {
-      ProjectLogger.log(e.getMessage(), e);
+      ProjectLogger.log("HttpUtil call fails == " + e.getMessage(), e);
     }
     long stopTime = System.currentTimeMillis();
     long elapsedTime = stopTime - startTime;
