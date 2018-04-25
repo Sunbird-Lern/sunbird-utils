@@ -283,6 +283,8 @@ public interface ResponseMessage {
     String INVALID_LOCN_ID = "Please provide valid locationId.";
     String UNUPDATABLE_FIELD = "Can not update field - {0}";
     String MANDATORY_HEADER_MISSING = "Mandatory header {0} is missing.";
+    String INVALID_PARAMETER_VALUE =
+        "Invalid value {0} for parameter {1}. Please provide a valid value.";
   }
 
   interface Key {
@@ -543,5 +545,6 @@ public interface ResponseMessage {
     String INVALID_LOCN_ID = "INVALID_LOCATION_ID";
     String UNUPDATABLE_FIELD = "UNUPDATABLE_FIELD";
     String MANDATORY_HEADER_MISSING = "MANDATORY_HEADER_MISSING";
+    String INVALID_PARAMETER_VALUE = "INVALID_PARAMETER_VALUE";
   }
 }
