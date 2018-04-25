@@ -519,6 +519,8 @@ public enum ResponseCode {
   mandatoryHeadersMissing(
       ResponseMessage.Key.MANDATORY_HEADER_MISSING,
       ResponseMessage.Message.MANDATORY_HEADER_MISSING),
+  invalidParameterValue(
+      ResponseMessage.Key.INVALID_PARAMETER_VALUE, ResponseMessage.Message.INVALID_PARAMETER_VALUE),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

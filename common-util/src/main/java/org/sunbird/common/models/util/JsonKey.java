@@ -627,6 +627,11 @@ public final class JsonKey {
   public static final String USER_BADGE_ASSERTION_DB = "user_badge_assertion";
   public static final String DURATION = "duration";
   public static final String OBJECT_STORE = "object-store";
+  public static final String IMAGE_URL = "imgUrl";
+  public static final String COMMUNITY_ID = "communityId";
+  public static final String LOCATION_CODE = "locationCode";
+  public static final String LATITUDE = "latitude";
+  public static final String LONGITUDE = "longitude";
 
   private JsonKey() {}
 }
