@@ -272,7 +272,7 @@ public interface ResponseMessage {
     String INVALID_PAGE_SOURCE = "Invalid page source.";
     String LOCATION_TYPE_REQUIRED = "Location type required.";
     String INVALID_REQUEST_DATA_FOR_LOCATION = "{0} field required.";
-    String ALREADY_EXIST = "This {0} already exists. Please retry with a valid unique value.";
+    String ALREADY_EXISTS = "A {0} with this {0} already exists. Please retry with a unique value.";
     String INVALID_VALUE = "Invalid {0} for {1}. Valid values are: {2}.";
     String PARENT_CODE_AND_PARENT_ID_MISSING = "Please provide either parentCode or parentId.";
     String INVALID_PARAMETER = "Please provide valid {0}.";
@@ -282,10 +282,11 @@ public interface ResponseMessage {
     String LOCATION_TYPE_CONFLICTS = "Location type conflicts with its parent location type.";
     String MANDATORY_PARAMETER_MISSING = "Mandatory parameter {0} is missing.";
     String INVALID_LOCN_ID = "Please provide valid locationId.";
-    String UNUPDATABLE_FIELD = "Can not update field - {0}";
+    String UPDATE_NOT_ALLOWED = "Update of {0} is not allowed.";
     String MANDATORY_HEADER_MISSING = "Mandatory header {0} is missing.";
     String INVALID_PARAMETER_VALUE =
         "Invalid value {0} for parameter {1}. Please provide a valid value.";
+    String PARENT_NOT_ALLOWED = "For top level location, {0} is not allowed.";
   }
 
   interface Key {
@@ -536,7 +537,7 @@ public interface ResponseMessage {
     String INVALID_PAGE_SOURCE = "INVALID_PAGE_SOURCE";
     String LOCATION_TYPE_REQUIRED = "LOCATION_TYPE_REQUIRED";
     String INVALID_REQUEST_DATA_FOR_LOCATION = "INVALID_REQUEST_DATA_CREATE_LOCATION";
-    String ALREADY_EXIST = "ALREADY_EXIST";
+    String ALREADY_EXISTS = "ALREADY_EXISTS";
     String INVALID_VALUE = "INVALID_VALUE";
     String PARENT_CODE_AND_PARENT_ID_MISSING = "PARENT_CODE_AND_PARENT_ID_MISSING";
     String INVALID_PARAMETER = "INVALID_PARAMETER";
@@ -545,8 +546,9 @@ public interface ResponseMessage {
     String LOCATION_TYPE_CONFLICTS = "LOCATION_TYPE_CONFLICTS";
     String MANDATORY_PARAMETER_MISSING = "MANDATORY_PARAMETER_MISSING";
     String INVALID_LOCN_ID = "INVALID_LOCATION_ID";
-    String UNUPDATABLE_FIELD = "UNUPDATABLE_FIELD";
+    String UPDATE_NOT_ALLOWED = "UPDATE_NOT_ALLOWED";
     String MANDATORY_HEADER_MISSING = "MANDATORY_HEADER_MISSING";
     String INVALID_PARAMETER_VALUE = "INVALID_PARAMETER_VALUE";
+    String PARENT_NOT_ALLOWED = "PARENT_NOT_ALLOWED";
   }
 }

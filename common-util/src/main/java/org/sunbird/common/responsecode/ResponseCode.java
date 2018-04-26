@@ -501,7 +501,7 @@ public enum ResponseCode {
   invalidRequestDataForLocation(
       ResponseMessage.Key.INVALID_REQUEST_DATA_FOR_LOCATION,
       ResponseMessage.Message.INVALID_REQUEST_DATA_FOR_LOCATION),
-  alreadyExist(ResponseMessage.Key.ALREADY_EXIST, ResponseMessage.Message.ALREADY_EXIST),
+  alreadyExists(ResponseMessage.Key.ALREADY_EXISTS, ResponseMessage.Message.ALREADY_EXISTS),
   invalidValue(ResponseMessage.Key.INVALID_VALUE, ResponseMessage.Message.INVALID_VALUE),
   parentCodeAndIdValidationError(
       ResponseMessage.Key.PARENT_CODE_AND_PARENT_ID_MISSING,
@@ -517,12 +517,14 @@ public enum ResponseCode {
       ResponseMessage.Key.MANDATORY_PARAMETER_MISSING,
       ResponseMessage.Message.MANDATORY_PARAMETER_MISSING),
   unupdatableField(
-      ResponseMessage.Key.UNUPDATABLE_FIELD, ResponseMessage.Message.UNUPDATABLE_FIELD),
+      ResponseMessage.Key.UPDATE_NOT_ALLOWED, ResponseMessage.Message.UPDATE_NOT_ALLOWED),
   mandatoryHeadersMissing(
       ResponseMessage.Key.MANDATORY_HEADER_MISSING,
       ResponseMessage.Message.MANDATORY_HEADER_MISSING),
   invalidParameterValue(
       ResponseMessage.Key.INVALID_PARAMETER_VALUE, ResponseMessage.Message.INVALID_PARAMETER_VALUE),
+  parentNotAllowed(
+      ResponseMessage.Key.PARENT_NOT_ALLOWED, ResponseMessage.Message.PARENT_NOT_ALLOWED),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
