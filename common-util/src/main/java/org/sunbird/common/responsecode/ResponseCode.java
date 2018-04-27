@@ -525,6 +525,13 @@ public enum ResponseCode {
       ResponseMessage.Key.INVALID_PARAMETER_VALUE, ResponseMessage.Message.INVALID_PARAMETER_VALUE),
   parentNotAllowed(
       ResponseMessage.Key.PARENT_NOT_ALLOWED, ResponseMessage.Message.PARENT_NOT_ALLOWED),
+  missingFileAttachment(
+      ResponseMessage.Key.MISSING_FILE_ATTACHMENT, ResponseMessage.Message.MISSING_FILE_ATTACHMENT),
+  fileAttachmentSizeNotConfigured(
+      ResponseMessage.Key.FILE_ATTACHMENT_SIZE_NOT_CONFIGURED,
+      ResponseMessage.Message.FILE_ATTACHMENT_SIZE_NOT_CONFIGURED),
+  emptyFile(ResponseMessage.Key.EMPTY_FILE, ResponseMessage.Message.EMPTY_FILE),
+  invalidColumns(ResponseMessage.Key.INVALID_COLUMNS, ResponseMessage.Message.INVALID_COLUMNS),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

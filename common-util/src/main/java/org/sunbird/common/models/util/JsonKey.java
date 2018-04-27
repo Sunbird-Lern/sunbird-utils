@@ -632,6 +632,7 @@ public final class JsonKey {
   public static final String LOCATION_CODE = "locationCode";
   public static final String LATITUDE = "latitude";
   public static final String LONGITUDE = "longitude";
+  public static final String UPLOAD_FILE_MAX_SIZE = "file_upload_max_size";
 
   private JsonKey() {}
 }

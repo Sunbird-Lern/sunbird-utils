@@ -287,6 +287,10 @@ public interface ResponseMessage {
     String INVALID_PARAMETER_VALUE =
         "Invalid value {0} for parameter {1}. Please provide a valid value.";
     String PARENT_NOT_ALLOWED = "For top level location, {0} is not allowed.";
+    String MISSING_FILE_ATTACHMENT = "Missing file attachment.";
+    String FILE_ATTACHMENT_SIZE_NOT_CONFIGURED = "File attachment max size is not configured.";
+    String EMPTY_FILE = "Attached file is empty.";
+    String INVALID_COLUMNS = "Allowed columns are - {0}.";
   }
 
   interface Key {
@@ -550,5 +554,9 @@ public interface ResponseMessage {
     String MANDATORY_HEADER_MISSING = "MANDATORY_HEADER_MISSING";
     String INVALID_PARAMETER_VALUE = "INVALID_PARAMETER_VALUE";
     String PARENT_NOT_ALLOWED = "PARENT_NOT_ALLOWED";
+    String MISSING_FILE_ATTACHMENT = "MISSING_FILE_ATTACHMENT";
+    String FILE_ATTACHMENT_SIZE_NOT_CONFIGURED = "ATTACHMENT_SIZE_NOT_CONFIGURED";
+    String EMPTY_FILE = "EMPTY_FILE";
+    String INVALID_COLUMNS = "INVALID_COLUMNS";
   }
 }

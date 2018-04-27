@@ -87,10 +87,10 @@ public class BaseRequestValidator {
   /**
    * Method to check whether given header fields present or not.
    *
-   * @param data Map contains the header as key value,
+   * @param data List of strings representing the header names in received request.
    * @param keys List of string reprents the headers fields.
    */
-  public void checkMandatoryHeaderssPresent(Map<String, String[]> data, String... keys) {
+  public void checkMandatoryHeadersPresent(Map<String, String[]> data, String... keys) {
     if (MapUtils.isEmpty(data)) {
       throw new ProjectCommonException(
           ResponseCode.invalidRequestData.getErrorCode(),
