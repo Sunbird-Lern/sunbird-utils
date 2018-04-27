@@ -541,13 +541,11 @@ public class UserRequestValidatorTest {
 
   @Test
   public void validateUploadUserWithOrgId() {
-    Request request = new Request();
     boolean response = false;
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.ORGANISATION_ID, "ORG-1233");
-    request.setRequest(requestObj);
     try {
-      RequestValidator.validateUploadUser(request);
+      RequestValidator.validateUploadUser(requestObj);
       response = true;
     } catch (ProjectCommonException e) {
       Assert.assertNull(e);
@@ -557,14 +555,12 @@ public class UserRequestValidatorTest {
 
   @Test
   public void validateUploadUserWithProviderAndExternalId() {
-    Request request = new Request();
     boolean response = false;
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PROVIDER, "ORG-provider");
     requestObj.put(JsonKey.EXTERNAL_ID, "ORG-1233");
-    request.setRequest(requestObj);
     try {
-      RequestValidator.validateUploadUser(request);
+      RequestValidator.validateUploadUser(requestObj);
       response = true;
     } catch (ProjectCommonException e) {
       Assert.assertNull(e);
