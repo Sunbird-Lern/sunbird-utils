@@ -270,6 +270,7 @@ public interface ResponseMessage {
     String PAGE_NOT_EXIST = "Requested page does not exist.";
     String ORG_NOT_EXIST = "Requested organisation does not exist.";
     String INVALID_PAGE_SOURCE = "Invalid page source.";
+    String BADGE_SUB_TYPE_REQUIRED = "Please provide badge class sub type.";
   }
 
   interface Key {
@@ -518,5 +519,6 @@ public interface ResponseMessage {
     String PAGE_NOT_EXIST = "PAGE_NOT_EXIST";
     String ORG_NOT_EXIST = "ORG_NOT_EXIST";
     String INVALID_PAGE_SOURCE = "INVALID_PAGE_SOURCE";
+    String BADGE_SUB_TYPE_REQUIRED = "BADGE_SUB_TYPE_REQUIRED";
   }
 }
