@@ -30,7 +30,7 @@ public class BaseLocationRequestValidator extends BaseRequestValidator {
    */
   public void validateUpdateLocationRequest(Request req) {
     checkMandatoryFieldsPresent(req.getRequest(), JsonKey.ID);
-    checkForMustNotAttribute(req.getRequest(), GeoLocationJsonKey.LOCATION_TYPE);
+    checkReadOnlyAttributesAbsent(req.getRequest(), GeoLocationJsonKey.LOCATION_TYPE);
   }
 
   /**

@@ -56,14 +56,14 @@ public class BaseRequestValidator {
   }
 
   /**
-   * Method to check whether given fields is in given map or not .If it is there throw exception .
-   * Bcoz in some update request cases we dont want to update some props to update , if it is there
-   * in request , throw exception .
+   * Method to check whether given fields is in given map or not .If it is there throw exception.
+   * because in some update request cases we don't want to update some props to , if it is there in
+   * request , throw exception.
    *
-   * @param data Map contains the key value,
-   * @param keys List of string represents the must not present fields .
+   * @param data Map contains the key value
+   * @param keys List of string represents the must not present fields.
    */
-  public void checkForMustNotAttribute(Map<String, Object> data, String... keys) {
+  public void checkReadOnlyAttributesAbsent(Map<String, Object> data, String... keys) {
 
     if (MapUtils.isEmpty(data)) {
       throw new ProjectCommonException(
