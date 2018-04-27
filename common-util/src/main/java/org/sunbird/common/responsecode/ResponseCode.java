@@ -497,7 +497,7 @@ public enum ResponseCode {
   invalidPageSource(
       ResponseMessage.Key.INVALID_PAGE_SOURCE, ResponseMessage.Message.INVALID_PAGE_SOURCE),
   badgeSubTypeRequired(
-      ResponseMessage.Key.BADGE_SUB_TYPE_REQUIRED, ResponseMessage.Message.BADGE_SUB_TYPE_REQUIRED),
+      ResponseMessage.Key.BADGE_SUBTYPE_REQUIRED, ResponseMessage.Message.BADGE_SUB_TYPE_REQUIRED),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
