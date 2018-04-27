@@ -270,6 +270,7 @@ public interface ResponseMessage {
     String PAGE_NOT_EXIST = "Requested page does not exist.";
     String ORG_NOT_EXIST = "Requested organisation does not exist.";
     String INVALID_PAGE_SOURCE = "Invalid page source.";
+    String BADGE_SUBTYPE_REQUIRED = "Please provide badge class subtype.";
     String LOCATION_TYPE_REQUIRED = "Location type required.";
     String INVALID_REQUEST_DATA_FOR_LOCATION = "{0} field required.";
     String ALREADY_EXISTS = "A {0} with {1} already exists. Please retry with a unique value.";
@@ -539,6 +540,7 @@ public interface ResponseMessage {
     String PAGE_NOT_EXIST = "PAGE_NOT_EXIST";
     String ORG_NOT_EXIST = "ORG_NOT_EXIST";
     String INVALID_PAGE_SOURCE = "INVALID_PAGE_SOURCE";
+    String BADGE_SUBTYPE_REQUIRED = "BADGE_SUBTYPE_REQUIRED";
     String LOCATION_TYPE_REQUIRED = "LOCATION_TYPE_REQUIRED";
     String INVALID_REQUEST_DATA_FOR_LOCATION = "INVALID_REQUEST_DATA_CREATE_LOCATION";
     String ALREADY_EXISTS = "ALREADY_EXISTS";

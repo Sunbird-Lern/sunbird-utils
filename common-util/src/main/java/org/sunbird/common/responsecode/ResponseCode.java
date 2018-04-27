@@ -496,6 +496,8 @@ public enum ResponseCode {
   orgDoesNotExist(ResponseMessage.Key.ORG_NOT_EXIST, ResponseMessage.Message.ORG_NOT_EXIST),
   invalidPageSource(
       ResponseMessage.Key.INVALID_PAGE_SOURCE, ResponseMessage.Message.INVALID_PAGE_SOURCE),
+  badgeSubTypeRequired(
+      ResponseMessage.Key.BADGE_SUBTYPE_REQUIRED, ResponseMessage.Message.BADGE_SUBTYPE_REQUIRED),
   locationTypeRequired(
       ResponseMessage.Key.LOCATION_TYPE_REQUIRED, ResponseMessage.Message.LOCATION_TYPE_REQUIRED),
   invalidRequestDataForLocation(
