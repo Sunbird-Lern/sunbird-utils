@@ -273,7 +273,7 @@ public interface ResponseMessage {
     String LOCATION_TYPE_REQUIRED = "Location type required.";
     String INVALID_REQUEST_DATA_FOR_LOCATION = "{0} field required.";
     String ALREADY_EXISTS = "A {0} with {1} already exists. Please retry with a unique value.";
-    String INVALID_VALUE = "Invalid {0} for {1}. Valid values are: {2}.";
+    String INVALID_VALUE = "Invalid {0} : {1}. Valid values are: {2}.";
     String PARENT_CODE_AND_PARENT_ID_MISSING = "Please provide either parentCode or parentId.";
     String INVALID_PARAMETER = "Please provide valid {0}.";
     String INVALID_PARENT_ID = "Please provide valid parentId.";
