@@ -11,13 +11,11 @@ import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.sunbird.actorUtil.InterServiceCommunication;
-import org.sunbird.actorUtil.InterServiceCommunicationFactory;
+import org.sunbird.actorUtil.location.LocationClient;
+import org.sunbird.actorUtil.location.impl.LocationClientImpl;
 import org.sunbird.common.exception.ProjectCommonException;
-import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.GeoLocationJsonKey;
 import org.sunbird.common.models.util.JsonKey;
-import org.sunbird.common.models.util.LocationActorOperation;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.request.BaseRequestValidator;
 import org.sunbird.common.request.Request;
@@ -26,8 +24,7 @@ import org.sunbird.common.responsecode.ResponseCode;
 /** Created by arvind on 25/4/18. */
 public class BaseLocationRequestValidator extends BaseRequestValidator {
 
-  private static InterServiceCommunication interServiceCommunication =
-      InterServiceCommunicationFactory.getInstance().getCommunicationPath("actorCommunication");
+  private static LocationClient locationClient = new LocationClientImpl();
   /**
    * Method to validate the create location request . Mandatory fields are as - name , type, code.
    *
@@ -91,23 +88,12 @@ public class BaseLocationRequestValidator extends BaseRequestValidator {
    *
    * @param codeList list of location code
    * @param actorRef
-   * @return List<String> list of locationIds
+   * @return List<String> list of locationId
    */
   public static List<String> validateLocationCode(List<String> codeList, Object actorRef) {
     Set<String> locationIds = null;
     List<Map<String, Object>> locationList = null;
-    Map<String, Object> filters = new HashMap<>();
-    filters.put(GeoLocationJsonKey.CODE, codeList);
-    Map<String, Object> locMap = new HashMap<>();
-    locMap.put(JsonKey.FILTERS, filters);
-    Request request = new Request();
-    request.setOperation(LocationActorOperation.SEARCH_LOCATION.getValue());
-    request.getRequest().putAll(locMap);
-    Object obj = interServiceCommunication.getResponse(request, actorRef);
-    if (obj instanceof Response) {
-      Response response = (Response) obj;
-      locationList = (List<Map<String, Object>>) response.getResult().get(JsonKey.RESPONSE);
-    }
+    locationList = locationClient.getLocationsByCodes(codeList, actorRef);
     List<String> locationIdList = new ArrayList<>();
     if (!CollectionUtils.isEmpty(locationList)) {
       locationIds = BaseLocationRequestValidator.validateLocationHierarchy(locationList, actorRef);
@@ -127,9 +113,9 @@ public class BaseLocationRequestValidator extends BaseRequestValidator {
   /**
    * This method will validate the location hierarchy and return the locationIds list
    *
-   * @param locationList
-   * @param actorRef
-   * @return list of locationIds
+   * @param locationList list of location
+   * @param actorRef actor reference
+   * @return list of locationId
    */
   public static Set<String> validateLocationHierarchy(
       List<Map<String, Object>> locationList, Object actorRef) {
@@ -217,23 +203,11 @@ public class BaseLocationRequestValidator extends BaseRequestValidator {
   }
 
   private static Map<String, Object> getParentLocation(String locationId, Object actorRef) {
-    Map<String, Object> location = new HashMap<>();
-    Map<String, Object> filters = new HashMap<>();
-    Map<String, String> requestData = new HashMap<>();
-    requestData.put(JsonKey.ID, locationId);
-    filters.put(JsonKey.FILTERS, requestData);
-    Request req = new Request();
-    req.setOperation(LocationActorOperation.SEARCH_LOCATION.getValue());
-    req.getRequest().putAll(filters);
-    Object obj = interServiceCommunication.getResponse(req, actorRef);
-    if (obj instanceof Response) {
-      Response response = (Response) obj;
-      List<Map<String, Object>> locationList =
-          (List<Map<String, Object>>) response.getResult().get(JsonKey.RESPONSE);
-      if (CollectionUtils.isNotEmpty(locationList)) {
-        location = locationList.get(0);
-      }
+    Map<String, Object> location = locationClient.getLocationById(locationId, actorRef);
+    if (MapUtils.isNotEmpty(location)) {
+      return location;
+    } else {
+      return new HashMap<>();
     }
-    return location;
   }
 }
