@@ -1,12 +1,12 @@
-package org.sunbird.actorUtil.location.impl;
+package org.sunbird.actorutil.location.impl;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
-import org.sunbird.actorUtil.InterServiceCommunication;
-import org.sunbird.actorUtil.InterServiceCommunicationFactory;
-import org.sunbird.actorUtil.location.LocationClient;
+import org.sunbird.actorutil.InterServiceCommunication;
+import org.sunbird.actorutil.InterServiceCommunicationFactory;
+import org.sunbird.actorutil.location.LocationClient;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.GeoLocationJsonKey;
 import org.sunbird.common.models.util.JsonKey;

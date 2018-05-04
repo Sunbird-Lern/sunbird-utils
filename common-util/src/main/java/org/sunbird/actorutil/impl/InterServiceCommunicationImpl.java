@@ -1,4 +1,4 @@
-package org.sunbird.actorUtil.impl;
+package org.sunbird.actorutil.impl;
 
 import static akka.pattern.PatternsCS.ask;
 
@@ -8,7 +8,7 @@ import akka.util.Timeout;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.TimeUnit;
-import org.sunbird.actorUtil.InterServiceCommunication;
+import org.sunbird.actorutil.InterServiceCommunication;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.request.Request;

@@ -1,4 +1,4 @@
-package org.sunbird.actorUtil;
+package org.sunbird.actorutil;
 
 import org.sunbird.common.request.Request;
 

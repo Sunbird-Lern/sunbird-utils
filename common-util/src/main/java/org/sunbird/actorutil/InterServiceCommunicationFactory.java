@@ -1,8 +1,8 @@
-package org.sunbird.actorUtil;
+package org.sunbird.actorutil;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.sunbird.actorUtil.impl.InterServiceCommunicationImpl;
+import org.sunbird.actorutil.impl.InterServiceCommunicationImpl;
 
 /** Created by arvind on 24/4/18. */
 public class InterServiceCommunicationFactory {

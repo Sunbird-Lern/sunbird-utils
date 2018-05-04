@@ -1,4 +1,4 @@
-package org.sunbird.actorUtil.location;
+package org.sunbird.actorutil.location;
 
 import java.util.List;
 import java.util.Map;
