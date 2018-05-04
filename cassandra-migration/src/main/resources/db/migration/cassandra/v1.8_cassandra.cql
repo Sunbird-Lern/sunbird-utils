@@ -1,0 +1,3 @@
+UPDATE sunbird.page_section set searchquery='{"request":{"filters":{"contentType":["Resource"]},"sort_by":{"lastUpdatedOn":"desc"}}}' where id='01247222769795891223';
+UPDATE sunbird.page_section set searchquery='{"request":{"filters":{"contentType":["Resource"]},"sort_by":{"me_totalDownloads":"desc"}}}' where id='01247222216654848022';
+UPDATE sunbird.page_section set searchquery='{"request":{"filters":{"mimeType":"application/vnd.ekstep.ecml-archive","contentType":"Resource","resourceType":"Worksheet"},"sort_by":{"me_totalDownloads":"desc","me_totalInteractions":"desc"}}}' where id='01247222653363814424';
