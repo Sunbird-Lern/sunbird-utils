@@ -89,7 +89,9 @@ public class BaseLocationRequestValidator extends BaseRequestValidator {
    * This method will validate the list of location code whether its valid or not. If valid will
    * return the locationId List.
    *
-   * @param codeList
+   * @param codeList list of location code
+   * @param actorRef
+   * @return List<String> list of locationIds
    */
   public static List<String> validateLocationCode(List<String> codeList, Object actorRef) {
     Set<String> locationIds = null;
@@ -160,9 +162,9 @@ public class BaseLocationRequestValidator extends BaseRequestValidator {
         if (type.equalsIgnoreCase((String) location.get(JsonKey.TYPE))
             && !(currentLocation.get(JsonKey.ID).equals(location.get(JsonKey.ID)))) {
           throw new ProjectCommonException(
-              ResponseCode.invalidOrgLocations.getErrorCode(),
+              ResponseCode.validateLocationCode.getErrorCode(),
               ProjectUtil.formatMessage(
-                  ResponseCode.invalidOrgLocations.getErrorMessage(),
+                  ResponseCode.validateLocationCode.getErrorMessage(),
                   currentLocation.get(JsonKey.CODE),
                   location.get(JsonKey.CODE),
                   type),
