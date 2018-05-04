@@ -292,6 +292,8 @@ public interface ResponseMessage {
     String FILE_ATTACHMENT_SIZE_NOT_CONFIGURED = "File attachment max size is not configured.";
     String EMPTY_FILE = "Attached file is empty.";
     String INVALID_COLUMNS = "Allowed columns are - {0}.";
+    String INVALID_ORG_LOCATIONS =
+        "An organisation cannot be associated to two conflicting locations ({0},{1}) at {2} level. ";
   }
 
   interface Key {
@@ -560,5 +562,6 @@ public interface ResponseMessage {
     String FILE_ATTACHMENT_SIZE_NOT_CONFIGURED = "ATTACHMENT_SIZE_NOT_CONFIGURED";
     String EMPTY_FILE = "EMPTY_FILE";
     String INVALID_COLUMNS = "INVALID_COLUMNS";
+    String INVALID_ORG_LOCATIONS = "INVALID_ORG_LOCATIONS";
   }
 }
