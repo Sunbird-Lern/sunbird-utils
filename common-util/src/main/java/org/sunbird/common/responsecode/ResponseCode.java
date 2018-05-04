@@ -497,7 +497,43 @@ public enum ResponseCode {
   invalidPageSource(
       ResponseMessage.Key.INVALID_PAGE_SOURCE, ResponseMessage.Message.INVALID_PAGE_SOURCE),
   badgeSubTypeRequired(
-      ResponseMessage.Key.BADGE_SUBTYPE_REQUIRED, ResponseMessage.Message.BADGE_SUB_TYPE_REQUIRED),
+      ResponseMessage.Key.BADGE_SUBTYPE_REQUIRED, ResponseMessage.Message.BADGE_SUBTYPE_REQUIRED),
+  locationTypeRequired(
+      ResponseMessage.Key.LOCATION_TYPE_REQUIRED, ResponseMessage.Message.LOCATION_TYPE_REQUIRED),
+  invalidRequestDataForLocation(
+      ResponseMessage.Key.INVALID_REQUEST_DATA_FOR_LOCATION,
+      ResponseMessage.Message.INVALID_REQUEST_DATA_FOR_LOCATION),
+  alreadyExists(ResponseMessage.Key.ALREADY_EXISTS, ResponseMessage.Message.ALREADY_EXISTS),
+  invalidValue(ResponseMessage.Key.INVALID_VALUE, ResponseMessage.Message.INVALID_VALUE),
+  parentCodeAndIdValidationError(
+      ResponseMessage.Key.PARENT_CODE_AND_PARENT_ID_MISSING,
+      ResponseMessage.Message.PARENT_CODE_AND_PARENT_ID_MISSING),
+  invalidParameter(
+      ResponseMessage.Key.INVALID_PARAMETER, ResponseMessage.Message.INVALID_PARAMETER),
+  invalidLocationDeleteRequest(
+      ResponseMessage.Key.INVALID_LOCATION_DELETE_REQUEST,
+      ResponseMessage.Message.INVALID_LOCATION_DELETE_REQUEST),
+  locationTypeConflicts(
+      ResponseMessage.Key.LOCATION_TYPE_CONFLICTS, ResponseMessage.Message.LOCATION_TYPE_CONFLICTS),
+  mandatoryParamsMissing(
+      ResponseMessage.Key.MANDATORY_PARAMETER_MISSING,
+      ResponseMessage.Message.MANDATORY_PARAMETER_MISSING),
+  unupdatableField(
+      ResponseMessage.Key.UPDATE_NOT_ALLOWED, ResponseMessage.Message.UPDATE_NOT_ALLOWED),
+  mandatoryHeadersMissing(
+      ResponseMessage.Key.MANDATORY_HEADER_MISSING,
+      ResponseMessage.Message.MANDATORY_HEADER_MISSING),
+  invalidParameterValue(
+      ResponseMessage.Key.INVALID_PARAMETER_VALUE, ResponseMessage.Message.INVALID_PARAMETER_VALUE),
+  parentNotAllowed(
+      ResponseMessage.Key.PARENT_NOT_ALLOWED, ResponseMessage.Message.PARENT_NOT_ALLOWED),
+  missingFileAttachment(
+      ResponseMessage.Key.MISSING_FILE_ATTACHMENT, ResponseMessage.Message.MISSING_FILE_ATTACHMENT),
+  fileAttachmentSizeNotConfigured(
+      ResponseMessage.Key.FILE_ATTACHMENT_SIZE_NOT_CONFIGURED,
+      ResponseMessage.Message.FILE_ATTACHMENT_SIZE_NOT_CONFIGURED),
+  emptyFile(ResponseMessage.Key.EMPTY_FILE, ResponseMessage.Message.EMPTY_FILE),
+  invalidColumns(ResponseMessage.Key.INVALID_COLUMNS, ResponseMessage.Message.INVALID_COLUMNS),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

@@ -271,6 +271,27 @@ public interface ResponseMessage {
     String ORG_NOT_EXIST = "Requested organisation does not exist.";
     String INVALID_PAGE_SOURCE = "Invalid page source.";
     String BADGE_SUBTYPE_REQUIRED = "Please provide badge class subtype.";
+    String LOCATION_TYPE_REQUIRED = "Location type required.";
+    String INVALID_REQUEST_DATA_FOR_LOCATION = "{0} field required.";
+    String ALREADY_EXISTS = "A {0} with {1} already exists. Please retry with a unique value.";
+    String INVALID_VALUE = "Invalid {0}: {1}. Valid values are: {2}.";
+    String PARENT_CODE_AND_PARENT_ID_MISSING = "Please provide either parentCode or parentId.";
+    String INVALID_PARAMETER = "Please provide valid {0}.";
+    String INVALID_PARENT_ID = "Please provide valid parentId.";
+    String INVALID_LOCATION_DELETE_REQUEST =
+        "One or more locations have a parent reference to given location and hence cannot be deleted.";
+    String LOCATION_TYPE_CONFLICTS = "Location type conflicts with its parent location type.";
+    String MANDATORY_PARAMETER_MISSING = "Mandatory parameter {0} is missing.";
+    String INVALID_LOCN_ID = "Please provide valid locationId.";
+    String UPDATE_NOT_ALLOWED = "Update of {0} is not allowed.";
+    String MANDATORY_HEADER_MISSING = "Mandatory header {0} is missing.";
+    String INVALID_PARAMETER_VALUE =
+        "Invalid value {0} for parameter {1}. Please provide a valid value.";
+    String PARENT_NOT_ALLOWED = "For top level location, {0} is not allowed.";
+    String MISSING_FILE_ATTACHMENT = "Missing file attachment.";
+    String FILE_ATTACHMENT_SIZE_NOT_CONFIGURED = "File attachment max size is not configured.";
+    String EMPTY_FILE = "Attached file is empty.";
+    String INVALID_COLUMNS = "Allowed columns are - {0}.";
   }
 
   interface Key {
@@ -520,5 +541,24 @@ public interface ResponseMessage {
     String ORG_NOT_EXIST = "ORG_NOT_EXIST";
     String INVALID_PAGE_SOURCE = "INVALID_PAGE_SOURCE";
     String BADGE_SUBTYPE_REQUIRED = "BADGE_SUBTYPE_REQUIRED";
+    String LOCATION_TYPE_REQUIRED = "LOCATION_TYPE_REQUIRED";
+    String INVALID_REQUEST_DATA_FOR_LOCATION = "INVALID_REQUEST_DATA_CREATE_LOCATION";
+    String ALREADY_EXISTS = "ALREADY_EXISTS";
+    String INVALID_VALUE = "INVALID_VALUE";
+    String PARENT_CODE_AND_PARENT_ID_MISSING = "PARENT_CODE_AND_PARENT_ID_MISSING";
+    String INVALID_PARAMETER = "INVALID_PARAMETER";
+    String INVALID_PARENT_ID = "INVALID_PARENT_ID";
+    String INVALID_LOCATION_DELETE_REQUEST = "INVALID_LOCATION_DELETE_REQUEST";
+    String LOCATION_TYPE_CONFLICTS = "LOCATION_TYPE_CONFLICTS";
+    String MANDATORY_PARAMETER_MISSING = "MANDATORY_PARAMETER_MISSING";
+    String INVALID_LOCN_ID = "INVALID_LOCATION_ID";
+    String UPDATE_NOT_ALLOWED = "UPDATE_NOT_ALLOWED";
+    String MANDATORY_HEADER_MISSING = "MANDATORY_HEADER_MISSING";
+    String INVALID_PARAMETER_VALUE = "INVALID_PARAMETER_VALUE";
+    String PARENT_NOT_ALLOWED = "PARENT_NOT_ALLOWED";
+    String MISSING_FILE_ATTACHMENT = "MISSING_FILE_ATTACHMENT";
+    String FILE_ATTACHMENT_SIZE_NOT_CONFIGURED = "ATTACHMENT_SIZE_NOT_CONFIGURED";
+    String EMPTY_FILE = "EMPTY_FILE";
+    String INVALID_COLUMNS = "INVALID_COLUMNS";
   }
 }

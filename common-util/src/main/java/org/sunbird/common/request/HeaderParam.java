@@ -27,7 +27,6 @@ public enum HeaderParam {
   X_Access_TokenId("x-authenticated-user-token"),
   X_Authenticated_Client_Token("x-authenticated-client-token"),
   X_Authenticated_Client_Id("x-authenticated-client-id");
-
   /** name of the parameter */
   private String name;
 
