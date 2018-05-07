@@ -9,7 +9,9 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.GeoLocationJsonKey;
 import org.sunbird.common.models.util.JsonKey;
@@ -21,12 +23,13 @@ import org.sunbird.common.request.Request;
  * @author arvind on 30/4/18.
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@RunWith(PowerMockRunner.class)
 public class BaseLocationRequestValidatorTest {
 
   private String LOCATION_NAME = "location-name";
   private String LOCATION_CODE = "location_code";
   private String LOC_TYPE_STATE = "STATE";
-  static BaseLocationRequestValidator validator = null;
+  BaseLocationRequestValidator validator = new BaseLocationRequestValidator();
 
   @Test
   public void testValidateCreateLocationWithProperData() {
@@ -49,7 +52,6 @@ public class BaseLocationRequestValidatorTest {
   @Test(expected = ProjectCommonException.class)
   public void testValidateCreateLocationWithMandatoryParamTypeMissing() {
     Request request = new Request();
-    Map<String, Object> requestBody = new HashMap<>();
     Map<String, Object> locationData = new HashMap<>();
     locationData.put(JsonKey.NAME, LOCATION_NAME);
     locationData.put(JsonKey.CODE, LOCATION_CODE);
