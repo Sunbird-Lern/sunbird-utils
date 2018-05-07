@@ -1,47 +1,24 @@
 package org.sunbird.actorutil;
 
-import java.util.HashMap;
-import java.util.Map;
+import net.jcip.annotations.ThreadSafe;
 import org.sunbird.actorutil.impl.InterServiceCommunicationImpl;
 
 /** Created by arvind on 24/4/18. */
+@ThreadSafe
 public class InterServiceCommunicationFactory {
 
-  private static InterServiceCommunicationFactory factory;
-  private static Map<String, InterServiceCommunication> modes = new HashMap<>();
+  private static InterServiceCommunication instance;
 
   private InterServiceCommunicationFactory() {}
 
-  public static InterServiceCommunicationFactory getInstance() {
-    if (null == factory) {
-      synchronized (InterServiceCommunicationFactory.class) {
-        if (null == factory) {
-          factory = new InterServiceCommunicationFactory();
-        }
-      }
-    }
-    return factory;
+  static {
+    instance = new InterServiceCommunicationImpl();
   }
 
-  public InterServiceCommunication getCommunicationPath(String mode) {
-    if ("actorCommunication".equalsIgnoreCase(mode)) {
-      return getActorCommunicationMode();
+  public static InterServiceCommunication getInstance() {
+    if (null == instance) {
+      instance = new InterServiceCommunicationImpl();
     }
-    return null;
-  }
-
-  public InterServiceCommunication getActorCommunicationMode() {
-
-    if (modes.get("actorCommunication") != null) {
-      return modes.get("actorCommunication");
-    } else {
-      synchronized (InterServiceCommunicationFactory.class) {
-        if (modes.get("actorCommunication") == null) {
-          InterServiceCommunication communication = new InterServiceCommunicationImpl();
-          modes.put("actorCommunication", communication);
-        }
-      }
-    }
-    return modes.get("actorCommunication");
+    return instance;
   }
 }

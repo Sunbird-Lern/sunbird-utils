@@ -1,5 +1,6 @@
 package org.sunbird.actorutil.location.impl;
 
+import akka.actor.ActorRef;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,50 +12,92 @@ import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.GeoLocationJsonKey;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LocationActorOperation;
+import org.sunbird.common.models.util.LoggerEnum;
+import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.request.Request;
 
 public class LocationClientImpl implements LocationClient {
 
   private static InterServiceCommunication interServiceCommunication =
-      InterServiceCommunicationFactory.getInstance().getCommunicationPath("actorCommunication");
+      InterServiceCommunicationFactory.getInstance();
 
   @Override
-  public List<Map<String, Object>> getLocationsByCodes(List<String> codeList, Object actorRef) {
-    List<Map<String, Object>> locationList = null;
+  public List<Map<String, Object>> getLocationsByCodes(ActorRef actorRef, List<String> codeList) {
+    String param = GeoLocationJsonKey.CODE;
+    Object value = codeList;
+    Response response = getSearchResponse(actorRef, param, value);
+    return (List<Map<String, Object>>) response.getResult().get(JsonKey.RESPONSE);
+  }
+
+  @Override
+  public Map<String, Object> getLocationById(ActorRef actorRef, String id) {
+    String param = JsonKey.ID;
+    Object value = id;
+    Map<String, Object> location = new HashMap<>();
+    Response response = getSearchResponse(actorRef, param, value);
+    if (null != response.getResult()) {
+      List<Map<String, Object>> locationList =
+          (List<Map<String, Object>>) response.getResult().get(JsonKey.RESPONSE);
+      if (CollectionUtils.isNotEmpty(locationList)) {
+        location = locationList.get(0);
+      }
+    }
+    return location;
+  }
+
+  private Response getSearchResponse(ActorRef actorRef, String param, Object value) {
+    Response response = null;
     Map<String, Object> filters = new HashMap<>();
-    filters.put(GeoLocationJsonKey.CODE, codeList);
     Map<String, Object> locMap = new HashMap<>();
+    filters.put(param, value);
     locMap.put(JsonKey.FILTERS, filters);
     Request request = new Request();
     request.setOperation(LocationActorOperation.SEARCH_LOCATION.getValue());
     request.getRequest().putAll(locMap);
-    Object obj = interServiceCommunication.getResponse(request, actorRef);
+    Object obj = interServiceCommunication.getResponse(actorRef, request);
     if (obj instanceof Response) {
-      Response response = (Response) obj;
-      locationList = (List<Map<String, Object>>) response.getResult().get(JsonKey.RESPONSE);
+      response = (Response) obj;
+    } else {
+      response = new Response();
     }
-    return locationList;
+    return response;
   }
 
   @Override
-  public Map<String, Object> getLocationById(String id, Object actorRef) {
-    List<Map<String, Object>> locationList = null;
-    Map<String, Object> filters = new HashMap<>();
-    Map<String, Object> location = new HashMap<>();
-    Map<String, String> requestData = new HashMap<>();
-    requestData.put(JsonKey.ID, id);
-    filters.put(JsonKey.FILTERS, requestData);
-    Request req = new Request();
-    req.setOperation(LocationActorOperation.SEARCH_LOCATION.getValue());
-    req.getRequest().putAll(filters);
-    Object obj = interServiceCommunication.getResponse(req, actorRef);
+  public Response getLocationByCode(ActorRef actorRef, String locationCode) {
+    String param = GeoLocationJsonKey.CODE;
+    Object value = locationCode;
+    return getSearchResponse(actorRef, param, value);
+  }
+
+  @Override
+  public Response createLocation(ActorRef actorRef, Map<String, Object> location) {
+    Request request = new Request();
+    request.getRequest().putAll(location);
+    request.setOperation(LocationActorOperation.CREATE_LOCATION.getValue());
+    ProjectLogger.log(
+        "callCreateLocation - " + "Operation -" + LocationActorOperation.CREATE_LOCATION.getValue(),
+        LoggerEnum.INFO);
+
+    Object obj = interServiceCommunication.getResponse(actorRef, request);
     if (obj instanceof Response) {
-      Response response = (Response) obj;
-      locationList = (List<Map<String, Object>>) response.getResult().get(JsonKey.RESPONSE);
+      return (Response) obj;
     }
-    if (CollectionUtils.isNotEmpty(locationList)) {
-      location = locationList.get(0);
+    return null;
+  }
+
+  @Override
+  public Response updateLocation(ActorRef actorRef, Map<String, Object> location) {
+    Request request = new Request();
+    request.getRequest().putAll(location);
+    request.setOperation(LocationActorOperation.UPDATE_LOCATION.getValue());
+    ProjectLogger.log(
+        "callUpdateLocation - " + "Operation -" + LocationActorOperation.UPDATE_LOCATION.getValue(),
+        LoggerEnum.INFO);
+    Object obj = interServiceCommunication.getResponse(actorRef, request);
+    if (obj instanceof Response) {
+      return (Response) obj;
     }
-    return location;
+    return null;
   }
 }

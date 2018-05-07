@@ -1,12 +1,15 @@
 package org.sunbird.common.validator.location;
 
+import akka.actor.ActorRef;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
@@ -24,7 +27,7 @@ import org.sunbird.common.responsecode.ResponseCode;
 /** Created by arvind on 25/4/18. */
 public class BaseLocationRequestValidator extends BaseRequestValidator {
 
-  private static LocationClient locationClient = new LocationClientImpl();
+  private LocationClient locationClient = new LocationClientImpl();
   /**
    * Method to validate the create location request . Mandatory fields are as - name , type, code.
    *
@@ -86,17 +89,17 @@ public class BaseLocationRequestValidator extends BaseRequestValidator {
    * This method will validate the list of location code whether its valid or not. If valid will
    * return the locationId List.
    *
-   * @param codeList list of location code
-   * @param actorRef
-   * @return List<String> list of locationId
+   * @param List of location code.
+   * @param Actor reference.
+   * @return List of location id.
    */
-  public static List<String> validateLocationCode(List<String> codeList, Object actorRef) {
+  public List<String> validateLocationCode(List<String> codeList, ActorRef actorRef) {
     Set<String> locationIds = null;
     List<Map<String, Object>> locationList = null;
-    locationList = locationClient.getLocationsByCodes(codeList, actorRef);
+    locationList = locationClient.getLocationsByCodes(actorRef, codeList);
     List<String> locationIdList = new ArrayList<>();
     if (!CollectionUtils.isEmpty(locationList)) {
-      locationIds = BaseLocationRequestValidator.validateLocationHierarchy(locationList, actorRef);
+      locationIds = getValidatedLocationSet(locationList, actorRef);
     } else {
       throw new ProjectCommonException(
           ResponseCode.invalidParameterValue.getErrorCode(),
@@ -111,65 +114,63 @@ public class BaseLocationRequestValidator extends BaseRequestValidator {
   }
 
   /**
-   * This method will validate the location hierarchy and return the locationIds list
-   *
-   * @param locationList list of location
-   * @param actorRef actor reference
-   * @return list of locationId
+   * @desc This method will validate the location hierarchy and return the locationIds list.
+   * @param LocationList list of location.
+   * @param ActorRef actor reference.
+   * @return List of locationId.
    */
-  public static Set<String> validateLocationHierarchy(
-      List<Map<String, Object>> locationList, Object actorRef) {
-    Set<String> locnIds = new HashSet<>();
-    Map<String, Object> responseLocnMapList = new HashMap<>();
+  public Set<String> getValidatedLocationSet(
+      List<Map<String, Object>> locationList, ActorRef actorRef) {
+    Set<Map<String, Object>> locationSet = new HashSet<>();
     for (Map<String, Object> location : locationList) {
-      Map<String, Object> parentLocnList = getParentLocations(location, actorRef);
-      addLocations(responseLocnMapList, parentLocnList);
+      Set<Map<String, Object>> parentLocnSet = getParentLocations(location, actorRef);
+      addLocations(locationSet, parentLocnSet);
     }
-    locnIds.addAll(responseLocnMapList.keySet());
-    return locnIds;
+    return locationSet.stream().map(s -> ((String) s.get(JsonKey.ID))).collect(Collectors.toSet());
   }
 
-  private static void addLocations(
-      Map<String, Object> responseLocnMapList, Map<String, Object> parentLocnList) {
-    if (MapUtils.isEmpty(responseLocnMapList)) {
-      responseLocnMapList.putAll(parentLocnList);
+  private void addLocations(
+      Set<Map<String, Object>> locationSet, Set<Map<String, Object>> parentLocnSet) {
+    if (CollectionUtils.sizeIsEmpty(locationSet)) {
+      locationSet.addAll(parentLocnSet);
     } else {
-      checkLocationAlreadyExist(responseLocnMapList, parentLocnList);
-    }
-  }
-
-  private static void checkLocationAlreadyExist(
-      Map<String, Object> responseLocnMapList, Map<String, Object> parentLocnList) {
-    for (Object obj : parentLocnList.values()) {
-      Map<String, Object> currentLocation = (Map<String, Object>) obj;
-      String type = (String) currentLocation.get(JsonKey.TYPE);
-      for (Object object : responseLocnMapList.values()) {
-        Map<String, Object> location = (Map<String, Object>) object;
-        if (type.equalsIgnoreCase((String) location.get(JsonKey.TYPE))
-            && !(currentLocation.get(JsonKey.ID).equals(location.get(JsonKey.ID)))) {
+      for (Object obj : parentLocnSet) {
+        Map<String, Object> currentLocation = (Map<String, Object>) obj;
+        String type = (String) currentLocation.get(JsonKey.TYPE);
+        Predicate<Map<String, Object>> predicate =
+            location ->
+                type.equalsIgnoreCase((String) location.get(JsonKey.TYPE))
+                    && !(currentLocation.get(JsonKey.ID).equals(location.get(JsonKey.ID)));
+        List<String> codeList =
+            locationSet
+                .stream()
+                .filter(predicate)
+                .map(location -> (String) location.get(JsonKey.CODE))
+                .collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(codeList)) {
           throw new ProjectCommonException(
-              ResponseCode.validateLocationCode.getErrorCode(),
+              ResponseCode.conflictingOrgLocations.getErrorCode(),
               ProjectUtil.formatMessage(
-                  ResponseCode.validateLocationCode.getErrorMessage(),
+                  ResponseCode.conflictingOrgLocations.getErrorMessage(),
                   currentLocation.get(JsonKey.CODE),
-                  location.get(JsonKey.CODE),
+                  codeList.get(0),
                   type),
               ResponseCode.CLIENT_ERROR.getResponseCode());
         }
+        locationSet.add(currentLocation);
       }
-      responseLocnMapList.put((String) currentLocation.get(JsonKey.ID), currentLocation);
     }
   }
 
-  private static Map<String, Object> getParentLocations(
-      Map<String, Object> location, Object actorRef) {
-    Map<String, Object> locMap = new HashMap<>();
+  private Set<Map<String, Object>> getParentLocations(
+      Map<String, Object> location, ActorRef actorRef) {
+    Set<Map<String, Object>> locSet = new LinkedHashSet<>();
     Map<String, Integer> orderMap = getOrderMap();
     int count = orderMap.get(location.get(JsonKey.TYPE)) + 1;
     while (count != 0) {
       if (MapUtils.isNotEmpty(location)) {
         Map<String, Object> parent = new HashMap<>();
-        locMap.put((String) location.get(JsonKey.ID), location);
+        locSet.add(location);
         if (orderMap.get(location.get(JsonKey.TYPE)) == 0
             && StringUtils.isNotEmpty((String) location.get(JsonKey.ID))) {
           parent = getParentLocation((String) location.get(JsonKey.ID), actorRef);
@@ -177,16 +178,16 @@ public class BaseLocationRequestValidator extends BaseRequestValidator {
           parent = getParentLocation((String) location.get(JsonKey.PARENT_ID), actorRef);
         }
         if (MapUtils.isNotEmpty(parent)) {
-          locMap.put((String) parent.get(JsonKey.ID), parent);
+          locSet.add(parent);
           location = parent;
         }
       }
       count--;
     }
-    return locMap;
+    return locSet;
   }
 
-  private static Map<String, Integer> getOrderMap() {
+  private Map<String, Integer> getOrderMap() {
     Map<String, Integer> orderMap = new HashMap<>();
     List<String> subTypeList =
         Arrays.asList(
@@ -202,8 +203,8 @@ public class BaseLocationRequestValidator extends BaseRequestValidator {
     return orderMap;
   }
 
-  private static Map<String, Object> getParentLocation(String locationId, Object actorRef) {
-    Map<String, Object> location = locationClient.getLocationById(locationId, actorRef);
+  private Map<String, Object> getParentLocation(String locationId, ActorRef actorRef) {
+    Map<String, Object> location = locationClient.getLocationById(actorRef, locationId);
     if (MapUtils.isNotEmpty(location)) {
       return location;
     } else {
