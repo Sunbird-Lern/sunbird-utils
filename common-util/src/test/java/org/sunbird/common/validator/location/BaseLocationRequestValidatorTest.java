@@ -46,10 +46,9 @@ public class BaseLocationRequestValidatorTest {
   private String LOCATION_NAME = "location-name";
   private String LOCATION_CODE = "location_code";
   private String LOC_TYPE_STATE = "STATE";
-  static BaseLocationRequestValidator validator = new BaseLocationRequestValidator();
+  static BaseLocationRequestValidator validator = null;
 
   private static InterServiceCommunication interServiceCommunication = null;
-  private static InterServiceCommunicationFactory factory = null;
 
   private static Map<String, Object> block = new HashMap<>();
   private static Map<String, Object> district = new HashMap<>();
@@ -92,12 +91,12 @@ public class BaseLocationRequestValidatorTest {
 
     PowerMockito.mockStatic(InterServiceCommunicationFactory.class);
     interServiceCommunication = PowerMockito.mock(InterServiceCommunication.class);
-    factory = PowerMockito.mock(InterServiceCommunicationFactory.class);
-    PowerMockito.when(factory.getInstance()).thenReturn(interServiceCommunication);
+    PowerMockito.when(InterServiceCommunicationFactory.getInstance())
+        .thenReturn(interServiceCommunication);
     PowerMockito.when(interServiceCommunication.getResponse(Mockito.any(), Mockito.any()))
         .thenReturn(locationList);
 
-    PowerMockito.mockStatic(BaseLocationRequestValidator.class);
+    validator = PowerMockito.mock(BaseLocationRequestValidator.class);
     PowerMockito.when(validator.validateLocationCode(Mockito.anyList(), Mockito.any()))
         .thenReturn(locationIdsList);
   }
