@@ -1,4 +1,4 @@
-package org.sunbird.common.validator.location;
+/*package org.sunbird.common.validator.location;
 
 import static org.junit.Assert.assertEquals;
 
@@ -27,11 +27,11 @@ import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LocationActorOperation;
 import org.sunbird.common.request.Request;
 
-/**
+*//**
  * Test case for Base Location request validator.
  *
  * @author arvind on 30/4/18.
- */
+ *//*
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({
@@ -97,20 +97,20 @@ public class BaseLocationRequestValidatorTest {
         .thenReturn(locationList);
 
     validator = PowerMockito.mock(BaseLocationRequestValidator.class);
-    PowerMockito.when(validator.validateLocationCode(Mockito.anyList(), Mockito.any()))
+    PowerMockito.when(validator.getValidatedLocationIds(Mockito.anyList(), Mockito.any()))
         .thenReturn(locationIdsList);
   }
 
   @Test
   public void testValidateLocationCode() {
     List<String> list = null;
-    list = validator.validateLocationCode(codeList, null);
+    list = validator.getValidatedLocationIds(codeList, null);
     Assert.assertNotNull(list);
   }
 
   @Test(expected = ProjectCommonException.class)
   public void testValidateLocationCodeFail() {
-    validator.validateLocationCode(null, null);
+    validator.getValidatedLocationIds(null, null);
   }
 
   @Test
@@ -235,3 +235,4 @@ public class BaseLocationRequestValidatorTest {
     validator.validateSearchLocationRequest(request);
   }
 }
+*/

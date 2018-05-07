@@ -10,5 +10,7 @@
       <module>cassandra-dac</module>
       <module>elasticsearch-util</module>
       <module>sunbird-notification</module>
+	  <module>models</module>
+	  <module>actor-util</module>
   </modules>
 </project>

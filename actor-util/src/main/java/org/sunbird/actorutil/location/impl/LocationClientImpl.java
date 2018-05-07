@@ -48,12 +48,12 @@ public class LocationClientImpl implements LocationClient {
   private Response getSearchResponse(ActorRef actorRef, String param, Object value) {
     Response response = null;
     Map<String, Object> filters = new HashMap<>();
-    Map<String, Object> locMap = new HashMap<>();
+    Map<String, Object> searchRequestMap = new HashMap<>();
     filters.put(param, value);
-    locMap.put(JsonKey.FILTERS, filters);
+    searchRequestMap.put(JsonKey.FILTERS, filters);
     Request request = new Request();
     request.setOperation(LocationActorOperation.SEARCH_LOCATION.getValue());
-    request.getRequest().putAll(locMap);
+    request.getRequest().putAll(searchRequestMap);
     ProjectLogger.log(
         "LocationClientImpl : callSearchLocation - "
             + "Operation -"
