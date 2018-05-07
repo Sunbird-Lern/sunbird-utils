@@ -124,13 +124,15 @@ public class BaseLocationRequestValidator extends BaseRequestValidator {
     Set<Map<String, Object>> locationSet = new HashSet<>();
     for (Map<String, Object> location : locationList) {
       Set<Map<String, Object>> parentLocnSet = getParentLocations(location, actorRef);
-      addLocations(locationSet, parentLocnSet);
+      addLocations(locationSet, parentLocnSet, (String) location.get(JsonKey.CODE));
     }
     return locationSet.stream().map(s -> ((String) s.get(JsonKey.ID))).collect(Collectors.toSet());
   }
 
   private void addLocations(
-      Set<Map<String, Object>> locationSet, Set<Map<String, Object>> parentLocnSet) {
+      Set<Map<String, Object>> locationSet,
+      Set<Map<String, Object>> parentLocnSet,
+      String requestedLocationCode) {
     if (CollectionUtils.sizeIsEmpty(locationSet)) {
       locationSet.addAll(parentLocnSet);
     } else {
@@ -152,7 +154,7 @@ public class BaseLocationRequestValidator extends BaseRequestValidator {
               ResponseCode.conflictingOrgLocations.getErrorCode(),
               ProjectUtil.formatMessage(
                   ResponseCode.conflictingOrgLocations.getErrorMessage(),
-                  currentLocation.get(JsonKey.CODE),
+                  requestedLocationCode,
                   codeList.get(0),
                   type),
               ResponseCode.CLIENT_ERROR.getResponseCode());

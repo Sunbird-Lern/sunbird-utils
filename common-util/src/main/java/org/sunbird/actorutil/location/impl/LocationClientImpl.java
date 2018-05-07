@@ -55,7 +55,9 @@ public class LocationClientImpl implements LocationClient {
     request.setOperation(LocationActorOperation.SEARCH_LOCATION.getValue());
     request.getRequest().putAll(locMap);
     ProjectLogger.log(
-        "callSearchLocation - " + "Operation -" + LocationActorOperation.SEARCH_LOCATION.getValue(),
+        "LocationClientImpl : callSearchLocation - "
+            + "Operation -"
+            + LocationActorOperation.SEARCH_LOCATION.getValue(),
         LoggerEnum.INFO);
     Object obj = interServiceCommunication.getResponse(actorRef, request);
     if (obj instanceof Response) {
@@ -79,7 +81,9 @@ public class LocationClientImpl implements LocationClient {
     request.getRequest().putAll(location);
     request.setOperation(LocationActorOperation.CREATE_LOCATION.getValue());
     ProjectLogger.log(
-        "callCreateLocation - " + "Operation -" + LocationActorOperation.CREATE_LOCATION.getValue(),
+        "LocationClientImpl : callCreateLocation - "
+            + "Operation -"
+            + LocationActorOperation.CREATE_LOCATION.getValue(),
         LoggerEnum.INFO);
 
     Object obj = interServiceCommunication.getResponse(actorRef, request);
@@ -95,7 +99,9 @@ public class LocationClientImpl implements LocationClient {
     request.getRequest().putAll(location);
     request.setOperation(LocationActorOperation.UPDATE_LOCATION.getValue());
     ProjectLogger.log(
-        "callUpdateLocation - " + "Operation -" + LocationActorOperation.UPDATE_LOCATION.getValue(),
+        "LocationClientImpl : callUpdateLocation - "
+            + "Operation -"
+            + LocationActorOperation.UPDATE_LOCATION.getValue(),
         LoggerEnum.INFO);
     Object obj = interServiceCommunication.getResponse(actorRef, request);
     if (obj instanceof Response) {
