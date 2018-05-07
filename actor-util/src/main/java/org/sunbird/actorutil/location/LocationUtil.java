@@ -10,7 +10,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
@@ -24,7 +23,7 @@ import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.models.location.Location;
 
 /**
- * This class will provide methods to validate Location code.
+ * This class will provide methods to get validated location ids from Location code.
  *
  * @author Amit Kumar
  */
@@ -88,26 +87,22 @@ public class LocationUtil {
     } else {
       for (Location currentLocation : parentLocnSet) {
         String type = currentLocation.getType();
-        Predicate<Location> predicate =
-            location ->
-                type.equalsIgnoreCase(location.getType())
-                    && !(currentLocation.getId().equals(location.getId()));
-        List<String> codeList =
-            locationSet
-                .stream()
-                .filter(predicate)
-                .map(Location::getCode)
-                .collect(Collectors.toList());
-        if (CollectionUtils.isNotEmpty(codeList)) {
-          throw new ProjectCommonException(
-              ResponseCode.conflictingOrgLocations.getErrorCode(),
-              ProjectUtil.formatMessage(
-                  ResponseCode.conflictingOrgLocations.getErrorMessage(),
-                  requestedLocationCode,
-                  codeList.get(0),
-                  type),
-              ResponseCode.CLIENT_ERROR.getResponseCode());
-        }
+        locationSet
+            .stream()
+            .forEach(
+                location -> {
+                  if (type.equalsIgnoreCase(location.getType())
+                      && !(currentLocation.getId().equals(location.getId()))) {
+                    throw new ProjectCommonException(
+                        ResponseCode.conflictingOrgLocations.getErrorCode(),
+                        ProjectUtil.formatMessage(
+                            ResponseCode.conflictingOrgLocations.getErrorMessage(),
+                            requestedLocationCode,
+                            location.getCode(),
+                            type),
+                        ResponseCode.CLIENT_ERROR.getResponseCode());
+                  }
+                });
         locationSet.add(currentLocation);
       }
     }
