@@ -21,6 +21,7 @@ import org.sunbird.common.models.util.GeoLocationJsonKey;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.responsecode.ResponseCode;
+import org.sunbird.models.location.Location;
 
 public class LocationUtil {
 
@@ -37,8 +38,13 @@ public class LocationUtil {
    */
   public List<String> getValidatedLocationIds(List<String> codeList, ActorRef actorRef) {
     Set<String> locationIds = null;
-    List<Map<String, Object>> locationList = null;
-    locationList = locationClient.getLocationsByCodes(actorRef, codeList);
+    List<Map<String, Object>> responseLocList = null;
+    responseLocList = locationClient.getLocationsByCodes(actorRef, codeList);
+    List<Location> locationList =
+        responseLocList
+            .stream()
+            .map(s -> mapper.convertValue(s, Location.class))
+            .collect(Collectors.toList());
     List<String> locationIdList = new ArrayList<>();
     if (!CollectionUtils.isEmpty(locationList)) {
       locationIds = getValidatedLocationSet(locationList, actorRef);
@@ -61,35 +67,31 @@ public class LocationUtil {
    * @param ActorRef actor reference.
    * @return Set of locationId.
    */
-  public Set<String> getValidatedLocationSet(
-      List<Map<String, Object>> locationList, ActorRef actorRef) {
-    Set<Map<String, Object>> locationSet = new HashSet<>();
-    for (Map<String, Object> location : locationList) {
-      Set<Map<String, Object>> parentLocnSet = getParentLocations(location, actorRef);
-      addLocations(locationSet, parentLocnSet, (String) location.get(JsonKey.CODE));
+  public Set<String> getValidatedLocationSet(List<Location> locationList, ActorRef actorRef) {
+    Set<Location> locationSet = new HashSet<>();
+    for (Location location : locationList) {
+      Set<Location> parentLocnSet = getParentLocations(location, actorRef);
+      addLocations(locationSet, parentLocnSet, location.getCode());
     }
-    return locationSet.stream().map(s -> ((String) s.get(JsonKey.ID))).collect(Collectors.toSet());
+    return locationSet.stream().map(Location::getId).collect(Collectors.toSet());
   }
 
   private void addLocations(
-      Set<Map<String, Object>> locationSet,
-      Set<Map<String, Object>> parentLocnSet,
-      String requestedLocationCode) {
+      Set<Location> locationSet, Set<Location> parentLocnSet, String requestedLocationCode) {
     if (CollectionUtils.sizeIsEmpty(locationSet)) {
       locationSet.addAll(parentLocnSet);
     } else {
-      for (Object obj : parentLocnSet) {
-        Map<String, Object> currentLocation = (Map<String, Object>) obj;
-        String type = (String) currentLocation.get(JsonKey.TYPE);
-        Predicate<Map<String, Object>> predicate =
+      for (Location currentLocation : parentLocnSet) {
+        String type = currentLocation.getType();
+        Predicate<Location> predicate =
             location ->
-                type.equalsIgnoreCase((String) location.get(JsonKey.TYPE))
-                    && !(currentLocation.get(JsonKey.ID).equals(location.get(JsonKey.ID)));
+                type.equalsIgnoreCase(location.getType())
+                    && !(currentLocation.getId().equals(location.getId()));
         List<String> codeList =
             locationSet
                 .stream()
                 .filter(predicate)
-                .map(location -> (String) location.get(JsonKey.CODE))
+                .map(Location::getCode)
                 .collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(codeList)) {
           throw new ProjectCommonException(
@@ -106,29 +108,25 @@ public class LocationUtil {
     }
   }
 
-  private Set<Map<String, Object>> getParentLocations(
-      Map<String, Object> location, ActorRef actorRef) {
-    Set<Map<String, Object>> locSet = new LinkedHashSet<>();
+  private Set<Location> getParentLocations(Location location, ActorRef actorRef) {
+    Set<Location> locationSet = new LinkedHashSet<>();
     Map<String, Integer> orderMap = getOrderMap();
-    int count = orderMap.get(location.get(JsonKey.TYPE)) + 1;
+    int count = orderMap.get(location.getType()) + 1;
     while (count != 0) {
-      if (MapUtils.isNotEmpty(location)) {
-        Map<String, Object> parent = new HashMap<>();
-        locSet.add(location);
-        if (orderMap.get(location.get(JsonKey.TYPE)) == 0
-            && StringUtils.isNotEmpty((String) location.get(JsonKey.ID))) {
-          parent = getParentLocation((String) location.get(JsonKey.ID), actorRef);
-        } else if (StringUtils.isNotEmpty((String) location.get(JsonKey.PARENT_ID))) {
-          parent = getParentLocation((String) location.get(JsonKey.PARENT_ID), actorRef);
-        }
-        if (MapUtils.isNotEmpty(parent)) {
-          locSet.add(parent);
-          location = parent;
-        }
+      Location parent = null;
+      locationSet.add(location);
+      if (orderMap.get(location.getType()) == 0 && StringUtils.isNotEmpty(location.getId())) {
+        parent = getParentLocation(location.getId(), actorRef);
+      } else if (StringUtils.isNotEmpty(location.getParentId())) {
+        parent = getParentLocation(location.getParentId(), actorRef);
+      }
+      if (null != parent) {
+        locationSet.add(parent);
+        location = parent;
       }
       count--;
     }
-    return locSet;
+    return locationSet;
   }
 
   private Map<String, Integer> getOrderMap() {
@@ -147,12 +145,12 @@ public class LocationUtil {
     return orderMap;
   }
 
-  private Map<String, Object> getParentLocation(String locationId, ActorRef actorRef) {
+  private Location getParentLocation(String locationId, ActorRef actorRef) {
     Map<String, Object> location = locationClient.getLocationById(actorRef, locationId);
     if (MapUtils.isNotEmpty(location)) {
-      return location;
+      return mapper.convertValue(location, Location.class);
     } else {
-      return new HashMap<>();
+      return new Location();
     }
   }
 }
