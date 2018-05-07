@@ -23,6 +23,11 @@ import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.models.location.Location;
 
+/**
+ * This class will provide methods to validate Location code.
+ *
+ * @author Amit Kumar
+ */
 public class LocationUtil {
 
   private LocationClient locationClient = new LocationClientImpl();
