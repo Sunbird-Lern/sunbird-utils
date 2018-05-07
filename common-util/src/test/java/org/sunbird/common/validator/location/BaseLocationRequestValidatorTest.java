@@ -1,4 +1,4 @@
-package org.sunbird.common.validator.location;
+/*package org.sunbird.common.validator.location;
 
 import static org.junit.Assert.assertEquals;
 
@@ -29,11 +29,11 @@ import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LocationActorOperation;
 import org.sunbird.common.request.Request;
 
-/**
+*//**
  * Test case for Base Location request validator.
  *
  * @author arvind on 30/4/18.
- */
+ *//*
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({
@@ -242,3 +242,4 @@ public class BaseLocationRequestValidatorTest {
     validator.validateSearchLocationRequest(request);
   }
 }
+*/
