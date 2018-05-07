@@ -117,7 +117,7 @@ public class BaseLocationRequestValidator extends BaseRequestValidator {
    * @desc This method will validate the location hierarchy and return the locationIds list.
    * @param LocationList list of location.
    * @param ActorRef actor reference.
-   * @return List of locationId.
+   * @return Set of locationId.
    */
   public Set<String> getValidatedLocationSet(
       List<Map<String, Object>> locationList, ActorRef actorRef) {

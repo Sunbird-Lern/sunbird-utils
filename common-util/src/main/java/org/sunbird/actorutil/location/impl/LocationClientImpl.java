@@ -54,6 +54,9 @@ public class LocationClientImpl implements LocationClient {
     Request request = new Request();
     request.setOperation(LocationActorOperation.SEARCH_LOCATION.getValue());
     request.getRequest().putAll(locMap);
+    ProjectLogger.log(
+        "callSearchLocation - " + "Operation -" + LocationActorOperation.SEARCH_LOCATION.getValue(),
+        LoggerEnum.INFO);
     Object obj = interServiceCommunication.getResponse(actorRef, request);
     if (obj instanceof Response) {
       response = (Response) obj;

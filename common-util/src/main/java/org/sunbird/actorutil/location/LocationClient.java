@@ -22,33 +22,33 @@ public interface LocationClient {
 
   /**
    * @desc This method will fetch location details by id.
-   * @param String locationId.
+   * @param String location id.
    * @param ActorRef actor reference.
-   * @return Location details.
+   * @return Location details as Map<String, Object>.
    */
   Map<String, Object> getLocationById(ActorRef actorRef, String id);
 
   /**
    * @desc This method will fetch location details by code.
-   * @param String locationId.
+   * @param String location code.
    * @param ActorRef actor reference.
-   * @return Location details.
+   * @return Response.
    */
   Response getLocationByCode(ActorRef actorRef, String locationCode);
 
   /**
    * @desc This method will create Location and returns the response.
-   * @param String locationId.
+   * @param Location details as Map<String,Object>.
    * @param ActorRef actor reference.
-   * @return Location details.
+   * @return Response.
    */
   Response createLocation(ActorRef actorRef, Map<String, Object> location);
 
   /**
    * @desc This method will update location details.
-   * @param String locationId.
+   * @param Location details as Map<String,Object>.
    * @param ActorRef actor reference.
-   * @return Location details.
+   * @return Response.
    */
   Response updateLocation(ActorRef actorRef, Map<String, Object> location);
 }

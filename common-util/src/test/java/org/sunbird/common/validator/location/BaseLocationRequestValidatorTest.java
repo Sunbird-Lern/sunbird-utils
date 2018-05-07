@@ -1,14 +1,12 @@
-/*package org.sunbird.common.validator.location;
+package org.sunbird.common.validator.location;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -20,20 +18,20 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.sunbird.actorUtil.InterServiceCommunication;
-import org.sunbird.actorUtil.InterServiceCommunicationFactory;
-import org.sunbird.actorUtil.impl.InterServiceCommunicationImpl;
+import org.sunbird.actorutil.InterServiceCommunication;
+import org.sunbird.actorutil.InterServiceCommunicationFactory;
+import org.sunbird.actorutil.impl.InterServiceCommunicationImpl;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.GeoLocationJsonKey;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LocationActorOperation;
 import org.sunbird.common.request.Request;
 
-*//**
+/**
  * Test case for Base Location request validator.
  *
  * @author arvind on 30/4/18.
- *//*
+ */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({
@@ -48,7 +46,7 @@ public class BaseLocationRequestValidatorTest {
   private String LOCATION_NAME = "location-name";
   private String LOCATION_CODE = "location_code";
   private String LOC_TYPE_STATE = "STATE";
-  BaseLocationRequestValidator validator = new BaseLocationRequestValidator();
+  static BaseLocationRequestValidator validator = new BaseLocationRequestValidator();
 
   private static InterServiceCommunication interServiceCommunication = null;
   private static InterServiceCommunicationFactory factory = null;
@@ -59,7 +57,7 @@ public class BaseLocationRequestValidatorTest {
   private static Request request = new Request();
   private static List<Map<String, Object>> locationList = new ArrayList<>();
   private static List<String> codeList = new ArrayList<>();
-  private static Set<String> locationIdsList = new HashSet<>();
+  private static List<String> locationIdsList = new ArrayList<>();
 
   @BeforeClass
   public static void setUp() {
@@ -95,29 +93,25 @@ public class BaseLocationRequestValidatorTest {
     PowerMockito.mockStatic(InterServiceCommunicationFactory.class);
     interServiceCommunication = PowerMockito.mock(InterServiceCommunication.class);
     factory = PowerMockito.mock(InterServiceCommunicationFactory.class);
-    PowerMockito.when(InterServiceCommunicationFactory.getInstance()).thenReturn(factory);
-    PowerMockito.when(factory.getCommunicationPath("actorCommunication"))
-        .thenReturn(interServiceCommunication);
+    PowerMockito.when(factory.getInstance()).thenReturn(interServiceCommunication);
     PowerMockito.when(interServiceCommunication.getResponse(Mockito.any(), Mockito.any()))
         .thenReturn(locationList);
 
     PowerMockito.mockStatic(BaseLocationRequestValidator.class);
-    PowerMockito.when(
-            BaseLocationRequestValidator.validateLocationHierarchy(
-                Mockito.anyList(), Mockito.any()))
+    PowerMockito.when(validator.validateLocationCode(Mockito.anyList(), Mockito.any()))
         .thenReturn(locationIdsList);
   }
 
   @Test
   public void testValidateLocationCode() {
     List<String> list = null;
-    list = BaseLocationRequestValidator.validateLocationCode(codeList, null);
+    list = validator.validateLocationCode(codeList, null);
     Assert.assertNotNull(list);
   }
 
   @Test(expected = ProjectCommonException.class)
   public void testValidateLocationCodeFail() {
-    BaseLocationRequestValidator.validateLocationCode(null, null);
+    validator.validateLocationCode(null, null);
   }
 
   @Test
@@ -242,4 +236,3 @@ public class BaseLocationRequestValidatorTest {
     validator.validateSearchLocationRequest(request);
   }
 }
-*/
