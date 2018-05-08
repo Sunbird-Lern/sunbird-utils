@@ -3,7 +3,6 @@ package org.sunbird.cassandraimpl;
 import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.PreparedStatement;
-import com.datastax.driver.core.RegularStatement;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.Statement;
@@ -24,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.sunbird.cassandra.CassandraOperation;
+import org.sunbird.common.CassandraQueryUtil;
 import org.sunbird.common.CassandraUtil;
 import org.sunbird.common.Constants;
 import org.sunbird.common.exception.ProjectCommonException;
@@ -481,7 +481,7 @@ public class CassandraOperationImpl implements CassandraOperation {
             .stream()
             .forEach(
                 x -> {
-                  createQuery(x.getKey(), x.getValue(), where);
+                  CassandraQueryUtil.createQuery(x.getKey(), x.getValue(), where);
                 });
       }
       ResultSet results = session.execute(where);
@@ -537,31 +537,6 @@ public class CassandraOperationImpl implements CassandraOperation {
     return response;
   }
 
-  private void createQuery(String key, Object value, Where where) {
-    QueryBuilder.eq(key, value);
-    if (value instanceof Map) {
-      Map<String, Object> map = (Map<String, Object>) value;
-      map.entrySet()
-          .stream()
-          .forEach(
-              x -> {
-                if (JsonKey.LTE.equalsIgnoreCase(x.getKey())) {
-                  where.and(QueryBuilder.lte(key, x.getValue()));
-                } else if (JsonKey.LT.equalsIgnoreCase(x.getKey())) {
-                  where.and(QueryBuilder.lt(key, x.getValue()));
-                } else if (JsonKey.GTE.equalsIgnoreCase(x.getKey())) {
-                  where.and(QueryBuilder.gte(key, x.getValue()));
-                } else if (JsonKey.GT.equalsIgnoreCase(x.getKey())) {
-                  where.and(QueryBuilder.gt(key, x.getValue()));
-                }
-              });
-    } else if (value instanceof List) {
-      where.and(QueryBuilder.in(key, (List) value));
-    } else {
-      where.and(QueryBuilder.eq(key, value));
-    }
-  }
-
   @Override
   public Response batchUpdate(
       String keyspaceName, String tableName, List<Map<String, Map<String, Object>>> list) {
@@ -573,7 +548,8 @@ public class CassandraOperationImpl implements CassandraOperation {
       for (Map<String, Map<String, Object>> record : list) {
         Map<String, Object> primaryKey = record.get(JsonKey.PRIMARY_KEY);
         Map<String, Object> nonPKRecord = record.get(JsonKey.NON_PRIMARY_KEY);
-        batch.add(createUpdateQuery(primaryKey, nonPKRecord, keyspaceName, tableName));
+        batch.add(
+            CassandraQueryUtil.createUpdateQuery(primaryKey, nonPKRecord, keyspaceName, tableName));
       }
       session.execute(batch);
       response.put(Constants.RESPONSE, Constants.SUCCESS);
@@ -582,31 +558,5 @@ public class CassandraOperationImpl implements CassandraOperation {
       throw ex;
     }
     return response;
-  }
-
-  private RegularStatement createUpdateQuery(
-      Map<String, Object> primaryKey,
-      Map<String, Object> nonPKRecord,
-      String keyspaceName,
-      String tableName) {
-
-    Update update = QueryBuilder.update(keyspaceName, tableName);
-    Assignments assignments = update.with();
-    Update.Where where = update.where();
-    nonPKRecord
-        .entrySet()
-        .stream()
-        .forEach(
-            x -> {
-              assignments.and(QueryBuilder.set(x.getKey(), x.getValue()));
-            });
-    primaryKey
-        .entrySet()
-        .stream()
-        .forEach(
-            x -> {
-              where.and(QueryBuilder.eq(x.getKey(), x.getValue()));
-            });
-    return where;
   }
 }
