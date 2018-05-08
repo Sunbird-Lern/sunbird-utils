@@ -1,4 +1,4 @@
-package org.sunbird.actorutil.location;
+package org.sunbird.validator.location;
 
 import akka.actor.ActorRef;
 import java.util.ArrayList;
@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.sunbird.actorutil.location.LocationClient;
 import org.sunbird.actorutil.location.impl.LocationClientImpl;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.GeoLocationJsonKey;
@@ -21,13 +22,28 @@ import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.models.location.Location;
 
 /**
- * This class will provide methods to get validated location id's from Location code.
+ * This class will contains method to validate the location api request.
  *
  * @author Amit Kumar
  */
-public class LocationUtil {
+public class LocationRequestValidator extends BaseLocationRequestValidator {
 
   private LocationClient locationClient = new LocationClientImpl();
+  private Map<String, Integer> orderMap = new HashMap<>();
+
+  {
+    List<String> subTypeList =
+        Arrays.asList(
+            ProjectUtil.getConfigValue(GeoLocationJsonKey.SUNBIRD_VALID_LOCATION_TYPES).split(";"));
+    for (String str : subTypeList) {
+      List<String> typeList =
+          (((Arrays.asList(str.split(","))).stream().map(String::toLowerCase))
+              .collect(Collectors.toList()));
+      for (int i = 0; i < typeList.size(); i++) {
+        orderMap.put(typeList.get(i), i);
+      }
+    }
+  }
 
   /**
    * This method will validate the list of location code whether its valid or not. If valid will
@@ -128,19 +144,7 @@ public class LocationUtil {
     return locationSet;
   }
 
-  private int getOrder(String type) {
-    Map<String, Integer> orderMap = new HashMap<>();
-    List<String> subTypeList =
-        Arrays.asList(
-            ProjectUtil.getConfigValue(GeoLocationJsonKey.SUNBIRD_VALID_LOCATION_TYPES).split(";"));
-    for (String str : subTypeList) {
-      List<String> typeList =
-          (((Arrays.asList(str.split(","))).stream().map(String::toLowerCase))
-              .collect(Collectors.toList()));
-      for (int i = 0; i < typeList.size(); i++) {
-        orderMap.put(typeList.get(i), i);
-      }
-    }
+  public int getOrder(String type) {
     return orderMap.get(type);
   }
 }

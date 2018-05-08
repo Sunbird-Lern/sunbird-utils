@@ -12,5 +12,6 @@
       <module>sunbird-notification</module>
 	  <module>models</module>
 	  <module>actor-util</module>
+	  <module>request-validator</module>
   </modules>
 </project>
