@@ -1,14 +1,24 @@
 package org.sunbird.cassandraimpl;
 
 import com.datastax.driver.core.BoundStatement;
+import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.PreparedStatement;
+import com.datastax.driver.core.RegularStatement;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Session;
+import com.datastax.driver.core.Statement;
+import com.datastax.driver.core.exceptions.NoHostAvailableException;
+import com.datastax.driver.core.exceptions.QueryExecutionException;
+import com.datastax.driver.core.exceptions.QueryValidationException;
+import com.datastax.driver.core.querybuilder.Batch;
 import com.datastax.driver.core.querybuilder.Clause;
 import com.datastax.driver.core.querybuilder.Delete;
+import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
 import com.datastax.driver.core.querybuilder.Select.Where;
+import com.datastax.driver.core.querybuilder.Update;
+import com.datastax.driver.core.querybuilder.Update.Assignments;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -161,37 +171,6 @@ public class CassandraOperationImpl implements CassandraOperation {
     long elapsedTime = stopTime - startTime;
     ProjectLogger.log(
         "Cassandra Service deleteRecord method end at =="
-            + stopTime
-            + " ,Total time elapsed = "
-            + elapsedTime,
-        LoggerEnum.PERF_LOG);
-    return response;
-  }
-
-  @Override
-  public Response getRecordById(String keyspaceName, String tableName, String identifier) {
-    long startTime = System.currentTimeMillis();
-    ProjectLogger.log(
-        "Cassandra Service getRecordById method started at ==" + startTime, LoggerEnum.PERF_LOG);
-    Response response = new Response();
-    try {
-      Select selectQuery = QueryBuilder.select().all().from(keyspaceName, tableName);
-      Where selectWhere = selectQuery.where();
-      Clause clause = QueryBuilder.eq(Constants.IDENTIFIER, identifier);
-      selectWhere.and(clause);
-      ResultSet results = connectionManager.getSession(keyspaceName).execute(selectQuery);
-      response = CassandraUtil.createResponse(results);
-    } catch (Exception e) {
-      ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName + " : " + e.getMessage(), e);
-      throw new ProjectCommonException(
-          ResponseCode.SERVER_ERROR.getErrorCode(),
-          ResponseCode.SERVER_ERROR.getErrorMessage(),
-          ResponseCode.SERVER_ERROR.getResponseCode());
-    }
-    long stopTime = System.currentTimeMillis();
-    long elapsedTime = stopTime - startTime;
-    ProjectLogger.log(
-        "Cassandra Service getRecordById method end at =="
             + stopTime
             + " ,Total time elapsed = "
             + elapsedTime,
@@ -411,5 +390,223 @@ public class CassandraOperationImpl implements CassandraOperation {
             + elapsedTime,
         LoggerEnum.PERF_LOG);
     return response;
+  }
+
+  /**
+   * @param keyspaceName
+   * @param tableName
+   * @param request
+   * @param compositeKey
+   * @return Response
+   */
+  @Override
+  public Response updateRecord(
+      String keyspaceName,
+      String tableName,
+      Map<String, Object> request,
+      Map<String, Object> compositeKey) {
+
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log(
+        "Cassandra Service updateRecord method started at ==" + startTime, LoggerEnum.PERF_LOG);
+    Response response = new Response();
+    try {
+      Session session = connectionManager.getSession(keyspaceName);
+      Update update = QueryBuilder.update(keyspaceName, tableName);
+      Assignments assignments = update.with();
+      Update.Where where = update.where();
+      request
+          .entrySet()
+          .stream()
+          .forEach(
+              x -> {
+                assignments.and(QueryBuilder.set(x.getKey(), x.getValue()));
+              });
+      compositeKey
+          .entrySet()
+          .stream()
+          .forEach(
+              x -> {
+                where.and(QueryBuilder.eq(x.getKey(), x.getValue()));
+              });
+      Statement exampleQuery = where;
+      session.execute(exampleQuery);
+    } catch (Exception e) {
+      if (e.getMessage().contains(JsonKey.UNKNOWN_IDENTIFIER)) {
+        ProjectLogger.log(Constants.EXCEPTION_MSG_UPDATE + tableName + " : " + e.getMessage(), e);
+        throw new ProjectCommonException(
+            ResponseCode.invalidPropertyError.getErrorCode(),
+            CassandraUtil.processExceptionForUnknownIdentifier(e),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
+      ProjectLogger.log(Constants.EXCEPTION_MSG_UPDATE + tableName + " : " + e.getMessage(), e);
+      throw new ProjectCommonException(
+          ResponseCode.dbUpdateError.getErrorCode(),
+          ResponseCode.dbUpdateError.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    long stopTime = System.currentTimeMillis();
+    long elapsedTime = stopTime - startTime;
+    ProjectLogger.log(
+        "Cassandra Service updateRecord method end at =="
+            + stopTime
+            + " ,Total time elapsed = "
+            + elapsedTime,
+        LoggerEnum.PERF_LOG);
+    return response;
+  }
+
+  /**
+   * @param keyspaceName
+   * @param tableName
+   * @param key key represents the identifier it could be singe string or in case of composite key
+   *     it will be map of composite keys name and their corresponding values.
+   * @return Response.
+   */
+  @Override
+  public Response getRecordById(String keyspaceName, String tableName, Object key) {
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log(
+        "Cassandra Service getRecordBy key method started at ==" + startTime, LoggerEnum.PERF_LOG);
+    Response response = new Response();
+    try {
+      Session session = connectionManager.getSession(keyspaceName);
+      Select.Where where = QueryBuilder.select().from(keyspaceName, tableName).where();
+      if (key instanceof String) {
+        where.and(QueryBuilder.eq(JsonKey.ID, (String) key));
+      } else if (key instanceof Map) {
+        Map<String, Object> compositeKey = (Map<String, Object>) key;
+        compositeKey
+            .entrySet()
+            .stream()
+            .forEach(
+                x -> {
+                  createQuery(x.getKey(), x.getValue(), where);
+                });
+      }
+      ResultSet results = session.execute(where);
+      response = CassandraUtil.createResponse(results);
+    } catch (Exception e) {
+      ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName + " : " + e.getMessage(), e);
+      throw new ProjectCommonException(
+          ResponseCode.SERVER_ERROR.getErrorCode(),
+          ResponseCode.SERVER_ERROR.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    long stopTime = System.currentTimeMillis();
+    long elapsedTime = stopTime - startTime;
+    ProjectLogger.log(
+        "Cassandra Service getRecordBy key method end at =="
+            + stopTime
+            + " ,Total time elapsed = "
+            + elapsedTime,
+        LoggerEnum.PERF_LOG);
+    return response;
+  }
+
+  @Override
+  public Response batchInsert(
+      String keyspaceName, String tableName, List<Map<String, Object>> records) {
+
+    Session session = connectionManager.getSession(keyspaceName);
+    Batch batch = QueryBuilder.batch();
+    Response response = new Response();
+
+    try {
+      for (Map<String, Object> map : records) {
+        Insert insert = QueryBuilder.insertInto(keyspaceName, tableName);
+        map.entrySet()
+            .stream()
+            .forEach(
+                x -> {
+                  insert.value(x.getKey(), x.getValue());
+                });
+        insert.setConsistencyLevel(ConsistencyLevel.QUORUM);
+        batch.add(insert);
+      }
+      // now execute the batch
+      session.execute(batch);
+      response.put(Constants.RESPONSE, Constants.SUCCESS);
+    } catch (QueryExecutionException
+        | QueryValidationException
+        | NoHostAvailableException
+        | IllegalStateException e) {
+      // log an exception
+      throw e;
+    }
+    return response;
+  }
+
+  private void createQuery(String key, Object value, Where where) {
+    QueryBuilder.eq(key, value);
+    if (value instanceof Map) {
+      Map<String, Object> map = (Map<String, Object>) value;
+      map.entrySet()
+          .stream()
+          .forEach(
+              x -> {
+                if (JsonKey.LTE.equalsIgnoreCase(x.getKey())) {
+                  where.and(QueryBuilder.lte(key, x.getValue()));
+                } else if (JsonKey.LT.equalsIgnoreCase(x.getKey())) {
+                  where.and(QueryBuilder.lt(key, x.getValue()));
+                } else if (JsonKey.GTE.equalsIgnoreCase(x.getKey())) {
+                  where.and(QueryBuilder.gte(key, x.getValue()));
+                } else if (JsonKey.GT.equalsIgnoreCase(x.getKey())) {
+                  where.and(QueryBuilder.gt(key, x.getValue()));
+                }
+              });
+    } else if (value instanceof List) {
+      where.and(QueryBuilder.in(key, (List) value));
+    } else {
+      where.and(QueryBuilder.eq(key, value));
+    }
+  }
+
+  @Override
+  public Response batchUpdate(
+      String keyspaceName, String tableName, List<Map<String, Map<String, Object>>> list) {
+
+    Session session = connectionManager.getSession(keyspaceName);
+    Batch batch = QueryBuilder.batch();
+    Response response = new Response();
+    try {
+      for (Map<String, Map<String, Object>> record : list) {
+        Map<String, Object> primaryKey = record.get(JsonKey.PRIMARY_KEY);
+        Map<String, Object> nonPKRecord = record.get(JsonKey.NON_PRIMARY_KEY);
+        batch.add(createUpdateQuery(primaryKey, nonPKRecord, keyspaceName, tableName));
+      }
+      session.execute(batch);
+      response.put(Constants.RESPONSE, Constants.SUCCESS);
+    } catch (Exception ex) {
+      ProjectLogger.log("Batch Update failed " + ex.getMessage(), ex);
+      throw ex;
+    }
+    return response;
+  }
+
+  private RegularStatement createUpdateQuery(
+      Map<String, Object> primaryKey,
+      Map<String, Object> nonPKRecord,
+      String keyspaceName,
+      String tableName) {
+
+    Update update = QueryBuilder.update(keyspaceName, tableName);
+    Assignments assignments = update.with();
+    Update.Where where = update.where();
+    nonPKRecord
+        .entrySet()
+        .stream()
+        .forEach(
+            x -> {
+              assignments.and(QueryBuilder.set(x.getKey(), x.getValue()));
+            });
+    primaryKey
+        .entrySet()
+        .stream()
+        .forEach(
+            x -> {
+              where.and(QueryBuilder.eq(x.getKey(), x.getValue()));
+            });
+    return where;
   }
 }

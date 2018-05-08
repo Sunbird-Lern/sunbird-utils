@@ -292,6 +292,7 @@ public interface ResponseMessage {
     String FILE_ATTACHMENT_SIZE_NOT_CONFIGURED = "File attachment max size is not configured.";
     String EMPTY_FILE = "Attached file is empty.";
     String INVALID_COLUMNS = "Allowed columns are - {0}.";
+    String INVALID_COLUMN = "File contains invalid column- {0}.";
   }
 
   interface Key {
@@ -560,5 +561,6 @@ public interface ResponseMessage {
     String FILE_ATTACHMENT_SIZE_NOT_CONFIGURED = "ATTACHMENT_SIZE_NOT_CONFIGURED";
     String EMPTY_FILE = "EMPTY_FILE";
     String INVALID_COLUMNS = "INVALID_COLUMNS";
+    String INVALID_COLUMN = "INVALID_COLUMN";
   }
 }

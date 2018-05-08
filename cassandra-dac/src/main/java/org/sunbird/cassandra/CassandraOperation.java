@@ -52,15 +52,6 @@ public interface CassandraOperation {
   public Response deleteRecord(String keyspaceName, String tableName, String identifier);
 
   /**
-   * @desc This method is used to fetch record based on primary key
-   * @param keyspaceName String (data base keyspace name)
-   * @param tableName String
-   * @param identifier String
-   * @return Response Response
-   */
-  public Response getRecordById(String keyspaceName, String tableName, String identifier);
-
-  /**
    * @desc This method is used to fetch record based on given parameter and it's value (it only
    *     fetch the record based on property or column name if you have created index on that column
    *     otherwise it will throw exception.)
@@ -113,4 +104,17 @@ public interface CassandraOperation {
    * @return Response Response
    */
   public Response getAllRecords(String keyspaceName, String tableName);
+
+  Response updateRecord(
+      String keyspaceName,
+      String tableName,
+      Map<String, Object> request,
+      Map<String, Object> compositeKey);
+
+  Response getRecordById(String keyspaceName, String tableName, Object key);
+
+  Response batchInsert(String keyspaceName, String tableName, List<Map<String, Object>> records);
+
+  Response batchUpdate(
+      String keyspaceName, String tableName, List<Map<String, Map<String, Object>>> list);
 }
