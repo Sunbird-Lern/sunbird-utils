@@ -13,5 +13,6 @@
 	  <module>models</module>
 	  <module>actor-util</module>
 	  <module>request-validator</module>
+      <module>actor-core</module>
   </modules>
 </project>
