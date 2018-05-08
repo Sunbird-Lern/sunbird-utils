@@ -14,7 +14,6 @@ import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 import scala.concurrent.duration.Duration;
 
-/** @author Arvind */
 public class InterServiceCommunicationImpl implements InterServiceCommunication {
 
   private static final Integer WAIT_TIME = 10;
@@ -25,7 +24,10 @@ public class InterServiceCommunicationImpl implements InterServiceCommunication 
     if (null == actorRef) {
       ProjectLogger.log(
           "InterServiceCommunicationImpl : getResponse - actorRef is null ", LoggerEnum.INFO);
-      return null;
+      throw new ProjectCommonException(
+          ResponseCode.unableToCommunicateWithActor.getErrorCode(),
+          ResponseCode.unableToCommunicateWithActor.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
     }
     CompletableFuture<Object> future = ask(actorRef, request, t).toCompletableFuture();
     try {
@@ -34,8 +36,8 @@ public class InterServiceCommunicationImpl implements InterServiceCommunication 
       ProjectLogger.log(
           "InterServiceCommunicationImpl : Interservice communication error " + e.getMessage(), e);
       throw new ProjectCommonException(
-          ResponseCode.unableToCommunicatWithActor.getErrorCode(),
-          ResponseCode.unableToCommunicatWithActor.getErrorMessage(),
+          ResponseCode.unableToCommunicateWithActor.getErrorCode(),
+          ResponseCode.unableToCommunicateWithActor.getErrorMessage(),
           ResponseCode.SERVER_ERROR.getResponseCode());
     }
   }

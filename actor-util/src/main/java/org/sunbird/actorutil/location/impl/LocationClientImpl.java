@@ -104,18 +104,11 @@ public class LocationClientImpl implements LocationClient {
   }
 
   @Override
-  public String updateLocation(ActorRef actorRef, Location location) {
+  public void updateLocation(ActorRef actorRef, Location location) {
     Request request = new Request();
     request.getRequest().putAll(mapper.convertValue(location, Map.class));
     request.setOperation(LocationActorOperation.UPDATE_LOCATION.getValue());
     ProjectLogger.log("LocationClientImpl : callUpdateLocation ", LoggerEnum.INFO);
-    Object obj = interServiceCommunication.getResponse(actorRef, request);
-    if (obj instanceof Response) {
-      Response response = (Response) obj;
-      if (null != response.getResult()) {
-        return (String) response.getResult().get(JsonKey.RESPONSE);
-      }
-    }
-    return null;
+    interServiceCommunication.getResponse(actorRef, request);
   }
 }

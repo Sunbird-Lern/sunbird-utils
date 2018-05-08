@@ -29,9 +29,9 @@ import org.sunbird.models.location.Location;
 public class LocationRequestValidator extends BaseLocationRequestValidator {
 
   private LocationClient locationClient = new LocationClientImpl();
-  private Map<String, Integer> orderMap = new HashMap<>();
+  private static Map<String, Integer> orderMap = new HashMap<>();
 
-  {
+  static {
     List<String> subTypeList =
         Arrays.asList(
             ProjectUtil.getConfigValue(GeoLocationJsonKey.SUNBIRD_VALID_LOCATION_TYPES).split(";"));
@@ -58,7 +58,7 @@ public class LocationRequestValidator extends BaseLocationRequestValidator {
     List<Location> locationList = locationClient.getLocationsByCodes(actorRef, codeList);
     List<String> locationIdList = new ArrayList<>();
     if (CollectionUtils.isNotEmpty(locationList)) {
-      if (locationList.size() < codeList.size()) {
+      if (locationList.size() != codeList.size()) {
         List<String> invalidCodeList =
             locationList
                 .stream()

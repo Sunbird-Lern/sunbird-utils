@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 /**
- * @desc Pojo class for Organization
+ * @desc POJO class for Organization
  * @author Amit Kumar
  */
 @JsonIgnoreProperties(ignoreUnknown = true)

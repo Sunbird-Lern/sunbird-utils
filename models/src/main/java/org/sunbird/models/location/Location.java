@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.io.Serializable;
 
 /**
- * @desc Pojo class for Location
+ * @desc POJO class for Location
  * @author Amit Kumar
  */
 @JsonIgnoreProperties(ignoreUnknown = true)

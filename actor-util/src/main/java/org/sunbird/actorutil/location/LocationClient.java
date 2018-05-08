@@ -47,7 +47,8 @@ public interface LocationClient {
    * @desc This method will update location details.
    * @param actorRef Actor reference.
    * @param location Location details.
-   * @return Success message.
+   * @return
+   * @return void.
    */
-  String updateLocation(ActorRef actorRef, Location location);
+  void updateLocation(ActorRef actorRef, Location location);
 }
