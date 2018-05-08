@@ -53,7 +53,7 @@ public class BaseMWService {
     }
   }
 
-  protected static ActorSelection getRemoteRouter(String router) {
+  public static ActorSelection getRemoteRouter(String router) {
     String path = null;
     if (BackgroundRequestRouter.class.getSimpleName().equals(router)) {
       path = config.getString("sunbird_remote_bg_req_router_path");

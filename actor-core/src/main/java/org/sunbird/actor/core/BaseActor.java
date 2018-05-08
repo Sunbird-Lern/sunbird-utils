@@ -1,6 +1,12 @@
 package org.sunbird.actor.core;
 
+import akka.actor.ActorRef;
+import akka.actor.ActorSelection;
 import akka.actor.UntypedAbstractActor;
+import java.util.concurrent.CompletionStage;
+import org.sunbird.actor.router.BackgroundRequestRouter;
+import org.sunbird.actor.router.RequestRouter;
+import org.sunbird.actor.service.BaseMWService;
 import org.sunbird.actor.service.SunbirdMWService;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
@@ -11,6 +17,7 @@ import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.request.ExecutionContext;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
+import scala.concurrent.duration.Duration;
 
 /** @author Vinaya & Mahesh Kumar Gangula */
 public abstract class BaseActor extends UntypedAbstractActor {
@@ -88,5 +95,30 @@ public abstract class BaseActor extends UntypedAbstractActor {
     }
     response.setParams(resStatus);
     return response;
+  }
+
+  protected ActorRef getActorRef(String operation) {
+    int waitTime = 10;
+    ActorSelection select = null;
+    ActorRef actor = RequestRouter.getActor(operation);
+    if (null != actor) {
+      return actor;
+    } else {
+      select =
+          (BaseMWService.getRemoteRouter(RequestRouter.class.getSimpleName()) == null
+              ? (BaseMWService.getRemoteRouter(BackgroundRequestRouter.class.getSimpleName()))
+              : BaseMWService.getRemoteRouter(RequestRouter.class.getSimpleName()));
+      CompletionStage<ActorRef> futureActor =
+          select.resolveOneCS(Duration.create(waitTime, "seconds"));
+      try {
+        actor = futureActor.toCompletableFuture().get();
+      } catch (Exception e) {
+        ProjectLogger.log(
+            "InterServiceCommunicationImpl : getResponse - unable to get actorref from actorselection "
+                + e.getMessage(),
+            e);
+      }
+      return actor;
+    }
   }
 }
