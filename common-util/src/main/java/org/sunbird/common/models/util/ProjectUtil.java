@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -944,5 +945,13 @@ public class ProjectUtil {
       ProjectLogger.log(e.getMessage(), e);
     }
     return null;
+  }
+
+  public static void removeUnwantedFields(Map<String, Object> map, String... keys) {
+    Arrays.stream(keys)
+        .forEach(
+            x -> {
+              map.remove(x);
+            });
   }
 }
