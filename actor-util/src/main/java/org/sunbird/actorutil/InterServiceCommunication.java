@@ -4,15 +4,16 @@ import akka.actor.ActorRef;
 import org.sunbird.common.request.Request;
 
 /**
- * Created by arvind on 24/4/18. @Desc This Interface will provide utility method to communicate
- * between two actor
+ * @Desc This interface will provide utility method to communicate between two actor
+ *
+ * @author Arvind
  */
 public interface InterServiceCommunication {
 
   /**
-   * @param Actor reference
-   * @param Request object
-   * @return Object
+   * @param actorRef Actor reference
+   * @param Request Request object
+   * @return Object Response Object
    */
-  public Object getResponse(ActorRef actor, Request request);
+  public Object getResponse(ActorRef actorRef, Request request);
 }

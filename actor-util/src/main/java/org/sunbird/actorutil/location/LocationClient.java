@@ -2,8 +2,7 @@ package org.sunbird.actorutil.location;
 
 import akka.actor.ActorRef;
 import java.util.List;
-import java.util.Map;
-import org.sunbird.common.models.response.Response;
+import org.sunbird.models.location.Location;
 
 /**
  * This class will provide utility methods for Location service
@@ -14,41 +13,41 @@ public interface LocationClient {
 
   /**
    * @desc This method will fetch location details by list of code.
-   * @param CodeList list of code.
-   * @param ActorRef actor reference.
+   * @param actorRef Actor reference.
+   * @param codeList List of location code.
    * @return List of location.
    */
-  List<Map<String, Object>> getLocationsByCodes(ActorRef actorRef, List<String> codeList);
+  List<Location> getLocationsByCodes(ActorRef actorRef, List<String> codeList);
 
   /**
    * @desc This method will fetch location details by id.
-   * @param String location id.
-   * @param ActorRef actor reference.
-   * @return Location details as Map<String, Object>.
+   * @param actorRef Actor reference.
+   * @param id Location id.
+   * @return Location details.
    */
-  Map<String, Object> getLocationById(ActorRef actorRef, String id);
+  Location getLocationById(ActorRef actorRef, String id);
 
   /**
    * @desc This method will fetch location details by code.
-   * @param String location code.
-   * @param ActorRef actor reference.
-   * @return Response.
+   * @param actorRef Actor reference.
+   * @param locationCode location code.
+   * @return Location details.
    */
-  Response getLocationByCode(ActorRef actorRef, String locationCode);
+  Location getLocationByCode(ActorRef actorRef, String locationCode);
 
   /**
    * @desc This method will create Location and returns the response.
-   * @param Location details as Map<String,Object>.
-   * @param ActorRef actor reference.
-   * @return Response.
+   * @param actorRef Actor reference.
+   * @param location Location details.
+   * @return Location id.
    */
-  Response createLocation(ActorRef actorRef, Map<String, Object> location);
+  String createLocation(ActorRef actorRef, Location location);
 
   /**
    * @desc This method will update location details.
-   * @param Location details as Map<String,Object>.
-   * @param ActorRef actor reference.
-   * @return Response.
+   * @param actorRef Actor reference.
+   * @param location Location details.
+   * @return Success message.
    */
-  Response updateLocation(ActorRef actorRef, Map<String, Object> location);
+  String updateLocation(ActorRef actorRef, Location location);
 }

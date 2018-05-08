@@ -8,7 +8,10 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
-/** @author Amit Kumar */
+/**
+ * @desc Pojo class for Organization
+ * @author Amit Kumar
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
 public class Organization implements Serializable {

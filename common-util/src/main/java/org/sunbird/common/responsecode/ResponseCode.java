@@ -537,6 +537,9 @@ public enum ResponseCode {
   conflictingOrgLocations(
       ResponseMessage.Key.CONFLICTING_ORG_LOCATIONS,
       ResponseMessage.Message.CONFLICTING_ORG_LOCATIONS),
+  unableToCommunicatWithActor(
+      ResponseMessage.Key.UNABLE_TO_COMMUNICATE_WITH_ACTOR,
+      ResponseMessage.Message.UNABLE_TO_COMMUNICATE_WITH_ACTOR),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

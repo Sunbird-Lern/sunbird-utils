@@ -5,7 +5,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.io.Serializable;
 
-/** @author Amit Kumar */
+/**
+ * @desc Pojo class for Location
+ * @author Amit Kumar
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
 public class Location implements Serializable {

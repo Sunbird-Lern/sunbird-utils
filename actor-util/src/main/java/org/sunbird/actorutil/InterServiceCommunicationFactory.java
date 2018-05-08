@@ -1,10 +1,12 @@
 package org.sunbird.actorutil;
 
-import net.jcip.annotations.ThreadSafe;
 import org.sunbird.actorutil.impl.InterServiceCommunicationImpl;
 
-/** Created by arvind on 24/4/18. @Desc Factory class for InterServiceCommunication */
-@ThreadSafe
+/**
+ * @Desc Factory class for InterServiceCommunication.
+ *
+ * @author Arvind
+ */
 public class InterServiceCommunicationFactory {
 
   private static InterServiceCommunication instance;
