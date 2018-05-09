@@ -55,15 +55,15 @@ public class LocationRequestValidator extends BaseLocationRequestValidator {
    */
   public List<String> getValidatedLocationIds(ActorRef actorRef, List<String> codeList) {
     Set<String> locationIds = null;
+    List<String> codes = new ArrayList<>(codeList);
     List<Location> locationList = locationClient.getLocationsByCodes(actorRef, codeList);
     List<String> locationIdList = new ArrayList<>();
     if (CollectionUtils.isNotEmpty(locationList)) {
-      if (locationList.size() != codeList.size()) {
+      if (locationList.size() != codes.size()) {
+        List<String> resCodeList = locationList.stream().map(Location::getCode).collect(Collectors.toList());
         List<String> invalidCodeList =
-            locationList
-                .stream()
-                .filter(s -> !codeList.contains(s.getCode()))
-                .map(Location::getCode)
+           codes.stream()
+                .filter(s -> !resCodeList.contains(s))
                 .collect(Collectors.toList());
         throwInvalidParameterValueException(invalidCodeList);
       } else {
