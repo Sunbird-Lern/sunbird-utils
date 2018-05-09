@@ -534,6 +534,12 @@ public enum ResponseCode {
       ResponseMessage.Message.FILE_ATTACHMENT_SIZE_NOT_CONFIGURED),
   emptyFile(ResponseMessage.Key.EMPTY_FILE, ResponseMessage.Message.EMPTY_FILE),
   invalidColumns(ResponseMessage.Key.INVALID_COLUMNS, ResponseMessage.Message.INVALID_COLUMNS),
+  conflictingOrgLocations(
+      ResponseMessage.Key.CONFLICTING_ORG_LOCATIONS,
+      ResponseMessage.Message.CONFLICTING_ORG_LOCATIONS),
+  unableToCommunicateWithActor(
+      ResponseMessage.Key.UNABLE_TO_COMMUNICATE_WITH_ACTOR,
+      ResponseMessage.Message.UNABLE_TO_COMMUNICATE_WITH_ACTOR),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
