@@ -1,5 +1,6 @@
 package org.sunbird.cassandraimpl;
 
+import com.datastax.driver.core.BatchStatement;
 import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.PreparedStatement;
@@ -509,8 +510,10 @@ public class CassandraOperationImpl implements CassandraOperation {
       String keyspaceName, String tableName, List<Map<String, Object>> records) {
 
     Session session = connectionManager.getSession(keyspaceName);
-    Batch batch = QueryBuilder.batch();
+    // Batch batch = QueryBuilder.batch();
     Response response = new Response();
+    BatchStatement batchStatement = new BatchStatement();
+    ResultSet rs = null;
 
     try {
       for (Map<String, Object> map : records) {
@@ -522,16 +525,16 @@ public class CassandraOperationImpl implements CassandraOperation {
                   insert.value(x.getKey(), x.getValue());
                 });
         insert.setConsistencyLevel(ConsistencyLevel.QUORUM);
-        batch.add(insert);
+        batchStatement.add(insert);
       }
-      // now execute the batch
-      session.execute(batch);
+      rs = session.execute(batchStatement);
       response.put(Constants.RESPONSE, Constants.SUCCESS);
     } catch (QueryExecutionException
         | QueryValidationException
         | NoHostAvailableException
         | IllegalStateException e) {
       // log an exception
+      ProjectLogger.log("Batch Insert Failed." + e.getMessage(), e);
       throw e;
     }
     return response;

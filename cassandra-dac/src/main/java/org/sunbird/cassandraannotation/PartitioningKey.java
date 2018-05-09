@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * * Indicate the field as part of the cassandra partitioning key.
+ * Indicate the field as part of the cassandra partitioning key.
  *
  * @author arvind.
  */
