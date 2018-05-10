@@ -8,6 +8,7 @@ public enum ResponseCode {
   invalidUserCredentials(
       ResponseMessage.Key.INVALID_USER_CREDENTIALS,
       ResponseMessage.Message.INVALID_USER_CREDENTIALS),
+  operationTimeout(ResponseMessage.Key.OPERATION_TIMEOUT, ResponseMessage.Message.OPERATION_TIMEOUT),
   invalidOperationName(
       ResponseMessage.Key.INVALID_OPERATION_NAME, ResponseMessage.Message.INVALID_OPERATION_NAME),
   invalidRequestData(

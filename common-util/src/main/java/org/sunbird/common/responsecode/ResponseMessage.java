@@ -11,6 +11,7 @@ public interface ResponseMessage {
 
     String UNAUTHORISE_USER = "You are not authorized.";
     String INVALID_USER_CREDENTIALS = "Please check your credentials";
+    String OPERATION_TIMEOUT = "Request processing taking too long time. Please try again later.";
     String INVALID_OPERATION_NAME =
         "Operation name is invalid. Please provide a valid operation name";
     String INVALID_REQUESTED_DATA = "Requested data for this operation is not valid.";
@@ -300,6 +301,7 @@ public interface ResponseMessage {
   interface Key {
     String UNAUTHORISE_USER = "UNAUTHORIZE_USER";
     String INVALID_USER_CREDENTIALS = "INVALID_USER_CREDENTIALS";
+    String OPERATION_TIMEOUT = "PROCESS_EXE_TIMEOUT";
     String INVALID_OPERATION_NAME = "INVALID_OPERATION_NAME";
     String INVALID_REQUESTED_DATA = "INVALID_REQUESTED_DATA";
     String CONSUMER_ID_MISSING_ERROR = "CONSUMER_ID_REQUIRED_ERROR";
