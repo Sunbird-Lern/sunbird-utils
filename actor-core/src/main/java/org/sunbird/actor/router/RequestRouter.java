@@ -100,7 +100,7 @@ public class RequestRouter extends BaseRouter {
 						parent.tell(failure, self());
 					} else if (failure instanceof akka.pattern.AskTimeoutException) {
 						ProjectCommonException exception = new ProjectCommonException(
-								ResponseCode.internalError.getErrorCode(), ResponseCode.internalError.getErrorMessage(),
+								ResponseCode.operationTimeout.getErrorCode(), ResponseCode.operationTimeout.getErrorMessage(),
 								ResponseCode.SERVER_ERROR.getResponseCode());
 						parent.tell(exception, self());
 						
