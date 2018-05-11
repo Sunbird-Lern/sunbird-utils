@@ -291,8 +291,11 @@ public interface ResponseMessage {
     String MISSING_FILE_ATTACHMENT = "Missing file attachment.";
     String FILE_ATTACHMENT_SIZE_NOT_CONFIGURED = "File attachment max size is not configured.";
     String EMPTY_FILE = "Attached file is empty.";
-    String INVALID_COLUMNS = "Allowed columns are - {0}.";
-    String INVALID_COLUMN = "File contains invalid column- {0}.";
+    String INVALID_COLUMNS = "Invalid Column {0}: , Valid columns are: {1}.";
+    String CONFLICTING_ORG_LOCATIONS =
+        "An organisation cannot be associated to two conflicting locations ({0}, {1}) at {2} level. ";
+    String UNABLE_TO_COMMUNICATE_WITH_ACTOR = "Unable to communicate with actor.";
+    String EMPTY_HEADER_LINE = "Header line is empty.";
   }
 
   interface Key {
@@ -562,5 +565,8 @@ public interface ResponseMessage {
     String EMPTY_FILE = "EMPTY_FILE";
     String INVALID_COLUMNS = "INVALID_COLUMNS";
     String INVALID_COLUMN = "INVALID_COLUMN";
+    String CONFLICTING_ORG_LOCATIONS = "CONFLICTING_ORG_LOCATIONS";
+    String UNABLE_TO_COMMUNICATE_WITH_ACTOR = "UNABLE_TO_COMMUNICATE_WITH_ACTOR";
+    String EMPTY_HEADER_LINE = "EMPTY_HEADER_LINE";
   }
 }
