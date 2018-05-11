@@ -289,13 +289,13 @@ public final class CassandraUtil {
           .stream()
           .forEach(
               x -> {
-                if (JsonKey.LTE.equalsIgnoreCase(x.getKey())) {
+                if (Constants.LTE.equalsIgnoreCase(x.getKey())) {
                   where.and(QueryBuilder.lte(key, x.getValue()));
-                } else if (JsonKey.LT.equalsIgnoreCase(x.getKey())) {
+                } else if (Constants.LT.equalsIgnoreCase(x.getKey())) {
                   where.and(QueryBuilder.lt(key, x.getValue()));
-                } else if (JsonKey.GTE.equalsIgnoreCase(x.getKey())) {
+                } else if (Constants.GTE.equalsIgnoreCase(x.getKey())) {
                   where.and(QueryBuilder.gte(key, x.getValue()));
-                } else if (JsonKey.GT.equalsIgnoreCase(x.getKey())) {
+                } else if (Constants.GT.equalsIgnoreCase(x.getKey())) {
                   where.and(QueryBuilder.gt(key, x.getValue()));
                 }
               });
@@ -348,13 +348,13 @@ public final class CassandraUtil {
           .stream()
           .forEach(
               x -> {
-                if (JsonKey.LTE.equalsIgnoreCase(x.getKey())) {
+                if (Constants.LTE.equalsIgnoreCase(x.getKey())) {
                   where.and(QueryBuilder.lte(key, x.getValue()));
-                } else if (JsonKey.LT.equalsIgnoreCase(x.getKey())) {
+                } else if (Constants.LT.equalsIgnoreCase(x.getKey())) {
                   where.and(QueryBuilder.lt(key, x.getValue()));
-                } else if (JsonKey.GTE.equalsIgnoreCase(x.getKey())) {
+                } else if (Constants.GTE.equalsIgnoreCase(x.getKey())) {
                   where.and(QueryBuilder.gte(key, x.getValue()));
-                } else if (JsonKey.GT.equalsIgnoreCase(x.getKey())) {
+                } else if (Constants.GT.equalsIgnoreCase(x.getKey())) {
                   where.and(QueryBuilder.gt(key, x.getValue()));
                 }
               });

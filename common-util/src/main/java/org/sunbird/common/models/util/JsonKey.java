@@ -633,10 +633,6 @@ public final class JsonKey {
   public static final String LATITUDE = "latitude";
   public static final String LONGITUDE = "longitude";
   public static final String UPLOAD_FILE_MAX_SIZE = "file_upload_max_size";
-  public static final String LTE = "<=";
-  public static final String LT = "<";
-  public static final String GTE = ">=";
-  public static final String GT = ">";
   public static final String PRIMARY_KEY = "PK";
   public static final String NON_PRIMARY_KEY = "NonPK";
   public static final String PARENT_ID = "parentId";

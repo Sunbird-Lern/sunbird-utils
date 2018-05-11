@@ -1,6 +1,10 @@
 package org.sunbird.common.models.util;
 
-/** @author arvind. */
+/**
+ * Constants for Bulk Upload service.
+ *
+ * @author Arvind
+ */
 public class BulkUploadJsonKey {
 
   private BulkUploadJsonKey() {}

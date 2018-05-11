@@ -64,6 +64,16 @@ public interface CassandraOperation {
   public Response getRecordsByProperty(
       String keyspaceName, String tableName, String propertyName, Object propertyValue);
 
+  /**
+   * Fetch records with specified columns (select all if null) for given column name and value.
+   *
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param propertyName Column name
+   * @param propertyValue Column value
+   * @param fields List of columns to be returned in each record
+   * @return Response consisting of fetched records
+   */
   Response getRecordsByProperty(
       String keyspaceName,
       String tableName,
@@ -83,6 +93,17 @@ public interface CassandraOperation {
   public Response getRecordsByProperty(
       String keyspaceName, String tableName, String propertyName, List<Object> propertyValueList);
 
+  /**
+   * Fetch records with specified columns (select all if null) for given column name with matching
+   * value in the list.
+   *
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param propertyName Column name
+   * @param propertyValueList List of values to be used for matching in select query
+   * @param fields List of columns to be returned in each record
+   * @return Response consisting of fetched records
+   */
   Response getRecordsByProperty(
       String keyspaceName,
       String tableName,
@@ -101,12 +122,14 @@ public interface CassandraOperation {
       String keyspaceName, String tableName, Map<String, Object> propertyMap);
 
   /**
-   * @desc This method is used to fetch record based on given parameter list and their values
-   * @param keyspaceName String (data base keyspace name)
-   * @param tableName String
-   * @param propertyMap Map<String,Object> propertyMap)(i.e map of column name and their value)
-   * @param fields list of attribute in select statement.
-   * @return Response.
+   * Fetch records with specified columns (select all if null) for given column map (name, value
+   * pairs).
+   *
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param propertyMap Map describing columns to be used in where clause of select query.
+   * @param fields List of columns to be returned in each record
+   * @return Response consisting of fetched records
    */
   Response getRecordsByProperties(
       String keyspaceName, String tableName, Map<String, Object> propertyMap, List<String> fields);
@@ -133,11 +156,11 @@ public interface CassandraOperation {
   /**
    * Method to update the record on basis of composite primary key.
    *
-   * @param keyspaceName String (data base keyspace name)
-   * @param tableName String database table name.
-   * @param updateAttributes attributes going to be update.
-   * @param compositeKey represents primary key.
-   * @return Response
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param updateAttributes Column map to be used in set clause of update query
+   * @param compositeKey Column map for composite primary key
+   * @return Response consisting of update query status
    */
   Response updateRecord(
       String keyspaceName,
@@ -148,42 +171,43 @@ public interface CassandraOperation {
   /**
    * Method to get record by primary key.
    *
-   * @param keyspaceName database keyspace name.
-   * @param tableName database table name.
-   * @param key represents primary key.
-   * @return Response.
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param key Primary key
+   * @return Response consisting of matched record
    */
   Response getRecordById(String keyspaceName, String tableName, String key);
 
   /**
    * Method to get record by composite primary key.
    *
-   * @param keyspaceName database keyspace name.
-   * @param tableName database table name.
-   * @param key represents composite primary key.
-   * @return Response.
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param key Column map representing composite primary key
+   * @return Response consisting of matched record
    */
   Response getRecordById(String keyspaceName, String tableName, Map<String, Object> key);
 
   /**
-   * Method to get record by primary key.
+   * Method to get record by primary key consisting of only specified fields (return all if null).
    *
-   * @param keyspaceName database keyspace name.
-   * @param tableName database table name.
-   * @param key represents primary key.
-   * @param fields list of attribute in select statement.
-   * @return Response.
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param key Primary key
+   * @param fields List of columns to be returned in each record
+   * @return Response consisting of matched record
    */
   Response getRecordById(String keyspaceName, String tableName, String key, List<String> fields);
 
   /**
-   * Method to get record by composite primary key.
+   * Method to get record by composity primary key consisting of only specified fields (return all
+   * if null).
    *
-   * @param keyspaceName database keyspace name.
-   * @param tableName database table name.
-   * @param key represents composite primary key.
-   * @param fields list of attribute in select statement.
-   * @return Response.
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param key Column map representing composite primary key
+   * @param fields List of columns to be returned in each record
+   * @return Response consisting of matched record
    */
   Response getRecordById(
       String keyspaceName, String tableName, Map<String, Object> key, List<String> fields);
@@ -191,22 +215,21 @@ public interface CassandraOperation {
   /**
    * Method to perform batch insert operation.
    *
-   * @param keyspaceName database keyspace name.
-   * @param tableName database table name.
-   * @param records represents the rows going to be insert into database.
-   * @return Response.
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param records List of records in the batch insert operation
+   * @return Response indicating status of operation
    */
   Response batchInsert(String keyspaceName, String tableName, List<Map<String, Object>> records);
 
   /**
    * Method to perform batch update operation.
    *
-   * @param keyspaceName database keyspace name.
-   * @param tableName database table name.
-   * @param records Map represents the rows going to be insert into database.Each list entry is a
-   *     map which contains two keys , PK- represents primary key, NonPK- represents fields that has
-   *     to update.
-   * @return Response.
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param records List of map consisting of two maps with exactly two keys: PK: Column map for
+   *     primary key, NonPK: Column map for properties with new values to be updated
+   * @return Response indicating status of operation
    */
   Response batchUpdate(
       String keyspaceName, String tableName, List<Map<String, Map<String, Object>>> records);

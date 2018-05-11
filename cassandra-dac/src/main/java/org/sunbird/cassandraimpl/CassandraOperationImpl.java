@@ -373,13 +373,6 @@ public class CassandraOperationImpl implements CassandraOperation {
     return response;
   }
 
-  /**
-   * @param keyspaceName
-   * @param tableName
-   * @param request
-   * @param compositeKey
-   * @return Response
-   */
   @Override
   public Response updateRecord(
       String keyspaceName,
@@ -413,14 +406,13 @@ public class CassandraOperationImpl implements CassandraOperation {
       Statement updateQuery = where;
       session.execute(updateQuery);
     } catch (Exception e) {
+      ProjectLogger.log(Constants.EXCEPTION_MSG_UPDATE + tableName + " : " + e.getMessage(), e);
       if (e.getMessage().contains(JsonKey.UNKNOWN_IDENTIFIER)) {
-        ProjectLogger.log(Constants.EXCEPTION_MSG_UPDATE + tableName + " : " + e.getMessage(), e);
         throw new ProjectCommonException(
             ResponseCode.invalidPropertyError.getErrorCode(),
             CassandraUtil.processExceptionForUnknownIdentifier(e),
             ResponseCode.CLIENT_ERROR.getResponseCode());
       }
-      ProjectLogger.log(Constants.EXCEPTION_MSG_UPDATE + tableName + " : " + e.getMessage(), e);
       throw new ProjectCommonException(
           ResponseCode.dbUpdateError.getErrorCode(),
           ResponseCode.dbUpdateError.getErrorMessage(),
