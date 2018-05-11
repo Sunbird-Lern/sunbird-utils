@@ -7,6 +7,8 @@ package org.sunbird.common.models.util;
  * @author Manzarul
  */
 public final class JsonKey {
+  public static final String ANONYMOUS = "Anonymous";
+  public static final String UNAUTHORIZED = "Unauthorized";
   public static final String MW_SYSTEM_HOST = "sunbird_mw_system_host";
   public static final String MW_SYSTEM_PORT = "sunbird_mw_system_port";
   public static final String MW_SYSTEM_CLIENT_PORT = "sunbird_mw_system_client_port";
