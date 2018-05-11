@@ -637,5 +637,6 @@ public final class JsonKey {
   public static final String CREATED_ON = "createdOn";
   public static final String LAST_UPDATED_ON = "lastUpdatedOn";
   public static final String LAST_UPDATED_BY = "lastUpdatedBy";
+  public static final String SUNBIRD_DEFAULT_CHANNEL = "sunbird_default_channel";
   private JsonKey() {}
 }
