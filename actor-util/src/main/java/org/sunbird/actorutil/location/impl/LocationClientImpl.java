@@ -85,6 +85,7 @@ public class LocationClientImpl implements LocationClient {
   @Override
   public String createLocation(ActorRef actorRef, Location location) {
     Request request = new Request();
+    String locationId = null;
     request.getRequest().putAll(mapper.convertValue(location, Map.class));
     Map<String, Object> resLocation = new HashMap<>();
     request.setOperation(LocationActorOperation.CREATE_LOCATION.getValue());
@@ -92,15 +93,9 @@ public class LocationClientImpl implements LocationClient {
     Object obj = interServiceCommunication.getResponse(actorRef, request);
     if (obj instanceof Response) {
       Response response = (Response) obj;
-      if (null != response.getResult()) {
-        List<Map<String, Object>> locationList =
-            (List<Map<String, Object>>) response.getResult().get(JsonKey.RESPONSE);
-        if (CollectionUtils.isNotEmpty(locationList)) {
-          resLocation = locationList.get(0);
-        }
-      }
+      locationId = (String) response.get(JsonKey.ID);
     }
-    return (String) resLocation.get(JsonKey.ID);
+    return locationId;
   }
 
   @Override

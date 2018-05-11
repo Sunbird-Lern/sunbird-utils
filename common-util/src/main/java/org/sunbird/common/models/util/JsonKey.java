@@ -633,7 +633,11 @@ public final class JsonKey {
   public static final String LATITUDE = "latitude";
   public static final String LONGITUDE = "longitude";
   public static final String UPLOAD_FILE_MAX_SIZE = "file_upload_max_size";
+  public static final String PRIMARY_KEY = "PK";
+  public static final String NON_PRIMARY_KEY = "NonPK";
   public static final String PARENT_ID = "parentId";
+  public static final String CASSANDRA_WRITE_BATCH_SIZE = "cassandra_write_batch_size";
+  public static final String CASSANDRA_UPDATE_BATCH_SIZE = "cassandra_update_batch_size";
 
   private JsonKey() {}
 }

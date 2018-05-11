@@ -541,6 +541,7 @@ public enum ResponseCode {
   unableToCommunicateWithActor(
       ResponseMessage.Key.UNABLE_TO_COMMUNICATE_WITH_ACTOR,
       ResponseMessage.Message.UNABLE_TO_COMMUNICATE_WITH_ACTOR),
+  emptyHeaderLine(ResponseMessage.Key.EMPTY_HEADER_LINE, ResponseMessage.Message.EMPTY_HEADER_LINE),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

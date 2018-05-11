@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -73,6 +74,7 @@ public class ProjectUtil {
 
   public static final String[] defaultPrivateFields = new String[] {JsonKey.EMAIL, JsonKey.PHONE};
   private static final String INDEX_NAME = "telemetry.raw";
+  private static ObjectMapper mapper = new ObjectMapper();
 
   static {
     pattern = Pattern.compile(EMAIL_PATTERN);
@@ -937,12 +939,23 @@ public class ProjectUtil {
    * @return String List of map converted as Json string.
    */
   public static String convertMapToJsonString(List<Map<String, Object>> mapList) {
-    ObjectMapper mapper = new ObjectMapper();
     try {
       return mapper.writeValueAsString(mapList);
     } catch (IOException e) {
       ProjectLogger.log(e.getMessage(), e);
     }
     return null;
+  }
+
+  public static void removeUnwantedFields(Map<String, Object> map, String... keys) {
+    Arrays.stream(keys)
+        .forEach(
+            x -> {
+              map.remove(x);
+            });
+  }
+
+  public static Map convertJsonStringToMap(String jsonString) throws IOException {
+    return mapper.readValue(jsonString, Map.class);
   }
 }
