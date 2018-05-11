@@ -1,13 +1,24 @@
 package org.sunbird.common;
 
+import com.datastax.driver.core.RegularStatement;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
+import com.datastax.driver.core.querybuilder.QueryBuilder;
+import com.datastax.driver.core.querybuilder.Select.Where;
+import com.datastax.driver.core.querybuilder.Update;
+import com.datastax.driver.core.querybuilder.Update.Assignments;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.sunbird.cassandraannotation.ClusteringKey;
+import org.sunbird.cassandraannotation.PartitioningKey;
+import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
@@ -21,7 +32,8 @@ import org.sunbird.common.responsecode.ResponseCode;
  */
 public final class CassandraUtil {
 
-  private static final PropertiesCache instance = PropertiesCache.getInstance();
+  private static final PropertiesCache propertiesCache = PropertiesCache.getInstance();
+  private static final String SERIAL_VERSION_UID = "serialVersionUID";
 
   private CassandraUtil() {}
 
@@ -73,7 +85,7 @@ public final class CassandraUtil {
       map = new HashMap<>();
       for (int i = 0; i < keyArray.length; i++) {
         int pos = keyArray[i].indexOf(Constants.OPEN_BRACE);
-        String column = instance.getProperty(keyArray[i].substring(0, pos).trim());
+        String column = propertiesCache.getProperty(keyArray[i].substring(0, pos).trim());
         map.put(column, row.getObject(column));
       }
       responseList.add(map);
@@ -165,5 +177,191 @@ public final class CassandraUtil {
                 .replace(JsonKey.UNKNOWN_IDENTIFIER, "")
                 .replace(JsonKey.UNDEFINED_IDENTIFIER, ""))
         .trim();
+  }
+
+  /**
+   * Method to create the update query for composite keys. Create two separate map one for primary
+   * key and other one for attributes which are going to set.
+   *
+   * @param clazz class of Model class corresponding to table.
+   * @return Map containing two submap with keys PK(containing primary key attributes) and
+   *     NonPk(containing updatable attributes).
+   */
+  public static <T> Map<String, Map<String, Object>> batchUpdateQuery(T clazz) {
+    Field[] fieldList = clazz.getClass().getDeclaredFields();
+
+    Map<String, Object> primaryKeyMap = new HashMap<>();
+    Map<String, Object> nonPKMap = new HashMap<>();
+    try {
+      for (Field field : fieldList) {
+        String fieldName = null;
+        Object fieldValue = null;
+        Boolean isFieldPrimaryKeyPart = false;
+        if (Modifier.isPrivate(field.getModifiers())) {
+          field.setAccessible(true);
+        }
+        Annotation[] annotations = field.getDeclaredAnnotations();
+        for (Annotation annotation : annotations) {
+          if (annotation instanceof PartitioningKey) {
+            isFieldPrimaryKeyPart = true;
+          } else if (annotation instanceof ClusteringKey) {
+            isFieldPrimaryKeyPart = true;
+          }
+        }
+        fieldName = field.getName();
+        fieldValue = field.get(clazz);
+        if (!(fieldName.equalsIgnoreCase(SERIAL_VERSION_UID))) {
+          if (isFieldPrimaryKeyPart) {
+            primaryKeyMap.put(fieldName, fieldValue);
+          } else {
+            nonPKMap.put(fieldName, fieldValue);
+          }
+        }
+      }
+    } catch (Exception ex) {
+      ProjectLogger.log("Exception occurred - batchUpdateQuery", ex);
+      throw new ProjectCommonException(
+          ResponseCode.SERVER_ERROR.getErrorCode(),
+          ResponseCode.SERVER_ERROR.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    Map<String, Map<String, Object>> map = new HashMap<>();
+    map.put(JsonKey.PRIMARY_KEY, primaryKeyMap);
+    map.put(JsonKey.NON_PRIMARY_KEY, nonPKMap);
+    return map;
+  }
+
+  /**
+   * Method to create the composite primary key.
+   *
+   * @param clazz class of Model class corresponding to table.
+   * @return Map containing primary key attributes.
+   */
+  public static <T> Map<String, Object> getPrimaryKey(T clazz) {
+    Field[] fieldList = clazz.getClass().getDeclaredFields();
+    Map<String, Object> primaryKeyMap = new HashMap<>();
+
+    try {
+      for (Field field : fieldList) {
+        String fieldName = null;
+        Object fieldValue = null;
+        Boolean isFieldPrimaryKeyPart = false;
+        if (Modifier.isPrivate(field.getModifiers())) {
+          field.setAccessible(true);
+        }
+        Annotation[] annotations = field.getDeclaredAnnotations();
+        for (Annotation annotation : annotations) {
+          if (annotation instanceof PartitioningKey) {
+            isFieldPrimaryKeyPart = true;
+          } else if (annotation instanceof ClusteringKey) {
+            isFieldPrimaryKeyPart = true;
+          }
+        }
+        fieldName = field.getName();
+        fieldValue = field.get(clazz);
+        if (!(fieldName.equalsIgnoreCase(SERIAL_VERSION_UID))) {
+          if (isFieldPrimaryKeyPart) {
+            primaryKeyMap.put(fieldName, fieldValue);
+          }
+        }
+      }
+    } catch (Exception ex) {
+      ProjectLogger.log("Exception occurred - getPrimaryKey", ex);
+      throw new ProjectCommonException(
+          ResponseCode.SERVER_ERROR.getErrorCode(),
+          ResponseCode.SERVER_ERROR.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    return primaryKeyMap;
+  }
+
+  /**
+   * Method to create the where clause.
+   *
+   * @param key represents the column name.
+   * @param value represents the column value.
+   * @param where where clause.
+   */
+  public static void createWhereQuery(String key, Object value, Where where) {
+    if (value instanceof Map) {
+      Map<String, Object> map = (Map<String, Object>) value;
+      map.entrySet()
+          .stream()
+          .forEach(
+              x -> {
+                if (JsonKey.LTE.equalsIgnoreCase(x.getKey())) {
+                  where.and(QueryBuilder.lte(key, x.getValue()));
+                } else if (JsonKey.LT.equalsIgnoreCase(x.getKey())) {
+                  where.and(QueryBuilder.lt(key, x.getValue()));
+                } else if (JsonKey.GTE.equalsIgnoreCase(x.getKey())) {
+                  where.and(QueryBuilder.gte(key, x.getValue()));
+                } else if (JsonKey.GT.equalsIgnoreCase(x.getKey())) {
+                  where.and(QueryBuilder.gt(key, x.getValue()));
+                }
+              });
+    } else if (value instanceof List) {
+      where.and(QueryBuilder.in(key, (List) value));
+    } else {
+      where.and(QueryBuilder.eq(key, value));
+    }
+  }
+
+  /**
+   * Method to create the cassandra update query.
+   *
+   * @param primaryKey map representing the composite primary key.
+   * @param nonPKRecord map contains the fields that has to update.
+   * @param keyspaceName cassandra keyspace name.
+   * @param tableName cassandra table name.
+   * @return RegularStatement.
+   */
+  public static RegularStatement createUpdateQuery(
+      Map<String, Object> primaryKey,
+      Map<String, Object> nonPKRecord,
+      String keyspaceName,
+      String tableName) {
+
+    Update update = QueryBuilder.update(keyspaceName, tableName);
+    Assignments assignments = update.with();
+    Update.Where where = update.where();
+    nonPKRecord
+        .entrySet()
+        .stream()
+        .forEach(
+            x -> {
+              assignments.and(QueryBuilder.set(x.getKey(), x.getValue()));
+            });
+    primaryKey
+        .entrySet()
+        .stream()
+        .forEach(
+            x -> {
+              where.and(QueryBuilder.eq(x.getKey(), x.getValue()));
+            });
+    return where;
+  }
+
+  public static void createQuery(String key, Object value, Where where) {
+    if (value instanceof Map) {
+      Map<String, Object> map = (Map<String, Object>) value;
+      map.entrySet()
+          .stream()
+          .forEach(
+              x -> {
+                if (JsonKey.LTE.equalsIgnoreCase(x.getKey())) {
+                  where.and(QueryBuilder.lte(key, x.getValue()));
+                } else if (JsonKey.LT.equalsIgnoreCase(x.getKey())) {
+                  where.and(QueryBuilder.lt(key, x.getValue()));
+                } else if (JsonKey.GTE.equalsIgnoreCase(x.getKey())) {
+                  where.and(QueryBuilder.gte(key, x.getValue()));
+                } else if (JsonKey.GT.equalsIgnoreCase(x.getKey())) {
+                  where.and(QueryBuilder.gt(key, x.getValue()));
+                }
+              });
+    } else if (value instanceof List) {
+      where.and(QueryBuilder.in(key, (List) value));
+    } else {
+      where.and(QueryBuilder.eq(key, value));
+    }
   }
 }

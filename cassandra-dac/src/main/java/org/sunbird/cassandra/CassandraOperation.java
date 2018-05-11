@@ -64,6 +64,13 @@ public interface CassandraOperation {
   public Response getRecordsByProperty(
       String keyspaceName, String tableName, String propertyName, Object propertyValue);
 
+  Response getRecordsByProperty(
+      String keyspaceName,
+      String tableName,
+      String propertyName,
+      Object propertyValue,
+      List<String> fields);
+
   /**
    * @desc This method is used to fetch record based on given parameter and it's list of value (for
    *     In Query , for example : SELECT * FROM mykeyspace.mytable WHERE id IN (‘A’,’B’,C’) )
@@ -76,6 +83,13 @@ public interface CassandraOperation {
   public Response getRecordsByProperty(
       String keyspaceName, String tableName, String propertyName, List<Object> propertyValueList);
 
+  Response getRecordsByProperty(
+      String keyspaceName,
+      String tableName,
+      String propertyName,
+      List<Object> propertyValueList,
+      List<String> fields);
+
   /**
    * @desc This method is used to fetch record based on given parameter list and their values
    * @param keyspaceName String (data base keyspace name)
@@ -87,12 +101,23 @@ public interface CassandraOperation {
       String keyspaceName, String tableName, Map<String, Object> propertyMap);
 
   /**
+   * @desc This method is used to fetch record based on given parameter list and their values
+   * @param keyspaceName String (data base keyspace name)
+   * @param tableName String
+   * @param propertyMap Map<String,Object> propertyMap)(i.e map of column name and their value)
+   * @param fields list of attribute in select statement.
+   * @return Response.
+   */
+  Response getRecordsByProperties(
+      String keyspaceName, String tableName, Map<String, Object> propertyMap, List<String> fields);
+
+  /**
    * @desc This method is used to fetch properties value based on id
    * @param keyspaceName String (data base keyspace name)
    * @param tableName String
    * @param id String
    * @param properties String varargs
-   * @return Response Response
+   * @return Response.
    */
   public Response getPropertiesValueById(
       String keyspaceName, String tableName, String id, String... properties);
@@ -105,16 +130,84 @@ public interface CassandraOperation {
    */
   public Response getAllRecords(String keyspaceName, String tableName);
 
+  /**
+   * Method to update the record on basis of composite primary key.
+   *
+   * @param keyspaceName String (data base keyspace name)
+   * @param tableName String database table name.
+   * @param updateAttributes attributes going to be update.
+   * @param compositeKey represents primary key.
+   * @return Response
+   */
   Response updateRecord(
       String keyspaceName,
       String tableName,
-      Map<String, Object> request,
+      Map<String, Object> updateAttributes,
       Map<String, Object> compositeKey);
 
-  Response getRecordById(String keyspaceName, String tableName, Object key);
+  /**
+   * Method to get record by primary key.
+   *
+   * @param keyspaceName database keyspace name.
+   * @param tableName database table name.
+   * @param key represents primary key.
+   * @return Response.
+   */
+  Response getRecordById(String keyspaceName, String tableName, String key);
 
+  /**
+   * Method to get record by composite primary key.
+   *
+   * @param keyspaceName database keyspace name.
+   * @param tableName database table name.
+   * @param key represents composite primary key.
+   * @return Response.
+   */
+  Response getRecordById(String keyspaceName, String tableName, Map<String, Object> key);
+
+  /**
+   * Method to get record by primary key.
+   *
+   * @param keyspaceName database keyspace name.
+   * @param tableName database table name.
+   * @param key represents primary key.
+   * @param fields list of attribute in select statement.
+   * @return Response.
+   */
+  Response getRecordById(String keyspaceName, String tableName, String key, List<String> fields);
+
+  /**
+   * Method to get record by composite primary key.
+   *
+   * @param keyspaceName database keyspace name.
+   * @param tableName database table name.
+   * @param key represents composite primary key.
+   * @param fields list of attribute in select statement.
+   * @return Response.
+   */
+  Response getRecordById(
+      String keyspaceName, String tableName, Map<String, Object> key, List<String> fields);
+
+  /**
+   * Method to perform batch insert operation.
+   *
+   * @param keyspaceName database keyspace name.
+   * @param tableName database table name.
+   * @param records represents the rows going to be insert into database.
+   * @return Response.
+   */
   Response batchInsert(String keyspaceName, String tableName, List<Map<String, Object>> records);
 
+  /**
+   * Method to perform batch update operation.
+   *
+   * @param keyspaceName database keyspace name.
+   * @param tableName database table name.
+   * @param records Map represents the rows going to be insert into database.Each list entry is a
+   *     map which contains two keys , PK- represents primary key, NonPK- represents fields that has
+   *     to update.
+   * @return Response.
+   */
   Response batchUpdate(
-      String keyspaceName, String tableName, List<Map<String, Map<String, Object>>> list);
+      String keyspaceName, String tableName, List<Map<String, Map<String, Object>>> records);
 }
