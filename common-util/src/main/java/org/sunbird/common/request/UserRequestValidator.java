@@ -85,6 +85,25 @@ public class UserRequestValidator {
           ResponseCode.userNameRequired.getErrorMessage(),
           ERROR_CODE);
     }
+    
+    if (StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.PROVIDER)) && 
+        StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID))) {
+      throw new ProjectCommonException(
+          ResponseCode.mandatoryParamsMissing.getErrorCode(),
+          ProjectUtil.formatMessage(
+              ResponseCode.mandatoryParamsMissing.getErrorMessage(),
+              JsonKey.EXTERNAL_ID),
+          ERROR_CODE);
+    }
+    if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PROVIDER)) && 
+        StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID))) {
+      throw new ProjectCommonException(
+          ResponseCode.mandatoryParamsMissing.getErrorCode(),
+          ProjectUtil.formatMessage(
+              ResponseCode.mandatoryParamsMissing.getErrorMessage(),
+              JsonKey.PROVIDER),
+          ERROR_CODE);
+    }
 
     if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.FIRST_NAME))) {
       throw new ProjectCommonException(

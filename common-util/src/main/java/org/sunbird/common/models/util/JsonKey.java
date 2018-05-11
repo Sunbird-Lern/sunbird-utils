@@ -634,6 +634,8 @@ public final class JsonKey {
   public static final String LONGITUDE = "longitude";
   public static final String UPLOAD_FILE_MAX_SIZE = "file_upload_max_size";
   public static final String PARENT_ID = "parentId";
-
+  public static final String CREATED_ON = "createdOn";
+  public static final String LAST_UPDATED_ON = "lastUpdatedOn";
+  public static final String LAST_UPDATED_BY = "lastUpdatedBy";
   private JsonKey() {}
 }

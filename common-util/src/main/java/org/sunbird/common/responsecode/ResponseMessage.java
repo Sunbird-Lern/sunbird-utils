@@ -179,7 +179,7 @@ public interface ResponseMessage {
     String RECEIVER_ID_ERROR = "Receiver id is mandatory.";
     String INVALID_RECEIVER_ID = "Receiver id is invalid.";
     String INVALID_BADGE_ID = "Invalid badge type id.";
-    String USER_REG_ORG_ERROR = "this user belongs to some other organization.";
+    String USER_REG_ORG_ERROR = "this user belongs to some other root organization.";
     String INVALID_ROLE = "Invalid role value provided in request.";
     String INVALID_SALT = "Please provide salt value.";
     String ORG_TYPE_MANDATORY = "Org Type name is mandatory.";
