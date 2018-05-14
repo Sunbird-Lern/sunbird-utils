@@ -34,8 +34,8 @@ public class ResponseCodeTest {
 
   @Test
   public void testGetResponseMessage() {
-    String respMsg = ResponseCode.getResponseMessage(ResponseCode.unAuthorised.getErrorCode());
-    assertEquals(ResponseCode.unAuthorised.getErrorMessage(), respMsg);
+    String respMsg = ResponseCode.getResponseMessage(ResponseCode.unAuthorized.getErrorCode());
+    assertEquals(ResponseCode.unAuthorized.getErrorMessage(), respMsg);
   }
 
   @Test

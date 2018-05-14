@@ -1,3 +1,3 @@
-CREATE TABLE IF NOT EXISTS sunbird.bulk_upload_process_task(processId text,sequenceId int,iterationId int,data text,status int,successResult text,failureResult text,createdOn timestamp,lastUpdatedOn timestamp,PRIMARY KEY (processId ,sequenceId ));
-
-ALTER TABLE  bulk_upload_process ADD  taskCount int;
+UPDATE sunbird.page_section set searchquery='{"request":{"filters":{"contentType":["Resource"]},"sort_by":{"lastUpdatedOn":"desc"}}}' where id='01247222769795891223';
+UPDATE sunbird.page_section set searchquery='{"request":{"filters":{"contentType":["Resource"]},"sort_by":{"me_totalDownloads":"desc"}}}' where id='01247222216654848022';
+UPDATE sunbird.page_section set searchquery='{"request":{"filters":{"mimeType":"application/vnd.ekstep.ecml-archive","contentType":"Resource","resourceType":"Worksheet"},"sort_by":{"me_totalDownloads":"desc","me_totalInteractions":"desc"}}}' where id='01247222653363814424';

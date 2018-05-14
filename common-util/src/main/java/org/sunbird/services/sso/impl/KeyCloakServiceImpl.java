@@ -51,7 +51,7 @@ public class KeyCloakServiceImpl implements SSOManager {
 
   @Override
   public String verifyToken(String accessToken) {
-    String userId = "";
+    
     try {
       PublicKey publicKey = toPublicKey(SSO_PUBLIC_KEY);
       AccessToken token =
@@ -61,30 +61,18 @@ public class KeyCloakServiceImpl implements SSOManager {
               KeyCloakConnectionProvider.SSO_URL + "realms/" + KeyCloakConnectionProvider.SSO_REALM,
               true,
               true);
-      userId = token.getSubject();
-      ProjectLogger.log(
-          token.getId()
-              + " "
-              + token.issuedFor
-              + " "
-              + token.getProfile()
-              + " "
-              + token.getSubject()
-              + " Active== "
-              + token.isActive()
-              + "  isExpired=="
-              + token.isExpired()
-              + " "
-              + token.issuedNow().getExpiration(),
+      ProjectLogger.log(token.getId() + " " + token.issuedFor + " " + token.getProfile() + " " + token.getSubject() 
+          + " Active: " + token.isActive() + "  isExpired: " + token.isExpired() + " " + token.issuedNow().getExpiration(),
           LoggerEnum.INFO.name());
+      return token.getSubject();
     } catch (Exception e) {
-      ProjectLogger.log("User token is not authorized==" + e);
+      ProjectLogger.log("User token is not authorized." + e);
       throw new ProjectCommonException(
-          ResponseCode.unAuthorised.getErrorCode(),
-          ResponseCode.unAuthorised.getErrorMessage(),
+          ResponseCode.unAuthorized.getErrorCode(),
+          ResponseCode.unAuthorized.getErrorMessage(),
           ResponseCode.UNAUTHORIZED.getResponseCode());
     }
-    return userId;
+    
   }
 
   /**

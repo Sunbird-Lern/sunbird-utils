@@ -9,7 +9,7 @@ public interface ResponseMessage {
 
   interface Message {
 
-    String UNAUTHORISE_USER = "You are not authorized.";
+    String UNAUTHORIZED_USER = "You are not authorized.";
     String INVALID_USER_CREDENTIALS = "Please check your credentials";
     String OPERATION_TIMEOUT = "Request processing taking too long time. Please try again later.";
     String INVALID_OPERATION_NAME =
@@ -300,7 +300,7 @@ public interface ResponseMessage {
   }
 
   interface Key {
-    String UNAUTHORISE_USER = "UNAUTHORIZE_USER";
+    String UNAUTHORIZED_USER = "UNAUTHORIZED_USER";
     String INVALID_USER_CREDENTIALS = "INVALID_USER_CREDENTIALS";
     String OPERATION_TIMEOUT = "PROCESS_EXE_TIMEOUT";
     String INVALID_OPERATION_NAME = "INVALID_OPERATION_NAME";
