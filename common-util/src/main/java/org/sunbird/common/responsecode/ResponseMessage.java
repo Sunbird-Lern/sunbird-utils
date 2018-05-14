@@ -9,8 +9,9 @@ public interface ResponseMessage {
 
   interface Message {
 
-    String UNAUTHORISE_USER = "You are not authorized.";
+    String UNAUTHORIZED_USER = "You are not authorized.";
     String INVALID_USER_CREDENTIALS = "Please check your credentials";
+    String OPERATION_TIMEOUT = "Request processing taking too long time. Please try again later.";
     String INVALID_OPERATION_NAME =
         "Operation name is invalid. Please provide a valid operation name";
     String INVALID_REQUESTED_DATA = "Requested data for this operation is not valid.";
@@ -292,15 +293,17 @@ public interface ResponseMessage {
     String MISSING_FILE_ATTACHMENT = "Missing file attachment.";
     String FILE_ATTACHMENT_SIZE_NOT_CONFIGURED = "File attachment max size is not configured.";
     String EMPTY_FILE = "Attached file is empty.";
-    String INVALID_COLUMNS = "Allowed columns are - {0}.";
+    String INVALID_COLUMNS = "Invalid column: {0}. Valid columns are: {1}.";
     String CONFLICTING_ORG_LOCATIONS =
         "An organisation cannot be associated to two conflicting locations ({0}, {1}) at {2} level. ";
     String UNABLE_TO_COMMUNICATE_WITH_ACTOR = "Unable to communicate with actor.";
+    String EMPTY_HEADER_LINE = "Missing header line in CSV file.";
   }
 
   interface Key {
-    String UNAUTHORISE_USER = "UNAUTHORIZE_USER";
+    String UNAUTHORIZED_USER = "UNAUTHORIZED_USER";
     String INVALID_USER_CREDENTIALS = "INVALID_USER_CREDENTIALS";
+    String OPERATION_TIMEOUT = "PROCESS_EXE_TIMEOUT";
     String INVALID_OPERATION_NAME = "INVALID_OPERATION_NAME";
     String INVALID_REQUESTED_DATA = "INVALID_REQUESTED_DATA";
     String CONSUMER_ID_MISSING_ERROR = "CONSUMER_ID_REQUIRED_ERROR";
@@ -564,7 +567,9 @@ public interface ResponseMessage {
     String FILE_ATTACHMENT_SIZE_NOT_CONFIGURED = "ATTACHMENT_SIZE_NOT_CONFIGURED";
     String EMPTY_FILE = "EMPTY_FILE";
     String INVALID_COLUMNS = "INVALID_COLUMNS";
+    String INVALID_COLUMN = "INVALID_COLUMN";
     String CONFLICTING_ORG_LOCATIONS = "CONFLICTING_ORG_LOCATIONS";
     String UNABLE_TO_COMMUNICATE_WITH_ACTOR = "UNABLE_TO_COMMUNICATE_WITH_ACTOR";
+    String EMPTY_HEADER_LINE = "EMPTY_HEADER_LINE";
   }
 }

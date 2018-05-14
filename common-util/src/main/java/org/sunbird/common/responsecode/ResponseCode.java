@@ -1,13 +1,16 @@
 package org.sunbird.common.responsecode;
 
 import org.apache.commons.lang3.StringUtils;
+import org.sunbird.common.models.util.JsonKey;
 
 /** @author Manzarul */
 public enum ResponseCode {
-  unAuthorised(ResponseMessage.Key.UNAUTHORISE_USER, ResponseMessage.Message.UNAUTHORISE_USER),
+  unAuthorized(ResponseMessage.Key.UNAUTHORIZED_USER, ResponseMessage.Message.UNAUTHORIZED_USER),
   invalidUserCredentials(
       ResponseMessage.Key.INVALID_USER_CREDENTIALS,
       ResponseMessage.Message.INVALID_USER_CREDENTIALS),
+  operationTimeout(
+      ResponseMessage.Key.OPERATION_TIMEOUT, ResponseMessage.Message.OPERATION_TIMEOUT),
   invalidOperationName(
       ResponseMessage.Key.INVALID_OPERATION_NAME, ResponseMessage.Message.INVALID_OPERATION_NAME),
   invalidRequestData(
@@ -541,6 +544,7 @@ public enum ResponseCode {
   unableToCommunicateWithActor(
       ResponseMessage.Key.UNABLE_TO_COMMUNICATE_WITH_ACTOR,
       ResponseMessage.Message.UNABLE_TO_COMMUNICATE_WITH_ACTOR),
+  emptyHeaderLine(ResponseMessage.Key.EMPTY_HEADER_LINE, ResponseMessage.Message.EMPTY_HEADER_LINE),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
@@ -659,14 +663,17 @@ public enum ResponseCode {
   public static ResponseCode getResponse(String errorCode) {
     if (StringUtils.isBlank(errorCode)) {
       return null;
-    }
-    ResponseCode value = null;
-    ResponseCode responseCodes[] = ResponseCode.values();
-    for (ResponseCode response : responseCodes) {
-      if (response.getErrorCode().equals(errorCode)) {
-        return response;
+    } else if (JsonKey.UNAUTHORIZED.equals(errorCode)) {
+      return ResponseCode.unAuthorized;
+    } else {
+      ResponseCode value = null;
+      ResponseCode responseCodes[] = ResponseCode.values();
+      for (ResponseCode response : responseCodes) {
+        if (response.getErrorCode().equals(errorCode)) {
+          return response;
+        }
       }
+      return value;
     }
-    return value;
   }
 }

@@ -7,6 +7,8 @@ package org.sunbird.common.models.util;
  * @author Manzarul
  */
 public final class JsonKey {
+  public static final String ANONYMOUS = "Anonymous";
+  public static final String UNAUTHORIZED = "Unauthorized";
   public static final String MW_SYSTEM_HOST = "sunbird_mw_system_host";
   public static final String MW_SYSTEM_PORT = "sunbird_mw_system_port";
   public static final String MW_SYSTEM_CLIENT_PORT = "sunbird_mw_system_client_port";
@@ -633,10 +635,15 @@ public final class JsonKey {
   public static final String LATITUDE = "latitude";
   public static final String LONGITUDE = "longitude";
   public static final String UPLOAD_FILE_MAX_SIZE = "file_upload_max_size";
+  public static final String PRIMARY_KEY = "PK";
+  public static final String NON_PRIMARY_KEY = "NonPK";
   public static final String PARENT_ID = "parentId";
   public static final String CREATED_ON = "createdOn";
   public static final String LAST_UPDATED_ON = "lastUpdatedOn";
   public static final String LAST_UPDATED_BY = "lastUpdatedBy";
   public static final String SUNBIRD_DEFAULT_CHANNEL = "sunbird_default_channel";
+  public static final String CASSANDRA_WRITE_BATCH_SIZE = "cassandra_write_batch_size";
+  public static final String CASSANDRA_UPDATE_BATCH_SIZE = "cassandra_update_batch_size";
+
   private JsonKey() {}
 }
