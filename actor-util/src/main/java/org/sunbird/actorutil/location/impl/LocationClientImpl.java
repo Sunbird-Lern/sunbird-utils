@@ -21,7 +21,7 @@ import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.models.location.Location;
-import org.sunbird.models.location.apirequest.LocationRequest;
+import org.sunbird.models.location.apirequest.UpsertLocationRequest;
 
 public class LocationClientImpl implements LocationClient {
 
@@ -86,7 +86,7 @@ public class LocationClientImpl implements LocationClient {
   }
 
   @Override
-  public String createLocation(ActorRef actorRef, LocationRequest location) {
+  public String createLocation(ActorRef actorRef, UpsertLocationRequest location) {
     Request request = new Request();
     String locationId = null;
     request.getRequest().putAll(mapper.convertValue(location, Map.class));
@@ -103,7 +103,7 @@ public class LocationClientImpl implements LocationClient {
   }
 
   @Override
-  public void updateLocation(ActorRef actorRef, LocationRequest location) {
+  public void updateLocation(ActorRef actorRef, UpsertLocationRequest location) {
     Request request = new Request();
     request.getRequest().putAll(mapper.convertValue(location, Map.class));
     request.setOperation(LocationActorOperation.UPDATE_LOCATION.getValue());
