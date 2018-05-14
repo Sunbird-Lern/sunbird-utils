@@ -1,5 +1,6 @@
 package org.sunbird.common.request;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
@@ -22,12 +23,25 @@ public class UserRequestValidator {
    * @param userRequest Request
    */
   public static void validateCreateUser(Request userRequest) {
+    fieldsNotAllowed(Arrays.asList(JsonKey.REGISTERED_ORG_ID, JsonKey.ROOT_ORG_ID), userRequest);
     createUserBasicValidation(userRequest);
     phoneValidation(userRequest);
     addressValidation(userRequest);
     educationValidation(userRequest);
     jobProfileValidation(userRequest);
     validateWebPages(userRequest);
+  }
+
+  public static void fieldsNotAllowed(List<String> fields, Request userRequest) {
+    for (String filed : fields) {
+      if (StringUtils.isBlank((String) userRequest.getRequest().get(filed))) {
+        throw new ProjectCommonException(
+            ResponseCode.invalidRequestParameter.getErrorCode(),
+            ProjectUtil.formatMessage(
+                ResponseCode.invalidRequestParameter.getErrorMessage(), filed),
+            ERROR_CODE);
+      }
+    }
   }
 
   public static void phoneValidation(Request userRequest) {
@@ -85,23 +99,21 @@ public class UserRequestValidator {
           ResponseCode.userNameRequired.getErrorMessage(),
           ERROR_CODE);
     }
-    
-    if (StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.PROVIDER)) && 
-        StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID))) {
+
+    if (StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.PROVIDER))
+        && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID))) {
       throw new ProjectCommonException(
           ResponseCode.mandatoryParamsMissing.getErrorCode(),
           ProjectUtil.formatMessage(
-              ResponseCode.mandatoryParamsMissing.getErrorMessage(),
-              JsonKey.EXTERNAL_ID),
+              ResponseCode.mandatoryParamsMissing.getErrorMessage(), JsonKey.EXTERNAL_ID),
           ERROR_CODE);
     }
-    if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PROVIDER)) && 
-        StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID))) {
+    if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PROVIDER))
+        && StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID))) {
       throw new ProjectCommonException(
           ResponseCode.mandatoryParamsMissing.getErrorCode(),
           ProjectUtil.formatMessage(
-              ResponseCode.mandatoryParamsMissing.getErrorMessage(),
-              JsonKey.PROVIDER),
+              ResponseCode.mandatoryParamsMissing.getErrorMessage(), JsonKey.PROVIDER),
           ERROR_CODE);
     }
 
@@ -500,6 +512,10 @@ public class UserRequestValidator {
 
   @SuppressWarnings("rawtypes")
   private static void updateUserBasicValidation(Request userRequest) {
+    fieldsNotAllowed(
+        Arrays.asList(
+            JsonKey.REGISTERED_ORG_ID, JsonKey.ROOT_ORG_ID, JsonKey.CHANNEL, JsonKey.USERNAME),
+        userRequest);
     if (userRequest.getRequest().containsKey(JsonKey.FIRST_NAME)
         && (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.FIRST_NAME)))) {
       throw new ProjectCommonException(

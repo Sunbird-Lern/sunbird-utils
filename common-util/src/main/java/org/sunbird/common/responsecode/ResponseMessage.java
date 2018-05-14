@@ -298,6 +298,7 @@ public interface ResponseMessage {
         "An organisation cannot be associated to two conflicting locations ({0}, {1}) at {2} level. ";
     String UNABLE_TO_COMMUNICATE_WITH_ACTOR = "Unable to communicate with actor.";
     String EMPTY_HEADER_LINE = "Missing header line in CSV file.";
+    String INVALID_REQUEST_PARAMETER = "Invalid parameter {0} in request.";
   }
 
   interface Key {
@@ -571,5 +572,6 @@ public interface ResponseMessage {
     String CONFLICTING_ORG_LOCATIONS = "CONFLICTING_ORG_LOCATIONS";
     String UNABLE_TO_COMMUNICATE_WITH_ACTOR = "UNABLE_TO_COMMUNICATE_WITH_ACTOR";
     String EMPTY_HEADER_LINE = "EMPTY_HEADER_LINE";
+    String INVALID_REQUEST_PARAMETER = "INVALID_REQUEST_PARAMETER";
   }
 }

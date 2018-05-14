@@ -181,18 +181,6 @@ public class KeyCloakServiceImpl implements SSOManager {
       map.put(JsonKey.EMAIL_VERIFIED_UPDATED, list);
       ur.setAttributes(map);
     }
-    if (isNotNull(request.get(JsonKey.USERNAME))) {
-      if (isNotNull(request.get(JsonKey.CHANNEL))) {
-        needTobeUpdate = true;
-        ur.setUsername(
-            (String) request.get(JsonKey.USERNAME)
-                + JsonKey.LOGIN_ID_DELIMETER
-                + (String) request.get(JsonKey.CHANNEL));
-      } else {
-        needTobeUpdate = true;
-        ur.setUsername((String) request.get(JsonKey.USERNAME));
-      }
-    }
     if (!StringUtils.isBlank((String) request.get(JsonKey.PHONE))) {
       needTobeUpdate = true;
       Map<String, List<String>> map = ur.getAttributes();
@@ -290,17 +278,9 @@ public class KeyCloakServiceImpl implements SSOManager {
       ur.setAttributes(map);
     }
 
-    if (isNotNull(request.get(JsonKey.USERNAME))) {
-      if (isNotNull(request.get(JsonKey.CHANNEL))) {
-        needTobeUpdate = true;
-        ur.setUsername(
-            (String) request.get(JsonKey.USERNAME)
-                + JsonKey.LOGIN_ID_DELIMETER
-                + (String) request.get(JsonKey.CHANNEL));
-      } else {
-        needTobeUpdate = true;
-        ur.setUsername((String) request.get(JsonKey.USERNAME));
-      }
+    if (isNotNull(request.get(JsonKey.LOGIN_ID))) {
+      needTobeUpdate = true;
+      ur.setUsername((String) request.get(JsonKey.LOGIN_ID));
     }
     if (!StringUtils.isBlank((String) request.get(JsonKey.PHONE))) {
       needTobeUpdate = true;
