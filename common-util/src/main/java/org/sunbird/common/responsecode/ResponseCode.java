@@ -296,8 +296,9 @@ public enum ResponseCode {
   storageContainerNameMandatory(
       ResponseMessage.Key.STORAGE_CONTAINER_NAME_MANDATORY,
       ResponseMessage.Message.STORAGE_CONTAINER_NAME_MANDATORY),
-  userRegOrgError(
-      ResponseMessage.Key.USER_REG_ORG_ERROR, ResponseMessage.Message.USER_REG_ORG_ERROR),
+  userRootOrgAssociationError(
+      ResponseMessage.Key.USER_ROOT_ORG_ASSOCIATION_ERROR,
+      ResponseMessage.Message.USER_ROOT_ORG_ASSOCIATION_ERROR),
   cloudServiceError(
       ResponseMessage.Key.CLOUD_SERVICE_ERROR, ResponseMessage.Message.CLOUD_SERVICE_ERROR),
   badgeTypeIdMandatory(

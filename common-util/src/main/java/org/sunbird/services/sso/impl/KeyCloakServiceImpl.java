@@ -183,12 +183,12 @@ public class KeyCloakServiceImpl implements SSOManager {
       ur.setAttributes(map);
     }
     if (isNotNull(request.get(JsonKey.USERNAME))) {
-      if (isNotNull(request.get(JsonKey.PROVIDER))) {
+      if (isNotNull(request.get(JsonKey.CHANNEL))) {
         needTobeUpdate = true;
         ur.setUsername(
             (String) request.get(JsonKey.USERNAME)
                 + JsonKey.LOGIN_ID_DELIMETER
-                + (String) request.get(JsonKey.PROVIDER));
+                + (String) request.get(JsonKey.CHANNEL));
       } else {
         needTobeUpdate = true;
         ur.setUsername((String) request.get(JsonKey.USERNAME));
@@ -292,12 +292,12 @@ public class KeyCloakServiceImpl implements SSOManager {
     }
 
     if (isNotNull(request.get(JsonKey.USERNAME))) {
-      if (isNotNull(request.get(JsonKey.PROVIDER))) {
+      if (isNotNull(request.get(JsonKey.CHANNEL))) {
         needTobeUpdate = true;
         ur.setUsername(
             (String) request.get(JsonKey.USERNAME)
                 + JsonKey.LOGIN_ID_DELIMETER
-                + (String) request.get(JsonKey.PROVIDER));
+                + (String) request.get(JsonKey.CHANNEL));
       } else {
         needTobeUpdate = true;
         ur.setUsername((String) request.get(JsonKey.USERNAME));
@@ -490,11 +490,11 @@ public class KeyCloakServiceImpl implements SSOManager {
   private UserRepresentation createUserReqObj(Map<String, Object> request) {
     CredentialRepresentation credential = new CredentialRepresentation();
     UserRepresentation user = new UserRepresentation();
-    if (isNotNull(request.get(JsonKey.PROVIDER))) {
+    if (isNotNull(request.get(JsonKey.CHANNEL))) {
       user.setUsername(
           (String) request.get(JsonKey.USERNAME)
               + JsonKey.LOGIN_ID_DELIMETER
-              + (String) request.get(JsonKey.PROVIDER));
+              + (String) request.get(JsonKey.CHANNEL));
     } else {
       user.setUsername((String) request.get(JsonKey.USERNAME));
     }
@@ -580,6 +580,7 @@ public class KeyCloakServiceImpl implements SSOManager {
    * @param password String
    * @return String access token
    */
+  @Override
   public String login(String userName, String password) {
     String accessTokenId = "";
     StringBuilder builder = new StringBuilder();

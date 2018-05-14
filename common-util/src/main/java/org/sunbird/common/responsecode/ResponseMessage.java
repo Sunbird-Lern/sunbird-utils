@@ -179,7 +179,8 @@ public interface ResponseMessage {
     String RECEIVER_ID_ERROR = "Receiver id is mandatory.";
     String INVALID_RECEIVER_ID = "Receiver id is invalid.";
     String INVALID_BADGE_ID = "Invalid badge type id.";
-    String USER_REG_ORG_ERROR = "this user belongs to some other root organization.";
+    String USER_ROOT_ORG_ASSOCIATION_ERROR =
+        "User is already associated with another root organization.";
     String INVALID_ROLE = "Invalid role value provided in request.";
     String INVALID_SALT = "Please provide salt value.";
     String ORG_TYPE_MANDATORY = "Org Type name is mandatory.";
@@ -461,7 +462,7 @@ public interface ResponseMessage {
     String ASSERTION_EVIDENCE_REQUIRED = "ASSERTION_EVIDENCE_REQUIRED";
     String ASSERTION_ID_REQUIRED = "ASSERTION_ID_REQUIRED";
     String STORAGE_CONTAINER_NAME_MANDATORY = "STORAGE_CONTAINER_NAME_MANDATORY";
-    String USER_REG_ORG_ERROR = "USER_REG_ORG_ERROR";
+    String USER_ROOT_ORG_ASSOCIATION_ERROR = "USER_ROOT_ORG_ASSOCIATION_ERROR";
     String CLOUD_SERVICE_ERROR = "CLOUD_SERVICE_ERROR";
     String BADGE_TYPE_ID_ERROR = "BADGE_TYPE_ID_ERROR";
     String RECEIVER_ID_ERROR = "RECEIVER_ID_ERROR";
