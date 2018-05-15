@@ -560,7 +560,7 @@ public class CassandraOperationImpl implements CassandraOperation {
     long stopTime = System.currentTimeMillis();
     long elapsedTime = stopTime - startTime;
     String message =
-        "Cassandra Service {0} method started {1} and end at {2} ,Total time elapsed={3}";
+        "Cassandra operation {0} started at {1} and completed at {2}. Total time elapsed is {3}.";
     MessageFormat mf = new MessageFormat(message);
     ProjectLogger.log(
         mf.format(new Object[] {operation, startTime, stopTime, elapsedTime}), LoggerEnum.PERF_LOG);
