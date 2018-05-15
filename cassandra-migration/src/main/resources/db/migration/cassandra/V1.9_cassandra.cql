@@ -3,7 +3,11 @@ CREATE TABLE IF NOT EXISTS sunbird.bulk_upload_process_task(processId text,seque
 ALTER TABLE  bulk_upload_process ADD  taskCount int;
 
 DROP TABLE user_external_identity;
-CREATE TABLE IF NOT EXISTS sunbird.user_external_identity(externalId text,provider text,userId text,createdOn timestamp,lastUpdatedOn timestamp,createdBy text,lastUpdatedBy text,PRIMARY KEY (provider ,externalId ));
+CREATE TABLE IF NOT EXISTS sunbird.user_external_identity(id text,externalId text,provider text,userId text,createdOn timestamp,lastUpdatedOn timestamp,createdBy text,lastUpdatedBy text,PRIMARY KEY (id) );
 ALTER TABLE sunbird.user DROP provider;
 ALTER TABLE sunbird.user DROP regOrgId;
 ALTER TABLE  sunbird.user ADD channel text;
+
+CREATE INDEX inx_cc_externalId ON sunbird.user_external_identity (externalId);
+CREATE INDEX inx_cc_userId ON sunbird.user_external_identity (userId);
+CREATE INDEX inx_cc_provider ON sunbird.user_external_identity (provider);
