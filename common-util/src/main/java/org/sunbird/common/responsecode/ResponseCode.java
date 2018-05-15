@@ -299,9 +299,9 @@ public enum ResponseCode {
   storageContainerNameMandatory(
       ResponseMessage.Key.STORAGE_CONTAINER_NAME_MANDATORY,
       ResponseMessage.Message.STORAGE_CONTAINER_NAME_MANDATORY),
-  userRootOrgAssociationError(
-      ResponseMessage.Key.USER_ROOT_ORG_ASSOCIATION_ERROR,
-      ResponseMessage.Message.USER_ROOT_ORG_ASSOCIATION_ERROR),
+  userOrgAssociationError(
+      ResponseMessage.Key.USER_ORG_ASSOCIATION_ERROR,
+      ResponseMessage.Message.USER_ORG_ASSOCIATION_ERROR),
   cloudServiceError(
       ResponseMessage.Key.CLOUD_SERVICE_ERROR, ResponseMessage.Message.CLOUD_SERVICE_ERROR),
   badgeTypeIdMandatory(
@@ -548,6 +548,9 @@ public enum ResponseCode {
   invalidRequestParameter(
       ResponseMessage.Key.INVALID_REQUEST_PARAMETER,
       ResponseMessage.Message.INVALID_REQUEST_PARAMETER),
+  rootOrgAssociationError(
+      ResponseMessage.Key.ROOT_ORG_ASSOCIATION_ERROR,
+      ResponseMessage.Message.ROOT_ORG_ASSOCIATION_ERROR),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
