@@ -570,14 +570,13 @@ public final class RequestValidator {
    * @param reqObj Request
    */
   public static void validateUploadUser(Map<String, Object> reqObj) {
-    if (StringUtils.isEmpty((String) reqObj.get(JsonKey.CHANNEL))) {
+    if (ProjectUtil.isStringNullOREmpty((String) reqObj.get(JsonKey.ORGANISATION_ID))
+        && (ProjectUtil.isStringNullOREmpty((String) reqObj.get(JsonKey.EXTERNAL_ID))
+            || StringUtils.isBlank((String) reqObj.get(JsonKey.PROVIDER)))) {
       throw new ProjectCommonException(
-          ResponseCode.mandatoryParamsMissing.getErrorCode(),
-          ProjectUtil.formatMessage(
-              ResponseCode.mandatoryParamsMissing.getErrorMessage(),
-              JsonKey.CHANNEL),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
-
+          ResponseCode.bulkUserUploadError.getErrorCode(),
+          ResponseCode.bulkUserUploadError.getErrorMessage(),
+          ERROR_CODE);
     }
   }
 
