@@ -570,9 +570,9 @@ public final class RequestValidator {
    * @param reqObj Request
    */
   public static void validateUploadUser(Map<String, Object> reqObj) {
-    if (ProjectUtil.isStringNullOREmpty((String) reqObj.get(JsonKey.ORGANISATION_ID))
-        && (ProjectUtil.isStringNullOREmpty((String) reqObj.get(JsonKey.EXTERNAL_ID))
-            || StringUtils.isBlank((String) reqObj.get(JsonKey.PROVIDER)))) {
+    if (StringUtils.isBlank((String) reqObj.get(JsonKey.ORGANISATION_ID))
+        && (StringUtils.isBlank((String) reqObj.get(JsonKey.ORG_EXTERNAL_ID))
+            || StringUtils.isBlank((String) reqObj.get(JsonKey.ORG_PROVIDER)))) {
       throw new ProjectCommonException(
           ResponseCode.bulkUserUploadError.getErrorCode(),
           ResponseCode.bulkUserUploadError.getErrorMessage(),

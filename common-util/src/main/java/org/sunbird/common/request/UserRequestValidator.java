@@ -516,6 +516,17 @@ public class UserRequestValidator {
         Arrays.asList(
             JsonKey.REGISTERED_ORG_ID, JsonKey.ROOT_ORG_ID, JsonKey.CHANNEL, JsonKey.USERNAME),
         userRequest);
+    if ((StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.USER_ID))
+            && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.ID)))
+        && (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID))
+            || StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PROVIDER)))) {
+      throw new ProjectCommonException(
+          ResponseCode.mandatoryParamsMissing.getErrorCode(),
+          ProjectUtil.formatMessage(
+              ResponseCode.mandatoryParamsMissing.getErrorMessage(),
+              (JsonKey.USER_ID + " or " + (JsonKey.EXTERNAL_ID + " & " + JsonKey.PROVIDER))),
+          ERROR_CODE);
+    }
     if (userRequest.getRequest().containsKey(JsonKey.FIRST_NAME)
         && (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.FIRST_NAME)))) {
       throw new ProjectCommonException(
