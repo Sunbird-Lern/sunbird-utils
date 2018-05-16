@@ -2,7 +2,6 @@ package org.sunbird.cassandraimpl;
 
 import com.datastax.driver.core.BatchStatement;
 import com.datastax.driver.core.BoundStatement;
-import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.PreparedStatement;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Session;
@@ -507,7 +506,6 @@ public class CassandraOperationImpl implements CassandraOperation {
                 x -> {
                   insert.value(x.getKey(), x.getValue());
                 });
-        insert.setConsistencyLevel(ConsistencyLevel.QUORUM);
         batchStatement.add(insert);
       }
       resultSet = session.execute(batchStatement);
@@ -562,9 +560,9 @@ public class CassandraOperationImpl implements CassandraOperation {
     long stopTime = System.currentTimeMillis();
     long elapsedTime = stopTime - startTime;
     String message =
-        "Cassandra Service {0} method started {0} and end at {1} ,Total time elapsed={2}";
+        "Cassandra operation {0} started at {1} and completed at {2}. Total time elapsed is {3}.";
     MessageFormat mf = new MessageFormat(message);
     ProjectLogger.log(
-        mf.format(new Object[] {startTime, stopTime, elapsedTime}), LoggerEnum.PERF_LOG);
+        mf.format(new Object[] {operation, startTime, stopTime, elapsedTime}), LoggerEnum.PERF_LOG);
   }
 }

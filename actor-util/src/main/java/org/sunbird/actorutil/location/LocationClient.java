@@ -3,6 +3,7 @@ package org.sunbird.actorutil.location;
 import akka.actor.ActorRef;
 import java.util.List;
 import org.sunbird.models.location.Location;
+import org.sunbird.models.location.apirequest.UpsertLocationRequest;
 
 /**
  * This class will provide utility methods for Location service
@@ -41,14 +42,12 @@ public interface LocationClient {
    * @param location Location details.
    * @return Location id.
    */
-  String createLocation(ActorRef actorRef, Location location);
+  String createLocation(ActorRef actorRef, UpsertLocationRequest location);
 
   /**
    * @desc This method will update location details.
    * @param actorRef Actor reference.
    * @param location Location details.
-   * @return
-   * @return void.
    */
-  void updateLocation(ActorRef actorRef, Location location);
+  void updateLocation(ActorRef actorRef, UpsertLocationRequest location);
 }

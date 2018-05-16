@@ -947,6 +947,12 @@ public class ProjectUtil {
     return null;
   }
 
+  /**
+   * Method to remove attributes from map.
+   *
+   * @param map contains data as key value.
+   * @param keys list of string that has to be remove from map if presents.
+   */
   public static void removeUnwantedFields(Map<String, Object> map, String... keys) {
     Arrays.stream(keys)
         .forEach(
@@ -955,7 +961,26 @@ public class ProjectUtil {
             });
   }
 
+  /**
+   * Method to convert Json string to Map.
+   *
+   * @param jsonString represents json string.
+   * @return map corresponding to json string.
+   * @throws IOException
+   */
   public static Map convertJsonStringToMap(String jsonString) throws IOException {
     return mapper.readValue(jsonString, Map.class);
+  }
+
+  /**
+   * Method to convert Request object to module specific POJO request.
+   *
+   * @param request Represents the incoming request object.
+   * @param clazz Target POJO class.
+   * @param <T> Target request object type.
+   * @return request object of target type.
+   */
+  public static <T> T convertToRequestPojo(Request request, Class<T> clazz) {
+    return (T) mapper.convertValue(request.getRequest(), clazz);
   }
 }
