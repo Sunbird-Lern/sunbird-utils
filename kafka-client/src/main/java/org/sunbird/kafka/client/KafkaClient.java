@@ -12,28 +12,22 @@ import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 
 /**
- * @author Mahesh Kumar Gangula This class will create Kafka consumer and producer object. and
- *     provide to caller. For each call it will create new consumer and producer object.
+ * This class will create Kafka consumer and producer object,and provide to caller. For each call it
+ * will create new consumer and producer object.
+ *
+ * @author Mahesh Kumar Gangula
  */
 public class KafkaClient {
 
-  private static Producer<Long, String> createProducer(String bootstrapServers, String clientId) {
-    return new KafkaProducer<Long, String>(createPropertiesObj(bootstrapServers, clientId));
-  }
-
-  private static Consumer<Long, String> createConsumer(String bootstrapServers, String clientId) {
-    return new KafkaConsumer<>(createPropertiesObj(bootstrapServers, clientId));
-  }
-
   /**
-   * his method will create a producer object and return to caller.
+   * This method will create a producer object and return to caller.
    *
    * @param bootstrapServers String EX:localhost:9092,localhost:9093,localhost:9094
    * @param clientId String unique string value
-   * @return Producer<Long, String>
+   * @return Producer
    */
-  public static Producer<Long, String> initProducer(String bootstrapServers, String clientId) {
-    return createProducer(bootstrapServers, clientId);
+  public static Producer<Long, String> createProducer(String bootstrapServers, String clientId) {
+    return new KafkaProducer<Long, String>(createProperties(bootstrapServers, clientId));
   }
 
   /**
@@ -41,10 +35,10 @@ public class KafkaClient {
    *
    * @param bootstrapServers String EX:localhost:9092,localhost:9093,localhost:9094
    * @param clientId String unique string value
-   * @return Consumer<Long, String>
+   * @return Consumer
    */
-  public static Consumer<Long, String> initConsumer(String bootstrapServers, String clientId) {
-    return createConsumer(bootstrapServers, clientId);
+  public static Consumer<Long, String> createConsumer(String bootstrapServers, String clientId) {
+    return new KafkaConsumer<>(createProperties(bootstrapServers, clientId));
   }
 
   /**
@@ -55,7 +49,7 @@ public class KafkaClient {
    * @param clientId String unique string value
    * @return Properties
    */
-  private static Properties createPropertiesObj(String bootstrapServers, String clientId) {
+  private static Properties createProperties(String bootstrapServers, String clientId) {
     ProjectLogger.log(
         "Kafka server config: and topic name " + bootstrapServers + " Topic--" + clientId,
         LoggerEnum.INFO.name());
