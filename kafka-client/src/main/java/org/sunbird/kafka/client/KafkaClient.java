@@ -22,8 +22,11 @@ public class KafkaClient {
   /**
    * This method will create a producer object and return to caller.
    *
-   * @param bootstrapServers String EX:localhost:9092,localhost:9093,localhost:9094
-   * @param clientId String unique string value
+   * @param bootstrapServers
+   *     <p>is a comma-separated list of host and port pairs that are the addresses of the Kafka
+   *     brokers in a "bootstrap" Kafka cluster that a Kafka client connects to initially to
+   *     bootstrap itself EX:localhost:9092,localhost:9093,localhost:9094
+   * @param clientId unique string value
    * @return Producer
    */
   public static Producer<Long, String> createProducer(String bootstrapServers, String clientId) {
@@ -33,8 +36,11 @@ public class KafkaClient {
   /**
    * This method will create a consumer object and return to caller.
    *
-   * @param bootstrapServers String EX:localhost:9092,localhost:9093,localhost:9094
-   * @param clientId String unique string value
+   * @param bootstrapServers
+   *     <p>is a comma-separated list of host and port pairs that are the addresses of the Kafka
+   *     brokers in a "bootstrap" Kafka cluster that a Kafka client connects to initially to
+   *     bootstrap itself EX:localhost:9092,localhost:9093,localhost:9094
+   * @param clientId unique string value
    * @return Consumer
    */
   public static Consumer<Long, String> createConsumer(String bootstrapServers, String clientId) {
@@ -45,7 +51,10 @@ public class KafkaClient {
    * This method will generate properties object based on passed bootstrapServer and clientId
    * details.
    *
-   * @param bootstrapServers String EX:localhost:9092,localhost:9093,localhost:9094
+   * @param bootstrapServers
+   *     <p>is a comma-separated list of host and port pairs that are the addresses of the Kafka
+   *     brokers in a "bootstrap" Kafka cluster that a Kafka client connects to initially to
+   *     bootstrap itself EX:localhost:9092,localhost:9093,localhost:9094
    * @param clientId String unique string value
    * @return Properties
    */
