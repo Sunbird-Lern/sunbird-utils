@@ -33,12 +33,12 @@ public class UserRequestValidator {
   }
 
   public static void fieldsNotAllowed(List<String> fields, Request userRequest) {
-    for (String filed : fields) {
-      if (StringUtils.isNotBlank((String) userRequest.getRequest().get(filed))) {
+    for (String field : fields) {
+      if (StringUtils.isNotBlank((String) userRequest.getRequest().get(field))) {
         throw new ProjectCommonException(
             ResponseCode.invalidRequestParameter.getErrorCode(),
             ProjectUtil.formatMessage(
-                ResponseCode.invalidRequestParameter.getErrorMessage(), filed),
+                ResponseCode.invalidRequestParameter.getErrorMessage(), field),
             ERROR_CODE);
       }
     }
