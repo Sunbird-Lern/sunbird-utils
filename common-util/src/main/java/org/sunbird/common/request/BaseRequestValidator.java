@@ -1,5 +1,6 @@
 package org.sunbird.common.request;
 
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Map;
 import org.apache.commons.collections.MapUtils;
@@ -42,7 +43,7 @@ public class BaseRequestValidator {
     if (StringUtils.isBlank(value)) {
       throw new ProjectCommonException(
               error.getErrorCode(),
-              String.format(error.getErrorMessage(), errorMsgArgument),
+              MessageFormat.format(error.getErrorMessage(), errorMsgArgument),
               ResponseCode.CLIENT_ERROR.getResponseCode());
     }
   }
@@ -82,7 +83,7 @@ public class BaseRequestValidator {
               ResponseCode.invalidData.getErrorMessage(),
               errorCode);
     }
-    return new ProjectCommonException(code.getErrorCode(), String.format(code.getErrorMessage(), errorMsgArgument), errorCode);
+    return new ProjectCommonException(code.getErrorCode(), MessageFormat.format(code.getErrorMessage(), errorMsgArgument), errorCode);
   }
 
 
