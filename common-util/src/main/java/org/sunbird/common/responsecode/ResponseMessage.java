@@ -36,6 +36,7 @@ public interface ResponseMessage {
     String COURSE_TOCURL_MISSING = "Course tocurl is mandatory.";
     String EMAIL_MISSING = "Email is mandatory.";
     String EMAIL_FORMAT = "Email is invalid.";
+    String URL_FORMAT_ERROR = "URL is invalid.";
     String FIRST_NAME_MISSING = "First name is mandatory.";
     String LANGUAGE_MISSING = "Language is mandatory.";
     String PASSWORD_MISSING = "Password is mandatory.";
@@ -196,7 +197,7 @@ public interface ResponseMessage {
     String INVALID_PHONE_NO_FORMAT = "Please provide a valid phone number.";
     String INVALID_WEBPAGE_DATA = "Invalid webPage data";
     String INVALID_MEDIA_TYPE = "Invalid media type for webPage";
-    String INVALID_WEBPAGE_URL = "Invalid URL for {0}";
+    String INVALID_WEBPAGE_URL = "Invalid URL for {0}.";
     String INVALID_DATE_RANGE = "Date range should be between 3 Month.";
     String INVALID_BATCH_END_DATE_ERROR = "Please provide valid End Date.";
     String INVALID_BATCH_START_DATE_ERROR = "Please provide valid Start Date.";
@@ -329,6 +330,7 @@ public interface ResponseMessage {
     String COURSE_TOCURL_MISSING = "COURSE_TOCURL_REQUIRED_ERROR";
     String EMAIL_MISSING = "EMAIL_ID_REQUIRED_ERROR";
     String EMAIL_FORMAT = "EMAIL_FORMAT_ERROR";
+    String URL_FORMAT_ERROR = "URL_FORMAT_ERROR";
     String FIRST_NAME_MISSING = "FIRST_NAME_REQUIRED_ERROR";
     String LANGUAGE_MISSING = "LANGUAGE_REQUIRED_ERROR";
     String PASSWORD_MISSING = "PASSWORD_REQUIRED_ERROR";
