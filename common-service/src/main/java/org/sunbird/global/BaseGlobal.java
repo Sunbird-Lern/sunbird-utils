@@ -79,7 +79,8 @@ public class BaseGlobal extends GlobalSettings {
     if (t instanceof ProjectCommonException) {
       commonException = (ProjectCommonException) t;
       response =
-          BaseController.createResponseOnException(request.path(), (ProjectCommonException) t);
+          BaseController.createResponseOnException(
+              request.path(), (ProjectCommonException) t, request.method());
     } else if (t instanceof akka.pattern.AskTimeoutException) {
       commonException =
           new ProjectCommonException(
@@ -93,7 +94,8 @@ public class BaseGlobal extends GlobalSettings {
               ResponseCode.internalError.getErrorMessage(),
               ResponseCode.SERVER_ERROR.getResponseCode());
     }
-    response = BaseController.createResponseOnException(request.path(), commonException);
+    response =
+        BaseController.createResponseOnException(request.path(), commonException, request.method());
     return Promise.<Result>pure(
         Results.status(ResponseCode.SERVER_ERROR.getResponseCode(), Json.toJson(response)));
   }

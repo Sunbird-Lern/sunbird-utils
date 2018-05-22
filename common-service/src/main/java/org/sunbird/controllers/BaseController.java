@@ -17,6 +17,7 @@ import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.request.ExecutionContext;
 import org.sunbird.common.responsecode.ResponseCode;
+import org.sunbird.util.ResponseIdUtil;
 import play.libs.F.Function;
 import play.libs.F.Promise;
 import play.libs.Json;
@@ -36,6 +37,7 @@ public class BaseController extends Controller {
   private static final int AKKA_WAIT_TIME = 10;
   protected Timeout timeout = new Timeout(AKKA_WAIT_TIME, TimeUnit.SECONDS);
   private static Object actorRef = null;
+  static ResponseIdUtil util = new ResponseIdUtil();
 
   static {
     try {
@@ -55,6 +57,7 @@ public class BaseController extends Controller {
    * @param timeout Timeout
    * @param responseKey String
    * @param httpReq Request Play http request
+   * @param method name of the api method (GET,POST etc)
    * @return Promise<Result>
    */
   public Promise<Result> actorResponseHandler(
@@ -68,12 +71,15 @@ public class BaseController extends Controller {
           public Result apply(Object result) {
             if (result instanceof Response) {
               Response response = (Response) result;
-              return createCommonResponse(request().path(), responseKey, response);
+              return createCommonResponse(
+                  request().path(), responseKey, response, httpReq.method());
             } else if (result instanceof ProjectCommonException) {
-              return createCommonExceptionResult(request().path(), (ProjectCommonException) result);
+              return createCommonExceptionResult(
+                  request().path(), (ProjectCommonException) result, httpReq.method());
             } else {
               ProjectLogger.log("Unsupported Actor Response format", LoggerEnum.INFO.name());
-              return createCommonExceptionResult(request().path(), new Exception());
+              return createCommonExceptionResult(
+                  request().path(), new Exception(), httpReq.method());
             }
           }
         };
@@ -90,10 +96,11 @@ public class BaseController extends Controller {
    *
    * @param path String (uri)
    * @param exception Exception
+   * @param method name of the api method (GET,POST)
    * @return Result
    */
-  public Result createCommonExceptionResult(String path, Exception exception) {
-    Response reponse = createResponseOnException(path, exception);
+  public Result createCommonExceptionResult(String path, Exception exception, String method) {
+    Response reponse = createResponseOnException(path, exception, method);
     int status = ResponseCode.SERVER_ERROR.getResponseCode();
     if (exception instanceof ProjectCommonException) {
       ProjectCommonException me = (ProjectCommonException) exception;
@@ -110,13 +117,14 @@ public class BaseController extends Controller {
    * @param exception Exception
    * @return Response
    */
-  public static Response createResponseOnException(String path, Exception exception) {
+  public static Response createResponseOnException(
+      String path, Exception exception, String method) {
     Response response = getErrorResponse(exception);
     response.setVer("");
     if (path != null) {
       response.setVer(getApiVersion(path));
     }
-    response.setId(getApiResponseId());
+    response.setId(util.getApiResponseId(path, method));
     response.setTs(ProjectUtil.getFormattedDate());
     return response;
   }
@@ -177,34 +185,35 @@ public class BaseController extends Controller {
     return params;
   }
 
-  public Result createCommonResponse(String path, Response response) {
-    return Results.ok(Json.toJson(BaseController.createSuccessResponse(path, response)));
+  public Result createCommonResponse(String path, Response response, String method) {
+    return Results.ok(Json.toJson(BaseController.createSuccessResponse(path, response, method)));
   }
 
-  public Result createCommonResponse(String path, String key, Response response) {
+  public Result createCommonResponse(String path, String key, Response response, String method) {
     if (!StringUtils.isBlank(key)) {
       Object value = response.getResult().get(JsonKey.RESPONSE);
       response.getResult().remove(JsonKey.RESPONSE);
       response.getResult().put(key, value);
     }
-    return Results.ok(Json.toJson(BaseController.createSuccessResponse(path, response)));
+    return Results.ok(Json.toJson(BaseController.createSuccessResponse(path, response, method)));
   }
 
   /**
    * This method will create success response object.
    *
-   * @param path String
-   * @param response Response
+   * @param path api uri example : /v1/user/create
+   * @param response Response object return from controller or actor
+   * @param method name of the api method (GET,POST etc)
    * @return Response
    */
-  public static Response createSuccessResponse(String path, Response response) {
+  public static Response createSuccessResponse(String path, Response response, String method) {
 
     if (StringUtils.isNotBlank(path)) {
       response.setVer(getApiVersion(path));
     } else {
       response.setVer("");
     }
-    response.setId(getApiResponseId());
+    response.setId(util.getApiResponseId(path, method));
     response.setTs(ProjectUtil.getFormattedDate());
     ResponseCode code = ResponseCode.getResponse(ResponseCode.success.getErrorCode());
     code.setResponseCode(ResponseCode.OK.getResponseCode());
@@ -225,15 +234,6 @@ public class BaseController extends Controller {
       return "v1";
     }
     return path.split("[/]")[1];
-  }
-
-  /**
-   * This method will provide api response id.
-   *
-   * @return api response id, that will help to trace the logs.
-   */
-  private static String getApiResponseId() {
-    return "api.telemetry";
   }
 
   public static void setActorRef(Object obj) {
