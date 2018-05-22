@@ -524,7 +524,7 @@ public class UserRequestValidator {
           ResponseCode.mandatoryParamsMissing.getErrorCode(),
           ProjectUtil.formatMessage(
               ResponseCode.mandatoryParamsMissing.getErrorMessage(),
-              (JsonKey.USER_ID + " or " + (JsonKey.EXTERNAL_ID + " & " + JsonKey.PROVIDER))),
+              (JsonKey.USER_ID + " or " + (JsonKey.EXTERNAL_ID + " and " + JsonKey.PROVIDER))),
           ERROR_CODE);
     }
     if (userRequest.getRequest().containsKey(JsonKey.FIRST_NAME)
