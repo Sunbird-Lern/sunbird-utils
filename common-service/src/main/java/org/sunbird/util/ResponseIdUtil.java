@@ -48,7 +48,7 @@ public class ResponseIdUtil {
     if (ProjectUtil.Method.GET.name().equalsIgnoreCase(method)) {
       val = getResponseId(path);
       if (StringUtils.isBlank(val)) {
-        String[] splitedpath = path.split("[" + Delimiter.slash.getSymbol() + "]");
+        String[] splitedpath = path.split("[/]");
         String tempPath = removeLastValue(splitedpath);
         val = getResponseId(tempPath);
       }
@@ -71,10 +71,9 @@ public class ResponseIdUtil {
     path = path.trim();
     StringBuilder builder = new StringBuilder("");
     if (path.startsWith(ver)) {
-      String requestUrl =
-          (path.split(Delimiter.escape.getSymbol() + Delimiter.question.getSymbol()))[0];
+      String requestUrl = (path.split("\\?"))[0];
       requestUrl = requestUrl.replaceFirst(ver, "api");
-      String[] list = requestUrl.split(Delimiter.escape.getSymbol());
+      String[] list = requestUrl.split("/");
       for (String str : list) {
         if (str.matches("[A-Za-z]+")) {
           builder.append(str).append(Delimiter.dot.getSymbol());
