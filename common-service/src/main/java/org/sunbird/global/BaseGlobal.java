@@ -1,5 +1,4 @@
-/** */
-package util;
+package org.sunbird.global;
 
 import java.lang.reflect.Method;
 import java.util.UUID;
