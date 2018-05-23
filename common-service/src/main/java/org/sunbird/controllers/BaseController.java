@@ -27,8 +27,8 @@ import play.mvc.Result;
 import play.mvc.Results;
 
 /**
- * This controller we can use for writing some common method. it should be extended by each
- * controller class.
+ * Base controller with common functionality which can be inherited by other controller classes for
+ * reuse.
  *
  * @author Mahesh Kumar Gangula
  */
@@ -43,22 +43,20 @@ public class BaseController extends Controller {
     try {
       actorRef = SunbirdMWService.getRequestRouter();
     } catch (Exception ex) {
-      ProjectLogger.log("Exception occured while getting actor ref in base controller " + ex);
+      ProjectLogger.log("BaseController: Exception occurred while getting actor reference: " + ex);
     }
   }
 
   /**
-   * This is a common method which will handle Asyn response came from Actor service. This method
-   * has the internal logic to identify the response object. add some more attribute on top of
-   * provided response and then return the response to caller.
+   * Common method to handle async response from actor service. Based on the result type, a uniform
+   * response object is constructed and returned to caller.
    *
-   * @param actorRef Object Reference of the actor selection
-   * @param request org.sunbird.common.request.Request
-   * @param timeout Timeout
-   * @param responseKey String
-   * @param httpReq Request Play http request
-   * @param method name of the api method (GET,POST etc)
-   * @return Promise<Result>
+   * @param actorRef Actor reference or selection object
+   * @param request Request to be sent to actor
+   * @param timeout Request timeout
+   * @param responseKey Response key used to update result within success response
+   * @param httpReq Play HTTP request
+   * @return Return a promise for API request
    */
   public Promise<Result> actorResponseHandler(
       Object actorRef,
@@ -77,7 +75,9 @@ public class BaseController extends Controller {
               return createCommonExceptionResult(
                   request().path(), (ProjectCommonException) result, httpReq.method());
             } else {
-              ProjectLogger.log("Unsupported Actor Response format", LoggerEnum.INFO.name());
+              ProjectLogger.log(
+                  "BaseController:actorResponseHandler: Unsupported actor response format",
+                  LoggerEnum.INFO.name());
               return createCommonExceptionResult(
                   request().path(), new Exception(), httpReq.method());
             }
@@ -92,12 +92,12 @@ public class BaseController extends Controller {
   }
 
   /**
-   * This method will create play mvc Result object from uri and exception param.
+   * Creates play mvc result in case of an exception.
    *
-   * @param path String (uri)
-   * @param exception Exception
-   * @param method name of the api method (GET,POST)
-   * @return Result
+   * @param path Request URI path
+   * @param exception Exception which occurred
+   * @param method Request method (e.g. GET)
+   * @return Play mvc result created for given exception
    */
   public Result createCommonExceptionResult(String path, Exception exception, String method) {
     Response reponse = createResponseOnException(path, exception, method);
@@ -110,12 +110,12 @@ public class BaseController extends Controller {
   }
 
   /**
-   * Common method to create Response object from path and exception. This response object is used
-   * by createCommonExceptionResult method.
+   * Creates a response object in case of an exception.
    *
-   * @param path String
-   * @param exception Exception
-   * @return Response
+   * @param path Request URI path
+   * @param exception Exception which occurred
+   * @param method Request method (e.g. GET)
+   * @return Response object created
    */
   public static Response createResponseOnException(
       String path, Exception exception, String method) {
@@ -130,19 +130,19 @@ public class BaseController extends Controller {
   }
 
   /**
-   * This method will create Response object based on passed exception.
+   * Creates a response object in case of an exception.
    *
-   * @param e
-   * @return
+   * @param exception Exception which occurred
+   * @return Response object created
    */
-  private static Response getErrorResponse(Exception e) {
+  private static Response getErrorResponse(Exception exception) {
     Response response = new Response();
     ResponseParams resStatus = new ResponseParams();
-    String message = setMessage(e);
+    String message = setMessage(exception);
     resStatus.setErrmsg(message);
     resStatus.setStatus(StatusType.FAILED.name());
-    if (e instanceof ProjectCommonException) {
-      ProjectCommonException me = (ProjectCommonException) e;
+    if (exception instanceof ProjectCommonException) {
+      ProjectCommonException me = (ProjectCommonException) exception;
       resStatus.setErr(me.getCode());
       response.setResponseCode(ResponseCode.getHeaderResponseCode(me.getResponseCode()));
     } else {
@@ -154,26 +154,28 @@ public class BaseController extends Controller {
   }
 
   /**
-   * This method will return message based on exception type. this method has the assumption if
-   * exception is instance of ProjectCommonException then it will come with message. in other case
-   * we are checking is it timeout exception then return "Request processing taking too long time.
-   * Please try again later." else it will return "Something went wrong in server while processing
-   * the reques"
+   * Return message based on exception.
    *
-   * @param e Exception
-   * @return String
+   * @param exception Exception which occurred
+   * @return Message corresponding to exception
    */
-  protected static String setMessage(Exception e) {
-    if (e != null) {
-      if (e instanceof ProjectCommonException) {
-        return e.getMessage();
-      } else if (e instanceof akka.pattern.AskTimeoutException) {
-        return "Request processing taking too long time. Please try again later.";
+  protected static String setMessage(Exception exception) {
+    if (exception != null) {
+      if (exception instanceof ProjectCommonException) {
+        return exception.getMessage();
+      } else if (exception instanceof akka.pattern.AskTimeoutException) {
+        return "Request timed out. Please try again.";
       }
     }
-    return "Something went wrong in server while processing the request";
+    return "Something went wrong while processing the request. Please try again.";
   }
 
+  /**
+   * Creates response params based on response code.
+   *
+   * @param code Response code
+   * @return Response params created based on response code
+   */
   public static ResponseParams createResponseParamObj(ResponseCode code) {
     ResponseParams params = new ResponseParams();
     if (code.getResponseCode() != 200) {
@@ -185,10 +187,27 @@ public class BaseController extends Controller {
     return params;
   }
 
+  /**
+   * Creates a success play mvc result.
+   *
+   * @param path Request URI path
+   * @param response Success response which is received
+   * @param method Request method (e.g. GET)
+   * @return Play mvc result created from success response
+   */
   public Result createCommonResponse(String path, Response response, String method) {
     return Results.ok(Json.toJson(BaseController.createSuccessResponse(path, response, method)));
   }
 
+  /**
+   * Creates a success play mvc result.
+   *
+   * @param path Request URI path
+   * @param key Response key used to update result within success response
+   * @param response Success response which is received
+   * @param method Request method (e.g. GET)
+   * @return Play mvc result created from success response
+   */
   public Result createCommonResponse(String path, String key, Response response, String method) {
     if (!StringUtils.isBlank(key)) {
       Object value = response.getResult().get(JsonKey.RESPONSE);
@@ -199,15 +218,14 @@ public class BaseController extends Controller {
   }
 
   /**
-   * This method will create success response object.
+   * Updates success response with common parameters.
    *
-   * @param path api uri example : /v1/user/create
-   * @param response Response object return from controller or actor
-   * @param method name of the api method (GET,POST etc)
-   * @return Response
+   * @param path Request URI path
+   * @param response Success response which is received
+   * @param method Request method (e.g. GET)
+   * @return Updated response
    */
   public static Response createSuccessResponse(String path, Response response, String method) {
-
     if (StringUtils.isNotBlank(path)) {
       response.setVer(getApiVersion(path));
     } else {
@@ -222,31 +240,34 @@ public class BaseController extends Controller {
   }
 
   /**
-   * This method will return api version. Assumption is version will always come first in url :EX
-   * v1/user/create
+   * Determine version of API request based on URI.
    *
-   * @param path api uri path value.
-   * @return version of api
+   * @param path Request URI path
+   * @return Version of API request
    */
   public static String getApiVersion(String path) {
     if (StringUtils.isBlank(path)) {
-      ProjectLogger.log("Path is coming as null or empty==", LoggerEnum.INFO);
+      ProjectLogger.log("BaseController:getApiVersion: Path is blank.", LoggerEnum.INFO);
       return "v1";
     }
     return path.split("[/]")[1];
   }
 
-  public static void setActorRef(Object obj) {
-    actorRef = obj;
+  /**
+   * Setter method for actor reference or selection object.
+   *
+   * @param actorRefObj Actor reference or selection object
+   */
+  public static void setActorRef(Object actorRefObj) {
+    actorRef = actorRefObj;
   }
 
   /**
-   * This method will provide remote Actor selection
+   * Getter method for actor reference or selection object.
    *
-   * @return Object
+   * @return Actor reference or selection object
    */
   public Object getActorRef() {
-
     return actorRef;
   }
 }

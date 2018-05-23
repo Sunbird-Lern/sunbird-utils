@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.sunbird</groupId>
@@ -6,13 +7,14 @@
   <packaging>pom</packaging>
   <name>sunbird_common_module</name>
   <modules>
-      <module>common-util</module>
-      <module>cassandra-dac</module>
-      <module>elasticsearch-util</module>
-      <module>sunbird-notification</module>
-	  <module>models</module>
-	  <module>actor-util</module>
-	  <module>request-validator</module>
-      <module>actor-core</module>
+    <module>common-util</module>
+    <module>cassandra-dac</module>
+    <module>elasticsearch-util</module>
+    <module>sunbird-notification</module>
+    <module>models</module>
+    <module>actor-util</module>
+    <module>request-validator</module>
+    <module>actor-core</module>
+    <module>common-service</module>
   </modules>
 </project>

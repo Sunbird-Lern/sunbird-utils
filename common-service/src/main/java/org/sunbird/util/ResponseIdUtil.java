@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.ProjectUtil;
 
 /**
- * This class is responsible for generating response id for request.
+ * Helper utility class for generating response ID based on received request.
  *
  * @author Manzarul
  */
@@ -12,7 +12,7 @@ public class ResponseIdUtil {
   private static final String version = "v1";
 
   /**
-   * This enum will hold different -2 delimiter
+   * Enum consisting delimiters
    *
    * @author Manzarul
    */
@@ -23,7 +23,7 @@ public class ResponseIdUtil {
     question("?");
     String symbol;
 
-    private Delimiter(String symbol) {
+    Delimiter(String symbol) {
       this.symbol = symbol;
     }
 
@@ -37,19 +37,19 @@ public class ResponseIdUtil {
   }
 
   /**
-   * Method to get API response Id
+   * Construct API response ID based on request path and method.
    *
-   * @param path api uri Ex: /v1/user/create
-   * @param method api method Ex: GET,POST etc
-   * @return api response id Ex: api.user.create
+   * @param path Request URI path (e.g. /v1/user/create)
+   * @param method Request method (e.g. GET)
+   * @return API response ID for given request URI.
    */
   public String getApiResponseId(String path, String method) {
-    String val = "";
+    String val;
     if (ProjectUtil.Method.GET.name().equalsIgnoreCase(method)) {
       val = getResponseId(path);
       if (StringUtils.isBlank(val)) {
-        String[] splitedpath = path.split("[/]");
-        String tempPath = removeLastValue(splitedpath);
+        String[] splitPathArray = path.split("[/]");
+        String tempPath = removeLastValue(splitPathArray);
         val = getResponseId(tempPath);
       }
     } else {
@@ -59,10 +59,10 @@ public class ResponseIdUtil {
   }
 
   /**
-   * Method to get the response id on basis of request path.
+   * Construct API response ID based on request path.
    *
-   * @param requestPath api uri Ex: /v1/user/create
-   * @return api response id Ex: api.user.create
+   * @param requestPath Request URI path (e.g. /v1/user/create)
+   * @return API response ID for given request URI.
    */
   public static String getResponseId(String requestPath) {
 
@@ -89,17 +89,18 @@ public class ResponseIdUtil {
   }
 
   /**
-   * Method to remove last value form array. example uri is /v1/user/read/{userId}
+   * Remove last value (path param) from array and return rest of request path URI.
    *
-   * @param splited splitted value of uri based on "/"
-   * @return /v1/user/read from /v1/user/read/{userId}
+   * @param splitPathArray Request URI path split into array based on "/"
+   * @return Request URI path without path param (e.g. return /v1/user/read for
+   *     /v1/user/read/{userId})
    */
-  private String removeLastValue(String splited[]) {
+  private String removeLastValue(String splitPathArray[]) {
 
     StringBuilder builder = new StringBuilder();
-    if (splited != null && splited.length > 0) {
-      for (int i = 1; i < splited.length - 1; i++) {
-        builder.append(Delimiter.slash.getSymbol() + splited[i]);
+    if (splitPathArray != null && splitPathArray.length > 0) {
+      for (int i = 1; i < splitPathArray.length - 1; i++) {
+        builder.append(Delimiter.slash.getSymbol() + splitPathArray[i]);
       }
     }
     return builder.toString();
