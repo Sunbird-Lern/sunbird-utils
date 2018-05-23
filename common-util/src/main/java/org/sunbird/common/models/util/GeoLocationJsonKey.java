@@ -12,7 +12,4 @@ public class GeoLocationJsonKey {
   public static final String SUNBIRD_VALID_LOCATION_TYPES = "sunbird_valid_location_types";
   public static final String PROPERTY_NAME = "name";
   public static final String PROPERTY_VALUE = "value";
-  public static final String ACTION = "action";
-  public static final String CREATED = "CREATED";
-  public static final String UPDATED = "UPDATED";
 }
