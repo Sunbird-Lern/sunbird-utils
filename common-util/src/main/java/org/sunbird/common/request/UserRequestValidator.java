@@ -9,6 +9,7 @@ import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.ProjectUtil.AddressType;
 import org.sunbird.common.responsecode.ResponseCode;
+import org.sunbird.common.responsecode.ResponseMessage;
 
 /** @author Amit Kumar */
 public class UserRequestValidator {
@@ -524,7 +525,11 @@ public class UserRequestValidator {
           ResponseCode.mandatoryParamsMissing.getErrorCode(),
           ProjectUtil.formatMessage(
               ResponseCode.mandatoryParamsMissing.getErrorMessage(),
-              (JsonKey.USER_ID + " or " + (JsonKey.EXTERNAL_ID + " and " + JsonKey.PROVIDER))),
+              (ProjectUtil.formatMessage(
+                  ResponseMessage.Message.OR_FORMAT,
+                  JsonKey.ID,
+                  ProjectUtil.formatMessage(
+                      ResponseMessage.Message.AND_FORMAT, JsonKey.EXTERNAL_ID, JsonKey.PROVIDER)))),
           ERROR_CODE);
     }
     if (userRequest.getRequest().containsKey(JsonKey.FIRST_NAME)

@@ -301,6 +301,8 @@ public interface ResponseMessage {
     String INVALID_REQUEST_PARAMETER = "Invalid parameter {0} in request.";
     String ROOT_ORG_ASSOCIATION_ERROR =
         "No root organisation found which is associated with given {0}.";
+    String OR_FORMAT = "{0} or {1}";
+    String AND_FORMAT = "{0} and {1}";
   }
 
   interface Key {
