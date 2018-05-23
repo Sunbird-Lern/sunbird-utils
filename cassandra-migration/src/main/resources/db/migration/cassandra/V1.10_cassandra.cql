@@ -1,5 +1,5 @@
-DROP TABLE user_external_identity;
-CREATE TABLE IF NOT EXISTS sunbird.user_external_identity(id text, externalId text, provider text, userId text, createdOn timestamp, lastUpdatedOn timestamp, createdBy text, lastUpdatedBy text, PRIMARY KEY(id));
+DROP TABLE IF EXISTS  sunbird.user_external_identity;
+CREATE TABLE IF NOT EXISTS sunbird.user_external_identity(id text,externalId text,provider text,userId text,createdOn timestamp,lastUpdatedOn timestamp,createdBy text,lastUpdatedBy text,PRIMARY KEY (id) );
 ALTER TABLE sunbird.user DROP provider;
 ALTER TABLE sunbird.user DROP regOrgId;
 ALTER TABLE sunbird.user ADD channel text;
