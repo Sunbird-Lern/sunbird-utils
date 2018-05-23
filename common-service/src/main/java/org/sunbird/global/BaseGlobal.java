@@ -22,7 +22,8 @@ import play.mvc.Result;
 import play.mvc.Results;
 
 /**
- * This class will work as a filter.
+ * Base class with common functionality to perform specific tasks at application start up or shut
+ * down.
  *
  * @author Manzarul
  */
@@ -42,10 +43,9 @@ public class BaseGlobal extends GlobalSettings {
   }
 
   /**
-   * This method will be called on application start up. it will be called only time in it's life
-   * cycle.
+   * Called on application startup.
    *
-   * @param app Application
+   * @param app Play application
    */
   public void onStart(Application app) {
     SunbirdMWService.init();
@@ -53,11 +53,11 @@ public class BaseGlobal extends GlobalSettings {
   }
 
   /**
-   * This method will be called on each request.
+   * Called to create root action for each request.
    *
-   * @param request Request
-   * @param actionMethod Method
-   * @return Action
+   * @param request HTTP request
+   * @param actionMethod Action method
+   * @return Root action created for received request
    */
   @SuppressWarnings("rawtypes")
   public Action onRequest(Request request, Method actionMethod) {
@@ -71,11 +71,17 @@ public class BaseGlobal extends GlobalSettings {
     return new ActionWrapper(super.onRequest(request, actionMethod));
   }
 
-  /** This method will be used to send the request header missing error message. */
+  /**
+   * Called when an exception occurred such as request header missing error message.
+   *
+   * @param request HTTP request header
+   * @param t Throwable error or exception
+   * @return Return a promise for API error
+   */
   @Override
   public Promise<Result> onError(Http.RequestHeader request, Throwable t) {
-    Response response = null;
-    ProjectCommonException commonException = null;
+    Response response;
+    ProjectCommonException commonException;
     if (t instanceof ProjectCommonException) {
       commonException = (ProjectCommonException) t;
       response =
