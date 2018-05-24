@@ -90,6 +90,7 @@ public class LocationRequestValidatorTest {
         .thenReturn(locationIdsList);
   }
 
+  /** Test to validate location code and get the corresponding location ids till top level. */
   @Test
   public void testValidateLocationCode() {
     List<String> list = null;
