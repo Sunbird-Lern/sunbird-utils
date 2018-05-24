@@ -59,8 +59,8 @@ public class RestUtil {
 
   public static boolean isSuccessful(HttpResponse<JsonNode> resp) throws Exception {
     int status = resp.getStatus();
-//    String code = resp.getBody().getObject().getString("responseCode");
-//    return ((status == 200) && (code.equals("OK")));
+    //    String code = resp.getBody().getObject().getString("responseCode");
+    //    return ((status == 200) && (code.equals("OK")));
     return (status == 200);
   }
 }

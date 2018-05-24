@@ -9,7 +9,8 @@ public enum ResponseCode {
   invalidUserCredentials(
       ResponseMessage.Key.INVALID_USER_CREDENTIALS,
       ResponseMessage.Message.INVALID_USER_CREDENTIALS),
-  operationTimeout(ResponseMessage.Key.OPERATION_TIMEOUT, ResponseMessage.Message.OPERATION_TIMEOUT),
+  operationTimeout(
+      ResponseMessage.Key.OPERATION_TIMEOUT, ResponseMessage.Message.OPERATION_TIMEOUT),
   invalidOperationName(
       ResponseMessage.Key.INVALID_OPERATION_NAME, ResponseMessage.Message.INVALID_OPERATION_NAME),
   invalidRequestData(
@@ -299,8 +300,9 @@ public enum ResponseCode {
   storageContainerNameMandatory(
       ResponseMessage.Key.STORAGE_CONTAINER_NAME_MANDATORY,
       ResponseMessage.Message.STORAGE_CONTAINER_NAME_MANDATORY),
-  userRegOrgError(
-      ResponseMessage.Key.USER_REG_ORG_ERROR, ResponseMessage.Message.USER_REG_ORG_ERROR),
+  userOrgAssociationError(
+      ResponseMessage.Key.USER_ORG_ASSOCIATION_ERROR,
+      ResponseMessage.Message.USER_ORG_ASSOCIATION_ERROR),
   cloudServiceError(
       ResponseMessage.Key.CLOUD_SERVICE_ERROR, ResponseMessage.Message.CLOUD_SERVICE_ERROR),
   badgeTypeIdMandatory(
@@ -544,6 +546,12 @@ public enum ResponseCode {
       ResponseMessage.Key.UNABLE_TO_COMMUNICATE_WITH_ACTOR,
       ResponseMessage.Message.UNABLE_TO_COMMUNICATE_WITH_ACTOR),
   emptyHeaderLine(ResponseMessage.Key.EMPTY_HEADER_LINE, ResponseMessage.Message.EMPTY_HEADER_LINE),
+  invalidRequestParameter(
+      ResponseMessage.Key.INVALID_REQUEST_PARAMETER,
+      ResponseMessage.Message.INVALID_REQUEST_PARAMETER),
+  rootOrgAssociationError(
+      ResponseMessage.Key.ROOT_ORG_ASSOCIATION_ERROR,
+      ResponseMessage.Message.ROOT_ORG_ASSOCIATION_ERROR),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
@@ -663,17 +671,16 @@ public enum ResponseCode {
     if (StringUtils.isBlank(errorCode)) {
       return null;
     } else if (JsonKey.UNAUTHORIZED.equals(errorCode)) {
-    		return ResponseCode.unAuthorized;
+      return ResponseCode.unAuthorized;
     } else {
-    		ResponseCode value = null;
-        ResponseCode responseCodes[] = ResponseCode.values();
-        for (ResponseCode response : responseCodes) {
-          if (response.getErrorCode().equals(errorCode)) {
-            return response;
-          }
+      ResponseCode value = null;
+      ResponseCode responseCodes[] = ResponseCode.values();
+      for (ResponseCode response : responseCodes) {
+        if (response.getErrorCode().equals(errorCode)) {
+          return response;
         }
-        return value;
+      }
+      return value;
     }
-    
   }
 }

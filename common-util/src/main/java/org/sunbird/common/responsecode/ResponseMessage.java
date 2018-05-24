@@ -181,7 +181,7 @@ public interface ResponseMessage {
     String RECEIVER_ID_ERROR = "Receiver id is mandatory.";
     String INVALID_RECEIVER_ID = "Receiver id is invalid.";
     String INVALID_BADGE_ID = "Invalid badge type id.";
-    String USER_REG_ORG_ERROR = "this user belongs to some other organization.";
+    String USER_ORG_ASSOCIATION_ERROR = "User is already associated with another organization.";
     String INVALID_ROLE = "Invalid role value provided in request.";
     String INVALID_SALT = "Please provide salt value.";
     String ORG_TYPE_MANDATORY = "Org Type name is mandatory.";
@@ -298,6 +298,11 @@ public interface ResponseMessage {
         "An organisation cannot be associated to two conflicting locations ({0}, {1}) at {2} level. ";
     String UNABLE_TO_COMMUNICATE_WITH_ACTOR = "Unable to communicate with actor.";
     String EMPTY_HEADER_LINE = "Missing header line in CSV file.";
+    String INVALID_REQUEST_PARAMETER = "Invalid parameter {0} in request.";
+    String ROOT_ORG_ASSOCIATION_ERROR =
+        "No root organisation found which is associated with given {0}.";
+    String OR_FORMAT = "{0} or {1}";
+    String AND_FORMAT = "{0} and {1}";
   }
 
   interface Key {
@@ -466,7 +471,7 @@ public interface ResponseMessage {
     String ASSERTION_EVIDENCE_REQUIRED = "ASSERTION_EVIDENCE_REQUIRED";
     String ASSERTION_ID_REQUIRED = "ASSERTION_ID_REQUIRED";
     String STORAGE_CONTAINER_NAME_MANDATORY = "STORAGE_CONTAINER_NAME_MANDATORY";
-    String USER_REG_ORG_ERROR = "USER_REG_ORG_ERROR";
+    String USER_ORG_ASSOCIATION_ERROR = "USER_ORG_ASSOCIATION_ERROR";
     String CLOUD_SERVICE_ERROR = "CLOUD_SERVICE_ERROR";
     String BADGE_TYPE_ID_ERROR = "BADGE_TYPE_ID_ERROR";
     String RECEIVER_ID_ERROR = "RECEIVER_ID_ERROR";
@@ -572,5 +577,7 @@ public interface ResponseMessage {
     String CONFLICTING_ORG_LOCATIONS = "CONFLICTING_ORG_LOCATIONS";
     String UNABLE_TO_COMMUNICATE_WITH_ACTOR = "UNABLE_TO_COMMUNICATE_WITH_ACTOR";
     String EMPTY_HEADER_LINE = "EMPTY_HEADER_LINE";
+    String INVALID_REQUEST_PARAMETER = "INVALID_REQUEST_PARAMETER";
+    String ROOT_ORG_ASSOCIATION_ERROR = "ROOT_ORG_ASSOCIATION_ERROR";
   }
 }

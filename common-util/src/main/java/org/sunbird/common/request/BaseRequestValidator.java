@@ -42,9 +42,9 @@ public class BaseRequestValidator {
   public void validateParam(String value, ResponseCode error, String errorMsgArgument) {
     if (StringUtils.isBlank(value)) {
       throw new ProjectCommonException(
-              error.getErrorCode(),
-              MessageFormat.format(error.getErrorMessage(), errorMsgArgument),
-              ResponseCode.CLIENT_ERROR.getResponseCode());
+          error.getErrorCode(),
+          MessageFormat.format(error.getErrorMessage(), errorMsgArgument),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
     }
   }
 
@@ -75,17 +75,20 @@ public class BaseRequestValidator {
    * @param errorCode (Http error code)
    * @return custom project exception
    */
-  public ProjectCommonException createExceptionByResponseCode(ResponseCode code, int errorCode, String errorMsgArgument) {
+  public ProjectCommonException createExceptionByResponseCode(
+      ResponseCode code, int errorCode, String errorMsgArgument) {
     if (code == null) {
       ProjectLogger.log("ResponseCode object is coming as null", LoggerEnum.INFO.name());
       return new ProjectCommonException(
-              ResponseCode.invalidData.getErrorCode(),
-              ResponseCode.invalidData.getErrorMessage(),
-              errorCode);
+          ResponseCode.invalidData.getErrorCode(),
+          ResponseCode.invalidData.getErrorMessage(),
+          errorCode);
     }
-    return new ProjectCommonException(code.getErrorCode(), MessageFormat.format(code.getErrorMessage(), errorMsgArgument), errorCode);
+    return new ProjectCommonException(
+        code.getErrorCode(),
+        MessageFormat.format(code.getErrorMessage(), errorMsgArgument),
+        errorCode);
   }
-
 
   /**
    * Method to check whether given mandatory fields is in given map or not .
