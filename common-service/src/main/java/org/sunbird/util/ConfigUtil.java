@@ -9,7 +9,7 @@ import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.responsecode.ResponseCode;
 
 /**
- * This util class will handle type safe config.
+ * This util class for providing type safe config to any service that requires it.
  *
  * @author Manzarul
  */
@@ -19,14 +19,14 @@ public class ConfigUtil {
   private static final String DEFAULT_TYPE_SAFE_CONFIG_FILE_NAME = "service.conf";
   private static final String INVALID_FILE_NAME = "Please provide a valid file name.";
 
-  /** private default constructor. */
+  /** Private default constructor. */
   private ConfigUtil() {}
 
   /**
-   * This method will create a type safe config object and return to caller. it will read the config
-   * value from System env first and as a fall back it will used service.conf file.
+   * This method will create a type safe config object and return to caller. It will read the config
+   * value from System env first and as a fall back it will use service.conf file.
    *
-   * @return com.typesafe.config.Config
+   * @return Type safe config object
    */
   public static Config getConfig() {
     if (config == null) {
@@ -38,19 +38,19 @@ public class ConfigUtil {
   }
 
   /**
-   * This method will create a type safe config object and return to caller. it will read the config
-   * value from System env first and as a fall back it will used provided by name. if file name is
-   * null or empty then it will throw ProjectCommonException with status code as 400.
+   * This method will create a type safe config object and return to caller. It will read the config
+   * value from System env first and as a fall back it will use provided file name. If file name is
+   * null or empty then it will throw ProjectCommonException with status code as 500.
    *
-   * @return com.typesafe.config.Config
+   * @return Type safe config object
    */
   public static Config getConfig(String fileName) {
     if (StringUtils.isBlank(fileName)) {
       ProjectLogger.log(
-          "ConfigUtil:getConfigWithFilename: file name is coming as null or empty " + fileName,
+          "ConfigUtil:getConfigWithFilename: Given file name is null or empty: " + fileName,
           LoggerEnum.INFO.name());
       throw new ProjectCommonException(
-          ResponseCode.invalidData.getErrorCode(),
+          ResponseCode.internalError.getErrorCode(),
           INVALID_FILE_NAME,
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
@@ -62,10 +62,6 @@ public class ConfigUtil {
     return config;
   }
 
-  /**
-   * @param fileName
-   * @return
-   */
   private static Config createConfig(String fileName) {
     Config defaultConf = ConfigFactory.load(fileName);
     Config envConf = ConfigFactory.systemEnvironment();
