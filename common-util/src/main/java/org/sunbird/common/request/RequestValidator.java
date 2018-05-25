@@ -18,6 +18,7 @@ import org.sunbird.common.models.util.ProjectUtil.ProgressStatus;
 import org.sunbird.common.models.util.ProjectUtil.Source;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.responsecode.ResponseCode;
+import org.sunbird.common.responsecode.ResponseMessage;
 
 /**
  * This call will do validation for all incoming request data.
@@ -574,8 +575,23 @@ public final class RequestValidator {
         && (StringUtils.isBlank((String) reqObj.get(JsonKey.ORG_EXTERNAL_ID))
             || StringUtils.isBlank((String) reqObj.get(JsonKey.ORG_PROVIDER)))) {
       throw new ProjectCommonException(
-          ResponseCode.bulkUserUploadError.getErrorCode(),
-          ResponseCode.bulkUserUploadError.getErrorMessage(),
+          ResponseCode.mandatoryParamsMissing.getErrorCode(),
+          ProjectUtil.formatMessage(
+              ResponseCode.mandatoryParamsMissing.getErrorMessage(),
+              (ProjectUtil.formatMessage(
+                  ResponseMessage.Message.OR_FORMAT,
+                  JsonKey.ORGANISATION_ID,
+                  ProjectUtil.formatMessage(
+                      ResponseMessage.Message.AND_FORMAT,
+                      JsonKey.ORG_EXTERNAL_ID,
+                      JsonKey.ORG_PROVIDER)))),
+          ERROR_CODE);
+    }
+    if (null == reqObj.get(JsonKey.FILE)) {
+      throw new ProjectCommonException(
+          ResponseCode.mandatoryParamsMissing.getErrorCode(),
+          ProjectUtil.formatMessage(
+              ResponseCode.mandatoryParamsMissing.getErrorMessage(), JsonKey.FILE),
           ERROR_CODE);
     }
   }

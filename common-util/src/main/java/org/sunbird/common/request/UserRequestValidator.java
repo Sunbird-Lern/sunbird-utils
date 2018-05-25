@@ -62,8 +62,7 @@ public class UserRequestValidator {
           (String) userRequest.getRequest().get(JsonKey.PHONE),
           (String) userRequest.getRequest().get(JsonKey.COUNTRY_CODE));
     }
-    if (!StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PROVIDER))
-        && !StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PHONE))) {
+    if (!StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PHONE))) {
       if (null != userRequest.getRequest().get(JsonKey.PHONE_VERIFIED)) {
         if (userRequest.getRequest().get(JsonKey.PHONE_VERIFIED) instanceof Boolean) {
           if (!((boolean) userRequest.getRequest().get(JsonKey.PHONE_VERIFIED))) {
