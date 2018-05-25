@@ -198,8 +198,8 @@ public enum ResponseCode {
   orgIdRequired(ResponseMessage.Key.ORG_ID_MISSING, ResponseMessage.Message.ORG_ID_MISSING),
   actorConnectionError(
       ResponseMessage.Key.ACTOR_CONNECTION_ERROR, ResponseMessage.Message.ACTOR_CONNECTION_ERROR),
-  userAlreadyExist(
-      ResponseMessage.Key.USER_ALREADY_EXIST, ResponseMessage.Message.USER_ALREADY_EXIST),
+  userAlreadyExists(
+      ResponseMessage.Key.USER_ALREADY_EXISTS, ResponseMessage.Message.USER_ALREADY_EXISTS),
   invalidUserId(ResponseMessage.Key.INVALID_USER_ID, ResponseMessage.Key.INVALID_USER_ID),
   loginIdRequired(ResponseMessage.Key.LOGIN_ID_MISSING, ResponseMessage.Message.LOGIN_ID_MISSING),
   contentStatusRequired(
