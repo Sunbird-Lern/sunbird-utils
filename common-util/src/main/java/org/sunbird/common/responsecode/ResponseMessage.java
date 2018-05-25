@@ -262,7 +262,7 @@ public interface ResponseMessage {
     String REVOCATION_REASON_REQUIRED = "Please provide revocation reason.";
     String ALREADY_REVOKED = "Assertion is already revoked.";
     String INVALID_RECIPIENT_TYPE = "Please provide a valid recipient type.";
-    String CUSTOM_CLIENT_ERROR = "{0}";
+    String CUSTOM_CLIENT_ERROR = "Request failed. {0}";
     String CUSTOM_RESOURCE_NOT_FOUND_ERROR = "{0}";
     String CUSTOM_SERVER_ERROR = "{0}";
     String INACTIVE_USER = "User is Inactive. Please make it active to proceed.";

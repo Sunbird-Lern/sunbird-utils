@@ -6,8 +6,11 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.LongDeserializer;
+import org.apache.kafka.common.serialization.LongSerializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 
@@ -28,7 +31,7 @@ public class KafkaClient {
    * @return A Kafka producer for given configuration.
    */
   public static Producer<Long, String> createProducer(String bootstrapServers, String clientId) {
-    return new KafkaProducer<Long, String>(createProperties(bootstrapServers, clientId));
+    return new KafkaProducer<Long, String>(createProducerProperties(bootstrapServers, clientId));
   }
 
   /**
@@ -41,21 +44,45 @@ public class KafkaClient {
    * @return A Kafka consumer for given configuration.
    */
   public static Consumer<Long, String> createConsumer(String bootstrapServers, String clientId) {
-    return new KafkaConsumer<>(createProperties(bootstrapServers, clientId));
+    return new KafkaConsumer<>(createConsumerProperties(bootstrapServers, clientId));
   }
 
   /**
-   * Creates a properties instance required for creating a Kafka producer or consumer.
+   * Creates a properties instance required for creating a Kafka producer.
    *
    * @param bootstrapServers Comma-separated list of host and port pairs that are the addresses of
    *     the Kafka brokers in a "bootstrap" Kafka cluster that a Kafka client connects to initially
    *     to bootstrap itself. e.g. localhost:9092,localhost:9093,localhost:9094
-   * @param clientId Identifier for Kafka producer or consumer
-   * @return Properties required for instantiating a Kafka producer or consumer.
+   * @param clientId Identifier for Kafka producer.
+   * @return Properties required for instantiating a Kafka producer.
    */
-  private static Properties createProperties(String bootstrapServers, String clientId) {
+  private static Properties createProducerProperties(String bootstrapServers, String clientId) {
     ProjectLogger.log(
-        "KafkaClient: createProperties called with bootstrapServers = "
+        "KafkaClient: createProducerProperties called with bootstrapServers = "
+            + bootstrapServers
+            + " clientId = "
+            + clientId,
+        LoggerEnum.INFO.name());
+    Properties props = new Properties();
+    props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+    props.put(ProducerConfig.CLIENT_ID_CONFIG, clientId);
+    props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, LongSerializer.class.getName());
+    props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+    return props;
+  }
+
+  /**
+   * Creates a properties instance required for creating a Kafka consumer.
+   *
+   * @param bootstrapServers Comma-separated list of host and port pairs that are the addresses of
+   *     the Kafka brokers in a "bootstrap" Kafka cluster that a Kafka client connects to initially
+   *     to bootstrap itself. e.g. localhost:9092,localhost:9093,localhost:9094
+   * @param clientId Identifier for Kafka consumer
+   * @return Properties required for instantiating a Kafka consumer.
+   */
+  private static Properties createConsumerProperties(String bootstrapServers, String clientId) {
+    ProjectLogger.log(
+        "KafkaClient: createConsumerProperties called with bootstrapServers = "
             + bootstrapServers
             + " clientId = "
             + clientId,
