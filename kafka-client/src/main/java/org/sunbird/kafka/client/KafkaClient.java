@@ -53,12 +53,12 @@ public class KafkaClient {
    * @param bootstrapServers Comma-separated list of host and port pairs that are the addresses of
    *     the Kafka brokers in a "bootstrap" Kafka cluster that a Kafka client connects to initially
    *     to bootstrap itself. e.g. localhost:9092,localhost:9093,localhost:9094
-   * @param clientId Identifier for Kafka producer or consumer
-   * @return Properties required for instantiating a Kafka producer or consumer.
+   * @param clientId Identifier for Kafka producer.
+   * @return Properties required for instantiating a Kafka producer.
    */
   private static Properties createProducerProperties(String bootstrapServers, String clientId) {
     ProjectLogger.log(
-        "KafkaClient: createProperties called with bootstrapServers = "
+        "KafkaClient: createProducerProperties called with bootstrapServers = "
             + bootstrapServers
             + " clientId = "
             + clientId,
@@ -77,12 +77,12 @@ public class KafkaClient {
    * @param bootstrapServers Comma-separated list of host and port pairs that are the addresses of
    *     the Kafka brokers in a "bootstrap" Kafka cluster that a Kafka client connects to initially
    *     to bootstrap itself. e.g. localhost:9092,localhost:9093,localhost:9094
-   * @param clientId Identifier for Kafka producer or consumer
-   * @return Properties required for instantiating a Kafka producer or consumer.
+   * @param clientId Identifier for Kafka consumer
+   * @return Properties required for instantiating a Kafka consumer.
    */
   private static Properties createConsumerProperties(String bootstrapServers, String clientId) {
     ProjectLogger.log(
-        "KafkaClient: createProperties called with bootstrapServers = "
+        "KafkaClient: createConsumerProperties called with bootstrapServers = "
             + bootstrapServers
             + " clientId = "
             + clientId,
