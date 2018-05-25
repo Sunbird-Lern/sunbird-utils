@@ -106,7 +106,7 @@ public interface ResponseMessage {
     String PHONE_NO_REQUIRED_ERROR = "Phone number is required.";
     String ORG_ID_MISSING = "Organization Id required.";
     String ACTOR_CONNECTION_ERROR = "Service is not able to connect with actor.";
-    String USER_ALREADY_EXIST = "user already exist.";
+    String USER_ALREADY_EXISTS = "User already exists for given {0}.";
     String PAGE_ALREADY_EXIST = "page already exist with this Page Name and Org Code.";
     String INVALID_USER_ID = "User Id does not exists in our records";
     String LOGIN_ID_MISSING = "loginId is required.";
@@ -303,6 +303,7 @@ public interface ResponseMessage {
         "No root organisation found which is associated with given {0}.";
     String OR_FORMAT = "{0} or {1}";
     String AND_FORMAT = "{0} and {1}";
+    String DEPENDENT_PARAMETER_MISSING = "Missing parameter {0} which is dependent on {1}.";
   }
 
   interface Key {
@@ -397,7 +398,7 @@ public interface ResponseMessage {
     String PHONE_NO_REQUIRED_ERROR = "PHONE_NO_REQUIRED_ERROR";
     String ORG_ID_MISSING = "ORG_ID_MISSING";
     String ACTOR_CONNECTION_ERROR = "ACTOR_CONNECTION_ERROR";
-    String USER_ALREADY_EXIST = "USER_ALREADY_EXIST";
+    String USER_ALREADY_EXISTS = "USER_ALREADY_EXISTS";
     String PAGE_ALREADY_EXIST = "PAGE_ALREADY_EXIST";
     String INVALID_USER_ID = "INVALID_USER_ID";
     String LOGIN_ID_MISSING = "LOGIN_ID_MISSING";
@@ -579,5 +580,6 @@ public interface ResponseMessage {
     String EMPTY_HEADER_LINE = "EMPTY_HEADER_LINE";
     String INVALID_REQUEST_PARAMETER = "INVALID_REQUEST_PARAMETER";
     String ROOT_ORG_ASSOCIATION_ERROR = "ROOT_ORG_ASSOCIATION_ERROR";
+    String DEPENDENT_PARAMETER_MISSING = "DEPENDENT_PARAMETER_MISSING";
   }
 }
