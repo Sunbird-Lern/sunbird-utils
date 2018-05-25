@@ -57,7 +57,7 @@ public class UserRequestValidator {
             ERROR_CODE);
       }
     }
-    if (!StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PHONE))) {
+    if (StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.PHONE))) {
       validatePhoneNo(
           (String) userRequest.getRequest().get(JsonKey.PHONE),
           (String) userRequest.getRequest().get(JsonKey.COUNTRY_CODE));
