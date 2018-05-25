@@ -104,17 +104,21 @@ public class UserRequestValidator {
     if (StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.PROVIDER))
         && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID))) {
       throw new ProjectCommonException(
-          ResponseCode.mandatoryParamsMissing.getErrorCode(),
+          ResponseCode.dependentParameterMissing.getErrorCode(),
           ProjectUtil.formatMessage(
-              ResponseCode.mandatoryParamsMissing.getErrorMessage(), JsonKey.EXTERNAL_ID),
+              ResponseCode.dependentParameterMissing.getErrorMessage(),
+              JsonKey.EXTERNAL_ID,
+              JsonKey.PROVIDER),
           ERROR_CODE);
     }
     if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PROVIDER))
         && StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID))) {
       throw new ProjectCommonException(
-          ResponseCode.mandatoryParamsMissing.getErrorCode(),
+          ResponseCode.dependentParameterMissing.getErrorCode(),
           ProjectUtil.formatMessage(
-              ResponseCode.mandatoryParamsMissing.getErrorMessage(), JsonKey.PROVIDER),
+              ResponseCode.dependentParameterMissing.getErrorMessage(),
+              JsonKey.PROVIDER,
+              JsonKey.EXTERNAL_ID),
           ERROR_CODE);
     }
 

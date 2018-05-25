@@ -552,6 +552,9 @@ public enum ResponseCode {
   rootOrgAssociationError(
       ResponseMessage.Key.ROOT_ORG_ASSOCIATION_ERROR,
       ResponseMessage.Message.ROOT_ORG_ASSOCIATION_ERROR),
+  dependentParameterMissing(
+      ResponseMessage.Key.DEPENDENT_PARAMETER_MISSING,
+      ResponseMessage.Message.DEPENDENT_PARAMETER_MISSING),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
