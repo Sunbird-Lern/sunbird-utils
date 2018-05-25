@@ -106,7 +106,7 @@ public interface ResponseMessage {
     String PHONE_NO_REQUIRED_ERROR = "Phone number is required.";
     String ORG_ID_MISSING = "Organization Id required.";
     String ACTOR_CONNECTION_ERROR = "Service is not able to connect with actor.";
-    String USER_ALREADY_EXIST = "user already exist for given {0}.";
+    String USER_ALREADY_EXIST = "User already exists for given {0}.";
     String PAGE_ALREADY_EXIST = "page already exist with this Page Name and Org Code.";
     String INVALID_USER_ID = "User Id does not exists in our records";
     String LOGIN_ID_MISSING = "loginId is required.";
