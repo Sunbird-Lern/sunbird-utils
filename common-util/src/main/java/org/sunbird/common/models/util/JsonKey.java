@@ -646,6 +646,7 @@ public final class JsonKey {
   public static final String CASSANDRA_UPDATE_BATCH_SIZE = "cassandra_update_batch_size";
   public static final String ORG_EXTERNAL_ID = "orgExternalId";
   public static final String ORG_PROVIDER = "orgProvider";
+  public static final String SUNBIRD_LMS_TELEMETRY_BASE_URL = "sunbird_lms_telemetry_base_url";
 
   private JsonKey() {}
 }
