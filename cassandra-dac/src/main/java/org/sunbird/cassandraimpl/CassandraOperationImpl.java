@@ -450,7 +450,7 @@ public class CassandraOperationImpl implements CassandraOperation {
                 });
       }
       ProjectLogger.log(
-          "CassandraOperationImpl:getRecordByIdentifier - Query : " + selectWhere.getQueryString(),
+          "CassandraOperationImpl:getRecordByIdentifier: query: " + selectWhere.getQueryString(),
           LoggerEnum.INFO);
       ResultSet results = session.execute(selectWhere);
       response = CassandraUtil.createResponse(results);
