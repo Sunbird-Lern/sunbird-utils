@@ -30,7 +30,7 @@ public abstract class BaseActor extends UntypedAbstractActor {
     if (message instanceof Request) {
       Request request = (Request) message;
       String operation = request.getOperation();
-      ProjectLogger.log("BaseActor: onReceive called for operation:" + operation, LoggerEnum.INFO);
+      ProjectLogger.log("BaseActor: onReceive called for operation: " + operation, LoggerEnum.INFO);
       try {
         onReceive(request);
       } catch (Exception e) {
