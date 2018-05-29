@@ -13,6 +13,7 @@ import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.response.ResponseParams;
 import org.sunbird.common.models.response.ResponseParams.StatusType;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.request.ExecutionContext;
 import org.sunbird.common.request.Request;
@@ -28,12 +29,12 @@ public abstract class BaseActor extends UntypedAbstractActor {
   public void onReceive(Object message) throws Throwable {
     if (message instanceof Request) {
       Request request = (Request) message;
-      String callerName = request.getOperation();
-      ProjectLogger.log("BaseActor onReceive called for operation : " + callerName);
+      String operation = request.getOperation();
+      ProjectLogger.log("BaseActor: onReceive called for operation: " + operation, LoggerEnum.INFO);
       try {
         onReceive(request);
       } catch (Exception e) {
-        onReceiveException(callerName, e);
+        onReceiveException(operation, e);
       }
     } else if (message instanceof Response) {
       sender().tell(message, self());
