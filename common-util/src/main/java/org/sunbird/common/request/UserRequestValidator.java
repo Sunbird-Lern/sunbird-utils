@@ -1,8 +1,10 @@
 package org.sunbird.common.request;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
@@ -24,6 +26,7 @@ public class UserRequestValidator {
    * @param userRequest Request
    */
   public static void validateCreateUser(Request userRequest) {
+    externalIdsValidation(userRequest);
     fieldsNotAllowed(Arrays.asList(JsonKey.REGISTERED_ORG_ID, JsonKey.ROOT_ORG_ID), userRequest);
     createUserBasicValidation(userRequest);
     phoneValidation(userRequest);
@@ -397,7 +400,7 @@ public class UserRequestValidator {
    */
   @SuppressWarnings({"rawtypes"})
   public static void validateUpdateUser(Request userRequest) {
-
+    externalIdsValidation(userRequest);
     phoneValidation(userRequest);
     updateUserBasicValidation(userRequest);
     if (userRequest.getRequest().get(JsonKey.ADDRESS) != null
@@ -441,6 +444,57 @@ public class UserRequestValidator {
           ResponseCode.invalidRootOrganisationId.getErrorCode(),
           ResponseCode.invalidRootOrganisationId.getErrorMessage(),
           ERROR_CODE);
+    }
+  }
+
+  private static void externalIdsValidation(Request userRequest) {
+    if (userRequest.getRequest().containsKey(JsonKey.EXTERNAL_IDS)
+        && (null != userRequest.getRequest().get(JsonKey.EXTERNAL_IDS))) {
+      if (!(userRequest.getRequest().get(JsonKey.EXTERNAL_IDS) instanceof List)) {
+        throw new ProjectCommonException(
+            ResponseCode.dataTypeError.getErrorCode(),
+            ProjectUtil.formatMessage(
+                ResponseCode.dataTypeError.getErrorMessage(), JsonKey.EXTERNAL_IDS, JsonKey.LIST),
+            ERROR_CODE);
+      } else {
+        List<Map<String, String>> externalIds = null;
+        List<String> operationList = null;
+        try {
+          externalIds =
+              (List<Map<String, String>>) userRequest.getRequest().get(JsonKey.EXTERNAL_IDS);
+          operationList =
+              Arrays.asList(ProjectUtil.OperationType.values())
+                  .stream()
+                  .map(s -> s.name().toLowerCase())
+                  .collect(Collectors.toList());
+        } catch (Exception ex) {
+          throw new ProjectCommonException(
+              ResponseCode.dataTypeError.getErrorCode(),
+              ProjectUtil.formatMessage(
+                  ResponseCode.dataTypeError.getErrorMessage(),
+                  JsonKey.EXTERNAL_IDS,
+                  "List<Map<String,String>>"),
+              ERROR_CODE);
+        }
+
+        List<String> operationTypeList = new ArrayList<String>(operationList);
+        externalIds
+            .stream()
+            .forEach(
+                s -> {
+                  if (StringUtils.isNotBlank(s.get(JsonKey.OPERATION))
+                      && (!operationTypeList.contains((s.get(JsonKey.OPERATION)).toLowerCase()))) {
+                    throw new ProjectCommonException(
+                        ResponseCode.invalidValue.getErrorCode(),
+                        ProjectUtil.formatMessage(
+                            ResponseCode.invalidValue.getErrorMessage(),
+                            (JsonKey.EXTERNAL_IDS + "." + JsonKey.OPERATION),
+                            s.get(JsonKey.OPERATION),
+                            String.join(",", operationTypeList)),
+                        ERROR_CODE);
+                  }
+                });
+      }
     }
   }
 

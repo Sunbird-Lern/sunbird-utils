@@ -555,6 +555,8 @@ public enum ResponseCode {
   dependentParameterMissing(
       ResponseMessage.Key.DEPENDENT_PARAMETER_MISSING,
       ResponseMessage.Message.DEPENDENT_PARAMETER_MISSING),
+  externalIdNotFound(
+      ResponseMessage.Key.EXTERNALID_NOT_FOUND, ResponseMessage.Message.EXTERNALID_NOT_FOUND),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

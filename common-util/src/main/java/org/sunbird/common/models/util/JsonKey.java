@@ -646,6 +646,8 @@ public final class JsonKey {
   public static final String CASSANDRA_UPDATE_BATCH_SIZE = "cassandra_update_batch_size";
   public static final String ORG_EXTERNAL_ID = "orgExternalId";
   public static final String ORG_PROVIDER = "orgProvider";
+  public static final String EXTERNAL_IDS = "externalIds";
+  public static final String UPDATED_ON = "updatedOn";
 
   private JsonKey() {}
 }
