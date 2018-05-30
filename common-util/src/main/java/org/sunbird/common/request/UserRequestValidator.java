@@ -447,7 +447,7 @@ public class UserRequestValidator {
     }
   }
 
-  private static void externalIdsValidation(Request userRequest) {
+  public static void externalIdsValidation(Request userRequest) {
     if (userRequest.getRequest().containsKey(JsonKey.EXTERNAL_IDS)
         && (null != userRequest.getRequest().get(JsonKey.EXTERNAL_IDS))) {
       if (!(userRequest.getRequest().get(JsonKey.EXTERNAL_IDS) instanceof List)) {
@@ -799,5 +799,17 @@ public class UserRequestValidator {
         }
       }
     }
+  }
+
+  /**
+   * This method will validate bulk api user data.
+   *
+   * @param userRequest Request
+   */
+  public static void validateBulkUserData(Request userRequest) {
+    externalIdsValidation(userRequest);
+    createUserBasicValidation(userRequest);
+    phoneValidation(userRequest);
+    validateWebPages(userRequest);
   }
 }
