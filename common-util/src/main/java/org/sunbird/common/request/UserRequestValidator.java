@@ -474,6 +474,7 @@ public class UserRequestValidator {
             .stream()
             .forEach(
                 s -> {
+                  // check for invalid operation type
                   if (StringUtils.isNotBlank(s.get(JsonKey.OPERATION))
                       && (!operationTypeList.contains((s.get(JsonKey.OPERATION)).toLowerCase()))) {
                     throw new ProjectCommonException(
@@ -485,6 +486,9 @@ public class UserRequestValidator {
                             String.join(",", operationTypeList)),
                         ERROR_CODE);
                   }
+                  // throw exception for invalid operation if other operation type is coming in
+                  // request
+                  // other than add or null for create user api
                   if (JsonKey.CREATE.equalsIgnoreCase(operation)
                       && StringUtils.isNotBlank(s.get(JsonKey.OPERATION))
                       && (!"add".equalsIgnoreCase(((s.get(JsonKey.OPERATION)))))) {
@@ -497,6 +501,7 @@ public class UserRequestValidator {
                             "add"),
                         ERROR_CODE);
                   }
+                  // check for missing externalId
                   if (StringUtils.isBlank(s.get(JsonKey.ID))) {
                     throw new ProjectCommonException(
                         ResponseCode.mandatoryParamsMissing.getErrorCode(),
@@ -505,6 +510,7 @@ public class UserRequestValidator {
                             (JsonKey.EXTERNAL_IDS + "." + JsonKey.ID)),
                         ERROR_CODE);
                   }
+                  // check for missing provider
                   if (StringUtils.isBlank(s.get(JsonKey.PROVIDER))) {
                     throw new ProjectCommonException(
                         ResponseCode.mandatoryParamsMissing.getErrorCode(),
