@@ -135,17 +135,6 @@ public interface CassandraOperation {
       String keyspaceName, String tableName, Map<String, Object> propertyMap);
 
   /**
-   * @desc This method is used to fetch record based on given parameter list and their values
-   * @param keyspaceName String (data base keyspace name)
-   * @param tableName String
-   * @param propertyMap Map<String,Object> propertyMap)(i.e map of indexed column name and their
-   *     value)
-   * @return Response Response
-   */
-  public Response getRecordsByIndexedProperties(
-      String keyspaceName, String tableName, Map<String, Object> propertyMap);
-
-  /**
    * Fetch records with specified columns (select all if null) for given column map (name, value
    * pairs).
    *

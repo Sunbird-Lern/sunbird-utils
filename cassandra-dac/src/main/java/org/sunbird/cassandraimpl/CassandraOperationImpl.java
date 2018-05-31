@@ -589,33 +589,4 @@ public class CassandraOperationImpl implements CassandraOperation {
     logQueryElapseTime("getRecordsByIndexedProperty", startTime);
     return response;
   }
-
-  @Override
-  public Response getRecordsByIndexedProperties(
-      String keyspaceName, String tableName, Map<String, Object> propertyMap) {
-    long startTime = System.currentTimeMillis();
-    ProjectLogger.log(
-        "Cassandra Service getRecordsByIndexedProperties method started at ==" + startTime,
-        LoggerEnum.INFO);
-    Response response = new Response();
-    try {
-      Select selectQuery = QueryBuilder.select().all().from(keyspaceName, tableName);
-      Where selectWhere = selectQuery.where();
-      for (Entry<String, Object> entry : propertyMap.entrySet()) {
-        Clause clause = QueryBuilder.eq(entry.getKey(), entry.getValue());
-        selectWhere.and(clause);
-      }
-      ResultSet results =
-          connectionManager.getSession(keyspaceName).execute(selectQuery.allowFiltering());
-      response = CassandraUtil.createResponse(results);
-    } catch (Exception e) {
-      ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName + " : " + e.getMessage(), e);
-      throw new ProjectCommonException(
-          ResponseCode.SERVER_ERROR.getErrorCode(),
-          ResponseCode.SERVER_ERROR.getErrorMessage(),
-          ResponseCode.SERVER_ERROR.getResponseCode());
-    }
-    logQueryElapseTime("getRecordsByIndexedProperties", startTime);
-    return response;
-  }
 }
