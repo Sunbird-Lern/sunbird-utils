@@ -112,6 +112,19 @@ public interface CassandraOperation {
       List<String> fields);
 
   /**
+   * Fetch records with specified columns (select all if null) for given column name with matching
+   * value in the list.
+   *
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param propertyName Indexed Column name
+   * @param propertyValue value to be used for matching in select query
+   * @return Response consisting of fetched records
+   */
+  Response getRecordsByIndexedProperty(
+      String keyspaceName, String tableName, String propertyName, Object propertyValue);
+
+  /**
    * @desc This method is used to fetch record based on given parameter list and their values
    * @param keyspaceName String (data base keyspace name)
    * @param tableName String
@@ -119,6 +132,17 @@ public interface CassandraOperation {
    * @return Response Response
    */
   public Response getRecordsByProperties(
+      String keyspaceName, String tableName, Map<String, Object> propertyMap);
+
+  /**
+   * @desc This method is used to fetch record based on given parameter list and their values
+   * @param keyspaceName String (data base keyspace name)
+   * @param tableName String
+   * @param propertyMap Map<String,Object> propertyMap)(i.e map of indexed column name and their
+   *     value)
+   * @return Response Response
+   */
+  public Response getRecordsByIndexedProperties(
       String keyspaceName, String tableName, Map<String, Object> propertyMap);
 
   /**

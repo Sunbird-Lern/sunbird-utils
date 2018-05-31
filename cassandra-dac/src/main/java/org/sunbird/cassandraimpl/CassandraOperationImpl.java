@@ -438,7 +438,7 @@ public class CassandraOperationImpl implements CassandraOperation {
       Select selectQuery = selectBuilder.from(keyspaceName, tableName);
       Where selectWhere = selectQuery.where();
       if (key instanceof String) {
-        selectWhere.and(QueryBuilder.eq(Constants.IDENTIFIER, (String) key));
+        selectWhere.and(QueryBuilder.eq(Constants.IDENTIFIER, key));
       } else if (key instanceof Map) {
         Map<String, Object> compositeKey = (Map<String, Object>) key;
         compositeKey
@@ -564,5 +564,58 @@ public class CassandraOperationImpl implements CassandraOperation {
     MessageFormat mf = new MessageFormat(message);
     ProjectLogger.log(
         mf.format(new Object[] {operation, startTime, stopTime, elapsedTime}), LoggerEnum.PERF_LOG);
+  }
+
+  @Override
+  public Response getRecordsByIndexedProperty(
+      String keyspaceName, String tableName, String propertyName, Object propertyValue) {
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log(
+        "Cassandra Service getRecordsByIndexedProperty method started at ==" + startTime,
+        LoggerEnum.INFO);
+    Response response = new Response();
+    try {
+      Select selectQuery = QueryBuilder.select().all().from(keyspaceName, tableName);
+      selectQuery.where().and(QueryBuilder.eq(propertyName, propertyValue));
+      ResultSet results = connectionManager.getSession(keyspaceName).execute(selectQuery);
+      response = CassandraUtil.createResponse(results);
+    } catch (Exception e) {
+      ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName + " : " + e.getMessage(), e);
+      throw new ProjectCommonException(
+          ResponseCode.SERVER_ERROR.getErrorCode(),
+          ResponseCode.SERVER_ERROR.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    logQueryElapseTime("getRecordsByIndexedProperty", startTime);
+    return response;
+  }
+
+  @Override
+  public Response getRecordsByIndexedProperties(
+      String keyspaceName, String tableName, Map<String, Object> propertyMap) {
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log(
+        "Cassandra Service getRecordsByIndexedProperties method started at ==" + startTime,
+        LoggerEnum.INFO);
+    Response response = new Response();
+    try {
+      Select selectQuery = QueryBuilder.select().all().from(keyspaceName, tableName);
+      Where selectWhere = selectQuery.where();
+      for (Entry<String, Object> entry : propertyMap.entrySet()) {
+        Clause clause = QueryBuilder.eq(entry.getKey(), entry.getValue());
+        selectWhere.and(clause);
+      }
+      ResultSet results =
+          connectionManager.getSession(keyspaceName).execute(selectQuery.allowFiltering());
+      response = CassandraUtil.createResponse(results);
+    } catch (Exception e) {
+      ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName + " : " + e.getMessage(), e);
+      throw new ProjectCommonException(
+          ResponseCode.SERVER_ERROR.getErrorCode(),
+          ResponseCode.SERVER_ERROR.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    logQueryElapseTime("getRecordsByIndexedProperties", startTime);
+    return response;
   }
 }

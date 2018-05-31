@@ -983,10 +983,4 @@ public class ProjectUtil {
   public static <T> T convertToRequestPojo(Request request, Class<T> clazz) {
     return mapper.convertValue(request.getRequest(), clazz);
   }
-
-  public enum OperationType {
-    CREATE,
-    UPDATE,
-    DELETE;
-  }
 }

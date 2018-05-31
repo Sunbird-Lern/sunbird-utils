@@ -647,7 +647,6 @@ public final class JsonKey {
   public static final String ORG_EXTERNAL_ID = "orgExternalId";
   public static final String ORG_PROVIDER = "orgProvider";
   public static final String EXTERNAL_IDS = "externalIds";
-  public static final String UPDATED_ON = "updatedOn";
   public static final String SUNBIRD_TELEMETRY_BASE_URL = "sunbird_telemetry_base_url";
 
   private JsonKey() {}
