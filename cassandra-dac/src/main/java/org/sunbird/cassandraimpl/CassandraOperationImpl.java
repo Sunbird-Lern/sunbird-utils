@@ -571,7 +571,7 @@ public class CassandraOperationImpl implements CassandraOperation {
       String keyspaceName, String tableName, String propertyName, Object propertyValue) {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
-        "Cassandra Service getRecordsByIndexedProperty method started at ==" + startTime,
+        "CassandraOperationImpl: getRecordsByIndexedProperty called at : " + startTime,
         LoggerEnum.INFO);
     Response response = new Response();
     try {
@@ -580,7 +580,13 @@ public class CassandraOperationImpl implements CassandraOperation {
       ResultSet results = connectionManager.getSession(keyspaceName).execute(selectQuery);
       response = CassandraUtil.createResponse(results);
     } catch (Exception e) {
-      ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName + " : " + e.getMessage(), e);
+      ProjectLogger.log(
+          "CassandraOperationImpl: getRecordsByIndexedProperty: "
+              + Constants.EXCEPTION_MSG_FETCH
+              + tableName
+              + " : "
+              + e.getMessage(),
+          e);
       throw new ProjectCommonException(
           ResponseCode.SERVER_ERROR.getErrorCode(),
           ResponseCode.SERVER_ERROR.getErrorMessage(),
@@ -591,13 +597,12 @@ public class CassandraOperationImpl implements CassandraOperation {
   }
 
   @Override
-  public Response deleteRecord(
+  public void deleteRecord(
       String keyspaceName, String tableName, Map<String, String> compositeKeyMap) {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
-        "Cassandra Service deleteRecord by composite key method started at ==" + startTime,
+        "CassandraOperationImpl: deleteRecord by composite key called at : " + startTime,
         LoggerEnum.INFO);
-    Response response = new Response();
     try {
       Delete delete = QueryBuilder.delete().from(keyspaceName, tableName);
       Delete.Where deleteWhere = delete.where();
@@ -610,15 +615,19 @@ public class CassandraOperationImpl implements CassandraOperation {
                 deleteWhere.and(clause);
               });
       connectionManager.getSession(keyspaceName).execute(delete);
-      response.put(Constants.RESPONSE, Constants.SUCCESS);
     } catch (Exception e) {
-      ProjectLogger.log(Constants.EXCEPTION_MSG_DELETE + tableName + " : " + e.getMessage(), e);
+      ProjectLogger.log(
+          "CassandraOperationImpl: deleteRecord by composite key. "
+              + Constants.EXCEPTION_MSG_DELETE
+              + tableName
+              + " : "
+              + e.getMessage(),
+          e);
       throw new ProjectCommonException(
           ResponseCode.SERVER_ERROR.getErrorCode(),
           ResponseCode.SERVER_ERROR.getErrorMessage(),
           ResponseCode.SERVER_ERROR.getResponseCode());
     }
     logQueryElapseTime("deleteRecordByCompositeKey", startTime);
-    return response;
   }
 }
