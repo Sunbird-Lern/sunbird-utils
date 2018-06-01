@@ -6,7 +6,7 @@
 	<artifactId>extensions</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>sunbird_extensions</name>
+	<name>Sunbird Extensions</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>

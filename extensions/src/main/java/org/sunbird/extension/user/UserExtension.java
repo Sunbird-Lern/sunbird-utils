@@ -3,15 +3,16 @@ package org.sunbird.extension.user;
 import java.util.Map;
 
 /**
- * This interface will provide utility methods to extend user management flows
+ * UserExtension is the interface for all extensions of Sunbird user profile. It defines methods for performing CRUD operations on user profile.
  * @author Jaikumar Soundara Rajan
  *
  */
 public interface UserExtension {
 	
 	/**
-	 * @param extensionMap
+	 * Creates user profile information.
+	 * @param userProfileMap User profile information
 	 */
-	public void create(Map<String,Object> extensionMap);
+	public void create(Map<String,Object> userProfileMap);
 	
 }
