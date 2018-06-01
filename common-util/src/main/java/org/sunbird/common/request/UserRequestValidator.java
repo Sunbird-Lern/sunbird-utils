@@ -610,8 +610,8 @@ public class UserRequestValidator {
                   JsonKey.ID,
                   ProjectUtil.formatMessage(
                       ResponseMessage.Message.AND_FORMAT,
-                      JsonKey.PROVIDER,
-                      (JsonKey.EXTERNAL_ID + ", " + JsonKey.EXTERNAL_ID_TYPE))))),
+                      (JsonKey.EXTERNAL_ID + ", " + JsonKey.EXTERNAL_ID_TYPE),
+                      JsonKey.PROVIDER)))),
           ERROR_CODE);
     }
     if (userRequest.getRequest().containsKey(JsonKey.FIRST_NAME)
