@@ -304,6 +304,7 @@ public interface ResponseMessage {
     String OR_FORMAT = "{0} or {1}";
     String AND_FORMAT = "{0} and {1}";
     String DEPENDENT_PARAMETER_MISSING = "Missing parameter {0} which is dependent on {1}.";
+    String DEPENDENT_PARAMS_MISSING = "Missing parameter value in {0}.";
     String EXTERNALID_NOT_FOUND = "External ID (id: {0}, provider: {1}) not found for given user.";
   }
 

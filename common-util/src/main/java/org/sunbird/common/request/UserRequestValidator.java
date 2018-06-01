@@ -101,27 +101,6 @@ public class UserRequestValidator {
           ERROR_CODE);
     }
 
-    if (StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.PROVIDER))
-        && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID))) {
-      throw new ProjectCommonException(
-          ResponseCode.dependentParameterMissing.getErrorCode(),
-          ProjectUtil.formatMessage(
-              ResponseCode.dependentParameterMissing.getErrorMessage(),
-              JsonKey.EXTERNAL_ID,
-              JsonKey.PROVIDER),
-          ERROR_CODE);
-    }
-    if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PROVIDER))
-        && StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID))) {
-      throw new ProjectCommonException(
-          ResponseCode.dependentParameterMissing.getErrorCode(),
-          ProjectUtil.formatMessage(
-              ResponseCode.dependentParameterMissing.getErrorMessage(),
-              JsonKey.PROVIDER,
-              JsonKey.EXTERNAL_ID),
-          ERROR_CODE);
-    }
-
     if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.FIRST_NAME))) {
       throw new ProjectCommonException(
           ResponseCode.firstNameRequired.getErrorCode(),
@@ -443,6 +422,8 @@ public class UserRequestValidator {
           ResponseCode.invalidRootOrganisationId.getErrorMessage(),
           ERROR_CODE);
     }
+
+    validateExtIdTypeAndProvider(userRequest);
   }
 
   public static void externalIdsValidation(Request userRequest, String operation) {
@@ -517,6 +498,15 @@ public class UserRequestValidator {
                         ProjectUtil.formatMessage(
                             ResponseCode.mandatoryParamsMissing.getErrorMessage(),
                             (JsonKey.EXTERNAL_IDS + "." + JsonKey.PROVIDER)),
+                        ERROR_CODE);
+                  }
+                  // check for missing idType
+                  if (StringUtils.isBlank(s.get(JsonKey.ID_TYPE))) {
+                    throw new ProjectCommonException(
+                        ResponseCode.mandatoryParamsMissing.getErrorCode(),
+                        ProjectUtil.formatMessage(
+                            ResponseCode.mandatoryParamsMissing.getErrorMessage(),
+                            (JsonKey.EXTERNAL_IDS + "." + JsonKey.ID_TYPE)),
                         ERROR_CODE);
                   }
                 });
@@ -837,5 +827,24 @@ public class UserRequestValidator {
     createUserBasicValidation(userRequest);
     phoneValidation(userRequest);
     validateWebPages(userRequest);
+    validateExtIdTypeAndProvider(userRequest);
+  }
+
+  private static void validateExtIdTypeAndProvider(Request userRequest) {
+    if (!(((StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.PROVIDER))
+            && StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID))
+            && StringUtils.isNotBlank(
+                (String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID_TYPE))))
+        || (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PROVIDER))
+            && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID))
+            && StringUtils.isBlank(
+                (String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID_TYPE))))) {
+      throw new ProjectCommonException(
+          ResponseCode.dependentParamsMissing.getErrorCode(),
+          ProjectUtil.formatMessage(
+              ResponseCode.dependentParamsMissing.getErrorMessage(),
+              (JsonKey.EXTERNAL_ID + "," + JsonKey.EXTERNAL_ID_TYPE + "," + JsonKey.PROVIDER)),
+          ERROR_CODE);
+    }
   }
 }

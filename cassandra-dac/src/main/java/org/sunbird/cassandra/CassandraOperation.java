@@ -52,6 +52,16 @@ public interface CassandraOperation {
   public Response deleteRecord(String keyspaceName, String tableName, String identifier);
 
   /**
+   * @desc This method is used to delete record in cassandra db by their primary composite key
+   * @param keyspaceName String (data base keyspace name)
+   * @param tableName String
+   * @param Map<String,String> Composite key map
+   * @return Response Response
+   */
+  public Response deleteRecord(
+      String keyspaceName, String tableName, Map<String, String> compositeKeyMap);
+
+  /**
    * @desc This method is used to fetch record based on given parameter and it's value (it only
    *     fetch the record based on property or column name if you have created index on that column
    *     otherwise it will throw exception.)
