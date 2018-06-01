@@ -989,20 +989,21 @@ public class ProjectUtil {
   }
 
   /**
-   * This method will take number of days in request and provide date rang. Date range is calculated
-   * as STARTDATE and ENDDATE, start data will be currentDate minus provided date and ENDDATE will
-   * be currentDate minus one. if data is less than equal to zero then it will return empty map.
+   * This method will take number of days in request and provide date range. Date range is
+   * calculated as STARTDATE and ENDDATE, start date will be current date minus provided number of
+   * days and ENDDATE will be current date minus one day. If date is less than equal to zero then it
+   * will return empty map.
    *
-   * @param date int value.
-   * @return map with STARTDATE and ENDDATE key in YYYY_MM_DD_FORMATTER format.
+   * @param numDays Number of days.
+   * @return Map with STARTDATE and ENDDATE key in YYYY_MM_DD_FORMATTER format.
    */
-  public static Map<String, String> getDateRange(int date) {
+  public static Map<String, String> getDateRange(int numDays) {
     Map<String, String> map = new HashMap<>();
-    if (date <= 0) {
+    if (numDays <= 0) {
       return map;
     }
     Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-    cal.add(Calendar.DATE, -date);
+    cal.add(Calendar.DATE, -numDays);
     map.put(STARTDATE, new SimpleDateFormat(YYYY_MM_DD_FORMATTER).format(cal.getTime()));
     cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
     cal.add(Calendar.DATE, -1);
