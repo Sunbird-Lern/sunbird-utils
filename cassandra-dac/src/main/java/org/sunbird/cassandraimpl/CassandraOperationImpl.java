@@ -571,7 +571,7 @@ public class CassandraOperationImpl implements CassandraOperation {
       String keyspaceName, String tableName, String propertyName, Object propertyValue) {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
-        "CassandraOperationImpl: getRecordsByIndexedProperty called at : " + startTime,
+        "CassandraOperationImpl:getRecordsByIndexedProperty called at " + startTime,
         LoggerEnum.INFO);
     Response response = new Response();
     try {
@@ -581,7 +581,7 @@ public class CassandraOperationImpl implements CassandraOperation {
       response = CassandraUtil.createResponse(results);
     } catch (Exception e) {
       ProjectLogger.log(
-          "CassandraOperationImpl: getRecordsByIndexedProperty: "
+          "CassandraOperationImpl:getRecordsByIndexedProperty: "
               + Constants.EXCEPTION_MSG_FETCH
               + tableName
               + " : "
@@ -601,7 +601,7 @@ public class CassandraOperationImpl implements CassandraOperation {
       String keyspaceName, String tableName, Map<String, String> compositeKeyMap) {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
-        "CassandraOperationImpl: deleteRecord by composite key called at : " + startTime,
+        "CassandraOperationImpl: deleteRecord by composite key called at " + startTime,
         LoggerEnum.INFO);
     try {
       Delete delete = QueryBuilder.delete().from(keyspaceName, tableName);

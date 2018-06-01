@@ -445,7 +445,7 @@ public class UserRequestValidator {
   private static void validateIndividualExternalId(
       String operation, List<Map<String, String>> externalIds) {
     // valid operation type for externalIds in user api.
-    List<String> operationTypeList = Arrays.asList("add", "remove", "edit");
+    List<String> operationTypeList = Arrays.asList(JsonKey.ADD, JsonKey.REMOVE, JsonKey.EDIT);
     externalIds
         .stream()
         .forEach(
@@ -477,34 +477,21 @@ public class UserRequestValidator {
                         "add"),
                     ERROR_CODE);
               }
-              // check for missing externalId
-              if (StringUtils.isBlank(s.get(JsonKey.ID))) {
-                throw new ProjectCommonException(
-                    ResponseCode.mandatoryParamsMissing.getErrorCode(),
-                    ProjectUtil.formatMessage(
-                        ResponseCode.mandatoryParamsMissing.getErrorMessage(),
-                        (JsonKey.EXTERNAL_IDS + "." + JsonKey.ID)),
-                    ERROR_CODE);
-              }
-              // check for missing provider
-              if (StringUtils.isBlank(s.get(JsonKey.PROVIDER))) {
-                throw new ProjectCommonException(
-                    ResponseCode.mandatoryParamsMissing.getErrorCode(),
-                    ProjectUtil.formatMessage(
-                        ResponseCode.mandatoryParamsMissing.getErrorMessage(),
-                        (JsonKey.EXTERNAL_IDS + "." + JsonKey.PROVIDER)),
-                    ERROR_CODE);
-              }
-              // check for missing idType
-              if (StringUtils.isBlank(s.get(JsonKey.ID_TYPE))) {
-                throw new ProjectCommonException(
-                    ResponseCode.mandatoryParamsMissing.getErrorCode(),
-                    ProjectUtil.formatMessage(
-                        ResponseCode.mandatoryParamsMissing.getErrorMessage(),
-                        (JsonKey.EXTERNAL_IDS + "." + JsonKey.ID_TYPE)),
-                    ERROR_CODE);
-              }
+              validateExternalIdMandatoryParam(JsonKey.ID, s.get(JsonKey.ID));
+              validateExternalIdMandatoryParam(JsonKey.PROVIDER, s.get(JsonKey.PROVIDER));
+              validateExternalIdMandatoryParam(JsonKey.ID_TYPE, s.get(JsonKey.ID_TYPE));
             });
+  }
+
+  private static void validateExternalIdMandatoryParam(String param, String paramValue) {
+    if (StringUtils.isBlank(paramValue)) {
+      throw new ProjectCommonException(
+          ResponseCode.mandatoryParamsMissing.getErrorCode(),
+          ProjectUtil.formatMessage(
+              ResponseCode.mandatoryParamsMissing.getErrorMessage(),
+              (JsonKey.EXTERNAL_IDS + "." + param)),
+          ERROR_CODE);
+    }
   }
 
   private static void validateUpdateUserEducation(Request userRequest) {

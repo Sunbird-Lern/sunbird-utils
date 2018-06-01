@@ -120,13 +120,12 @@ public interface CassandraOperation {
       List<String> fields);
 
   /**
-   * Fetch records with specified columns (select all if null) for given column name with matching
-   * value in the list.
+   * Fetch records with specified indexed column
    *
    * @param keyspaceName Keyspace name
    * @param tableName Table name
    * @param propertyName Indexed Column name
-   * @param propertyValue value to be used for matching in select query
+   * @param propertyValue Value to be used for matching in select query
    * @return Response consisting of fetched records
    */
   Response getRecordsByIndexedProperty(

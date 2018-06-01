@@ -650,6 +650,9 @@ public final class JsonKey {
   public static final String SUNBIRD_TELEMETRY_BASE_URL = "sunbird_telemetry_base_url";
   public static final String EXTERNAL_ID_TYPE = "externalIdType";
   public static final String ID_TYPE = "idType";
+  public static final String ADD = "add";
+  public static final String REMOVE = "remove";
+  public static final String EDIT = "edit";
 
   private JsonKey() {}
 }
