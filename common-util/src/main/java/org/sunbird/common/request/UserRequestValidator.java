@@ -435,26 +435,14 @@ public class UserRequestValidator {
             ProjectUtil.formatMessage(
                 ResponseCode.dataTypeError.getErrorMessage(), JsonKey.EXTERNAL_IDS, JsonKey.LIST),
             ERROR_CODE);
-      } else {
-        List<Map<String, String>> externalIds = null;
-        try {
-          externalIds =
-              (List<Map<String, String>>) userRequest.getRequest().get(JsonKey.EXTERNAL_IDS);
-        } catch (Exception ex) {
-          throw new ProjectCommonException(
-              ResponseCode.dataTypeError.getErrorCode(),
-              ProjectUtil.formatMessage(
-                  ResponseCode.dataTypeError.getErrorMessage(),
-                  JsonKey.EXTERNAL_IDS,
-                  "List of key-value objects"),
-              ERROR_CODE);
-        }
-        validateOperationTypeAndMandatoryFieldsInExternalIds(operation, externalIds);
       }
+      List<Map<String, String>> externalIds =
+          (List<Map<String, String>>) userRequest.getRequest().get(JsonKey.EXTERNAL_IDS);
+      validateIndividualExternalId(operation, externalIds);
     }
   }
 
-  private static void validateOperationTypeAndMandatoryFieldsInExternalIds(
+  private static void validateIndividualExternalId(
       String operation, List<Map<String, String>> externalIds) {
     // valid operation type for externalIds in user api.
     List<String> operationTypeList = Arrays.asList("add", "remove", "edit");

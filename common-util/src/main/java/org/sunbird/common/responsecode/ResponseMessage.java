@@ -307,6 +307,8 @@ public interface ResponseMessage {
     String DEPENDENT_PARAMS_MISSING = "Missing parameter value in {0}.";
     String EXTERNALID_NOT_FOUND =
         "External ID (id: {0}, idType: {1}, provider: {2}) not found for given user.";
+    String PARSING_FAILED = "Failed to parse {0}.";
+    String EXTERNAL_ID_FORMAT = "externalId (id: {0}, idType: {1}, provider: {2})";
   }
 
   interface Key {
