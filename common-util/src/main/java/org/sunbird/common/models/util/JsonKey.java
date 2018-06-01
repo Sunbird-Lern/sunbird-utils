@@ -614,6 +614,7 @@ public final class JsonKey {
   public static final String SOFT_CONSTRAINTS = "softConstraints";
   public static final String SUNBIRD_API_BASE_URL = "sunbird_api_base_url";
   public static final String SUNBIRD_AUTHORIZATION = "sunbird_authorization";
+  public static final String SUNBIRD_COMPOSITE_SEARCH_URL="sunbird_composite_search_url";
   public static final String SUNBIRD_CONTENT_BADGE_ASSIGN_URL = "sunbird.content.badge.assign.url";
   public static final String SUNBIRD_CONTENT_BADGE_REVOKE_URL = "sunbird.content.badge.revoke.url";
   public static final String SUNBIRD_LMS_BASE_URL = "sunbird_lms_base_url";
