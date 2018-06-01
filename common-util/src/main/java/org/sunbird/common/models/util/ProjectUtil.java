@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
+import java.util.TimeZone;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
@@ -74,6 +75,9 @@ public class ProjectUtil {
 
   public static final String[] defaultPrivateFields = new String[] {JsonKey.EMAIL, JsonKey.PHONE};
   private static final String INDEX_NAME = "telemetry.raw";
+  private static String YYYY_MM_DD_FORMATTER = "yyyy-MM-dd";
+  private static final String STARTDATE = "startDate";
+  private static final String ENDDATE = "endDate";
   private static ObjectMapper mapper = new ObjectMapper();
 
   static {
@@ -982,5 +986,28 @@ public class ProjectUtil {
    */
   public static <T> T convertToRequestPojo(Request request, Class<T> clazz) {
     return (T) mapper.convertValue(request.getRequest(), clazz);
+  }
+
+  /**
+   * This method will take number of days in request and provide date range. Date range is
+   * calculated as STARTDATE and ENDDATE, start date will be current date minus provided number of
+   * days and ENDDATE will be current date minus one day. If date is less than equal to zero then it
+   * will return empty map.
+   *
+   * @param numDays Number of days.
+   * @return Map with STARTDATE and ENDDATE key in YYYY_MM_DD_FORMATTER format.
+   */
+  public static Map<String, String> getDateRange(int numDays) {
+    Map<String, String> map = new HashMap<>();
+    if (numDays <= 0) {
+      return map;
+    }
+    Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+    cal.add(Calendar.DATE, -numDays);
+    map.put(STARTDATE, new SimpleDateFormat(YYYY_MM_DD_FORMATTER).format(cal.getTime()));
+    cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+    cal.add(Calendar.DATE, -1);
+    map.put(ENDDATE, new SimpleDateFormat(YYYY_MM_DD_FORMATTER).format(cal.getTime()));
+    return map;
   }
 }
