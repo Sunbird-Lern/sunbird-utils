@@ -75,7 +75,7 @@ public class ProjectUtil {
 
   public static final String[] defaultPrivateFields = new String[] {JsonKey.EMAIL, JsonKey.PHONE};
   private static final String INDEX_NAME = "telemetry.raw";
-  private static String YYY_MM_DD_FORMATTER = "yyyy-MM-dd";
+  private static String YYYY_MM_DD_FORMATTER = "yyyy-MM-dd";
   private static final String STARTDATE = "startDate";
   private static final String ENDDATE = "endDate";
   private static ObjectMapper mapper = new ObjectMapper();
@@ -994,7 +994,7 @@ public class ProjectUtil {
    * be currentDate minus one. if data is less than equal to zero then it will return empty map.
    *
    * @param date int value.
-   * @return map with STARTDATE and ENDDATE key in YYY_MM_DD_FORMATTER format.
+   * @return map with STARTDATE and ENDDATE key in YYYY_MM_DD_FORMATTER format.
    */
   public static Map<String, String> getDateRange(int date) {
     Map<String, String> map = new HashMap<>();
@@ -1003,10 +1003,10 @@ public class ProjectUtil {
     }
     Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
     cal.add(Calendar.DATE, -date);
-    map.put(STARTDATE, new SimpleDateFormat(YYY_MM_DD_FORMATTER).format(cal.getTime()));
+    map.put(STARTDATE, new SimpleDateFormat(YYYY_MM_DD_FORMATTER).format(cal.getTime()));
     cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
     cal.add(Calendar.DATE, -1);
-    map.put(ENDDATE, new SimpleDateFormat(YYY_MM_DD_FORMATTER).format(cal.getTime()));
+    map.put(ENDDATE, new SimpleDateFormat(YYYY_MM_DD_FORMATTER).format(cal.getTime()));
     return map;
   }
 }
