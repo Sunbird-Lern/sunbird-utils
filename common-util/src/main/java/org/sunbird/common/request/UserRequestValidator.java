@@ -489,7 +489,8 @@ public class UserRequestValidator {
           ResponseCode.mandatoryParamsMissing.getErrorCode(),
           ProjectUtil.formatMessage(
               ResponseCode.mandatoryParamsMissing.getErrorMessage(),
-              (JsonKey.EXTERNAL_IDS + "." + param)),
+              ProjectUtil.formatMessage(
+                  ResponseMessage.Message.DOT_FORMAT, JsonKey.EXTERNAL_IDS, param)),
           ERROR_CODE);
     }
   }
