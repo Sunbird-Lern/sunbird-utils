@@ -29,11 +29,11 @@ public class RestUtil {
   }
 
   public static HttpResponse<JsonNode> execute(BaseRequest request) throws Exception {
-    ProjectLogger.log("request url: " + request.getHttpRequest().getUrl());
+    ProjectLogger.log("request url: " + request.getHttpRequest().getUrl(), LoggerEnum.INFO.name());
     Body body = request.getHttpRequest().getBody();
     if ((body != null) && (body instanceof RequestBodyEntity)) {
       RequestBodyEntity rbody = (RequestBodyEntity) body;
-      ProjectLogger.log("request body:" + rbody.getBody());
+      ProjectLogger.log("request body:" + rbody.getBody(), LoggerEnum.INFO.name());
     }
 
     HttpResponse<JsonNode> response = request.asJson();
