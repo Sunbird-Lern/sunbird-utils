@@ -4,6 +4,8 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
 import akka.pattern.Patterns;
 import akka.util.Timeout;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.actor.service.SunbirdMWService;
@@ -17,6 +19,9 @@ import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.request.ExecutionContext;
 import org.sunbird.common.responsecode.ResponseCode;
+import org.sunbird.global.ServiceBaseGlobal;
+import org.sunbird.telemetry.util.TelemetryLmaxWriter;
+import org.sunbird.telemetry.util.lmaxdisruptor.TelemetryEvents;
 import org.sunbird.util.ResponseIdUtil;
 import play.libs.F.Function;
 import play.libs.F.Promise;
@@ -38,6 +43,7 @@ public class BaseController extends Controller {
   protected Timeout timeout = new Timeout(AKKA_WAIT_TIME, TimeUnit.SECONDS);
   private static Object actorRef = null;
   private static ResponseIdUtil util = new ResponseIdUtil();
+  private TelemetryLmaxWriter lmaxWriter = TelemetryLmaxWriter.getInstance();
 
   static {
     try {
@@ -269,5 +275,161 @@ public class BaseController extends Controller {
    */
   public Object getActorRef() {
     return actorRef;
+  }
+
+  /**
+   * This method will create failure response
+   *
+   * @param request Request
+   * @param code ResponseCode
+   * @param headerCode ResponseCode
+   * @return Response
+   */
+  public static Response createFailureResponse(
+      Request request, ResponseCode code, ResponseCode headerCode) {
+
+    Response response = new Response();
+    response.setVer(getApiVersion(request.path()));
+    response.setId(getApiResponseId(request));
+    response.setTs(ProjectUtil.getFormattedDate());
+    response.setResponseCode(headerCode);
+    response.setParams(createResponseParamObj(code));
+    return response;
+  }
+
+  /**
+   * Method to get API response Id
+   *
+   * @param request play.mvc.Http.Request
+   * @return String
+   */
+  private static String getApiResponseId(Request request) {
+
+    String val = "";
+    if (request != null) {
+      String path = request.path();
+      if (request.method().equalsIgnoreCase(ProjectUtil.Method.GET.name())) {
+        val = ResponseIdUtil.getResponseId(path);
+        if (StringUtils.isBlank(val)) {
+          String[] splitedpath = path.split("[/]");
+          path = ResponseIdUtil.removeLastValue(splitedpath);
+          val = ResponseIdUtil.getResponseId(path);
+        }
+      } else {
+        val = ResponseIdUtil.getResponseId(path);
+      }
+      if (StringUtils.isBlank(val)) {
+        val = ResponseIdUtil.getResponseId(path);
+        if (StringUtils.isBlank(val)) {
+          String[] splitedpath = path.split("[/]");
+          path = ResponseIdUtil.removeLastValue(splitedpath);
+          val = ResponseIdUtil.getResponseId(path);
+        }
+      }
+    }
+    return val;
+  }
+
+  /**
+   * This method will create common response for all controller method
+   *
+   * @param response Object
+   * @param key String
+   * @param request play.mvc.Http.Request
+   * @return Result
+   */
+  public Result createCommonResponse(Object response, String key, Request request) {
+
+    Map<String, Object> requestInfo =
+        ServiceBaseGlobal.requestInfo.get(ctx().flash().get(JsonKey.REQUEST_ID));
+    org.sunbird.common.request.Request req = new org.sunbird.common.request.Request();
+
+    Map<String, Object> params = (Map<String, Object>) requestInfo.get(JsonKey.ADDITIONAL_INFO);
+
+    params.put(JsonKey.LOG_TYPE, JsonKey.API_ACCESS);
+    params.put(JsonKey.MESSAGE, "");
+    params.put(JsonKey.METHOD, request.method());
+    // calculate  the total time consume
+    long startTime = (Long) params.get(JsonKey.START_TIME);
+    params.put(JsonKey.DURATION, calculateApiTimeTaken(startTime));
+    removeFields(params, JsonKey.START_TIME);
+    params.put(
+        JsonKey.STATUS, String.valueOf(((Response) response).getResponseCode().getResponseCode()));
+    params.put(JsonKey.LOG_LEVEL, JsonKey.INFO);
+    req.setRequest(
+        generateTelemetryRequestForController(
+            TelemetryEvents.LOG.getName(),
+            params,
+            (Map<String, Object>) requestInfo.get(JsonKey.CONTEXT)));
+    // if any request is coming form /v1/telemetry/save then don't generate the telemetry log
+    // for it.
+    lmaxWriter.submitMessage(req);
+
+    Response courseResponse = (Response) response;
+    if (!StringUtils.isBlank(key)) {
+      Object value = courseResponse.getResult().get(JsonKey.RESPONSE);
+      courseResponse.getResult().remove(JsonKey.RESPONSE);
+      courseResponse.getResult().put(key, value);
+    }
+
+    // remove request info from map
+    ServiceBaseGlobal.requestInfo.remove(ctx().flash().get(JsonKey.REQUEST_ID));
+    return Results.ok(
+        Json.toJson(BaseController.createSuccessResponse(request, (Response) courseResponse)));
+    // }
+    /*
+     * else {
+     *
+     * ProjectCommonException exception = (ProjectCommonException) response; return
+     * Results.status(exception.getResponseCode(),
+     * Json.toJson(BaseController.createResponseOnException(request, exception))); }
+     */
+  }
+
+  private long calculateApiTimeTaken(Long startTime) {
+
+    Long timeConsumed = null;
+    if (null != startTime) {
+      timeConsumed = System.currentTimeMillis() - startTime;
+    }
+    return timeConsumed;
+  }
+
+  private void removeFields(Map<String, Object> params, String... properties) {
+    for (String property : properties) {
+      params.remove(property);
+    }
+  }
+
+  private Map<String, Object> generateTelemetryRequestForController(
+      String eventType, Map<String, Object> params, Map<String, Object> context) {
+
+    Map<String, Object> map = new HashMap<>();
+    map.put(JsonKey.TELEMETRY_EVENT_TYPE, eventType);
+    map.put(JsonKey.CONTEXT, context);
+    map.put(JsonKey.PARAMS, params);
+    return map;
+  }
+
+  /**
+   * This method will create data for success response.
+   *
+   * @param request play.mvc.Http.Request
+   * @param response Response
+   * @return Response
+   */
+  public static Response createSuccessResponse(Request request, Response response) {
+
+    if (request != null) {
+      response.setVer(getApiVersion(request.path()));
+    } else {
+      response.setVer("");
+    }
+    response.setId(getApiResponseId(request));
+    response.setTs(ProjectUtil.getFormattedDate());
+    ResponseCode code = ResponseCode.getResponse(ResponseCode.success.getErrorCode());
+    code.setResponseCode(ResponseCode.OK.getResponseCode());
+    response.setParams(createResponseParamObj(code));
+    return response;
   }
 }

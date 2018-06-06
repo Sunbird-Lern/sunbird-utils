@@ -95,7 +95,7 @@ public class ResponseIdUtil {
    * @return Request URI path without path param (e.g. return /v1/user/read for
    *     /v1/user/read/{userId})
    */
-  private String removeLastValue(String splitPathArray[]) {
+  public static String removeLastValue(String splitPathArray[]) {
 
     StringBuilder builder = new StringBuilder();
     if (splitPathArray != null && splitPathArray.length > 0) {

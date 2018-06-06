@@ -5,14 +5,17 @@ import static org.sunbird.common.models.util.ProjectUtil.isNotNull;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -1122,5 +1125,75 @@ public class ElasticSearchUtil {
    */
   public static long calculateEndTime(long startTime) {
     return System.currentTimeMillis() - startTime;
+  }
+
+  /**
+   * This method will take searchQuery map and internally it will convert map to SearchDto object.
+   *
+   * @param searchQueryMap Map<String , Object>
+   * @return SearchDTO
+   */
+  @SuppressWarnings("unchecked")
+  public static SearchDTO createSearchDto(Map<String, Object> searchQueryMap) {
+    SearchDTO search = new SearchDTO();
+    if (searchQueryMap.containsKey(JsonKey.QUERY)) {
+      search.setQuery((String) searchQueryMap.get(JsonKey.QUERY));
+    }
+    if (searchQueryMap.containsKey(JsonKey.FACETS)) {
+      search.setFacets((List<Map<String, String>>) searchQueryMap.get(JsonKey.FACETS));
+    }
+    if (searchQueryMap.containsKey(JsonKey.FIELDS)) {
+      search.setFields((List<String>) searchQueryMap.get(JsonKey.FIELDS));
+    }
+    if (searchQueryMap.containsKey(JsonKey.FILTERS)) {
+      search.getAdditionalProperties().put(JsonKey.FILTERS, searchQueryMap.get(JsonKey.FILTERS));
+    }
+    if (searchQueryMap.containsKey(JsonKey.EXISTS)) {
+      search.getAdditionalProperties().put(JsonKey.EXISTS, searchQueryMap.get(JsonKey.EXISTS));
+    }
+    if (searchQueryMap.containsKey(JsonKey.NOT_EXISTS)) {
+      search
+          .getAdditionalProperties()
+          .put(JsonKey.NOT_EXISTS, searchQueryMap.get(JsonKey.NOT_EXISTS));
+    }
+    if (searchQueryMap.containsKey(JsonKey.SORT_BY)) {
+      search
+          .getSortBy()
+          .putAll((Map<? extends String, ? extends String>) searchQueryMap.get(JsonKey.SORT_BY));
+    }
+    if (searchQueryMap.containsKey(JsonKey.OFFSET)) {
+      if ((searchQueryMap.get(JsonKey.OFFSET)) instanceof Integer) {
+        search.setOffset((int) searchQueryMap.get(JsonKey.OFFSET));
+      } else {
+        search.setOffset(((BigInteger) searchQueryMap.get(JsonKey.OFFSET)).intValue());
+      }
+    }
+    if (searchQueryMap.containsKey(JsonKey.LIMIT)) {
+      if ((searchQueryMap.get(JsonKey.LIMIT)) instanceof Integer) {
+        search.setLimit((int) searchQueryMap.get(JsonKey.LIMIT));
+      } else {
+        search.setLimit(((BigInteger) searchQueryMap.get(JsonKey.LIMIT)).intValue());
+      }
+    }
+    if (searchQueryMap.containsKey(JsonKey.GROUP_QUERY)) {
+      search
+          .getGroupQuery()
+          .addAll(
+              (Collection<? extends Map<String, Object>>) searchQueryMap.get(JsonKey.GROUP_QUERY));
+    }
+    if (searchQueryMap.containsKey(JsonKey.SOFT_CONSTRAINTS)) {
+      // Play is converting int value to bigInt so need to cnvert back those data to iny
+      // SearchDto soft constraints expect Map<String, Integer>
+      Map<String, Integer> constraintsMap = new HashMap<>();
+      Set<Entry<String, BigInteger>> entrySet =
+          ((Map<String, BigInteger>) searchQueryMap.get(JsonKey.SOFT_CONSTRAINTS)).entrySet();
+      Iterator<Entry<String, BigInteger>> itr = entrySet.iterator();
+      while (itr.hasNext()) {
+        Entry<String, BigInteger> entry = itr.next();
+        constraintsMap.put(entry.getKey(), entry.getValue().intValue());
+      }
+      search.setSoftConstraints(constraintsMap);
+    }
+    return search;
   }
 }
