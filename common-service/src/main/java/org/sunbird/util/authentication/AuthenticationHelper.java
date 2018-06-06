@@ -14,8 +14,6 @@ import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.helper.ServiceFactory;
 import org.sunbird.services.sso.SSOManager;
 import org.sunbird.services.sso.SSOServiceFactory;
-import org.sunbird.util.CassandraStartUpUtil;
-import org.sunbird.util.CassandraStartUpUtil.DbInfo;
 
 /**
  * This class will handle all the method related to authentication. For example verifying user
@@ -33,7 +31,10 @@ public class AuthenticationHelper {
           && Boolean.parseBoolean(
               PropertiesCache.getInstance().getProperty(JsonKey.IS_SSO_ENABLED)));
   private static CassandraOperation cassandraOperation = ServiceFactory.getInstance();
-  private static DbInfo userAuth = CassandraStartUpUtil.dbInfoMap.get(JsonKey.USER_AUTH_DB);
+  private static final String USER_AUTH_TABLE_NAME = "user_auth";
+  private static final String MASTER_KEY_TABLE_NAME = "client_info";
+  private static final String USER_TABLE_NAME = "user";
+  private static final String KEYSPACE = "sunbird";
 
   /**
    * This method will verify the incoming user access token against store data base /cache. If token
@@ -52,8 +53,7 @@ public class AuthenticationHelper {
         userId = ssoManager.verifyToken(token);
       } else {
         Response authResponse =
-            cassandraOperation.getRecordById(
-                userAuth.getKeySpace(), userAuth.getTableName(), token);
+            cassandraOperation.getRecordById(KEYSPACE, USER_AUTH_TABLE_NAME, token);
         if (authResponse != null && authResponse.get(JsonKey.RESPONSE) != null) {
           List<Map<String, Object>> authList =
               (List<Map<String, Object>>) authResponse.get(JsonKey.RESPONSE);
@@ -71,16 +71,13 @@ public class AuthenticationHelper {
 
   @SuppressWarnings("unchecked")
   public static String verifyClientAccessToken(String clientId, String clientToken) {
-    CassandraStartUpUtil.DbInfo clientDbInfo =
-        CassandraStartUpUtil.dbInfoMap.get(JsonKey.CLIENT_INFO_DB);
     Map<String, Object> propertyMap = new HashMap<>();
     propertyMap.put(JsonKey.ID, clientId);
     propertyMap.put(JsonKey.MASTER_KEY, clientToken);
     String validClientId = JsonKey.UNAUTHORIZED;
     try {
       Response clientResponse =
-          cassandraOperation.getRecordsByProperties(
-              clientDbInfo.getKeySpace(), clientDbInfo.getTableName(), propertyMap);
+          cassandraOperation.getRecordsByProperties(KEYSPACE, MASTER_KEY_TABLE_NAME, propertyMap);
       if (null != clientResponse && !clientResponse.getResult().isEmpty()) {
         List<Map<String, Object>> dataList =
             (List<Map<String, Object>>) clientResponse.getResult().get(JsonKey.RESPONSE);
@@ -93,15 +90,13 @@ public class AuthenticationHelper {
   }
 
   public static Map<String, Object> getClientAccessTokenDetail(String clientId) {
-    CassandraStartUpUtil.DbInfo clientDbInfo =
-        CassandraStartUpUtil.dbInfoMap.get(JsonKey.CLIENT_INFO_DB);
+
     Map<String, Object> response = null;
     Map<String, Object> propertyMap = new HashMap<>();
     propertyMap.put(JsonKey.ID, clientId);
     try {
       Response clientResponse =
-          cassandraOperation.getRecordById(
-              clientDbInfo.getKeySpace(), clientDbInfo.getTableName(), clientId);
+          cassandraOperation.getRecordById(KEYSPACE, MASTER_KEY_TABLE_NAME, clientId);
       if (null != clientResponse && !clientResponse.getResult().isEmpty()) {
         List<Map<String, Object>> dataList =
             (List<Map<String, Object>>) clientResponse.getResult().get(JsonKey.RESPONSE);
@@ -114,12 +109,10 @@ public class AuthenticationHelper {
   }
 
   public static Map<String, Object> getUserDetail(String userId) {
-    CassandraStartUpUtil.DbInfo userDbInfo = CassandraStartUpUtil.dbInfoMap.get(JsonKey.USER_DB);
+
     Map<String, Object> response = null;
     try {
-      Response userResponse =
-          cassandraOperation.getRecordById(
-              userDbInfo.getKeySpace(), userDbInfo.getTableName(), userId);
+      Response userResponse = cassandraOperation.getRecordById(KEYSPACE, USER_TABLE_NAME, userId);
       if (null != userResponse && !userResponse.getResult().isEmpty()) {
         List<Map<String, Object>> dataList =
             (List<Map<String, Object>>) userResponse.getResult().get(JsonKey.RESPONSE);
@@ -132,12 +125,10 @@ public class AuthenticationHelper {
   }
 
   public static Map<String, Object> getOrgDetail(String orgId) {
-    CassandraStartUpUtil.DbInfo userDbInfo = CassandraStartUpUtil.dbInfoMap.get(JsonKey.ORG_DB);
+
     Map<String, Object> response = null;
     try {
-      Response userResponse =
-          cassandraOperation.getRecordById(
-              userDbInfo.getKeySpace(), userDbInfo.getTableName(), orgId);
+      Response userResponse = cassandraOperation.getRecordById(KEYSPACE, USER_TABLE_NAME, orgId);
       if (null != userResponse && !userResponse.getResult().isEmpty()) {
         List<Map<String, Object>> dataList =
             (List<Map<String, Object>>) userResponse.getResult().get(JsonKey.RESPONSE);
@@ -176,7 +167,7 @@ public class AuthenticationHelper {
       String externalId, String provider) {
     String keyspace = "sunbird";
     String userExtTable = "user_external_identity";
-    CassandraStartUpUtil.DbInfo usrDbInfo = CassandraStartUpUtil.dbInfoMap.get(JsonKey.USER_DB);
+
     Map<String, Object> user = null;
     Map<String, Object> map = new HashMap<>();
     map.put(JsonKey.PROVIDER, (provider).toLowerCase());
@@ -188,9 +179,7 @@ public class AuthenticationHelper {
       Map<String, Object> userExtIdRecord = userRecordList.get(0);
       Response res =
           cassandraOperation.getRecordById(
-              usrDbInfo.getKeySpace(),
-              usrDbInfo.getTableName(),
-              (String) userExtIdRecord.get(JsonKey.USER_ID));
+              KEYSPACE, USER_TABLE_NAME, (String) userExtIdRecord.get(JsonKey.USER_ID));
       if (CollectionUtils.isNotEmpty((List<Map<String, Object>>) res.get(JsonKey.RESPONSE))) {
         // user exist
         user = ((List<Map<String, Object>>) res.get(JsonKey.RESPONSE)).get(0);
