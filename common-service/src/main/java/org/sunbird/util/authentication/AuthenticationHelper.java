@@ -34,7 +34,8 @@ public class AuthenticationHelper {
   private static final String USER_AUTH_TABLE_NAME = "user_auth";
   private static final String MASTER_KEY_TABLE_NAME = "client_info";
   private static final String USER_TABLE_NAME = "user";
-  private static final String KEYSPACE = "sunbird";
+  private static final String KEYSPACE_NAME = "sunbird";
+  private static final String USER_EXTERNAL_IDENTITY_TABLE_NAME = "user_external_identity";
 
   /**
    * This method will verify the incoming user access token against store data base /cache. If token
@@ -53,7 +54,7 @@ public class AuthenticationHelper {
         userId = ssoManager.verifyToken(token);
       } else {
         Response authResponse =
-            cassandraOperation.getRecordById(KEYSPACE, USER_AUTH_TABLE_NAME, token);
+            cassandraOperation.getRecordById(KEYSPACE_NAME, USER_AUTH_TABLE_NAME, token);
         if (authResponse != null && authResponse.get(JsonKey.RESPONSE) != null) {
           List<Map<String, Object>> authList =
               (List<Map<String, Object>>) authResponse.get(JsonKey.RESPONSE);
@@ -77,7 +78,8 @@ public class AuthenticationHelper {
     String validClientId = JsonKey.UNAUTHORIZED;
     try {
       Response clientResponse =
-          cassandraOperation.getRecordsByProperties(KEYSPACE, MASTER_KEY_TABLE_NAME, propertyMap);
+          cassandraOperation.getRecordsByProperties(
+              KEYSPACE_NAME, MASTER_KEY_TABLE_NAME, propertyMap);
       if (null != clientResponse && !clientResponse.getResult().isEmpty()) {
         List<Map<String, Object>> dataList =
             (List<Map<String, Object>>) clientResponse.getResult().get(JsonKey.RESPONSE);
@@ -96,7 +98,7 @@ public class AuthenticationHelper {
     propertyMap.put(JsonKey.ID, clientId);
     try {
       Response clientResponse =
-          cassandraOperation.getRecordById(KEYSPACE, MASTER_KEY_TABLE_NAME, clientId);
+          cassandraOperation.getRecordById(KEYSPACE_NAME, MASTER_KEY_TABLE_NAME, clientId);
       if (null != clientResponse && !clientResponse.getResult().isEmpty()) {
         List<Map<String, Object>> dataList =
             (List<Map<String, Object>>) clientResponse.getResult().get(JsonKey.RESPONSE);
@@ -112,7 +114,8 @@ public class AuthenticationHelper {
 
     Map<String, Object> response = null;
     try {
-      Response userResponse = cassandraOperation.getRecordById(KEYSPACE, USER_TABLE_NAME, userId);
+      Response userResponse =
+          cassandraOperation.getRecordById(KEYSPACE_NAME, USER_TABLE_NAME, userId);
       if (null != userResponse && !userResponse.getResult().isEmpty()) {
         List<Map<String, Object>> dataList =
             (List<Map<String, Object>>) userResponse.getResult().get(JsonKey.RESPONSE);
@@ -128,7 +131,8 @@ public class AuthenticationHelper {
 
     Map<String, Object> response = null;
     try {
-      Response userResponse = cassandraOperation.getRecordById(KEYSPACE, USER_TABLE_NAME, orgId);
+      Response userResponse =
+          cassandraOperation.getRecordById(KEYSPACE_NAME, USER_TABLE_NAME, orgId);
       if (null != userResponse && !userResponse.getResult().isEmpty()) {
         List<Map<String, Object>> dataList =
             (List<Map<String, Object>>) userResponse.getResult().get(JsonKey.RESPONSE);
@@ -165,21 +169,21 @@ public class AuthenticationHelper {
 
   public static Map<String, Object> getUserFromExternalIdAndProvider(
       String externalId, String provider) {
-    String keyspace = "sunbird";
-    String userExtTable = "user_external_identity";
 
     Map<String, Object> user = null;
     Map<String, Object> map = new HashMap<>();
     map.put(JsonKey.PROVIDER, (provider).toLowerCase());
     map.put(JsonKey.EXTERNAL_ID, (externalId).toLowerCase());
-    Response response = cassandraOperation.getRecordsByProperties(keyspace, userExtTable, map);
+    Response response =
+        cassandraOperation.getRecordsByProperties(
+            KEYSPACE_NAME, USER_EXTERNAL_IDENTITY_TABLE_NAME, map);
     List<Map<String, Object>> userRecordList =
         (List<Map<String, Object>>) response.get(JsonKey.RESPONSE);
     if (CollectionUtils.isNotEmpty(userRecordList)) {
       Map<String, Object> userExtIdRecord = userRecordList.get(0);
       Response res =
           cassandraOperation.getRecordById(
-              KEYSPACE, USER_TABLE_NAME, (String) userExtIdRecord.get(JsonKey.USER_ID));
+              KEYSPACE_NAME, USER_TABLE_NAME, (String) userExtIdRecord.get(JsonKey.USER_ID));
       if (CollectionUtils.isNotEmpty((List<Map<String, Object>>) res.get(JsonKey.RESPONSE))) {
         // user exist
         user = ((List<Map<String, Object>>) res.get(JsonKey.RESPONSE)).get(0);
