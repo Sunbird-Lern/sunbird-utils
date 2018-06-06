@@ -11,6 +11,7 @@ import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.BadgingJsonKey;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.ProjectUtil.Environment;
@@ -19,6 +20,7 @@ import org.sunbird.common.request.HeaderParam;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.controllers.BaseController;
 import org.sunbird.telemetry.util.TelemetryUtil;
+import org.sunbird.util.CassandraStartUpUtil;
 import org.sunbird.util.authentication.RequestInterceptor;
 import play.Application;
 import play.libs.F.Promise;
@@ -30,8 +32,13 @@ import play.mvc.Http.Request;
 import play.mvc.Result;
 import play.mvc.Results;
 
-/** @author arvind. */
-public abstract class ServiceBaseGlobal extends BaseGlobal {
+/**
+ * This class will work as a filter. All play request pass through this filter onCall method. Class
+ * also contains onStart method that will be call only once when application will be started.
+ *
+ * @author arvind.
+ */
+public class ServiceBaseGlobal extends BaseGlobal {
 
   public static ProjectUtil.Environment env;
 
@@ -83,13 +90,19 @@ public abstract class ServiceBaseGlobal extends BaseGlobal {
    *
    * @param app Application
    */
-  public abstract void onStart(Application app);
+  public void onStart(Application app) {
+    setEnvironment();
+    ProjectLogger.log("Server started.. with environment: " + env.name(), LoggerEnum.INFO.name());
+    ssoPublicKey = System.getenv(JsonKey.SSO_PUBLIC_KEY);
+    CassandraStartUpUtil.checkCassandraDbConnections(JsonKey.SUNBIRD);
+    CassandraStartUpUtil.checkCassandraDbConnections(JsonKey.SUNBIRD_PLUGIN);
+  }
 
   /**
    * This method will be called on each request.
    *
-   * @param request Request
-   * @param actionMethod Method
+   * @param request represents the Play request object.
+   * @param actionMethod Method type , example - GET , POST etc.
    * @return Action
    */
   @SuppressWarnings("rawtypes")
@@ -186,11 +199,10 @@ public abstract class ServiceBaseGlobal extends BaseGlobal {
   }
 
   /**
-   * This method will do request data validation for GET method only. As a GET request user must
-   * send some key in header.
+   * This method will do request data validation .
    *
-   * @param request Request
-   * @param errorMessage String
+   * @param request Request represents the play request object.
+   * @param errorMessage represents the validation error message.
    * @return Promise<Result>
    */
   public Promise<Result> onDataValidationError(
@@ -203,7 +215,7 @@ public abstract class ServiceBaseGlobal extends BaseGlobal {
   }
 
   /**
-   * This method will be used to send the request header missing error message.
+   * This method will be called by play in case error occur.
    *
    * @param request Http.RequestHeader
    * @param t Throwable

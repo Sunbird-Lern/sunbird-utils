@@ -43,7 +43,7 @@ public class ResponseIdUtil {
    * @param method Request method (e.g. GET)
    * @return API response ID for given request URI.
    */
-  public String getApiResponseId(String path, String method) {
+  public static String getApiResponseId(String path, String method) {
     String val;
     if (ProjectUtil.Method.GET.name().equalsIgnoreCase(method)) {
       val = getResponseId(path);

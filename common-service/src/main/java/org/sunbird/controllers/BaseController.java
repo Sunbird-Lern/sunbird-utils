@@ -75,17 +75,58 @@ public class BaseController extends Controller {
           public Result apply(Object result) {
             if (result instanceof Response) {
               Response response = (Response) result;
-              return createCommonResponse(
-                  request().path(), responseKey, response, httpReq.method());
+              return createCommonResponse(response, responseKey, httpReq, true);
             } else if (result instanceof ProjectCommonException) {
-              return createCommonExceptionResult(
-                  request().path(), (ProjectCommonException) result, httpReq.method());
+              return createCommonExceptionResponse((ProjectCommonException) result, httpReq, true);
             } else {
               ProjectLogger.log(
                   "BaseController:actorResponseHandler: Unsupported actor response format",
                   LoggerEnum.INFO.name());
-              return createCommonExceptionResult(
-                  request().path(), new Exception(), httpReq.method());
+              return createCommonExceptionResponse(new Exception(), httpReq, true);
+            }
+          }
+        };
+
+    if (actorRef instanceof ActorRef) {
+      return Promise.wrap(Patterns.ask((ActorRef) actorRef, request, timeout)).map(function);
+    } else {
+      return Promise.wrap(Patterns.ask((ActorSelection) actorRef, request, timeout)).map(function);
+    }
+  }
+
+  /**
+   * Common method to handle async response from actor service. Based on the result type, a uniform
+   * response object is constructed and returned to caller.
+   *
+   * @param actorRef Actor reference or selection object
+   * @param request Request to be sent to actor
+   * @param timeout Request timeout
+   * @param responseKey Response key used to update result within success response
+   * @param httpReq Play HTTP request
+   * @param generateTelemetry if true - generate telemetry for the api call.
+   * @return Return a promise for API request
+   */
+  public Promise<Result> actorResponseHandler(
+      Object actorRef,
+      org.sunbird.common.request.Request request,
+      Timeout timeout,
+      String responseKey,
+      Request httpReq,
+      boolean generateTelemetry) {
+    Function<Object, Result> function =
+        new Function<Object, Result>() {
+          public Result apply(Object result) {
+            if (result instanceof Response) {
+              Response response = (Response) result;
+              return createCommonResponse(response, responseKey, httpReq, generateTelemetry);
+            } else if (result instanceof ProjectCommonException) {
+              return createCommonExceptionResponse(
+                  (ProjectCommonException) result, httpReq, generateTelemetry);
+            } else {
+              ProjectLogger.log(
+                  "BaseController:actorResponseHandler: Unsupported actor response format",
+                  LoggerEnum.INFO.name());
+              return createCommonExceptionResponse(new Exception(), httpReq, generateTelemetry);
             }
           }
         };
@@ -194,58 +235,6 @@ public class BaseController extends Controller {
   }
 
   /**
-   * Creates a success play mvc result.
-   *
-   * @param path Request URI path
-   * @param response Success response which is received
-   * @param method Request method (e.g. GET)
-   * @return Play mvc result created from success response
-   */
-  public Result createCommonResponse(String path, Response response, String method) {
-    return Results.ok(Json.toJson(BaseController.createSuccessResponse(path, response, method)));
-  }
-
-  /**
-   * Creates a success play mvc result.
-   *
-   * @param path Request URI path
-   * @param key Response key used to update result within success response
-   * @param response Success response which is received
-   * @param method Request method (e.g. GET)
-   * @return Play mvc result created from success response
-   */
-  public Result createCommonResponse(String path, String key, Response response, String method) {
-    if (!StringUtils.isBlank(key)) {
-      Object value = response.getResult().get(JsonKey.RESPONSE);
-      response.getResult().remove(JsonKey.RESPONSE);
-      response.getResult().put(key, value);
-    }
-    return Results.ok(Json.toJson(BaseController.createSuccessResponse(path, response, method)));
-  }
-
-  /**
-   * Updates success response with common parameters.
-   *
-   * @param path Request URI path
-   * @param response Success response which is received
-   * @param method Request method (e.g. GET)
-   * @return Updated response
-   */
-  public static Response createSuccessResponse(String path, Response response, String method) {
-    if (StringUtils.isNotBlank(path)) {
-      response.setVer(getApiVersion(path));
-    } else {
-      response.setVer("");
-    }
-    response.setId(util.getApiResponseId(path, method));
-    response.setTs(ProjectUtil.getFormattedDate());
-    ResponseCode code = ResponseCode.getResponse(ResponseCode.success.getErrorCode());
-    code.setResponseCode(ResponseCode.OK.getResponseCode());
-    response.setParams(createResponseParamObj(code));
-    return response;
-  }
-
-  /**
    * Determine version of API request based on URI.
    *
    * @param path Request URI path
@@ -280,9 +269,11 @@ public class BaseController extends Controller {
   /**
    * This method will create failure response
    *
-   * @param request Request
-   * @param code ResponseCode
-   * @param headerCode ResponseCode
+   * @param request represents the play context request.
+   * @param code ResponseCode of response , in case of failure it represents the error_code , in
+   *     case of success it is SUCCESS.
+   * @param headerCode ResponseCode that will be returned as http response code
+   *     example-CLIENT_ERROR, SERVER_ERROR etc.
    * @return Response
    */
   public static Response createFailureResponse(
@@ -290,7 +281,7 @@ public class BaseController extends Controller {
 
     Response response = new Response();
     response.setVer(getApiVersion(request.path()));
-    response.setId(getApiResponseId(request));
+    response.setId(ResponseIdUtil.getApiResponseId(request.path(), request.method()));
     response.setTs(ProjectUtil.getFormattedDate());
     response.setResponseCode(headerCode);
     response.setParams(createResponseParamObj(code));
@@ -298,48 +289,30 @@ public class BaseController extends Controller {
   }
 
   /**
-   * Method to get API response Id
-   *
-   * @param request play.mvc.Http.Request
-   * @return String
-   */
-  private static String getApiResponseId(Request request) {
-
-    String val = "";
-    if (request != null) {
-      String path = request.path();
-      if (request.method().equalsIgnoreCase(ProjectUtil.Method.GET.name())) {
-        val = ResponseIdUtil.getResponseId(path);
-        if (StringUtils.isBlank(val)) {
-          String[] splitedpath = path.split("[/]");
-          path = ResponseIdUtil.removeLastValue(splitedpath);
-          val = ResponseIdUtil.getResponseId(path);
-        }
-      } else {
-        val = ResponseIdUtil.getResponseId(path);
-      }
-      if (StringUtils.isBlank(val)) {
-        val = ResponseIdUtil.getResponseId(path);
-        if (StringUtils.isBlank(val)) {
-          String[] splitedpath = path.split("[/]");
-          path = ResponseIdUtil.removeLastValue(splitedpath);
-          val = ResponseIdUtil.getResponseId(path);
-        }
-      }
-    }
-    return val;
-  }
-
-  /**
    * This method will create common response for all controller method
    *
-   * @param response Object
-   * @param key String
+   * @param response represents the response from service layer.
+   * @param key String Response key used to update result within success response
    * @param request play.mvc.Http.Request
    * @return Result
    */
-  public Result createCommonResponse(Object response, String key, Request request) {
+  public Result createCommonResponse(
+      Response response, String key, Request request, boolean generateTelemetry) {
 
+    if (generateTelemetry) {
+      generateTelemetryForSuccessResponse(response, request);
+    }
+
+    if (!StringUtils.isBlank(key)) {
+      Object value = response.getResult().get(JsonKey.RESPONSE);
+      response.getResult().remove(JsonKey.RESPONSE);
+      response.getResult().put(key, value);
+    }
+    return Results.ok(
+        Json.toJson(BaseController.createSuccessResponse(request, (Response) response)));
+  }
+
+  private void generateTelemetryForSuccessResponse(Object response, Request request) {
     Map<String, Object> requestInfo =
         ServiceBaseGlobal.requestInfo.get(ctx().flash().get(JsonKey.REQUEST_ID));
     org.sunbird.common.request.Request req = new org.sunbird.common.request.Request();
@@ -364,26 +337,8 @@ public class BaseController extends Controller {
     // if any request is coming form /v1/telemetry/save then don't generate the telemetry log
     // for it.
     lmaxWriter.submitMessage(req);
-
-    Response courseResponse = (Response) response;
-    if (!StringUtils.isBlank(key)) {
-      Object value = courseResponse.getResult().get(JsonKey.RESPONSE);
-      courseResponse.getResult().remove(JsonKey.RESPONSE);
-      courseResponse.getResult().put(key, value);
-    }
-
     // remove request info from map
     ServiceBaseGlobal.requestInfo.remove(ctx().flash().get(JsonKey.REQUEST_ID));
-    return Results.ok(
-        Json.toJson(BaseController.createSuccessResponse(request, (Response) courseResponse)));
-    // }
-    /*
-     * else {
-     *
-     * ProjectCommonException exception = (ProjectCommonException) response; return
-     * Results.status(exception.getResponseCode(),
-     * Json.toJson(BaseController.createResponseOnException(request, exception))); }
-     */
   }
 
   private long calculateApiTimeTaken(Long startTime) {
@@ -412,10 +367,10 @@ public class BaseController extends Controller {
   }
 
   /**
-   * This method will create data for success response.
+   * Method to create data for success response.
    *
    * @param request play.mvc.Http.Request
-   * @param response Response
+   * @param response represents the response object from service layer.
    * @return Response
    */
   public static Response createSuccessResponse(Request request, Response response) {
@@ -425,11 +380,95 @@ public class BaseController extends Controller {
     } else {
       response.setVer("");
     }
-    response.setId(getApiResponseId(request));
+    response.setId(ResponseIdUtil.getApiResponseId(request.path(), request.method()));
     response.setTs(ProjectUtil.getFormattedDate());
     ResponseCode code = ResponseCode.getResponse(ResponseCode.success.getErrorCode());
     code.setResponseCode(ResponseCode.OK.getResponseCode());
     response.setParams(createResponseParamObj(code));
     return response;
+  }
+
+  /**
+   * Common exception response handler method.
+   *
+   * @param e Exception represents the exception occurred while processing the request.
+   * @param request play.mvc.Http.Request
+   * @return Result
+   */
+  public Result createCommonExceptionResponse(
+      Exception e, Request request, boolean generateTelemetry) {
+
+    ProjectCommonException exception = null;
+    if (e instanceof ProjectCommonException) {
+      exception = (ProjectCommonException) e;
+    } else {
+      exception =
+          new ProjectCommonException(
+              ResponseCode.internalError.getErrorCode(),
+              ResponseCode.internalError.getErrorMessage(),
+              ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+
+    Request req = request;
+    if (req == null) {
+      req = request();
+    }
+
+    if (generateTelemetry) {
+      generateTelemetryForExceptionResponse(exception, req);
+    }
+    return createCommonExceptionResult(request().path(), exception, req.method());
+  }
+
+  private String generateStackTrace(StackTraceElement[] elements) {
+    StringBuilder builder = new StringBuilder("");
+    for (StackTraceElement element : elements) {
+
+      builder.append(element.toString());
+      builder.append("\n");
+    }
+    return builder.toString();
+  }
+
+  private void generateTelemetryForExceptionResponse(
+      ProjectCommonException exception, Request request) {
+
+    ProjectLogger.log(exception.getMessage(), exception, generateTelemetryInfoForError());
+
+    Map<String, Object> requestInfo =
+        ServiceBaseGlobal.requestInfo.get(ctx().flash().get(JsonKey.REQUEST_ID));
+    org.sunbird.common.request.Request reqForTelemetry = new org.sunbird.common.request.Request();
+    Map<String, Object> params = (Map<String, Object>) requestInfo.get(JsonKey.ADDITIONAL_INFO);
+    params.put(JsonKey.LOG_TYPE, JsonKey.API_ACCESS);
+    params.put(JsonKey.MESSAGE, "");
+    params.put(JsonKey.METHOD, request.method());
+    // calculate  the total time consume
+    long startTime = (Long) params.get(JsonKey.START_TIME);
+    params.put(JsonKey.DURATION, calculateApiTimeTaken(startTime));
+    removeFields(params, JsonKey.START_TIME);
+    params.put(JsonKey.STATUS, String.valueOf(exception.getResponseCode()));
+    params.put(JsonKey.LOG_LEVEL, "error");
+    params.put(JsonKey.STACKTRACE, generateStackTrace(exception.getStackTrace()));
+    reqForTelemetry.setRequest(
+        generateTelemetryRequestForController(
+            TelemetryEvents.LOG.getName(),
+            params,
+            (Map<String, Object>) requestInfo.get(JsonKey.CONTEXT)));
+    lmaxWriter.submitMessage(reqForTelemetry);
+    ServiceBaseGlobal.requestInfo.remove(ctx().flash().get(JsonKey.REQUEST_ID));
+  }
+
+  private static Map<String, Object> generateTelemetryInfoForError() {
+
+    Map<String, Object> map = new HashMap<>();
+    Map<String, Object> requestInfo =
+        ServiceBaseGlobal.requestInfo.get(ctx().flash().get(JsonKey.REQUEST_ID));
+    Map<String, Object> contextInfo = (Map<String, Object>) requestInfo.get(JsonKey.CONTEXT);
+    Map<String, Object> params = new HashMap<>();
+    params.put(JsonKey.ERR_TYPE, JsonKey.API_ACCESS);
+
+    map.put(JsonKey.CONTEXT, contextInfo);
+    map.put(JsonKey.PARAMS, params);
+    return map;
   }
 }
