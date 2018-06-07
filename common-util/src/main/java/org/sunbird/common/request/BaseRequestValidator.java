@@ -1,5 +1,6 @@
 package org.sunbird.common.request;
 
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Map;
 import org.apache.commons.collections.MapUtils;
@@ -32,10 +33,26 @@ public class BaseRequestValidator {
   }
 
   /**
+   * Helper method which throws an exception if given parameter value is blank (null or empty).
+   *
+   * @param value Request parameter value.
+   * @param error Error to be thrown in case of validation error.
+   * @param errorMsgArgument Argument for error message.
+   */
+  public void validateParam(String value, ResponseCode error, String errorMsgArgument) {
+    if (StringUtils.isBlank(value)) {
+      throw new ProjectCommonException(
+          error.getErrorCode(),
+          MessageFormat.format(error.getErrorMessage(), errorMsgArgument),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+  }
+
+  /**
    * This method will create the ProjectCommonException by reading ResponseCode and errorCode.
    * incase ResponseCode is null then it will throw invalidData error.
    *
-   * @param Response code
+   * @param code Error response code
    * @param errorCode (Http error code)
    * @return custom project exception
    */
@@ -48,6 +65,29 @@ public class BaseRequestValidator {
           errorCode);
     }
     return new ProjectCommonException(code.getErrorCode(), code.getErrorMessage(), errorCode);
+  }
+
+  /**
+   * This method will create the ProjectCommonException by reading ResponseCode and errorCode.
+   * incase ResponseCode is null then it will throw invalidData error.
+   *
+   * @param code Error response code
+   * @param errorCode (Http error code)
+   * @return custom project exception
+   */
+  public ProjectCommonException createExceptionByResponseCode(
+      ResponseCode code, int errorCode, String errorMsgArgument) {
+    if (code == null) {
+      ProjectLogger.log("ResponseCode object is coming as null", LoggerEnum.INFO.name());
+      return new ProjectCommonException(
+          ResponseCode.invalidData.getErrorCode(),
+          ResponseCode.invalidData.getErrorMessage(),
+          errorCode);
+    }
+    return new ProjectCommonException(
+        code.getErrorCode(),
+        MessageFormat.format(code.getErrorMessage(), errorMsgArgument),
+        errorCode);
   }
 
   /**

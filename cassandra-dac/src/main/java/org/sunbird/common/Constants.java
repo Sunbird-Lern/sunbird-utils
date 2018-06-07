@@ -56,4 +56,8 @@ public interface Constants {
       "Exception occured while upserting record from ";
   public static final String EXCEPTION_MSG_DELETE = "Exception occured while deleting record from ";
   public static final String EXCEPTION_MSG_UPDATE = "Exception occured while updating record to ";
+  public static final String LTE = "<=";
+  public static final String LT = "<";
+  public static final String GTE = ">=";
+  public static final String GT = ">";
 }
