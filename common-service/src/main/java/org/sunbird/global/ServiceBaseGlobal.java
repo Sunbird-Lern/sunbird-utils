@@ -134,7 +134,7 @@ public class ServiceBaseGlobal extends BaseGlobal {
     }
     reqContext.put(JsonKey.CHANNEL, channel);
     ctx.flash().put(JsonKey.CHANNEL, channel);
-    reqContext.put(JsonKey.ENV, getEnv(request));
+    reqContext.put(JsonKey.ENV, getOperationEnv(request));
     reqContext.put(JsonKey.REQUEST_ID, ExecutionContext.getRequestId());
 
     if (!USER_UNAUTH_STATES.contains(userId)) {
@@ -170,7 +170,7 @@ public class ServiceBaseGlobal extends BaseGlobal {
     requestInfo.put(messageId, map);
   }
 
-  private String getEnv(Request request) {
+  private String getOperationEnv(Request request) {
 
     String uri = request.uri();
     String env;

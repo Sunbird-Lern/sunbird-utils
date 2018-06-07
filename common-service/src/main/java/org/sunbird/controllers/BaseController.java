@@ -4,6 +4,7 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
 import akka.pattern.Patterns;
 import akka.util.Timeout;
+import com.fasterxml.jackson.databind.JsonNode;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -291,6 +292,45 @@ public class BaseController extends Controller {
         Json.toJson(BaseController.createSuccessResponse(request, (Response) response)));
   }
 
+  /**
+   * Helper method for creating and initialising a request for given operation and request body.
+   *
+   * @param operation A defined actor operation
+   * @param requestBodyJson Optional information received in request body (JSON)
+   * @return Created and initialised Request (@see {@link org.sunbird.common.request.Request})
+   *     instance.
+   */
+  public org.sunbird.common.request.Request createAndInitRequest(
+      String operation, JsonNode requestBodyJson) {
+    org.sunbird.common.request.Request request;
+
+    if (requestBodyJson != null) {
+      request =
+          (org.sunbird.common.request.Request)
+              org.sunbird.controllers.mapper.RequestMapper.mapRequest(
+                  requestBodyJson, org.sunbird.common.request.Request.class);
+    } else {
+      request = new org.sunbird.common.request.Request();
+    }
+
+    request.setOperation(operation);
+    request.setRequestId(ExecutionContext.getRequestId());
+    request.setEnv(getEnvironment());
+    request.getContext().put(JsonKey.REQUESTED_BY, ctx().flash().get(JsonKey.USER_ID));
+    return request;
+  }
+
+  /**
+   * Helper method for creating and initialising a request for given operation.
+   *
+   * @param operation A defined actor operation
+   * @return Created and initialised Request (@see {@link org.sunbird.common.request.Request})
+   *     instance.
+   */
+  public org.sunbird.common.request.Request createAndInitRequest(String operation) {
+    return createAndInitRequest(operation, null);
+  }
+
   private void generateTelemetryForSuccessResponse(Object response, Request request) {
     Map<String, Object> requestInfo =
         ServiceBaseGlobal.requestInfo.get(ctx().flash().get(JsonKey.REQUEST_ID));
@@ -449,5 +489,18 @@ public class BaseController extends Controller {
     map.put(JsonKey.CONTEXT, contextInfo);
     map.put(JsonKey.PARAMS, params);
     return map;
+  }
+
+  /**
+   * This method will provide environment id.
+   *
+   * @return int
+   */
+  private int getEnvironment() {
+
+    if (ServiceBaseGlobal.env != null) {
+      return ServiceBaseGlobal.env.getValue();
+    }
+    return ProjectUtil.Environment.dev.getValue();
   }
 }
