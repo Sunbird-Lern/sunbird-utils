@@ -72,8 +72,8 @@ public class PhoneValidator {
       phoneNumber = phoneNumberUtil.parse(phNumber, isoCode);
       return phoneNumberUtil.isValidNumber(phoneNumber);
     } catch (NumberParseException e) {
-      ProjectLogger.log("Exception occurred while validating phone number : ", e);
-      ProjectLogger.log(phNumber + "this phone no. is not a valid one.");
+      ProjectLogger.log(
+          "PhoneValidator: validatePhone: Exception occurred while validating phone number = ", e);
     }
     return false;
   }
