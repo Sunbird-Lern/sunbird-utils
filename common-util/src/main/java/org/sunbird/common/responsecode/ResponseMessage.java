@@ -9,7 +9,7 @@ public interface ResponseMessage {
 
   interface Message {
 
-    String UNAUTHORIZED_USER = "You are not authorized.";
+    String UNAUTHORISE_USER = "You are not authorized.";
     String INVALID_USER_CREDENTIALS = "Please check your credentials";
     String INVALID_OPERATION_NAME =
         "Operation name is invalid. Please provide a valid operation name";
@@ -295,7 +295,7 @@ public interface ResponseMessage {
   }
 
   interface Key {
-    String UNAUTHORIZED_USER = "UNAUTHORIZED_USER";
+    String UNAUTHORISE_USER = "UNAUTHORIZE_USER";
     String INVALID_USER_CREDENTIALS = "INVALID_USER_CREDENTIALS";
     String INVALID_OPERATION_NAME = "INVALID_OPERATION_NAME";
     String INVALID_REQUESTED_DATA = "INVALID_REQUESTED_DATA";
