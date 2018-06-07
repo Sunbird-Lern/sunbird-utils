@@ -228,7 +228,7 @@ public class BaseController extends Controller {
    *
    * @param request represents the play context request.
    * @param code Failure code used to set response params (i.e. err, errmsg)
-   * @param headerCode Failure code user to set response code (e.g. CLIENT_ERROR, SERVER_ERROR etc.)
+   * @param headerCode Failure code used to set response code (e.g. CLIENT_ERROR, SERVER_ERROR etc.)
    * @return Response
    */
   public static Response createFailureResponse(
@@ -398,36 +398,27 @@ public class BaseController extends Controller {
   }
 
   private void generateTelemetryForSuccessResponse(Object response, Request request) {
-
-    org.sunbird.common.request.Request req =
-        generateTelemetryCommonResponse(
-            request,
-            JsonKey.SUCCESS,
-            String.valueOf(((Response) response).getResponseCode().getResponseCode()),
-            JsonKey.INFO,
-            null);
-    lmaxWriter.submitMessage(req);
-    // remove request info from map
-    ServiceBaseGlobal.requestInfo.remove(ctx().flash().get(JsonKey.REQUEST_ID));
+    generateTelemetry(
+        request,
+        JsonKey.SUCCESS,
+        String.valueOf(((Response) response).getResponseCode().getResponseCode()),
+        JsonKey.INFO,
+        null);
   }
 
   private void generateTelemetryForExceptionResponse(
       ProjectCommonException exception, Request request) {
     // Generate a telemetry event of type ERROR using project logger for exception
     ProjectLogger.log(exception.getMessage(), exception, generateTelemetryInfoForError());
-    org.sunbird.common.request.Request req =
-        generateTelemetryCommonResponse(
-            request,
-            exception.getMessage(),
-            String.valueOf(exception.getResponseCode()),
-            ERROR,
-            generateStackTrace(exception.getStackTrace()));
-    lmaxWriter.submitMessage(req);
-    // remove request info from map
-    ServiceBaseGlobal.requestInfo.remove(ctx().flash().get(JsonKey.REQUEST_ID));
+    generateTelemetry(
+        request,
+        exception.getMessage(),
+        String.valueOf(exception.getResponseCode()),
+        ERROR,
+        generateStackTrace(exception.getStackTrace()));
   }
 
-  private org.sunbird.common.request.Request generateTelemetryCommonResponse(
+  private void generateTelemetry(
       Request request, String message, String status, String logLevel, String stackTrace) {
     Map<String, Object> requestInfo =
         ServiceBaseGlobal.requestInfo.get(ctx().flash().get(JsonKey.REQUEST_ID));
@@ -454,7 +445,9 @@ public class BaseController extends Controller {
             TelemetryEvents.LOG.getName(),
             params,
             (Map<String, Object>) requestInfo.get(JsonKey.CONTEXT)));
-    return req;
+    lmaxWriter.submitMessage(req);
+    // remove request info from map
+    ServiceBaseGlobal.requestInfo.remove(ctx().flash().get(JsonKey.REQUEST_ID));
   }
 
   private Map<String, Object> generateTelemetryRequestForController(
