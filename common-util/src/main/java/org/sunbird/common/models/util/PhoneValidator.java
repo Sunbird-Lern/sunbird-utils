@@ -20,7 +20,7 @@ public class PhoneValidator {
 
   private PhoneValidator() {}
 
-  public static boolean validatePhoneNo(String phone, String countryCode) {
+  public static boolean validatePhoneNumber(String phone, String countryCode) {
     if (phone.contains("+")) {
       throw new ProjectCommonException(
           ResponseCode.invalidPhoneNumber.getErrorCode(),
@@ -28,15 +28,15 @@ public class PhoneValidator {
           ERROR_CODE);
     }
     if (StringUtils.isNotBlank(countryCode)) {
-      boolean bool = validateCountryCode(countryCode);
-      if (!bool) {
+      boolean isCountryCodeValid = validateCountryCode(countryCode);
+      if (!isCountryCodeValid) {
         throw new ProjectCommonException(
             ResponseCode.invalidCountryCode.getErrorCode(),
             ResponseCode.invalidCountryCode.getErrorMessage(),
             ERROR_CODE);
       }
     }
-    if (ProjectUtil.validatePhone(phone, countryCode)) {
+    if (validatePhone(phone, countryCode)) {
       return true;
     } else {
       throw new ProjectCommonException(
@@ -47,33 +47,33 @@ public class PhoneValidator {
   }
 
   public static boolean validateCountryCode(String countryCode) {
-    String pattern = "^(?:[+] ?){0,1}(?:[0-9] ?){1,3}";
+    String countryCodePattern = "^(?:[+] ?){0,1}(?:[0-9] ?){1,3}";
     try {
-      Pattern patt = Pattern.compile(pattern);
-      Matcher matcher = patt.matcher(countryCode);
+      Pattern pattern = Pattern.compile(countryCodePattern);
+      Matcher matcher = pattern.matcher(countryCode);
       return matcher.matches();
     } catch (Exception e) {
       return false;
     }
   }
 
-  public static boolean validatePhone(String phNumber, String countryCode) {
+  public static boolean validatePhone(String phone, String countryCode) {
     PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
-    String contryCode = countryCode;
-    if (!StringUtils.isBlank(countryCode) && (countryCode.charAt(0) != '+')) {
-      contryCode = "+" + countryCode;
+    String code = countryCode;
+    if (StringUtils.isNotBlank(countryCode) && (countryCode.charAt(0) != '+')) {
+      code = "+" + countryCode;
     }
     Phonenumber.PhoneNumber phoneNumber = null;
     try {
       if (StringUtils.isBlank(countryCode)) {
-        contryCode = PropertiesCache.getInstance().getProperty("sunbird_default_country_code");
+        code = PropertiesCache.getInstance().getProperty("sunbird_default_country_code");
       }
-      String isoCode = phoneNumberUtil.getRegionCodeForCountryCode(Integer.parseInt(contryCode));
-      phoneNumber = phoneNumberUtil.parse(phNumber, isoCode);
+      String isoCode = phoneNumberUtil.getRegionCodeForCountryCode(Integer.parseInt(code));
+      phoneNumber = phoneNumberUtil.parse(phone, isoCode);
       return phoneNumberUtil.isValidNumber(phoneNumber);
     } catch (NumberParseException e) {
       ProjectLogger.log(
-          "PhoneValidator: validatePhone: Exception occurred while validating phone number = ", e);
+          "PhoneValidator:validatePhone: Exception occurred while validating phone number = ", e);
     }
     return false;
   }

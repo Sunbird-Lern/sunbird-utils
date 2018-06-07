@@ -560,9 +560,6 @@ public enum ResponseCode {
   externalIdAssignedToOtherUser(
       ResponseMessage.Key.EXTERNALID_ASSIGNED_TO_OTHER_USER,
       ResponseMessage.Message.EXTERNALID_ASSIGNED_TO_OTHER_USER),
-  dependentParamsMissing(
-      ResponseMessage.Key.DEPENDENT_PARAMETER_MISSING,
-      ResponseMessage.Message.DEPENDENT_PARAMS_MISSING),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
