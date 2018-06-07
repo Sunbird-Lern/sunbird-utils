@@ -303,6 +303,7 @@ public interface ResponseMessage {
         "No root organisation found which is associated with given {0}.";
     String OR_FORMAT = "{0} or {1}";
     String AND_FORMAT = "{0} and {1}";
+    String DOT_FORMAT = "{0}.{1}";
     String DEPENDENT_PARAMETER_MISSING = "Missing parameter {0} which is dependent on {1}.";
   }
 
