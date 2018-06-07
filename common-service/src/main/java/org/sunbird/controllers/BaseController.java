@@ -21,6 +21,7 @@ import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.request.ExecutionContext;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.global.ServiceBaseGlobal;
+import org.sunbird.telemetry.util.TelemetryConstant;
 import org.sunbird.telemetry.util.TelemetryLmaxWriter;
 import org.sunbird.telemetry.util.lmaxdisruptor.TelemetryEvents;
 import org.sunbird.util.ResponseIdUtil;
@@ -45,7 +46,6 @@ public class BaseController extends Controller {
   private static Object actorRef = null;
   private static ResponseIdUtil util = new ResponseIdUtil();
   private TelemetryLmaxWriter lmaxWriter = TelemetryLmaxWriter.getInstance();
-  private static final String ERROR = "error";
 
   static {
     try {
@@ -410,11 +410,12 @@ public class BaseController extends Controller {
       ProjectCommonException exception, Request request) {
     // Generate a telemetry event of type ERROR using project logger for exception
     ProjectLogger.log(exception.getMessage(), exception, generateTelemetryInfoForError());
+    // Generate a telemetry event of type API_ACCESS
     generateTelemetry(
         request,
         exception.getMessage(),
         String.valueOf(exception.getResponseCode()),
-        ERROR,
+        TelemetryConstant.LOG_LEVEL_ERROR,
         generateStackTrace(exception.getStackTrace()));
   }
 
@@ -436,7 +437,7 @@ public class BaseController extends Controller {
     removeFields(params, JsonKey.START_TIME);
     params.put(JsonKey.STATUS, status);
     params.put(JsonKey.LOG_LEVEL, logLevel);
-    if (ERROR.equalsIgnoreCase(logLevel)) {
+    if (TelemetryConstant.LOG_LEVEL_ERROR.equalsIgnoreCase(logLevel)) {
       params.put(JsonKey.STACKTRACE, stackTrace);
     }
     org.sunbird.common.request.Request req = new org.sunbird.common.request.Request();

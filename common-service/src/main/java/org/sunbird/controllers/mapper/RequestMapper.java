@@ -28,9 +28,9 @@ public class RequestMapper {
       return Json.fromJson(requestData, obj);
     } catch (Exception e) {
       ProjectLogger.log(
-          "RequestMapper: mapRequest: Generic exception occurred = " + e.getMessage(), e);
+          "RequestMapper:mapRequest: Generic exception occurred = " + e.getMessage(), e);
       ProjectLogger.log(
-          "RequestMapper: mapRequest: Generic exception for request with data = "
+          "RequestMapper:mapRequest: Generic exception for request with data = "
               + requestData.toString(),
           LoggerEnum.INFO.name());
       throw new ProjectCommonException(
