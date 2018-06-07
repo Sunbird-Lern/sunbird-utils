@@ -569,7 +569,6 @@ public class ElasticSearchUtil {
     ProjectLogger.log("calling search builder======" + searchRequestBuilder.toString());
     SearchResponse response = null;
     response = searchRequestBuilder.execute().actionGet();
-    ProjectLogger.log("getting response for es======" + response);
     List<Map<String, Object>> esSource = new ArrayList<>();
     Map<String, Object> responsemap = new HashMap<>();
     long count = 0;
