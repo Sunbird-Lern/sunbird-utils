@@ -70,28 +70,7 @@ public class BaseController extends Controller {
       Timeout timeout,
       String responseKey,
       Request httpReq) {
-    Function<Object, Result> function =
-        new Function<Object, Result>() {
-          public Result apply(Object result) {
-            if (result instanceof Response) {
-              Response response = (Response) result;
-              return createCommonResponse(response, responseKey, httpReq, true);
-            } else if (result instanceof ProjectCommonException) {
-              return createCommonExceptionResponse((ProjectCommonException) result, httpReq, true);
-            } else {
-              ProjectLogger.log(
-                  "BaseController:actorResponseHandler: Unsupported actor response format",
-                  LoggerEnum.INFO.name());
-              return createCommonExceptionResponse(new Exception(), httpReq, true);
-            }
-          }
-        };
-
-    if (actorRef instanceof ActorRef) {
-      return Promise.wrap(Patterns.ask((ActorRef) actorRef, request, timeout)).map(function);
-    } else {
-      return Promise.wrap(Patterns.ask((ActorSelection) actorRef, request, timeout)).map(function);
-    }
+    return actorResponseHandler(actorRef, request, timeout, responseKey, httpReq, true);
   }
 
   /**
