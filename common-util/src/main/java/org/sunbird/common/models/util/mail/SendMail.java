@@ -2,12 +2,12 @@ package org.sunbird.common.models.util.mail;
 
 import java.io.StringWriter;
 import java.util.Properties;
+
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 import javax.mail.BodyPart;
 import javax.mail.Message;
-import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -15,6 +15,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -37,6 +38,9 @@ public class SendMail {
   private static String userName;
   private static String password;
   private static String fromEmail;
+  private static Session session;
+  private static VelocityEngine engine;
+  private static Transport transport;
 
   static {
     // collecting setup value from ENV
@@ -68,6 +72,24 @@ public class SendMail {
      */
     props.put("mail.smtp.auth", "true");
     props.put("mail.smtp.port", port);
+    
+    try {
+    	session = Session.getInstance(props, new GMailAuthenticator(userName, password));
+    	
+        engine = new VelocityEngine();
+        Properties p = new Properties();
+        p.setProperty("resource.loader", "class");
+        p.setProperty(
+            "class.resource.loader.class",
+            "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+        engine.init(p);
+        
+    	transport = session.getTransport("smtp");
+        transport.connect(host, userName, password);
+        registerShutDownHook();
+    } catch (Exception e) {
+        ProjectLogger.log(e.toString(), e);
+    }
   }
 
   /** This method will initialize values from property files. */
@@ -77,6 +99,16 @@ public class SendMail {
     userName = PropertiesCache.getInstance().getProperty(JsonKey.EMAIL_SERVER_USERNAME);
     password = PropertiesCache.getInstance().getProperty(JsonKey.EMAIL_SERVER_PASSWORD);
     fromEmail = PropertiesCache.getInstance().getProperty(JsonKey.EMAIL_SERVER_FROM);
+  }
+  
+  private static Template getTemplate(String templateName) {
+	  Template template = null;
+	  try {
+		  template = engine.getTemplate(templateName);
+	  } catch (Exception e) {
+	      ProjectLogger.log(e.toString(), e);
+	  }
+	  return template;
   }
 
   /**
@@ -90,13 +122,11 @@ public class SendMail {
   public static boolean sendMail(
       String[] receipent, String subject, VelocityContext context, String templateName) {
     ProjectLogger.log("Mail Template name - " + templateName, LoggerEnum.INFO.name());
-    Transport transport = null;
     boolean flag = true;
     if (context != null) {
       context.put(JsonKey.FROM_EMAIL, fromEmail);
     }
     try {
-      Session session = Session.getInstance(props, new GMailAuthenticator(userName, password));
       MimeMessage message = new MimeMessage(session);
       message.setFrom(new InternetAddress(fromEmail));
       int size = receipent.length;
@@ -107,32 +137,19 @@ public class SendMail {
         size--;
       }
       message.setSubject(subject);
-      VelocityEngine engine = new VelocityEngine();
-      Properties p = new Properties();
-      p.setProperty("resource.loader", "class");
-      p.setProperty(
-          "class.resource.loader.class",
-          "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
-      engine.init(p);
-      Template template = engine.getTemplate(templateName);
-      StringWriter writer = new StringWriter();
-      template.merge(context, writer);
-      message.setContent(writer.toString(), "text/html");
-      transport = session.getTransport("smtp");
-      transport.connect(host, userName, password);
-      transport.sendMessage(message, message.getAllRecipients());
-      transport.close();
+      
+      Template template = getTemplate(templateName);
+      if (null != template) {
+    	  StringWriter writer = new StringWriter();
+          template.merge(context, writer);
+          message.setContent(writer.toString(), "text/html");
+          transport.sendMessage(message, message.getAllRecipients());
+      } else {
+    	  flag = false;
+      }
     } catch (Exception e) {
       flag = false;
       ProjectLogger.log(e.toString(), e);
-    } finally {
-      if (transport != null) {
-        try {
-          transport.close();
-        } catch (MessagingException e) {
-          ProjectLogger.log(e.toString(), e);
-        }
-      }
     }
     return flag;
   }
@@ -153,9 +170,7 @@ public class SendMail {
       String templateName,
       String[] ccList) {
     ProjectLogger.log("Mail Template name - " + templateName, LoggerEnum.INFO.name());
-    Transport transport = null;
     try {
-      Session session = Session.getInstance(props, new GMailAuthenticator(userName, password));
       MimeMessage message = new MimeMessage(session);
       message.setFrom(new InternetAddress(fromEmail));
       int size = receipent.length;
@@ -173,31 +188,16 @@ public class SendMail {
         size--;
       }
       message.setSubject(subject);
-      VelocityEngine engine = new VelocityEngine();
-      Properties p = new Properties();
-      p.setProperty("resource.loader", "class");
-      p.setProperty(
-          "class.resource.loader.class",
-          "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
-      engine.init(p);
-      Template template = engine.getTemplate(templateName);
-      StringWriter writer = new StringWriter();
-      template.merge(context, writer);
-      message.setContent(writer.toString(), "text/html");
-      transport = session.getTransport("smtp");
-      transport.connect(host, userName, password);
-      transport.sendMessage(message, message.getAllRecipients());
-      transport.close();
+      
+      Template template = getTemplate(templateName);
+      if (null != template) {
+    	  StringWriter writer = new StringWriter();
+          template.merge(context, writer);
+          message.setContent(writer.toString(), "text/html");
+          transport.sendMessage(message, message.getAllRecipients());
+      }
     } catch (Exception e) {
       ProjectLogger.log(e.toString(), e);
-    } finally {
-      if (transport != null) {
-        try {
-          transport.close();
-        } catch (MessagingException e) {
-          ProjectLogger.log(e.toString(), e);
-        }
-      }
     }
   }
 
@@ -211,9 +211,7 @@ public class SendMail {
    */
   public static void sendAttachment(
       String[] receipent, String mail, String subject, String filePath) {
-    Transport transport = null;
     try {
-      Session session = Session.getInstance(props, new GMailAuthenticator(userName, password));
       MimeMessage message = new MimeMessage(session);
       message.setFrom(new InternetAddress(fromEmail));
       int size = receipent.length;
@@ -238,20 +236,35 @@ public class SendMail {
       multipart.addBodyPart(messageBodyPart);
       message.setSubject(subject);
       message.setContent(multipart);
-      transport = session.getTransport("smtp");
-      transport.connect(host, userName, password);
       transport.sendMessage(message, message.getAllRecipients());
-      transport.close();
     } catch (Exception e) {
       ProjectLogger.log(e.toString(), e);
-    } finally {
-      if (transport != null) {
-        try {
-          transport.close();
-        } catch (MessagingException e) {
-          ProjectLogger.log(e.toString(), e);
-        }
-      }
     }
   }
+  
+  /** Register the hook for resource clean up. this will be called when jvm shut down. */
+  public static void registerShutDownHook() {
+    Runtime runtime = Runtime.getRuntime();
+    runtime.addShutdownHook(new ResourceCleanUp());
+    ProjectLogger.log("Cassandra ShutDownHook registered.");
+  }
+
+  /**
+   * This class will be called by registerShutDownHook to register the call inside jvm , when jvm
+   * terminate it will call the run method to clean up the resource.
+   */
+  static class ResourceCleanUp extends Thread {
+    @Override
+    public void run() {
+      ProjectLogger.log("started resource cleanup SMTP clients.");
+      try {
+    	  if (null != transport)
+    		  transport.close();
+      } catch (Exception e) {
+          ProjectLogger.log(e.toString(), e);
+      }
+      ProjectLogger.log("completed resource cleanup SMTP clients.");
+    }
+  }
+  
 }
