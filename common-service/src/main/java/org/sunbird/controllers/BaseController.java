@@ -436,7 +436,7 @@ public class BaseController extends Controller {
     if (generateTelemetry) {
       generateTelemetryForExceptionResponse(exception, req);
     }
-    return createCommonExceptionResult(request().path(), exception, req.method());
+    return createCommonExceptionResult(req.path(), exception, req.method());
   }
 
   private String generateStackTrace(StackTraceElement[] elements) {
