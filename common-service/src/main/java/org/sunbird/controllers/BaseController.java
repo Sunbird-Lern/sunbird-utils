@@ -387,7 +387,7 @@ public class BaseController extends Controller {
   /**
    * This method will provide environment id.
    *
-   * @return int
+   * @return Environment id.
    */
   private int getEnvironment() {
 
