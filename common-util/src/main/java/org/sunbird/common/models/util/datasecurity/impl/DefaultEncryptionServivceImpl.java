@@ -116,15 +116,14 @@ public class DefaultEncryptionServivceImpl implements EncryptionService {
   public static String encrypt(String value)
       throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
           IllegalBlockSizeException, BadPaddingException {
-//    String valueToEnc = null;
-//    String eValue = value;
-//    for (int i = 0; i < ITERATIONS; i++) {
-//      valueToEnc = encryption_key + eValue;
-//      byte[] encValue = c.doFinal(valueToEnc.getBytes());
-//      eValue = new sun.misc.BASE64Encoder().encode(encValue);
-//    }
-//    return eValue;
-	  return value;
+    String valueToEnc = null;
+    String eValue = value;
+    for (int i = 0; i < ITERATIONS; i++) {
+      valueToEnc = encryption_key + eValue;
+      byte[] encValue = c.doFinal(valueToEnc.getBytes());
+      eValue = new sun.misc.BASE64Encoder().encode(encValue);
+    }
+    return eValue;
   }
 
   private static Key generateKey() {
