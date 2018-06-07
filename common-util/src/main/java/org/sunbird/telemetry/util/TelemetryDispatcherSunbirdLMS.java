@@ -27,7 +27,8 @@ public class TelemetryDispatcherSunbirdLMS implements TelemetryDispatcher {
       ProjectLogger.log("EVEVTS TO FLUSH : " + eventReq);
       String response =
           HttpUtil.sendPostRequest(
-              getCompleteUrl(JsonKey.SUNBIRD_LMS_BASE_URL, JsonKey.SUNBIRD_LMS_TELEMETRY_API_URL),
+              getCompleteUrl(
+                  JsonKey.SUNBIRD_TELEMETRY_BASE_URL, JsonKey.SUNBIRD_TELEMETRY_API_PATH),
               eventReq,
               getSunbirdLMSHeaders());
       ProjectLogger.log("FLUSH RESPONSE : " + response);
