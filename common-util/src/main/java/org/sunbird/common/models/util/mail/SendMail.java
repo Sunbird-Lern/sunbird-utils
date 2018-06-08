@@ -85,7 +85,7 @@ public class SendMail {
         engine.init(p);
         
     	transport = session.getTransport("smtp");
-        transport.connect(host, userName, password);
+//        transport.connect(host, userName, password);
         registerShutDownHook();
     } catch (Exception e) {
         ProjectLogger.log(e.toString(), e);
@@ -143,7 +143,7 @@ public class SendMail {
     	  StringWriter writer = new StringWriter();
           template.merge(context, writer);
           message.setContent(writer.toString(), "text/html");
-          transport.sendMessage(message, message.getAllRecipients());
+//          transport.sendMessage(message, message.getAllRecipients());
       } else {
     	  flag = false;
       }
@@ -194,7 +194,7 @@ public class SendMail {
     	  StringWriter writer = new StringWriter();
           template.merge(context, writer);
           message.setContent(writer.toString(), "text/html");
-          transport.sendMessage(message, message.getAllRecipients());
+//          transport.sendMessage(message, message.getAllRecipients());
       }
     } catch (Exception e) {
       ProjectLogger.log(e.toString(), e);
@@ -236,7 +236,7 @@ public class SendMail {
       multipart.addBodyPart(messageBodyPart);
       message.setSubject(subject);
       message.setContent(multipart);
-      transport.sendMessage(message, message.getAllRecipients());
+//      transport.sendMessage(message, message.getAllRecipients());
     } catch (Exception e) {
       ProjectLogger.log(e.toString(), e);
     }
