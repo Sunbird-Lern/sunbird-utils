@@ -17,9 +17,10 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
+//import org.apache.velocity.Template;
+//import org.apache.velocity.VelocityContext;
+//import org.apache.velocity.app.VelocityEngine;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
@@ -39,7 +40,7 @@ public class SendMail {
   private static String password;
   private static String fromEmail;
   private static Session session;
-  private static VelocityEngine engine;
+//  private static VelocityEngine engine;
   private static Transport transport;
 
   static {
@@ -76,16 +77,16 @@ public class SendMail {
     try {
     	session = Session.getInstance(props, new GMailAuthenticator(userName, password));
     	
-        engine = new VelocityEngine();
-        Properties p = new Properties();
-        p.setProperty("resource.loader", "class");
-        p.setProperty(
-            "class.resource.loader.class",
-            "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
-        engine.init(p);
+//        engine = new VelocityEngine();
+//        Properties p = new Properties();
+//        p.setProperty("resource.loader", "class");
+//        p.setProperty(
+//            "class.resource.loader.class",
+//            "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+//        engine.init(p);
         
     	transport = session.getTransport("smtp");
-//        transport.connect(host, userName, password);
+        transport.connect(host, userName, password);
         registerShutDownHook();
     } catch (Exception e) {
         ProjectLogger.log(e.toString(), e);
@@ -101,7 +102,7 @@ public class SendMail {
     fromEmail = PropertiesCache.getInstance().getProperty(JsonKey.EMAIL_SERVER_FROM);
   }
   
-  private static Template getTemplate(String templateName) {
+  /*private static Template getTemplate(String templateName) {
 	  Template template = null;
 	  try {
 		  template = engine.getTemplate(templateName);
@@ -109,7 +110,7 @@ public class SendMail {
 	      ProjectLogger.log(e.toString(), e);
 	  }
 	  return template;
-  }
+  }*/
 
   /**
    * this method is used to send email.
@@ -138,15 +139,17 @@ public class SendMail {
       }
       message.setSubject(subject);
       
-      Template template = getTemplate(templateName);
-      if (null != template) {
-    	  StringWriter writer = new StringWriter();
-          template.merge(context, writer);
-          message.setContent(writer.toString(), "text/html");
-//          transport.sendMessage(message, message.getAllRecipients());
-      } else {
-    	  flag = false;
-      }
+//      Template template = getTemplate(templateName);
+//      if (null != template) {
+//    	  StringWriter writer = new StringWriter();
+//          template.merge(context, writer);
+//          message.setContent(writer.toString(), "text/html");
+      	message.setContent("sending text mail.", "text/html");
+          transport.sendMessage(message, message.getAllRecipients());
+          ProjectLogger.log("Mail sent to " + receipent, LoggerEnum.INFO.name());
+//      } else {
+//    	  flag = false;
+//      }
     } catch (Exception e) {
       flag = false;
       ProjectLogger.log(e.toString(), e);
@@ -189,13 +192,14 @@ public class SendMail {
       }
       message.setSubject(subject);
       
-      Template template = getTemplate(templateName);
-      if (null != template) {
-    	  StringWriter writer = new StringWriter();
-          template.merge(context, writer);
-          message.setContent(writer.toString(), "text/html");
-//          transport.sendMessage(message, message.getAllRecipients());
-      }
+//      Template template = getTemplate(templateName);
+//      if (null != template) {
+//    	  StringWriter writer = new StringWriter();
+//          template.merge(context, writer);
+//          message.setContent(writer.toString(), "text/html");
+      		message.setContent("sending test mail.", "text/html");
+          transport.sendMessage(message, message.getAllRecipients());
+//      }
     } catch (Exception e) {
       ProjectLogger.log(e.toString(), e);
     }
@@ -236,7 +240,7 @@ public class SendMail {
       multipart.addBodyPart(messageBodyPart);
       message.setSubject(subject);
       message.setContent(multipart);
-//      transport.sendMessage(message, message.getAllRecipients());
+      transport.sendMessage(message, message.getAllRecipients());
     } catch (Exception e) {
       ProjectLogger.log(e.toString(), e);
     }
