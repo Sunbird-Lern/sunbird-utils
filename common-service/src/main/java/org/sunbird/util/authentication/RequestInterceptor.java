@@ -8,22 +8,22 @@ import play.mvc.Http;
 import play.mvc.Http.Request;
 
 /**
- * Class to perform request validation stuffs.
+ * This class will do the request header validation
  *
  * @author Amit Kumar
  */
 public class RequestInterceptor {
 
-  private static List<String> restrictedUriList;
+  private static List<String> restrictedUrlList;
   private static List<String> publicUrlList;
   private static List<String> privateUrlList;
 
-  public static List<String> getRestrictedUriList() {
-    return restrictedUriList;
+  public static List<String> getRestrictedUrlList() {
+    return restrictedUrlList;
   }
 
-  public static void setRestrictedUriList(List<String> restrictedUriList) {
-    RequestInterceptor.restrictedUriList = restrictedUriList;
+  public static void setRestrictedUrlList(List<String> restrictedUrlList) {
+    RequestInterceptor.restrictedUrlList = restrictedUrlList;
   }
 
   public static List<String> getPublicUrlList() {
@@ -45,10 +45,10 @@ public class RequestInterceptor {
   private RequestInterceptor() {}
 
   /**
-   * Method to perform the authorisation of request.
+   * This Method will do the request header validation.
    *
-   * @param ctx play request context
-   * @return identifier of actor(triggered the request)
+   * @param ctx Request
+   * @return String
    */
   public static String verifyRequestData(Http.Context ctx) {
     Request request = ctx.request();
@@ -60,7 +60,7 @@ public class RequestInterceptor {
       String authClientId = request.getHeader(HeaderParam.X_Authenticated_Client_Id.getName());
 
       if (StringUtils.isNotBlank(userToken)) {
-        clientId = AuthenticationHelper.verifyUserAccesToken(userToken);
+        clientId = AuthenticationHelper.verifyUserToken(userToken);
       } else if (StringUtils.isNotBlank(authClientToken) && StringUtils.isNotBlank(authClientId)) {
         clientId = AuthenticationHelper.verifyClientAccessToken(authClientId, authClientToken);
         if (!JsonKey.UNAUTHORIZED.equals(clientId)) {
@@ -77,18 +77,18 @@ public class RequestInterceptor {
    * this method will check incoming request required validation or not. if this method return true
    * it means no need of validation other wise validation is required.
    *
-   * @param request Stirng URI
-   * @return boolean
+   * @param requestUrl Request URI
+   * @return whether URI part of public URL or not ,If URI is public URI return true else false.
    */
-  public static boolean isRequestInExcludeList(String request) {
+  public static boolean isRequestInExcludeList(String requestUrl) {
     boolean resp = false;
-    if (!StringUtils.isBlank(request)) {
-      if (publicUrlList.contains(request)) {
+    if (StringUtils.isNotBlank(requestUrl)) {
+      if (publicUrlList.contains(requestUrl)) {
         resp = true;
       } else {
-        String[] splitedpath = request.split("[/]");
-        String tempRequest = removeLastValue(splitedpath);
-        if (publicUrlList.contains(tempRequest)) {
+        String[] splitPath = requestUrl.split("[/]");
+        String url = removeLastValue(splitPath);
+        if (publicUrlList.contains(url)) {
           resp = true;
         }
       }
@@ -96,12 +96,18 @@ public class RequestInterceptor {
     return resp;
   }
 
-  private static String removeLastValue(String splited[]) {
+  /**
+   * Method to remove last value
+   *
+   * @param splitPath String []
+   * @return String
+   */
+  private static String removeLastValue(String splitPath[]) {
 
     StringBuilder builder = new StringBuilder();
-    if (splited != null && splited.length > 0) {
-      for (int i = 1; i < splited.length - 1; i++) {
-        builder.append("/" + splited[i]);
+    if (splitPath != null && splitPath.length > 0) {
+      for (int i = 1; i < splitPath.length - 1; i++) {
+        builder.append("/" + splitPath[i]);
       }
     }
     return builder.toString();

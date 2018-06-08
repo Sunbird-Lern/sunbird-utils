@@ -58,24 +58,24 @@ public class ServiceBaseGlobal extends BaseGlobal {
     public Promise<Result> call(Http.Context ctx) throws java.lang.Throwable {
       Promise<Result> result = null;
       ctx.response().setHeader("Access-Control-Allow-Origin", "*");
-      // Verify the request data
-      String requesterId = RequestInterceptor.verifyRequestData(ctx);
+      // Verify request data like authentication
+      String message = RequestInterceptor.verifyRequestData(ctx);
       // Set required parameters for telemetry event
-      intializeRequestInfo(ctx, requesterId);
-      if (!USER_UNAUTH_STATES.contains(requesterId)) {
-        ctx.flash().put(JsonKey.USER_ID, requesterId);
+      intializeRequestInfo(ctx, message);
+      if (!USER_UNAUTH_STATES.contains(message)) {
+        ctx.flash().put(JsonKey.USER_ID, message);
         ctx.flash().put(JsonKey.IS_AUTH_REQ, "false");
-        for (String uri : RequestInterceptor.getRestrictedUriList()) {
+        for (String uri : RequestInterceptor.getRestrictedUrlList()) {
           if (ctx.request().path().contains(uri)) {
             ctx.flash().put(JsonKey.IS_AUTH_REQ, "true");
             break;
           }
         }
         result = delegate.call(ctx);
-      } else if (JsonKey.UNAUTHORIZED.equals(requesterId)) {
+      } else if (JsonKey.UNAUTHORIZED.equals(message)) {
         result =
             onDataValidationError(
-                ctx.request(), requesterId, ResponseCode.UNAUTHORIZED.getResponseCode());
+                ctx.request(), message, ResponseCode.UNAUTHORIZED.getResponseCode());
       } else {
         result = delegate.call(ctx);
       }
@@ -84,10 +84,10 @@ public class ServiceBaseGlobal extends BaseGlobal {
   }
 
   /**
-   * This method will be called on application start up , method to perform the tasks performed at
-   * application start up time.
+   * This method will be called on application start up. it will be called only time in it's life
+   * cycle.
    *
-   * @param app play Application
+   * @param app Application
    */
   public void onStart(Application app) {
     setEnvironment();
@@ -116,105 +116,9 @@ public class ServiceBaseGlobal extends BaseGlobal {
     return new ActionWrapper(super.onRequest(request, actionMethod));
   }
 
-  private String getOperationEnv(Request request) {
-
-    String uri = request.uri();
-    String env;
-    if (uri.startsWith("/v1/user")) {
-      env = JsonKey.USER;
-    } else if (uri.startsWith("/v1/org")) {
-      env = JsonKey.ORGANISATION;
-    } else if (uri.startsWith("/v1/object")) {
-      env = JsonKey.ANNOUNCEMENT;
-    } else if (uri.startsWith("/v1/page")) {
-      env = JsonKey.PAGE;
-    } else if (uri.startsWith("/v1/course/batch")) {
-      env = JsonKey.BATCH;
-    } else if (uri.startsWith("/v1/notification")) {
-      env = JsonKey.NOTIFICATION;
-    } else if (uri.startsWith("/v1/dashboard")) {
-      env = JsonKey.DASHBOARD;
-    } else if (uri.startsWith("/v1/badges")) {
-      env = JsonKey.BADGES;
-    } else if (uri.startsWith("/v1/issuer")) {
-      env = BadgingJsonKey.BADGES;
-    } else {
-      env = "miscellaneous";
-    }
-    return env;
-  }
-
-  /**
-   * Method to perform action on occurrences of data validation error
-   *
-   * @param request Request represents the play request object
-   * @param errorMessage represents the validation error message
-   * @return Promise<Result>
-   */
-  private Promise<Result> onDataValidationError(
-      Request request, String errorMessage, int responseCode) {
-    ProjectLogger.log("Data error found--" + errorMessage);
-    ResponseCode code = ResponseCode.getResponse(errorMessage);
-    ResponseCode headerCode = ResponseCode.CLIENT_ERROR;
-    Response resp = BaseController.createFailureResponse(request, code, headerCode);
-    return Promise.<Result>pure(Results.status(responseCode, Json.toJson(resp)));
-  }
-
-  /**
-   * This method will be called by play in case error occur.
-   *
-   * @param request Http.RequestHeader
-   * @param t Throwable
-   * @return Promise<Result>
-   */
-  @Override
-  public Promise<Result> onError(Http.RequestHeader request, Throwable t) {
-
-    Response response = null;
-    ProjectCommonException commonException = null;
-    if (t instanceof ProjectCommonException) {
-      commonException = (ProjectCommonException) t;
-      response =
-          BaseController.createResponseOnException(
-              request.path(), (ProjectCommonException) t, request.method());
-    } else if (t instanceof akka.pattern.AskTimeoutException) {
-      commonException =
-          new ProjectCommonException(
-              ResponseCode.actorConnectionError.getErrorCode(),
-              ResponseCode.actorConnectionError.getErrorMessage(),
-              ResponseCode.SERVER_ERROR.getResponseCode());
-    } else {
-      commonException =
-          new ProjectCommonException(
-              ResponseCode.internalError.getErrorCode(),
-              ResponseCode.internalError.getErrorMessage(),
-              ResponseCode.SERVER_ERROR.getResponseCode());
-    }
-    response =
-        BaseController.createResponseOnException(request.path(), commonException, request.method());
-    return Promise.<Result>pure(Results.internalServerError(Json.toJson(response)));
-  }
-
-  private Environment setEnvironment() {
-
-    if (play.Play.isDev()) {
-      return env = Environment.dev;
-    } else if (play.Play.isTest()) {
-      return env = Environment.qa;
-    } else {
-      return env = Environment.prod;
-    }
-  }
-
-  /**
-   * Method to save the request related information inorder to use while telemetry generation.
-   *
-   * @param ctx play context
-   * @param userId identifier of actor(triggered the request)
-   */
   private void intializeRequestInfo(Context ctx, String userId) {
     Request request = ctx.request();
-    String actionMethod = request.method();
+    String actionMethod = ctx.request().method();
     String messageId = ExecutionContext.getRequestId();
     String url = request.uri();
     String methodName = actionMethod;
@@ -228,7 +132,6 @@ public class ServiceBaseGlobal extends BaseGlobal {
       channel = JsonKey.DEFAULT_ROOT_ORG_ID;
     }
     reqContext.put(JsonKey.CHANNEL, channel);
-    // we need channel in case
     ctx.flash().put(JsonKey.CHANNEL, channel);
     reqContext.put(JsonKey.ENV, getOperationEnv(request));
     reqContext.put(JsonKey.REQUEST_ID, ExecutionContext.getRequestId());
@@ -264,5 +167,105 @@ public class ServiceBaseGlobal extends BaseGlobal {
     }
     ctx.flash().put(JsonKey.REQUEST_ID, messageId);
     requestInfo.put(messageId, map);
+  }
+
+  private String getEnv(Request request) {
+
+    String uri = request.uri();
+    String env;
+    if (uri.startsWith("/v1/user")) {
+      env = JsonKey.USER;
+    } else if (uri.startsWith("/v1/org")) {
+      env = JsonKey.ORGANISATION;
+    } else if (uri.startsWith("/v1/object")) {
+      env = JsonKey.ANNOUNCEMENT;
+    } else if (uri.startsWith("/v1/page")) {
+      env = JsonKey.PAGE;
+    } else if (uri.startsWith("/v1/course/batch")) {
+      env = JsonKey.BATCH;
+    } else if (uri.startsWith("/v1/notification")) {
+      env = JsonKey.NOTIFICATION;
+    } else if (uri.startsWith("/v1/dashboard")) {
+      env = JsonKey.DASHBOARD;
+    } else if (uri.startsWith("/v1/badges")) {
+      env = JsonKey.BADGES;
+    } else if (uri.startsWith("/v1/issuer")) {
+      env = BadgingJsonKey.BADGES;
+    } else if (uri.startsWith("/v1/content")) {
+      env = JsonKey.BATCH;
+    } else if (uri.startsWith("/v1/role")) {
+      env = JsonKey.ROLE;
+    } else if (uri.startsWith("/v1/note")) {
+      env = JsonKey.NOTE;
+    } else if (uri.startsWith("/v1/location")) {
+      env = JsonKey.LOCATION;
+    } else {
+      env = "miscellaneous";
+    }
+    return env;
+  }
+
+  /**
+   * This method will do request data validation .
+   *
+   * @param request Request represents the play request object.
+   * @param errorMessage represents the validation error message.
+   * @return Promise<Result>
+   */
+  public Promise<Result> onDataValidationError(
+      Request request, String errorMessage, int responseCode) {
+    ProjectLogger.log("Data error found--" + errorMessage);
+    ResponseCode code = ResponseCode.getResponse(errorMessage);
+    ResponseCode headerCode = ResponseCode.CLIENT_ERROR;
+    Response resp = BaseController.createFailureResponse(request, code, headerCode);
+    return Promise.<Result>pure(Results.status(responseCode, Json.toJson(resp)));
+  }
+
+  /**
+   * This method will be called by play in case error occur.
+   *
+   * @param request Http.RequestHeader
+   * @param t Throwable
+   * @return Promise<Result>
+   */
+  @Override
+  public Promise<Result> onError(Http.RequestHeader request, Throwable t) {
+
+    Response response = null;
+    ProjectCommonException commonException = null;
+    if (t instanceof ProjectCommonException) {
+      commonException = (ProjectCommonException) t;
+    } else if (t instanceof akka.pattern.AskTimeoutException) {
+      commonException =
+          new ProjectCommonException(
+              ResponseCode.actorConnectionError.getErrorCode(),
+              ResponseCode.actorConnectionError.getErrorMessage(),
+              ResponseCode.SERVER_ERROR.getResponseCode());
+    } else {
+      commonException =
+          new ProjectCommonException(
+              ResponseCode.internalError.getErrorCode(),
+              ResponseCode.internalError.getErrorMessage(),
+              ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    response =
+        BaseController.createResponseOnException(request.path(), commonException, request.method());
+    return Promise.<Result>pure(Results.internalServerError(Json.toJson(response)));
+  }
+
+  /**
+   * This method will identify the environment and update with enum.
+   *
+   * @return Environment
+   */
+  public Environment setEnvironment() {
+
+    if (play.Play.isDev()) {
+      return env = Environment.dev;
+    } else if (play.Play.isTest()) {
+      return env = Environment.qa;
+    } else {
+      return env = Environment.prod;
+    }
   }
 }
