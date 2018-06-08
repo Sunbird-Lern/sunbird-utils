@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
-import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.BadgingJsonKey;
 import org.sunbird.common.models.util.JsonKey;
@@ -119,7 +118,7 @@ public class ServiceBaseGlobal extends BaseGlobal {
 
     ExecutionContext context = ExecutionContext.getCurrent();
     Map<String, Object> reqContext = new HashMap<>();
-    // set env and channel to the
+    // set env and channel to the request context
     String channel = request.getHeader(JsonKey.CHANNEL_ID);
     if (StringUtils.isBlank(channel)) {
       channel = ProjectUtil.getConfigValue(JsonKey.SUNBIRD_DEFAULT_CHANNEL);
@@ -210,38 +209,6 @@ public class ServiceBaseGlobal extends BaseGlobal {
     ResponseCode headerCode = ResponseCode.CLIENT_ERROR;
     Response resp = BaseController.createFailureResponse(request, code, headerCode);
     return Promise.<Result>pure(Results.status(responseCode, Json.toJson(resp)));
-  }
-
-  /**
-   * This method will be called by play in case error occur.
-   *
-   * @param request Http.RequestHeader
-   * @param t Throwable
-   * @return Promise<Result>
-   */
-  @Override
-  public Promise<Result> onError(Http.RequestHeader request, Throwable t) {
-
-    Response response = null;
-    ProjectCommonException commonException = null;
-    if (t instanceof ProjectCommonException) {
-      commonException = (ProjectCommonException) t;
-    } else if (t instanceof akka.pattern.AskTimeoutException) {
-      commonException =
-          new ProjectCommonException(
-              ResponseCode.actorConnectionError.getErrorCode(),
-              ResponseCode.actorConnectionError.getErrorMessage(),
-              ResponseCode.SERVER_ERROR.getResponseCode());
-    } else {
-      commonException =
-          new ProjectCommonException(
-              ResponseCode.internalError.getErrorCode(),
-              ResponseCode.internalError.getErrorMessage(),
-              ResponseCode.SERVER_ERROR.getResponseCode());
-    }
-    response =
-        BaseController.createResponseOnException(request.path(), commonException, request.method());
-    return Promise.<Result>pure(Results.internalServerError(Json.toJson(response)));
   }
 
   /**

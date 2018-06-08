@@ -11,8 +11,7 @@ import org.sunbird.services.sso.SSOManager;
 import org.sunbird.services.sso.SSOServiceFactory;
 
 /**
- * This class will handle all the method related to authentication. For example verifying user
- * access token, creating access token after success login.
+ * Helper class with methods to authenticate caller of API requests
  *
  * @author Manzarul
  */
