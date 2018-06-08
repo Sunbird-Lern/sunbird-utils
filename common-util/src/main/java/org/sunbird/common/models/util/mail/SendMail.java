@@ -141,12 +141,12 @@ public class SendMail {
       
 //      Template template = getTemplate(templateName);
 //      if (null != template) {
-//    	  StringWriter writer = new StringWriter();
+    	  StringWriter writer = new StringWriter();
+    	  writer.write("sending test mail.");
 //          template.merge(context, writer);
-//          message.setContent(writer.toString(), "text/html");
-      	message.setContent("sending text mail.", "text/html");
+          message.setContent(writer.toString(), "text/html");
           transport.sendMessage(message, message.getAllRecipients());
-          ProjectLogger.log("Mail sent to " + receipent, LoggerEnum.INFO.name());
+          ProjectLogger.log("With writer mail sent to " + receipent, LoggerEnum.INFO.name());
 //      } else {
 //    	  flag = false;
 //      }
@@ -194,11 +194,12 @@ public class SendMail {
       
 //      Template template = getTemplate(templateName);
 //      if (null != template) {
-//    	  StringWriter writer = new StringWriter();
+    	  StringWriter writer = new StringWriter();
 //          template.merge(context, writer);
-//          message.setContent(writer.toString(), "text/html");
-      		message.setContent("sending test mail.", "text/html");
+    	  	writer.write("sending test mail.");
+          message.setContent(writer.toString(), "text/html");
           transport.sendMessage(message, message.getAllRecipients());
+          ProjectLogger.log("With writer mail sent to " + receipent, LoggerEnum.INFO.name());
 //      }
     } catch (Exception e) {
       ProjectLogger.log(e.toString(), e);
