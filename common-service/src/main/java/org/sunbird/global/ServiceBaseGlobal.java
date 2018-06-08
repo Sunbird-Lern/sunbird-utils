@@ -56,15 +56,14 @@ public class ServiceBaseGlobal extends BaseGlobal {
 
     @Override
     public Promise<Result> call(Http.Context ctx) throws java.lang.Throwable {
-      ctx.request().headers();
       Promise<Result> result = null;
       ctx.response().setHeader("Access-Control-Allow-Origin", "*");
-      // Unauthorized, Anonymous, UserID
-      String message = RequestInterceptor.verifyRequestData(ctx);
-      // call method to set all the required params for the telemetry event(log)...
-      intializeRequestInfo(ctx, message);
-      if (!USER_UNAUTH_STATES.contains(message)) {
-        ctx.flash().put(JsonKey.USER_ID, message);
+      // Verify the request data
+      String requesterId = RequestInterceptor.verifyRequestData(ctx);
+      // Set required parameters for telemetry event
+      intializeRequestInfo(ctx, requesterId);
+      if (!USER_UNAUTH_STATES.contains(requesterId)) {
+        ctx.flash().put(JsonKey.USER_ID, requesterId);
         ctx.flash().put(JsonKey.IS_AUTH_REQ, "false");
         for (String uri : RequestInterceptor.getRestrictedUriList()) {
           if (ctx.request().path().contains(uri)) {
@@ -73,10 +72,10 @@ public class ServiceBaseGlobal extends BaseGlobal {
           }
         }
         result = delegate.call(ctx);
-      } else if (JsonKey.UNAUTHORIZED.equals(message)) {
+      } else if (JsonKey.UNAUTHORIZED.equals(requesterId)) {
         result =
             onDataValidationError(
-                ctx.request(), message, ResponseCode.UNAUTHORIZED.getResponseCode());
+                ctx.request(), requesterId, ResponseCode.UNAUTHORIZED.getResponseCode());
       } else {
         result = delegate.call(ctx);
       }

@@ -54,13 +54,13 @@ public class RequestInterceptor {
     Request request = ctx.request();
     if (!isRequestInExcludeList(request.path())) {
       String clientId = JsonKey.UNAUTHORIZED;
-      String accessToken = request.getHeader(HeaderParam.X_Access_TokenId.getName());
+      String userToken = request.getHeader(HeaderParam.X_Authenticated_User_Token.getName());
       String authClientToken =
           request.getHeader(HeaderParam.X_Authenticated_Client_Token.getName());
       String authClientId = request.getHeader(HeaderParam.X_Authenticated_Client_Id.getName());
 
-      if (StringUtils.isNotBlank(accessToken)) {
-        clientId = AuthenticationHelper.verifyUserAccesToken(accessToken);
+      if (StringUtils.isNotBlank(userToken)) {
+        clientId = AuthenticationHelper.verifyUserAccesToken(userToken);
       } else if (StringUtils.isNotBlank(authClientToken) && StringUtils.isNotBlank(authClientId)) {
         clientId = AuthenticationHelper.verifyClientAccessToken(authClientId, authClientToken);
         if (!JsonKey.UNAUTHORIZED.equals(clientId)) {
