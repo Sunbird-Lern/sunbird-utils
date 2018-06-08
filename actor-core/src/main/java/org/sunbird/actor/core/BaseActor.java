@@ -36,10 +36,8 @@ public abstract class BaseActor extends UntypedAbstractActor {
       } catch (Exception e) {
         onReceiveException(operation, e);
       }
-    } else if (message instanceof Response) {
-      sender().tell(message, self());
     } else {
-      unSupportedMessage();
+      // Do nothing !
     }
   }
 
