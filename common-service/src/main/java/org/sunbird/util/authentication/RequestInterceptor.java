@@ -8,7 +8,7 @@ import play.mvc.Http;
 import play.mvc.Http.Request;
 
 /**
- * This class will do the request header validation
+ * Request interceptor responsible to authenticated HTTP requests
  *
  * @author Amit Kumar
  */
@@ -45,10 +45,11 @@ public class RequestInterceptor {
   private RequestInterceptor() {}
 
   /**
-   * This Method will do the request header validation.
+   * Authenticates given HTTP request context
    *
-   * @param ctx Request
-   * @return String
+   * @param ctx HTTP play request context
+   * @return User or Client ID for authenticated request. For unauthenticated requests, UNAUTHORIZED
+   *     is returned
    */
   public static String verifyRequestData(Http.Context ctx) {
     Request request = ctx.request();
@@ -74,11 +75,10 @@ public class RequestInterceptor {
   }
 
   /**
-   * this method will check incoming request required validation or not. if this method return true
-   * it means no need of validation other wise validation is required.
+   * Checks if request URL is in excluded (i.e. public) URL list or not
    *
-   * @param requestUrl Request URI
-   * @return whether URI part of public URL or not ,If URI is public URI return true else false.
+   * @param requestUrl Request URL
+   * @return True if URL is in excluded (public) URLs. Otherwise, returns false
    */
   public static boolean isRequestInExcludeList(String requestUrl) {
     boolean resp = false;
@@ -87,8 +87,8 @@ public class RequestInterceptor {
         resp = true;
       } else {
         String[] splitPath = requestUrl.split("[/]");
-        String url = removeLastValue(splitPath);
-        if (publicUrlList.contains(url)) {
+        String urlWithoutPathParam = removeLastValue(splitPath);
+        if (publicUrlList.contains(urlWithoutPathParam)) {
           resp = true;
         }
       }
@@ -97,10 +97,10 @@ public class RequestInterceptor {
   }
 
   /**
-   * Method to remove last value
+   * Returns URL without path and query parameters.
    *
-   * @param splitPath String []
-   * @return String
+   * @param splitPath URL path split on slash (i.e. /)
+   * @return URL without path and query parameters
    */
   private static String removeLastValue(String splitPath[]) {
 

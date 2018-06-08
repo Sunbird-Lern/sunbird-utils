@@ -11,7 +11,6 @@ import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.BadgingJsonKey;
 import org.sunbird.common.models.util.JsonKey;
-import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.ProjectUtil.Environment;
@@ -33,8 +32,8 @@ import play.mvc.Result;
 import play.mvc.Results;
 
 /**
- * This class will work as a filter. All play request pass through this filter onCall method. Class
- * also contains onStart method that will be call only once when application will be started.
+ * Base class for sunbird services which require Cassandra connection and authentication of API
+ * requests to perform specific tasks at application start up or shut down.
  *
  * @author arvind.
  */
@@ -44,7 +43,6 @@ public class ServiceBaseGlobal extends BaseGlobal {
 
   public static Map<String, Map<String, Object>> requestInfo = new HashMap<>();
 
-  public static String ssoPublicKey = "";
   private static final String version = "v1";
   private static final List<String> USER_UNAUTH_STATES =
       Arrays.asList(JsonKey.UNAUTHORIZED, JsonKey.ANONYMOUS);
@@ -59,11 +57,11 @@ public class ServiceBaseGlobal extends BaseGlobal {
       Promise<Result> result = null;
       ctx.response().setHeader("Access-Control-Allow-Origin", "*");
       // Verify request data like authentication
-      String message = RequestInterceptor.verifyRequestData(ctx);
+      String userId = RequestInterceptor.verifyRequestData(ctx);
       // Set required parameters for telemetry event
-      intializeRequestInfo(ctx, message);
-      if (!USER_UNAUTH_STATES.contains(message)) {
-        ctx.flash().put(JsonKey.USER_ID, message);
+      intializeRequestInfo(ctx, userId);
+      if (!USER_UNAUTH_STATES.contains(userId)) {
+        ctx.flash().put(JsonKey.USER_ID, userId);
         ctx.flash().put(JsonKey.IS_AUTH_REQ, "false");
         for (String uri : RequestInterceptor.getRestrictedUrlList()) {
           if (ctx.request().path().contains(uri)) {
@@ -72,10 +70,10 @@ public class ServiceBaseGlobal extends BaseGlobal {
           }
         }
         result = delegate.call(ctx);
-      } else if (JsonKey.UNAUTHORIZED.equals(message)) {
+      } else if (JsonKey.UNAUTHORIZED.equals(userId)) {
         result =
-            onDataValidationError(
-                ctx.request(), message, ResponseCode.UNAUTHORIZED.getResponseCode());
+            createValidationErrorResult(
+                ctx.request(), userId, ResponseCode.UNAUTHORIZED.getResponseCode());
       } else {
         result = delegate.call(ctx);
       }
@@ -84,33 +82,29 @@ public class ServiceBaseGlobal extends BaseGlobal {
   }
 
   /**
-   * This method will be called on application start up. it will be called only time in it's life
-   * cycle.
+   * Called on application startup.
    *
-   * @param app Application
+   * @param app Play application
    */
   public void onStart(Application app) {
     setEnvironment();
-    ProjectLogger.log("Server started.. with environment: " + env.name(), LoggerEnum.INFO.name());
-    ssoPublicKey = System.getenv(JsonKey.SSO_PUBLIC_KEY);
     CassandraStartUpUtil.checkCassandraDbConnections(JsonKey.SUNBIRD);
     CassandraStartUpUtil.checkCassandraDbConnections(JsonKey.SUNBIRD_PLUGIN);
   }
 
   /**
-   * This method will be called on each request.
+   * Called to create root action for each request.
    *
-   * @param request represents the Play request object.
-   * @param actionMethod Method type , example - GET , POST etc.
-   * @return Action
+   * @param request HTTP request
+   * @param actionMethod Action method
+   * @return Root action created for received request
    */
   @SuppressWarnings("rawtypes")
   public Action onRequest(Request request, Method actionMethod) {
 
     String messageId = request.getHeader(JsonKey.MESSAGE_ID);
     if (StringUtils.isBlank(messageId)) {
-      UUID uuid = UUID.randomUUID();
-      messageId = uuid.toString();
+      messageId = UUID.randomUUID().toString();
     }
     ExecutionContext.setRequestId(messageId);
     return new ActionWrapper(super.onRequest(request, actionMethod));
@@ -121,7 +115,6 @@ public class ServiceBaseGlobal extends BaseGlobal {
     String actionMethod = ctx.request().method();
     String messageId = ExecutionContext.getRequestId();
     String url = request.uri();
-    String methodName = actionMethod;
     long startTime = System.currentTimeMillis();
 
     ExecutionContext context = ExecutionContext.getCurrent();
@@ -129,11 +122,11 @@ public class ServiceBaseGlobal extends BaseGlobal {
     // set env and channel to the
     String channel = request.getHeader(JsonKey.CHANNEL_ID);
     if (StringUtils.isBlank(channel)) {
-      channel = JsonKey.DEFAULT_ROOT_ORG_ID;
+      channel = ProjectUtil.getConfigValue(JsonKey.SUNBIRD_DEFAULT_CHANNEL);
     }
     reqContext.put(JsonKey.CHANNEL, channel);
     ctx.flash().put(JsonKey.CHANNEL, channel);
-    reqContext.put(JsonKey.ENV, getOperationEnv(request));
+    reqContext.put(JsonKey.ENV, getEnv(request));
     reqContext.put(JsonKey.REQUEST_ID, ExecutionContext.getRequestId());
 
     if (!USER_UNAUTH_STATES.contains(userId)) {
@@ -157,14 +150,11 @@ public class ServiceBaseGlobal extends BaseGlobal {
     map.put(JsonKey.CONTEXT, TelemetryUtil.getTelemetryContext());
     Map<String, Object> additionalInfo = new HashMap<>();
     additionalInfo.put(JsonKey.URL, url);
-    additionalInfo.put(JsonKey.METHOD, methodName);
+    additionalInfo.put(JsonKey.METHOD, actionMethod);
     additionalInfo.put(JsonKey.START_TIME, startTime);
 
     // additional info contains info other than context info ...
     map.put(JsonKey.ADDITIONAL_INFO, additionalInfo);
-    if (StringUtils.isBlank(messageId)) {
-      messageId = JsonKey.DEFAULT_CONSUMER_ID;
-    }
     ctx.flash().put(JsonKey.REQUEST_ID, messageId);
     requestInfo.put(messageId, map);
   }
@@ -206,15 +196,16 @@ public class ServiceBaseGlobal extends BaseGlobal {
   }
 
   /**
-   * This method will do request data validation .
+   * Returns a promise with error result in case of validation error
    *
-   * @param request Request represents the play request object.
-   * @param errorMessage represents the validation error message.
-   * @return Promise<Result>
+   * @param request HTTP request in play context
+   * @param errorMessage Validation error message
+   * @return Promise with error result
    */
-  public Promise<Result> onDataValidationError(
+  private Promise<Result> createValidationErrorResult(
       Request request, String errorMessage, int responseCode) {
-    ProjectLogger.log("Data error found--" + errorMessage);
+    ProjectLogger.log(
+        "ServiceBaseGlobal:createValidationErrorResult: Validation error result: " + errorMessage);
     ResponseCode code = ResponseCode.getResponse(errorMessage);
     ResponseCode headerCode = ResponseCode.CLIENT_ERROR;
     Response resp = BaseController.createFailureResponse(request, code, headerCode);
