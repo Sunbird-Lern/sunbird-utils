@@ -2,13 +2,16 @@ package org.sunbird.common.request;
 
 import java.text.MessageFormat;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
+import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
+import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.responsecode.ResponseCode;
 
 /**
@@ -117,6 +120,35 @@ public class BaseRequestValidator {
   }
 
   /**
+   * Method to check whether given mandatory fields is in given map or not .
+   *
+   * @param data Map contains the key value
+   * @param keys List of string represents the mandatory fields
+   * @param exceptionMsg exception message
+   */
+  public void checkMandatoryParamsPresent(
+      Map<String, Object> data, String exceptionMsg, String... keys) {
+    if (MapUtils.isEmpty(data)) {
+      throw new ProjectCommonException(
+          ResponseCode.invalidRequestData.getErrorCode(),
+          ResponseCode.invalidRequestData.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    Arrays.stream(keys)
+        .forEach(
+            key -> {
+              if (StringUtils.isEmpty((String) data.get(key))) {
+                throw new ProjectCommonException(
+                    ResponseCode.mandatoryParamsMissing.getErrorCode(),
+                    ProjectUtil.formatMessage(
+                        ResponseCode.mandatoryParamsMissing.getErrorMessage(), exceptionMsg),
+                    ResponseCode.CLIENT_ERROR.getResponseCode(),
+                    key);
+              }
+            });
+  }
+
+  /**
    * Method to check whether given fields is in given map or not .If it is there throw exception.
    * because in some update request cases we don't want to update some props to , if it is there in
    * request , throw exception.
@@ -169,5 +201,65 @@ public class BaseRequestValidator {
                     key);
               }
             });
+  }
+
+  /**
+   * Method to check unnecessary fields in request
+   *
+   * @param requestMap Request information
+   * @param fields List of not allowed fields
+   */
+  public void checkForFieldsNotAllowed(Map<String, Object> requestMap, List<String> fields) {
+    fields
+        .stream()
+        .forEach(
+            field -> {
+              if (requestMap.containsKey(field)) {
+                throw new ProjectCommonException(
+                    ResponseCode.invalidRequestParameter.getErrorCode(),
+                    ProjectUtil.formatMessage(
+                        ResponseCode.invalidRequestParameter.getErrorMessage(), field),
+                    ResponseCode.CLIENT_ERROR.getResponseCode());
+              }
+            });
+  }
+
+  /**
+   * This method will validate the instance type as List for given fields in request.
+   *
+   * @param requestMap Request information
+   * @param fields List of fields
+   */
+  public void validateListParam(Map<String, Object> requestMap, String... fields) {
+    Arrays.stream(fields)
+        .forEach(
+            field -> {
+              if (requestMap.containsKey(field)
+                  && null != requestMap.get(field)
+                  && !(requestMap.get(field) instanceof List)) {
+                throw new ProjectCommonException(
+                    ResponseCode.dataTypeError.getErrorCode(),
+                    ProjectUtil.formatMessage(
+                        ResponseCode.dataTypeError.getErrorMessage(), field, JsonKey.LIST),
+                    ResponseCode.CLIENT_ERROR.getResponseCode());
+              }
+            });
+  }
+
+  /**
+   * This method will validate the date with format "yyyy-MM-dd".
+   *
+   * @param dob
+   */
+  public void validateDateParam(String dob) {
+    if (StringUtils.isNotBlank(dob)) {
+      boolean isValidDate = ProjectUtil.isDateValidFormat(ProjectUtil.YEAR_MONTH_DATE_FORMAT, dob);
+      if (!isValidDate) {
+        throw new ProjectCommonException(
+            ResponseCode.dateFormatError.getErrorCode(),
+            ResponseCode.dateFormatError.getErrorMessage(),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
+    }
   }
 }
