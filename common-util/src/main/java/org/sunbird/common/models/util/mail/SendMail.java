@@ -8,6 +8,7 @@ import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 import javax.mail.BodyPart;
 import javax.mail.Message;
+import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -39,9 +40,9 @@ public class SendMail {
   private static String userName;
   private static String password;
   private static String fromEmail;
-  private static Session session;
+//  private static Session session;
 //  private static VelocityEngine engine;
-  private static Transport transport;
+//  private static Transport transport;
 
   static {
     // collecting setup value from ENV
@@ -75,7 +76,7 @@ public class SendMail {
     props.put("mail.smtp.port", port);
     
     try {
-    	session = Session.getInstance(props, new GMailAuthenticator(userName, password));
+//    	session = Session.getInstance(props, new GMailAuthenticator(userName, password));
     	
 //        engine = new VelocityEngine();
 //        Properties p = new Properties();
@@ -85,8 +86,8 @@ public class SendMail {
 //            "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
 //        engine.init(p);
         
-    	transport = session.getTransport("smtp");
-        transport.connect(host, userName, password);
+//    	transport = session.getTransport("smtp");
+//        transport.connect(host, userName, password);
         registerShutDownHook();
     } catch (Exception e) {
         ProjectLogger.log(e.toString(), e);
@@ -127,7 +128,12 @@ public class SendMail {
     if (context != null) {
       context.put(JsonKey.FROM_EMAIL, fromEmail);
     }
+    Transport transport = null;
+    
     try {
+    	  Session session = Session.getInstance(props, new GMailAuthenticator(userName, password));
+  	  transport = session.getTransport("smtp");
+  	  transport.connect(host, userName, password);
       MimeMessage message = new MimeMessage(session);
       message.setFrom(new InternetAddress(fromEmail));
       int size = receipent.length;
@@ -146,13 +152,21 @@ public class SendMail {
 //          template.merge(context, writer);
           message.setContent(writer.toString(), "text/html");
           transport.sendMessage(message, message.getAllRecipients());
-          ProjectLogger.log("With writer mail sent to " + receipent, LoggerEnum.INFO.name());
+          ProjectLogger.log("Transport inside - mail sent to " + receipent, LoggerEnum.INFO.name());
 //      } else {
 //    	  flag = false;
 //      }
     } catch (Exception e) {
       flag = false;
       ProjectLogger.log(e.toString(), e);
+    } finally {
+    	if (null != transport)
+		try {
+			transport.close();
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     return flag;
   }
@@ -173,7 +187,11 @@ public class SendMail {
       String templateName,
       String[] ccList) {
     ProjectLogger.log("Mail Template name - " + templateName, LoggerEnum.INFO.name());
+    Transport transport = null;
     try {
+    	Session session = Session.getInstance(props, new GMailAuthenticator(userName, password));
+  	  transport = session.getTransport("smtp");
+  	  transport.connect(host, userName, password);
       MimeMessage message = new MimeMessage(session);
       message.setFrom(new InternetAddress(fromEmail));
       int size = receipent.length;
@@ -199,10 +217,19 @@ public class SendMail {
     	  	writer.write("sending test mail.");
           message.setContent(writer.toString(), "text/html");
           transport.sendMessage(message, message.getAllRecipients());
-          ProjectLogger.log("With writer mail sent to " + receipent, LoggerEnum.INFO.name());
+          ProjectLogger.log("Transport inside - mail sent to " + receipent, LoggerEnum.INFO.name());
 //      }
     } catch (Exception e) {
       ProjectLogger.log(e.toString(), e);
+    } finally {
+    	if (null != transport) {
+    		try {
+			transport.close();
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	}
     }
   }
 
@@ -216,7 +243,11 @@ public class SendMail {
    */
   public static void sendAttachment(
       String[] receipent, String mail, String subject, String filePath) {
+	  Transport transport = null;
     try {
+    	  Session session = Session.getInstance(props, new GMailAuthenticator(userName, password));
+  	  transport = session.getTransport("smtp");
+  	  transport.connect(host, userName, password);
       MimeMessage message = new MimeMessage(session);
       message.setFrom(new InternetAddress(fromEmail));
       int size = receipent.length;
@@ -244,6 +275,13 @@ public class SendMail {
       transport.sendMessage(message, message.getAllRecipients());
     } catch (Exception e) {
       ProjectLogger.log(e.toString(), e);
+    } finally {
+    		try {
+			transport.close();
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
   }
   
@@ -262,12 +300,12 @@ public class SendMail {
     @Override
     public void run() {
       ProjectLogger.log("started resource cleanup SMTP clients.");
-      try {
-    	  if (null != transport)
-    		  transport.close();
-      } catch (Exception e) {
-          ProjectLogger.log(e.toString(), e);
-      }
+//      try {
+//    	  if (null != transport)
+//    		  transport.close();
+//      } catch (Exception e) {
+//          ProjectLogger.log(e.toString(), e);
+//      }
       ProjectLogger.log("completed resource cleanup SMTP clients.");
     }
   }
