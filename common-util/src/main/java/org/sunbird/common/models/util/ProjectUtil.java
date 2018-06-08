@@ -1010,4 +1010,16 @@ public class ProjectUtil {
     map.put(ENDDATE, new SimpleDateFormat(YYYY_MM_DD_FORMATTER).format(cal.getTime()));
     return map;
   }
+
+  /**
+   * Method to convert Request object to module specific POJO request.
+   *
+   * @param requestMap Represents the incoming request body.
+   * @param clazz Target POJO class.
+   * @param <T> Target request object type.
+   * @return request object of target type.
+   */
+  public static <T> T convertToRequestPojo(Map<String, Object> requestMap, Class<T> clazz) {
+    return (T) mapper.convertValue(requestMap, clazz);
+  }
 }

@@ -213,7 +213,12 @@
     			<artifactId>unirest-java</artifactId>
     			<version>1.4.9</version>
 		</dependency>
-	</dependencies>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>RELEASE</version>
+    </dependency>
+  </dependencies>
 	<build>
 		<pluginManagement>
 			<plugins>
