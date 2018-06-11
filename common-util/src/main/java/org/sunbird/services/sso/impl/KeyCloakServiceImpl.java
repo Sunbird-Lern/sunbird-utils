@@ -51,7 +51,6 @@ public class KeyCloakServiceImpl implements SSOManager {
 
   @Override
   public String verifyToken(String accessToken) {
-    String userId = "";
     try {
       PublicKey publicKey = toPublicKey(SSO_PUBLIC_KEY);
       AccessToken token =
@@ -61,30 +60,17 @@ public class KeyCloakServiceImpl implements SSOManager {
               KeyCloakConnectionProvider.SSO_URL + "realms/" + KeyCloakConnectionProvider.SSO_REALM,
               true,
               true);
-      userId = token.getSubject();
-      ProjectLogger.log(
-          token.getId()
-              + " "
-              + token.issuedFor
-              + " "
-              + token.getProfile()
-              + " "
-              + token.getSubject()
-              + " Active== "
-              + token.isActive()
-              + "  isExpired=="
-              + token.isExpired()
-              + " "
-              + token.issuedNow().getExpiration(),
+      ProjectLogger.log(token.getId() + " " + token.issuedFor + " " + token.getProfile() + " " + token.getSubject() 
+          + " Active: " + token.isActive() + "  isExpired: " + token.isExpired() + " " + token.issuedNow().getExpiration(),
           LoggerEnum.INFO.name());
+      return token.getSubject();
     } catch (Exception e) {
-      ProjectLogger.log("User token is not authorized==" + e);
+      ProjectLogger.log("User token is not authorized." + e);
       throw new ProjectCommonException(
-          ResponseCode.unAuthorised.getErrorCode(),
-          ResponseCode.unAuthorised.getErrorMessage(),
+          ResponseCode.unAuthorized.getErrorCode(),
+          ResponseCode.unAuthorized.getErrorMessage(),
           ResponseCode.UNAUTHORIZED.getResponseCode());
     }
-    return userId;
   }
 
   /**
@@ -181,18 +167,6 @@ public class KeyCloakServiceImpl implements SSOManager {
       }
       map.put(JsonKey.EMAIL_VERIFIED_UPDATED, list);
       ur.setAttributes(map);
-    }
-    if (isNotNull(request.get(JsonKey.USERNAME))) {
-      if (isNotNull(request.get(JsonKey.PROVIDER))) {
-        needTobeUpdate = true;
-        ur.setUsername(
-            (String) request.get(JsonKey.USERNAME)
-                + JsonKey.LOGIN_ID_DELIMETER
-                + (String) request.get(JsonKey.PROVIDER));
-      } else {
-        needTobeUpdate = true;
-        ur.setUsername((String) request.get(JsonKey.USERNAME));
-      }
     }
     if (!StringUtils.isBlank((String) request.get(JsonKey.PHONE))) {
       needTobeUpdate = true;
@@ -291,17 +265,9 @@ public class KeyCloakServiceImpl implements SSOManager {
       ur.setAttributes(map);
     }
 
-    if (isNotNull(request.get(JsonKey.USERNAME))) {
-      if (isNotNull(request.get(JsonKey.PROVIDER))) {
-        needTobeUpdate = true;
-        ur.setUsername(
-            (String) request.get(JsonKey.USERNAME)
-                + JsonKey.LOGIN_ID_DELIMETER
-                + (String) request.get(JsonKey.PROVIDER));
-      } else {
-        needTobeUpdate = true;
-        ur.setUsername((String) request.get(JsonKey.USERNAME));
-      }
+    if (isNotNull(request.get(JsonKey.LOGIN_ID))) {
+      needTobeUpdate = true;
+      ur.setUsername((String) request.get(JsonKey.LOGIN_ID));
     }
     if (!StringUtils.isBlank((String) request.get(JsonKey.PHONE))) {
       needTobeUpdate = true;
@@ -490,11 +456,11 @@ public class KeyCloakServiceImpl implements SSOManager {
   private UserRepresentation createUserReqObj(Map<String, Object> request) {
     CredentialRepresentation credential = new CredentialRepresentation();
     UserRepresentation user = new UserRepresentation();
-    if (isNotNull(request.get(JsonKey.PROVIDER))) {
+    if (isNotNull(request.get(JsonKey.CHANNEL))) {
       user.setUsername(
           (String) request.get(JsonKey.USERNAME)
               + JsonKey.LOGIN_ID_DELIMETER
-              + (String) request.get(JsonKey.PROVIDER));
+              + (String) request.get(JsonKey.CHANNEL));
     } else {
       user.setUsername((String) request.get(JsonKey.USERNAME));
     }
@@ -580,6 +546,7 @@ public class KeyCloakServiceImpl implements SSOManager {
    * @param password String
    * @return String access token
    */
+  @Override
   public String login(String userName, String password) {
     String accessTokenId = "";
     StringBuilder builder = new StringBuilder();
