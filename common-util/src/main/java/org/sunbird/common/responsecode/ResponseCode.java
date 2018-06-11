@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 
 /** @author Manzarul */
 public enum ResponseCode {
-  unAuthorised(ResponseMessage.Key.UNAUTHORISE_USER, ResponseMessage.Message.UNAUTHORISE_USER),
+  unAuthorized(ResponseMessage.Key.UNAUTHORIZED_USER, ResponseMessage.Message.UNAUTHORIZED_USER),
   invalidUserCredentials(
       ResponseMessage.Key.INVALID_USER_CREDENTIALS,
       ResponseMessage.Message.INVALID_USER_CREDENTIALS),
