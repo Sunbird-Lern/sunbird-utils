@@ -2,13 +2,16 @@ package org.sunbird.common.request;
 
 import java.text.MessageFormat;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
+import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
+import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.responsecode.ResponseCode;
 
 /**
@@ -91,10 +94,10 @@ public class BaseRequestValidator {
   }
 
   /**
-   * Method to check whether given mandatory fields is in given map or not .
+   * Method to check whether given mandatory fields is in given map or not.
    *
    * @param data Map contains the key value,
-   * @param keys List of string reprents the mandatory fields .mvn
+   * @param keys List of string represents the mandatory fields.
    */
   public void checkMandatoryFieldsPresent(Map<String, Object> data, String... keys) {
     if (MapUtils.isEmpty(data)) {
@@ -110,6 +113,35 @@ public class BaseRequestValidator {
                 throw new ProjectCommonException(
                     ResponseCode.mandatoryParamsMissing.getErrorCode(),
                     ResponseCode.mandatoryParamsMissing.getErrorMessage(),
+                    ResponseCode.CLIENT_ERROR.getResponseCode(),
+                    key);
+              }
+            });
+  }
+
+  /**
+   * Method to check whether given mandatory fields is in given map or not .
+   *
+   * @param data Map contains the key value
+   * @param keys List of string represents the mandatory fields
+   * @param exceptionMsg Exception message
+   */
+  public void checkMandatoryParamsPresent(
+      Map<String, Object> data, String exceptionMsg, String... keys) {
+    if (MapUtils.isEmpty(data)) {
+      throw new ProjectCommonException(
+          ResponseCode.invalidRequestData.getErrorCode(),
+          ResponseCode.invalidRequestData.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    Arrays.stream(keys)
+        .forEach(
+            key -> {
+              if (StringUtils.isEmpty((String) data.get(key))) {
+                throw new ProjectCommonException(
+                    ResponseCode.mandatoryParamsMissing.getErrorCode(),
+                    ProjectUtil.formatMessage(
+                        ResponseCode.mandatoryParamsMissing.getErrorMessage(), exceptionMsg),
                     ResponseCode.CLIENT_ERROR.getResponseCode(),
                     key);
               }
@@ -149,7 +181,7 @@ public class BaseRequestValidator {
    * Method to check whether given header fields present or not.
    *
    * @param data List of strings representing the header names in received request.
-   * @param keys List of string reprents the headers fields.
+   * @param keys List of string represents the headers fields.
    */
   public void checkMandatoryHeadersPresent(Map<String, String[]> data, String... keys) {
     if (MapUtils.isEmpty(data)) {
@@ -169,5 +201,80 @@ public class BaseRequestValidator {
                     key);
               }
             });
+  }
+
+  /**
+   * Ensures not allowed fields are absent in given request.
+   *
+   * @param requestMap Request information
+   * @param fields List of not allowed fields
+   */
+  public void checkForFieldsNotAllowed(Map<String, Object> requestMap, List<String> fields) {
+    fields
+        .stream()
+        .forEach(
+            field -> {
+              if (requestMap.containsKey(field)) {
+                throw new ProjectCommonException(
+                    ResponseCode.invalidRequestParameter.getErrorCode(),
+                    ProjectUtil.formatMessage(
+                        ResponseCode.invalidRequestParameter.getErrorMessage(), field),
+                    ResponseCode.CLIENT_ERROR.getResponseCode());
+              }
+            });
+  }
+
+  /**
+   * Helper method which throws an exception if each field is not of type List.
+   *
+   * @param requestMap Request information
+   * @param fields List of fields
+   */
+  public void validateListParam(Map<String, Object> requestMap, String... fields) {
+    Arrays.stream(fields)
+        .forEach(
+            field -> {
+              if (requestMap.containsKey(field)
+                  && null != requestMap.get(field)
+                  && !(requestMap.get(field) instanceof List)) {
+                throw new ProjectCommonException(
+                    ResponseCode.dataTypeError.getErrorCode(),
+                    ProjectUtil.formatMessage(
+                        ResponseCode.dataTypeError.getErrorMessage(), field, JsonKey.LIST),
+                    ResponseCode.CLIENT_ERROR.getResponseCode());
+              }
+            });
+  }
+
+  /**
+   * Helper method which throws an exception if given date is not in YYYY-MM-DD format.
+   *
+   * @param dob Date of birth.
+   */
+  public void validateDateParam(String dob) {
+    if (StringUtils.isNotBlank(dob)) {
+      boolean isValidDate = ProjectUtil.isDateValidFormat(ProjectUtil.YEAR_MONTH_DATE_FORMAT, dob);
+      if (!isValidDate) {
+        throw new ProjectCommonException(
+            ResponseCode.dateFormatError.getErrorCode(),
+            ResponseCode.dateFormatError.getErrorMessage(),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
+    }
+  }
+
+  /**
+   * Helper method which throws an exception if given parameter value is blank (null or empty).
+   *
+   * @param error Error to be thrown in case of validation error.
+   * @param errorMsg Error message.
+   */
+  public void validateParamValue(String value, ResponseCode error, String errorMsg) {
+    if (StringUtils.isBlank(value)) {
+      throw new ProjectCommonException(
+          error.getErrorCode(),
+          MessageFormat.format(error.getErrorMessage(), errorMsg),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
   }
 }
