@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
+import java.util.TimeZone;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
@@ -73,6 +75,10 @@ public class ProjectUtil {
 
   public static final String[] defaultPrivateFields = new String[] {JsonKey.EMAIL, JsonKey.PHONE};
   private static final String INDEX_NAME = "telemetry.raw";
+  private static String YYYY_MM_DD_FORMATTER = "yyyy-MM-dd";
+  private static final String STARTDATE = "startDate";
+  private static final String ENDDATE = "endDate";
+  private static ObjectMapper mapper = new ObjectMapper();
 
   static {
     pattern = Pattern.compile(EMAIL_PATTERN);
@@ -937,12 +943,71 @@ public class ProjectUtil {
    * @return String List of map converted as Json string.
    */
   public static String convertMapToJsonString(List<Map<String, Object>> mapList) {
-    ObjectMapper mapper = new ObjectMapper();
     try {
       return mapper.writeValueAsString(mapList);
     } catch (IOException e) {
       ProjectLogger.log(e.getMessage(), e);
     }
     return null;
+  }
+
+  /**
+   * Method to remove attributes from map.
+   *
+   * @param map contains data as key value.
+   * @param keys list of string that has to be remove from map if presents.
+   */
+  public static void removeUnwantedFields(Map<String, Object> map, String... keys) {
+    Arrays.stream(keys)
+        .forEach(
+            x -> {
+              map.remove(x);
+            });
+  }
+
+  /**
+   * Method to convert Json string to Map.
+   *
+   * @param jsonString represents json string.
+   * @return map corresponding to json string.
+   * @throws IOException
+   */
+  public static Map convertJsonStringToMap(String jsonString) throws IOException {
+    return mapper.readValue(jsonString, Map.class);
+  }
+
+  /**
+   * Method to convert Request object to module specific POJO request.
+   *
+   * @param request Represents the incoming request object.
+   * @param clazz Target POJO class.
+   * @param <T> Target request object type.
+   * @return request object of target type.
+   */
+  public static <T> T convertToRequestPojo(Request request, Class<T> clazz) {
+    return (T) mapper.convertValue(request.getRequest(), clazz);
+  }
+
+  /**
+   * This method will take number of days in request and provide date range. Date range is
+   * calculated as STARTDATE and ENDDATE, start date will be current date minus provided number of
+   * days and ENDDATE will be current date minus one day. If date is less than equal to zero then it
+   * will return empty map.
+   *
+   * @param numDays Number of days.
+   * @return Map with STARTDATE and ENDDATE key in YYYY_MM_DD_FORMATTER format.
+   */
+  public static Map<String, String> getDateRange(int numDays) {
+    Map<String, String> map = new HashMap<>();
+    if (numDays <= 0) {
+      return map;
+    }
+    Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+    cal.add(Calendar.DATE, -numDays);
+    map.put(STARTDATE, new SimpleDateFormat(YYYY_MM_DD_FORMATTER).format(cal.getTime()));
+    cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+    cal.add(Calendar.DATE, -1);
+    map.put(ENDDATE, new SimpleDateFormat(YYYY_MM_DD_FORMATTER).format(cal.getTime()));
+    return map;
   }
 }

@@ -4,11 +4,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.VelocityContext;
 import org.junit.Test;
@@ -363,5 +367,45 @@ public class ProjectUtilTest {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.invalidUsrData.getErrorCode(), e.getCode());
     }
+  }
+
+  @Test
+  public void testValidDateRange() {
+    int noOfDays = 7;
+    Map<String, String> map = ProjectUtil.getDateRange(noOfDays);
+    Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+    cal.add(Calendar.DATE, -noOfDays);
+    assertEquals(map.get("startDate"), new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));
+    cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+    cal.add(Calendar.DATE, -1);
+    assertEquals(map.get("endDate"), new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));
+  }
+
+  @Test
+  public void testInvalidDateRange() {
+    int noOfDays = 14;
+    Map<String, String> map = ProjectUtil.getDateRange(noOfDays);
+    Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+    cal.add(Calendar.DATE, -noOfDays);
+    assertEquals(map.get("startDate"), new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));
+    cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+    cal.add(Calendar.DATE, noOfDays);
+    assertNotEquals(map.get("endDate"), new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));
+  }
+
+  @Test
+  public void testZeroDateRange() {
+    int noOfDays = 0;
+    Map<String, String> map = ProjectUtil.getDateRange(noOfDays);
+    assertNull(map.get("startDate"));
+    assertNull(map.get("endDate"));
+  }
+
+  @Test
+  public void testNegativeDateRange() {
+    int noOfDays = -100;
+    Map<String, String> map = ProjectUtil.getDateRange(noOfDays);
+    assertNull(map.get("startDate"));
+    assertNull(map.get("endDate"));
   }
 }

@@ -24,10 +24,10 @@ public class TelemetryDispatcherSunbirdLMS implements TelemetryDispatcher {
       List<Map<String, Object>> jsonList =
           mapper.readValue(eventList.toString(), new TypeReference<List<Map<String, Object>>>() {});
       String eventReq = getTelemetryEvent(createTelemetryRequest(jsonList));
-      ProjectLogger.log("EVEVTS TO FLUSH : " + eventReq);
       String response =
           HttpUtil.sendPostRequest(
-              getCompleteUrl(JsonKey.SUNBIRD_LMS_BASE_URL, JsonKey.SUNBIRD_LMS_TELEMETRY_API_URL),
+              getCompleteUrl(
+                  JsonKey.SUNBIRD_TELEMETRY_BASE_URL, JsonKey.SUNBIRD_TELEMETRY_API_PATH),
               eventReq,
               getSunbirdLMSHeaders());
       ProjectLogger.log("FLUSH RESPONSE : " + response);
