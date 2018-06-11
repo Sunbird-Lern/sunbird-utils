@@ -48,16 +48,16 @@ public abstract class BaseActor extends UntypedAbstractActor {
     SunbirdMWService.tellToBGRouter(request, self());
   }
 
-  public void unSupportedMessage() {
+  public void unSupportedMessage() throws Exception {
     ProjectCommonException exception =
         new ProjectCommonException(
             ResponseCode.invalidRequestData.getErrorCode(),
             ResponseCode.invalidRequestData.getErrorMessage(),
             ResponseCode.CLIENT_ERROR.getResponseCode());
-    sender().tell(exception, self());
+    throw exception;
   }
 
-  public void onReceiveUnsupportedOperation(String callerName) {
+  public void onReceiveUnsupportedOperation(String callerName) throws Exception {
     ProjectLogger.log(callerName + ": unsupported message");
     unSupportedMessage();
   }
@@ -69,13 +69,13 @@ public abstract class BaseActor extends UntypedAbstractActor {
             ResponseCode.invalidOperationName.getErrorCode(),
             ResponseCode.invalidOperationName.getErrorMessage(),
             ResponseCode.CLIENT_ERROR.getResponseCode());
-    sender().tell(exception, self());
+    throw exception;
   }
 
   protected void onReceiveException(String callerName, Exception e) {
     ProjectLogger.log(
         "Exception in message processing for: " + callerName + " :: message: " + e.getMessage(), e);
-    sender().tell(e, self());
+    throw e;
   }
 
   protected Response getErrorResponse(Exception e) {
