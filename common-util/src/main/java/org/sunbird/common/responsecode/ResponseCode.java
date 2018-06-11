@@ -1,7 +1,6 @@
 package org.sunbird.common.responsecode;
 
 import org.apache.commons.lang3.StringUtils;
-import org.sunbird.common.models.util.JsonKey;
 
 /** @author Manzarul */
 public enum ResponseCode {

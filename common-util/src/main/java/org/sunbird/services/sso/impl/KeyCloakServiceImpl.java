@@ -51,7 +51,6 @@ public class KeyCloakServiceImpl implements SSOManager {
 
   @Override
   public String verifyToken(String accessToken) {
-
     try {
       PublicKey publicKey = toPublicKey(SSO_PUBLIC_KEY);
       AccessToken token =
@@ -61,20 +60,8 @@ public class KeyCloakServiceImpl implements SSOManager {
               KeyCloakConnectionProvider.SSO_URL + "realms/" + KeyCloakConnectionProvider.SSO_REALM,
               true,
               true);
-      ProjectLogger.log(
-          token.getId()
-              + " "
-              + token.issuedFor
-              + " "
-              + token.getProfile()
-              + " "
-              + token.getSubject()
-              + " Active: "
-              + token.isActive()
-              + "  isExpired: "
-              + token.isExpired()
-              + " "
-              + token.issuedNow().getExpiration(),
+      ProjectLogger.log(token.getId() + " " + token.issuedFor + " " + token.getProfile() + " " + token.getSubject() 
+          + " Active: " + token.isActive() + "  isExpired: " + token.isExpired() + " " + token.issuedNow().getExpiration(),
           LoggerEnum.INFO.name());
       return token.getSubject();
     } catch (Exception e) {
