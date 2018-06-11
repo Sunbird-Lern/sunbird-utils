@@ -32,6 +32,19 @@ public class DefaultEncryptionServivceImpl implements EncryptionService {
   private static String encryption_key = "";
 
   private String sunbirdEncryption = "";
+  
+  private static Cipher c;
+  
+  static {
+	  try {
+		  encryption_key = getSalt();
+		  Key key = generateKey();
+		  c = Cipher.getInstance(ALGORITHM);
+		  c.init(Cipher.ENCRYPT_MODE, key);
+	  } catch (Exception e) {
+		  ProjectLogger.log(e.getMessage(), e);
+	  }
+  }
 
   public DefaultEncryptionServivceImpl() {
     sunbirdEncryption = System.getenv(JsonKey.SUNBIRD_ENCRYPTION);
@@ -103,11 +116,6 @@ public class DefaultEncryptionServivceImpl implements EncryptionService {
   public static String encrypt(String value)
       throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
           IllegalBlockSizeException, BadPaddingException {
-    encryption_key = getSalt();
-    Key key = generateKey();
-    Cipher c = Cipher.getInstance(ALGORITHM);
-    c.init(Cipher.ENCRYPT_MODE, key);
-
     String valueToEnc = null;
     String eValue = value;
     for (int i = 0; i < ITERATIONS; i++) {

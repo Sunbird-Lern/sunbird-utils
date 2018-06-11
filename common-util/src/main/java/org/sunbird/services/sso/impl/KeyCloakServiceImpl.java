@@ -51,7 +51,6 @@ public class KeyCloakServiceImpl implements SSOManager {
 
   @Override
   public String verifyToken(String accessToken) {
-
     try {
       PublicKey publicKey = toPublicKey(SSO_PUBLIC_KEY);
       AccessToken token =
