@@ -99,7 +99,7 @@ public class HttpUtil {
     try {
       body = getResponse(httpURLConnection);
     } catch (Exception ex) {
-      ProjectLogger.log("Exception occured while reading body" + ex);
+      ProjectLogger.log("Exception occurred while reading body" + ex);
     }
     response = new HttpUtilResponse(body, httpURLConnection.getResponseCode());
     long stopTime = System.currentTimeMillis();
@@ -194,7 +194,7 @@ public class HttpUtil {
     try {
       body = getResponse(httpURLConnection);
     } catch (Exception ex) {
-      ProjectLogger.log("Exception occured while reading body" + ex);
+      ProjectLogger.log("Exception occurred while reading body" + ex);
     }
     response = new HttpUtilResponse(body, httpURLConnection.getResponseCode());
     long stopTime = System.currentTimeMillis();
@@ -350,7 +350,7 @@ public class HttpUtil {
     try {
       body = getResponse(httpURLConnection);
     } catch (Exception ex) {
-      ProjectLogger.log("Exception occured while reading body" + ex);
+      ProjectLogger.log("Exception occurred while reading body" + ex);
     }
     response = new HttpUtilResponse(body, httpURLConnection.getResponseCode());
     long stopTime = System.currentTimeMillis();
@@ -567,7 +567,7 @@ public class HttpUtil {
       try {
         body = generateResponse(httpResponse);
       } catch (Exception ex) {
-        ProjectLogger.log("Exception occured while reading body" + ex);
+        ProjectLogger.log("Exception occurred while reading body" + ex);
       }
       response = new HttpUtilResponse(body, httpResponse.getStatusLine().getStatusCode());
       long stopTime = System.currentTimeMillis();
@@ -652,7 +652,7 @@ public class HttpUtil {
       try {
         body = generateResponse(httpResponse);
       } catch (Exception ex) {
-        ProjectLogger.log("Exception occured while reading body" + ex);
+        ProjectLogger.log("Exception occurred while reading body" + ex);
       }
       response = new HttpUtilResponse(body, httpResponse.getStatusLine().getStatusCode());
       telemetryProcessingCall(logInfo);
@@ -712,7 +712,7 @@ public class HttpUtil {
       try {
         body = generateResponse(httpResponse);
       } catch (Exception ex) {
-        ProjectLogger.log("Exception occured while reading body" + ex);
+        ProjectLogger.log("Exception occurred while reading body" + ex);
       }
       response = new HttpUtilResponse(body, httpResponse.getStatusLine().getStatusCode());
       telemetryProcessingCall(logInfo);
@@ -766,7 +766,7 @@ public class HttpUtil {
       try {
         body = generateResponse(httpResponse);
       } catch (Exception ex) {
-        ProjectLogger.log("Exception occured while reading body" + ex);
+        ProjectLogger.log("Exception occurred while reading body" + ex);
       }
       response = new HttpUtilResponse(body, httpResponse.getStatusLine().getStatusCode());
       telemetryProcessingCall(logInfo);
@@ -802,7 +802,7 @@ public class HttpUtil {
       try {
         body = generateResponse(httpResponse);
       } catch (Exception ex) {
-        ProjectLogger.log("Exception occured while reading body" + ex);
+        ProjectLogger.log("Exception occurred while reading body" + ex);
       }
       response = new HttpUtilResponse(body, httpResponse.getStatusLine().getStatusCode());
       return response;
@@ -853,7 +853,7 @@ public class HttpUtil {
       try {
         body = generateResponse(httpResponse);
       } catch (Exception ex) {
-        ProjectLogger.log("Exception occured while reading body" + ex);
+        ProjectLogger.log("Exception occurred while reading body" + ex);
       }
       response = new HttpUtilResponse(body, httpResponse.getStatusLine().getStatusCode());
       telemetryProcessingCall(logInfo);

@@ -1,11 +1,13 @@
 package org.sunbird.common.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 /** @author Manzarul */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Request implements Serializable {
 
   private static final long serialVersionUID = -2362783406031347676L;

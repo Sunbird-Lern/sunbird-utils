@@ -11,6 +11,7 @@ public interface ResponseMessage {
 
     String UNAUTHORIZED_USER = "You are not authorized.";
     String INVALID_USER_CREDENTIALS = "Please check your credentials";
+    String OPERATION_TIMEOUT = "Request processing taking too long time. Please try again later.";
     String INVALID_OPERATION_NAME =
         "Operation name is invalid. Please provide a valid operation name";
     String INVALID_REQUESTED_DATA = "Requested data for this operation is not valid.";
@@ -35,6 +36,7 @@ public interface ResponseMessage {
     String COURSE_TOCURL_MISSING = "Course tocurl is mandatory.";
     String EMAIL_MISSING = "Email is mandatory.";
     String EMAIL_FORMAT = "Email is invalid.";
+    String URL_FORMAT_ERROR = "URL is invalid.";
     String FIRST_NAME_MISSING = "First name is mandatory.";
     String LANGUAGE_MISSING = "Language is mandatory.";
     String PASSWORD_MISSING = "Password is mandatory.";
@@ -104,7 +106,7 @@ public interface ResponseMessage {
     String PHONE_NO_REQUIRED_ERROR = "Phone number is required.";
     String ORG_ID_MISSING = "Organization Id required.";
     String ACTOR_CONNECTION_ERROR = "Service is not able to connect with actor.";
-    String USER_ALREADY_EXIST = "user already exist.";
+    String USER_ALREADY_EXISTS = "User already exists for given {0}.";
     String PAGE_ALREADY_EXIST = "page already exist with this Page Name and Org Code.";
     String INVALID_USER_ID = "User Id does not exists in our records";
     String LOGIN_ID_MISSING = "loginId is required.";
@@ -179,7 +181,7 @@ public interface ResponseMessage {
     String RECEIVER_ID_ERROR = "Receiver id is mandatory.";
     String INVALID_RECEIVER_ID = "Receiver id is invalid.";
     String INVALID_BADGE_ID = "Invalid badge type id.";
-    String USER_REG_ORG_ERROR = "this user belongs to some other organization.";
+    String USER_ORG_ASSOCIATION_ERROR = "User is already associated with another organization.";
     String INVALID_ROLE = "Invalid role value provided in request.";
     String INVALID_SALT = "Please provide salt value.";
     String ORG_TYPE_MANDATORY = "Org Type name is mandatory.";
@@ -195,7 +197,7 @@ public interface ResponseMessage {
     String INVALID_PHONE_NO_FORMAT = "Please provide a valid phone number.";
     String INVALID_WEBPAGE_DATA = "Invalid webPage data";
     String INVALID_MEDIA_TYPE = "Invalid media type for webPage";
-    String INVALID_WEBPAGE_URL = "Invalid URL for {0}";
+    String INVALID_WEBPAGE_URL = "Invalid URL for {0}.";
     String INVALID_DATE_RANGE = "Date range should be between 3 Month.";
     String INVALID_BATCH_END_DATE_ERROR = "Please provide valid End Date.";
     String INVALID_BATCH_START_DATE_ERROR = "Please provide valid Start Date.";
@@ -260,7 +262,7 @@ public interface ResponseMessage {
     String REVOCATION_REASON_REQUIRED = "Please provide revocation reason.";
     String ALREADY_REVOKED = "Assertion is already revoked.";
     String INVALID_RECIPIENT_TYPE = "Please provide a valid recipient type.";
-    String CUSTOM_CLIENT_ERROR = "{0}";
+    String CUSTOM_CLIENT_ERROR = "Request failed. {0}";
     String CUSTOM_RESOURCE_NOT_FOUND_ERROR = "{0}";
     String CUSTOM_SERVER_ERROR = "{0}";
     String INACTIVE_USER = "User is Inactive. Please make it active to proceed.";
@@ -291,12 +293,23 @@ public interface ResponseMessage {
     String MISSING_FILE_ATTACHMENT = "Missing file attachment.";
     String FILE_ATTACHMENT_SIZE_NOT_CONFIGURED = "File attachment max size is not configured.";
     String EMPTY_FILE = "Attached file is empty.";
-    String INVALID_COLUMNS = "Allowed columns are - {0}.";
+    String INVALID_COLUMNS = "Invalid column: {0}. Valid columns are: {1}.";
+    String CONFLICTING_ORG_LOCATIONS =
+        "An organisation cannot be associated to two conflicting locations ({0}, {1}) at {2} level. ";
+    String UNABLE_TO_COMMUNICATE_WITH_ACTOR = "Unable to communicate with actor.";
+    String EMPTY_HEADER_LINE = "Missing header line in CSV file.";
+    String INVALID_REQUEST_PARAMETER = "Invalid parameter {0} in request.";
+    String ROOT_ORG_ASSOCIATION_ERROR =
+        "No root organisation found which is associated with given {0}.";
+    String OR_FORMAT = "{0} or {1}";
+    String AND_FORMAT = "{0} and {1}";
+    String DEPENDENT_PARAMETER_MISSING = "Missing parameter {0} which is dependent on {1}.";
   }
 
   interface Key {
     String UNAUTHORIZED_USER = "UNAUTHORIZED_USER";
     String INVALID_USER_CREDENTIALS = "INVALID_USER_CREDENTIALS";
+    String OPERATION_TIMEOUT = "PROCESS_EXE_TIMEOUT";
     String INVALID_OPERATION_NAME = "INVALID_OPERATION_NAME";
     String INVALID_REQUESTED_DATA = "INVALID_REQUESTED_DATA";
     String CONSUMER_ID_MISSING_ERROR = "CONSUMER_ID_REQUIRED_ERROR";
@@ -320,6 +333,7 @@ public interface ResponseMessage {
     String COURSE_TOCURL_MISSING = "COURSE_TOCURL_REQUIRED_ERROR";
     String EMAIL_MISSING = "EMAIL_ID_REQUIRED_ERROR";
     String EMAIL_FORMAT = "EMAIL_FORMAT_ERROR";
+    String URL_FORMAT_ERROR = "URL_FORMAT_ERROR";
     String FIRST_NAME_MISSING = "FIRST_NAME_REQUIRED_ERROR";
     String LANGUAGE_MISSING = "LANGUAGE_REQUIRED_ERROR";
     String PASSWORD_MISSING = "PASSWORD_REQUIRED_ERROR";
@@ -384,7 +398,7 @@ public interface ResponseMessage {
     String PHONE_NO_REQUIRED_ERROR = "PHONE_NO_REQUIRED_ERROR";
     String ORG_ID_MISSING = "ORG_ID_MISSING";
     String ACTOR_CONNECTION_ERROR = "ACTOR_CONNECTION_ERROR";
-    String USER_ALREADY_EXIST = "USER_ALREADY_EXIST";
+    String USER_ALREADY_EXISTS = "USER_ALREADY_EXISTS";
     String PAGE_ALREADY_EXIST = "PAGE_ALREADY_EXIST";
     String INVALID_USER_ID = "INVALID_USER_ID";
     String LOGIN_ID_MISSING = "LOGIN_ID_MISSING";
@@ -458,7 +472,7 @@ public interface ResponseMessage {
     String ASSERTION_EVIDENCE_REQUIRED = "ASSERTION_EVIDENCE_REQUIRED";
     String ASSERTION_ID_REQUIRED = "ASSERTION_ID_REQUIRED";
     String STORAGE_CONTAINER_NAME_MANDATORY = "STORAGE_CONTAINER_NAME_MANDATORY";
-    String USER_REG_ORG_ERROR = "USER_REG_ORG_ERROR";
+    String USER_ORG_ASSOCIATION_ERROR = "USER_ORG_ASSOCIATION_ERROR";
     String CLOUD_SERVICE_ERROR = "CLOUD_SERVICE_ERROR";
     String BADGE_TYPE_ID_ERROR = "BADGE_TYPE_ID_ERROR";
     String RECEIVER_ID_ERROR = "RECEIVER_ID_ERROR";
@@ -560,5 +574,12 @@ public interface ResponseMessage {
     String FILE_ATTACHMENT_SIZE_NOT_CONFIGURED = "ATTACHMENT_SIZE_NOT_CONFIGURED";
     String EMPTY_FILE = "EMPTY_FILE";
     String INVALID_COLUMNS = "INVALID_COLUMNS";
+    String INVALID_COLUMN = "INVALID_COLUMN";
+    String CONFLICTING_ORG_LOCATIONS = "CONFLICTING_ORG_LOCATIONS";
+    String UNABLE_TO_COMMUNICATE_WITH_ACTOR = "UNABLE_TO_COMMUNICATE_WITH_ACTOR";
+    String EMPTY_HEADER_LINE = "EMPTY_HEADER_LINE";
+    String INVALID_REQUEST_PARAMETER = "INVALID_REQUEST_PARAMETER";
+    String ROOT_ORG_ASSOCIATION_ERROR = "ROOT_ORG_ASSOCIATION_ERROR";
+    String DEPENDENT_PARAMETER_MISSING = "DEPENDENT_PARAMETER_MISSING";
   }
 }
