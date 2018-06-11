@@ -4,6 +4,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 
+/**
+ * Helper class for validating email.
+ *
+ * @author Amit Kumar
+ */
 public class EmailValidator {
 
   private static Pattern pattern;
@@ -18,12 +23,12 @@ public class EmailValidator {
   }
 
   /**
-   * Method to validate email.
+   * Validates format of email.
    *
-   * @param email Email value
-   * @return boolean Is email valid or not.
+   * @param email Email value.
+   * @return True, if email format is valid. Otherwise, return false.
    */
-  public static boolean isEmailvalid(String email) {
+  public static boolean isEmailValid(String email) {
     if (StringUtils.isBlank(email)) {
       return false;
     }

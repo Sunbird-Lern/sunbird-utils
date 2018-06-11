@@ -204,7 +204,7 @@ public class BaseRequestValidator {
   }
 
   /**
-   * Method to check unnecessary fields in request
+   * Ensures not allowed fields are absent in given request.
    *
    * @param requestMap Request information
    * @param fields List of not allowed fields
@@ -225,7 +225,7 @@ public class BaseRequestValidator {
   }
 
   /**
-   * This method will validate the instance type as List for given fields in request.
+   * Helper method which throws an exception if each field is not of type List.
    *
    * @param requestMap Request information
    * @param fields List of fields
@@ -247,9 +247,9 @@ public class BaseRequestValidator {
   }
 
   /**
-   * This method will validate the date with format "yyyy-MM-dd".
+   * Helper method which throws an exception if given date is not in YYYY-MM-DD format.
    *
-   * @param dob
+   * @param dob Date of birth.
    */
   public void validateDateParam(String dob) {
     if (StringUtils.isNotBlank(dob)) {
