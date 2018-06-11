@@ -94,10 +94,10 @@ public class BaseRequestValidator {
   }
 
   /**
-   * Method to check whether given mandatory fields is in given map or not .
+   * Method to check whether given mandatory fields is in given map or not.
    *
    * @param data Map contains the key value,
-   * @param keys List of string reprents the mandatory fields .mvn
+   * @param keys List of string represents the mandatory fields.
    */
   public void checkMandatoryFieldsPresent(Map<String, Object> data, String... keys) {
     if (MapUtils.isEmpty(data)) {
@@ -124,7 +124,7 @@ public class BaseRequestValidator {
    *
    * @param data Map contains the key value
    * @param keys List of string represents the mandatory fields
-   * @param exceptionMsg exception message
+   * @param exceptionMsg Exception message
    */
   public void checkMandatoryParamsPresent(
       Map<String, Object> data, String exceptionMsg, String... keys) {
@@ -181,7 +181,7 @@ public class BaseRequestValidator {
    * Method to check whether given header fields present or not.
    *
    * @param data List of strings representing the header names in received request.
-   * @param keys List of string reprents the headers fields.
+   * @param keys List of string represents the headers fields.
    */
   public void checkMandatoryHeadersPresent(Map<String, String[]> data, String... keys) {
     if (MapUtils.isEmpty(data)) {
@@ -260,6 +260,21 @@ public class BaseRequestValidator {
             ResponseCode.dateFormatError.getErrorMessage(),
             ResponseCode.CLIENT_ERROR.getResponseCode());
       }
+    }
+  }
+
+  /**
+   * Helper method which throws an exception if given parameter value is blank (null or empty).
+   *
+   * @param error Error to be thrown in case of validation error.
+   * @param errorMsg Error message.
+   */
+  public void validateParamValue(String value, ResponseCode error, String errorMsg) {
+    if (StringUtils.isBlank(value)) {
+      throw new ProjectCommonException(
+          error.getErrorCode(),
+          MessageFormat.format(error.getErrorMessage(), errorMsg),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
     }
   }
 }
