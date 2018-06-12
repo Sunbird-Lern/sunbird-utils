@@ -2,7 +2,6 @@ package org.sunbird.util;
 
 import com.typesafe.config.Config;
 import java.text.MessageFormat;
-import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
@@ -23,11 +22,12 @@ public final class CassandraStartUpUtil {
   private CassandraStartUpUtil() {}
 
   /**
-   * This method will check the cassandra data base connection. first it will try to established the
-   * data base connection from provided environment variable , if environment variable values are
-   * not set then connection will be established from property file.
+   * Creates Cassandra DB connection(s) based on configured mode (embedded or standalone)
+   *
+   * @param keySpace Keyspace (sunbird, sunbirdplugin) of DB for which connection needs to be
+   *     established
    */
-  public static void checkCassandraDbConnections(String keySpace) {
+  public static void createCassandraConnection(String keySpace) {
 
     String cassandraMode = config.getString(JsonKey.SUNBIRD_CASSANDRA_MODE);
     if (JsonKey.EMBEDDED_MODE.equalsIgnoreCase(cassandraMode)) {
@@ -44,19 +44,19 @@ public final class CassandraStartUpUtil {
     if (result) {
       ProjectLogger.log(
           MessageFormat.format(
-              "CassandraStartUpUtil:checkCassandraDbConnections: connection created successfully for mode : {0} for keyspace : {1}",
+              "CassandraStartUpUtil:checkCassandraDbConnections: Connection created successfully for mode : {0} for keyspace : {1}",
               JsonKey.EMBEDDED_MODE, keySpace),
           LoggerEnum.INFO.name());
     } else {
       ProjectLogger.log(
           MessageFormat.format(
-              "CassandraStartUpUtil:checkCassandraDbConnections: Cconnection creation failed for mode : {0} for keyspace : {1}",
+              "CassandraStartUpUtil:checkCassandraDbConnections: Connection creation failed for mode : {0} for keyspace : {1}",
               JsonKey.EMBEDDED_MODE, keySpace),
           LoggerEnum.ERROR.name());
       throw new ProjectCommonException(
           ResponseCode.cassandraConnectionEstablishmentFailed.getErrorCode(),
           ResponseCode.cassandraConnectionEstablishmentFailed.getErrorCode(),
-          ResponseCode.SERVER_ERROR.hashCode(),
+          ResponseCode.SERVER_ERROR.getResponseCode(),
           JsonKey.EMBEDDED_MODE);
     }
     return true;
@@ -65,15 +65,18 @@ public final class CassandraStartUpUtil {
   private static boolean createCassandraConnectionForStandAloneMode(String keyspace) {
     String ips = config.getString(JsonKey.SUNBIRD_CASSANDRA_IP);
     String envPort = config.getString(JsonKey.SUNBIRD_CASSANDRA_PORT);
+    String userName = config.getString(JsonKey.SUNBIRD_CASSANDRA_USER_NAME);
+    String password = config.getString(JsonKey.SUNBIRD_CASSANDRA_PASSWORD);
+
+    ConfigUtil.validateMandatoryConfigValue(ips);
+    ConfigUtil.validateMandatoryConfigValue(envPort);
+
     CassandraConnectionManager cassandraConnectionManager =
         CassandraConnectionMngrFactory.getObject(JsonKey.STANDALONE_MODE);
 
-    checkMandatoryConfigValue(ips);
-    checkMandatoryConfigValue(envPort);
     String[] ipList = ips.split(",");
     String[] portList = envPort.split(",");
-    String userName = config.getString(JsonKey.SUNBIRD_CASSANDRA_USER_NAME);
-    String password = config.getString(JsonKey.SUNBIRD_CASSANDRA_PASSWORD);
+
     for (int i = 0; i < ipList.length; i++) {
       String ip = ipList[i];
       String port = portList[i];
@@ -83,46 +86,31 @@ public final class CassandraStartUpUtil {
         if (result) {
           ProjectLogger.log(
               MessageFormat.format(
-                  "CassandraStartUpUtil:createCassandraConnection: Connection created successfully in mode: {0} for  IP: {1} and keyspace: {2}",
+                  "CassandraStartUpUtil:createCassandraConnectionForStandAloneMode: Connection created successfully in mode: {0} for IP: {1} and keyspace: {2}",
                   JsonKey.STANDALONE_MODE, ip, keyspace),
               LoggerEnum.INFO.name());
         } else {
           ProjectLogger.log(
               MessageFormat.format(
-                  "CassandraStartUpUtil:createCassandraConnection: Connection creation failed in mode: {0} for  IP: {1} and keyspace: {2}",
+                  "CassandraStartUpUtil:createCassandraConnectionForStandAloneMode: Connection creation failed in mode: {0} for IP: {1} and keyspace: {2}",
                   JsonKey.STANDALONE_MODE, ip, keyspace),
               LoggerEnum.ERROR.name());
           throw new ProjectCommonException(
               ResponseCode.cassandraConnectionEstablishmentFailed.getErrorCode(),
               ResponseCode.cassandraConnectionEstablishmentFailed.getErrorCode(),
-              ResponseCode.SERVER_ERROR.hashCode());
+              ResponseCode.SERVER_ERROR.getResponseCode());
         }
       } catch (Exception ex) {
         ProjectLogger.log(
-            "CassandraStartUpUtil:createCassandraConnection: failed with error = "
+            "CassandraStartUpUtil:createCassandraConnectionForStandAloneMode: Generic exception occurred with error = "
                 + ex.getMessage(),
             ex);
         throw new ProjectCommonException(
             ResponseCode.cassandraConnectionEstablishmentFailed.getErrorCode(),
             ResponseCode.cassandraConnectionEstablishmentFailed.getErrorCode(),
-            ResponseCode.SERVER_ERROR.hashCode());
+            ResponseCode.SERVER_ERROR.getResponseCode());
       }
     }
     return true;
-  }
-
-  private static void checkMandatoryConfigValue(String configParameter) {
-
-    if (StringUtils.isBlank(configParameter)) {
-      ProjectLogger.log(
-          "SchedulerManager:checkMandatoryConfigValues: missing mandatory configuration parameter : "
-              + configParameter,
-          LoggerEnum.ERROR.name());
-      throw new ProjectCommonException(
-          ResponseCode.mandatoryConfigParamsMissing.getErrorCode(),
-          ResponseCode.mandatoryConfigParamsMissing.getErrorMessage(),
-          ResponseCode.SERVER_ERROR.getResponseCode(),
-          configParameter);
-    }
   }
 }

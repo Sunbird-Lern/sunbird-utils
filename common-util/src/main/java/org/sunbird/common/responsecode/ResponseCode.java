@@ -560,7 +560,7 @@ public enum ResponseCode {
   externalIdAssignedToOtherUser(
       ResponseMessage.Key.EXTERNALID_ASSIGNED_TO_OTHER_USER,
       ResponseMessage.Message.EXTERNALID_ASSIGNED_TO_OTHER_USER),
-  mandatoryConfigParamsMissing(
+  mandatoryConfigParamMissing(
       ResponseMessage.Key.MANDATORY_CONFIG_PARAMETER_MISSING,
       ResponseMessage.Message.MANDATORY_CONFIG_PARAMETER_MISSING),
   cassandraConnectionEstablishmentFailed(

@@ -3,16 +3,14 @@ package org.sunbird.scheduler;
 import com.typesafe.config.Config;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.MessageFormat;
 import java.util.Properties;
-import org.apache.commons.lang3.StringUtils;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
-import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
-import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.util.ConfigUtil;
 
 /**
@@ -82,18 +80,15 @@ public abstract class SchedulerManager {
     String username = config.getString(JsonKey.SUNBIRD_PG_USER);
     String password = config.getString(JsonKey.SUNBIRD_PG_PASSWORD);
     ProjectLogger.log(
-        "SchedulerManager:setUpClusterMode: Environment variable value for PostGress SQl= host, port,db "
-            + host
-            + " ,"
-            + port
-            + ","
-            + db,
+        MessageFormat.format(
+            "SchedulerManager:setUpClusterMode: PostgreSQL config = (host: {0}, port: {1}, db: {2})",
+            host, port, db),
         LoggerEnum.INFO.name());
-    checkMandatoryConfigValue(host);
-    checkMandatoryConfigValue(port);
-    checkMandatoryConfigValue(db);
-    checkMandatoryConfigValue(username);
-    checkMandatoryConfigValue(password);
+    ConfigUtil.validateMandatoryConfigValue(host);
+    ConfigUtil.validateMandatoryConfigValue(port);
+    ConfigUtil.validateMandatoryConfigValue(db);
+    ConfigUtil.validateMandatoryConfigValue(username);
+    ConfigUtil.validateMandatoryConfigValue(password);
     ProjectLogger.log(
         "SchedulerManager:setUpClusterMode: Reading PostgreSQL configuration from environment variables.",
         LoggerEnum.INFO.name());
@@ -105,27 +100,13 @@ public abstract class SchedulerManager {
     return configProp;
   }
 
-  private void checkMandatoryConfigValue(String configParameter) {
-
-    if (StringUtils.isBlank(configParameter)) {
-      ProjectLogger.log(
-          "SchedulerManager:checkMandatoryConfigValues: missing mandatory configuration parameter : "
-              + configParameter,
-          LoggerEnum.ERROR.name());
-      throw new ProjectCommonException(
-          ResponseCode.mandatoryConfigParamsMissing.getErrorCode(),
-          ResponseCode.mandatoryConfigParamsMissing.getErrorMessage(),
-          ResponseCode.SERVER_ERROR.getResponseCode(),
-          configParameter);
-    }
-  }
-
   /**
    * Clean up thread to gracefully shutdown quartz scheduler
    *
    * @author Manzarul
    */
   class ResourceCleanUp extends Thread {
+
     @Override
     public void run() {
       ProjectLogger.log(
