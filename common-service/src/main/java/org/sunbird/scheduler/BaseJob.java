@@ -5,7 +5,11 @@ import org.quartz.Job;
 import org.sunbird.actor.service.SunbirdMWService;
 import org.sunbird.common.request.Request;
 
-/** @author Mahesh Kumar Gangula */
+/**
+ * Abstract base implementation for a Sunbird scheduler job
+ *
+ * @author Mahesh Kumar Gangula
+ */
 public abstract class BaseJob implements Job {
 
   public void tellToBGRouter(Request request) {

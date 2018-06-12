@@ -62,9 +62,9 @@ public class ExecutionContextUtil {
           }
         }
       }
-      context.setRequestContext(requestContext);
-      // and global context will be set at the time of creation of thread local automatically
     }
+    context.setRequestContext(requestContext);
+    // and global context will be set at the time of creation of thread local automatically
   }
 
   /**
