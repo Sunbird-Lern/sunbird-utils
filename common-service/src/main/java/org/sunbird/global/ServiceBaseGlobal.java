@@ -87,8 +87,8 @@ public class ServiceBaseGlobal extends BaseGlobal {
    */
   public void onStart(Application app) {
     setEnvironment();
-    CassandraStartUpUtil.checkCassandraDbConnections(JsonKey.SUNBIRD);
-    CassandraStartUpUtil.checkCassandraDbConnections(JsonKey.SUNBIRD_PLUGIN);
+    CassandraStartUpUtil.createCassandraConnection(JsonKey.SUNBIRD);
+    CassandraStartUpUtil.createCassandraConnection(JsonKey.SUNBIRD_PLUGIN);
   }
 
   /**

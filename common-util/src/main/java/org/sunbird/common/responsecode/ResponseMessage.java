@@ -311,6 +311,10 @@ public interface ResponseMessage {
     String EXTERNAL_ID_FORMAT = "externalId (id: {0}, idType: {1}, provider: {2})";
     String EXTERNALID_ASSIGNED_TO_OTHER_USER =
         "External ID (id: {0}, idType: {1}, provider: {2}) already assigned to another user.";
+    String MANDATORY_CONFIG_PARAMETER_MISSING =
+        "Mandatory configuration parameter {0} missing which is required for service startup.";
+    String CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED =
+        "Cassandra connection establishment failed in {0} mode.";
   }
 
   interface Key {
@@ -590,5 +594,7 @@ public interface ResponseMessage {
     String DEPENDENT_PARAMETER_MISSING = "DEPENDENT_PARAMETER_MISSING";
     String EXTERNALID_NOT_FOUND = "EXTERNALID_NOT_FOUND";
     String EXTERNALID_ASSIGNED_TO_OTHER_USER = "EXTERNALID_ASSIGNED_TO_OTHER_USER";
+    String MANDATORY_CONFIG_PARAMETER_MISSING = "MANDATORY_CONFIG_PARAMETER_MISSING";
+    String CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED = "CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED";
   }
 }
