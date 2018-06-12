@@ -61,7 +61,7 @@ public abstract class SchedulerManager {
     } finally {
       registerShutDownHook();
     }
-    ProjectLogger.log("SchedulerManager:initScheduler: started scheduler jobs.");
+    ProjectLogger.log("SchedulerManager:initScheduler: Started scheduler jobs.");
   }
 
   /**

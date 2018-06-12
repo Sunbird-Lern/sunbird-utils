@@ -62,11 +62,10 @@ public class ConfigUtil {
     return config;
   }
 
-  public static void validateMandatoryConfigValue(String configParameter) {
+  public static void ConfigUtil(String configParameter) {
     if (StringUtils.isBlank(configParameter)) {
       ProjectLogger.log(
-          "SchedulerManager:checkMandatoryConfigValues: Missing mandatory configuration parameter: "
-              + configParameter,
+          "ConfigUtil:ConfigUtil: Missing mandatory configuration parameter: " + configParameter,
           LoggerEnum.ERROR.name());
       throw new ProjectCommonException(
           ResponseCode.mandatoryConfigParamMissing.getErrorCode(),
