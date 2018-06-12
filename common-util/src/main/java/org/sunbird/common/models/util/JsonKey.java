@@ -616,7 +616,7 @@ public final class JsonKey {
   public static final String SUNBIRD_API_MGR_BASE_URL = "sunbird_api_mgr_base_url";
   public static final String SUNBIRD_AUTHORIZATION = "sunbird_authorization";
   public static final String SUNBIRD_CS_BASE_URL = "sunbird_cs_base_url";
-  public static final String SUNBIRD_CS_SEARCH_PATH="sunbird_cs_search_path";
+  public static final String SUNBIRD_CS_SEARCH_PATH = "sunbird_cs_search_path";
   public static final String SUNBIRD_CONTENT_BADGE_ASSIGN_URL = "sunbird.content.badge.assign.url";
   public static final String SUNBIRD_CONTENT_BADGE_REVOKE_URL = "sunbird.content.badge.revoke.url";
   public static final String SUNBIRD_LMS_BASE_URL = "sunbird_lms_base_url";
@@ -650,6 +650,7 @@ public final class JsonKey {
   public static final String ORG_EXTERNAL_ID = "orgExternalId";
   public static final String ORG_PROVIDER = "orgProvider";
   public static final String SUNBIRD_TELEMETRY_BASE_URL = "sunbird_telemetry_base_url";
+  public static final String DEFAULT_FRAMEWORK = "defaultFramework";
 
   private JsonKey() {}
 }

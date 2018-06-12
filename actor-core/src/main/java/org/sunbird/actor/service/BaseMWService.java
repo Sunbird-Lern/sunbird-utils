@@ -96,7 +96,7 @@ public class BaseMWService {
     if (!RouterMode.OFF.name().equalsIgnoreCase(RequestRouter.getMode())) {
       requestRouter =
           system.actorOf(
-              FromConfig.getInstance().props(Props.create(RequestRouter.class)),
+              FromConfig.getInstance().props(Props.create(RequestRouter.class).withDispatcher("rr-dispatcher")),
               RequestRouter.class.getSimpleName());
     }
     ProjectLogger.log(
@@ -105,7 +105,7 @@ public class BaseMWService {
     if (!RouterMode.OFF.name().equalsIgnoreCase(BackgroundRequestRouter.getMode())) {
       bgRequestRouter =
           system.actorOf(
-              FromConfig.getInstance().props(Props.create(BackgroundRequestRouter.class)),
+              FromConfig.getInstance().props(Props.create(BackgroundRequestRouter.class).withDispatcher("brr-dispatcher")),
               BackgroundRequestRouter.class.getSimpleName());
     }
   }

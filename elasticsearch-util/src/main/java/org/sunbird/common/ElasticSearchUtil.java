@@ -13,7 +13,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
@@ -61,6 +60,8 @@ import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
+import org.sunbird.common.models.util.ProjectUtil.EsIndex;
+import org.sunbird.common.models.util.ProjectUtil.EsType;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.dto.SearchDTO;
@@ -87,11 +88,46 @@ public class ElasticSearchUtil {
       new ArrayList<>(Arrays.asList("CREATED", "UPDATED", "NOOP"));
   private static final String SOFT_MODE = "soft";
   private static final String RAW_APPEND = ".raw";
-  private static ConcurrentHashMap<String, Boolean> indexMap = new ConcurrentHashMap<>();
-  private static ConcurrentHashMap<String, Boolean> typeMap = new ConcurrentHashMap<>();
+  private static Map<String, Boolean> indexMap = new HashMap<>();
+  private static Map<String, Boolean> typeMap = new HashMap<>();
 
   private ElasticSearchUtil() {}
+  
+  static {
+	  createIndices();
+	  createIndexTypes();
+  }
 
+  
+  private static void createIndices() {
+	  try {
+		  for (EsIndex index: EsIndex.values()) {
+			boolean isExist = ConnectionManager.getClient().admin().indices().exists(Requests.indicesExistsRequest(index.getIndexName())).get()
+			  .isExists();
+			if (!isExist) {
+	            indexMap.put(index.getIndexName(), true);
+			} else {
+	            boolean created =
+	                createIndex(index.getIndexName(), null, null, ElasticSearchSettings.createSettingsForIndex());
+	            if (created) {
+	              indexMap.put(index.getIndexName(), true);
+	            }
+	          }
+		  } 
+	  } catch (Exception e) {
+			e.printStackTrace();
+	  }
+  }
+  
+  private static void createIndexTypes() {
+	  String[] types = Arrays.stream(EsType.values()).map(f -> f.getTypeName()).toArray(String[]::new);
+	  for (EsIndex index: EsIndex.values()) {
+		  verifyOrCreatType(index.getIndexName(), types);
+	  }
+  }
+  
+  
+  
   /**
    * This method will put a new data entry inside Elastic search. identifier value becomes _id
    * inside ES, so every time provide a unique value while saving it.
@@ -569,7 +605,6 @@ public class ElasticSearchUtil {
     ProjectLogger.log("calling search builder======" + searchRequestBuilder.toString());
     SearchResponse response = null;
     response = searchRequestBuilder.execute().actionGet();
-    ProjectLogger.log("getting response for es======" + response);
     List<Map<String, Object>> esSource = new ArrayList<>();
     Map<String, Object> responsemap = new HashMap<>();
     long count = 0;
@@ -864,17 +899,18 @@ public class ElasticSearchUtil {
    * @return boolean
    */
   private static boolean verifyOrCreateIndexAndType(String index, String type) {
-    if (indexMap.containsKey(index)) {
-      if (typeMap.containsKey(type)) {
-        return true;
-      }
-      verifyOrCreatType(index, type);
-      return true;
-    } else {
-      verifyOrCreateIndex(index);
-      verifyOrCreatType(index, type);
-      return true;
-    }
+//    if (indexMap.containsKey(index)) {
+//      if (typeMap.containsKey(type)) {
+//        return true;
+//      }
+//      verifyOrCreatType(index, type);
+//      return true;
+//    } else {
+//      verifyOrCreateIndex(index);
+//      verifyOrCreatType(index, type);
+//      return true;
+//    }
+	  return true;
   }
 
   private static MatchQueryBuilder createMatchQuery(String name, Object text, Float boost) {

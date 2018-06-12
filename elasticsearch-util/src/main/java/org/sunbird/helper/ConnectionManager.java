@@ -68,7 +68,7 @@ public class ConnectionManager {
     if (clusterName != null && !"".equals(clusterName)) {
       builder = builder.put("cluster.name", clusterName);
     }
-    builder = builder.put("client.transport.sniff", true);
+    builder = builder.put("client.transport.sniff", false);
     builder = builder.put("client.transport.ignore_cluster_name", true);
     client = new PreBuiltTransportClient(builder.build());
     for (int i = 0; i < host.size(); i++) {
