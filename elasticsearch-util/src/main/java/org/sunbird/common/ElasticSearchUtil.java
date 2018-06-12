@@ -104,7 +104,7 @@ public class ElasticSearchUtil {
 		  for (EsIndex index: EsIndex.values()) {
 			boolean isExist = ConnectionManager.getClient().admin().indices().exists(Requests.indicesExistsRequest(index.getIndexName())).get()
 			  .isExists();
-			if (!isExist) {
+			if (isExist) {
 	            indexMap.put(index.getIndexName(), true);
 			} else {
 	            boolean created =
