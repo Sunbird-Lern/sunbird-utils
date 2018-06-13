@@ -1,8 +1,10 @@
 package org.sunbird.common.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 
 /** @author rayulu */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RequestParams implements Serializable {
 
   private static final long serialVersionUID = -759588115950763188L;
