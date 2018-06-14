@@ -1,10 +1,11 @@
-package org.sunbird.telemetry.util.lmaxdisruptor;
+package org.sunbird.telemetry.util;
 
 import com.lmax.disruptor.EventFactory;
 import org.sunbird.common.request.Request;
 
-/** Created by arvind on 10/1/18. */
+/** @author Manzarul */
 public class WriteEventFactory implements EventFactory<Request> {
+  @Override
   public Request newInstance() {
     return new Request();
   }
