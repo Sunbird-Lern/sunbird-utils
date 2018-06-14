@@ -23,7 +23,7 @@ import org.sunbird.common.request.Request;
 public class TelemetryFlush {
 
   private Queue<String> queue = new ConcurrentLinkedQueue<>();
-  private int thresholdSize = 500;
+  private int thresholdSize = 20;
   private static ObjectMapper mapper = new ObjectMapper();
   private static TelemetryFlush telemetryFlush;
   SunbirdTelemetryEventConsumer consumer = SunbirdTelemetryEventConsumer.getInstance();
@@ -76,7 +76,6 @@ public class TelemetryFlush {
       }
       Request req = createTelemetryRequest(list);
       consumer.consume(req);
-      // LMAXWriter.getInstance().submitMessage(req);
     }
   }
 
