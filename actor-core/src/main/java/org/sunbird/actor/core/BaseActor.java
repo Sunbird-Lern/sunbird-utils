@@ -54,6 +54,7 @@ public abstract class BaseActor extends UntypedAbstractActor {
             ResponseCode.invalidRequestData.getErrorCode(),
             ResponseCode.invalidRequestData.getErrorMessage(),
             ResponseCode.CLIENT_ERROR.getResponseCode());
+    sender().tell(exception, self());
     throw exception;
   }
 
@@ -69,13 +70,19 @@ public abstract class BaseActor extends UntypedAbstractActor {
             ResponseCode.invalidOperationName.getErrorCode(),
             ResponseCode.invalidOperationName.getErrorMessage(),
             ResponseCode.CLIENT_ERROR.getResponseCode());
+    sender().tell(exception, self());
     throw exception;
   }
 
-  protected void onReceiveException(String callerName, Exception e) throws Exception {
+  protected void onReceiveException(String callerName, Exception exception) throws Exception {
     ProjectLogger.log(
-        "Exception in message processing for: " + callerName + " :: message: " + e.getMessage(), e);
-    throw e;
+        "Exception in message processing for: "
+            + callerName
+            + " :: message: "
+            + exception.getMessage(),
+        exception);
+    sender().tell(exception, self());
+    throw exception;
   }
 
   protected Response getErrorResponse(Exception e) {

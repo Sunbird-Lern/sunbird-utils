@@ -303,7 +303,18 @@ public interface ResponseMessage {
         "No root organisation found which is associated with given {0}.";
     String OR_FORMAT = "{0} or {1}";
     String AND_FORMAT = "{0} and {1}";
+    String DOT_FORMAT = "{0}.{1}";
     String DEPENDENT_PARAMETER_MISSING = "Missing parameter {0} which is dependent on {1}.";
+    String EXTERNALID_NOT_FOUND =
+        "External ID (id: {0}, idType: {1}, provider: {2}) not found for given user.";
+    String PARSING_FAILED = "Failed to parse {0}.";
+    String EXTERNAL_ID_FORMAT = "externalId (id: {0}, idType: {1}, provider: {2})";
+    String EXTERNALID_ASSIGNED_TO_OTHER_USER =
+        "External ID (id: {0}, idType: {1}, provider: {2}) already assigned to another user.";
+    String MANDATORY_CONFIG_PARAMETER_MISSING =
+        "Mandatory configuration parameter {0} missing which is required for service startup.";
+    String CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED =
+        "Cassandra connection establishment failed in {0} mode.";
   }
 
   interface Key {
@@ -581,5 +592,9 @@ public interface ResponseMessage {
     String INVALID_REQUEST_PARAMETER = "INVALID_REQUEST_PARAMETER";
     String ROOT_ORG_ASSOCIATION_ERROR = "ROOT_ORG_ASSOCIATION_ERROR";
     String DEPENDENT_PARAMETER_MISSING = "DEPENDENT_PARAMETER_MISSING";
+    String EXTERNALID_NOT_FOUND = "EXTERNALID_NOT_FOUND";
+    String EXTERNALID_ASSIGNED_TO_OTHER_USER = "EXTERNALID_ASSIGNED_TO_OTHER_USER";
+    String MANDATORY_CONFIG_PARAMETER_MISSING = "MANDATORY_CONFIG_PARAMETER_MISSING";
+    String CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED = "CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED";
   }
 }
