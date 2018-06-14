@@ -23,4 +23,18 @@ public interface UserExtension {
    * @param userProfileMap User profile information
    */
   public void create(Map<String, Object> userProfileMap);
+
+  /**
+   * This method will be called before update method.
+   *
+   * @param userProfileMap User profile information
+   */
+  public void preUpdate(Map<String, Object> userProfileMap);
+
+  /**
+   * Updates user profile information.
+   *
+   * @param userProfileMap User profile information
+   */
+  public void update(Map<String, Object> userProfileMap);
 }
