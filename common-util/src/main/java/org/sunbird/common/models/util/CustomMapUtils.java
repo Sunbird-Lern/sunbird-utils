@@ -1,6 +1,5 @@
 package org.sunbird.common.models.util;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -17,10 +16,9 @@ public class CustomMapUtils {
    * This method will convert these(userName,loginId,source,provider) keys value to lower case.
    *
    * @param map Requested Map
+   * @param keyList List of keys
    */
-  public static void convertValuesToLower(Map<String, Object> map) {
-    List<String> keyList =
-        Arrays.asList(JsonKey.USERNAME, JsonKey.LOGIN_ID, JsonKey.SOURCE, JsonKey.PROVIDER);
+  public static void convertValuesToLower(Map<String, Object> map, List<String> keyList) {
     map.entrySet()
         .stream()
         .forEach(
