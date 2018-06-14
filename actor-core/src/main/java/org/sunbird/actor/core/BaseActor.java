@@ -55,7 +55,6 @@ public abstract class BaseActor extends UntypedAbstractActor {
             ResponseCode.invalidRequestData.getErrorMessage(),
             ResponseCode.CLIENT_ERROR.getResponseCode());
     sender().tell(exception, self());
-    throw exception;
   }
 
   public void onReceiveUnsupportedOperation(String callerName) throws Exception {
@@ -71,7 +70,6 @@ public abstract class BaseActor extends UntypedAbstractActor {
             ResponseCode.invalidOperationName.getErrorMessage(),
             ResponseCode.CLIENT_ERROR.getResponseCode());
     sender().tell(exception, self());
-    throw exception;
   }
 
   protected void onReceiveException(String callerName, Exception exception) throws Exception {
@@ -82,7 +80,6 @@ public abstract class BaseActor extends UntypedAbstractActor {
             + exception.getMessage(),
         exception);
     sender().tell(exception, self());
-    throw exception;
   }
 
   protected Response getErrorResponse(Exception e) {
