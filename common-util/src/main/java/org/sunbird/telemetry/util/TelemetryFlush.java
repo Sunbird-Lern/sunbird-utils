@@ -8,12 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.request.Request;
-import org.sunbird.telemetry.telemetryrouter.LMAXWriter;
 
 /**
  * Class to Receive the telemetry messages and once queue reached threshold value flush the messages
@@ -27,6 +26,7 @@ public class TelemetryFlush {
   private int thresholdSize = 500;
   private static ObjectMapper mapper = new ObjectMapper();
   private static TelemetryFlush telemetryFlush;
+  SunbirdTelemetryEventConsumer consumer = SunbirdTelemetryEventConsumer.getInstance();
 
   public static TelemetryFlush getInstance() {
     if (telemetryFlush == null) {
@@ -47,7 +47,8 @@ public class TelemetryFlush {
       try {
         this.thresholdSize = Integer.parseInt(queueThreshold.trim());
       } catch (Exception ex) {
-        ProjectLogger.log("Threshold size from config is not integer", ex);
+        ProjectLogger.log(
+            "TelemetryFlush:TelemetryFlush: Threshold size from config is not integer", ex);
       }
     }
   }
@@ -74,7 +75,8 @@ public class TelemetryFlush {
         }
       }
       Request req = createTelemetryRequest(list);
-      LMAXWriter.getInstance().submitMessage(req);
+      consumer.consume(req);
+      // LMAXWriter.getInstance().submitMessage(req);
     }
   }
 
@@ -90,7 +92,9 @@ public class TelemetryFlush {
       req.getRequest().putAll(map);
       return req;
     } catch (Exception e) {
-      ProjectLogger.log("Failed to create request for telemetry flush.", e);
+      ProjectLogger.log(
+          "TelemetryFlush:createTelemetryRequest: Failed to create request for telemetry flush.",
+          e);
     }
     return req;
   }

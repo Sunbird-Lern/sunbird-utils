@@ -16,9 +16,12 @@ import org.sunbird.telemetry.dto.Context;
 import org.sunbird.telemetry.dto.Producer;
 import org.sunbird.telemetry.dto.Target;
 import org.sunbird.telemetry.dto.Telemetry;
-import org.sunbird.telemetry.util.lmaxdisruptor.TelemetryEvents;
 
-/** class to generate the telemetry events and convert the final event oject to string ... */
+/**
+ * class to transform the request data to telemetry events
+ *
+ * @author Arvind
+ */
 public class TelemetryGenerator {
 
   private static ObjectMapper mapper = new ObjectMapper();

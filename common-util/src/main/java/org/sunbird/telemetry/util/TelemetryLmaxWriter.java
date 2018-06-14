@@ -5,8 +5,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.request.Request;
-import org.sunbird.telemetry.util.lmaxdisruptor.WriteEventFactory;
-import org.sunbird.telemetry.util.lmaxdisruptor.WriteEventProducer;
 
 /**
  * Lmax Disruptor engine to receive the telemetry request and forward the request to event handler

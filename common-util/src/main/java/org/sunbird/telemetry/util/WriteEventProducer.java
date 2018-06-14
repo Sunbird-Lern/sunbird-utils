@@ -1,4 +1,4 @@
-package org.sunbird.telemetry.telemetryrouter;
+package org.sunbird.telemetry.util;
 
 import com.lmax.disruptor.EventTranslatorOneArg;
 import com.lmax.disruptor.dsl.Disruptor;
@@ -23,8 +23,7 @@ public class WriteEventProducer {
       };
 
   public void onData(Request request) {
-    ProjectLogger.log(
-        "WriteEventProducer:onData: Publishing " + request.toString(), LoggerEnum.INFO.name());
+    ProjectLogger.log("Publishing " + request.toString(), LoggerEnum.INFO.name());
     // publish the message to disruptor
     disruptor.publishEvent(TRANSLATOR_ONE_ARG, request);
   }

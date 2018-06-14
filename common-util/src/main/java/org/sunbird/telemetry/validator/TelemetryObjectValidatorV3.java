@@ -1,4 +1,4 @@
-package org.sunbird.telemetry.util.validator;
+package org.sunbird.telemetry.validator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -9,9 +9,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.telemetry.dto.Telemetry;
-import org.sunbird.telemetry.util.lmaxdisruptor.TelemetryEvents;
+import org.sunbird.telemetry.util.TelemetryEvents;
 
-/** Created by arvind on 30/1/18. */
+/** @author arvind */
 public class TelemetryObjectValidatorV3 implements TelemetryObjectValidator {
 
   ObjectMapper mapper = new ObjectMapper();

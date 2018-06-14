@@ -10,9 +10,8 @@ import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.request.Request;
 import org.sunbird.telemetry.collector.TelemetryAssemblerFactory;
 import org.sunbird.telemetry.collector.TelemetryDataAssembler;
-import org.sunbird.telemetry.util.lmaxdisruptor.TelemetryEvents;
-import org.sunbird.telemetry.util.validator.TelemetryObjectValidator;
-import org.sunbird.telemetry.util.validator.TelemetryObjectValidatorV3;
+import org.sunbird.telemetry.validator.TelemetryObjectValidator;
+import org.sunbird.telemetry.validator.TelemetryObjectValidatorV3;
 
 /**
  * Handler class for telemetry write event
