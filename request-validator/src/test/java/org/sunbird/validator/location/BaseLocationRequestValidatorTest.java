@@ -1,4 +1,4 @@
-package org.sunbird.common.validator.location;
+package org.sunbird.validator.location;
 
 import static org.junit.Assert.assertEquals;
 
@@ -20,7 +20,7 @@ import org.sunbird.common.request.Request;
 /**
  * Test case for Base Location request validator.
  *
- * @author arvind on 30/4/18.
+ * @author arvind.
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(PowerMockRunner.class)
@@ -29,7 +29,7 @@ public class BaseLocationRequestValidatorTest {
   private String LOCATION_NAME = "location-name";
   private String LOCATION_CODE = "location_code";
   private String LOC_TYPE_STATE = "STATE";
-  BaseLocationRequestValidator validator = new BaseLocationRequestValidator();
+  private BaseLocationRequestValidator validator = new BaseLocationRequestValidator();
 
   @Test
   public void testValidateCreateLocationWithProperData() {
@@ -52,7 +52,6 @@ public class BaseLocationRequestValidatorTest {
   @Test(expected = ProjectCommonException.class)
   public void testValidateCreateLocationWithMandatoryParamTypeMissing() {
     Request request = new Request();
-    Map<String, Object> requestBody = new HashMap<>();
     Map<String, Object> locationData = new HashMap<>();
     locationData.put(JsonKey.NAME, LOCATION_NAME);
     locationData.put(JsonKey.CODE, LOCATION_CODE);

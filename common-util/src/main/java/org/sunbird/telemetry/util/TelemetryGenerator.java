@@ -245,7 +245,7 @@ public class TelemetryGenerator {
 
     edata.put(JsonKey.TYPE, logType);
     edata.put(JsonKey.LEVEL, logLevel);
-    edata.put(JsonKey.MESSAGE, message);
+    edata.put(JsonKey.MESSAGE, message != null ? message : "");
 
     edata.put(
         JsonKey.PARAMS,
