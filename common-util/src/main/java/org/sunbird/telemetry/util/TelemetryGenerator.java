@@ -16,9 +16,12 @@ import org.sunbird.telemetry.dto.Context;
 import org.sunbird.telemetry.dto.Producer;
 import org.sunbird.telemetry.dto.Target;
 import org.sunbird.telemetry.dto.Telemetry;
-import org.sunbird.telemetry.util.lmaxdisruptor.TelemetryEvents;
 
-/** class to generate the telemetry events and convert the final event oject to string ... */
+/**
+ * class to transform the request data to telemetry events
+ *
+ * @author Arvind
+ */
 public class TelemetryGenerator {
 
   private static ObjectMapper mapper = new ObjectMapper();
@@ -28,9 +31,9 @@ public class TelemetryGenerator {
   /**
    * To generate api_access LOG telemetry JSON string.
    *
-   * @param context
-   * @param params
-   * @return
+   * @param context Map contains the telemetry context info like actor info, env info etc.
+   * @param params Map contains the telemetry event data info
+   * @return Telemetry event
    */
   public static String audit(Map<String, Object> context, Map<String, Object> params) {
     if (!validateRequest(context, params)) {
@@ -164,6 +167,13 @@ public class TelemetryGenerator {
     return event;
   }
 
+  /**
+   * Method to generate the search type telemetry event.
+   *
+   * @param context Map contains the telemetry context info like actor info, env info etc.
+   * @param params Map contains the telemetry event data info
+   * @return Search Telemetry event
+   */
   public static String search(Map<String, Object> context, Map<String, Object> params) {
 
     if (!validateRequest(context, params)) {
@@ -211,6 +221,13 @@ public class TelemetryGenerator {
     return edata;
   }
 
+  /**
+   * Method to generate the log type telemetry event.
+   *
+   * @param context Map contains the telemetry context info like actor info, env info etc.
+   * @param params Map contains the telemetry event data info
+   * @return Search Telemetry event
+   */
   public static String log(Map<String, Object> context, Map<String, Object> params) {
 
     if (!validateRequest(context, params)) {
@@ -268,6 +285,13 @@ public class TelemetryGenerator {
     return paramsList;
   }
 
+  /**
+   * Method to generate the error type telemetry event.
+   *
+   * @param context Map contains the telemetry context info like actor info, env info etc.
+   * @param params Map contains the error event data info
+   * @return Search Telemetry event
+   */
   public static String error(Map<String, Object> context, Map<String, Object> params) {
 
     if (!validateRequest(context, params)) {
