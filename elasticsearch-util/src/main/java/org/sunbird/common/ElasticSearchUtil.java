@@ -110,7 +110,7 @@ public class ElasticSearchUtil {
                 .exists(Requests.indicesExistsRequest(index.getIndexName()))
                 .get()
                 .isExists();
-        if (!isExist) {
+        if (isExist) {
           indexMap.put(index.getIndexName(), true);
         } else {
           boolean created =
