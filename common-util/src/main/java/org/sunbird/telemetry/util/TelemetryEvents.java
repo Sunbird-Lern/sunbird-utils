@@ -1,6 +1,10 @@
-package org.sunbird.telemetry.util.lmaxdisruptor;
+package org.sunbird.telemetry.util;
 
-/** Created by arvind on 29/1/18. */
+/**
+ * enum for telemetry events
+ *
+ * @author arvind.
+ */
 public enum TelemetryEvents {
   AUDIT("AUDIT"),
   SEARCH("SEARCH"),

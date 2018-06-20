@@ -39,7 +39,7 @@ import org.sunbird.common.models.response.HttpUtilResponse;
 import org.sunbird.common.request.ExecutionContext;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
-import org.sunbird.telemetry.util.lmaxdisruptor.TelemetryEvents;
+import org.sunbird.telemetry.util.TelemetryEvents;
 
 /**
  * This utility method will handle external http call

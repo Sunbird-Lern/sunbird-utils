@@ -1,6 +1,6 @@
-package org.sunbird.telemetry.util.validator;
+package org.sunbird.telemetry.validator;
 
-/** Created by arvind on 30/1/18. */
+/** @author arvind */
 public interface TelemetryObjectValidator {
 
   public boolean validateAudit(String jsonString);
