@@ -1,6 +1,7 @@
 package org.sunbird.extension.user;
 
 import java.util.Map;
+import org.sunbird.common.models.response.Response;
 
 /**
  * UserExtension is the interface for all extensions of Sunbird user profile. It defines methods for
@@ -21,8 +22,16 @@ public interface UserExtension {
    * Creates user profile information.
    *
    * @param userProfileMap User profile information
+   * @return Response
    */
-  public void create(Map<String, Object> userProfileMap);
+  public Response create(Map<String, Object> userProfileMap);
+
+  /**
+   * This method will be called after create method.
+   *
+   * @param userProfileMap User profile information
+   */
+  public void postCreate(Map<String, Object> userProfileMap);
 
   /**
    * This method will be called before update method.
@@ -35,6 +44,7 @@ public interface UserExtension {
    * Updates user profile information.
    *
    * @param userProfileMap User profile information
+   * @return Response
    */
-  public void update(Map<String, Object> userProfileMap);
+  public Response update(Map<String, Object> userProfileMap);
 }
