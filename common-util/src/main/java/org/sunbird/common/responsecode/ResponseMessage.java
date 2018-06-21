@@ -315,7 +315,7 @@ public interface ResponseMessage {
         "Mandatory configuration parameter {0} missing which is required for service startup.";
     String CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED =
         "Cassandra connection establishment failed in {0} mode.";
-    String COMMON_ATTRIBUTE_MISMATCH = "{0} mismatch for {1} and {2}";
+    String COMMON_ATTRIBUTE_MISMATCH = "{0} mismatch of {1} and {2}";
   }
 
   interface Key {
