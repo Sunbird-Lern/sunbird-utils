@@ -566,6 +566,9 @@ public enum ResponseCode {
   cassandraConnectionEstablishmentFailed(
       ResponseMessage.Key.CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED,
       ResponseMessage.Message.CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED),
+  commonAttributeMismatch(
+      ResponseMessage.Key.COMMON_ATTRIBUTE_MISMATCH,
+      ResponseMessage.Message.COMMON_ATTRIBUTE_MISMATCH),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
