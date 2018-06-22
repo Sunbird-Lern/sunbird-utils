@@ -39,7 +39,7 @@ public class CassandraPropertyReader {
   /**
    * Method to read value from resource file .
    *
-   * @param key
+   * @param key property value to read
    * @return value corresponding to given key if found else will return key itself.
    */
   public String readProperty(String key) {
