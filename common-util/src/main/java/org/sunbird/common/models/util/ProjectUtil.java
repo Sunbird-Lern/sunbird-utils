@@ -1010,4 +1010,18 @@ public class ProjectUtil {
     map.put(ENDDATE, new SimpleDateFormat(YYYY_MM_DD_FORMATTER).format(cal.getTime()));
     return map;
   }
+  
+  /**
+  * This method util will be used to create ProjectCommonException for all kind
+  * of client error for the given response code(enum).
+  *
+  * @param ResponseCode
+  *            .
+  * @return ProjectCommonException .
+  */
+  public static ProjectCommonException createClientException(ResponseCode exception) {
+	throw new ProjectCommonException(exception.getErrorCode(), exception.getErrorMessage(),
+			ResponseCode.CLIENT_ERROR.getResponseCode());
+  }
+
 }
