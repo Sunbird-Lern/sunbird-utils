@@ -41,7 +41,6 @@ import org.sunbird.services.sso.SSOManager;
 public class KeyCloakServiceImpl implements SSOManager {
 
   private Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
-  private static final boolean IS_EMAIL_SETUP_COMPLETE = true;
   private static final String URL =
       KeyCloakConnectionProvider.SSO_URL
           + "realms/"
@@ -60,8 +59,20 @@ public class KeyCloakServiceImpl implements SSOManager {
               KeyCloakConnectionProvider.SSO_URL + "realms/" + KeyCloakConnectionProvider.SSO_REALM,
               true,
               true);
-      ProjectLogger.log(token.getId() + " " + token.issuedFor + " " + token.getProfile() + " " + token.getSubject() 
-          + " Active: " + token.isActive() + "  isExpired: " + token.isExpired() + " " + token.issuedNow().getExpiration(),
+      ProjectLogger.log(
+          token.getId()
+              + " "
+              + token.issuedFor
+              + " "
+              + token.getProfile()
+              + " "
+              + token.getSubject()
+              + " Active: "
+              + token.isActive()
+              + "  isExpired: "
+              + token.isExpired()
+              + " "
+              + token.issuedNow().getExpiration(),
           LoggerEnum.INFO.name());
       return token.getSubject();
     } catch (Exception e) {
@@ -120,11 +131,6 @@ public class KeyCloakServiceImpl implements SSOManager {
       }
     } else {
       ProjectUtil.createAndThrowServerError();
-    }
-    if ((!(StringUtils.isBlank(userId))
-            && !(StringUtils.isBlank((String) request.get(JsonKey.EMAIL))))
-        && IS_EMAIL_SETUP_COMPLETE) {
-      verifyEmail(userId);
     }
     Map<String, String> map = new HashMap<>();
     map.put(JsonKey.USER_ID, userId);
@@ -200,9 +206,6 @@ public class KeyCloakServiceImpl implements SSOManager {
       // then no need to make api call to keycloak to update profile.
       if (needTobeUpdate) {
         resource.update(ur);
-        if (isNotNull(request.get(JsonKey.EMAIL))) {
-          verifyEmail(userId);
-        }
       }
     } catch (Exception ex) {
       ProjectUtil.createAndThrowInvalidUserDataException();
@@ -252,7 +255,6 @@ public class KeyCloakServiceImpl implements SSOManager {
       }
       map.put(JsonKey.EMAIL_VERIFIED_UPDATED, list);
       ur.setAttributes(map);
-      verifyEmail(userId);
     } else {
       needTobeUpdate = true;
       Map<String, List<String>> map = ur.getAttributes();
@@ -393,7 +395,7 @@ public class KeyCloakServiceImpl implements SSOManager {
   /**
    * This method will send email verification link to registered user email
    *
-   * @param userId key claok id.
+   * @param userId keycloak id.
    */
   private void verifyEmail(String userId) {
     try {
