@@ -26,7 +26,6 @@ public class CassandraPropertyReader {
   }
 
   public static CassandraPropertyReader getInstance() {
-    // change the lazy holder implementation to simple singleton implementation ...
     if (null == cassandraPropertyReader) {
       synchronized (CassandraPropertyReader.class) {
         if (null == cassandraPropertyReader) {
@@ -41,7 +40,7 @@ public class CassandraPropertyReader {
    * Method to read value from resource file .
    *
    * @param key
-   * @return
+   * @return value corresponding to given key if found else will return key itself.
    */
   public String readProperty(String key) {
     return properties.getProperty(key) != null ? properties.getProperty(key) : key;
