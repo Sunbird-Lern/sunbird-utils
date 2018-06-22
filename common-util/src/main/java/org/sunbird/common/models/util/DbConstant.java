@@ -6,8 +6,8 @@ package org.sunbird.common.models.util;
  * @author arvind
  */
 public enum DbConstant {
-  SUNBIRD_KEYSPACE_NAME("sunbird"),
-  USER_TABLE_NAME("user");
+  sunbirdKeyspaceName("sunbird"),
+  userTableName("user");
 
   DbConstant(String value) {
     this.value = value;
