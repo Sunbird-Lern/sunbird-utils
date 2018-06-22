@@ -139,7 +139,8 @@ public interface ResponseMessage {
     String USER_NAME_OR_ID_ERROR = "Please provide either username or userId.";
     String USER_ACCOUNT_BLOCKED = "User account has been blocked .";
     String EMAIL_VERIFY_ERROR = "Please provide a verified email in order to create user.";
-    String PHONE_VERIFY_ERROR = "Please provide a verified phone number in order to create user.";
+    String PHONE_VERIFY_ERROR =
+        "Please provide a verified phone number in order to create/update user.";
     String BULK_USER_UPLOAD_ERROR =
         "Please provide either organization Id or external Id & provider value.";
     String DATA_SIZE_EXCEEDED = "Maximum upload data size should be {0}";
