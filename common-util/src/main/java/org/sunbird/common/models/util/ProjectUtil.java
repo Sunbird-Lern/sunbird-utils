@@ -1012,15 +1012,15 @@ public class ProjectUtil {
   }
   
   /**
-  * This method util will be used to create ProjectCommonException for all kind
+  * This method will be used to create ProjectCommonException for all kind
   * of client error for the given response code(enum).
   *
-  * @param ResponseCode
-  *            .
-  * @return ProjectCommonException .
+  * @param ResponseCode: An enum of all the api responses.
+  *            
+  * @return ProjectCommonException
   */
-  public static ProjectCommonException createClientException(ResponseCode exception) {
-	throw new ProjectCommonException(exception.getErrorCode(), exception.getErrorMessage(),
+  public static ProjectCommonException createClientException(ResponseCode responseCode) {
+	return new ProjectCommonException(responseCode.getErrorCode(), responseCode.getErrorMessage(),
 			ResponseCode.CLIENT_ERROR.getResponseCode());
   }
 
