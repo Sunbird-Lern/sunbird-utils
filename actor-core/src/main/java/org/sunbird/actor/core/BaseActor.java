@@ -36,10 +36,8 @@ public abstract class BaseActor extends UntypedAbstractActor {
       } catch (Exception e) {
         onReceiveException(operation, e);
       }
-    } else if (message instanceof Response) {
-      sender().tell(message, self());
     } else {
-      unSupportedMessage();
+      // Do nothing !
     }
   }
 
@@ -50,7 +48,7 @@ public abstract class BaseActor extends UntypedAbstractActor {
     SunbirdMWService.tellToBGRouter(request, self());
   }
 
-  public void unSupportedMessage() {
+  public void unSupportedMessage() throws Exception {
     ProjectCommonException exception =
         new ProjectCommonException(
             ResponseCode.invalidRequestData.getErrorCode(),
@@ -59,7 +57,7 @@ public abstract class BaseActor extends UntypedAbstractActor {
     sender().tell(exception, self());
   }
 
-  public void onReceiveUnsupportedOperation(String callerName) {
+  public void onReceiveUnsupportedOperation(String callerName) throws Exception {
     ProjectLogger.log(callerName + ": unsupported message");
     unSupportedMessage();
   }
@@ -74,10 +72,14 @@ public abstract class BaseActor extends UntypedAbstractActor {
     sender().tell(exception, self());
   }
 
-  protected void onReceiveException(String callerName, Exception e) {
+  protected void onReceiveException(String callerName, Exception exception) throws Exception {
     ProjectLogger.log(
-        "Exception in message processing for: " + callerName + " :: message: " + e.getMessage(), e);
-    sender().tell(e, self());
+        "Exception in message processing for: "
+            + callerName
+            + " :: message: "
+            + exception.getMessage(),
+        exception);
+    sender().tell(exception, self());
   }
 
   protected Response getErrorResponse(Exception e) {

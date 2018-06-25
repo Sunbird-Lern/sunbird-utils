@@ -13,7 +13,8 @@ import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.telemetry.dto.Actor;
 import org.sunbird.telemetry.dto.Context;
 import org.sunbird.telemetry.dto.Telemetry;
-import org.sunbird.telemetry.util.lmaxdisruptor.TelemetryEvents;
+import org.sunbird.telemetry.util.TelemetryEvents;
+import org.sunbird.telemetry.validator.TelemetryObjectValidatorV3;
 
 /** Created by arvind on 30/1/18. */
 public class TelemetryObjectValidatorV3Test {

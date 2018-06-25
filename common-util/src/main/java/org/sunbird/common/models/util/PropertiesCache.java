@@ -15,7 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 public class PropertiesCache {
 
   private final String[] fileName = {
-    "cassandratablecolumn.properties",
     "elasticsearch.config.properties",
     "cassandra.config.properties",
     "dbconfig.properties",
@@ -56,6 +55,8 @@ public class PropertiesCache {
   }
 
   public String getProperty(String key) {
+    String value = System.getenv(key);
+    if (StringUtils.isNotBlank(value)) return value;
     return configProp.getProperty(key) != null ? configProp.getProperty(key) : key;
   }
 
@@ -88,6 +89,8 @@ public class PropertiesCache {
    * @return
    */
   public String readProperty(String key) {
+    String value = System.getenv(key);
+    if (StringUtils.isNotBlank(value)) return value;
     return configProp.getProperty(key);
   }
 }

@@ -233,4 +233,25 @@ public interface CassandraOperation {
    */
   Response batchUpdate(
       String keyspaceName, String tableName, List<Map<String, Map<String, Object>>> records);
+
+  /**
+   * Fetch records with specified indexed column
+   *
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param propertyName Indexed Column name
+   * @param propertyValue Value to be used for matching in select query
+   * @return Response consisting of fetched records
+   */
+  Response getRecordsByIndexedProperty(
+      String keyspaceName, String tableName, String propertyName, Object propertyValue);
+
+  /**
+   * @desc This method is used to delete record in cassandra db by their primary composite key
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param compositeKeyMap Column map for composite primary key
+   */
+  public void deleteRecord(
+      String keyspaceName, String tableName, Map<String, String> compositeKeyMap);
 }
