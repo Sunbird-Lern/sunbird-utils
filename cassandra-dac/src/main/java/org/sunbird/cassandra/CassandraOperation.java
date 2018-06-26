@@ -253,4 +253,15 @@ public interface CassandraOperation {
    */
   Response batchUpdate(
       String keyspaceName, String tableName, List<Map<String, Map<String, Object>>> records);
+
+  /**
+   * Fetch records with composite key.
+   *
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param compositeKeyMap Column map for composite primary key
+   * @return Response consisting of fetched records
+   */
+  Response getRecordsByCompositeKey(
+      String keyspaceName, String tableName, Map<String, Object> compositeKeyMap);
 }

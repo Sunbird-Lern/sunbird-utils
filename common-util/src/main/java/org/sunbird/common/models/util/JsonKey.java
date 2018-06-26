@@ -84,7 +84,7 @@ public final class JsonKey {
   public static final String BULK_OP_DB = "BulkOpDb";
   public static final String BULK_UPLOAD_BATCH_DATA_SIZE = "bulk_upload_batch_data_size";
   public static final String BULK_UPLOAD_ORG_DATA_SIZE = "bulk_upload_org_data_size";
-  public static final String BULK_UPLOAD_USER_DATA_SIZE = "bulk_upload_user_data_size";
+  public static final String BULK_UPLOAD_USER_DATA_SIZE = "sunbird_user_bulk_upload_size";
   public static final String BULK_USER_UPLOAD = "bulkUserUpload";
   public static final String CASSANDRA_IN_EMBEDDED_MODE = "cassandraInEmbeddedMode";
   public static final String CASSANDRA_SERVICE = "Cassandra service";
@@ -616,7 +616,7 @@ public final class JsonKey {
   public static final String SUNBIRD_API_MGR_BASE_URL = "sunbird_api_mgr_base_url";
   public static final String SUNBIRD_AUTHORIZATION = "sunbird_authorization";
   public static final String SUNBIRD_CS_BASE_URL = "sunbird_cs_base_url";
-  public static final String SUNBIRD_CS_SEARCH_PATH="sunbird_cs_search_path";
+  public static final String SUNBIRD_CS_SEARCH_PATH = "sunbird_cs_search_path";
   public static final String SUNBIRD_CONTENT_BADGE_ASSIGN_URL = "sunbird.content.badge.assign.url";
   public static final String SUNBIRD_CONTENT_BADGE_REVOKE_URL = "sunbird.content.badge.revoke.url";
   public static final String SUNBIRD_LMS_BASE_URL = "sunbird_lms_base_url";
@@ -656,6 +656,7 @@ public final class JsonKey {
   public static final String ADD = "add";
   public static final String REMOVE = "remove";
   public static final String EDIT = "edit";
+  public static final String DEFAULT_FRAMEWORK = "defaultFramework";
 
   private JsonKey() {}
 }

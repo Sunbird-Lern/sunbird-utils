@@ -20,6 +20,19 @@ public class DefaultDecryptionServiceImpl implements DecryptionService {
 
   private String sunbirdEncryption = "";
 
+  private static Cipher c;
+
+  static {
+    try {
+      sunbird_encryption = DefaultEncryptionServivceImpl.getSalt();
+      Key key = generateKey();
+      c = Cipher.getInstance(ALGORITHM);
+      c.init(Cipher.DECRYPT_MODE, key);
+    } catch (Exception e) {
+      ProjectLogger.log(e.getMessage(), e);
+    }
+  }
+
   public DefaultDecryptionServiceImpl() {
     sunbirdEncryption = System.getenv(JsonKey.SUNBIRD_ENCRYPTION);
     if (StringUtils.isBlank(sunbirdEncryption)) {
@@ -83,11 +96,6 @@ public class DefaultDecryptionServiceImpl implements DecryptionService {
    */
   public static String decrypt(String value) {
     try {
-      sunbird_encryption = DefaultEncryptionServivceImpl.getSalt();
-      Key key = generateKey();
-      Cipher c = Cipher.getInstance(ALGORITHM);
-      c.init(Cipher.DECRYPT_MODE, key);
-
       String dValue = null;
       String valueToDecrypt = value.trim();
       for (int i = 0; i < ITERATIONS; i++) {

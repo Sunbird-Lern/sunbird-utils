@@ -49,11 +49,11 @@ public abstract class BaseRouter extends BaseActor {
         switch (name) {
           case "BackgroundRequestRouter":
             String[] bgOperations = routerDetails.asyncTasks();
-            createActor(context, actor, bgOperations);
+            createActor(context, actor, bgOperations, "brr-usr-dispatcher");
             break;
           case "RequestRouter":
             String[] operations = routerDetails.tasks();
-            createActor(context, actor, operations);
+            createActor(context, actor, operations, "rr-usr-dispatcher");
             break;
           default:
             System.out.println("Router with name '" + name + "' not supported.");
@@ -66,12 +66,19 @@ public abstract class BaseRouter extends BaseActor {
   }
 
   private void createActor(
-      ActorContext context, Class<? extends BaseActor> actor, String[] operations) {
+      ActorContext context,
+      Class<? extends BaseActor> actor,
+      String[] operations,
+      String dispatcher) {
     if (null != operations && operations.length > 0) {
-
+      Props props = null;
+      if (StringUtils.isNotBlank(dispatcher)) {
+        props = Props.create(actor).withDispatcher(dispatcher);
+      } else {
+        props = Props.create(actor);
+      }
       ActorRef actorRef =
-          context.actorOf(
-              FromConfig.getInstance().props(Props.create(actor)), actor.getSimpleName());
+          context.actorOf(FromConfig.getInstance().props(props), actor.getSimpleName());
       for (String operation : operations) {
         String parentName = self().path().name();
         cacheActor(getKey(parentName, operation), actorRef);
