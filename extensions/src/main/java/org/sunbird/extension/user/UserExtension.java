@@ -20,9 +20,10 @@ public interface UserExtension {
   /**
    * Reads user profile information.
    *
-   * @param userProfileMap User profile information
+   * @param userIdMap UserId Information
+   * @return userProfileMap Map<String, Object>
    */
-  public void read(Map<String, Object> userProfileMap);
+  public Map<String, Object> read(Map<String, Object> userIdMap);
 
   /**
    * Updates user profile information.

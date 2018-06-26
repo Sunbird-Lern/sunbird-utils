@@ -56,15 +56,6 @@ public class User implements Serializable {
   private String channel;
   private String loginId;
   private String registryId;
-  private Map<String, Object> registry;
-
-  public Map<String, Object> getRegistry() {
-    return registry;
-  }
-
-  public void setRegistry(Map<String, Object> registry) {
-    this.registry = registry;
-  }
 
   public String getRegistryId() {
     return registryId;
