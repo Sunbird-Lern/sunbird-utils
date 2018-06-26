@@ -651,6 +651,7 @@ public final class JsonKey {
   public static final String ORG_PROVIDER = "orgProvider";
   public static final String SUNBIRD_TELEMETRY_BASE_URL = "sunbird_telemetry_base_url";
   public static final String DEFAULT_FRAMEWORK = "defaultFramework";
+  public static final String SUNBIRD_EMAIL_ENV = "sunbird_email_env";
 
   private JsonKey() {}
 }
