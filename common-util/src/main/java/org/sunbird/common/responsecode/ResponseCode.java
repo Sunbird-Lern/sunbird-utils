@@ -572,6 +572,8 @@ public enum ResponseCode {
   commonAttributeMismatch(
       ResponseMessage.Key.COMMON_ATTRIBUTE_MISMATCH,
       ResponseMessage.Message.COMMON_ATTRIBUTE_MISMATCH),
+  duplicateExternalId(
+      ResponseMessage.Key.DUPLICATE_EXTERNAL_ID, ResponseMessage.Message.DUPLICATE_EXTERNAL_ID),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
