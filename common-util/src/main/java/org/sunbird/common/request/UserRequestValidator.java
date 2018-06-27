@@ -812,10 +812,9 @@ public class UserRequestValidator {
     validateWebPages(userRequest);
     validateExtIdTypeAndProvider(userRequest);
     if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.USERNAME))
-        && (StringUtils.isNotBlank(
-                (String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID_PROVIDER))
-            && StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID))
-            && StringUtils.isNotBlank(
+        && (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID_PROVIDER))
+            || StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID))
+            || StringUtils.isBlank(
                 (String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID_TYPE)))) {
       throw new ProjectCommonException(
           ResponseCode.mandatoryParamsMissing.getErrorCode(),
