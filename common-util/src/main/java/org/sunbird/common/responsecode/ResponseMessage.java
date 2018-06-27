@@ -317,6 +317,7 @@ public interface ResponseMessage {
     String CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED =
         "Cassandra connection establishment failed in {0} mode.";
     String COMMON_ATTRIBUTE_MISMATCH = "{0} mismatch of {1} and {2}";
+    String MULTIPLE_COURSES_FOR_BATCH = "For one batch multiple courses not allowed.";
   }
 
   interface Key {
@@ -599,5 +600,6 @@ public interface ResponseMessage {
     String MANDATORY_CONFIG_PARAMETER_MISSING = "MANDATORY_CONFIG_PARAMETER_MISSING";
     String CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED = "CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED";
     String COMMON_ATTRIBUTE_MISMATCH = "COMMON_ATTRIBUTE_MISMATCH";
+    String MULTIPLE_COURSES_FOR_BATCH = "MULTIPLE_COURSES_FOR_BATCH";
   }
 }

@@ -569,6 +569,9 @@ public enum ResponseCode {
   commonAttributeMismatch(
       ResponseMessage.Key.COMMON_ATTRIBUTE_MISMATCH,
       ResponseMessage.Message.COMMON_ATTRIBUTE_MISMATCH),
+  multipleCoursesNotAllowedForBatch(
+      ResponseMessage.Key.MULTIPLE_COURSES_FOR_BATCH,
+      ResponseMessage.Message.MULTIPLE_COURSES_FOR_BATCH),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
