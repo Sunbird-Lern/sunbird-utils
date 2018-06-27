@@ -26,6 +26,12 @@ public class UserRequestValidator {
   public static void validateCreateUser(Request userRequest) {
     externalIdsValidation(userRequest, JsonKey.CREATE);
     fieldsNotAllowed(Arrays.asList(JsonKey.REGISTERED_ORG_ID, JsonKey.ROOT_ORG_ID), userRequest);
+    if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.USERNAME))) {
+      throw new ProjectCommonException(
+          ResponseCode.userNameRequired.getErrorCode(),
+          ResponseCode.userNameRequired.getErrorMessage(),
+          ERROR_CODE);
+    }
     createUserBasicValidation(userRequest);
     phoneValidation(userRequest);
     addressValidation(userRequest);
@@ -93,13 +99,6 @@ public class UserRequestValidator {
    * @param userRequest
    */
   public static void createUserBasicValidation(Request userRequest) {
-
-    if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.USERNAME))) {
-      throw new ProjectCommonException(
-          ResponseCode.userNameRequired.getErrorCode(),
-          ResponseCode.userNameRequired.getErrorMessage(),
-          ERROR_CODE);
-    }
 
     if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.FIRST_NAME))) {
       throw new ProjectCommonException(
@@ -812,6 +811,23 @@ public class UserRequestValidator {
     phoneValidation(userRequest);
     validateWebPages(userRequest);
     validateExtIdTypeAndProvider(userRequest);
+    if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.USERNAME))
+        && (StringUtils.isNotBlank(
+                (String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID_PROVIDER))
+            && StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID))
+            && StringUtils.isNotBlank(
+                (String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID_TYPE)))) {
+      throw new ProjectCommonException(
+          ResponseCode.mandatoryParamsMissing.getErrorCode(),
+          ProjectUtil.formatMessage(
+              ResponseCode.mandatoryParamsMissing.getErrorMessage(),
+              (StringFormatter.joinByOr(
+                  JsonKey.USERNAME,
+                  StringFormatter.joinByAnd(
+                      StringFormatter.joinByComma(JsonKey.EXTERNAL_ID, JsonKey.EXTERNAL_ID_TYPE),
+                      JsonKey.EXTERNAL_ID_PROVIDER)))),
+          ERROR_CODE);
+    }
   }
 
   private static void validateExtIdTypeAndProvider(Request userRequest) {
