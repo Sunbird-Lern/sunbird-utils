@@ -26,8 +26,8 @@ public interface CassandraOperation {
 
   /**
    * @desc This method is used to insert record in cassandra db
-   * @param keyspaceName String (data base keyspace name)
-   * @param tableName String
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
    * @param request Map<String,Object>(i.e map of column name and their value)
    * @return Response Response
    */
@@ -35,8 +35,8 @@ public interface CassandraOperation {
 
   /**
    * @desc This method is used to update record in cassandra db
-   * @param keyspaceName String (data base keyspace name)
-   * @param tableName String
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
    * @param request Map<String,Object>(i.e map of column name and their value)
    * @return Response Response
    */
@@ -44,8 +44,8 @@ public interface CassandraOperation {
 
   /**
    * @desc This method is used to delete record in cassandra db by their primary key(identifier)
-   * @param keyspaceName String (data base keyspace name)
-   * @param tableName String
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
    * @param identifier String
    * @return Response Response
    */

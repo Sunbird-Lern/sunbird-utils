@@ -318,8 +318,6 @@ public interface ResponseMessage {
     String CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED =
         "Cassandra connection establishment failed in {0} mode.";
     String COMMON_ATTRIBUTE_MISMATCH = "{0} mismatch of {1} and {2}";
-    String DUPLICATE_EXTERNAL_ID =
-        "External ID with idType: {1} & provider: {2} already assigned to this user.";
   }
 
   interface Key {
@@ -602,6 +600,5 @@ public interface ResponseMessage {
     String MANDATORY_CONFIG_PARAMETER_MISSING = "MANDATORY_CONFIG_PARAMETER_MISSING";
     String CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED = "CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED";
     String COMMON_ATTRIBUTE_MISMATCH = "COMMON_ATTRIBUTE_MISMATCH";
-    String DUPLICATE_EXTERNAL_ID = "DUPLICATE_EXTERNAL_ID";
   }
 }

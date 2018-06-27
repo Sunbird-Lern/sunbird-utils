@@ -636,8 +636,7 @@ public class CassandraOperationImpl implements CassandraOperation {
       String keyspaceName, String tableName, Map<String, Object> compositeKeyMap) {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
-        "Cassandra Service getRecordsByCompositeKey method started at ==" + startTime,
-        LoggerEnum.INFO);
+        "CassandraOperationImpl: getRecordsByCompositeKey called at " + startTime, LoggerEnum.INFO);
     Response response = new Response();
     try {
       Builder selectBuilder = QueryBuilder.select().all();
@@ -650,7 +649,12 @@ public class CassandraOperationImpl implements CassandraOperation {
       ResultSet results = connectionManager.getSession(keyspaceName).execute(selectQuery);
       response = CassandraUtil.createResponse(results);
     } catch (Exception e) {
-      ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName + " : " + e.getMessage(), e);
+      ProjectLogger.log(
+          "CassandraOperationImpl:getRecordsByCompositeKey: "
+              + Constants.EXCEPTION_MSG_FETCH
+              + tableName
+              + " : "
+              + e.getMessage());
       throw new ProjectCommonException(
           ResponseCode.SERVER_ERROR.getErrorCode(),
           ResponseCode.SERVER_ERROR.getErrorMessage(),

@@ -657,6 +657,7 @@ public final class JsonKey {
   public static final String REMOVE = "remove";
   public static final String EDIT = "edit";
   public static final String DEFAULT_FRAMEWORK = "defaultFramework";
+  public static final String EXTERNAL_ID_PROVIDER = "externalIdProvider";
 
   private JsonKey() {}
 }
