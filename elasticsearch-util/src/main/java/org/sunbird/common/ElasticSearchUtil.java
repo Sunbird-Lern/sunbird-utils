@@ -15,6 +15,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
@@ -92,42 +94,46 @@ public class ElasticSearchUtil {
   private static Map<String, Boolean> typeMap = new HashMap<>();
 
   private ElasticSearchUtil() {}
-  
+
   static {
-	  createIndices();
-	  createIndexTypes();
+    createIndices();
+    createIndexTypes();
   }
 
-  
   private static void createIndices() {
-	  try {
-		  for (EsIndex index: EsIndex.values()) {
-			boolean isExist = ConnectionManager.getClient().admin().indices().exists(Requests.indicesExistsRequest(index.getIndexName())).get()
-			  .isExists();
-			if (isExist) {
-	            indexMap.put(index.getIndexName(), true);
-			} else {
-	            boolean created =
-	                createIndex(index.getIndexName(), null, null, ElasticSearchSettings.createSettingsForIndex());
-	            if (created) {
-	              indexMap.put(index.getIndexName(), true);
-	            }
-	          }
-		  } 
-	  } catch (Exception e) {
-			e.printStackTrace();
-	  }
+    try {
+      for (EsIndex index : EsIndex.values()) {
+        boolean isExist =
+            ConnectionManager.getClient()
+                .admin()
+                .indices()
+                .exists(Requests.indicesExistsRequest(index.getIndexName()))
+                .get()
+                .isExists();
+        if (isExist) {
+          indexMap.put(index.getIndexName(), true);
+        } else {
+          boolean created =
+              createIndex(
+                  index.getIndexName(), null, null, ElasticSearchSettings.createSettingsForIndex());
+          if (created) {
+            indexMap.put(index.getIndexName(), true);
+          }
+        }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
-  
+
   private static void createIndexTypes() {
-	  String[] types = Arrays.stream(EsType.values()).map(f -> f.getTypeName()).toArray(String[]::new);
-	  for (EsIndex index: EsIndex.values()) {
-		  verifyOrCreatType(index.getIndexName(), types);
-	  }
+    String[] types =
+        Arrays.stream(EsType.values()).map(f -> f.getTypeName()).toArray(String[]::new);
+    for (EsIndex index : EsIndex.values()) {
+      verifyOrCreatType(index.getIndexName(), types);
+    }
   }
-  
-  
-  
+
   /**
    * This method will put a new data entry inside Elastic search. identifier value becomes _id
    * inside ES, so every time provide a unique value while saving it.
@@ -899,18 +905,18 @@ public class ElasticSearchUtil {
    * @return boolean
    */
   private static boolean verifyOrCreateIndexAndType(String index, String type) {
-//    if (indexMap.containsKey(index)) {
-//      if (typeMap.containsKey(type)) {
-//        return true;
-//      }
-//      verifyOrCreatType(index, type);
-//      return true;
-//    } else {
-//      verifyOrCreateIndex(index);
-//      verifyOrCreatType(index, type);
-//      return true;
-//    }
-	  return true;
+    //    if (indexMap.containsKey(index)) {
+    //      if (typeMap.containsKey(type)) {
+    //        return true;
+    //      }
+    //      verifyOrCreatType(index, type);
+    //      return true;
+    //    } else {
+    //      verifyOrCreateIndex(index);
+    //      verifyOrCreatType(index, type);
+    //      return true;
+    //    }
+    return true;
   }
 
   private static MatchQueryBuilder createMatchQuery(String name, Object text, Float boost) {
@@ -1158,5 +1164,25 @@ public class ElasticSearchUtil {
    */
   public static long calculateEndTime(long startTime) {
     return System.currentTimeMillis() - startTime;
+  }
+
+  /**
+   * Helper method for searching by filters for Elastic search.
+   *
+   * @param indexName Elastic search index
+   * @param esType Elastic search document type
+   * @param filters Filters criteria for ES search
+   * @return return the search result.
+   */
+  public static List<Map<String, Object>> searchByFilters(
+      String indexName, String esType, Map<String, Object> filters) {
+    SearchDTO searchDTO = new SearchDTO();
+    searchDTO.getAdditionalProperties().put(JsonKey.FILTERS, filters);
+    Map<String, Object> esResult = ElasticSearchUtil.complexSearch(searchDTO, indexName, esType);
+    if (MapUtils.isNotEmpty(esResult)
+        && CollectionUtils.isNotEmpty((List) esResult.get(JsonKey.CONTENT))) {
+      return ((List<Map<String, Object>>) esResult.get(JsonKey.CONTENT));
+    }
+    return Collections.emptyList();
   }
 }

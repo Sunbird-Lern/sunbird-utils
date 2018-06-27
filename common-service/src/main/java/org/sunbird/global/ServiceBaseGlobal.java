@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
+import org.sunbird.actor.service.SunbirdMWService;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.BadgingJsonKey;
 import org.sunbird.common.models.util.JsonKey;
@@ -85,8 +86,10 @@ public class ServiceBaseGlobal extends BaseGlobal {
    *
    * @param app Play application
    */
+  @Override
   public void onStart(Application app) {
     setEnvironment();
+    SunbirdMWService.init();
     CassandraStartUpUtil.createCassandraConnection(JsonKey.SUNBIRD);
     CassandraStartUpUtil.createCassandraConnection(JsonKey.SUNBIRD_PLUGIN);
   }
@@ -98,6 +101,7 @@ public class ServiceBaseGlobal extends BaseGlobal {
    * @param actionMethod Action method
    * @return Root action created for received request
    */
+  @Override
   @SuppressWarnings("rawtypes")
   public Action onRequest(Request request, Method actionMethod) {
 
