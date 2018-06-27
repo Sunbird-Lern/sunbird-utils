@@ -658,6 +658,8 @@ public final class JsonKey {
   public static final String EDIT = "edit";
   public static final String DEFAULT_FRAMEWORK = "defaultFramework";
   public static final String EXTERNAL_ID_PROVIDER = "externalIdProvider";
+  public static final String SUNBIRD_INSTALLATION_DISPLAY_NAME =
+      "sunbird_installation_display_name";
 
   private JsonKey() {}
 }
