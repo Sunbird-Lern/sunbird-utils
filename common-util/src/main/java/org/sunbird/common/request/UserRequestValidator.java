@@ -25,7 +25,16 @@ public class UserRequestValidator {
    */
   public static void validateCreateUser(Request userRequest) {
     externalIdsValidation(userRequest, JsonKey.CREATE);
-    fieldsNotAllowed(Arrays.asList(JsonKey.REGISTERED_ORG_ID, JsonKey.ROOT_ORG_ID), userRequest);
+    fieldsNotAllowed(
+        Arrays.asList(
+            JsonKey.REGISTERED_ORG_ID,
+            JsonKey.ROOT_ORG_ID,
+            JsonKey.PROVIDER,
+            JsonKey.EXTERNAL_ID,
+            JsonKey.EXTERNAL_ID_PROVIDER,
+            JsonKey.EXTERNAL_ID_TYPE,
+            JsonKey.ID_TYPE),
+        userRequest);
     if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.USERNAME))) {
       throw new ProjectCommonException(
           ResponseCode.userNameRequired.getErrorCode(),
@@ -568,7 +577,13 @@ public class UserRequestValidator {
   private static void updateUserBasicValidation(Request userRequest) {
     fieldsNotAllowed(
         Arrays.asList(
-            JsonKey.REGISTERED_ORG_ID, JsonKey.ROOT_ORG_ID, JsonKey.CHANNEL, JsonKey.USERNAME),
+            JsonKey.REGISTERED_ORG_ID,
+            JsonKey.ROOT_ORG_ID,
+            JsonKey.CHANNEL,
+            JsonKey.USERNAME,
+            JsonKey.PROVIDER,
+            JsonKey.EXTERNAL_ID,
+            JsonKey.ID_TYPE),
         userRequest);
     if ((StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.USER_ID))
             && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.ID)))
