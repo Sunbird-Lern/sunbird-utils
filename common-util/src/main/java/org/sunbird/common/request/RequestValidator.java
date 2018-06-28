@@ -1147,4 +1147,14 @@ public final class RequestValidator {
         ResponseCode.getResponse(errorCode).getErrorMessage(),
         ERROR_CODE);
   }
+
+  /**
+   * 
+   *  This method will validate the initalisation process
+   * 
+   */
+
+  public static void validateInitialisation(Request request) {
+    // here goes the logic to check the system settings 'isInitialised' is true or not.if true throw error
+  }
 }

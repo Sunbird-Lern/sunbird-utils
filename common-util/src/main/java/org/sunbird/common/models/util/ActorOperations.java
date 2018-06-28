@@ -151,7 +151,8 @@ public enum ActorOperations {
   SEARCH_DATA("searchData"),
   GET_METRICS("getMetrics"),
   REG_CHANNEL("channelReg"),
-  UPDATE_LEARNER_STATE("updateLearnerState");
+  UPDATE_LEARNER_STATE("updateLearnerState"),
+  CREATE_FIRST_ROOTORG("createFirstRootOrg");
   private String value;
 
   /**
