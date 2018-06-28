@@ -582,7 +582,6 @@ public class UserRequestValidator {
             JsonKey.CHANNEL,
             JsonKey.USERNAME,
             JsonKey.PROVIDER,
-            JsonKey.EXTERNAL_ID,
             JsonKey.ID_TYPE),
         userRequest);
     if ((StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.USER_ID))
