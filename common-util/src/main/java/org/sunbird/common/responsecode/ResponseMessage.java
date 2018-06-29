@@ -317,7 +317,7 @@ public interface ResponseMessage {
     String CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED =
         "Cassandra connection establishment failed in {0} mode.";
     String COMMON_ATTRIBUTE_MISMATCH = "{0} mismatch of {1} and {2}";
-    String MULTIPLE_COURSES_FOR_BATCH = "For one batch multiple courses not allowed.";
+    String MULTIPLE_COURSES_FOR_BATCH = "A batch cannot belong to multiple courses.";
   }
 
   interface Key {
