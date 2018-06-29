@@ -598,7 +598,7 @@ public class UserRequestValidator {
           ProjectUtil.formatMessage(
               ResponseCode.mandatoryParamsMissing.getErrorMessage(),
               (StringFormatter.joinByOr(
-                  JsonKey.ID,
+                  JsonKey.USER_ID,
                   StringFormatter.joinByAnd(
                       StringFormatter.joinByComma(JsonKey.EXTERNAL_ID, JsonKey.EXTERNAL_ID_TYPE),
                       JsonKey.EXTERNAL_ID_PROVIDER)))),
