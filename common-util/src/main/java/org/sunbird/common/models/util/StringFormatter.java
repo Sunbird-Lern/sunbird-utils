@@ -7,10 +7,10 @@ package org.sunbird.common.models.util;
  */
 public class StringFormatter {
 
-  private static final String DOT = ".";
-  private static final String AND = " and ";
-  private static final String OR = " or ";
-  private static final String COMMA = " , ";
+  public static final String DOT = ".";
+  public static final String AND = " and ";
+  public static final String OR = " or ";
+  public static final String COMMA = ", ";
 
   private StringFormatter() {}
 

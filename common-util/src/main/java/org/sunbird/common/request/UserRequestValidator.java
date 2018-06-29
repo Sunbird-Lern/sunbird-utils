@@ -470,7 +470,7 @@ public class UserRequestValidator {
                         ResponseCode.invalidValue.getErrorMessage(),
                         StringFormatter.joinByDot(JsonKey.EXTERNAL_IDS, JsonKey.OPERATION),
                         identity.get(JsonKey.OPERATION),
-                        String.join(",", operationTypeList)),
+                        String.join(StringFormatter.COMMA, operationTypeList)),
                     ERROR_CODE);
               }
               // throw exception for invalid operation if other operation type is coming in
