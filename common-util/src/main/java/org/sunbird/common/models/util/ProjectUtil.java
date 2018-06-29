@@ -985,7 +985,7 @@ public class ProjectUtil {
    * @return request object of target type.
    */
   public static <T> T convertToRequestPojo(Request request, Class<T> clazz) {
-    return (T) mapper.convertValue(request.getRequest(), clazz);
+    return mapper.convertValue(request.getRequest(), clazz);
   }
 
   /**
@@ -1010,18 +1010,18 @@ public class ProjectUtil {
     map.put(ENDDATE, new SimpleDateFormat(YYYY_MM_DD_FORMATTER).format(cal.getTime()));
     return map;
   }
-  
-  /**
-  * This method will be used to create ProjectCommonException for all kind
-  * of client error for the given response code(enum).
-  *
-  * @param ResponseCode: An enum of all the api responses.
-  *            
-  * @return ProjectCommonException
-  */
-  public static ProjectCommonException createClientException(ResponseCode responseCode) {
-	return new ProjectCommonException(responseCode.getErrorCode(), responseCode.getErrorMessage(),
-			ResponseCode.CLIENT_ERROR.getResponseCode());
-  }
 
+  /**
+   * This method will be used to create ProjectCommonException for all kind of client error for the
+   * given response code(enum).
+   *
+   * @param ResponseCode: An enum of all the api responses.
+   * @return ProjectCommonException
+   */
+  public static ProjectCommonException createClientException(ResponseCode responseCode) {
+    return new ProjectCommonException(
+        responseCode.getErrorCode(),
+        responseCode.getErrorMessage(),
+        ResponseCode.CLIENT_ERROR.getResponseCode());
+  }
 }

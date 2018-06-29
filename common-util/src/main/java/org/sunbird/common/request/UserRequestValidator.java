@@ -8,8 +8,8 @@ import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.ProjectUtil.AddressType;
+import org.sunbird.common.models.util.StringFormatter;
 import org.sunbird.common.responsecode.ResponseCode;
-import org.sunbird.common.responsecode.ResponseMessage;
 
 /** @author Amit Kumar */
 public class UserRequestValidator {
@@ -24,7 +24,23 @@ public class UserRequestValidator {
    * @param userRequest Request
    */
   public static void validateCreateUser(Request userRequest) {
-    fieldsNotAllowed(Arrays.asList(JsonKey.REGISTERED_ORG_ID, JsonKey.ROOT_ORG_ID), userRequest);
+    externalIdsValidation(userRequest, JsonKey.CREATE);
+    fieldsNotAllowed(
+        Arrays.asList(
+            JsonKey.REGISTERED_ORG_ID,
+            JsonKey.ROOT_ORG_ID,
+            JsonKey.PROVIDER,
+            JsonKey.EXTERNAL_ID,
+            JsonKey.EXTERNAL_ID_PROVIDER,
+            JsonKey.EXTERNAL_ID_TYPE,
+            JsonKey.ID_TYPE),
+        userRequest);
+    if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.USERNAME))) {
+      throw new ProjectCommonException(
+          ResponseCode.userNameRequired.getErrorCode(),
+          ResponseCode.userNameRequired.getErrorMessage(),
+          ERROR_CODE);
+    }
     createUserBasicValidation(userRequest);
     phoneValidation(userRequest);
     addressValidation(userRequest);
@@ -35,7 +51,9 @@ public class UserRequestValidator {
 
   public static void fieldsNotAllowed(List<String> fields, Request userRequest) {
     for (String field : fields) {
-      if (StringUtils.isNotBlank((String) userRequest.getRequest().get(field))) {
+      if (((userRequest.getRequest().get(field) instanceof String)
+              && StringUtils.isNotBlank((String) userRequest.getRequest().get(field)))
+          || (null != userRequest.getRequest().get(field))) {
         throw new ProjectCommonException(
             ResponseCode.invalidRequestParameter.getErrorCode(),
             ProjectUtil.formatMessage(
@@ -92,34 +110,6 @@ public class UserRequestValidator {
    * @param userRequest
    */
   public static void createUserBasicValidation(Request userRequest) {
-
-    if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.USERNAME))) {
-      throw new ProjectCommonException(
-          ResponseCode.userNameRequired.getErrorCode(),
-          ResponseCode.userNameRequired.getErrorMessage(),
-          ERROR_CODE);
-    }
-
-    if (StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.PROVIDER))
-        && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID))) {
-      throw new ProjectCommonException(
-          ResponseCode.dependentParameterMissing.getErrorCode(),
-          ProjectUtil.formatMessage(
-              ResponseCode.dependentParameterMissing.getErrorMessage(),
-              JsonKey.EXTERNAL_ID,
-              JsonKey.PROVIDER),
-          ERROR_CODE);
-    }
-    if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PROVIDER))
-        && StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID))) {
-      throw new ProjectCommonException(
-          ResponseCode.dependentParameterMissing.getErrorCode(),
-          ProjectUtil.formatMessage(
-              ResponseCode.dependentParameterMissing.getErrorMessage(),
-              JsonKey.PROVIDER,
-              JsonKey.EXTERNAL_ID),
-          ERROR_CODE);
-    }
 
     if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.FIRST_NAME))) {
       throw new ProjectCommonException(
@@ -397,7 +387,7 @@ public class UserRequestValidator {
    */
   @SuppressWarnings({"rawtypes"})
   public static void validateUpdateUser(Request userRequest) {
-
+    externalIdsValidation(userRequest, JsonKey.UPDATE);
     phoneValidation(userRequest);
     updateUserBasicValidation(userRequest);
     if (userRequest.getRequest().get(JsonKey.ADDRESS) != null
@@ -440,6 +430,77 @@ public class UserRequestValidator {
       throw new ProjectCommonException(
           ResponseCode.invalidRootOrganisationId.getErrorCode(),
           ResponseCode.invalidRootOrganisationId.getErrorMessage(),
+          ERROR_CODE);
+    }
+
+    validateExtIdTypeAndProvider(userRequest);
+  }
+
+  public static void externalIdsValidation(Request userRequest, String operation) {
+    if (userRequest.getRequest().containsKey(JsonKey.EXTERNAL_IDS)
+        && (null != userRequest.getRequest().get(JsonKey.EXTERNAL_IDS))) {
+      if (!(userRequest.getRequest().get(JsonKey.EXTERNAL_IDS) instanceof List)) {
+        throw new ProjectCommonException(
+            ResponseCode.dataTypeError.getErrorCode(),
+            ProjectUtil.formatMessage(
+                ResponseCode.dataTypeError.getErrorMessage(), JsonKey.EXTERNAL_IDS, JsonKey.LIST),
+            ERROR_CODE);
+      }
+      List<Map<String, String>> externalIds =
+          (List<Map<String, String>>) userRequest.getRequest().get(JsonKey.EXTERNAL_IDS);
+      validateIndividualExternalId(operation, externalIds);
+    }
+  }
+
+  private static void validateIndividualExternalId(
+      String operation, List<Map<String, String>> externalIds) {
+    // valid operation type for externalIds in user api.
+    List<String> operationTypeList = Arrays.asList(JsonKey.ADD, JsonKey.REMOVE, JsonKey.EDIT);
+    externalIds
+        .stream()
+        .forEach(
+            identity -> {
+              // check for invalid operation type
+              if (StringUtils.isNotBlank(identity.get(JsonKey.OPERATION))
+                  && (!operationTypeList.contains(
+                      (identity.get(JsonKey.OPERATION)).toLowerCase()))) {
+                throw new ProjectCommonException(
+                    ResponseCode.invalidValue.getErrorCode(),
+                    ProjectUtil.formatMessage(
+                        ResponseCode.invalidValue.getErrorMessage(),
+                        StringFormatter.joinByDot(JsonKey.EXTERNAL_IDS, JsonKey.OPERATION),
+                        identity.get(JsonKey.OPERATION),
+                        String.join(StringFormatter.COMMA, operationTypeList)),
+                    ERROR_CODE);
+              }
+              // throw exception for invalid operation if other operation type is coming in
+              // request
+              // other than add or null for create user api
+              if (JsonKey.CREATE.equalsIgnoreCase(operation)
+                  && StringUtils.isNotBlank(identity.get(JsonKey.OPERATION))
+                  && (!JsonKey.ADD.equalsIgnoreCase(((identity.get(JsonKey.OPERATION)))))) {
+                throw new ProjectCommonException(
+                    ResponseCode.invalidValue.getErrorCode(),
+                    ProjectUtil.formatMessage(
+                        ResponseCode.invalidValue.getErrorMessage(),
+                        StringFormatter.joinByDot(JsonKey.EXTERNAL_IDS, JsonKey.OPERATION),
+                        identity.get(JsonKey.OPERATION),
+                        JsonKey.ADD),
+                    ERROR_CODE);
+              }
+              validateExternalIdMandatoryParam(JsonKey.ID, identity.get(JsonKey.ID));
+              validateExternalIdMandatoryParam(JsonKey.PROVIDER, identity.get(JsonKey.PROVIDER));
+              validateExternalIdMandatoryParam(JsonKey.ID_TYPE, identity.get(JsonKey.ID_TYPE));
+            });
+  }
+
+  private static void validateExternalIdMandatoryParam(String param, String paramValue) {
+    if (StringUtils.isBlank(paramValue)) {
+      throw new ProjectCommonException(
+          ResponseCode.mandatoryParamsMissing.getErrorCode(),
+          ProjectUtil.formatMessage(
+              ResponseCode.mandatoryParamsMissing.getErrorMessage(),
+              StringFormatter.joinByDot(JsonKey.EXTERNAL_IDS, param)),
           ERROR_CODE);
     }
   }
@@ -518,21 +579,29 @@ public class UserRequestValidator {
   private static void updateUserBasicValidation(Request userRequest) {
     fieldsNotAllowed(
         Arrays.asList(
-            JsonKey.REGISTERED_ORG_ID, JsonKey.ROOT_ORG_ID, JsonKey.CHANNEL, JsonKey.USERNAME),
+            JsonKey.REGISTERED_ORG_ID,
+            JsonKey.ROOT_ORG_ID,
+            JsonKey.CHANNEL,
+            JsonKey.USERNAME,
+            JsonKey.PROVIDER,
+            JsonKey.ID_TYPE),
         userRequest);
     if ((StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.USER_ID))
             && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.ID)))
         && (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID))
-            || StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PROVIDER)))) {
+            || StringUtils.isBlank(
+                (String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID_PROVIDER))
+            || StringUtils.isBlank(
+                (String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID_TYPE)))) {
       throw new ProjectCommonException(
           ResponseCode.mandatoryParamsMissing.getErrorCode(),
           ProjectUtil.formatMessage(
               ResponseCode.mandatoryParamsMissing.getErrorMessage(),
-              (ProjectUtil.formatMessage(
-                  ResponseMessage.Message.OR_FORMAT,
-                  JsonKey.ID,
-                  ProjectUtil.formatMessage(
-                      ResponseMessage.Message.AND_FORMAT, JsonKey.EXTERNAL_ID, JsonKey.PROVIDER)))),
+              (StringFormatter.joinByOr(
+                  JsonKey.USER_ID,
+                  StringFormatter.joinByAnd(
+                      StringFormatter.joinByComma(JsonKey.EXTERNAL_ID, JsonKey.EXTERNAL_ID_TYPE),
+                      JsonKey.EXTERNAL_ID_PROVIDER)))),
           ERROR_CODE);
     }
     if (userRequest.getRequest().containsKey(JsonKey.FIRST_NAME)
@@ -744,6 +813,57 @@ public class UserRequestValidator {
           }
         }
       }
+    }
+  }
+
+  /**
+   * This method will validate bulk api user data.
+   *
+   * @param userRequest Request
+   */
+  public static void validateBulkUserData(Request userRequest) {
+    externalIdsValidation(userRequest, JsonKey.BULK_USER_UPLOAD);
+    createUserBasicValidation(userRequest);
+    phoneValidation(userRequest);
+    validateWebPages(userRequest);
+    validateExtIdTypeAndProvider(userRequest);
+    if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.USERNAME))
+        && (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID_PROVIDER))
+            || StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID))
+            || StringUtils.isBlank(
+                (String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID_TYPE)))) {
+      throw new ProjectCommonException(
+          ResponseCode.mandatoryParamsMissing.getErrorCode(),
+          ProjectUtil.formatMessage(
+              ResponseCode.mandatoryParamsMissing.getErrorMessage(),
+              (StringFormatter.joinByOr(
+                  JsonKey.USERNAME,
+                  StringFormatter.joinByAnd(
+                      StringFormatter.joinByComma(JsonKey.EXTERNAL_ID, JsonKey.EXTERNAL_ID_TYPE),
+                      JsonKey.EXTERNAL_ID_PROVIDER)))),
+          ERROR_CODE);
+    }
+  }
+
+  private static void validateExtIdTypeAndProvider(Request userRequest) {
+    if ((StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID_PROVIDER))
+        && StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID))
+        && StringUtils.isNotBlank(
+            (String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID_TYPE)))) {
+      return;
+    } else if (StringUtils.isBlank(
+            (String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID_PROVIDER))
+        && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID))
+        && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.EXTERNAL_ID_TYPE))) {
+      return;
+    } else {
+      throw new ProjectCommonException(
+          ResponseCode.dependentParamsMissing.getErrorCode(),
+          ProjectUtil.formatMessage(
+              ResponseCode.dependentParamsMissing.getErrorMessage(),
+              StringFormatter.joinByComma(
+                  JsonKey.EXTERNAL_ID, JsonKey.EXTERNAL_ID_TYPE, JsonKey.EXTERNAL_ID_PROVIDER)),
+          ERROR_CODE);
     }
   }
 }

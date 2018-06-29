@@ -32,18 +32,18 @@ public class DefaultEncryptionServivceImpl implements EncryptionService {
   private static String encryption_key = "";
 
   private String sunbirdEncryption = "";
-  
+
   private static Cipher c;
-  
+
   static {
-	  try {
-		  encryption_key = getSalt();
-		  Key key = generateKey();
-		  c = Cipher.getInstance(ALGORITHM);
-		  c.init(Cipher.ENCRYPT_MODE, key);
-	  } catch (Exception e) {
-		  ProjectLogger.log(e.getMessage(), e);
-	  }
+    try {
+      encryption_key = getSalt();
+      Key key = generateKey();
+      c = Cipher.getInstance(ALGORITHM);
+      c.init(Cipher.ENCRYPT_MODE, key);
+    } catch (Exception e) {
+      ProjectLogger.log(e.getMessage(), e);
+    }
   }
 
   public DefaultEncryptionServivceImpl() {

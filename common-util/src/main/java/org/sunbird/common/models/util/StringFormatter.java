@@ -7,9 +7,10 @@ package org.sunbird.common.models.util;
  */
 public class StringFormatter {
 
-  private static final String DOT = ".";
-  private static final String AND = " and ";
-  private static final String OR = " or ";
+  public static final String DOT = ".";
+  public static final String AND = " and ";
+  public static final String OR = " or ";
+  public static final String COMMA = ", ";
 
   private StringFormatter() {}
 
@@ -41,5 +42,15 @@ public class StringFormatter {
    */
   public static String joinByAnd(String... params) {
     return String.join(AND, params);
+  }
+
+  /**
+   * Helper method to construct and formatted string.
+   *
+   * @param params One or more strings to be joined by comma
+   * @return and formatted string
+   */
+  public static String joinByComma(String... params) {
+    return String.join(COMMA, params);
   }
 }

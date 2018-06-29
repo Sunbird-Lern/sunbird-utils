@@ -649,8 +649,15 @@ public final class JsonKey {
   public static final String CASSANDRA_UPDATE_BATCH_SIZE = "cassandra_update_batch_size";
   public static final String ORG_EXTERNAL_ID = "orgExternalId";
   public static final String ORG_PROVIDER = "orgProvider";
+  public static final String EXTERNAL_IDS = "externalIds";
   public static final String SUNBIRD_TELEMETRY_BASE_URL = "sunbird_telemetry_base_url";
+  public static final String EXTERNAL_ID_TYPE = "externalIdType";
+  public static final String ID_TYPE = "idType";
+  public static final String ADD = "add";
+  public static final String REMOVE = "remove";
+  public static final String EDIT = "edit";
   public static final String DEFAULT_FRAMEWORK = "defaultFramework";
+  public static final String EXTERNAL_ID_PROVIDER = "externalIdProvider";
   public static final String SUNBIRD_INSTALLATION_DISPLAY_NAME =
       "sunbird_installation_display_name";
 

@@ -1,5 +1,6 @@
 package org.sunbird.common.models.util;
 
+import akka.dispatch.Futures;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
@@ -8,11 +9,8 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.BaseRequest;
 import com.mashape.unirest.request.body.Body;
 import com.mashape.unirest.request.body.RequestBodyEntity;
-
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
-
-import akka.dispatch.Futures;
 import scala.concurrent.Future;
 import scala.concurrent.Promise;
 
@@ -38,29 +36,30 @@ public class RestUtil {
   public static Future<HttpResponse<JsonNode>> executeAsync(BaseRequest request) {
     ProjectLogger.log("RestUtil:execute: request url = " + request.getHttpRequest().getUrl());
     Promise<HttpResponse<JsonNode>> promise = Futures.promise();
-    
+
     Body body = request.getHttpRequest().getBody();
     if ((body != null) && (body instanceof RequestBodyEntity)) {
       RequestBodyEntity rbody = (RequestBodyEntity) body;
       ProjectLogger.log("RestUtil:execute: request body = " + rbody.getBody());
     }
-    request.asJsonAsync(new Callback<JsonNode>() {
+    request.asJsonAsync(
+        new Callback<JsonNode>() {
 
-      @Override
-      public void failed(UnirestException e) {
-        promise.failure(e);
-      }
+          @Override
+          public void failed(UnirestException e) {
+            promise.failure(e);
+          }
 
-      @Override
-      public void completed(HttpResponse<JsonNode> response) {
-        promise.success(response);
-      }
+          @Override
+          public void completed(HttpResponse<JsonNode> response) {
+            promise.success(response);
+          }
 
-      @Override
-      public void cancelled() {
-        promise.failure(new Exception("cancelled"));
-      }
-    });
+          @Override
+          public void cancelled() {
+            promise.failure(new Exception("cancelled"));
+          }
+        });
 
     return promise.future();
   }
