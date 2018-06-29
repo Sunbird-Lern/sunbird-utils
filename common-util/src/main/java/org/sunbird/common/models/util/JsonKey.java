@@ -84,7 +84,7 @@ public final class JsonKey {
   public static final String BULK_OP_DB = "BulkOpDb";
   public static final String BULK_UPLOAD_BATCH_DATA_SIZE = "bulk_upload_batch_data_size";
   public static final String BULK_UPLOAD_ORG_DATA_SIZE = "bulk_upload_org_data_size";
-  public static final String BULK_UPLOAD_USER_DATA_SIZE = "bulk_upload_user_data_size";
+  public static final String BULK_UPLOAD_USER_DATA_SIZE = "sunbird_user_bulk_upload_size";
   public static final String BULK_USER_UPLOAD = "bulkUserUpload";
   public static final String CASSANDRA_IN_EMBEDDED_MODE = "cassandraInEmbeddedMode";
   public static final String CASSANDRA_SERVICE = "Cassandra service";
@@ -649,8 +649,17 @@ public final class JsonKey {
   public static final String CASSANDRA_UPDATE_BATCH_SIZE = "cassandra_update_batch_size";
   public static final String ORG_EXTERNAL_ID = "orgExternalId";
   public static final String ORG_PROVIDER = "orgProvider";
+  public static final String EXTERNAL_IDS = "externalIds";
   public static final String SUNBIRD_TELEMETRY_BASE_URL = "sunbird_telemetry_base_url";
+  public static final String EXTERNAL_ID_TYPE = "externalIdType";
+  public static final String ID_TYPE = "idType";
+  public static final String ADD = "add";
+  public static final String REMOVE = "remove";
+  public static final String EDIT = "edit";
   public static final String DEFAULT_FRAMEWORK = "defaultFramework";
+  public static final String EXTERNAL_ID_PROVIDER = "externalIdProvider";
+  public static final String SUNBIRD_INSTALLATION_DISPLAY_NAME =
+      "sunbird_installation_display_name";
 
   private JsonKey() {}
 }

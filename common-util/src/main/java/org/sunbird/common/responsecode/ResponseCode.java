@@ -560,12 +560,21 @@ public enum ResponseCode {
   externalIdAssignedToOtherUser(
       ResponseMessage.Key.EXTERNALID_ASSIGNED_TO_OTHER_USER,
       ResponseMessage.Message.EXTERNALID_ASSIGNED_TO_OTHER_USER),
+  dependentParamsMissing(
+      ResponseMessage.Key.DEPENDENT_PARAMETER_MISSING,
+      ResponseMessage.Message.DEPENDENT_PARAMS_MISSING),
   mandatoryConfigParamMissing(
       ResponseMessage.Key.MANDATORY_CONFIG_PARAMETER_MISSING,
       ResponseMessage.Message.MANDATORY_CONFIG_PARAMETER_MISSING),
   cassandraConnectionEstablishmentFailed(
       ResponseMessage.Key.CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED,
       ResponseMessage.Message.CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED),
+  commonAttributeMismatch(
+      ResponseMessage.Key.COMMON_ATTRIBUTE_MISMATCH,
+      ResponseMessage.Message.COMMON_ATTRIBUTE_MISMATCH),
+  multipleCoursesNotAllowedForBatch(
+      ResponseMessage.Key.MULTIPLE_COURSES_FOR_BATCH,
+      ResponseMessage.Message.MULTIPLE_COURSES_FOR_BATCH),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

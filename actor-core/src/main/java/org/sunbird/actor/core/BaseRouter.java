@@ -66,17 +66,19 @@ public abstract class BaseRouter extends BaseActor {
   }
 
   private void createActor(
-      ActorContext context, Class<? extends BaseActor> actor, String[] operations, String dispatcher) {
+      ActorContext context,
+      Class<? extends BaseActor> actor,
+      String[] operations,
+      String dispatcher) {
     if (null != operations && operations.length > 0) {
-    	  Props props = null;
-    	  if (StringUtils.isNotBlank(dispatcher)) {
-    		  props = Props.create(actor).withDispatcher(dispatcher);
-    	  } else {
-    		  props = Props.create(actor);
-    	  }
+      Props props = null;
+      if (StringUtils.isNotBlank(dispatcher)) {
+        props = Props.create(actor).withDispatcher(dispatcher);
+      } else {
+        props = Props.create(actor);
+      }
       ActorRef actorRef =
-          context.actorOf(
-              FromConfig.getInstance().props(props), actor.getSimpleName());
+          context.actorOf(FromConfig.getInstance().props(props), actor.getSimpleName());
       for (String operation : operations) {
         String parentName = self().path().name();
         cacheActor(getKey(parentName, operation), actorRef);
