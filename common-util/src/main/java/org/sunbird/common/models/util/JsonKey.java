@@ -660,6 +660,7 @@ public final class JsonKey {
   public static final String EXTERNAL_ID_PROVIDER = "externalIdProvider";
   public static final String SUNBIRD_INSTALLATION_DISPLAY_NAME =
       "sunbird_installation_display_name";
+  public static final String USR_EXT_IDNT_TABLE = "usr_external_identity";
 
   private JsonKey() {}
 }
