@@ -62,7 +62,7 @@ public interface ResponseMessage {
     String LOGIN_TYPE_MISSING = "Login type is required.";
     String EMAIL_IN_USE = "Email already exists.";
     String USERNAME_EMAIL_IN_USE =
-        "Username or Email is already in used. Please try with a different Username or Email.";
+        "Username or Email is already in use. Please try with a different Username or Email.";
     String KEY_CLOAK_DEFAULT_ERROR = "server error at sso.";
     String USER_REG_UNSUCCESSFULL = "User Registration unsuccessfull.";
     String USER_UPDATE_UNSUCCESSFULL = "User update operation is unsuccessfull.";
