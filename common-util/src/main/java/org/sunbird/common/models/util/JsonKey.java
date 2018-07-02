@@ -661,6 +661,7 @@ public final class JsonKey {
   public static final String SUNBIRD_INSTALLATION_DISPLAY_NAME =
       "sunbird_installation_display_name";
   public static final String USR_EXT_IDNT_TABLE = "usr_external_identity";
+  public static final String END_TIME_IN_HOUR_MINUTE_SECOND = " 23:59:59";
 
   private JsonKey() {}
 }

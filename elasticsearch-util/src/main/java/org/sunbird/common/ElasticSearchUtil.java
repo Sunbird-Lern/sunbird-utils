@@ -607,7 +607,7 @@ public class ElasticSearchUtil {
       addAggregations(searchRequestBuilder, searchDTO.getFacets());
     }
     ProjectLogger.log(
-        "calling search builder======" + searchRequestBuilder.toString(), LoggerEnum.INFO.name());
+        "calling search builder======" + searchRequestBuilder.toString(), LoggerEnum.DEBUG.name());
     SearchResponse response = null;
     response = searchRequestBuilder.execute().actionGet();
     List<Map<String, Object>> esSource = new ArrayList<>();
