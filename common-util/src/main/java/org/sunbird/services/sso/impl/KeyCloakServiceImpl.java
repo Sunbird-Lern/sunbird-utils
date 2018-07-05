@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ws.rs.core.Response;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.keycloak.RSATokenVerifier;
@@ -440,8 +442,11 @@ public class KeyCloakServiceImpl implements SSOManager {
         keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
     UserRepresentation user = resource.toRepresentation();
     Map<String, List<String>> map = user.getAttributes();
-    List<String> list = map.get(JsonKey.EMAIL_VERIFIED_UPDATED);
-    if (!list.isEmpty()) {
+    List<String> list = null;
+    if (MapUtils.isNotEmpty(map)) {
+      list = map.get(JsonKey.EMAIL_VERIFIED_UPDATED);
+    }
+    if (CollectionUtils.isNotEmpty(list)) {
       return list.get(0);
     } else {
       return "";
