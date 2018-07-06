@@ -569,6 +569,54 @@ public enum ResponseCode {
   commonAttributeMismatch(
       ResponseMessage.Key.COMMON_ATTRIBUTE_MISMATCH,
       ResponseMessage.Message.COMMON_ATTRIBUTE_MISMATCH),
+  jsonTransformInvalidTypeConfig(
+      ResponseMessage.Key.JSON_TRANSFORM_INVALID_TYPE_CONFIG,
+      ResponseMessage.Message.JSON_TRANSFORM_INVALID_TYPE_CONFIG),
+  jsonTransformInvalidDateFormat(
+      ResponseMessage.Key.JSON_TRANSFORM_INVALID_DATE_FORMAT,
+      ResponseMessage.Message.JSON_TRANSFORM_INVALID_DATE_FORMAT),
+  jsonTransformFailedInvalidInput(
+      ResponseMessage.Key.JSON_TRANSFORM_FAILED_INVALID_INPUT,
+      ResponseMessage.Message.JSON_TRANSFORM_FAILED_INVALID_INPUT),
+  jsonTransformEnumValuesMissing(
+      ResponseMessage.Key.JSON_TRANSFORM_ENUM_VALUES_MISSING,
+      ResponseMessage.Message.JSON_TRANSFORM_ENUM_VALUES_MISSING),
+  jsonTransformBasicConfigMissing(
+      ResponseMessage.Key.JSON_TRANSFORM_BASIC_CONFIG_MISSING,
+      ResponseMessage.Message.JSON_TRANSFORM_BASIC_CONFIG_MISSING),
+  userRegistryLoadConfigFailed(
+      ResponseMessage.Key.USER_REGISTRY_LOAD_CONFIG_FAILED,
+      ResponseMessage.Message.USER_REGISTRY_LOAD_CONFIG_FAILED),
+  userRegistryClientCreationFailed(
+      ResponseMessage.Key.USER_REGISTRY_CLIENT_CREATION_FAILED,
+      ResponseMessage.Message.USER_REGISTRY_CLIENT_CREATION_FAILED),
+  userRegistryAddEntityFailed(
+      ResponseMessage.Key.USER_REGISTRY_ADD_ENTITY_FAILED,
+      ResponseMessage.Message.USER_REGISTRY_ADD_ENTITY_FAILED),
+  userRegistryReadEntityFailed(
+      ResponseMessage.Key.USER_REGISTRY_READ_ENTITY_FAILED,
+      ResponseMessage.Message.USER_REGISTRY_READ_ENTITY_FAILED),
+  userRegistryUpdateEntityFailed(
+      ResponseMessage.Key.USER_REGISTRY_UPDATE_ENTITY_FAILED,
+      ResponseMessage.Message.USER_REGISTRY_UPDATE_ENTITY_FAILED),
+  userRegistryDeleteEntityFailed(
+      ResponseMessage.Key.USER_REGISTRY_DELETE_ENTITY_FAILED,
+      ResponseMessage.Message.USER_REGISTRY_DELETE_ENTITY_FAILED),
+  userRegistryParseResponseFailed(
+      ResponseMessage.Key.USER_REGISTRY_PARSE_RESPONSE_FAILED,
+      ResponseMessage.Message.USER_REGISTRY_PARSE_RESPONSE_FAILED),
+  userRegistryUserTypeBlank(
+      ResponseMessage.Key.USER_REGISTRY_USER_TYPE_BLANK,
+      ResponseMessage.Message.USER_REGISTRY_USER_TYPE_BLANK),
+  userRegistryMainProviderNotConfigured(
+      ResponseMessage.Key.USER_REGISTRY_MAIN_PROVIDER_NOT_CONFIGURED,
+      ResponseMessage.Message.USER_REGISTRY_MAIN_PROVIDER_NOT_CONFIGURED),
+  userRegistryUniqueIdBlank(
+      ResponseMessage.Key.USER_REGISTRY_UNIQUE_ID_BLANK,
+      ResponseMessage.Message.USER_REGISTRY_UNIQUE_ID_BLANK),
+  userRegistryAccessTokenBlank(
+      ResponseMessage.Key.USER_REGISTRY_ACCESS_TOKEN_BLANK,
+      ResponseMessage.Message.USER_REGISTRY_ACCESS_TOKEN_BLANK),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
