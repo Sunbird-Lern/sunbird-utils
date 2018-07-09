@@ -84,9 +84,6 @@ public class BaseGlobal extends GlobalSettings {
     ProjectCommonException commonException;
     if (t instanceof ProjectCommonException) {
       commonException = (ProjectCommonException) t;
-      response =
-          BaseController.createResponseOnException(
-              request.path(), (ProjectCommonException) t, request.method());
     } else if (t instanceof akka.pattern.AskTimeoutException) {
       commonException =
           new ProjectCommonException(

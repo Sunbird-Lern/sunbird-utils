@@ -43,7 +43,7 @@ public class ResponseIdUtil {
    * @param method Request method (e.g. GET)
    * @return API response ID for given request URI.
    */
-  public String getApiResponseId(String path, String method) {
+  public static String getApiResponseId(String path, String method) {
     String val;
     if (ProjectUtil.Method.GET.name().equalsIgnoreCase(method)) {
       val = getResponseId(path);
@@ -95,7 +95,7 @@ public class ResponseIdUtil {
    * @return Request URI path without path param (e.g. return /v1/user/read for
    *     /v1/user/read/{userId})
    */
-  private String removeLastValue(String splitPathArray[]) {
+  private static String removeLastValue(String splitPathArray[]) {
 
     StringBuilder builder = new StringBuilder();
     if (splitPathArray != null && splitPathArray.length > 0) {

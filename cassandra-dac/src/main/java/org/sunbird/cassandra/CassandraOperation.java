@@ -26,8 +26,8 @@ public interface CassandraOperation {
 
   /**
    * @desc This method is used to insert record in cassandra db
-   * @param keyspaceName String (data base keyspace name)
-   * @param tableName String
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
    * @param request Map<String,Object>(i.e map of column name and their value)
    * @return Response Response
    */
@@ -35,8 +35,8 @@ public interface CassandraOperation {
 
   /**
    * @desc This method is used to update record in cassandra db
-   * @param keyspaceName String (data base keyspace name)
-   * @param tableName String
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
    * @param request Map<String,Object>(i.e map of column name and their value)
    * @return Response Response
    */
@@ -44,21 +44,29 @@ public interface CassandraOperation {
 
   /**
    * @desc This method is used to delete record in cassandra db by their primary key(identifier)
-   * @param keyspaceName String (data base keyspace name)
-   * @param tableName String
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
    * @param identifier String
    * @return Response Response
    */
   public Response deleteRecord(String keyspaceName, String tableName, String identifier);
 
   /**
+   * @desc This method is used to delete record in cassandra db by their primary composite key
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param compositeKeyMap Column map for composite primary key
+   */
+  public void deleteRecord(
+      String keyspaceName, String tableName, Map<String, String> compositeKeyMap);
+
+  /**
    * @desc This method is used to fetch record based on given parameter and it's value (it only
-   *     fetch the record based on property or column name if you have created index on that column
-   *     otherwise it will throw exception.)
+   *     fetch the record on indexed property or column or it will throw exception.)
    * @param keyspaceName String (data base keyspace name)
    * @param tableName String
    * @param propertyName String
-   * @param propertyValue Object
+   * @param propertyValue Value to be used for matching in select query
    * @return Response Response
    */
   public Response getRecordsByProperty(
@@ -110,6 +118,18 @@ public interface CassandraOperation {
       String propertyName,
       List<Object> propertyValueList,
       List<String> fields);
+
+  /**
+   * Fetch records with specified indexed column
+   *
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param propertyName Indexed Column name
+   * @param propertyValue Value to be used for matching in select query
+   * @return Response consisting of fetched records
+   */
+  Response getRecordsByIndexedProperty(
+      String keyspaceName, String tableName, String propertyName, Object propertyValue);
 
   /**
    * @desc This method is used to fetch record based on given parameter list and their values
@@ -233,4 +253,15 @@ public interface CassandraOperation {
    */
   Response batchUpdate(
       String keyspaceName, String tableName, List<Map<String, Map<String, Object>>> records);
+
+  /**
+   * Fetch records with composite key.
+   *
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param compositeKeyMap Column map for composite primary key
+   * @return Response consisting of fetched records
+   */
+  Response getRecordsByCompositeKey(
+      String keyspaceName, String tableName, Map<String, Object> compositeKeyMap);
 }

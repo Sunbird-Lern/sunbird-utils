@@ -62,6 +62,20 @@ public class ConfigUtil {
     return config;
   }
 
+  public static void validateMandatoryConfigValue(String configParameter) {
+    if (StringUtils.isBlank(configParameter)) {
+      ProjectLogger.log(
+          "ConfigUtil:validateMandatoryConfigValue: Missing mandatory configuration parameter: "
+              + configParameter,
+          LoggerEnum.ERROR.name());
+      throw new ProjectCommonException(
+          ResponseCode.mandatoryConfigParamMissing.getErrorCode(),
+          ResponseCode.mandatoryConfigParamMissing.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode(),
+          configParameter);
+    }
+  }
+
   private static Config createConfig(String fileName) {
     Config defaultConf = ConfigFactory.load(fileName);
     Config envConf = ConfigFactory.systemEnvironment();

@@ -438,7 +438,7 @@ public class CassandraOperationImpl implements CassandraOperation {
       Select selectQuery = selectBuilder.from(keyspaceName, tableName);
       Where selectWhere = selectQuery.where();
       if (key instanceof String) {
-        selectWhere.and(QueryBuilder.eq(Constants.IDENTIFIER, (String) key));
+        selectWhere.and(QueryBuilder.eq(Constants.IDENTIFIER, key));
       } else if (key instanceof Map) {
         Map<String, Object> compositeKey = (Map<String, Object>) key;
         compositeKey
@@ -564,5 +564,103 @@ public class CassandraOperationImpl implements CassandraOperation {
     MessageFormat mf = new MessageFormat(message);
     ProjectLogger.log(
         mf.format(new Object[] {operation, startTime, stopTime, elapsedTime}), LoggerEnum.PERF_LOG);
+  }
+
+  @Override
+  public Response getRecordsByIndexedProperty(
+      String keyspaceName, String tableName, String propertyName, Object propertyValue) {
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log(
+        "CassandraOperationImpl:getRecordsByIndexedProperty called at " + startTime,
+        LoggerEnum.INFO);
+    Response response = new Response();
+    try {
+      Select selectQuery = QueryBuilder.select().all().from(keyspaceName, tableName);
+      selectQuery.where().and(QueryBuilder.eq(propertyName, propertyValue));
+      ResultSet results = connectionManager.getSession(keyspaceName).execute(selectQuery);
+      response = CassandraUtil.createResponse(results);
+    } catch (Exception e) {
+      ProjectLogger.log(
+          "CassandraOperationImpl:getRecordsByIndexedProperty: "
+              + Constants.EXCEPTION_MSG_FETCH
+              + tableName
+              + " : "
+              + e.getMessage(),
+          e);
+      throw new ProjectCommonException(
+          ResponseCode.SERVER_ERROR.getErrorCode(),
+          ResponseCode.SERVER_ERROR.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    logQueryElapseTime("getRecordsByIndexedProperty", startTime);
+    return response;
+  }
+
+  @Override
+  public void deleteRecord(
+      String keyspaceName, String tableName, Map<String, String> compositeKeyMap) {
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log(
+        "CassandraOperationImpl: deleteRecord by composite key called at " + startTime,
+        LoggerEnum.INFO);
+    try {
+      Delete delete = QueryBuilder.delete().from(keyspaceName, tableName);
+      Delete.Where deleteWhere = delete.where();
+      compositeKeyMap
+          .entrySet()
+          .stream()
+          .forEach(
+              x -> {
+                Clause clause = QueryBuilder.eq(x.getKey(), x.getValue());
+                deleteWhere.and(clause);
+              });
+      connectionManager.getSession(keyspaceName).execute(delete);
+    } catch (Exception e) {
+      ProjectLogger.log(
+          "CassandraOperationImpl: deleteRecord by composite key. "
+              + Constants.EXCEPTION_MSG_DELETE
+              + tableName
+              + " : "
+              + e.getMessage(),
+          e);
+      throw new ProjectCommonException(
+          ResponseCode.SERVER_ERROR.getErrorCode(),
+          ResponseCode.SERVER_ERROR.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    logQueryElapseTime("deleteRecordByCompositeKey", startTime);
+  }
+
+  @Override
+  public Response getRecordsByCompositeKey(
+      String keyspaceName, String tableName, Map<String, Object> compositeKeyMap) {
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log(
+        "CassandraOperationImpl: getRecordsByCompositeKey called at " + startTime, LoggerEnum.INFO);
+    Response response = new Response();
+    try {
+      Builder selectBuilder = QueryBuilder.select().all();
+      Select selectQuery = selectBuilder.from(keyspaceName, tableName);
+      Where selectWhere = selectQuery.where();
+      for (Entry<String, Object> entry : compositeKeyMap.entrySet()) {
+        Clause clause = QueryBuilder.eq(entry.getKey(), entry.getValue());
+        selectWhere.and(clause);
+      }
+      ResultSet results = connectionManager.getSession(keyspaceName).execute(selectQuery);
+      response = CassandraUtil.createResponse(results);
+    } catch (Exception e) {
+      ProjectLogger.log(
+          "CassandraOperationImpl:getRecordsByCompositeKey: "
+              + Constants.EXCEPTION_MSG_FETCH
+              + tableName
+              + " : "
+              + e.getMessage());
+      throw new ProjectCommonException(
+          ResponseCode.SERVER_ERROR.getErrorCode(),
+          ResponseCode.SERVER_ERROR.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    logQueryElapseTime("getRecordsByCompositeKey", startTime);
+    return response;
   }
 }

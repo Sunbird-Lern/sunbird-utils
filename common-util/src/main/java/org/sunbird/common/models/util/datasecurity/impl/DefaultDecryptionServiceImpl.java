@@ -19,18 +19,18 @@ public class DefaultDecryptionServiceImpl implements DecryptionService {
   private static String sunbird_encryption = "";
 
   private String sunbirdEncryption = "";
-  
+
   private static Cipher c;
-  
+
   static {
-	  try {
-		  sunbird_encryption = DefaultEncryptionServivceImpl.getSalt();
-	      Key key = generateKey();
-	      c = Cipher.getInstance(ALGORITHM);
-	      c.init(Cipher.DECRYPT_MODE, key);
-	  } catch (Exception e) {
-		  ProjectLogger.log(e.getMessage(), e);
-	  }
+    try {
+      sunbird_encryption = DefaultEncryptionServivceImpl.getSalt();
+      Key key = generateKey();
+      c = Cipher.getInstance(ALGORITHM);
+      c.init(Cipher.DECRYPT_MODE, key);
+    } catch (Exception e) {
+      ProjectLogger.log(e.getMessage(), e);
+    }
   }
 
   public DefaultDecryptionServiceImpl() {

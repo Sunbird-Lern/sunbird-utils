@@ -62,7 +62,7 @@ public interface ResponseMessage {
     String LOGIN_TYPE_MISSING = "Login type is required.";
     String EMAIL_IN_USE = "Email already exists.";
     String USERNAME_EMAIL_IN_USE =
-        "Username or Email is already in used. Please try with a different Username or Email.";
+        "Username or Email is already in use. Please try with a different Username or Email.";
     String KEY_CLOAK_DEFAULT_ERROR = "server error at sso.";
     String USER_REG_UNSUCCESSFULL = "User Registration unsuccessfull.";
     String USER_UPDATE_UNSUCCESSFULL = "User update operation is unsuccessfull.";
@@ -139,7 +139,8 @@ public interface ResponseMessage {
     String USER_NAME_OR_ID_ERROR = "Please provide either username or userId.";
     String USER_ACCOUNT_BLOCKED = "User account has been blocked .";
     String EMAIL_VERIFY_ERROR = "Please provide a verified email in order to create user.";
-    String PHONE_VERIFY_ERROR = "Please provide a verified phone number in order to create user.";
+    String PHONE_VERIFY_ERROR =
+        "Please provide a verified phone number in order to create/update user.";
     String BULK_USER_UPLOAD_ERROR =
         "Please provide either organization Id or external Id & provider value.";
     String DATA_SIZE_EXCEEDED = "Maximum upload data size should be {0}";
@@ -303,7 +304,21 @@ public interface ResponseMessage {
         "No root organisation found which is associated with given {0}.";
     String OR_FORMAT = "{0} or {1}";
     String AND_FORMAT = "{0} and {1}";
+    String DOT_FORMAT = "{0}.{1}";
     String DEPENDENT_PARAMETER_MISSING = "Missing parameter {0} which is dependent on {1}.";
+    String DEPENDENT_PARAMS_MISSING = "Missing parameter value in {0}.";
+    String EXTERNALID_NOT_FOUND =
+        "External ID (id: {0}, idType: {1}, provider: {2}) not found for given user.";
+    String PARSING_FAILED = "Failed to parse {0}.";
+    String EXTERNAL_ID_FORMAT = "externalId (id: {0}, idType: {1}, provider: {2})";
+    String EXTERNALID_ASSIGNED_TO_OTHER_USER =
+        "External ID (id: {0}, idType: {1}, provider: {2}) already assigned to another user.";
+    String MANDATORY_CONFIG_PARAMETER_MISSING =
+        "Mandatory configuration parameter {0} missing which is required for service startup.";
+    String CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED =
+        "Cassandra connection establishment failed in {0} mode.";
+    String COMMON_ATTRIBUTE_MISMATCH = "{0} mismatch of {1} and {2}";
+    String MULTIPLE_COURSES_FOR_BATCH = "A batch cannot belong to multiple courses.";
   }
 
   interface Key {
@@ -581,5 +596,11 @@ public interface ResponseMessage {
     String INVALID_REQUEST_PARAMETER = "INVALID_REQUEST_PARAMETER";
     String ROOT_ORG_ASSOCIATION_ERROR = "ROOT_ORG_ASSOCIATION_ERROR";
     String DEPENDENT_PARAMETER_MISSING = "DEPENDENT_PARAMETER_MISSING";
+    String EXTERNALID_NOT_FOUND = "EXTERNALID_NOT_FOUND";
+    String EXTERNALID_ASSIGNED_TO_OTHER_USER = "EXTERNALID_ASSIGNED_TO_OTHER_USER";
+    String MANDATORY_CONFIG_PARAMETER_MISSING = "MANDATORY_CONFIG_PARAMETER_MISSING";
+    String CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED = "CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED";
+    String COMMON_ATTRIBUTE_MISMATCH = "COMMON_ATTRIBUTE_MISMATCH";
+    String MULTIPLE_COURSES_FOR_BATCH = "MULTIPLE_COURSES_FOR_BATCH";
   }
 }

@@ -20,10 +20,10 @@ import org.sunbird.cassandraannotation.ClusteringKey;
 import org.sunbird.cassandraannotation.PartitioningKey;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
+import org.sunbird.common.models.util.CassandraPropertyReader;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
-import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.responsecode.ResponseCode;
 
 /**
@@ -32,7 +32,8 @@ import org.sunbird.common.responsecode.ResponseCode;
  */
 public final class CassandraUtil {
 
-  private static final PropertiesCache propertiesCache = PropertiesCache.getInstance();
+  private static final CassandraPropertyReader propertiesCache =
+      CassandraPropertyReader.getInstance();
   private static final String SERIAL_VERSION_UID = "serialVersionUID";
 
   private CassandraUtil() {}
@@ -85,7 +86,7 @@ public final class CassandraUtil {
       map = new HashMap<>();
       for (int i = 0; i < keyArray.length; i++) {
         int pos = keyArray[i].indexOf(Constants.OPEN_BRACE);
-        String column = propertiesCache.getProperty(keyArray[i].substring(0, pos).trim());
+        String column = propertiesCache.readProperty(keyArray[i].substring(0, pos).trim());
         map.put(column, row.getObject(column));
       }
       responseList.add(map);
