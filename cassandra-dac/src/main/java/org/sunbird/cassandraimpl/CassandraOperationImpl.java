@@ -630,4 +630,37 @@ public class CassandraOperationImpl implements CassandraOperation {
     }
     logQueryElapseTime("deleteRecordByCompositeKey", startTime);
   }
+
+  @Override
+  public Response getRecordsByCompositeKey(
+      String keyspaceName, String tableName, Map<String, Object> compositeKeyMap) {
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log(
+        "CassandraOperationImpl: getRecordsByCompositeKey called at " + startTime, LoggerEnum.INFO);
+    Response response = new Response();
+    try {
+      Builder selectBuilder = QueryBuilder.select().all();
+      Select selectQuery = selectBuilder.from(keyspaceName, tableName);
+      Where selectWhere = selectQuery.where();
+      for (Entry<String, Object> entry : compositeKeyMap.entrySet()) {
+        Clause clause = QueryBuilder.eq(entry.getKey(), entry.getValue());
+        selectWhere.and(clause);
+      }
+      ResultSet results = connectionManager.getSession(keyspaceName).execute(selectQuery);
+      response = CassandraUtil.createResponse(results);
+    } catch (Exception e) {
+      ProjectLogger.log(
+          "CassandraOperationImpl:getRecordsByCompositeKey: "
+              + Constants.EXCEPTION_MSG_FETCH
+              + tableName
+              + " : "
+              + e.getMessage());
+      throw new ProjectCommonException(
+          ResponseCode.SERVER_ERROR.getErrorCode(),
+          ResponseCode.SERVER_ERROR.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    logQueryElapseTime("getRecordsByCompositeKey", startTime);
+    return response;
+  }
 }

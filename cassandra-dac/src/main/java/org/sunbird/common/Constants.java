@@ -51,11 +51,12 @@ public interface Constants {
   public static final String IF_EXISTS = " IF EXISTS;";
   public static final String ALREADY_EXIST = "Record with this primary key already exist.";
   public static final String IF_NOT_EXISTS = " IF NOT EXISTS;";
-  public static final String EXCEPTION_MSG_FETCH = "Exception occured while fetching record from ";
+  public static final String EXCEPTION_MSG_FETCH = "Exception occurred while fetching record from ";
   public static final String EXCEPTION_MSG_UPSERT =
       "Exception occured while upserting record from ";
-  public static final String EXCEPTION_MSG_DELETE = "Exception occured while deleting record from ";
-  public static final String EXCEPTION_MSG_UPDATE = "Exception occured while updating record to ";
+  public static final String EXCEPTION_MSG_DELETE =
+      "Exception occurred while deleting record from ";
+  public static final String EXCEPTION_MSG_UPDATE = "Exception occurred while updating record to ";
   public static final String LTE = "<=";
   public static final String LT = "<";
   public static final String GTE = ">=";

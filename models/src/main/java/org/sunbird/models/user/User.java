@@ -55,6 +55,7 @@ public class User implements Serializable {
   private String externalId;
   private String channel;
   private String loginId;
+  private List<Map<String, String>> externalIds;
   private String registryId;
 
   public String getRegistryId() {
@@ -360,5 +361,13 @@ public class User implements Serializable {
 
   public void setExternalId(String externalId) {
     this.externalId = externalId;
+  }
+
+  public List<Map<String, String>> getExternalIds() {
+    return externalIds;
+  }
+
+  public void setExternalIds(List<Map<String, String>> externalIds) {
+    this.externalIds = externalIds;
   }
 }
