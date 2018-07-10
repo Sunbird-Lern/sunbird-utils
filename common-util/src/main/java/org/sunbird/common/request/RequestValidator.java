@@ -646,6 +646,7 @@ public final class RequestValidator {
 	}
 
 	public static void validateUpdateCourseBatchReq(Request request) {
+		
 		if (null != request.getRequest().get(JsonKey.STATUS)) {
 			boolean status = validateBatchStatus(request);
 			if (!status) {
