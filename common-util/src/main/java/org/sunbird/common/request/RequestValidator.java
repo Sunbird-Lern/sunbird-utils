@@ -646,7 +646,7 @@ public final class RequestValidator {
   }
 
   public static void validateUpdateCourseBatchReq(Request request) {
-    if (null != request.getRequest().get(JsonKey.STATUS)) {
+	if (null != request.getRequest().get(JsonKey.STATUS)) {
       boolean status = validateBatchStatus(request);
       if (!status) {
         throw new ProjectCommonException(
@@ -665,6 +665,12 @@ public final class RequestValidator {
     if (request.getRequest().containsKey(JsonKey.ENROLLMENT_TYPE)) {
       String enrolmentType = (String) request.getRequest().get(JsonKey.ENROLLMENT_TYPE);
       validateEnrolmentType(enrolmentType);
+    }
+    String startDate = (String) request.getRequest().get(JsonKey.START_DATE);
+    validateStartDate(startDate);
+    if (request.getRequest().containsKey(JsonKey.END_DATE)
+        && !StringUtils.isEmpty((String) request.getRequest().get(JsonKey.END_DATE))) {
+      validateEndDate(startDate, (String) request.getRequest().get(JsonKey.END_DATE));
     }
     if (request.getRequest().containsKey(JsonKey.END_DATE)
         && !StringUtils.isEmpty((String) request.getRequest().get(JsonKey.END_DATE))) {
