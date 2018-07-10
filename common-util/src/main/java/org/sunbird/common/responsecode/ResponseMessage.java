@@ -317,27 +317,32 @@ public interface ResponseMessage {
     String CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED =
         "Cassandra connection establishment failed in {0} mode.";
     String COMMON_ATTRIBUTE_MISMATCH = "{0} mismatch of {1} and {2}";
-    String JSON_TRANSFORM_INVALID_TYPE_CONFIG =
-        "Invalid type configuration for JSON transformation";
-    String JSON_TRANSFORM_INVALID_DATE_FORMAT =
-        "Invalid date format configuration for JSON transformation";
-    String JSON_TRANSFORM_FAILED_INVALID_INPUT =
-        "JSON Transformation failed due to invalid input data format";
-    String JSON_TRANSFORM_ENUM_VALUES_MISSING = "Enum values missing in the configuration";
-    String JSON_TRANSFORM_BASIC_CONFIG_MISSING =
-        "one or more basic config fields(toFieldName, fromType, toType) are missing ";
-    String USER_REGISTRY_LOAD_CONFIG_FAILED = "Loading of User Registry Configurations failed";
-    String USER_REGISTRY_CLIENT_CREATION_FAILED = "User Registry Client Creation Failed";
-    String USER_REGISTRY_ADD_ENTITY_FAILED = "User Registry Add Entity Failed";
-    String USER_REGISTRY_READ_ENTITY_FAILED = "User Registry Read Entity Failed";
-    String USER_REGISTRY_UPDATE_ENTITY_FAILED = "User Registry Update Entity Failed";
-    String USER_REGISTRY_DELETE_ENTITY_FAILED = "User Registry Delete Entity Failed";
-    String USER_REGISTRY_PARSE_RESPONSE_FAILED = "Error while parsing response from registry";
-    String USER_REGISTRY_USER_TYPE_BLANK = "User Registry - UserType is blank";
-    String USER_REGISTRY_MAIN_PROVIDER_NOT_CONFIGURED =
-        "User Registry - Main Provider is not configured";
-    String USER_REGISTRY_UNIQUE_ID_BLANK = "User Registry - RegistryId is blank";
-    String USER_REGISTRY_ACCESS_TOKEN_BLANK = "User Registry - User Access Token is blank";
+    String ERROR_JSON_TRANSFORM_INVALID_TYPE_CONFIG =
+        "JSON transformation failed as invalid type configuration found for field {0}.";
+    String ERROR_JSON_TRANSFORM_INVALID_DATE_FORMAT =
+        "JSON transformation failed as invalid date format configuration found for field {0}.";
+    String ERROR_JSON_TRANSFORM_INVALID_INPUT =
+        "JSON transformation failed as invalid input provided for field {0}.";
+    String ERROR_JSON_TRANSFORM_INVALID_ENUM_INPUT =
+        "JSON transformation failed as invalid enum input provided for field {0}.";
+    String ERROR_JSON_TRANSFORM_ENUM_VALUES_EMPTY =
+        "JSON transformation failed as enum values is empty in configuration for field {0}.";
+    String ERROR_JSON_TRANSFORM_BASIC_CONFIG_MISSING =
+        "JSON transformation failed as mandatory configuration (toFieldName, fromType or toType) is missing for field {0}.";
+    String ERROR_USER_REGISTRY_LOAD_CONFIG =
+        "Loading failed for user registry configuration file {0}.";
+    String ERROR_USER_REGISTRY_CLIENT_CREATION = "User registry client creation failed.";
+    String ERROR_USER_REGISTRY_ADD_ENTITY = "User registry add entity API failed.";
+    String ERROR_USER_REGISTRY_READ_ENTITY = "User registry read entity API failed.";
+    String ERROR_USER_REGISTRY_UPDATE_ENTITY = "User registry update entity API failed.";
+    String ERROR_USER_REGISTRY_DELETE_ENTITY = "User registry delete entity API failed.";
+    String ERROR_USER_REGISTRY_PARSE_RESPONSE = "Error while parsing response from registry.";
+    String ERROR_USER_REGISTRY_USER_TYPE_BLANK = "Request failed as user type is blank.";
+    String ERROR_USER_REGISTRY_MAIN_PROVIDER_NOT_CONFIGURED =
+        "Request failed as provider not configured for user ID.";
+    String ERROR_USER_REGISTRY_UNIQUE_ID_BLANK = "Request failed as registryId is not provided.";
+    String ERROR_USER_REGISTRY_ACCESS_TOKEN_BLANK =
+        "Request failed as user access token is not provided.";
   }
 
   interface Key {
@@ -620,22 +625,23 @@ public interface ResponseMessage {
     String MANDATORY_CONFIG_PARAMETER_MISSING = "MANDATORY_CONFIG_PARAMETER_MISSING";
     String CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED = "CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED";
     String COMMON_ATTRIBUTE_MISMATCH = "COMMON_ATTRIBUTE_MISMATCH";
-    String JSON_TRANSFORM_INVALID_TYPE_CONFIG = "JSON_TRANSFORM_INVALID_TYPE_CONFIG";
-    String JSON_TRANSFORM_INVALID_DATE_FORMAT = "JSON_TRANSFORM_INVALID_DATE_FORMAT";
-    String JSON_TRANSFORM_FAILED_INVALID_INPUT = "JSON_TRANSFORM_FAILED_INVALID_INPUT";
-    String JSON_TRANSFORM_ENUM_VALUES_MISSING = "JSON_TRANSFORM_ENUM_VALUES_MISSING";
-    String JSON_TRANSFORM_BASIC_CONFIG_MISSING = "JSON_TRANSFORM_BASIC_CONFIG_MISSING";
-    String USER_REGISTRY_LOAD_CONFIG_FAILED = "USER_REGISTRY_LOAD_CONFIG_FAILED";
-    String USER_REGISTRY_CLIENT_CREATION_FAILED = "USER_REGISTRY_CLIENT_CREATION_FAILED";
-    String USER_REGISTRY_ADD_ENTITY_FAILED = "USER_REGISTRY_ADD_ENTITY_FAILED";
-    String USER_REGISTRY_READ_ENTITY_FAILED = "USER_REGISTRY_READ_ENTITY_FAILED";
-    String USER_REGISTRY_UPDATE_ENTITY_FAILED = "USER_REGISTRY_UPDATE_ENTITY_FAILED";
-    String USER_REGISTRY_DELETE_ENTITY_FAILED = "USER_REGISTRY_DELETE_ENTITY_FAILED";
-    String USER_REGISTRY_PARSE_RESPONSE_FAILED = "USER_REGISTRY_PARSE_RESPONSE_FAILED";
-    String USER_REGISTRY_USER_TYPE_BLANK = "USER_REGISTRY_USER_TYPE_BLANK";
-    String USER_REGISTRY_MAIN_PROVIDER_NOT_CONFIGURED =
-        "USER_REGISTRY_MAIN_PROVIDER_NOT_CONFIGURED";
-    String USER_REGISTRY_UNIQUE_ID_BLANK = "USER_REGISTRY_UNIQUE_ID_BLANK";
-    String USER_REGISTRY_ACCESS_TOKEN_BLANK = "USER_REGISTRY_ACCESS_TOKEN_BLANK";
+    String ERROR_JSON_TRANSFORM_INVALID_TYPE_CONFIG = "ERROR_JSON_TRANSFORM_INVALID_TYPE_CONFIG";
+    String ERROR_JSON_TRANSFORM_INVALID_DATE_FORMAT = "ERROR_JSON_TRANSFORM_INVALID_DATE_FORMAT";
+    String ERROR_JSON_TRANSFORM_INVALID_INPUT = "ERROR_JSON_TRANSFORM_INVALID_INPUT";
+    String ERROR_JSON_TRANSFORM_INVALID_ENUM_INPUT = "ERROR_JSON_TRANSFORM_INVALID_ENUM_INPUT";
+    String ERROR_JSON_TRANSFORM_ENUM_VALUES_EMPTY = "ERROR_JSON_TRANSFORM_ENUM_VALUES_EMPTY";
+    String ERROR_JSON_TRANSFORM_BASIC_CONFIG_MISSING = "ERROR_JSON_TRANSFORM_BASIC_CONFIG_MISSING";
+    String ERROR_USER_REGISTRY_LOAD_CONFIG = "ERROR_USER_REGISTRY_LOAD_CONFIG";
+    String ERROR_USER_REGISTRY_CLIENT_CREATION = "ERROR_USER_REGISTRY_CLIENT_CREATION";
+    String ERROR_USER_REGISTRY_ADD_ENTITY = "ERROR_USER_REGISTRY_ADD_ENTITY";
+    String ERROR_USER_REGISTRY_READ_ENTITY = "ERROR_USER_REGISTRY_READ_ENTITY";
+    String ERROR_USER_REGISTRY_UPDATE_ENTITY = "ERROR_USER_REGISTRY_UPDATE_ENTITY";
+    String ERROR_USER_REGISTRY_DELETE_ENTITY = "ERROR_USER_REGISTRY_DELETE_ENTITY";
+    String ERROR_USER_REGISTRY_PARSE_RESPONSE = "ERROR_USER_REGISTRY_PARSE_RESPONSE";
+    String ERROR_USER_REGISTRY_USER_TYPE_BLANK = "ERROR_USER_REGISTRY_USER_TYPE_BLANK";
+    String ERROR_USER_REGISTRY_MAIN_PROVIDER_NOT_CONFIGURED =
+        "ERROR_USER_REGISTRY_MAIN_PROVIDER_NOT_CONFIGURED";
+    String ERROR_USER_REGISTRY_UNIQUE_ID_BLANK = "ERROR_USER_REGISTRY_UNIQUE_ID_BLANK";
+    String ERROR_USER_REGISTRY_ACCESS_TOKEN_BLANK = "ERROR_USER_REGISTRY_ACCESS_TOKEN_BLANK";
   }
 }

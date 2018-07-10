@@ -21,7 +21,7 @@ public interface UserExtension {
    * Reads user profile information.
    *
    * @param userIdMap UserId Information
-   * @return userProfileMap Map<String, Object>
+   * @return User profile information retrieved.
    */
   public Map<String, Object> read(Map<String, Object> userIdMap);
 
