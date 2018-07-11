@@ -19,6 +19,9 @@ import org.sunbird.common.models.util.ProjectUtil.Source;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.common.responsecode.ResponseMessage;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import org.sunbird.common.models.util.LoggerEnum;
 
 /**
  * This call will do validation for all incoming request data.
@@ -137,6 +140,53 @@ public final class RequestValidator {
           ERROR_CODE);
     }
   }
+
+
+  public static void validateCreateFirstRootOrg(Request request) {
+    if (StringUtils.isBlank((String) request.getRequest().get(JsonKey.ORG_NAME))) {
+      throw new ProjectCommonException(
+          ResponseCode.organisationNameRequired.getErrorCode(),
+          ResponseCode.organisationNameRequired.getErrorMessage(),
+          ERROR_CODE);
+    }
+    if (StringUtils.isEmpty((String) request.getRequest().get(JsonKey.CHANNEL))) {
+      throw new ProjectCommonException(
+          ResponseCode.channelIdRequiredForRootOrg.getErrorCode(),
+          ResponseCode.channelIdRequiredForRootOrg.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    } 
+    if(!validateRemoteAddress(request.get("remoteAddress").toString()))
+      {
+        throw new ProjectCommonException(
+          ResponseCode.requestNotAllowed.getErrorCode(),
+          ResponseCode.requestNotAllowed.getErrorMessage(),
+          ResponseCode.UNAUTHORIZED.getResponseCode());
+    } 
+        
+  }
+
+/**
+ * This method will validate the incoming request and validates the client host 
+ */
+  public static Boolean validateRemoteAddress(String remoteAddress){
+    Boolean validAddress = false;
+    try {
+      // compare client remote address with available hosts or localhost
+    if(remoteAddress.equals(ProjectUtil.getConfigValue(JsonKey.MW_SYSTEM_HOST)) || 
+        remoteAddress.equals(ProjectUtil.getConfigValue(JsonKey.SUNBIRD_NETTY_HOST)) || 
+      remoteAddress.equals(ProjectUtil.getConfigValue(JsonKey.EMBEDDED_CASSANDRA_HOST)) || 
+       remoteAddress.equals(JsonKey.LOCAL_IPV6_ADDRESS) || 
+       remoteAddress.equals(InetAddress.getLocalHost().getHostAddress()))
+      {
+        validAddress = true;
+      }
+      return validAddress;
+    }
+    catch(UnknownHostException exception){
+      return false;  
+    }   
+  }
+
 
   public static void validateUpdateOrg(Request request) {
     validateOrg(request);
