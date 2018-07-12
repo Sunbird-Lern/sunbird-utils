@@ -331,6 +331,8 @@ public interface ResponseMessage {
         "JSON transformation failed as enum values is empty in configuration for field {0}.";
     String ERROR_JSON_TRANSFORM_BASIC_CONFIG_MISSING =
         "JSON transformation failed as mandatory configuration (toFieldName, fromType or toType) is missing for field {0}.";
+    String ERROR_JSON_TRANSFORM_INVALID_FILTER_CONFIG =
+        "JSON transformation failed as invalid filter configuration found for field {0}.";
     String ERROR_SUNBIRD_EXTENSION_LOAD_CONFIG =
         "Loading failed for sunbird extension configuration file {0}.";
     String ERROR_OPEN_SABER_CLIENT_CREATION = "Open Saber client creation failed.";
@@ -634,6 +636,8 @@ public interface ResponseMessage {
     String ERROR_JSON_TRANSFORM_INVALID_ENUM_INPUT = "ERROR_JSON_TRANSFORM_INVALID_ENUM_INPUT";
     String ERROR_JSON_TRANSFORM_ENUM_VALUES_EMPTY = "ERROR_JSON_TRANSFORM_ENUM_VALUES_EMPTY";
     String ERROR_JSON_TRANSFORM_BASIC_CONFIG_MISSING = "ERROR_JSON_TRANSFORM_BASIC_CONFIG_MISSING";
+    String ERROR_JSON_TRANSFORM_INVALID_FILTER_CONFIG =
+        "ERROR_JSON_TRANSFORM_INVALID_FILTER_CONFIG";
     String ERROR_SUNBIRD_EXTENSION_LOAD_CONFIG = "ERROR_SUNBIRD_EXTENSION_LOAD_CONFIG";
     String ERROR_OPEN_SABER_CLIENT_CREATION = "ERROR_OPEN_SABER_CLIENT_CREATION";
     String ERROR_USER_REGISTRY_ADD_ENTITY = "ERROR_USER_REGISTRY_ADD_ENTITY";

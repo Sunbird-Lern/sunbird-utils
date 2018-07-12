@@ -593,6 +593,9 @@ public enum ResponseCode {
   errorJsonTransformBasicConfigMissing(
       ResponseMessage.Key.ERROR_JSON_TRANSFORM_BASIC_CONFIG_MISSING,
       ResponseMessage.Message.ERROR_JSON_TRANSFORM_BASIC_CONFIG_MISSING),
+  errorJsonTransformInvalidFilterConfig(
+      ResponseMessage.Key.ERROR_JSON_TRANSFORM_INVALID_FILTER_CONFIG,
+      ResponseMessage.Message.ERROR_JSON_TRANSFORM_INVALID_FILTER_CONFIG),
   errorSunbirdExtensionLoadConfig(
       ResponseMessage.Key.ERROR_SUNBIRD_EXTENSION_LOAD_CONFIG,
       ResponseMessage.Message.ERROR_SUNBIRD_EXTENSION_LOAD_CONFIG),
