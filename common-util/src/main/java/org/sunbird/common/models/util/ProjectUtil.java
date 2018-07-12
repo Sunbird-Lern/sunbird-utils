@@ -985,7 +985,7 @@ public class ProjectUtil {
    * @return request object of target type.
    */
   public static <T> T convertToRequestPojo(Request request, Class<T> clazz) {
-    return (T) mapper.convertValue(request.getRequest(), clazz);
+    return mapper.convertValue(request.getRequest(), clazz);
   }
 
   /**

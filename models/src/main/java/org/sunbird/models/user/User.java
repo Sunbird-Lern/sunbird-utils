@@ -57,6 +57,7 @@ public class User implements Serializable {
   private String loginId;
   private String registryId;
   private Map<String, Object> registry;
+  private List<Map<String, String>> externalIds;
 
   public Map<String, Object> getRegistry() {
     return registry;
@@ -369,5 +370,13 @@ public class User implements Serializable {
 
   public void setExternalId(String externalId) {
     this.externalId = externalId;
+  }
+
+  public List<Map<String, String>> getExternalIds() {
+    return externalIds;
+  }
+
+  public void setExternalIds(List<Map<String, String>> externalIds) {
+    this.externalIds = externalIds;
   }
 }
