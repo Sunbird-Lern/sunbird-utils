@@ -593,12 +593,12 @@ public enum ResponseCode {
   errorJsonTransformBasicConfigMissing(
       ResponseMessage.Key.ERROR_JSON_TRANSFORM_BASIC_CONFIG_MISSING,
       ResponseMessage.Message.ERROR_JSON_TRANSFORM_BASIC_CONFIG_MISSING),
-  errorUserRegistryLoadConfig(
-      ResponseMessage.Key.ERROR_USER_REGISTRY_LOAD_CONFIG,
-      ResponseMessage.Message.ERROR_USER_REGISTRY_LOAD_CONFIG),
-  errorUserRegistryClientCreation(
-      ResponseMessage.Key.ERROR_USER_REGISTRY_CLIENT_CREATION,
-      ResponseMessage.Message.ERROR_USER_REGISTRY_CLIENT_CREATION),
+  errorSunbirdExtensionLoadConfig(
+      ResponseMessage.Key.ERROR_SUNBIRD_EXTENSION_LOAD_CONFIG,
+      ResponseMessage.Message.ERROR_SUNBIRD_EXTENSION_LOAD_CONFIG),
+  errorOpenSaberClientCreation(
+      ResponseMessage.Key.ERROR_OPEN_SABER_CLIENT_CREATION,
+      ResponseMessage.Message.ERROR_OPEN_SABER_CLIENT_CREATION),
   errorUserRegistryAddEntity(
       ResponseMessage.Key.ERROR_USER_REGISTRY_ADD_ENTITY,
       ResponseMessage.Message.ERROR_USER_REGISTRY_ADD_ENTITY),

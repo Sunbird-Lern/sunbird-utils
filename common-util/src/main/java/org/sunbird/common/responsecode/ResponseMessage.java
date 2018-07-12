@@ -331,9 +331,9 @@ public interface ResponseMessage {
         "JSON transformation failed as enum values is empty in configuration for field {0}.";
     String ERROR_JSON_TRANSFORM_BASIC_CONFIG_MISSING =
         "JSON transformation failed as mandatory configuration (toFieldName, fromType or toType) is missing for field {0}.";
-    String ERROR_USER_REGISTRY_LOAD_CONFIG =
-        "Loading failed for user registry configuration file {0}.";
-    String ERROR_USER_REGISTRY_CLIENT_CREATION = "User registry client creation failed.";
+    String ERROR_SUNBIRD_EXTENSION_LOAD_CONFIG =
+        "Loading failed for sunbird extension configuration file {0}.";
+    String ERROR_OPEN_SABER_CLIENT_CREATION = "Open Saber client creation failed.";
     String ERROR_USER_REGISTRY_ADD_ENTITY = "User registry add entity API failed.";
     String ERROR_USER_REGISTRY_READ_ENTITY = "User registry read entity API failed.";
     String ERROR_USER_REGISTRY_UPDATE_ENTITY = "User registry update entity API failed.";
@@ -634,8 +634,8 @@ public interface ResponseMessage {
     String ERROR_JSON_TRANSFORM_INVALID_ENUM_INPUT = "ERROR_JSON_TRANSFORM_INVALID_ENUM_INPUT";
     String ERROR_JSON_TRANSFORM_ENUM_VALUES_EMPTY = "ERROR_JSON_TRANSFORM_ENUM_VALUES_EMPTY";
     String ERROR_JSON_TRANSFORM_BASIC_CONFIG_MISSING = "ERROR_JSON_TRANSFORM_BASIC_CONFIG_MISSING";
-    String ERROR_USER_REGISTRY_LOAD_CONFIG = "ERROR_USER_REGISTRY_LOAD_CONFIG";
-    String ERROR_USER_REGISTRY_CLIENT_CREATION = "ERROR_USER_REGISTRY_CLIENT_CREATION";
+    String ERROR_SUNBIRD_EXTENSION_LOAD_CONFIG = "ERROR_SUNBIRD_EXTENSION_LOAD_CONFIG";
+    String ERROR_OPEN_SABER_CLIENT_CREATION = "ERROR_OPEN_SABER_CLIENT_CREATION";
     String ERROR_USER_REGISTRY_ADD_ENTITY = "ERROR_USER_REGISTRY_ADD_ENTITY";
     String ERROR_USER_REGISTRY_READ_ENTITY = "ERROR_USER_REGISTRY_READ_ENTITY";
     String ERROR_USER_REGISTRY_UPDATE_ENTITY = "ERROR_USER_REGISTRY_UPDATE_ENTITY";
