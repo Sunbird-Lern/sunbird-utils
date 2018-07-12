@@ -319,6 +319,32 @@ public interface ResponseMessage {
         "Cassandra connection establishment failed in {0} mode.";
     String COMMON_ATTRIBUTE_MISMATCH = "{0} mismatch of {1} and {2}";
     String MULTIPLE_COURSES_FOR_BATCH = "A batch cannot belong to multiple courses.";
+    String ERROR_JSON_TRANSFORM_INVALID_TYPE_CONFIG =
+        "JSON transformation failed as invalid type configuration found for field {0}.";
+    String ERROR_JSON_TRANSFORM_INVALID_DATE_FORMAT =
+        "JSON transformation failed as invalid date format configuration found for field {0}.";
+    String ERROR_JSON_TRANSFORM_INVALID_INPUT =
+        "JSON transformation failed as invalid input provided for field {0}.";
+    String ERROR_JSON_TRANSFORM_INVALID_ENUM_INPUT =
+        "JSON transformation failed as invalid enum input provided for field {0}.";
+    String ERROR_JSON_TRANSFORM_ENUM_VALUES_EMPTY =
+        "JSON transformation failed as enum values is empty in configuration for field {0}.";
+    String ERROR_JSON_TRANSFORM_BASIC_CONFIG_MISSING =
+        "JSON transformation failed as mandatory configuration (toFieldName, fromType or toType) is missing for field {0}.";
+    String ERROR_USER_REGISTRY_LOAD_CONFIG =
+        "Loading failed for user registry configuration file {0}.";
+    String ERROR_USER_REGISTRY_CLIENT_CREATION = "User registry client creation failed.";
+    String ERROR_USER_REGISTRY_ADD_ENTITY = "User registry add entity API failed.";
+    String ERROR_USER_REGISTRY_READ_ENTITY = "User registry read entity API failed.";
+    String ERROR_USER_REGISTRY_UPDATE_ENTITY = "User registry update entity API failed.";
+    String ERROR_USER_REGISTRY_DELETE_ENTITY = "User registry delete entity API failed.";
+    String ERROR_USER_REGISTRY_PARSE_RESPONSE = "Error while parsing response from registry.";
+    String ERROR_USER_REGISTRY_USER_TYPE_BLANK = "Request failed as user type is blank.";
+    String ERROR_USER_REGISTRY_MAIN_PROVIDER_NOT_CONFIGURED =
+        "Request failed as provider not configured for user ID.";
+    String ERROR_USER_REGISTRY_UNIQUE_ID_BLANK = "Request failed as registryId is not provided.";
+    String ERROR_USER_REGISTRY_ACCESS_TOKEN_BLANK =
+        "Request failed as user access token is not provided.";
   }
 
   interface Key {
@@ -602,5 +628,23 @@ public interface ResponseMessage {
     String CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED = "CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED";
     String COMMON_ATTRIBUTE_MISMATCH = "COMMON_ATTRIBUTE_MISMATCH";
     String MULTIPLE_COURSES_FOR_BATCH = "MULTIPLE_COURSES_FOR_BATCH";
+    String ERROR_JSON_TRANSFORM_INVALID_TYPE_CONFIG = "ERROR_JSON_TRANSFORM_INVALID_TYPE_CONFIG";
+    String ERROR_JSON_TRANSFORM_INVALID_DATE_FORMAT = "ERROR_JSON_TRANSFORM_INVALID_DATE_FORMAT";
+    String ERROR_JSON_TRANSFORM_INVALID_INPUT = "ERROR_JSON_TRANSFORM_INVALID_INPUT";
+    String ERROR_JSON_TRANSFORM_INVALID_ENUM_INPUT = "ERROR_JSON_TRANSFORM_INVALID_ENUM_INPUT";
+    String ERROR_JSON_TRANSFORM_ENUM_VALUES_EMPTY = "ERROR_JSON_TRANSFORM_ENUM_VALUES_EMPTY";
+    String ERROR_JSON_TRANSFORM_BASIC_CONFIG_MISSING = "ERROR_JSON_TRANSFORM_BASIC_CONFIG_MISSING";
+    String ERROR_USER_REGISTRY_LOAD_CONFIG = "ERROR_USER_REGISTRY_LOAD_CONFIG";
+    String ERROR_USER_REGISTRY_CLIENT_CREATION = "ERROR_USER_REGISTRY_CLIENT_CREATION";
+    String ERROR_USER_REGISTRY_ADD_ENTITY = "ERROR_USER_REGISTRY_ADD_ENTITY";
+    String ERROR_USER_REGISTRY_READ_ENTITY = "ERROR_USER_REGISTRY_READ_ENTITY";
+    String ERROR_USER_REGISTRY_UPDATE_ENTITY = "ERROR_USER_REGISTRY_UPDATE_ENTITY";
+    String ERROR_USER_REGISTRY_DELETE_ENTITY = "ERROR_USER_REGISTRY_DELETE_ENTITY";
+    String ERROR_USER_REGISTRY_PARSE_RESPONSE = "ERROR_USER_REGISTRY_PARSE_RESPONSE";
+    String ERROR_USER_REGISTRY_USER_TYPE_BLANK = "ERROR_USER_REGISTRY_USER_TYPE_BLANK";
+    String ERROR_USER_REGISTRY_MAIN_PROVIDER_NOT_CONFIGURED =
+        "ERROR_USER_REGISTRY_MAIN_PROVIDER_NOT_CONFIGURED";
+    String ERROR_USER_REGISTRY_UNIQUE_ID_BLANK = "ERROR_USER_REGISTRY_UNIQUE_ID_BLANK";
+    String ERROR_USER_REGISTRY_ACCESS_TOKEN_BLANK = "ERROR_USER_REGISTRY_ACCESS_TOKEN_BLANK";
   }
 }
