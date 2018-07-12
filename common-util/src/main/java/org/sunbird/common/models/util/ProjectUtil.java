@@ -812,7 +812,8 @@ public class ProjectUtil {
     }
   }
 
-  public static String getSMSBody(String userName, String webUrl, String instanceName) {
+  public static String getSMSBody(
+      String userName, String webUrl, String instanceName, String appName) {
     try {
       Properties props = new Properties();
       props.put("resource.loader", "class");
@@ -828,6 +829,9 @@ public class ProjectUtil {
       params.put("webUrl", StringUtils.isBlank(webUrl) ? "web_url" : webUrl);
       params.put(
           "instanceName", StringUtils.isBlank(instanceName) ? "instance_name" : instanceName);
+      if (StringUtils.isNotBlank(appName)) {
+        params.put("appName", appName);
+      }
       Template t = ve.getTemplate("/welcomeSmsTemplate.vm");
       VelocityContext context = new VelocityContext(params);
       StringWriter writer = new StringWriter();
