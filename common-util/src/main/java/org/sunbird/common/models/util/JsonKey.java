@@ -664,6 +664,8 @@ public final class JsonKey {
   public static final String USR_EXT_IDNT_TABLE = "usr_external_identity";
   public static final String END_TIME_IN_HOUR_MINUTE_SECOND = " 23:59:59";
   public static final String REGISTRY_ID = "registryId";
+  public static final String SUNBIRD_APP_NAME = "sunbird_app_name";
+  public static final String SUNBIRD_DEFAULT_COUNTRY_CODE = "sunbird_default_country_code";
 
   private JsonKey() {}
 }
