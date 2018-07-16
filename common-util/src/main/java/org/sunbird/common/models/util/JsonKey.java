@@ -351,7 +351,6 @@ public final class JsonKey {
   public static final String OFFSET = "offset";
   public static final String ON = "ON";
   public static final String ONBOARDING_WELCOME_MAIL_BODY = "onboarding_welcome_mail_body";
-  public static final String ONOARDING_WELCOME_MESSAGE = "onboarding_welcome_message";
   public static final String OPEN = "open";
   public static final String OPERATION = "operation";
   public static final String OPERATION_FOR = "operationFor";
