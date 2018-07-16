@@ -664,10 +664,6 @@ public final class JsonKey {
   public static final String END_TIME_IN_HOUR_MINUTE_SECOND = " 23:59:59";
   public static final String REGISTRY_ID = "registryId";
   public static final String SUNBIRD_APP_NAME = "sunbird_app_name";
-  public static final String SUNBIRD_DEFAULT_COUNTRY_CODE = "sunbird_default_country_code";
-  public static final String ONBOARDING_MAIL_SUBJECT = "onboarding_mail_subject";
-  public static final String ONBOARDING_MAIL_MESSAGE = "onboarding_welcome_message";
-  public static final String SUNBIRD_DEFAULT_WELCOME_MSG = "sunbird_default_welcome_sms";
 
   private JsonKey() {}
 }
