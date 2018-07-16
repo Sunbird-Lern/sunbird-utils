@@ -2,9 +2,9 @@ package org.sunbird.common.request;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
@@ -451,7 +451,9 @@ public class UserRequestValidator {
       List<Map<String, String>> externalIds =
           (List<Map<String, String>>) userRequest.getRequest().get(JsonKey.EXTERNAL_IDS);
       validateIndividualExternalId(operation, externalIds);
-      checkForDuplicateExternalId(externalIds);
+      if (operation.equalsIgnoreCase(JsonKey.CREATE)) {
+        checkForDuplicateExternalId(externalIds);
+      }
     }
   }
 
@@ -887,18 +889,20 @@ public class UserRequestValidator {
 
   private static void checkForDuplicateExternalId(List<Map<String, String>> list) {
     List<Map<String, String>> tempList = new ArrayList<>();
-    Iterator<Map<String, String>> itr = list.iterator();
-    while (itr.hasNext()) {
-      Map<String, String> externalId = itr.next();
-      if (tempList.isEmpty()) {
-        tempList.add(externalId);
-      }
+    if (CollectionUtils.isNotEmpty(list)) {
+      tempList.add(list.get(0));
+    }
+    for (Map<String, String> externalId : list) {
       for (Map<String, String> extId : tempList) {
         String provider = extId.get(JsonKey.PROVIDER);
         String idType = extId.get(JsonKey.ID_TYPE);
-        if (!(provider.equalsIgnoreCase(externalId.get(JsonKey.PROVIDER))
-            && idType.equalsIgnoreCase(externalId.get(JsonKey.ID_TYPE)))) {
-          ProjectCommonException.throwClientErrorException(ResponseCode.invalidExternalId, null);
+        if (provider.equalsIgnoreCase(externalId.get(JsonKey.PROVIDER))
+            && idType.equalsIgnoreCase(externalId.get(JsonKey.ID_TYPE))) {
+          String exceptionMsg =
+              ProjectUtil.formatMessage(
+                  ResponseCode.duplicateExternalIds.getErrorMessage(), idType, provider);
+          ProjectCommonException.throwClientErrorException(
+              ResponseCode.duplicateExternalIds, exceptionMsg);
         }
       }
     }

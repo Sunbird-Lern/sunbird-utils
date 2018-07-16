@@ -629,9 +629,8 @@ public enum ResponseCode {
   errorUserRegistryAccessTokenBlank(
       ResponseMessage.Key.ERROR_USER_REGISTRY_ACCESS_TOKEN_BLANK,
       ResponseMessage.Message.ERROR_USER_REGISTRY_ACCESS_TOKEN_BLANK),
-  invalidExternalId(
-      ResponseMessage.Key.IDTYPE_AND_PROVIDER_COMBINATION_SHOULD_BE_UNIQUE,
-      ResponseMessage.Message.IDTYPE_AND_PROVIDER_COMBINATION_SHOULD_BE_UNIQUE),
+  duplicateExternalIds(
+      ResponseMessage.Key.DUPLICATE_EXTERNAL_IDS, ResponseMessage.Message.DUPLICATE_EXTERNAL_IDS),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

@@ -347,8 +347,8 @@ public interface ResponseMessage {
     String ERROR_USER_REGISTRY_UNIQUE_ID_BLANK = "Request failed as registryId is not provided.";
     String ERROR_USER_REGISTRY_ACCESS_TOKEN_BLANK =
         "Request failed as user access token is not provided.";
-    String IDTYPE_AND_PROVIDER_COMBINATION_SHOULD_BE_UNIQUE =
-        "ExternalId's idType and provider combination should be unique for an user.";
+    String DUPLICATE_EXTERNAL_IDS =
+        "Duplicate external IDs for given idType ({0}) and provider ({1]).";
   }
 
   interface Key {
@@ -652,7 +652,6 @@ public interface ResponseMessage {
         "ERROR_USER_REGISTRY_MAIN_PROVIDER_NOT_CONFIGURED";
     String ERROR_USER_REGISTRY_UNIQUE_ID_BLANK = "ERROR_USER_REGISTRY_UNIQUE_ID_BLANK";
     String ERROR_USER_REGISTRY_ACCESS_TOKEN_BLANK = "ERROR_USER_REGISTRY_ACCESS_TOKEN_BLANK";
-    String IDTYPE_AND_PROVIDER_COMBINATION_SHOULD_BE_UNIQUE =
-        "IDTYPE_AND_PROVIDER_COMBINATION_SHOULD_BE_UNIQUE";
+    String DUPLICATE_EXTERNAL_IDS = "DUPLICATE_EXTERNAL_IDS";
   }
 }
