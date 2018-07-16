@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
@@ -888,14 +887,11 @@ public class UserRequestValidator {
   }
 
   private static void checkForDuplicateExternalId(List<Map<String, String>> list) {
-    List<Map<String, String>> tempList = new ArrayList<>();
-    if (CollectionUtils.isNotEmpty(list)) {
-      tempList.add(list.get(0));
-    }
+    List<Map<String, String>> checkedList = new ArrayList<>();
     for (Map<String, String> externalId : list) {
-      for (Map<String, String> extId : tempList) {
-        String provider = extId.get(JsonKey.PROVIDER);
-        String idType = extId.get(JsonKey.ID_TYPE);
+      for (Map<String, String> checkedExternalId : checkedList) {
+        String provider = checkedExternalId.get(JsonKey.PROVIDER);
+        String idType = checkedExternalId.get(JsonKey.ID_TYPE);
         if (provider.equalsIgnoreCase(externalId.get(JsonKey.PROVIDER))
             && idType.equalsIgnoreCase(externalId.get(JsonKey.ID_TYPE))) {
           String exceptionMsg =
@@ -905,6 +901,7 @@ public class UserRequestValidator {
               ResponseCode.duplicateExternalIds, exceptionMsg);
         }
       }
+      checkedList.add(externalId);
     }
   }
 }
