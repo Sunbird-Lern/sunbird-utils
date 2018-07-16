@@ -745,6 +745,21 @@ public class UserRequestValidator {
               ResponseCode.dataTypeError.getErrorMessage(), JsonKey.ROLES, JsonKey.LIST),
           ERROR_CODE);
     }
+
+    String organisationId = (String) request.getRequest().get(JsonKey.ORGANISATION_ID);
+    String externalId = (String) request.getRequest().get(JsonKey.EXTERNAL_ID);
+    String provider = (String) request.getRequest().get(JsonKey.PROVIDER);
+    if (StringUtils.isBlank(organisationId)
+        && (StringUtils.isBlank(externalId) || StringUtils.isBlank(provider))) {
+      throw new ProjectCommonException(
+          ResponseCode.mandatoryParamsMissing.getErrorCode(),
+          ProjectUtil.formatMessage(
+              ResponseCode.mandatoryParamsMissing.getErrorMessage(),
+              (StringFormatter.joinByOr(
+                  JsonKey.ORGANISATION_ID,
+                  StringFormatter.joinByAnd(JsonKey.EXTERNAL_ID, JsonKey.PROVIDER)))),
+          ERROR_CODE);
+    }
   }
 
   /** @param request */
