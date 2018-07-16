@@ -1,5 +1,6 @@
 package org.sunbird.common.request;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -895,7 +896,7 @@ public class UserRequestValidator {
         if (provider.equalsIgnoreCase(externalId.get(JsonKey.PROVIDER))
             && idType.equalsIgnoreCase(externalId.get(JsonKey.ID_TYPE))) {
           String exceptionMsg =
-              ProjectUtil.formatMessage(
+              MessageFormat.format(
                   ResponseCode.duplicateExternalIds.getErrorMessage(), idType, provider);
           ProjectCommonException.throwClientErrorException(
               ResponseCode.duplicateExternalIds, exceptionMsg);
