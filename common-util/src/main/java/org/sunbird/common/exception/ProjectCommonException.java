@@ -2,6 +2,8 @@
 package org.sunbird.common.exception;
 
 import java.text.MessageFormat;
+import org.apache.commons.lang3.StringUtils;
+import org.sunbird.common.responsecode.ResponseCode;
 
 /**
  * This exception will be used across all backend code. This will send status code and error message
@@ -42,6 +44,7 @@ public class ProjectCommonException extends RuntimeException {
    *
    * @return String
    */
+  @Override
   public String getMessage() {
     return message;
   }
@@ -85,5 +88,19 @@ public class ProjectCommonException extends RuntimeException {
     this.code = code;
     this.message = MessageFormat.format(messageWithPlaceholder, placeholderValue);
     this.responseCode = responseCode;
+  }
+
+  public static void throwClientErrorException(ResponseCode responseCode, String exceptionMessage) {
+    throw new ProjectCommonException(
+        responseCode.getErrorCode(),
+        StringUtils.isBlank(exceptionMessage) ? responseCode.getErrorMessage() : exceptionMessage,
+        ResponseCode.CLIENT_ERROR.getResponseCode());
+  }
+
+  public static void throwServerErrorException(ResponseCode responseCode, String exceptionMessage) {
+    throw new ProjectCommonException(
+        responseCode.getErrorCode(),
+        StringUtils.isBlank(exceptionMessage) ? responseCode.getErrorMessage() : exceptionMessage,
+        ResponseCode.SERVER_ERROR.getResponseCode());
   }
 }
