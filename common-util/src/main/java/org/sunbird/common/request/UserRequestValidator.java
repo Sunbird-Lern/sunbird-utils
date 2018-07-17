@@ -1,5 +1,7 @@
 package org.sunbird.common.request;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -449,6 +451,9 @@ public class UserRequestValidator {
       List<Map<String, String>> externalIds =
           (List<Map<String, String>>) userRequest.getRequest().get(JsonKey.EXTERNAL_IDS);
       validateIndividualExternalId(operation, externalIds);
+      if (operation.equalsIgnoreCase(JsonKey.CREATE)) {
+        checkForDuplicateExternalId(externalIds);
+      }
     }
   }
 
@@ -745,6 +750,21 @@ public class UserRequestValidator {
               ResponseCode.dataTypeError.getErrorMessage(), JsonKey.ROLES, JsonKey.LIST),
           ERROR_CODE);
     }
+
+    String organisationId = (String) request.getRequest().get(JsonKey.ORGANISATION_ID);
+    String externalId = (String) request.getRequest().get(JsonKey.EXTERNAL_ID);
+    String provider = (String) request.getRequest().get(JsonKey.PROVIDER);
+    if (StringUtils.isBlank(organisationId)
+        && (StringUtils.isBlank(externalId) || StringUtils.isBlank(provider))) {
+      throw new ProjectCommonException(
+          ResponseCode.mandatoryParamsMissing.getErrorCode(),
+          ProjectUtil.formatMessage(
+              ResponseCode.mandatoryParamsMissing.getErrorMessage(),
+              (StringFormatter.joinByOr(
+                  JsonKey.ORGANISATION_ID,
+                  StringFormatter.joinByAnd(JsonKey.EXTERNAL_ID, JsonKey.PROVIDER)))),
+          ERROR_CODE);
+    }
   }
 
   /** @param request */
@@ -864,6 +884,25 @@ public class UserRequestValidator {
               StringFormatter.joinByComma(
                   JsonKey.EXTERNAL_ID, JsonKey.EXTERNAL_ID_TYPE, JsonKey.EXTERNAL_ID_PROVIDER)),
           ERROR_CODE);
+    }
+  }
+
+  private static void checkForDuplicateExternalId(List<Map<String, String>> list) {
+    List<Map<String, String>> checkedList = new ArrayList<>();
+    for (Map<String, String> externalId : list) {
+      for (Map<String, String> checkedExternalId : checkedList) {
+        String provider = checkedExternalId.get(JsonKey.PROVIDER);
+        String idType = checkedExternalId.get(JsonKey.ID_TYPE);
+        if (provider.equalsIgnoreCase(externalId.get(JsonKey.PROVIDER))
+            && idType.equalsIgnoreCase(externalId.get(JsonKey.ID_TYPE))) {
+          String exceptionMsg =
+              MessageFormat.format(
+                  ResponseCode.duplicateExternalIds.getErrorMessage(), idType, provider);
+          ProjectCommonException.throwClientErrorException(
+              ResponseCode.duplicateExternalIds, exceptionMsg);
+        }
+      }
+      checkedList.add(externalId);
     }
   }
 }
