@@ -631,7 +631,8 @@ public enum ResponseCode {
   SERVER_ERROR(500),
   RESOURCE_NOT_FOUND(404),
   UNAUTHORIZED(401),
-  REDIRECTION_REQUIRED(302);
+  REDIRECTION_REQUIRED(302),
+  FORBIDDEN(403);
   private int responseCode;
   /** error code contains String value */
   private String errorCode;

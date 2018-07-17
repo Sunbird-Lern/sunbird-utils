@@ -12,6 +12,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.ProjectUtil.ProgressStatus;
@@ -19,9 +20,6 @@ import org.sunbird.common.models.util.ProjectUtil.Source;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.common.responsecode.ResponseMessage;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import org.sunbird.common.models.util.LoggerEnum;
 
 /**
  * This call will do validation for all incoming request data.
@@ -141,7 +139,6 @@ public final class RequestValidator {
     }
   }
 
-
   public static void validateCreateFirstRootOrg(Request request) {
     if (StringUtils.isBlank((String) request.getRequest().get(JsonKey.ORG_NAME))) {
       throw new ProjectCommonException(
@@ -149,44 +146,35 @@ public final class RequestValidator {
           ResponseCode.organisationNameRequired.getErrorMessage(),
           ERROR_CODE);
     }
-    if (StringUtils.isEmpty((String) request.getRequest().get(JsonKey.CHANNEL))) {
+    if (StringUtils.isBlank((String) request.getRequest().get(JsonKey.CHANNEL))) {
       throw new ProjectCommonException(
           ResponseCode.channelIdRequiredForRootOrg.getErrorCode(),
           ResponseCode.channelIdRequiredForRootOrg.getErrorMessage(),
           ResponseCode.CLIENT_ERROR.getResponseCode());
-    } 
-    if(!validateRemoteAddress(request.get("remoteAddress").toString()))
-      {
-        throw new ProjectCommonException(
-          ResponseCode.requestNotAllowed.getErrorCode(),
-          ResponseCode.requestNotAllowed.getErrorMessage(),
-          ResponseCode.UNAUTHORIZED.getResponseCode());
-    } 
-        
-  }
-
-/**
- * This method will validate the incoming request and validates the client host 
- */
-  public static Boolean validateRemoteAddress(String remoteAddress){
-    Boolean validAddress = false;
-    try {
-      // compare client remote address with available hosts or localhost
-    if(remoteAddress.equals(ProjectUtil.getConfigValue(JsonKey.MW_SYSTEM_HOST)) || 
-        remoteAddress.equals(ProjectUtil.getConfigValue(JsonKey.SUNBIRD_NETTY_HOST)) || 
-      remoteAddress.equals(ProjectUtil.getConfigValue(JsonKey.EMBEDDED_CASSANDRA_HOST)) || 
-       remoteAddress.equals(JsonKey.LOCAL_IPV6_ADDRESS) || 
-       remoteAddress.equals(InetAddress.getLocalHost().getHostAddress()))
-      {
-        validAddress = true;
-      }
-      return validAddress;
     }
-    catch(UnknownHostException exception){
-      return false;  
-    }   
+    if (!validateRemoteAddress(request.get(JsonKey.REMOTE_ADDRESS).toString())) {
+      throw new ProjectCommonException(
+          ResponseCode.restrictedRequest.getErrorCode(),
+          ResponseCode.restrictedRequest.getErrorMessage(),
+          ResponseCode.FORBIDDEN.getResponseCode());
+    }
   }
 
+  /** This method will validate the incoming request and validates the client host */
+  public static Boolean validateRemoteAddress(String remoteAddress) {
+    Boolean validAddress = false;
+    ProjectLogger.log(
+        "address "
+            + ProjectUtil.getConfigValue(JsonKey.INITIALISATION_HOST)
+            + " remote:: "
+            + remoteAddress,
+        LoggerEnum.INFO);
+    // compare client remote address with trusted initialization hosts
+    if (remoteAddress.equals(ProjectUtil.getConfigValue(JsonKey.INITIALISATION_HOST))) {
+      validAddress = true;
+    }
+    return validAddress;
+  }
 
   public static void validateUpdateOrg(Request request) {
     validateOrg(request);

@@ -319,6 +319,7 @@ public interface ResponseMessage {
         "Cassandra connection establishment failed in {0} mode.";
     String COMMON_ATTRIBUTE_MISMATCH = "{0} mismatch of {1} and {2}";
     String MULTIPLE_COURSES_FOR_BATCH = "A batch cannot belong to multiple courses.";
+<<<<<<< 41dfa0c2265cdee1aa2d4766faa6e945abd13655
 <<<<<<< 06477e2ab31797dc36924ff216ef27507dc53852
     String ERROR_JSON_TRANSFORM_INVALID_TYPE_CONFIG =
         "JSON transformation failed as invalid type configuration found for field {0}.";
@@ -351,6 +352,10 @@ public interface ResponseMessage {
     String SYSTEM_ALREADY_INITIALISED = "System already initialised.Cannot initialise again.";
     String REQUEST_NOT_ALLOWED = "Request from external addresses are not allowed";
 >>>>>>> Issue #SB-4881 feat: Initialise API utils changes
+=======
+    String SYSTEM_ALREADY_INITIALISED = "Request failed as system is already initialised.";
+    String RESTRICTED_REQUEST = "Request is not allowed from current IP address.";
+>>>>>>> Issue #SB-4881 fix: PR review  fixes
   }
 
   interface Key {
