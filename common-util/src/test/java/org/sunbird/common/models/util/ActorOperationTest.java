@@ -25,8 +25,6 @@ public class ActorOperationTest {
     Assert.assertEquals("getUserCount", ActorOperations.GET_USER_COUNT.getValue());
     Assert.assertEquals("updateGeoLocation", ActorOperations.UPDATE_GEO_LOCATION.getValue());
     Assert.assertEquals("getGeoLocation", ActorOperations.GET_GEO_LOCATION.getValue());
-    Assert.assertEquals(
-        "updateTCStatusOfUser", ActorOperations.UPDATE_TC_STATUS_OF_USER.getValue());
     Assert.assertEquals("registerClient", ActorOperations.REGISTER_CLIENT.getValue());
     Assert.assertEquals("updateClientKey", ActorOperations.UPDATE_CLIENT_KEY.getValue());
     Assert.assertEquals("getClientKey", ActorOperations.GET_CLIENT_KEY.getValue());
@@ -64,8 +62,6 @@ public class ActorOperationTest {
     Assert.assertEquals("getSection", ActorOperations.GET_SECTION.getValue());
     Assert.assertEquals("getCourseById", ActorOperations.GET_COURSE_BY_ID.getValue());
     Assert.assertEquals("updateUserCount", ActorOperations.UPDATE_USER_COUNT.getValue());
-    Assert.assertEquals("saveAssessment", ActorOperations.SAVE_ASSESSMENT.getValue());
-    Assert.assertEquals("getAssessment", ActorOperations.GET_ASSESSMENT.getValue());
     Assert.assertEquals(
         "getRecommendedCourses", ActorOperations.GET_RECOMMENDED_COURSES.getValue());
     Assert.assertEquals(
@@ -139,8 +135,6 @@ public class ActorOperationTest {
     Assert.assertEquals(
         "orgConsumptionMetricsReport", ActorOperations.ORG_CONSUMPTION_METRICS_REPORT.getValue());
     Assert.assertEquals("fileStorageService", ActorOperations.FILE_STORAGE_SERVICE.getValue());
-    Assert.assertEquals("getAllBadge", ActorOperations.GET_ALL_BADGE.getValue());
-    Assert.assertEquals("addUserBadge", ActorOperations.ADD_USER_BADGE.getValue());
     Assert.assertEquals("addUserBadgebackground", ActorOperations.ADD_USER_BADGE_BKG.getValue());
     Assert.assertEquals(
         "fileGenerationAndUpload", ActorOperations.FILE_GENERATION_AND_UPLOAD.getValue());
