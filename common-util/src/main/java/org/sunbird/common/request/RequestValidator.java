@@ -667,12 +667,14 @@ public final class RequestValidator {
       String enrolmentType = (String) request.getRequest().get(JsonKey.ENROLLMENT_TYPE);
       validateEnrolmentType(enrolmentType);
     }
+    
     String startDate = (String) request.getRequest().get(JsonKey.START_DATE);
     validateStartDate(startDate);
     if (request.getRequest().containsKey(JsonKey.END_DATE)
         && !StringUtils.isEmpty((String) request.getRequest().get(JsonKey.END_DATE))) {
       validateEndDate(startDate, (String) request.getRequest().get(JsonKey.END_DATE));
     }
+    
     if (request.getRequest().containsKey(JsonKey.END_DATE)
         && !StringUtils.isEmpty((String) request.getRequest().get(JsonKey.END_DATE))) {
       boolean bool = validateDateWithTodayDate((String) request.getRequest().get(JsonKey.END_DATE));
