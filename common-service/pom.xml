@@ -21,6 +21,16 @@
 			<groupId>com.typesafe.play</groupId>
 			<artifactId>play_2.11</artifactId>
 			<version>${play2.version}</version>
+                        <exclusions>
+                                <exclusion>
+                                  <groupId>com.fasterxml.jackson.core</groupId>
+                                  <artifactId>jackson-core</artifactId>
+                                </exclusion>
+                                <exclusion>
+                                  <groupId>com.fasterxml.jackson.datatype</groupId>
+                                  <artifactId>jackson-datatype-jdk8</artifactId>
+                                </exclusion>
+                        </exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.sunbird</groupId>
