@@ -712,6 +712,7 @@ public final class RequestValidator {
   }
 
   private static void validateUpdateBatchEndDate(Request request) {
+	  
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     String startDate = (String) request.getRequest().get(JsonKey.START_DATE);
     String endDate = (String) request.getRequest().get(JsonKey.END_DATE);
