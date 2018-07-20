@@ -670,9 +670,8 @@ public final class RequestValidator {
     String endDate = (String) request.getRequest().get(JsonKey.END_DATE);
 
     validateStartDate(startDate);
-    if (request.getRequest().containsKey(JsonKey.END_DATE) && StringUtils.isNotEmpty(endDate)) {
-      validateEndDate(startDate, endDate);
-    }
+    validateEndDate(startDate, endDate);
+    
 
     boolean bool = validateDateWithTodayDate(endDate);
     if (!bool) {
