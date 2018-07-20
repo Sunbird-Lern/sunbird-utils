@@ -148,11 +148,11 @@ public interface ResponseMessage {
     String USER_ALREADY_ACTIVE = "User is already active";
     String ENROLMENT_TYPE_REQUIRED = "Enrolment type is mandatory.";
     String ENROLMENT_TYPE_VALUE_ERROR = "EnrolmentType value must be either open or invite-only.";
-    String COURSE_BATCH_START_DATE_REQUIRED = "batch start date is mandatory.";
+    String COURSE_BATCH_START_DATE_REQUIRED = "Batch start date is mandatory.";
     String COURSE_BATCH_START_DATE_INVALID =
-        "batch start date should be either today or future date.";
+        "Batch start date should be either today or future date.";
     String DATE_FORMAT_ERRROR = "Date format error.";
-    String END_DATE_ERROR = "end date should be greater than start date.";
+    String END_DATE_ERROR = "End date should be greater than start date.";
     String INVALID_CSV_FILE = "Please provide valid csv file.";
     String INVALID_COURSE_BATCH_ID = "Invalid course batch id ";
     String COURSE_BATCH_ID_MISSING = "Course batch Id required";
@@ -206,7 +206,7 @@ public interface ResponseMessage {
     String COURSE_BATCH_IS_CLOSED_ERROR = "Batch has been closed.";
     String CONFIIRM_PASSWORD_MISSING = "Confirm password is mandatory.";
     String CONFIIRM_PASSWORD_EMPTY = "Confirm password can not be empty.";
-    String SAME_PASSWORD_ERROR = "new password can't be same as old password.";
+    String SAME_PASSWORD_ERROR = "New password can't be same as old password.";
     String ENDORSED_USER_ID_REQUIRED = " Endorsed user id required .";
     String CAN_NOT_ENDORSE = "Can not endorse since both belong to different orgs .";
     String INVALID_ORG_TYPE_ID_ERROR = "Please provide valid orgTypeId.";
