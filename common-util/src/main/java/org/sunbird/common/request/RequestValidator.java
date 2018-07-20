@@ -624,9 +624,8 @@ public final class RequestValidator {
     String startDate = (String) request.getRequest().get(JsonKey.START_DATE);
     String endDate = (String) request.getRequest().get(JsonKey.END_DATE);
     validateStartDate(startDate);
-    if (request.getRequest().containsKey(JsonKey.END_DATE) && StringUtils.isNotEmpty(endDate)) {
-      validateEndDate(startDate, endDate);
-    }
+    validateEndDate(startDate, endDate);
+
     if (request.getRequest().containsKey(JsonKey.COURSE_CREATED_FOR)
         && !(request.getRequest().get(JsonKey.COURSE_CREATED_FOR) instanceof List)) {
       throw new ProjectCommonException(
@@ -669,19 +668,20 @@ public final class RequestValidator {
     }
     String startDate = (String) request.getRequest().get(JsonKey.START_DATE);
     String endDate = (String) request.getRequest().get(JsonKey.END_DATE);
+
     validateStartDate(startDate);
     if (request.getRequest().containsKey(JsonKey.END_DATE) && StringUtils.isNotEmpty(endDate)) {
       validateEndDate(startDate, endDate);
     }
-    if (request.getRequest().containsKey(JsonKey.END_DATE)) {
-      boolean bool = validateDateWithTodayDate(endDate);
-      if (!bool) {
-        throw new ProjectCommonException(
-            ResponseCode.invalidBatchEndDateError.getErrorCode(),
-            ResponseCode.invalidBatchEndDateError.getErrorMessage(),
-            ERROR_CODE);
-      }
+
+    boolean bool = validateDateWithTodayDate(endDate);
+    if (!bool) {
+      throw new ProjectCommonException(
+          ResponseCode.invalidBatchEndDateError.getErrorCode(),
+          ResponseCode.invalidBatchEndDateError.getErrorMessage(),
+          ERROR_CODE);
     }
+
     validateUpdateBatchEndDate(request);
     if (request.getRequest().containsKey(JsonKey.COURSE_CREATED_FOR)
         && !(request.getRequest().get(JsonKey.COURSE_CREATED_FOR) instanceof List)) {
@@ -712,7 +712,7 @@ public final class RequestValidator {
   }
 
   private static void validateUpdateBatchEndDate(Request request) {
-	  
+
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     String startDate = (String) request.getRequest().get(JsonKey.START_DATE);
     String endDate = (String) request.getRequest().get(JsonKey.END_DATE);
@@ -825,8 +825,10 @@ public final class RequestValidator {
     Date batchEndDate = null;
     Date batchStartDate = null;
     try {
-      batchEndDate = format.parse(endDate);
-      batchStartDate = format.parse(startDate);
+      if (StringUtils.isNotEmpty(endDate)) {
+        batchEndDate = format.parse(endDate);
+        batchStartDate = format.parse(startDate);
+      }
     } catch (Exception e) {
       throw new ProjectCommonException(
           ResponseCode.dateFormatError.getErrorCode(),
