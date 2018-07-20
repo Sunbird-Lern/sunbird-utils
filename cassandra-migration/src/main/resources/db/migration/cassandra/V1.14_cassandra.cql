@@ -1,0 +1,1 @@
+ALTER table sunbird.user add registryid text;
