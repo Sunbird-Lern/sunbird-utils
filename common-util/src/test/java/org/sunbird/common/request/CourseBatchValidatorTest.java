@@ -136,7 +136,7 @@ public class CourseBatchValidatorTest {
       RequestValidator.validateCreateBatchReq(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
-      assertEquals(ResponseCode.courseBatchSatrtDateRequired.getErrorCode(), e.getCode());
+      assertEquals(ResponseCode.courseBatchStartDateRequired.getErrorCode(), e.getCode());
     }
   }
 
