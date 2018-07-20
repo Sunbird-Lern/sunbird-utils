@@ -622,10 +622,10 @@ public final class RequestValidator {
     String enrolmentType = (String) request.getRequest().get(JsonKey.ENROLLMENT_TYPE);
     validateEnrolmentType(enrolmentType);
     String startDate = (String) request.getRequest().get(JsonKey.START_DATE);
+    String endDate = (String) request.getRequest().get(JsonKey.END_DATE);
     validateStartDate(startDate);
-    if (request.getRequest().containsKey(JsonKey.END_DATE)
-        && !StringUtils.isEmpty((String) request.getRequest().get(JsonKey.END_DATE))) {
-      validateEndDate(startDate, (String) request.getRequest().get(JsonKey.END_DATE));
+    if (request.getRequest().containsKey(JsonKey.END_DATE) && StringUtils.isNotEmpty(endDate)) {
+      validateEndDate(startDate, endDate);
     }
     if (request.getRequest().containsKey(JsonKey.COURSE_CREATED_FOR)
         && !(request.getRequest().get(JsonKey.COURSE_CREATED_FOR) instanceof List)) {
@@ -646,7 +646,7 @@ public final class RequestValidator {
   }
 
   public static void validateUpdateCourseBatchReq(Request request) {
-	  
+
     if (null != request.getRequest().get(JsonKey.STATUS)) {
       boolean status = validateBatchStatus(request);
       if (!status) {
@@ -667,17 +667,14 @@ public final class RequestValidator {
       String enrolmentType = (String) request.getRequest().get(JsonKey.ENROLLMENT_TYPE);
       validateEnrolmentType(enrolmentType);
     }
-    
     String startDate = (String) request.getRequest().get(JsonKey.START_DATE);
+    String endDate = (String) request.getRequest().get(JsonKey.END_DATE);
     validateStartDate(startDate);
-    if (request.getRequest().containsKey(JsonKey.END_DATE)
-        && !StringUtils.isEmpty((String) request.getRequest().get(JsonKey.END_DATE))) {
-      validateEndDate(startDate, (String) request.getRequest().get(JsonKey.END_DATE));
+    if (request.getRequest().containsKey(JsonKey.END_DATE) && StringUtils.isNotEmpty(endDate)) {
+      validateEndDate(startDate, endDate);
     }
-    
-    if (request.getRequest().containsKey(JsonKey.END_DATE)
-        && !StringUtils.isEmpty((String) request.getRequest().get(JsonKey.END_DATE))) {
-      boolean bool = validateDateWithTodayDate((String) request.getRequest().get(JsonKey.END_DATE));
+    if (request.getRequest().containsKey(JsonKey.END_DATE)) {
+      boolean bool = validateDateWithTodayDate(endDate);
       if (!bool) {
         throw new ProjectCommonException(
             ResponseCode.invalidBatchEndDateError.getErrorCode(),
@@ -716,16 +713,18 @@ public final class RequestValidator {
 
   private static void validateUpdateBatchEndDate(Request request) {
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    String startDate = (String) request.getRequest().get(JsonKey.START_DATE);
+    String endDate = (String) request.getRequest().get(JsonKey.END_DATE);
     format.setLenient(false);
     if (request.getRequest().containsKey(JsonKey.END_DATE)
-        && !StringUtils.isEmpty((String) request.getRequest().get(JsonKey.END_DATE))
+        && StringUtils.isNotEmpty(startDate)
         && request.getRequest().containsKey(JsonKey.START_DATE)
-        && !StringUtils.isBlank((String) request.getRequest().get(JsonKey.START_DATE))) {
+        && !StringUtils.isBlank(startDate)) {
       Date batchStartDate = null;
       Date batchEndDate = null;
       try {
-        batchStartDate = format.parse((String) request.getRequest().get(JsonKey.START_DATE));
-        batchEndDate = format.parse((String) request.getRequest().get(JsonKey.END_DATE));
+        batchStartDate = format.parse(startDate);
+        batchEndDate = format.parse(endDate);
         Calendar cal1 = Calendar.getInstance();
         Calendar cal2 = Calendar.getInstance();
         cal1.setTime(batchStartDate);
@@ -749,14 +748,16 @@ public final class RequestValidator {
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     format.setLenient(false);
     try {
-      Date reqDate = format.parse(date);
-      Date todayDate = format.parse(format.format(new Date()));
-      Calendar cal1 = Calendar.getInstance();
-      Calendar cal2 = Calendar.getInstance();
-      cal1.setTime(reqDate);
-      cal2.setTime(todayDate);
-      if (reqDate.before(todayDate)) {
-        return false;
+      if (StringUtils.isNotEmpty(date)) {
+        Date reqDate = format.parse(date);
+        Date todayDate = format.parse(format.format(new Date()));
+        Calendar cal1 = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+        cal1.setTime(reqDate);
+        cal2.setTime(todayDate);
+        if (reqDate.before(todayDate)) {
+          return false;
+        }
       }
     } catch (Exception e) {
       throw new ProjectCommonException(
@@ -790,8 +791,8 @@ public final class RequestValidator {
     format.setLenient(false);
     if (StringUtils.isBlank(startDate)) {
       throw new ProjectCommonException(
-          ResponseCode.courseBatchSatrtDateRequired.getErrorCode(),
-          ResponseCode.courseBatchSatrtDateRequired.getErrorMessage(),
+          ResponseCode.courseBatchStartDateRequired.getErrorCode(),
+          ResponseCode.courseBatchStartDateRequired.getErrorMessage(),
           ERROR_CODE);
     }
     try {
