@@ -661,34 +661,6 @@ public class UserRequestValidator {
   }
 
   /**
-   * This method will validate user login data.
-   *
-   * @param userRequest Request
-   */
-  public static void validateUserLogin(Request userRequest) {
-    if (userRequest.getRequest().get(JsonKey.USERNAME) == null) {
-      throw new ProjectCommonException(
-          ResponseCode.userNameRequired.getErrorCode(),
-          ResponseCode.userNameRequired.getErrorMessage(),
-          ERROR_CODE);
-    }
-    if (userRequest.getRequest().get(JsonKey.PASSWORD) == null
-        || (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PASSWORD)))) {
-      throw new ProjectCommonException(
-          ResponseCode.passwordRequired.getErrorCode(),
-          ResponseCode.passwordRequired.getErrorMessage(),
-          ERROR_CODE);
-    }
-    if (userRequest.getRequest().get(JsonKey.SOURCE) == null
-        || (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PASSWORD)))) {
-      throw new ProjectCommonException(
-          ResponseCode.sourceRequired.getErrorCode(),
-          ResponseCode.sourceRequired.getErrorMessage(),
-          ERROR_CODE);
-    }
-  }
-
-  /**
    * This method will validate change password requested data.
    *
    * @param userRequest Request
