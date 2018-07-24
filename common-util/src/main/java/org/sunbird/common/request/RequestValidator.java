@@ -671,7 +671,6 @@ public final class RequestValidator {
 
     validateStartDate(startDate);
     validateEndDate(startDate, endDate);
-    
 
     boolean bool = validateDateWithTodayDate(endDate);
     if (!bool) {
@@ -834,7 +833,7 @@ public final class RequestValidator {
           ResponseCode.dateFormatError.getErrorMessage(),
           ERROR_CODE);
     }
-    if (batchStartDate.getTime() >= batchEndDate.getTime()) {
+    if (StringUtils.isNotEmpty(endDate) && batchStartDate.getTime() >= batchEndDate.getTime()) {
       throw new ProjectCommonException(
           ResponseCode.endDateError.getErrorCode(),
           ResponseCode.endDateError.getErrorMessage(),
