@@ -256,7 +256,7 @@ public enum ResponseCode {
   enrolmentIncorrectValue(
       ResponseMessage.Key.ENROLMENT_TYPE_VALUE_ERROR,
       ResponseMessage.Message.ENROLMENT_TYPE_VALUE_ERROR),
-  courseBatchSatrtDateRequired(
+  courseBatchStartDateRequired(
       ResponseMessage.Key.COURSE_BATCH_START_DATE_REQUIRED,
       ResponseMessage.Message.COURSE_BATCH_START_DATE_REQUIRED),
   courseBatchStartDateError(

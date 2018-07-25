@@ -412,117 +412,6 @@ public final class RequestValidator {
   }
 
   /**
-   * This method will validate save Assessment data.
-   *
-   * @param request Request
-   */
-  public static void validateSaveAssessment(Request request) {
-    if (StringUtils.isEmpty(
-        (String)
-            (request.getRequest().get(JsonKey.COURSE_ID) != null
-                ? request.getRequest().get(JsonKey.COURSE_ID)
-                : ""))) {
-      throw new ProjectCommonException(
-          ResponseCode.courseIdRequired.getErrorCode(),
-          ResponseCode.courseIdRequired.getErrorMessage(),
-          ERROR_CODE);
-    }
-    if (StringUtils.isEmpty(
-        (String)
-            (request.getRequest().get(JsonKey.CONTENT_ID) != null
-                ? request.getRequest().get(JsonKey.CONTENT_ID)
-                : ""))) {
-      throw new ProjectCommonException(
-          ResponseCode.contentIdRequired.getErrorCode(),
-          ResponseCode.contentIdRequired.getErrorMessage(),
-          ERROR_CODE);
-    }
-    if (StringUtils.isEmpty(
-        (String)
-            (request.getRequest().get(JsonKey.ATTEMPT_ID) != null
-                ? request.getRequest().get(JsonKey.ATTEMPT_ID)
-                : ""))) {
-      throw new ProjectCommonException(
-          ResponseCode.attemptIdRequired.getErrorCode(),
-          ResponseCode.attemptIdRequired.getErrorMessage(),
-          ERROR_CODE);
-    }
-    if (request.getRequest().get(JsonKey.ASSESSMENT) != null) {
-      @SuppressWarnings("unchecked")
-      List<Map<String, Object>> list =
-          (List<Map<String, Object>>) request.getRequest().get(JsonKey.ASSESSMENT);
-      if (list == null) {
-        throw new ProjectCommonException(
-            ResponseCode.invalidRequestData.getErrorCode(),
-            ResponseCode.invalidRequestData.getErrorMessage(),
-            ERROR_CODE);
-      }
-      validateAssessment(list);
-    }
-  }
-
-  private static void validateAssessment(List<Map<String, Object>> list) {
-    for (Map<String, Object> map : list) {
-      if (StringUtils.isEmpty(
-          (String)
-              (map.get(JsonKey.ASSESSMENT_ITEM_ID) != null
-                  ? map.get(JsonKey.ASSESSMENT_ITEM_ID)
-                  : ""))) {
-        throw new ProjectCommonException(
-            ResponseCode.assessmentItemIdRequired.getErrorCode(),
-            ResponseCode.assessmentItemIdRequired.getErrorMessage(),
-            ERROR_CODE);
-      }
-      if (StringUtils.isBlank(
-          (String)
-              (map.get(JsonKey.ASSESSMENT_TYPE) != null ? map.get(JsonKey.ASSESSMENT_TYPE) : ""))) {
-        throw new ProjectCommonException(
-            ResponseCode.assessmentTypeRequired.getErrorCode(),
-            ResponseCode.assessmentTypeRequired.getErrorMessage(),
-            ERROR_CODE);
-      }
-      if (StringUtils.isEmpty(
-          (String)
-              (map.get(JsonKey.ASSESSMENT_ANSWERS) != null
-                  ? map.get(JsonKey.ASSESSMENT_ANSWERS)
-                  : ""))) {
-        throw new ProjectCommonException(
-            ResponseCode.assessmentAnswersRequired.getErrorCode(),
-            ResponseCode.assessmentAnswersRequired.getErrorMessage(),
-            ERROR_CODE);
-      }
-      if (StringUtils.isEmpty(
-          (String)
-              (map.get(JsonKey.ASSESSMENT_MAX_SCORE) != null
-                  ? map.get(JsonKey.ASSESSMENT_MAX_SCORE)
-                  : ""))) {
-        throw new ProjectCommonException(
-            ResponseCode.assessmentmaxScoreRequired.getErrorCode(),
-            ResponseCode.assessmentmaxScoreRequired.getErrorMessage(),
-            ERROR_CODE);
-      }
-    }
-  }
-
-  /**
-   * This method will validate get Assessment data.
-   *
-   * @param request Request
-   */
-  public static void validateGetAssessment(Request request) {
-    if (StringUtils.isEmpty(
-        (String)
-            (request.getRequest().get(JsonKey.COURSE_ID) != null
-                ? request.getRequest().get(JsonKey.COURSE_ID)
-                : ""))) {
-      throw new ProjectCommonException(
-          ResponseCode.courseIdRequiredError.getErrorCode(),
-          ResponseCode.courseIdRequiredError.getErrorMessage(),
-          ERROR_CODE);
-    }
-  }
-
-  /**
    * This method will validate user org requested data.
    *
    * @param userRequest Request
@@ -622,11 +511,10 @@ public final class RequestValidator {
     String enrolmentType = (String) request.getRequest().get(JsonKey.ENROLLMENT_TYPE);
     validateEnrolmentType(enrolmentType);
     String startDate = (String) request.getRequest().get(JsonKey.START_DATE);
+    String endDate = (String) request.getRequest().get(JsonKey.END_DATE);
     validateStartDate(startDate);
-    if (request.getRequest().containsKey(JsonKey.END_DATE)
-        && !StringUtils.isEmpty((String) request.getRequest().get(JsonKey.END_DATE))) {
-      validateEndDate(startDate, (String) request.getRequest().get(JsonKey.END_DATE));
-    }
+    validateEndDate(startDate, endDate);
+
     if (request.getRequest().containsKey(JsonKey.COURSE_CREATED_FOR)
         && !(request.getRequest().get(JsonKey.COURSE_CREATED_FOR) instanceof List)) {
       throw new ProjectCommonException(
@@ -646,6 +534,7 @@ public final class RequestValidator {
   }
 
   public static void validateUpdateCourseBatchReq(Request request) {
+
     if (null != request.getRequest().get(JsonKey.STATUS)) {
       boolean status = validateBatchStatus(request);
       if (!status) {
@@ -666,16 +555,20 @@ public final class RequestValidator {
       String enrolmentType = (String) request.getRequest().get(JsonKey.ENROLLMENT_TYPE);
       validateEnrolmentType(enrolmentType);
     }
-    if (request.getRequest().containsKey(JsonKey.END_DATE)
-        && !StringUtils.isEmpty((String) request.getRequest().get(JsonKey.END_DATE))) {
-      boolean bool = validateDateWithTodayDate((String) request.getRequest().get(JsonKey.END_DATE));
-      if (!bool) {
-        throw new ProjectCommonException(
-            ResponseCode.invalidBatchEndDateError.getErrorCode(),
-            ResponseCode.invalidBatchEndDateError.getErrorMessage(),
-            ERROR_CODE);
-      }
+    String startDate = (String) request.getRequest().get(JsonKey.START_DATE);
+    String endDate = (String) request.getRequest().get(JsonKey.END_DATE);
+
+    validateStartDate(startDate);
+    validateEndDate(startDate, endDate);
+
+    boolean bool = validateDateWithTodayDate(endDate);
+    if (!bool) {
+      throw new ProjectCommonException(
+          ResponseCode.invalidBatchEndDateError.getErrorCode(),
+          ResponseCode.invalidBatchEndDateError.getErrorMessage(),
+          ERROR_CODE);
     }
+
     validateUpdateBatchEndDate(request);
     if (request.getRequest().containsKey(JsonKey.COURSE_CREATED_FOR)
         && !(request.getRequest().get(JsonKey.COURSE_CREATED_FOR) instanceof List)) {
@@ -706,17 +599,20 @@ public final class RequestValidator {
   }
 
   private static void validateUpdateBatchEndDate(Request request) {
+
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    String startDate = (String) request.getRequest().get(JsonKey.START_DATE);
+    String endDate = (String) request.getRequest().get(JsonKey.END_DATE);
     format.setLenient(false);
     if (request.getRequest().containsKey(JsonKey.END_DATE)
-        && !StringUtils.isEmpty((String) request.getRequest().get(JsonKey.END_DATE))
+        && StringUtils.isNotEmpty(startDate)
         && request.getRequest().containsKey(JsonKey.START_DATE)
-        && !StringUtils.isBlank((String) request.getRequest().get(JsonKey.START_DATE))) {
+        && !StringUtils.isBlank(startDate)) {
       Date batchStartDate = null;
       Date batchEndDate = null;
       try {
-        batchStartDate = format.parse((String) request.getRequest().get(JsonKey.START_DATE));
-        batchEndDate = format.parse((String) request.getRequest().get(JsonKey.END_DATE));
+        batchStartDate = format.parse(startDate);
+        batchEndDate = format.parse(endDate);
         Calendar cal1 = Calendar.getInstance();
         Calendar cal2 = Calendar.getInstance();
         cal1.setTime(batchStartDate);
@@ -740,14 +636,16 @@ public final class RequestValidator {
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     format.setLenient(false);
     try {
-      Date reqDate = format.parse(date);
-      Date todayDate = format.parse(format.format(new Date()));
-      Calendar cal1 = Calendar.getInstance();
-      Calendar cal2 = Calendar.getInstance();
-      cal1.setTime(reqDate);
-      cal2.setTime(todayDate);
-      if (reqDate.before(todayDate)) {
-        return false;
+      if (StringUtils.isNotEmpty(date)) {
+        Date reqDate = format.parse(date);
+        Date todayDate = format.parse(format.format(new Date()));
+        Calendar cal1 = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+        cal1.setTime(reqDate);
+        cal2.setTime(todayDate);
+        if (reqDate.before(todayDate)) {
+          return false;
+        }
       }
     } catch (Exception e) {
       throw new ProjectCommonException(
@@ -781,8 +679,8 @@ public final class RequestValidator {
     format.setLenient(false);
     if (StringUtils.isBlank(startDate)) {
       throw new ProjectCommonException(
-          ResponseCode.courseBatchSatrtDateRequired.getErrorCode(),
-          ResponseCode.courseBatchSatrtDateRequired.getErrorMessage(),
+          ResponseCode.courseBatchStartDateRequired.getErrorCode(),
+          ResponseCode.courseBatchStartDateRequired.getErrorMessage(),
           ERROR_CODE);
     }
     try {
@@ -814,15 +712,17 @@ public final class RequestValidator {
     Date batchEndDate = null;
     Date batchStartDate = null;
     try {
-      batchEndDate = format.parse(endDate);
-      batchStartDate = format.parse(startDate);
+      if (StringUtils.isNotEmpty(endDate)) {
+        batchEndDate = format.parse(endDate);
+        batchStartDate = format.parse(startDate);
+      }
     } catch (Exception e) {
       throw new ProjectCommonException(
           ResponseCode.dateFormatError.getErrorCode(),
           ResponseCode.dateFormatError.getErrorMessage(),
           ERROR_CODE);
     }
-    if (batchStartDate.getTime() >= batchEndDate.getTime()) {
+    if (StringUtils.isNotEmpty(endDate) && batchStartDate.getTime() >= batchEndDate.getTime()) {
       throw new ProjectCommonException(
           ResponseCode.endDateError.getErrorCode(),
           ResponseCode.endDateError.getErrorMessage(),
@@ -910,17 +810,6 @@ public final class RequestValidator {
           ResponseCode.storageContainerNameMandatory.getErrorCode(),
           ResponseCode.storageContainerNameMandatory.getErrorMessage(),
           ERROR_CODE);
-    }
-  }
-
-  /** @param reqObj */
-  public static void validateAddUserBadge(Request reqObj) {
-
-    if (StringUtils.isBlank((String) reqObj.get(JsonKey.BADGE_TYPE_ID))) {
-      throw createExceptionInstance(ResponseCode.badgeTypeIdMandatory.getErrorCode());
-    }
-    if (StringUtils.isBlank((String) reqObj.get(JsonKey.RECEIVER_ID))) {
-      throw createExceptionInstance(ResponseCode.receiverIdMandatory.getErrorCode());
     }
   }
 

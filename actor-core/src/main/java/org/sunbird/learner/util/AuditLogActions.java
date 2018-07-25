@@ -24,25 +24,13 @@ public class AuditLogActions {
         ActorOperations.UPDATE_ORG_STATUS.getValue(),
         new AuditOperation(JsonKey.ORGANISATION, JsonKey.UPDATE));
     auditLogUrlMap.put(
-        ActorOperations.APPROVE_ORG.getValue(),
-        new AuditOperation(JsonKey.ORGANISATION, JsonKey.UPDATE));
-    auditLogUrlMap.put(
         ActorOperations.APPROVE_ORGANISATION.getValue(),
-        new AuditOperation(JsonKey.ORGANISATION, JsonKey.UPDATE));
-    auditLogUrlMap.put(
-        ActorOperations.JOIN_USER_ORGANISATION.getValue(),
         new AuditOperation(JsonKey.ORGANISATION, JsonKey.UPDATE));
     auditLogUrlMap.put(
         ActorOperations.ADD_MEMBER_ORGANISATION.getValue(),
         new AuditOperation(JsonKey.ORGANISATION, JsonKey.UPDATE));
     auditLogUrlMap.put(
         ActorOperations.REMOVE_MEMBER_ORGANISATION.getValue(),
-        new AuditOperation(JsonKey.ORGANISATION, JsonKey.UPDATE));
-    auditLogUrlMap.put(
-        ActorOperations.APPROVE_USER_ORGANISATION.getValue(),
-        new AuditOperation(JsonKey.ORGANISATION, JsonKey.UPDATE));
-    auditLogUrlMap.put(
-        ActorOperations.REJECT_USER_ORGANISATION.getValue(),
         new AuditOperation(JsonKey.ORGANISATION, JsonKey.UPDATE));
     auditLogUrlMap.put(
         ActorOperations.BLOCK_USER.getValue(), new AuditOperation(JsonKey.USER, JsonKey.UPDATE));
