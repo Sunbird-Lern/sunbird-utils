@@ -287,12 +287,7 @@ public class BaseRequestValidator {
    *     issuer,badgeClass etc.
    */
   public static void validateIdentifierValue(String identifier, String objectType) {
-    System.out.println("validateIdentifierValue value==" + identifier);
     if (StringUtils.isBlank(identifier) || "NULL".equalsIgnoreCase(identifier)) {
-      System.out.println(
-          "validateIdentifierValue Meg=="
-              + MessageFormat.format(
-                  ResponseCode.invalidParameterValue.getErrorMessage(), identifier, objectType));
       throw new ProjectCommonException(
           ResponseCode.invalidParameterValue.getErrorCode(),
           MessageFormat.format(
