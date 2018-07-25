@@ -333,19 +333,16 @@ public interface ResponseMessage {
         "JSON transformation failed as mandatory configuration (toFieldName, fromType or toType) is missing for field {0}.";
     String ERROR_JSON_TRANSFORM_INVALID_FILTER_CONFIG =
         "JSON transformation failed as invalid filter configuration found for field {0}.";
-    String ERROR_SUNBIRD_EXTENSION_LOAD_CONFIG =
-        "Loading failed for sunbird extension configuration file {0}.";
-    String ERROR_OPEN_SABER_CLIENT_CREATION = "Open Saber client creation failed.";
-    String ERROR_USER_REGISTRY_ADD_ENTITY = "User registry add entity API failed.";
-    String ERROR_USER_REGISTRY_READ_ENTITY = "User registry read entity API failed.";
-    String ERROR_USER_REGISTRY_UPDATE_ENTITY = "User registry update entity API failed.";
-    String ERROR_USER_REGISTRY_DELETE_ENTITY = "User registry delete entity API failed.";
-    String ERROR_USER_REGISTRY_PARSE_RESPONSE = "Error while parsing response from registry.";
-    String ERROR_USER_REGISTRY_USER_TYPE_BLANK = "Request failed as user type is blank.";
-    String ERROR_USER_REGISTRY_MAIN_PROVIDER_NOT_CONFIGURED =
-        "Request failed as provider not configured for user ID.";
-    String ERROR_USER_REGISTRY_UNIQUE_ID_BLANK = "Request failed as registryId is not provided.";
-    String ERROR_USER_REGISTRY_ACCESS_TOKEN_BLANK =
+    String ERROR_LOAD_CONFIG = "Loading failed for configuration file {0}.";
+    String ERROR_REGISTRY_CLIENT_CREATION = "Registry client creation failed.";
+    String ERROR_REGISTRY_ADD_ENTITY = "Registry add entity API failed.";
+    String ERROR_REGISTRY_READ_ENTITY = "Registry read entity API failed.";
+    String ERROR_REGISTRY_UPDATE_ENTITY = "Registry update entity API failed.";
+    String ERROR_REGISTRY_DELETE_ENTITY = "Registry delete entity API failed.";
+    String ERROR_REGISTRY_PARSE_RESPONSE = "Error while parsing response from registry.";
+    String ERROR_REGISTRY_ENTITY_TYPE_BLANK = "Request failed as entity type is blank.";
+    String ERROR_REGISTRY_ENTITY_ID_BLANK = "Request failed as entity id is not provided.";
+    String ERROR_REGISTRY_ACCESS_TOKEN_BLANK =
         "Request failed as user access token is not provided.";
     String DUPLICATE_EXTERNAL_IDS =
         "Duplicate external IDs for given idType ({0}) and provider ({1}).";
@@ -640,18 +637,16 @@ public interface ResponseMessage {
     String ERROR_JSON_TRANSFORM_BASIC_CONFIG_MISSING = "ERROR_JSON_TRANSFORM_BASIC_CONFIG_MISSING";
     String ERROR_JSON_TRANSFORM_INVALID_FILTER_CONFIG =
         "ERROR_JSON_TRANSFORM_INVALID_FILTER_CONFIG";
-    String ERROR_SUNBIRD_EXTENSION_LOAD_CONFIG = "ERROR_SUNBIRD_EXTENSION_LOAD_CONFIG";
-    String ERROR_OPEN_SABER_CLIENT_CREATION = "ERROR_OPEN_SABER_CLIENT_CREATION";
-    String ERROR_USER_REGISTRY_ADD_ENTITY = "ERROR_USER_REGISTRY_ADD_ENTITY";
-    String ERROR_USER_REGISTRY_READ_ENTITY = "ERROR_USER_REGISTRY_READ_ENTITY";
-    String ERROR_USER_REGISTRY_UPDATE_ENTITY = "ERROR_USER_REGISTRY_UPDATE_ENTITY";
-    String ERROR_USER_REGISTRY_DELETE_ENTITY = "ERROR_USER_REGISTRY_DELETE_ENTITY";
-    String ERROR_USER_REGISTRY_PARSE_RESPONSE = "ERROR_USER_REGISTRY_PARSE_RESPONSE";
-    String ERROR_USER_REGISTRY_USER_TYPE_BLANK = "ERROR_USER_REGISTRY_USER_TYPE_BLANK";
-    String ERROR_USER_REGISTRY_MAIN_PROVIDER_NOT_CONFIGURED =
-        "ERROR_USER_REGISTRY_MAIN_PROVIDER_NOT_CONFIGURED";
-    String ERROR_USER_REGISTRY_UNIQUE_ID_BLANK = "ERROR_USER_REGISTRY_UNIQUE_ID_BLANK";
-    String ERROR_USER_REGISTRY_ACCESS_TOKEN_BLANK = "ERROR_USER_REGISTRY_ACCESS_TOKEN_BLANK";
+    String ERROR_LOAD_CONFIG = "ERROR_LOAD_CONFIG";
+    String ERROR_REGISTRY_CLIENT_CREATION = "ERROR_REGISTRY_CLIENT_CREATION";
+    String ERROR_REGISTRY_ADD_ENTITY = "ERROR_REGISTRY_ADD_ENTITY";
+    String ERROR_REGISTRY_READ_ENTITY = "ERROR_REGISTRY_READ_ENTITY";
+    String ERROR_REGISTRY_UPDATE_ENTITY = "ERROR_REGISTRY_UPDATE_ENTITY";
+    String ERROR_REGISTRY_DELETE_ENTITY = "ERROR_REGISTRY_DELETE_ENTITY";
+    String ERROR_REGISTRY_PARSE_RESPONSE = "ERROR_REGISTRY_PARSE_RESPONSE";
+    String ERROR_REGISTRY_ENTITY_TYPE_BLANK = "ERROR_REGISTRY_ENTITY_TYPE_BLANK";
+    String ERROR_REGISTRY_ENTITY_ID_BLANK = "ERROR_REGISTRY_ENTITY_ID_BLANK";
+    String ERROR_REGISTRY_ACCESS_TOKEN_BLANK = "ERROR_REGISTRY_ACCESS_TOKEN_BLANK";
     String DUPLICATE_EXTERNAL_IDS = "DUPLICATE_EXTERNAL_IDS";
   }
 }
