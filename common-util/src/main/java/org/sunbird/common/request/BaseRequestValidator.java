@@ -277,4 +277,27 @@ public class BaseRequestValidator {
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
   }
+
+  /**
+   * This method will do the validation for empty or null only. if value is either empty String or
+   * null then throw projectCommon exception.
+   *
+   * @param identifier String
+   * @param objectType String, for which object identifier is example : object can be user,
+   *     issuer,badgeClass etc.
+   */
+  public static void validateIdentifierValue(String identifier, String objectType) {
+    System.out.println("validateIdentifierValue value==" + identifier);
+    if (StringUtils.isBlank(identifier) || "NULL".equalsIgnoreCase(identifier)) {
+      System.out.println(
+          "validateIdentifierValue Meg=="
+              + MessageFormat.format(
+                  ResponseCode.invalidParameterValue.getErrorMessage(), identifier, objectType));
+      throw new ProjectCommonException(
+          ResponseCode.invalidParameterValue.getErrorCode(),
+          MessageFormat.format(
+              ResponseCode.invalidParameterValue.getErrorMessage(), identifier, objectType),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+  }
 }
