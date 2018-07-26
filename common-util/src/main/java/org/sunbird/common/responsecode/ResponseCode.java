@@ -96,7 +96,7 @@ public enum ResponseCode {
   invalidParentId(
       ResponseMessage.Key.INVALID_PARENT_ORGANIZATION_ID,
       ResponseMessage.Message.INVALID_PARENT_ORGANIZATION_ID),
-  channelIdRequiredForRootOrg(
+  channelRequiredForRootOrg(
       ResponseMessage.Key.CHANNEL_MISSING, ResponseMessage.Message.CHANNEL_MISSING),
   cyclicValidationError(
       ResponseMessage.Key.CYCLIC_VALIDATION_FAILURE,
@@ -626,6 +626,12 @@ public enum ResponseCode {
       ResponseMessage.Message.ERROR_REGISTRY_ACCESS_TOKEN_BLANK),
   duplicateExternalIds(
       ResponseMessage.Key.DUPLICATE_EXTERNAL_IDS, ResponseMessage.Message.DUPLICATE_EXTERNAL_IDS),
+  systemAlreadyInitialised(
+      ResponseMessage.Key.SYSTEM_ALREADY_INITIALISED,
+      ResponseMessage.Message.SYSTEM_ALREADY_INITIALISED),
+      rootOrgAlreadyExist(
+        ResponseMessage.Key.ROOT_ORG_ALREADY_EXIST,
+        ResponseMessage.Message.ROOT_ORG_ALREADY_EXIST),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

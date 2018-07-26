@@ -64,7 +64,7 @@ public class OrgValidatorTest {
       RequestValidator.validateCreateOrg(request);
       requestObj.put("ext", "success");
     } catch (ProjectCommonException e) {
-      assertEquals(ResponseCode.channelIdRequiredForRootOrg.getErrorCode(), e.getCode());
+      assertEquals(ResponseCode.channelRequiredForRootOrg.getErrorCode(), e.getCode());
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
     }
     assertEquals(null, (String) requestObj.get("ext"));
@@ -214,7 +214,7 @@ public class OrgValidatorTest {
       RequestValidator.validateUpdateOrg(request);
       requestObj.put("ext", "success");
     } catch (ProjectCommonException e) {
-      assertEquals(ResponseCode.channelIdRequiredForRootOrg.getErrorCode(), e.getCode());
+      assertEquals(ResponseCode.channelRequiredForRootOrg.getErrorCode(), e.getCode());
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
     }
     assertEquals(null, (String) requestObj.get("ext"));

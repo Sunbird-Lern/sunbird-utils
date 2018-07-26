@@ -8,6 +8,8 @@ import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
+import org.sunbird.common.models.util.LoggerEnum;
+import org.sunbird.common.models.util.ProjectLogger;
 
 /**
  * This class contains methods to validate the initialisation api request
@@ -30,31 +32,9 @@ public class InitialisationRequestValidator {
     }
     if (StringUtils.isBlank((String) request.getRequest().get(JsonKey.CHANNEL))) {
       throw new ProjectCommonException(
-          ResponseCode.channelIdRequiredForRootOrg.getErrorCode(),
-          ResponseCode.channelIdRequiredForRootOrg.getErrorMessage(),
+          ResponseCode.channelRequiredForRootOrg.getErrorCode(),
+          ResponseCode.channelRequiredForRootOrg.getErrorMessage(),
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
-    if (!validateRemoteAddress(request.get(JsonKey.REMOTE_ADDRESS).toString())) {
-      throw new ProjectCommonException(
-          ResponseCode.restrictedRequest.getErrorCode(),
-          ResponseCode.restrictedRequest.getErrorMessage(),
-          ResponseCode.FORBIDDEN.getResponseCode());
-    }
-  }
-
-  /**
-   * This method will validates the client request host IP with existing initalisation hosts
-   *
-   * @param remoteAddress Ipaddress of requesting client
-   */
-  public Boolean validateRemoteAddress(String remoteAddress) {
-    List<String> allowedInitialisationHosts =
-        Arrays.asList(ProjectUtil.getConfigValue(JsonKey.INITIALISATION_HOSTS).split(","));
-    Boolean validAddress = false;
-    if (allowedInitialisationHosts.contains(remoteAddress)
-        || remoteAddress == JsonKey.LOCAL_IPV4_ADDRESS) {
-      validAddress = true;
-    }
-    return validAddress;
   }
 }

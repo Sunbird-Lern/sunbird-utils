@@ -12,6 +12,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.request.Request;
+import org.sunbird.common.responsecode.ResponseCode;
 
 /**
  * Testcases for Initialisation Request Validator
@@ -31,42 +32,40 @@ public class InitialisationRequestValidatorTest {
   @Test
   public void testValidateCreateFirstRootOrg() {
     Request request = new Request();
-    boolean response = false;
     Map<String, Object> rootOrgData = new HashMap<>();
     rootOrgData.put(JsonKey.ORG_NAME, ORG_NAME);
     rootOrgData.put(JsonKey.CHANNEL, CHANNEL);
     request.setRequest(rootOrgData);
-    request.put(JsonKey.REMOTE_ADDRESS, REMOTE_ADDRESS);
     try {
       validator.validateCreateFirstRootOrg(request);
-      response = true;
     } catch (ProjectCommonException e) {
       Assert.assertNull(e);
     }
   }
 
-  @Test(expected = ProjectCommonException.class)
-  public void testValidateCreateFirstRootOrgWithoutData() {
+  @Test
+  public void testValidateCreateFirstRootOrgWithoutChannel() {
     Request request = new Request();
     Map<String, Object> rootOrgData = new HashMap<>();
+    rootOrgData.put(JsonKey.ORG_NAME, ORG_NAME);
     request.setRequest(rootOrgData);
-    request.put(JsonKey.REMOTE_ADDRESS, REMOTE_ADDRESS);
     try {
       validator.validateCreateFirstRootOrg(request);
     } catch (ProjectCommonException e) {
-      Assert.assertNotNull(e);
+      Assert.assertEquals(e.getMessage(),ResponseCode.channelRequiredForRootOrg.getErrorMessage());
     }
   }
 
-  @Test(expected = ProjectCommonException.class)
-  public void testvalidateRemoteAddress() {
-    Boolean result = validator.validateRemoteAddress(REMOTE_ADDRESS);
-    Assert.assertEquals(result, true);
-  }
-
-  @Test(expected = ProjectCommonException.class)
-  public void testvalidateRemoteAddresswithInvalidAddress() {
-    Boolean result = validator.validateRemoteAddress("");
-    Assert.assertEquals(result, false);
+  @Test
+  public void testValidateCreateFirstRootOrgWithoutOrgName() {
+    Request request = new Request();
+    Map<String, Object> rootOrgData = new HashMap<>();
+    rootOrgData.put(JsonKey.CHANNEL, CHANNEL);
+    request.setRequest(rootOrgData);
+    try {
+      validator.validateCreateFirstRootOrg(request);
+    } catch (ProjectCommonException e) {
+      Assert.assertEquals(e.getMessage(),ResponseCode.organisationNameRequired.getErrorMessage());
+    }
   }
 }
