@@ -596,39 +596,34 @@ public enum ResponseCode {
   errorJsonTransformInvalidFilterConfig(
       ResponseMessage.Key.ERROR_JSON_TRANSFORM_INVALID_FILTER_CONFIG,
       ResponseMessage.Message.ERROR_JSON_TRANSFORM_INVALID_FILTER_CONFIG),
-  errorSunbirdExtensionLoadConfig(
-      ResponseMessage.Key.ERROR_SUNBIRD_EXTENSION_LOAD_CONFIG,
-      ResponseMessage.Message.ERROR_SUNBIRD_EXTENSION_LOAD_CONFIG),
-  errorOpenSaberClientCreation(
-      ResponseMessage.Key.ERROR_OPEN_SABER_CLIENT_CREATION,
-      ResponseMessage.Message.ERROR_OPEN_SABER_CLIENT_CREATION),
-  errorUserRegistryAddEntity(
-      ResponseMessage.Key.ERROR_USER_REGISTRY_ADD_ENTITY,
-      ResponseMessage.Message.ERROR_USER_REGISTRY_ADD_ENTITY),
-  errorUserRegistryReadEntity(
-      ResponseMessage.Key.ERROR_USER_REGISTRY_READ_ENTITY,
-      ResponseMessage.Message.ERROR_USER_REGISTRY_READ_ENTITY),
-  errorUserRegistryUpdateEntity(
-      ResponseMessage.Key.ERROR_USER_REGISTRY_UPDATE_ENTITY,
-      ResponseMessage.Message.ERROR_USER_REGISTRY_UPDATE_ENTITY),
-  errorUserRegistryDeleteEntity(
-      ResponseMessage.Key.ERROR_USER_REGISTRY_DELETE_ENTITY,
-      ResponseMessage.Message.ERROR_USER_REGISTRY_DELETE_ENTITY),
-  errorUserRegistryParseResponse(
-      ResponseMessage.Key.ERROR_USER_REGISTRY_PARSE_RESPONSE,
-      ResponseMessage.Message.ERROR_USER_REGISTRY_PARSE_RESPONSE),
-  errorUserRegistryUserTypeBlank(
-      ResponseMessage.Key.ERROR_USER_REGISTRY_USER_TYPE_BLANK,
-      ResponseMessage.Message.ERROR_USER_REGISTRY_USER_TYPE_BLANK),
-  errorUserRegistryMainProviderNotConfigured(
-      ResponseMessage.Key.ERROR_USER_REGISTRY_MAIN_PROVIDER_NOT_CONFIGURED,
-      ResponseMessage.Message.ERROR_USER_REGISTRY_MAIN_PROVIDER_NOT_CONFIGURED),
-  errorUserRegistryUniqueIdBlank(
-      ResponseMessage.Key.ERROR_USER_REGISTRY_UNIQUE_ID_BLANK,
-      ResponseMessage.Message.ERROR_USER_REGISTRY_UNIQUE_ID_BLANK),
-  errorUserRegistryAccessTokenBlank(
-      ResponseMessage.Key.ERROR_USER_REGISTRY_ACCESS_TOKEN_BLANK,
-      ResponseMessage.Message.ERROR_USER_REGISTRY_ACCESS_TOKEN_BLANK),
+  errorLoadConfig(ResponseMessage.Key.ERROR_LOAD_CONFIG, ResponseMessage.Message.ERROR_LOAD_CONFIG),
+  errorRegistryClientCreation(
+      ResponseMessage.Key.ERROR_REGISTRY_CLIENT_CREATION,
+      ResponseMessage.Message.ERROR_REGISTRY_CLIENT_CREATION),
+  errorRegistryAddEntity(
+      ResponseMessage.Key.ERROR_REGISTRY_ADD_ENTITY,
+      ResponseMessage.Message.ERROR_REGISTRY_ADD_ENTITY),
+  errorRegistryReadEntity(
+      ResponseMessage.Key.ERROR_REGISTRY_READ_ENTITY,
+      ResponseMessage.Message.ERROR_REGISTRY_READ_ENTITY),
+  errorRegistryUpdateEntity(
+      ResponseMessage.Key.ERROR_REGISTRY_UPDATE_ENTITY,
+      ResponseMessage.Message.ERROR_REGISTRY_UPDATE_ENTITY),
+  errorRegistryDeleteEntity(
+      ResponseMessage.Key.ERROR_REGISTRY_DELETE_ENTITY,
+      ResponseMessage.Message.ERROR_REGISTRY_DELETE_ENTITY),
+  errorRegistryParseResponse(
+      ResponseMessage.Key.ERROR_REGISTRY_PARSE_RESPONSE,
+      ResponseMessage.Message.ERROR_REGISTRY_PARSE_RESPONSE),
+  errorRegistryEntityTypeBlank(
+      ResponseMessage.Key.ERROR_REGISTRY_ENTITY_TYPE_BLANK,
+      ResponseMessage.Message.ERROR_REGISTRY_ENTITY_TYPE_BLANK),
+  errorRegistryEntityIdBlank(
+      ResponseMessage.Key.ERROR_REGISTRY_ENTITY_ID_BLANK,
+      ResponseMessage.Message.ERROR_REGISTRY_ENTITY_ID_BLANK),
+  errorRegistryAccessTokenBlank(
+      ResponseMessage.Key.ERROR_REGISTRY_ACCESS_TOKEN_BLANK,
+      ResponseMessage.Message.ERROR_REGISTRY_ACCESS_TOKEN_BLANK),
   duplicateExternalIds(
       ResponseMessage.Key.DUPLICATE_EXTERNAL_IDS, ResponseMessage.Message.DUPLICATE_EXTERNAL_IDS),
   OK(200),
