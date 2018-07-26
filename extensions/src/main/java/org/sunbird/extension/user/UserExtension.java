@@ -35,7 +35,7 @@ public interface UserExtension {
   /**
    * Deletes user profile information.
    *
-   * @param userProfileMap User profile information
+   * @param userIdMap UserId Information
    */
-  public void delete(Map<String, Object> userProfileMap);
+  public void delete(Map<String, Object> userIdMap);
 }
