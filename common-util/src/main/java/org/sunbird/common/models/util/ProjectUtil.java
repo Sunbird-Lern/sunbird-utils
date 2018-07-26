@@ -683,8 +683,8 @@ public class ProjectUtil {
         responseMap.put(JsonKey.ERROR, commonException.getResponseCode());
         responseMap.put(JsonKey.ERRORMSG, commonException.getMessage());
       } else {
-        responseMap.put(JsonKey.ERROR, e != null ? e.getMessage() : "connection Error");
-        responseMap.put(JsonKey.ERRORMSG, e != null ? e.getMessage() : "connection Error");
+        responseMap.put(JsonKey.ERROR, e != null ? e.getMessage() : "CONNECTION_ERROR");
+        responseMap.put(JsonKey.ERRORMSG, e != null ? e.getMessage() : "Connection error");
       }
     }
     return responseMap;

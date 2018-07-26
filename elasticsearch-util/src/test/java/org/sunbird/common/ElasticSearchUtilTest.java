@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import org.elasticsearch.client.transport.TransportClient;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -601,9 +600,8 @@ public class ElasticSearchUtilTest {
     boolean response = false;
     try {
       response = ElasticSearchUtil.healthCheck();
-    } catch (InterruptedException e) {
+    } catch (Exception e) {
 
-    } catch (ExecutionException e) {
     }
     assertEquals(true, response);
   }
