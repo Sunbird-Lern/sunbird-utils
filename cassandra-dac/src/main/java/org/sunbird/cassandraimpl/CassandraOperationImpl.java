@@ -577,7 +577,8 @@ public class CassandraOperationImpl implements CassandraOperation {
     try {
       Select selectQuery = QueryBuilder.select().all().from(keyspaceName, tableName);
       selectQuery.where().and(QueryBuilder.eq(propertyName, propertyValue));
-      ResultSet results = connectionManager.getSession(keyspaceName).execute(selectQuery);
+      ResultSet results =
+          connectionManager.getSession(keyspaceName).execute(selectQuery.allowFiltering());
       response = CassandraUtil.createResponse(results);
     } catch (Exception e) {
       ProjectLogger.log(
