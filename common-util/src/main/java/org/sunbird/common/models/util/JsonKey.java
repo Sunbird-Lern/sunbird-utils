@@ -177,6 +177,8 @@ public final class JsonKey {
   public static final String EDUCATION = "education";
   public static final String EDUCATION_DB = "user_education";
   public static final String EKS = "eks";
+  public static final String SEARCH_SERVICE_API_BASE_URL = "sunbird_search_service_api_base_url";
+  public static final String ANALYTICS_API_BASE_URL = "sunbird_analytics_api_base_url";
   public static final String EKSTEP_AUTHORIZATION = "ekstep_authorization";
   public static final String EKSTEP_BASE_URL = "ekstep_api_base_url";
   public static final String EKSTEP_CHANNEL_REG_API_URL = "ekstep.channel.reg.api.url";

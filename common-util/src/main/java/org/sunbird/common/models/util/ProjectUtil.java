@@ -704,13 +704,10 @@ public class ProjectUtil {
     String tagStatus = "";
     try {
       ProjectLogger.log("start call for registering the tag ==" + tagId);
-      String ekStepBaseUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);
-      if (StringUtils.isBlank(ekStepBaseUrl)) {
-        ekStepBaseUrl = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_BASE_URL);
-      }
+      String analyticsBaseUrl = getConfigValue(JsonKey.ANALYTICS_API_BASE_URL);
       tagStatus =
           HttpUtil.sendPostRequest(
-              ekStepBaseUrl
+              analyticsBaseUrl
                   + PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_TAG_API_URL)
                   + "/"
                   + tagId,
