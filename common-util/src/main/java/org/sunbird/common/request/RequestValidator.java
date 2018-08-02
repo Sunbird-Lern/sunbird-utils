@@ -604,10 +604,7 @@ public final class RequestValidator {
     String startDate = (String) request.getRequest().get(JsonKey.START_DATE);
     String endDate = (String) request.getRequest().get(JsonKey.END_DATE);
     format.setLenient(false);
-    if (request.getRequest().containsKey(JsonKey.END_DATE)
-        && StringUtils.isNotEmpty(startDate)
-        && request.getRequest().containsKey(JsonKey.START_DATE)
-        && !StringUtils.isBlank(startDate)) {
+    if (StringUtils.isNotBlank(endDate) && StringUtils.isNotBlank(startDate)) {
       Date batchStartDate = null;
       Date batchEndDate = null;
       try {
