@@ -125,10 +125,14 @@ public class ElasticSearchUtil {
   }
 
   private static void createIndexTypes() {
-    String[] types =
-        Arrays.stream(EsType.values()).map(f -> f.getTypeName()).toArray(String[]::new);
-    for (EsIndex index : EsIndex.values()) {
-      verifyOrCreatType(index.getIndexName(), types);
+    try {
+      String[] types =
+          Arrays.stream(EsType.values()).map(f -> f.getTypeName()).toArray(String[]::new);
+      for (EsIndex index : EsIndex.values()) {
+        verifyOrCreatType(index.getIndexName(), types);
+      }
+    } catch (Exception e) {
+      ProjectLogger.log("ElasticSearchUtil:createIndexTypes error: " + e.getMessage(), e);
     }
   }
 
@@ -1079,18 +1083,20 @@ public class ElasticSearchUtil {
    * This method will do the health check of elastic search.
    *
    * @return boolean
-   * @throws InterruptedException
-   * @throws ExecutionException
    */
-  public static boolean healthCheck() throws InterruptedException, ExecutionException {
+  public static boolean healthCheck() {
     boolean indexResponse = false;
-    indexResponse =
-        ConnectionManager.getClient()
-            .admin()
-            .indices()
-            .exists(Requests.indicesExistsRequest(ProjectUtil.EsIndex.sunbird.getIndexName()))
-            .get()
-            .isExists();
+    try {
+      indexResponse =
+          ConnectionManager.getClient()
+              .admin()
+              .indices()
+              .exists(Requests.indicesExistsRequest(ProjectUtil.EsIndex.sunbird.getIndexName()))
+              .get()
+              .isExists();
+    } catch (Exception e) {
+      ProjectLogger.log("ElasticSearchUtil:healthCheck error " + e.getMessage(), e);
+    }
     return indexResponse;
   }
 

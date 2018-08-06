@@ -177,6 +177,8 @@ public final class JsonKey {
   public static final String EDUCATION = "education";
   public static final String EDUCATION_DB = "user_education";
   public static final String EKS = "eks";
+  public static final String SEARCH_SERVICE_API_BASE_URL = "sunbird_search_service_api_base_url";
+  public static final String ANALYTICS_API_BASE_URL = "sunbird_analytics_api_base_url";
   public static final String EKSTEP_AUTHORIZATION = "ekstep_authorization";
   public static final String EKSTEP_BASE_URL = "ekstep_api_base_url";
   public static final String EKSTEP_CHANNEL_REG_API_URL = "ekstep.channel.reg.api.url";
@@ -351,7 +353,6 @@ public final class JsonKey {
   public static final String OFFSET = "offset";
   public static final String ON = "ON";
   public static final String ONBOARDING_WELCOME_MAIL_BODY = "onboarding_welcome_mail_body";
-  public static final String ONOARDING_WELCOME_MESSAGE = "onboarding_welcome_message";
   public static final String OPEN = "open";
   public static final String OPERATION = "operation";
   public static final String OPERATION_FOR = "operationFor";
@@ -657,11 +658,19 @@ public final class JsonKey {
   public static final String REMOVE = "remove";
   public static final String EDIT = "edit";
   public static final String DEFAULT_FRAMEWORK = "defaultFramework";
+  public static final String SUNBIRD_OPENSABER_BRIDGE_ENABLE = "sunbird_open_saber_bridge_enable";
   public static final String EXTERNAL_ID_PROVIDER = "externalIdProvider";
   public static final String SUNBIRD_INSTALLATION_DISPLAY_NAME =
       "sunbird_installation_display_name";
   public static final String USR_EXT_IDNT_TABLE = "usr_external_identity";
   public static final String END_TIME_IN_HOUR_MINUTE_SECOND = " 23:59:59";
+  public static final String REGISTRY_ID = "registryId";
+  public static final String SUNBIRD_APP_NAME = "sunbird_app_name";
+  public static final String SUNBIRD_DEFAULT_COUNTRY_CODE = "sunbird_default_country_code";
+  public static final String ONBOARDING_MAIL_SUBJECT = "onboarding_mail_subject";
+  public static final String ONBOARDING_MAIL_MESSAGE = "onboarding_welcome_message";
+  public static final String SUNBIRD_DEFAULT_WELCOME_MSG = "sunbird_default_welcome_sms";
+  public static final String SUNBIRD_DEFAULT_USER_TYPE = "sunbird_default_user_type";
 
   private JsonKey() {}
 }

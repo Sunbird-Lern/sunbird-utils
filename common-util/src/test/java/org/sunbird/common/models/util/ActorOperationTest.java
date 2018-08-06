@@ -25,8 +25,6 @@ public class ActorOperationTest {
     Assert.assertEquals("getUserCount", ActorOperations.GET_USER_COUNT.getValue());
     Assert.assertEquals("updateGeoLocation", ActorOperations.UPDATE_GEO_LOCATION.getValue());
     Assert.assertEquals("getGeoLocation", ActorOperations.GET_GEO_LOCATION.getValue());
-    Assert.assertEquals(
-        "updateTCStatusOfUser", ActorOperations.UPDATE_TC_STATUS_OF_USER.getValue());
     Assert.assertEquals("registerClient", ActorOperations.REGISTER_CLIENT.getValue());
     Assert.assertEquals("updateClientKey", ActorOperations.UPDATE_CLIENT_KEY.getValue());
     Assert.assertEquals("getClientKey", ActorOperations.GET_CLIENT_KEY.getValue());
@@ -42,16 +40,12 @@ public class ActorOperationTest {
         "createTanentPreference", ActorOperations.CREATE_TENANT_PREFERENCE.getValue());
     Assert.assertEquals("createUser", ActorOperations.CREATE_USER.getValue());
     Assert.assertEquals("updateUser", ActorOperations.UPDATE_USER.getValue());
-    Assert.assertEquals("login", ActorOperations.LOGIN.getValue());
-    Assert.assertEquals("logout", ActorOperations.LOGOUT.getValue());
-    Assert.assertEquals("changePassword", ActorOperations.CHANGE_PASSWORD.getValue());
     Assert.assertEquals("userAuth", ActorOperations.USER_AUTH.getValue());
     Assert.assertEquals("getUserProfile", ActorOperations.GET_PROFILE.getValue());
     Assert.assertEquals("createOrg", ActorOperations.CREATE_ORG.getValue());
     Assert.assertEquals("updateOrg", ActorOperations.UPDATE_ORG.getValue());
     Assert.assertEquals("updateOrgStatus", ActorOperations.UPDATE_ORG_STATUS.getValue());
     Assert.assertEquals("getOrgDetails", ActorOperations.GET_ORG_DETAILS.getValue());
-    Assert.assertEquals("approveOrg", ActorOperations.APPROVE_ORG.getValue());
     Assert.assertEquals("userAuth", ActorOperations.USER_AUTH.getValue());
     Assert.assertEquals("createPage", ActorOperations.CREATE_PAGE.getValue());
     Assert.assertEquals("updatePage", ActorOperations.UPDATE_PAGE.getValue());
@@ -64,31 +58,23 @@ public class ActorOperationTest {
     Assert.assertEquals("getSection", ActorOperations.GET_SECTION.getValue());
     Assert.assertEquals("getCourseById", ActorOperations.GET_COURSE_BY_ID.getValue());
     Assert.assertEquals("updateUserCount", ActorOperations.UPDATE_USER_COUNT.getValue());
-    Assert.assertEquals("saveAssessment", ActorOperations.SAVE_ASSESSMENT.getValue());
-    Assert.assertEquals("getAssessment", ActorOperations.GET_ASSESSMENT.getValue());
     Assert.assertEquals(
         "getRecommendedCourses", ActorOperations.GET_RECOMMENDED_COURSES.getValue());
     Assert.assertEquals(
         "updateUserInfoToElastic", ActorOperations.UPDATE_USER_INFO_ELASTIC.getValue());
     Assert.assertEquals("getRoles", ActorOperations.GET_ROLES.getValue());
     Assert.assertEquals("approveOrganisation", ActorOperations.APPROVE_ORGANISATION.getValue());
-    Assert.assertEquals("joinUserOrganisation", ActorOperations.JOIN_USER_ORGANISATION.getValue());
     Assert.assertEquals(
         "addMemberOrganisation", ActorOperations.ADD_MEMBER_ORGANISATION.getValue());
     Assert.assertEquals(
         "removeMemberOrganisation", ActorOperations.REMOVE_MEMBER_ORGANISATION.getValue());
-    Assert.assertEquals(
-        "approveUserOrganisation", ActorOperations.APPROVE_USER_ORGANISATION.getValue());
     Assert.assertEquals("compositeSearch", ActorOperations.COMPOSITE_SEARCH.getValue());
     Assert.assertEquals(
         "getUserDetailsByLoginId", ActorOperations.GET_USER_DETAILS_BY_LOGINID.getValue());
     Assert.assertEquals(
         "updateOrgInfoToElastic", ActorOperations.UPDATE_ORG_INFO_ELASTIC.getValue());
     Assert.assertEquals(
-        "rejectUserOrganisation", ActorOperations.REJECT_USER_ORGANISATION.getValue());
-    Assert.assertEquals(
         "insertOrgInfoToElastic", ActorOperations.INSERT_ORG_INFO_ELASTIC.getValue());
-    Assert.assertEquals("downloadUsersData", ActorOperations.DOWNLOAD_USERS.getValue());
     Assert.assertEquals("downlaodOrg", ActorOperations.DOWNLOAD_ORGS.getValue());
     Assert.assertEquals("blockUser", ActorOperations.BLOCK_USER.getValue());
     Assert.assertEquals("deleteByIdentifier", ActorOperations.DELETE_BY_IDENTIFIER.getValue());
@@ -139,8 +125,6 @@ public class ActorOperationTest {
     Assert.assertEquals(
         "orgConsumptionMetricsReport", ActorOperations.ORG_CONSUMPTION_METRICS_REPORT.getValue());
     Assert.assertEquals("fileStorageService", ActorOperations.FILE_STORAGE_SERVICE.getValue());
-    Assert.assertEquals("getAllBadge", ActorOperations.GET_ALL_BADGE.getValue());
-    Assert.assertEquals("addUserBadge", ActorOperations.ADD_USER_BADGE.getValue());
     Assert.assertEquals("addUserBadgebackground", ActorOperations.ADD_USER_BADGE_BKG.getValue());
     Assert.assertEquals(
         "fileGenerationAndUpload", ActorOperations.FILE_GENERATION_AND_UPLOAD.getValue());
@@ -171,6 +155,5 @@ public class ActorOperationTest {
     Assert.assertEquals("getMediaTypes", ActorOperations.GET_MEDIA_TYPES.getValue());
     Assert.assertEquals("searchAuditLog", ActorOperations.SEARCH_AUDIT_LOG.getValue());
     Assert.assertEquals("processAuditLog", ActorOperations.PROCESS_AUDIT_LOG.getValue());
-    Assert.assertEquals("forgotpassword", ActorOperations.FORGOT_PASSWORD.getValue());
   }
 }

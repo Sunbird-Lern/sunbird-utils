@@ -256,7 +256,7 @@ public enum ResponseCode {
   enrolmentIncorrectValue(
       ResponseMessage.Key.ENROLMENT_TYPE_VALUE_ERROR,
       ResponseMessage.Message.ENROLMENT_TYPE_VALUE_ERROR),
-  courseBatchSatrtDateRequired(
+  courseBatchStartDateRequired(
       ResponseMessage.Key.COURSE_BATCH_START_DATE_REQUIRED,
       ResponseMessage.Message.COURSE_BATCH_START_DATE_REQUIRED),
   courseBatchStartDateError(
@@ -575,6 +575,57 @@ public enum ResponseCode {
   multipleCoursesNotAllowedForBatch(
       ResponseMessage.Key.MULTIPLE_COURSES_FOR_BATCH,
       ResponseMessage.Message.MULTIPLE_COURSES_FOR_BATCH),
+  errorJsonTransformInvalidTypeConfig(
+      ResponseMessage.Key.ERROR_JSON_TRANSFORM_INVALID_TYPE_CONFIG,
+      ResponseMessage.Message.ERROR_JSON_TRANSFORM_INVALID_TYPE_CONFIG),
+  errorJsonTransformInvalidDateFormat(
+      ResponseMessage.Key.ERROR_JSON_TRANSFORM_INVALID_DATE_FORMAT,
+      ResponseMessage.Message.ERROR_JSON_TRANSFORM_INVALID_DATE_FORMAT),
+  errorJsonTransformInvalidInput(
+      ResponseMessage.Key.ERROR_JSON_TRANSFORM_INVALID_INPUT,
+      ResponseMessage.Message.ERROR_JSON_TRANSFORM_INVALID_INPUT),
+  errorJsonTransformInvalidEnumInput(
+      ResponseMessage.Key.ERROR_JSON_TRANSFORM_INVALID_ENUM_INPUT,
+      ResponseMessage.Message.ERROR_JSON_TRANSFORM_INVALID_ENUM_INPUT),
+  errorJsonTransformEnumValuesEmpty(
+      ResponseMessage.Key.ERROR_JSON_TRANSFORM_ENUM_VALUES_EMPTY,
+      ResponseMessage.Message.ERROR_JSON_TRANSFORM_ENUM_VALUES_EMPTY),
+  errorJsonTransformBasicConfigMissing(
+      ResponseMessage.Key.ERROR_JSON_TRANSFORM_BASIC_CONFIG_MISSING,
+      ResponseMessage.Message.ERROR_JSON_TRANSFORM_BASIC_CONFIG_MISSING),
+  errorJsonTransformInvalidFilterConfig(
+      ResponseMessage.Key.ERROR_JSON_TRANSFORM_INVALID_FILTER_CONFIG,
+      ResponseMessage.Message.ERROR_JSON_TRANSFORM_INVALID_FILTER_CONFIG),
+  errorLoadConfig(ResponseMessage.Key.ERROR_LOAD_CONFIG, ResponseMessage.Message.ERROR_LOAD_CONFIG),
+  errorRegistryClientCreation(
+      ResponseMessage.Key.ERROR_REGISTRY_CLIENT_CREATION,
+      ResponseMessage.Message.ERROR_REGISTRY_CLIENT_CREATION),
+  errorRegistryAddEntity(
+      ResponseMessage.Key.ERROR_REGISTRY_ADD_ENTITY,
+      ResponseMessage.Message.ERROR_REGISTRY_ADD_ENTITY),
+  errorRegistryReadEntity(
+      ResponseMessage.Key.ERROR_REGISTRY_READ_ENTITY,
+      ResponseMessage.Message.ERROR_REGISTRY_READ_ENTITY),
+  errorRegistryUpdateEntity(
+      ResponseMessage.Key.ERROR_REGISTRY_UPDATE_ENTITY,
+      ResponseMessage.Message.ERROR_REGISTRY_UPDATE_ENTITY),
+  errorRegistryDeleteEntity(
+      ResponseMessage.Key.ERROR_REGISTRY_DELETE_ENTITY,
+      ResponseMessage.Message.ERROR_REGISTRY_DELETE_ENTITY),
+  errorRegistryParseResponse(
+      ResponseMessage.Key.ERROR_REGISTRY_PARSE_RESPONSE,
+      ResponseMessage.Message.ERROR_REGISTRY_PARSE_RESPONSE),
+  errorRegistryEntityTypeBlank(
+      ResponseMessage.Key.ERROR_REGISTRY_ENTITY_TYPE_BLANK,
+      ResponseMessage.Message.ERROR_REGISTRY_ENTITY_TYPE_BLANK),
+  errorRegistryEntityIdBlank(
+      ResponseMessage.Key.ERROR_REGISTRY_ENTITY_ID_BLANK,
+      ResponseMessage.Message.ERROR_REGISTRY_ENTITY_ID_BLANK),
+  errorRegistryAccessTokenBlank(
+      ResponseMessage.Key.ERROR_REGISTRY_ACCESS_TOKEN_BLANK,
+      ResponseMessage.Message.ERROR_REGISTRY_ACCESS_TOKEN_BLANK),
+  duplicateExternalIds(
+      ResponseMessage.Key.DUPLICATE_EXTERNAL_IDS, ResponseMessage.Message.DUPLICATE_EXTERNAL_IDS),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

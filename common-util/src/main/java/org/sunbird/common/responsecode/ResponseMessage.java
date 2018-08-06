@@ -148,11 +148,11 @@ public interface ResponseMessage {
     String USER_ALREADY_ACTIVE = "User is already active";
     String ENROLMENT_TYPE_REQUIRED = "Enrolment type is mandatory.";
     String ENROLMENT_TYPE_VALUE_ERROR = "EnrolmentType value must be either open or invite-only.";
-    String COURSE_BATCH_START_DATE_REQUIRED = "batch start date is mandatory.";
+    String COURSE_BATCH_START_DATE_REQUIRED = "Batch start date is mandatory.";
     String COURSE_BATCH_START_DATE_INVALID =
-        "batch start date should be either today or future date.";
+        "Batch start date should be either today or future date.";
     String DATE_FORMAT_ERRROR = "Date format error.";
-    String END_DATE_ERROR = "end date should be greater than start date.";
+    String END_DATE_ERROR = "End date should be greater than start date.";
     String INVALID_CSV_FILE = "Please provide valid csv file.";
     String INVALID_COURSE_BATCH_ID = "Invalid course batch id ";
     String COURSE_BATCH_ID_MISSING = "Course batch Id required";
@@ -206,7 +206,7 @@ public interface ResponseMessage {
     String COURSE_BATCH_IS_CLOSED_ERROR = "Batch has been closed.";
     String CONFIIRM_PASSWORD_MISSING = "Confirm password is mandatory.";
     String CONFIIRM_PASSWORD_EMPTY = "Confirm password can not be empty.";
-    String SAME_PASSWORD_ERROR = "new password can't be same as old password.";
+    String SAME_PASSWORD_ERROR = "New password can't be same as old password.";
     String ENDORSED_USER_ID_REQUIRED = " Endorsed user id required .";
     String CAN_NOT_ENDORSE = "Can not endorse since both belong to different orgs .";
     String INVALID_ORG_TYPE_ID_ERROR = "Please provide valid orgTypeId.";
@@ -319,6 +319,33 @@ public interface ResponseMessage {
         "Cassandra connection establishment failed in {0} mode.";
     String COMMON_ATTRIBUTE_MISMATCH = "{0} mismatch of {1} and {2}";
     String MULTIPLE_COURSES_FOR_BATCH = "A batch cannot belong to multiple courses.";
+    String ERROR_JSON_TRANSFORM_INVALID_TYPE_CONFIG =
+        "JSON transformation failed as invalid type configuration found for field {0}.";
+    String ERROR_JSON_TRANSFORM_INVALID_DATE_FORMAT =
+        "JSON transformation failed as invalid date format configuration found for field {0}.";
+    String ERROR_JSON_TRANSFORM_INVALID_INPUT =
+        "JSON transformation failed as invalid input provided for field {0}.";
+    String ERROR_JSON_TRANSFORM_INVALID_ENUM_INPUT =
+        "JSON transformation failed as invalid enum input provided for field {0}.";
+    String ERROR_JSON_TRANSFORM_ENUM_VALUES_EMPTY =
+        "JSON transformation failed as enum values is empty in configuration for field {0}.";
+    String ERROR_JSON_TRANSFORM_BASIC_CONFIG_MISSING =
+        "JSON transformation failed as mandatory configuration (toFieldName, fromType or toType) is missing for field {0}.";
+    String ERROR_JSON_TRANSFORM_INVALID_FILTER_CONFIG =
+        "JSON transformation failed as invalid filter configuration found for field {0}.";
+    String ERROR_LOAD_CONFIG = "Loading failed for configuration file {0}.";
+    String ERROR_REGISTRY_CLIENT_CREATION = "Registry client creation failed.";
+    String ERROR_REGISTRY_ADD_ENTITY = "Registry add entity API failed.";
+    String ERROR_REGISTRY_READ_ENTITY = "Registry read entity API failed.";
+    String ERROR_REGISTRY_UPDATE_ENTITY = "Registry update entity API failed.";
+    String ERROR_REGISTRY_DELETE_ENTITY = "Registry delete entity API failed.";
+    String ERROR_REGISTRY_PARSE_RESPONSE = "Error while parsing response from registry.";
+    String ERROR_REGISTRY_ENTITY_TYPE_BLANK = "Request failed as entity type is blank.";
+    String ERROR_REGISTRY_ENTITY_ID_BLANK = "Request failed as entity id is not provided.";
+    String ERROR_REGISTRY_ACCESS_TOKEN_BLANK =
+        "Request failed as user access token is not provided.";
+    String DUPLICATE_EXTERNAL_IDS =
+        "Duplicate external IDs for given idType ({0}) and provider ({1}).";
   }
 
   interface Key {
@@ -602,5 +629,24 @@ public interface ResponseMessage {
     String CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED = "CASSANDRA_CONNECTION_ESTABLISHMENT_FAILED";
     String COMMON_ATTRIBUTE_MISMATCH = "COMMON_ATTRIBUTE_MISMATCH";
     String MULTIPLE_COURSES_FOR_BATCH = "MULTIPLE_COURSES_FOR_BATCH";
+    String ERROR_JSON_TRANSFORM_INVALID_TYPE_CONFIG = "ERROR_JSON_TRANSFORM_INVALID_TYPE_CONFIG";
+    String ERROR_JSON_TRANSFORM_INVALID_DATE_FORMAT = "ERROR_JSON_TRANSFORM_INVALID_DATE_FORMAT";
+    String ERROR_JSON_TRANSFORM_INVALID_INPUT = "ERROR_JSON_TRANSFORM_INVALID_INPUT";
+    String ERROR_JSON_TRANSFORM_INVALID_ENUM_INPUT = "ERROR_JSON_TRANSFORM_INVALID_ENUM_INPUT";
+    String ERROR_JSON_TRANSFORM_ENUM_VALUES_EMPTY = "ERROR_JSON_TRANSFORM_ENUM_VALUES_EMPTY";
+    String ERROR_JSON_TRANSFORM_BASIC_CONFIG_MISSING = "ERROR_JSON_TRANSFORM_BASIC_CONFIG_MISSING";
+    String ERROR_JSON_TRANSFORM_INVALID_FILTER_CONFIG =
+        "ERROR_JSON_TRANSFORM_INVALID_FILTER_CONFIG";
+    String ERROR_LOAD_CONFIG = "ERROR_LOAD_CONFIG";
+    String ERROR_REGISTRY_CLIENT_CREATION = "ERROR_REGISTRY_CLIENT_CREATION";
+    String ERROR_REGISTRY_ADD_ENTITY = "ERROR_REGISTRY_ADD_ENTITY";
+    String ERROR_REGISTRY_READ_ENTITY = "ERROR_REGISTRY_READ_ENTITY";
+    String ERROR_REGISTRY_UPDATE_ENTITY = "ERROR_REGISTRY_UPDATE_ENTITY";
+    String ERROR_REGISTRY_DELETE_ENTITY = "ERROR_REGISTRY_DELETE_ENTITY";
+    String ERROR_REGISTRY_PARSE_RESPONSE = "ERROR_REGISTRY_PARSE_RESPONSE";
+    String ERROR_REGISTRY_ENTITY_TYPE_BLANK = "ERROR_REGISTRY_ENTITY_TYPE_BLANK";
+    String ERROR_REGISTRY_ENTITY_ID_BLANK = "ERROR_REGISTRY_ENTITY_ID_BLANK";
+    String ERROR_REGISTRY_ACCESS_TOKEN_BLANK = "ERROR_REGISTRY_ACCESS_TOKEN_BLANK";
+    String DUPLICATE_EXTERNAL_IDS = "DUPLICATE_EXTERNAL_IDS";
   }
 }

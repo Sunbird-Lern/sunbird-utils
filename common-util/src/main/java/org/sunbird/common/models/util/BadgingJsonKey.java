@@ -79,6 +79,8 @@ public class BadgingJsonKey {
   public static final String TELE_PDATA = "pdata";
   public static final String TELE_VERSION = "ver";
   public static final String TELE_CONTEXT = "context";
+  public static final String USER = "user";
+  public static final String CONTENT = "content";
 
   private BadgingJsonKey() {}
 }

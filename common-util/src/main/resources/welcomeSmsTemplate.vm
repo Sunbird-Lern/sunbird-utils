@@ -1,1 +1,1 @@
-$userName, Welcome to $instanceName. You can login using your mobile number. Use $webUrl to login using browser, or download the Diksha mobile app from Play Store.
+$userName, Welcome to $instanceName. You can login using your mobile number. #if ($appName) Use $webUrl to login using browser, or download the $appName app from Playstore. #else Login at $webUrl. #end

@@ -15,8 +15,6 @@ import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
-import org.sunbird.common.services.AssessmentEvaluator;
-import org.sunbird.common.services.impl.DefaultAssessmentEvaluator;
 
 /** Unit test for simple App. */
 public class AppTest {
@@ -93,29 +91,6 @@ public class AppTest {
     } catch (Exception e) {
     }
     Assert.assertNotNull(response);
-  }
-
-  @Test
-  public void testEvaluateAssessment() {
-    Map<String, List<Map<String, Object>>> data = createEvaluateAssessmentRequest();
-    AssessmentEvaluator evaluator = new DefaultAssessmentEvaluator();
-    Map<String, List<Map<String, Object>>> response = evaluator.evaluateAssessment(data);
-    List<Map<String, Object>> list = response.get("USR1");
-    Assert.assertEquals(list.size(), 8);
-  }
-
-  @Test
-  public void testEvaluateResult() {
-    // Map<String, List<Map<String, Object>>> data1 =
-    // createEvaluateAssessmentRequest();
-    AssessmentEvaluator evaluator = new DefaultAssessmentEvaluator();
-    // Map<String, List<Map<String, Object>>> response1 =
-    // evaluator.evaluateAssessment(data1);
-    // Map<String, List<Map<String, Object>>> req= new HashMap<>();
-    // req.put("USR1", response1.get("USR1"));
-    List<Map<String, Object>> response =
-        evaluator.evaluateResult(createEvaluateAssessmentRequest());
-    Assert.assertEquals(response.size(), 1);
   }
 
   @Test

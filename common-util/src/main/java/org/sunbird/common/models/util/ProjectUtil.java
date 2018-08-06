@@ -683,8 +683,8 @@ public class ProjectUtil {
         responseMap.put(JsonKey.ERROR, commonException.getResponseCode());
         responseMap.put(JsonKey.ERRORMSG, commonException.getMessage());
       } else {
-        responseMap.put(JsonKey.ERROR, e != null ? e.getMessage() : "connection Error");
-        responseMap.put(JsonKey.ERRORMSG, e != null ? e.getMessage() : "connection Error");
+        responseMap.put(JsonKey.ERROR, e != null ? e.getMessage() : "CONNECTION_ERROR");
+        responseMap.put(JsonKey.ERRORMSG, e != null ? e.getMessage() : "Connection error");
       }
     }
     return responseMap;
@@ -704,13 +704,10 @@ public class ProjectUtil {
     String tagStatus = "";
     try {
       ProjectLogger.log("start call for registering the tag ==" + tagId);
-      String ekStepBaseUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);
-      if (StringUtils.isBlank(ekStepBaseUrl)) {
-        ekStepBaseUrl = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_BASE_URL);
-      }
+      String analyticsBaseUrl = getConfigValue(JsonKey.ANALYTICS_API_BASE_URL);
       tagStatus =
           HttpUtil.sendPostRequest(
-              ekStepBaseUrl
+              analyticsBaseUrl
                   + PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_TAG_API_URL)
                   + "/"
                   + tagId,
@@ -812,7 +809,8 @@ public class ProjectUtil {
     }
   }
 
-  public static String getSMSBody(String userName, String webUrl, String instanceName) {
+  public static String getSMSBody(
+      String userName, String webUrl, String instanceName, String appName) {
     try {
       Properties props = new Properties();
       props.put("resource.loader", "class");
@@ -828,6 +826,9 @@ public class ProjectUtil {
       params.put("webUrl", StringUtils.isBlank(webUrl) ? "web_url" : webUrl);
       params.put(
           "instanceName", StringUtils.isBlank(instanceName) ? "instance_name" : instanceName);
+      if (StringUtils.isNotBlank(appName)) {
+        params.put("appName", appName);
+      }
       Template t = ve.getTemplate("/welcomeSmsTemplate.vm");
       VelocityContext context = new VelocityContext(params);
       StringWriter writer = new StringWriter();

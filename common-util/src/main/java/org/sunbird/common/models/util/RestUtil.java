@@ -17,14 +17,8 @@ import scala.concurrent.Promise;
 /** @author Mahesh Kumar Gangula */
 public class RestUtil {
 
-  private static String basePath;
-
   static {
-    basePath = System.getenv(JsonKey.EKSTEP_BASE_URL);
-    if (StringUtils.isBlank(basePath)) {
-      basePath = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_BASE_URL);
-    }
-
+    
     String apiKey = System.getenv(JsonKey.EKSTEP_AUTHORIZATION);
     if (StringUtils.isBlank(apiKey)) {
       apiKey = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_AUTHORIZATION);
@@ -74,10 +68,6 @@ public class RestUtil {
 
     HttpResponse<JsonNode> response = request.asJson();
     return response;
-  }
-
-  public static String getBasePath() {
-    return basePath;
   }
 
   public static String getFromResponse(HttpResponse<JsonNode> resp, String key) throws Exception {
