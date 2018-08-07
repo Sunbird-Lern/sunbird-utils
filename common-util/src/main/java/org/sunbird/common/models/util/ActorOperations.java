@@ -112,6 +112,7 @@ public enum ActorOperations {
   PROCESS_AUDIT_LOG("processAuditLog"),
   ADD_SKILL("addSkill"),
   GET_SKILL("getSkill"),
+  UPDATE_SKILL("updateSkill"),
   GET_SKILLS_LIST("getSkillsList"),
   PROFILE_VISIBILITY("profileVisibility"),
   CREATE_TENANT_PREFERENCE("createTanentPreference"),
