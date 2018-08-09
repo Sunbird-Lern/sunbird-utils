@@ -114,7 +114,7 @@ public enum ActorOperations {
   GET_SKILL("getSkill"),
   UPDATE_SKILL("updateSkill"),
   GET_SKILLS_LIST("getSkillsList"),
-  ENDORSE_USER_SKILL("endorseUserSkill"),
+  ADD_USER_SKILL_ENDORSEMENT("addUserSkillEndorsement"),
   PROFILE_VISIBILITY("profileVisibility"),
   CREATE_TENANT_PREFERENCE("createTanentPreference"),
   UPDATE_TENANT_PREFERENCE("updateTenantPreference"),

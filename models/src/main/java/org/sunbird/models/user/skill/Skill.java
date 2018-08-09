@@ -8,7 +8,7 @@ public class Skill {
   private String addedAt;
   private List<HashMap<String, String>> endorsersList = null;
   private String addedBy;
-  private Integer endorsementcount;
+  private Integer endorsementCount;
   private String id;
   private String skillNameToLowercase;
   private String userId;
@@ -46,11 +46,11 @@ public class Skill {
   }
 
   public Integer getEndorsementcount() {
-    return endorsementcount;
+    return endorsementCount;
   }
 
-  public void setEndorsementcount(Integer endorsementcount) {
-    this.endorsementcount = endorsementcount;
+  public void setEndorsementcount(Integer endorsementCount) {
+    this.endorsementCount = endorsementCount;
   }
 
   public String getId() {
