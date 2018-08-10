@@ -200,7 +200,7 @@ public enum ResponseCode {
       ResponseMessage.Key.ACTOR_CONNECTION_ERROR, ResponseMessage.Message.ACTOR_CONNECTION_ERROR),
   userAlreadyExists(
       ResponseMessage.Key.USER_ALREADY_EXISTS, ResponseMessage.Message.USER_ALREADY_EXISTS),
-  invalidUserId(ResponseMessage.Key.INVALID_USER_ID, ResponseMessage.Key.INVALID_USER_ID),
+  invalidUserId(ResponseMessage.Key.INVALID_USER_ID, ResponseMessage.Message.INVALID_USER_ID),
   loginIdRequired(ResponseMessage.Key.LOGIN_ID_MISSING, ResponseMessage.Message.LOGIN_ID_MISSING),
   contentStatusRequired(
       ResponseMessage.Key.CONTENT_STATUS_MISSING_ERROR,
