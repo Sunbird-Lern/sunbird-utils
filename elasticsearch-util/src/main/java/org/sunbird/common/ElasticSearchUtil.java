@@ -1166,7 +1166,7 @@ public class ElasticSearchUtil {
     return System.currentTimeMillis() - startTime;
   }
 
-  public static SearchDTO createSearchDto(Map<String, Object> searchQueryMap) {
+  public static SearchDTO createSearchDTO(Map<String, Object> searchQueryMap) {
     SearchDTO search = new SearchDTO();
     if (searchQueryMap.containsKey(JsonKey.QUERY)) {
       search.setQuery((String) searchQueryMap.get(JsonKey.QUERY));
