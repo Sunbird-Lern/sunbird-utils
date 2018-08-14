@@ -282,7 +282,7 @@ public class BaseRequestValidator {
    *
    * @param request Request from user.
    */
-  private static void validateUserId(Request request) {
+  public static void validateUserId(Request request) {
     if (request
         .getRequest()
         .get(JsonKey.USER_ID)
