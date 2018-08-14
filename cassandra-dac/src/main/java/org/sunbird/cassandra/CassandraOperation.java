@@ -65,10 +65,10 @@ public interface CassandraOperation {
    *     given list of primary keys
    * @param keyspaceName Keyspace name
    * @param tableName Table name
-   * @param identifierList identifier list of primary keys
-   * @return Response boolean
+   * @param identifierList List of primary keys of records to be deleted
+   * @return Status of delete records operation
    */
-  public boolean deleteRecord(String keyspaceName, String tableName, List<String> identifierList);
+  public boolean deleteRecords(String keyspaceName, String tableName, List<String> identifierList);
 
   /**
    * @desc This method is used to fetch record based on given parameter and it's value (it only

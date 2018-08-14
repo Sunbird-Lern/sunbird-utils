@@ -633,12 +633,11 @@ public class CassandraOperationImpl implements CassandraOperation {
   }
 
   @Override
-  public boolean deleteRecord(String keyspaceName, String tableName, List<String> identifierList) {
+  public boolean deleteRecords(String keyspaceName, String tableName, List<String> identifierList) {
     long startTime = System.currentTimeMillis();
     ResultSet resultSet;
     ProjectLogger.log(
-        "CassandraOperationImpl: deleteRecord by list of primary key called at " + startTime,
-        LoggerEnum.INFO);
+        "CassandraOperationImpl: deleteRecords called at " + startTime, LoggerEnum.INFO);
     try {
       Delete delete = QueryBuilder.delete().from(keyspaceName, tableName);
       Delete.Where deleteWhere = delete.where();
@@ -647,7 +646,7 @@ public class CassandraOperationImpl implements CassandraOperation {
       resultSet = connectionManager.getSession(keyspaceName).execute(delete);
     } catch (Exception e) {
       ProjectLogger.log(
-          "CassandraOperationImpl: deleteRecord by list of primary key. "
+          "CassandraOperationImpl: deleteRecords by list of primary key. "
               + Constants.EXCEPTION_MSG_DELETE
               + tableName
               + " : "
@@ -658,7 +657,7 @@ public class CassandraOperationImpl implements CassandraOperation {
           ResponseCode.SERVER_ERROR.getErrorMessage(),
           ResponseCode.SERVER_ERROR.getResponseCode());
     }
-    logQueryElapseTime("deleteRecordByListOfPrimaryKey", startTime);
+    logQueryElapseTime("deleteRecords", startTime);
     return resultSet.wasApplied();
   }
 
