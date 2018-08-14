@@ -1,8 +1,12 @@
 package org.sunbird.models.user.skill;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.HashMap;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Skill {
   private String skillName;
   private String createdOn;
