@@ -633,6 +633,35 @@ public class CassandraOperationImpl implements CassandraOperation {
   }
 
   @Override
+  public boolean deleteRecords(String keyspaceName, String tableName, List<String> identifierList) {
+    long startTime = System.currentTimeMillis();
+    ResultSet resultSet;
+    ProjectLogger.log(
+        "CassandraOperationImpl: deleteRecords called at " + startTime, LoggerEnum.INFO);
+    try {
+      Delete delete = QueryBuilder.delete().from(keyspaceName, tableName);
+      Delete.Where deleteWhere = delete.where();
+      Clause clause = QueryBuilder.in(JsonKey.ID, identifierList);
+      deleteWhere.and(clause);
+      resultSet = connectionManager.getSession(keyspaceName).execute(delete);
+    } catch (Exception e) {
+      ProjectLogger.log(
+          "CassandraOperationImpl: deleteRecords by list of primary key. "
+              + Constants.EXCEPTION_MSG_DELETE
+              + tableName
+              + " : "
+              + e.getMessage(),
+          e);
+      throw new ProjectCommonException(
+          ResponseCode.SERVER_ERROR.getErrorCode(),
+          ResponseCode.SERVER_ERROR.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    logQueryElapseTime("deleteRecords", startTime);
+    return resultSet.wasApplied();
+  }
+
+  @Override
   public Response getRecordsByCompositeKey(
       String keyspaceName, String tableName, Map<String, Object> compositeKeyMap) {
     long startTime = System.currentTimeMillis();
