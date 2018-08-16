@@ -670,7 +670,13 @@ public final class JsonKey {
   public static final String ONBOARDING_MAIL_SUBJECT = "onboarding_mail_subject";
   public static final String ONBOARDING_MAIL_MESSAGE = "onboarding_welcome_message";
   public static final String SUNBIRD_DEFAULT_WELCOME_MSG = "sunbird_default_welcome_sms";
+  public static final String INITIALISATION_HOSTS = "sunbird_initialisation_hosts";  
   public static final String SUNBIRD_DEFAULT_USER_TYPE = "sunbird_default_user_type";
+  public static final String IS_ROOT_ORG_INITIALISED = "isRootOrgInitialised";
+  public static final String INITIALISER = "INITIALISER";
+  public static final String STARTED = "started";
+  public static final String COMPLETED = "completed";
+  public static final String SYSTEM_SETTINGS = "system_settings";
 
   private JsonKey() {}
 }

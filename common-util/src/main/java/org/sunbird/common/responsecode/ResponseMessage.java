@@ -346,6 +346,8 @@ public interface ResponseMessage {
         "Request failed as user access token is not provided.";
     String DUPLICATE_EXTERNAL_IDS =
         "Duplicate external IDs for given idType ({0}) and provider ({1}).";
+    String SYSTEM_ALREADY_INITIALISED = "Request failed as system is already initialised.";
+    String ROOT_ORG_ALREADY_EXIST = "RootOrg already exist.";
   }
 
   interface Key {
@@ -648,5 +650,7 @@ public interface ResponseMessage {
     String ERROR_REGISTRY_ENTITY_ID_BLANK = "ERROR_REGISTRY_ENTITY_ID_BLANK";
     String ERROR_REGISTRY_ACCESS_TOKEN_BLANK = "ERROR_REGISTRY_ACCESS_TOKEN_BLANK";
     String DUPLICATE_EXTERNAL_IDS = "DUPLICATE_EXTERNAL_IDS";
+    String SYSTEM_ALREADY_INITIALISED = "SYSTEM_ALREADY_INITIALISED";
+    String ROOT_ORG_ALREADY_EXIST = "ROOT_ORG_ALREADY_EXIST";
   }
 }

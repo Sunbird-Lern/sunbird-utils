@@ -121,8 +121,8 @@ public final class RequestValidator {
             && (Boolean) request.getRequest().get(JsonKey.IS_ROOT_ORG))
         && StringUtils.isEmpty((String) request.getRequest().get(JsonKey.CHANNEL))) {
       throw new ProjectCommonException(
-          ResponseCode.channelIdRequiredForRootOrg.getErrorCode(),
-          ResponseCode.channelIdRequiredForRootOrg.getErrorMessage(),
+          ResponseCode.channelRequiredForRootOrg.getErrorCode(),
+          ResponseCode.channelRequiredForRootOrg.getErrorMessage(),
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
   }
@@ -157,8 +157,8 @@ public final class RequestValidator {
             && (Boolean) request.getRequest().get(JsonKey.IS_ROOT_ORG))
         && StringUtils.isEmpty((String) request.getRequest().get(JsonKey.CHANNEL))) {
       throw new ProjectCommonException(
-          ResponseCode.channelIdRequiredForRootOrg.getErrorCode(),
-          ResponseCode.channelIdRequiredForRootOrg.getErrorMessage(),
+          ResponseCode.channelRequiredForRootOrg.getErrorCode(),
+          ResponseCode.channelRequiredForRootOrg.getErrorMessage(),
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
   }
