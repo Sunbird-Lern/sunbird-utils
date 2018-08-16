@@ -317,7 +317,7 @@ public class HttpUtil {
       writer.write(params);
       writer.flush();
     } catch (IOException e) {
-      ProjectLogger.log(e.getMessage(), e);
+      ProjectLogger.log("HttpUtil:postRequest call failure with error = " + e.getMessage(), e);
       throw e;
     } finally {
       if (null != writer) {
