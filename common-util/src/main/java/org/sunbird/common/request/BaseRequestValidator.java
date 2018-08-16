@@ -277,4 +277,22 @@ public class BaseRequestValidator {
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
   }
+  /**
+   * Helper method which throws an exception if user ID in request is not same as that in user
+   * token.
+   *
+   * @param request API request
+   * @param userIdKey Attribute name for user ID in API request
+   */
+  public static void validateUserId(Request request, String userIdKey) {
+    if (request.getRequest().get(userIdKey).equals(request.getContext().get(JsonKey.USER_ID))) {
+
+      throw new ProjectCommonException(
+          ResponseCode.invalidParameterValue.getErrorCode(),
+          ResponseCode.invalidParameterValue.getErrorMessage(),
+          ResponseCode.invalidParameterValue.getResponseCode(),
+          (String) request.getRequest().get(JsonKey.USER_ID),
+          JsonKey.USER_ID);
+    }
+  }
 }
