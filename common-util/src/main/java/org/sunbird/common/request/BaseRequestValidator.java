@@ -292,7 +292,7 @@ public class BaseRequestValidator {
       throw new ProjectCommonException(
           ResponseCode.invalidParameterValue.getErrorCode(),
           ResponseCode.invalidParameterValue.getErrorMessage(),
-          ResponseCode.invalidParameterValue.getResponseCode(),
+          ResponseCode.CLIENT_ERROR.getResponseCode(),
           (String) request.getRequest().get(JsonKey.USER_ID),
           JsonKey.USER_ID);
     }
