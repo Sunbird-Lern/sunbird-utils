@@ -139,7 +139,10 @@ public enum ActorOperations {
   SEARCH_DATA("searchData"),
   GET_METRICS("getMetrics"),
   REG_CHANNEL("channelReg"),
-  UPDATE_LEARNER_STATE("updateLearnerState");
+  UPDATE_LEARNER_STATE("updateLearnerState"),
+  GET_SYSTEM_SETTING_BY_ID("getSystemSettingById"),
+  GET_ALL_SYSTEM_SETTINGS("getAllSystemSettings"),
+  UPDATE_SYSTEM_SETTING_BY_ID("updateSystemSettingById");
   private String value;
 
   /**

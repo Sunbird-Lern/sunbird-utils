@@ -629,6 +629,15 @@ public enum ResponseCode {
   invalidDuplicateValue(
       ResponseMessage.Key.INVALID_DUPLICATE_VALUE,
       ResponseMessage.Message.INVALID_DUPLICATE_VALUE),
+  systemSettingIdRequiredError(
+      ResponseMessage.Key.SYSTEM_SETTING_ID_MISSING,
+      ResponseMessage.Message.SYSTEM_SETTING_ID_MISSING),
+  systemSettingFieldRequiredError(
+      ResponseMessage.Key.SYSTEM_SETTING_FIELD_MISSING,
+      ResponseMessage.Message.SYSTEM_SETTING_FIELD_MISSING),
+  systemSettingValueRequiredError(
+      ResponseMessage.Key.SYSTEM_SETTING_VALUE_MISSING,
+      ResponseMessage.Message.SYSTEM_SETTING_VALUE_MISSING),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
