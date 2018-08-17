@@ -785,14 +785,34 @@ public final class RequestValidator {
     if (null == (request.getRequest().get(JsonKey.RECIPIENT_EMAILS))
         && null == (request.getRequest().get(JsonKey.RECIPIENT_USERIDS))) {
       throw new ProjectCommonException(
-          ResponseCode.recipientAddressError.getErrorCode(),
-          ResponseCode.recipientAddressError.getErrorMessage(),
+          ResponseCode.emailFormatError.getErrorCode(),
+          ResponseCode.emailFormatError.getErrorMessage(),
           ERROR_CODE);
     }
     if ((null != (request.getRequest().get(JsonKey.RECIPIENT_EMAILS))
             && ((List) request.getRequest().get(JsonKey.RECIPIENT_EMAILS)).isEmpty())
         && (null != (request.getRequest().get(JsonKey.RECIPIENT_USERIDS))
             && ((List) request.getRequest().get(JsonKey.RECIPIENT_USERIDS)).isEmpty())) {
+      throw new ProjectCommonException(
+          ResponseCode.recipientAddressError.getErrorCode(),
+          ResponseCode.recipientAddressError.getErrorMessage(),
+          ERROR_CODE);
+    }
+
+    if ((null != (request.getRequest().get(JsonKey.RECIPIENT_EMAILS))
+            && ((List) request.getRequest().get(JsonKey.RECIPIENT_EMAILS)).isEmpty())
+        && (null == (request.getRequest().get(JsonKey.RECIPIENT_USERIDS))
+            || ((List) request.getRequest().get(JsonKey.RECIPIENT_USERIDS)).isEmpty())) {
+      throw new ProjectCommonException(
+          ResponseCode.recipientAddressError.getErrorCode(),
+          ResponseCode.recipientAddressError.getErrorMessage(),
+          ERROR_CODE);
+    }
+
+    if ((null != (request.getRequest().get(JsonKey.RECIPIENT_USERIDS))
+            && ((List) request.getRequest().get(JsonKey.RECIPIENT_USERIDS)).isEmpty())
+        && (null == (request.getRequest().get(JsonKey.RECIPIENT_EMAILS))
+            || ((List) request.getRequest().get(JsonKey.RECIPIENT_EMAILS)).isEmpty())) {
       throw new ProjectCommonException(
           ResponseCode.recipientAddressError.getErrorCode(),
           ResponseCode.recipientAddressError.getErrorMessage(),

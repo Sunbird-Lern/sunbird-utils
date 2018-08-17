@@ -18,6 +18,7 @@ import javax.mail.internet.MimeMultipart;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
@@ -118,6 +119,61 @@ public class SendMail {
       StringWriter writer = new StringWriter();
       template.merge(context, writer);
       message.setContent(writer.toString(), "text/html");
+      transport = session.getTransport("smtp");
+      transport.connect(host, userName, password);
+      transport.sendMessage(message, message.getAllRecipients());
+      transport.close();
+    } catch (Exception e) {
+      flag = false;
+      ProjectLogger.log(e.toString(), e);
+    } finally {
+      if (transport != null) {
+        try {
+          transport.close();
+        } catch (MessagingException e) {
+          ProjectLogger.log(e.toString(), e);
+        }
+      }
+    }
+    return flag;
+  }
+
+  /**
+   * this method is used to send email.
+   *
+   * @param receipent email to whom we send mail
+   * @param context VelocityContext
+   * @param templateName String
+   * @param subject subject
+   */
+  public static boolean sendMail(
+      String[] receipent,
+      String subject,
+      VelocityContext context,
+      String templateName,
+      String templateValue) {
+    ProjectLogger.log("Mail Template name - " + templateName, LoggerEnum.INFO.name());
+    Transport transport = null;
+    boolean flag = true;
+    if (context != null) {
+      context.put(JsonKey.FROM_EMAIL, fromEmail);
+    }
+    try {
+      Session session = Session.getInstance(props, new GMailAuthenticator(userName, password));
+      MimeMessage message = new MimeMessage(session);
+      message.setFrom(new InternetAddress(fromEmail));
+      int size = receipent.length;
+      int i = 0;
+      while (size > 0) {
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(receipent[i]));
+        i++;
+        size--;
+      }
+      message.setSubject(subject);
+      Velocity.init();
+      StringWriter writer = new StringWriter();
+      Velocity.evaluate(context, writer, "SimpleVelocity", templateValue);
+      System.out.println("success: " + writer.toString());
       transport = session.getTransport("smtp");
       transport.connect(host, userName, password);
       transport.sendMessage(message, message.getAllRecipients());

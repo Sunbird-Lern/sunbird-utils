@@ -259,7 +259,8 @@ public class CassandraOperationImpl implements CassandraOperation {
     try {
       Builder selectBuilder;
       if (CollectionUtils.isNotEmpty(fields)) {
-        selectBuilder = QueryBuilder.select((String[]) fields.toArray());
+        String[] dbFields = fields.toArray(new String[fields.size()]);
+        selectBuilder = QueryBuilder.select(dbFields);
       } else {
         selectBuilder = QueryBuilder.select().all();
       }
@@ -267,8 +268,12 @@ public class CassandraOperationImpl implements CassandraOperation {
       Where selectWhere = selectQuery.where();
       for (Entry<String, Object> entry : propertyMap.entrySet()) {
         if (entry.getValue() instanceof List) {
-          Clause clause = QueryBuilder.in(entry.getKey(), entry.getValue());
-          selectWhere.and(clause);
+          List<Object> list = (List) entry.getValue();
+          if (null != list) {
+            Object[] propertyValues = list.toArray(new Object[list.size()]);
+            Clause clause = QueryBuilder.in(entry.getKey(), propertyValues);
+            selectWhere.and(clause);
+          }
         } else {
           Clause clause = QueryBuilder.eq(entry.getKey(), entry.getValue());
           selectWhere.and(clause);
