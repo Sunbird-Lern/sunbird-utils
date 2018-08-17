@@ -1,6 +1,5 @@
 package org.sunbird.models.user.skill;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.sql.Timestamp;
@@ -12,7 +11,6 @@ import java.util.List;
 public class Skill {
   private String skillName;
 
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.S")
   private Timestamp createdOn;
 
   private List<HashMap<String, String>> endorsersList = null;
@@ -23,7 +21,6 @@ public class Skill {
   private String userId;
   private String lastUpdatedBy;
 
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.S")
   private Timestamp lastUpdatedOn;
 
   public String getSkillName() {

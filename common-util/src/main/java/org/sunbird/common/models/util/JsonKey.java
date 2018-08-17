@@ -223,7 +223,7 @@ public final class JsonKey {
   public static final String END_TIME = "endTime";
   public static final String ENDORSE_DATE = "endorseDate";
   public static final String ENDORSED_USER_ID = "endorsedUserId";
-  public static final String ENDORSEMENT_COUNT = "endorsementcount";
+  public static final String ENDORSEMENT_COUNT = "endorsementCount";
   public static final String ENDORSERS = "endorsers";
   public static final String ENDORSERS_LIST = "endorsersList";
   public static final String ENROLLMENT_END_DATE = "enrollmentEndDate";
