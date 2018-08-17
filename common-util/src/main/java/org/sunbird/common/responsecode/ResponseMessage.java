@@ -346,7 +346,7 @@ public interface ResponseMessage {
         "Request failed as user access token is not provided.";
     String DUPLICATE_EXTERNAL_IDS =
         "Duplicate external IDs for given idType ({0}) and provider ({1}).";
-    String INVALID_DUPLICATE_VALUES = "Values for {0} and {1} cannot be same.";
+    String INVALID_DUPLICATE_VALUE = "Values for {0} and {1} cannot be same.";
   }
 
   interface Key {
