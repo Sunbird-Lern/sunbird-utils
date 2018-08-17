@@ -346,6 +346,7 @@ public interface ResponseMessage {
         "Request failed as user access token is not provided.";
     String DUPLICATE_EXTERNAL_IDS =
         "Duplicate external IDs for given idType ({0}) and provider ({1}).";
+    String INVALID_DUPLICATE_VALUE = "Values for {0} and {1} cannot be same.";
   }
 
   interface Key {
@@ -648,5 +649,6 @@ public interface ResponseMessage {
     String ERROR_REGISTRY_ENTITY_ID_BLANK = "ERROR_REGISTRY_ENTITY_ID_BLANK";
     String ERROR_REGISTRY_ACCESS_TOKEN_BLANK = "ERROR_REGISTRY_ACCESS_TOKEN_BLANK";
     String DUPLICATE_EXTERNAL_IDS = "DUPLICATE_EXTERNAL_IDS";
+    String INVALID_DUPLICATE_VALUE = "INVALID_DUPLICATE_VALUE";
   }
 }
