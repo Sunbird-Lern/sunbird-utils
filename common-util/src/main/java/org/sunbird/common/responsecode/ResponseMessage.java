@@ -347,6 +347,9 @@ public interface ResponseMessage {
     String DUPLICATE_EXTERNAL_IDS =
         "Duplicate external IDs for given idType ({0}) and provider ({1}).";
     String INVALID_DUPLICATE_VALUE = "Values for {0} and {1} cannot be same.";
+    String SYSTEM_SETTING_ID_MISSING = "id is mandatory";
+    String SYSTEM_SETTING_FIELD_MISSING = "field is mandatory";
+    String SYSTEM_SETTING_VALUE_MISSING = "value is mandatory";
   }
 
   interface Key {
@@ -650,5 +653,8 @@ public interface ResponseMessage {
     String ERROR_REGISTRY_ACCESS_TOKEN_BLANK = "ERROR_REGISTRY_ACCESS_TOKEN_BLANK";
     String DUPLICATE_EXTERNAL_IDS = "DUPLICATE_EXTERNAL_IDS";
     String INVALID_DUPLICATE_VALUE = "INVALID_DUPLICATE_VALUE";
+    String SYSTEM_SETTING_ID_MISSING = "SYSTEM_SETTING_ID_MISSING";
+    String SYSTEM_SETTING_FIELD_MISSING = "SYSTEM_SETTING_FIELD_MISSING";
+    String SYSTEM_SETTING_VALUE_MISSING = "SYSTEM_SETTING_VALUE_MISSING";
   }
 }
