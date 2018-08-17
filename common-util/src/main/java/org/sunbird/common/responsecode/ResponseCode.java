@@ -627,8 +627,8 @@ public enum ResponseCode {
   duplicateExternalIds(
       ResponseMessage.Key.DUPLICATE_EXTERNAL_IDS, ResponseMessage.Message.DUPLICATE_EXTERNAL_IDS),
   invalidDuplicateValue(
-      ResponseMessage.Key.INVALID_DUPLICATE_VALUES,
-      ResponseMessage.Message.INVALID_DUPLICATE_VALUES),
+      ResponseMessage.Key.INVALID_DUPLICATE_VALUE,
+      ResponseMessage.Message.INVALID_DUPLICATE_VALUE),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
