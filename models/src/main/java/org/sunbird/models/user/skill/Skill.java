@@ -2,6 +2,7 @@ package org.sunbird.models.user.skill;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 
@@ -9,7 +10,9 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Skill {
   private String skillName;
-  private String createdOn;
+
+  private Timestamp createdOn;
+
   private List<HashMap<String, String>> endorsersList = null;
   private String createdBy;
   private Integer endorsementCount;
@@ -17,7 +20,8 @@ public class Skill {
   private String skillNameToLowercase;
   private String userId;
   private String lastUpdatedBy;
-  private String lastUpdatedOn;
+
+  private Timestamp lastUpdatedOn;
 
   public String getSkillName() {
     return skillName;
@@ -59,14 +63,6 @@ public class Skill {
     this.userId = userId;
   }
 
-  public String getCreatedOn() {
-    return createdOn;
-  }
-
-  public void setCreatedOn(String createdOn) {
-    this.createdOn = createdOn;
-  }
-
   public String getCreatedBy() {
     return createdBy;
   }
@@ -91,11 +87,19 @@ public class Skill {
     this.lastUpdatedBy = lastUpdatedBy;
   }
 
-  public String getLastUpdatedOn() {
+  public Timestamp getCreatedOn() {
+    return createdOn;
+  }
+
+  public void setCreatedOn(Timestamp createdOn) {
+    this.createdOn = createdOn;
+  }
+
+  public Timestamp getLastUpdatedOn() {
     return lastUpdatedOn;
   }
 
-  public void setLastUpdatedOn(String lastUpdatedOn) {
+  public void setLastUpdatedOn(Timestamp lastUpdatedOn) {
     this.lastUpdatedOn = lastUpdatedOn;
   }
 }

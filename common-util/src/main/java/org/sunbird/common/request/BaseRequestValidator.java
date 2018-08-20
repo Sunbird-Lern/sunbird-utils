@@ -285,12 +285,14 @@ public class BaseRequestValidator {
    * @param userIdKey Attribute name for user ID in API request
    */
   public static void validateUserId(Request request, String userIdKey) {
-    if (request.getRequest().get(userIdKey).equals(request.getContext().get(JsonKey.USER_ID))) {
-
+    if (!(request
+        .getRequest()
+        .get(userIdKey)
+        .equals(request.getContext().get(JsonKey.REQUESTED_BY)))) {
       throw new ProjectCommonException(
           ResponseCode.invalidParameterValue.getErrorCode(),
           ResponseCode.invalidParameterValue.getErrorMessage(),
-          ResponseCode.invalidParameterValue.getResponseCode(),
+          ResponseCode.CLIENT_ERROR.getResponseCode(),
           (String) request.getRequest().get(JsonKey.USER_ID),
           JsonKey.USER_ID);
     }
