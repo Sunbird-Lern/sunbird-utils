@@ -19,6 +19,7 @@ import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.ProjectUtil.ProgressStatus;
 import org.sunbird.common.models.util.ProjectUtil.Source;
 import org.sunbird.common.models.util.PropertiesCache;
+import org.sunbird.common.models.util.StringFormatter;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.common.responsecode.ResponseMessage;
 
@@ -792,11 +793,9 @@ public final class RequestValidator {
           ResponseCode.mandatoryParamsMissing.getErrorCode(),
           MessageFormat.format(
               ResponseCode.mandatoryParamsMissing.getErrorMessage(),
-              (JsonKey.RECIPIENT_EMAILS
-                  + ","
-                  + JsonKey.RECIPIENT_USERIDS
-                  + " or "
-                  + JsonKey.RECIPIENT_SEARCH_QUERY)),
+              StringFormatter.joinByOr(
+                  StringFormatter.joinByComma(JsonKey.RECIPIENT_EMAILS, JsonKey.RECIPIENT_USERIDS),
+                  JsonKey.RECIPIENT_SEARCH_QUERY)),
           ERROR_CODE);
     }
   }
