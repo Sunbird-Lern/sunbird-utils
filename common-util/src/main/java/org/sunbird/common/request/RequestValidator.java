@@ -9,6 +9,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
@@ -782,40 +784,20 @@ public final class RequestValidator {
           ResponseCode.emailBodyError.getErrorMessage(),
           ERROR_CODE);
     }
-    if (null == (request.getRequest().get(JsonKey.RECIPIENT_EMAILS))
-        && null == (request.getRequest().get(JsonKey.RECIPIENT_USERIDS))) {
+    if (CollectionUtils.isEmpty((List<String>) (request.getRequest().get(JsonKey.RECIPIENT_EMAILS)))
+        && CollectionUtils.isEmpty(
+            (List<String>) (request.getRequest().get(JsonKey.RECIPIENT_USERIDS)))
+        && MapUtils.isEmpty(
+            (Map<String, Object>) (request.getRequest().get(JsonKey.RECIPIENT_SEARCH_QUERY)))) {
       throw new ProjectCommonException(
-          ResponseCode.emailFormatError.getErrorCode(),
-          ResponseCode.emailFormatError.getErrorMessage(),
-          ERROR_CODE);
-    }
-    if ((null != (request.getRequest().get(JsonKey.RECIPIENT_EMAILS))
-            && ((List) request.getRequest().get(JsonKey.RECIPIENT_EMAILS)).isEmpty())
-        && (null != (request.getRequest().get(JsonKey.RECIPIENT_USERIDS))
-            && ((List) request.getRequest().get(JsonKey.RECIPIENT_USERIDS)).isEmpty())) {
-      throw new ProjectCommonException(
-          ResponseCode.recipientAddressError.getErrorCode(),
-          ResponseCode.recipientAddressError.getErrorMessage(),
-          ERROR_CODE);
-    }
-
-    if ((null != (request.getRequest().get(JsonKey.RECIPIENT_EMAILS))
-            && ((List) request.getRequest().get(JsonKey.RECIPIENT_EMAILS)).isEmpty())
-        && (null == (request.getRequest().get(JsonKey.RECIPIENT_USERIDS))
-            || ((List) request.getRequest().get(JsonKey.RECIPIENT_USERIDS)).isEmpty())) {
-      throw new ProjectCommonException(
-          ResponseCode.recipientAddressError.getErrorCode(),
-          ResponseCode.recipientAddressError.getErrorMessage(),
-          ERROR_CODE);
-    }
-
-    if ((null != (request.getRequest().get(JsonKey.RECIPIENT_USERIDS))
-            && ((List) request.getRequest().get(JsonKey.RECIPIENT_USERIDS)).isEmpty())
-        && (null == (request.getRequest().get(JsonKey.RECIPIENT_EMAILS))
-            || ((List) request.getRequest().get(JsonKey.RECIPIENT_EMAILS)).isEmpty())) {
-      throw new ProjectCommonException(
-          ResponseCode.recipientAddressError.getErrorCode(),
-          ResponseCode.recipientAddressError.getErrorMessage(),
+          ResponseCode.mandatoryParamsMissing.getErrorCode(),
+          MessageFormat.format(
+              ResponseCode.mandatoryParamsMissing.getErrorMessage(),
+              (JsonKey.RECIPIENT_EMAILS
+                  + ","
+                  + JsonKey.RECIPIENT_USERIDS
+                  + " or"
+                  + JsonKey.RECIPIENT_SEARCH_QUERY)),
           ERROR_CODE);
     }
   }

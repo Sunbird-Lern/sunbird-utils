@@ -87,45 +87,56 @@ public class SendMail {
    * @param context VelocityContext
    * @param templateName String
    * @param subject subject
+   * @throws Exception
    */
   public static boolean sendMail(
       String[] receipent, String subject, VelocityContext context, String templateName) {
-    ProjectLogger.log("Mail Template name - " + templateName, LoggerEnum.INFO.name());
-    Transport transport = null;
-    boolean flag = true;
-    if (context != null) {
-      context.put(JsonKey.FROM_EMAIL, fromEmail);
-    }
+    VelocityEngine engine = new VelocityEngine();
+    Properties p = new Properties();
+    p.setProperty("resource.loader", "class");
+    p.setProperty(
+        "class.resource.loader.class",
+        "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+    StringWriter writer = null;
     try {
+      engine.init(p);
+      Template template = engine.getTemplate(templateName);
+      writer = new StringWriter();
+      template.merge(context, writer);
+    } catch (Exception e) {
+      ProjectLogger.log("SendMail:sendMail " + e.getMessage(), e);
+    }
+
+    return sendEmail(receipent, subject, context, templateName, writer);
+  }
+
+  private static boolean sendEmail(
+      String[] receipent,
+      String subject,
+      VelocityContext context,
+      String templateName,
+      StringWriter writer) {
+    Transport transport = null;
+    boolean sentStatus = true;
+    try {
+      if (context != null) {
+        context.put(JsonKey.FROM_EMAIL, fromEmail);
+      }
       Session session = Session.getInstance(props, new GMailAuthenticator(userName, password));
       MimeMessage message = new MimeMessage(session);
       message.setFrom(new InternetAddress(fromEmail));
-      int size = receipent.length;
-      int i = 0;
-      while (size > 0) {
-        message.addRecipient(Message.RecipientType.TO, new InternetAddress(receipent[i]));
-        i++;
-        size--;
+      for (String email : receipent) {
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
       }
       message.setSubject(subject);
-      VelocityEngine engine = new VelocityEngine();
-      Properties p = new Properties();
-      p.setProperty("resource.loader", "class");
-      p.setProperty(
-          "class.resource.loader.class",
-          "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
-      engine.init(p);
-      Template template = engine.getTemplate(templateName);
-      StringWriter writer = new StringWriter();
-      template.merge(context, writer);
       message.setContent(writer.toString(), "text/html");
       transport = session.getTransport("smtp");
       transport.connect(host, userName, password);
       transport.sendMessage(message, message.getAllRecipients());
       transport.close();
     } catch (Exception e) {
-      flag = false;
-      ProjectLogger.log(e.toString(), e);
+      sentStatus = false;
+      ProjectLogger.log("SendMail:sendMail " + e.getMessage(), e);
     } finally {
       if (transport != null) {
         try {
@@ -135,7 +146,7 @@ public class SendMail {
         }
       }
     }
-    return flag;
+    return sentStatus;
   }
 
   /**
@@ -143,54 +154,22 @@ public class SendMail {
    *
    * @param receipent email to whom we send mail
    * @param context VelocityContext
-   * @param templateName String
+   * @param templateName email template name
+   * @param templateValue email template content
    * @param subject subject
+   * @throws Exception
    */
   public static boolean sendMail(
       String[] receipent,
       String subject,
       VelocityContext context,
       String templateName,
-      String templateValue) {
-    ProjectLogger.log("Mail Template name - " + templateName, LoggerEnum.INFO.name());
-    Transport transport = null;
-    boolean flag = true;
-    if (context != null) {
-      context.put(JsonKey.FROM_EMAIL, fromEmail);
-    }
-    try {
-      Session session = Session.getInstance(props, new GMailAuthenticator(userName, password));
-      MimeMessage message = new MimeMessage(session);
-      message.setFrom(new InternetAddress(fromEmail));
-      int size = receipent.length;
-      int i = 0;
-      while (size > 0) {
-        message.addRecipient(Message.RecipientType.TO, new InternetAddress(receipent[i]));
-        i++;
-        size--;
-      }
-      message.setSubject(subject);
-      Velocity.init();
-      StringWriter writer = new StringWriter();
-      Velocity.evaluate(context, writer, "SimpleVelocity", templateValue);
-      System.out.println("success: " + writer.toString());
-      transport = session.getTransport("smtp");
-      transport.connect(host, userName, password);
-      transport.sendMessage(message, message.getAllRecipients());
-      transport.close();
-    } catch (Exception e) {
-      flag = false;
-      ProjectLogger.log(e.toString(), e);
-    } finally {
-      if (transport != null) {
-        try {
-          transport.close();
-        } catch (MessagingException e) {
-          ProjectLogger.log(e.toString(), e);
-        }
-      }
-    }
-    return flag;
+      String templateValue)
+      throws Exception {
+    Velocity.init();
+    StringWriter writer = new StringWriter();
+    Velocity.evaluate(context, writer, "SimpleVelocity", templateValue);
+    return sendEmail(receipent, subject, context, templateName, writer);
   }
 
   /**
