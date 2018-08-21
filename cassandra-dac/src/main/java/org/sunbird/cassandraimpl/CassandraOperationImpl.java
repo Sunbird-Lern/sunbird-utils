@@ -700,11 +700,11 @@ public class CassandraOperationImpl implements CassandraOperation {
   }
 
   @Override
-  public Response getPropertiesValueByIds(
+  public Response getRecordsByIdsWithSpecifiedColumns(
       String keyspaceName, String tableName, List<String> properties, List<String> ids) {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
-        "Cassandra Service getPropertiesValueByIds method started at ==" + startTime,
+        "CassandraOperationImpl: getRecordsByIdsWithSpecifiedColumns call started at " + startTime,
         LoggerEnum.INFO);
     Response response = new Response();
     try {
@@ -723,7 +723,7 @@ public class CassandraOperationImpl implements CassandraOperation {
           ResponseCode.SERVER_ERROR.getErrorMessage(),
           ResponseCode.SERVER_ERROR.getResponseCode());
     }
-    logQueryElapseTime("getPropertiesValueByIds", startTime);
+    logQueryElapseTime("getRecordsByIdsWithSpecifiedColumns", startTime);
     return response;
   }
 }

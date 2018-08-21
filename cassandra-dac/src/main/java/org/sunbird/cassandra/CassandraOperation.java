@@ -284,6 +284,6 @@ public interface CassandraOperation {
    * @param ids List of identifiers
    * @return Response consisting of fetched records
    */
-  Response getPropertiesValueByIds(
+  Response getRecordsByIdsWithSpecifiedColumns(
       String keyspaceName, String tableName, List<String> properties, List<String> ids);
 }
