@@ -81,16 +81,15 @@ public class SendMail {
   }
 
   /**
-   * this method is used to send email.
+   * Send email using given template name.
    *
-   * @param receipent email to whom we send mail
-   * @param context VelocityContext
-   * @param templateName String
-   * @param subject subject
-   * @throws Exception
+   * @param emailList List of recipient emails
+   * @param context Context for Velocity template
+   * @param templateName Name of email template
+   * @param subject Subject of email
    */
   public static boolean sendMail(
-      String[] receipent, String subject, VelocityContext context, String templateName) {
+      String[] emailList, String subject, VelocityContext context, String templateName) {
     VelocityEngine engine = new VelocityEngine();
     Properties p = new Properties();
     p.setProperty("resource.loader", "class");
@@ -107,86 +106,44 @@ public class SendMail {
       ProjectLogger.log("SendMail:sendMail " + e.getMessage(), e);
     }
 
-    return sendEmail(receipent, subject, context, templateName, writer);
-  }
-
-  private static boolean sendEmail(
-      String[] receipent,
-      String subject,
-      VelocityContext context,
-      String templateName,
-      StringWriter writer) {
-    Transport transport = null;
-    boolean sentStatus = true;
-    try {
-      if (context != null) {
-        context.put(JsonKey.FROM_EMAIL, fromEmail);
-      }
-      Session session = Session.getInstance(props, new GMailAuthenticator(userName, password));
-      MimeMessage message = new MimeMessage(session);
-      message.setFrom(new InternetAddress(fromEmail));
-      for (String email : receipent) {
-        message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
-      }
-      message.setSubject(subject);
-      message.setContent(writer.toString(), "text/html");
-      transport = session.getTransport("smtp");
-      transport.connect(host, userName, password);
-      transport.sendMessage(message, message.getAllRecipients());
-      transport.close();
-    } catch (Exception e) {
-      sentStatus = false;
-      ProjectLogger.log("SendMail:sendMail " + e.getMessage(), e);
-    } finally {
-      if (transport != null) {
-        try {
-          transport.close();
-        } catch (MessagingException e) {
-          ProjectLogger.log(e.toString(), e);
-        }
-      }
-    }
-    return sentStatus;
+    return sendEmail(emailList, subject, context, writer);
   }
 
   /**
-   * this method is used to send email.
+   * Send email using given template body.
    *
-   * @param receipent email to whom we send mail
-   * @param context VelocityContext
-   * @param templateName email template name
-   * @param templateValue email template content
-   * @param subject subject
-   * @throws Exception
+   * @param emailList List of recipient emails
+   * @param context Context for Velocity template
+   * @param templateBody Email template body
+   * @param subject Subject of email
    */
   public static boolean sendMail(
-      String[] receipent,
+      String[] emailList,
       String subject,
       VelocityContext context,
-      String templateName,
-      String templateValue)
+      String templateBody)
       throws Exception {
     Velocity.init();
     StringWriter writer = new StringWriter();
-    Velocity.evaluate(context, writer, "SimpleVelocity", templateValue);
-    return sendEmail(receipent, subject, context, templateName, writer);
+    Velocity.evaluate(context, writer, "SimpleVelocity", templateBody);
+    return sendEmail(emailList, subject, context, writer);
   }
 
   /**
-   * this method is used to send email along with CC Recipients list.
+   * Send email (with Cc) using given template name.
    *
-   * @param receipent email to whom we send mail
-   * @param context VelocityContext
-   * @param templateName String
-   * @param subject subject
-   * @param ccList String
+   * @param emailList List of recipient emails
+   * @param context Context for Velocity template
+   * @param templateName Name of email template
+   * @param subject Subject of email
+   * @param ccEmailList List of Cc emails
    */
   public static void sendMail(
-      String[] receipent,
+      String[] emailList,
       String subject,
       VelocityContext context,
       String templateName,
-      String[] ccList) {
+      String[] ccEmailList) {
     ProjectLogger.log("Mail Template name - " + templateName, LoggerEnum.INFO.name());
     Transport transport = null;
     try {
@@ -196,14 +153,14 @@ public class SendMail {
       int size = receipent.length;
       int i = 0;
       while (size > 0) {
-        message.addRecipient(Message.RecipientType.TO, new InternetAddress(receipent[i]));
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailList[i]));
         i++;
         size--;
       }
-      size = ccList.length;
+      size = ccEmailList.length;
       i = 0;
       while (size > 0) {
-        message.addRecipient(Message.RecipientType.CC, new InternetAddress(ccList[i]));
+        message.addRecipient(Message.RecipientType.CC, new InternetAddress(ccEmailList[i]));
         i++;
         size--;
       }
@@ -237,15 +194,15 @@ public class SendMail {
   }
 
   /**
-   * this method is used to send email as an attachment.
+   * Send email (with attachment) and given body.
    *
-   * @param receipent email to whom we send mail
-   * @param mail mail body.
-   * @param subject subject
-   * @param filePath String
+   * @param emailList List of recipient emails
+   * @param emailBody Text of email body
+   * @param subject Subject of email
+   * @param filePath Path of attachment file
    */
   public static void sendAttachment(
-      String[] receipent, String mail, String subject, String filePath) {
+      String[] emailList, String emailBody, String subject, String filePath) {
     Transport transport = null;
     try {
       Session session = Session.getInstance(props, new GMailAuthenticator(userName, password));
@@ -254,13 +211,13 @@ public class SendMail {
       int size = receipent.length;
       int i = 0;
       while (size > 0) {
-        message.addRecipient(Message.RecipientType.TO, new InternetAddress(receipent[i]));
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailList[i]));
         i++;
         size--;
       }
       message.setSubject(subject);
       BodyPart messageBodyPart = new MimeBodyPart();
-      messageBodyPart.setContent(mail, "text/html");
+      messageBodyPart.setContent(emailBody, "text/html");
       // messageBodyPart.setText(mail);
       // Create a multipar message
       Multipart multipart = new MimeMultipart();
@@ -288,5 +245,43 @@ public class SendMail {
         }
       }
     }
+  }
+  
+  private static boolean sendEmail(
+      String[] emailList,
+      String subject,
+      VelocityContext context,
+      StringWriter writer) {
+    Transport transport = null;
+    boolean sentStatus = true;
+    try {
+      if (context != null) {
+        context.put(JsonKey.FROM_EMAIL, fromEmail);
+      }
+      Session session = Session.getInstance(props, new GMailAuthenticator(userName, password));
+      MimeMessage message = new MimeMessage(session);
+      message.setFrom(new InternetAddress(fromEmail));
+      for (String email : emailList) {
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+      }
+      message.setSubject(subject);
+      message.setContent(writer.toString(), "text/html");
+      transport = session.getTransport("smtp");
+      transport.connect(host, userName, password);
+      transport.sendMessage(message, message.getAllRecipients());
+      transport.close();
+    } catch (Exception e) {
+      sentStatus = false;
+      ProjectLogger.log("SendMail:sendMail: Exception occurred with message = " + e.getMessage(), e);
+    } finally {
+      if (transport != null) {
+        try {
+          transport.close();
+        } catch (MessagingException e) {
+          ProjectLogger.log(e.toString(), e);
+        }
+      }
+    }
+    return sentStatus;
   }
 }
