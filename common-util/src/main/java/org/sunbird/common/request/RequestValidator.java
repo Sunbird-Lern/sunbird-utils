@@ -770,7 +770,6 @@ public final class RequestValidator {
     }
   }
 
-  @SuppressWarnings("rawtypes")
   public static void validateSendMail(Request request) {
     if (StringUtils.isBlank((String) request.getRequest().get(JsonKey.SUBJECT))) {
       throw new ProjectCommonException(
@@ -796,7 +795,7 @@ public final class RequestValidator {
               (JsonKey.RECIPIENT_EMAILS
                   + ","
                   + JsonKey.RECIPIENT_USERIDS
-                  + " or"
+                  + " or "
                   + JsonKey.RECIPIENT_SEARCH_QUERY)),
           ERROR_CODE);
     }
