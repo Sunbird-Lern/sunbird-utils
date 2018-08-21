@@ -103,7 +103,8 @@ public class SendMail {
       writer = new StringWriter();
       template.merge(context, writer);
     } catch (Exception e) {
-      ProjectLogger.log("SendMail:sendMail " + e.getMessage(), e);
+      ProjectLogger.log(
+          "SendMail:sendMail : Exception occurred with message =" + e.getMessage(), e);
     }
 
     return sendEmail(emailList, subject, context, writer);
@@ -117,15 +118,17 @@ public class SendMail {
    * @param templateBody Email template body
    * @param subject Subject of email
    */
-  public static boolean sendMail(
-      String[] emailList,
-      String subject,
-      VelocityContext context,
-      String templateBody)
-      throws Exception {
-    Velocity.init();
-    StringWriter writer = new StringWriter();
-    Velocity.evaluate(context, writer, "SimpleVelocity", templateBody);
+  public static boolean sendMailWithBody(
+      String[] emailList, String subject, VelocityContext context, String templateBody) {
+    StringWriter writer = null;
+    try {
+      Velocity.init();
+      writer = new StringWriter();
+      Velocity.evaluate(context, writer, "SimpleVelocity", templateBody);
+    } catch (Exception e) {
+      ProjectLogger.log(
+          "SendMail:sendMailWithBody : Exception occurred with message =" + e.getMessage(), e);
+    }
     return sendEmail(emailList, subject, context, writer);
   }
 
@@ -150,7 +153,7 @@ public class SendMail {
       Session session = Session.getInstance(props, new GMailAuthenticator(userName, password));
       MimeMessage message = new MimeMessage(session);
       message.setFrom(new InternetAddress(fromEmail));
-      int size = receipent.length;
+      int size = emailList.length;
       int i = 0;
       while (size > 0) {
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailList[i]));
@@ -208,7 +211,7 @@ public class SendMail {
       Session session = Session.getInstance(props, new GMailAuthenticator(userName, password));
       MimeMessage message = new MimeMessage(session);
       message.setFrom(new InternetAddress(fromEmail));
-      int size = receipent.length;
+      int size = emailList.length;
       int i = 0;
       while (size > 0) {
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailList[i]));
@@ -246,12 +249,9 @@ public class SendMail {
       }
     }
   }
-  
+
   private static boolean sendEmail(
-      String[] emailList,
-      String subject,
-      VelocityContext context,
-      StringWriter writer) {
+      String[] emailList, String subject, VelocityContext context, StringWriter writer) {
     Transport transport = null;
     boolean sentStatus = true;
     try {
@@ -272,7 +272,8 @@ public class SendMail {
       transport.close();
     } catch (Exception e) {
       sentStatus = false;
-      ProjectLogger.log("SendMail:sendMail: Exception occurred with message = " + e.getMessage(), e);
+      ProjectLogger.log(
+          "SendMail:sendMail: Exception occurred with message = " + e.getMessage(), e);
     } finally {
       if (transport != null) {
         try {
