@@ -104,7 +104,7 @@ public class SendMail {
       template.merge(context, writer);
     } catch (Exception e) {
       ProjectLogger.log(
-          "SendMail:sendMail : Exception occurred with message =" + e.getMessage(), e);
+          "SendMail:sendMail : Exception occurred with message = " + e.getMessage(), e);
     }
 
     return sendEmail(emailList, subject, context, writer);
