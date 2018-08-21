@@ -274,4 +274,16 @@ public interface CassandraOperation {
    */
   Response getRecordsByCompositeKey(
       String keyspaceName, String tableName, Map<String, Object> compositeKeyMap);
+
+  /**
+   * Fetch records with specified columns for given identifiers.
+   *
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param properties List of columns to be returned in each record
+   * @param ids List of identifiers
+   * @return Response consisting of fetched records
+   */
+  Response getPropertiesValueByIds(
+      String keyspaceName, String tableName, List<String> properties, List<String> ids);
 }
