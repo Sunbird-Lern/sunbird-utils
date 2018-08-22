@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.sunbird.cassandra.CassandraOperation;
 import org.sunbird.common.CassandraUtil;
 import org.sunbird.common.Constants;
@@ -709,13 +710,12 @@ public class CassandraOperationImpl implements CassandraOperation {
     Response response = new Response();
     try {
       Builder selectBuilder;
-      selectBuilder = QueryBuilder.select(properties.toArray(new String[properties.size()]));
-      Select selectQuery = selectBuilder.from(keyspaceName, tableName);
-      Where selectWhere = selectQuery.where();
-      Clause clause = QueryBuilder.in(JsonKey.ID, ids.toArray(new Object[ids.size()]));
-      selectWhere.and(clause);
-      ResultSet results = connectionManager.getSession(keyspaceName).execute(selectQuery);
-      response = CassandraUtil.createResponse(results);
+      if (CollectionUtils.isNotEmpty(properties)) {
+        selectBuilder = QueryBuilder.select(properties.toArray(new String[properties.size()]));
+      } else {
+        selectBuilder = QueryBuilder.select().all();
+      }
+      response = executeSelectQuery(keyspaceName, tableName, ids, selectBuilder, "");
     } catch (Exception e) {
       ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName + " : " + e.getMessage(), e);
       throw new ProjectCommonException(
@@ -724,6 +724,55 @@ public class CassandraOperationImpl implements CassandraOperation {
           ResponseCode.SERVER_ERROR.getResponseCode());
     }
     logQueryElapseTime("getRecordsByIdsWithSpecifiedColumns", startTime);
+    return response;
+  }
+
+  private Response executeSelectQuery(
+      String keyspaceName,
+      String tableName,
+      List<String> ids,
+      Builder selectBuilder,
+      String primaryKeyColumnName) {
+    Response response;
+    Select selectQuery = selectBuilder.from(keyspaceName, tableName);
+    Where selectWhere = selectQuery.where();
+    Clause clause = null;
+    if (StringUtils.isBlank(primaryKeyColumnName)) {
+      clause = QueryBuilder.in(JsonKey.ID, ids.toArray(new Object[ids.size()]));
+    } else {
+      clause = QueryBuilder.in(primaryKeyColumnName, ids.toArray(new Object[ids.size()]));
+    }
+
+    selectWhere.and(clause);
+    ResultSet results = connectionManager.getSession(keyspaceName).execute(selectQuery);
+    response = CassandraUtil.createResponse(results);
+    return response;
+  }
+
+  @Override
+  public Response getRecordsByPrimaryKeys(
+      String keyspaceName,
+      String tableName,
+      List<String> primaryKeys,
+      String primaryKeyColumnName) {
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log(
+        "CassandraOperationImpl: getRecordsByPrimaryKeys call started at " + startTime,
+        LoggerEnum.INFO);
+    Response response = new Response();
+    try {
+      Builder selectBuilder = QueryBuilder.select().all();
+      response =
+          executeSelectQuery(
+              keyspaceName, tableName, primaryKeys, selectBuilder, primaryKeyColumnName);
+    } catch (Exception e) {
+      ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName + " : " + e.getMessage(), e);
+      throw new ProjectCommonException(
+          ResponseCode.SERVER_ERROR.getErrorCode(),
+          ResponseCode.SERVER_ERROR.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    logQueryElapseTime("getRecordsByPrimaryKeys", startTime);
     return response;
   }
 }

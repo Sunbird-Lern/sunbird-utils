@@ -286,4 +286,16 @@ public interface CassandraOperation {
    */
   Response getRecordsByIdsWithSpecifiedColumns(
       String keyspaceName, String tableName, List<String> properties, List<String> ids);
+
+  /**
+   * Fetch records for given primary keys.
+   *
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param primaryKeys List of primaryKey values
+   * @param primaryKeyColumnName name of the primary key column
+   * @return Response consisting of fetched records
+   */
+  Response getRecordsByPrimaryKeys(
+      String keyspaceName, String tableName, List<String> primaryKeys, String primaryKeyColumnName);
 }
