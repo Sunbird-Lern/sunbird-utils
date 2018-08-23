@@ -92,9 +92,9 @@ public class ElasticSearchUtil {
       new ArrayList<>(Arrays.asList("CREATED", "UPDATED", "NOOP"));
   private static final String SOFT_MODE = "soft";
   private static final String RAW_APPEND = ".raw";
-  private static Map<String, Boolean> indexMap = new HashMap<>();
-  private static Map<String, Boolean> typeMap = new HashMap<>();
-  private static final String ES_INDICES_TYPES_FILE = "elasticsearch.conf";
+  protected static Map<String, Boolean> indexMap = new HashMap<>();
+  protected static Map<String, Boolean> typeMap = new HashMap<>();
+  protected static final String ES_INDICES_TYPES_FILE = "elasticsearch.conf";
   private static Config config = ConfigUtil.getConfig(ES_INDICES_TYPES_FILE);
 
   private ElasticSearchUtil() {}
