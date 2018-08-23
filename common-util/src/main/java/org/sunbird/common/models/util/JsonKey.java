@@ -671,6 +671,7 @@ public final class JsonKey {
   public static final String ONBOARDING_MAIL_MESSAGE = "onboarding_welcome_message";
   public static final String SUNBIRD_DEFAULT_WELCOME_MSG = "sunbird_default_welcome_sms";
   public static final String SUNBIRD_DEFAULT_USER_TYPE = "sunbird_default_user_type";
+  public static final String ES_TYPES = "types";
 
   private JsonKey() {}
 }

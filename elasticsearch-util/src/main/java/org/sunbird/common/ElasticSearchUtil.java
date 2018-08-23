@@ -4,12 +4,22 @@ package org.sunbird.common;
 import static org.sunbird.common.models.util.ProjectUtil.isNotNull;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.typesafe.config.Config;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
@@ -55,10 +65,9 @@ import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
-import org.sunbird.common.models.util.ProjectUtil.EsIndex;
-import org.sunbird.common.models.util.ProjectUtil.EsType;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.responsecode.ResponseCode;
+import org.sunbird.common.util.ConfigUtil;
 import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
 import org.sunbird.helper.ElasticSearchMapping;
@@ -85,49 +94,76 @@ public class ElasticSearchUtil {
   private static final String RAW_APPEND = ".raw";
   private static Map<String, Boolean> indexMap = new HashMap<>();
   private static Map<String, Boolean> typeMap = new HashMap<>();
+  private static final String ES_INDICES_TYPES_FILE = "elasticsearch.conf";
+  private static Config config = ConfigUtil.getConfig(ES_INDICES_TYPES_FILE);
 
   private ElasticSearchUtil() {}
 
   static {
-    createIndices();
-    createIndexTypes();
+    verifyIndicesAndTypes();
   }
 
-  private static void createIndices() {
-    try {
-      for (EsIndex index : EsIndex.values()) {
-        boolean isExist =
-            ConnectionManager.getClient()
-                .admin()
-                .indices()
-                .exists(Requests.indicesExistsRequest(index.getIndexName()))
-                .get()
-                .isExists();
-        if (isExist) {
-          indexMap.put(index.getIndexName(), true);
-        } else {
-          boolean created =
-              createIndex(
-                  index.getIndexName(), null, null, ElasticSearchSettings.createSettingsForIndex());
-          if (created) {
-            indexMap.put(index.getIndexName(), true);
+  /**
+   * This method will read indices and type values from elasticsearch.conf file as type safe
+   * configuration, it will do verification for each indices and types in side elasticseach, if any
+   * indices or type is not present into elasticseach then it will create it. this method will be
+   * called only once time during class loading.
+   *
+   * @return true or false.
+   */
+  private static boolean verifyIndicesAndTypes() {
+    boolean response = false;
+    if (config != null) {
+      try {
+        List<Object> list = (List) config.getAnyRefList("elasticsearch.indices");
+        if (CollectionUtils.isNotEmpty(list)) {
+          for (Object obj : list) {
+            Map<String, Object> map = (Map) obj;
+            createIndices((String) map.get(JsonKey.NAME));
+            verifyOrCreatType(
+                (String) map.get(JsonKey.NAME),
+                ((List<String>) map.get(JsonKey.ES_TYPES)).toArray(new String[0]));
+            response = true;
           }
+        } else {
+          ProjectLogger.log(
+              "ElasticSearchUtil:verifyIndicesAndTypes indices list is empty or null",
+              LoggerEnum.INFO.name());
+        }
+      } catch (Exception e) {
+        ProjectLogger.log(
+            "ElasticSearchUtil:verifyIndicesAndTypes error during elasticseach indices and type configuration: "
+                + e.getMessage(),
+            e);
+      }
+    } else {
+      ProjectLogger.log(
+          "ElasticSearchUtil:verifyIndicesAndTypes type safe config object is null",
+          LoggerEnum.INFO.name());
+    }
+    return response;
+  }
+
+  private static void createIndices(String indicesName) {
+    try {
+      boolean isExist =
+          ConnectionManager.getClient()
+              .admin()
+              .indices()
+              .exists(Requests.indicesExistsRequest(indicesName))
+              .get()
+              .isExists();
+      if (isExist) {
+        indexMap.put(indicesName, true);
+      } else {
+        boolean created =
+            createIndex(indicesName, null, null, ElasticSearchSettings.createSettingsForIndex());
+        if (created) {
+          indexMap.put(indicesName, true);
         }
       }
     } catch (Exception e) {
       e.printStackTrace();
-    }
-  }
-
-  private static void createIndexTypes() {
-    try {
-      String[] types =
-          Arrays.stream(EsType.values()).map(f -> f.getTypeName()).toArray(String[]::new);
-      for (EsIndex index : EsIndex.values()) {
-        verifyOrCreatType(index.getIndexName(), types);
-      }
-    } catch (Exception e) {
-      ProjectLogger.log("ElasticSearchUtil:createIndexTypes error: " + e.getMessage(), e);
     }
   }
 

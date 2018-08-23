@@ -7,6 +7,7 @@ import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.responsecode.ResponseCode;
+import org.sunbird.common.util.ConfigUtil;
 import org.sunbird.helper.CassandraConnectionManager;
 import org.sunbird.helper.CassandraConnectionMngrFactory;
 
@@ -112,5 +113,10 @@ public final class CassandraStartUpUtil {
       }
     }
     return true;
+  }
+
+  public static void main(String[] args) {
+    // String cassandraMode = config.getString(JsonKey.SUNBIRD_CASSANDRA_MODE);
+    System.out.println(config);
   }
 }
