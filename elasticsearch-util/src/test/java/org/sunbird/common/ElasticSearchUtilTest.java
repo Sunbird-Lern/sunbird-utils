@@ -674,14 +674,14 @@ public class ElasticSearchUtilTest {
   }
 
   @Test
-  public void verifyAllindicesandType() {
-    Config config = ConfigUtil.getConfig(ElasticSearchUtil.ES_INDICES_TYPES_FILE);
+  public void testVerifyAndCreateIndicesAndTypes() {
+    Config config = ConfigUtil.getConfig(ElasticSearchUtil.ES_CONFIG_FILE);
     List<Object> list = (List) config.getAnyRefList("elasticsearch.indices");
     for (Object obj : list) {
       Map<String, Object> map = (Map) obj;
-      String indicesName = (String) map.get(JsonKey.NAME);
+      String indexName = (String) map.get(JsonKey.NAME);
       List<String> types = (List<String>) map.get(JsonKey.ES_TYPES);
-      assertEquals(ElasticSearchUtil.indexMap.get(indicesName), true);
+      assertEquals(ElasticSearchUtil.indexMap.get(indexName), true);
       for (String type : types) {
         assertEquals(ElasticSearchUtil.typeMap.get(type), true);
       }

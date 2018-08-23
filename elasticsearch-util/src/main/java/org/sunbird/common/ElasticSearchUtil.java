@@ -94,13 +94,13 @@ public class ElasticSearchUtil {
   private static final String RAW_APPEND = ".raw";
   protected static Map<String, Boolean> indexMap = new HashMap<>();
   protected static Map<String, Boolean> typeMap = new HashMap<>();
-  protected static final String ES_INDICES_TYPES_FILE = "elasticsearch.conf";
-  private static Config config = ConfigUtil.getConfig(ES_INDICES_TYPES_FILE);
+  protected static final String ES_CONFIG_FILE = "elasticsearch.conf";
+  private static Config config = ConfigUtil.getConfig(ES_CONFIG_FILE);
 
   private ElasticSearchUtil() {}
 
   static {
-    verifyIndicesAndTypes();
+    verifyAndCreateIndicesAndTypes();
   }
 
   /**
@@ -111,7 +111,7 @@ public class ElasticSearchUtil {
    *
    * @return true or false.
    */
-  private static boolean verifyIndicesAndTypes() {
+  private static boolean verifyAndCreateIndicesAndTypes() {
     boolean response = false;
     if (config != null) {
       try {
@@ -119,51 +119,54 @@ public class ElasticSearchUtil {
         if (CollectionUtils.isNotEmpty(list)) {
           for (Object obj : list) {
             Map<String, Object> map = (Map) obj;
-            createIndices((String) map.get(JsonKey.NAME));
-            verifyOrCreatType(
+            verifyOrCreateIndex((String) map.get(JsonKey.NAME));
+            verifyOrCreateType(
                 (String) map.get(JsonKey.NAME),
                 ((List<String>) map.get(JsonKey.ES_TYPES)).toArray(new String[0]));
             response = true;
           }
         } else {
           ProjectLogger.log(
-              "ElasticSearchUtil:verifyIndicesAndTypes indices list is empty or null",
+              "ElasticSearchUtil:verifyAndCreateIndicesAndTypes indices list is empty or null",
               LoggerEnum.INFO.name());
         }
       } catch (Exception e) {
         ProjectLogger.log(
-            "ElasticSearchUtil:verifyIndicesAndTypes error during elasticseach indices and type configuration: "
+            "ElasticSearchUtil:verifyAndCreateIndicesAndTypes error during elasticseach indices and type configuration: "
                 + e.getMessage(),
             e);
       }
     } else {
       ProjectLogger.log(
-          "ElasticSearchUtil:verifyIndicesAndTypes type safe config object is null",
+          "ElasticSearchUtil:verifyAndCreateIndicesAndTypes type safe config object is null",
           LoggerEnum.INFO.name());
     }
     return response;
   }
 
-  private static void createIndices(String indicesName) {
+  private static void verifyOrCreateIndex(String indexName) {
     try {
       boolean isExist =
           ConnectionManager.getClient()
               .admin()
               .indices()
-              .exists(Requests.indicesExistsRequest(indicesName))
+              .exists(Requests.indicesExistsRequest(indexName))
               .get()
               .isExists();
       if (isExist) {
-        indexMap.put(indicesName, true);
+        indexMap.put(indexName, true);
       } else {
         boolean created =
-            createIndex(indicesName, null, null, ElasticSearchSettings.createSettingsForIndex());
+            createIndex(indexName, null, null, ElasticSearchSettings.createSettingsForIndex());
         if (created) {
-          indexMap.put(indicesName, true);
+          indexMap.put(indexName, true);
         }
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      ProjectLogger.log(
+          "ElasticSearchUtil:verifyOrCreateIndex error during elasticseach index creation: "
+              + e.getMessage(),
+          e);
     }
   }
 
@@ -189,7 +192,6 @@ public class ElasticSearchUtil {
       ProjectLogger.log("Identifier value is null or empty ,not able to save data.");
       return "ERROR";
     }
-    verifyOrCreateIndexAndType(index, type);
     try {
       data.put("identifier", identifier);
       IndexResponse response =
@@ -283,7 +285,6 @@ public class ElasticSearchUtil {
     }
     SearchResponse sr = null;
     try {
-      verifyOrCreateIndexAndType(index, type);
       sr =
           ConnectionManager.getClient()
               .search(new SearchRequest(index).types(type).source(sourceBuilder))
@@ -331,7 +332,6 @@ public class ElasticSearchUtil {
         && !StringUtils.isBlank(type)
         && !StringUtils.isBlank(identifier)
         && data != null) {
-      verifyOrCreateIndexAndType(index, type);
       try {
         UpdateResponse response =
             ConnectionManager.getClient().prepareUpdate(index, type, identifier).setDoc(data).get();
@@ -390,7 +390,6 @@ public class ElasticSearchUtil {
         && !StringUtils.isBlank(identifier)
         && data != null
         && data.size() > 0) {
-      verifyOrCreateIndexAndType(index, type);
       IndexRequest indexRequest = new IndexRequest(index, type, identifier).source(data);
       UpdateRequest updateRequest =
           new UpdateRequest(index, type, identifier).doc(data).upsert(indexRequest);
@@ -855,48 +854,12 @@ public class ElasticSearchUtil {
   }
 
   /**
-   * This method will check indices is already created or not.
-   *
-   * @param indices String
-   */
-  private static void verifyOrCreateIndex(String... indices) {
-    for (String index : indices) {
-      if (!indexMap.containsKey(index)) {
-        try {
-          boolean indexResponse =
-              ConnectionManager.getClient()
-                  .admin()
-                  .indices()
-                  .exists(Requests.indicesExistsRequest(index))
-                  .get()
-                  .isExists();
-          if (indexResponse) {
-            indexMap.put(index, true);
-          } else {
-            boolean createIndexResp =
-                createIndex(index, null, null, ElasticSearchSettings.createSettingsForIndex());
-            if (createIndexResp) {
-              indexMap.put(index, true);
-            }
-          }
-        } catch (InterruptedException | ExecutionException e) {
-          boolean createIndexResp =
-              createIndex(index, null, null, ElasticSearchSettings.createSettingsForIndex());
-          if (createIndexResp) {
-            indexMap.put(index, true);
-          }
-        }
-      }
-    }
-  }
-
-  /**
    * This method will check types are created or not.
    *
    * @param indices String
-   * @param types String var arg
+   * @param types String var-arg
    */
-  private static void verifyOrCreatType(String indices, String... types) {
+  private static void verifyOrCreateType(String indices, String... types) {
     for (String type : types) {
       if (!typeMap.containsKey(type)) {
         TypesExistsRequest typesExistsRequest =
@@ -929,28 +892,6 @@ public class ElasticSearchUtil {
         }
       }
     }
-  }
-
-  /**
-   * Method to create the index and type with provided setting and mapping.
-   *
-   * @param index String
-   * @param type String
-   * @return boolean
-   */
-  private static boolean verifyOrCreateIndexAndType(String index, String type) {
-    //    if (indexMap.containsKey(index)) {
-    //      if (typeMap.containsKey(type)) {
-    //        return true;
-    //      }
-    //      verifyOrCreatType(index, type);
-    //      return true;
-    //    } else {
-    //      verifyOrCreateIndex(index);
-    //      verifyOrCreatType(index, type);
-    //      return true;
-    //    }
-    return true;
   }
 
   private static MatchQueryBuilder createMatchQuery(String name, Object text, Float boost) {
@@ -1049,8 +990,7 @@ public class ElasticSearchUtil {
                   new BulkProcessor.Listener() {
                     @Override
                     public void beforeBulk(long executionId, BulkRequest request) {
-                      // doing the verification for index and type here.
-                      verifyOrCreateIndexAndType(index, type);
+                      // doing some pre processing task if required.
                     }
 
                     @Override
