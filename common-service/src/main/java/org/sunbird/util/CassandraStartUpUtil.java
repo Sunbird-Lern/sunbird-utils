@@ -114,9 +114,4 @@ public final class CassandraStartUpUtil {
     }
     return true;
   }
-
-  public static void main(String[] args) {
-    // String cassandraMode = config.getString(JsonKey.SUNBIRD_CASSANDRA_MODE);
-    System.out.println(config);
-  }
 }
