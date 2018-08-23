@@ -292,8 +292,8 @@ public interface CassandraOperation {
    *
    * @param keyspaceName Keyspace name
    * @param tableName Table name
-   * @param primaryKeys List of primaryKey values
-   * @param primaryKeyColumnName name of the primary key column
+   * @param primaryKeys List of primary key values
+   * @param primaryKeyColumnName Name of the primary key column
    * @return Response consisting of fetched records
    */
   Response getRecordsByPrimaryKeys(
