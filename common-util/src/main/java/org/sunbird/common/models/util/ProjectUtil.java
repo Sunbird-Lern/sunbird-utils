@@ -607,18 +607,8 @@ public class ProjectUtil {
   private static String getSunbirdLogoUrl(Map<String, Object> map) {
     String logoUrl = (String) getValue(map, JsonKey.ORG_IMAGE_URL);
     if (StringUtils.isBlank(logoUrl)) {
-      logoUrl = System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL);
-      ProjectLogger.log(
-          "ProjectUtil:getSunbirdLogoUrl: url = " + logoUrl, LoggerEnum.INFO.name());
-      if (StringUtils.isNotBlank(logoUrl)) {
-        return logoUrl;
-      } else if (StringUtils.isNotBlank(
-        propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL))) {
-        logoUrl = propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL);
-        ProjectLogger.log(
-          "ProjectUtil:getSunbirdLogoUrl: url = " + logoUrl, LoggerEnum.INFO.name());
-        return logoUrl;
-      }
+      logoUrl = getConfigValue(JsonKey.SUNBIRD_ENV_LOGO_URL);
+      ProjectLogger.log("ProjectUtil:getSunbirdLogoUrl: url = " + logoUrl, LoggerEnum.INFO.name());
     }
     return logoUrl;
   }
