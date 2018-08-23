@@ -608,8 +608,8 @@ public class ProjectUtil {
     String logoUrl = (String) getValue(map, JsonKey.ORG_IMAGE_URL);
     if (StringUtils.isBlank(logoUrl)) {
       logoUrl = getConfigValue(JsonKey.SUNBIRD_ENV_LOGO_URL);
-      ProjectLogger.log("ProjectUtil:getSunbirdLogoUrl: url = " + logoUrl, LoggerEnum.INFO.name());
     }
+    ProjectLogger.log("ProjectUtil:getSunbirdLogoUrl: url = " + logoUrl, LoggerEnum.INFO.name());
     return logoUrl;
   }
 
