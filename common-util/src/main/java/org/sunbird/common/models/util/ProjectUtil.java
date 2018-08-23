@@ -581,17 +581,17 @@ public class ProjectUtil {
   public static VelocityContext getContext(Map<String, Object> map) {
     propertiesCache = PropertiesCache.getInstance();
     VelocityContext context = new VelocityContext();
-    if (!StringUtils.isBlank((String) map.get(JsonKey.ACTION_URL))) {
+    if (StringUtils.isNotBlank((String) map.get(JsonKey.ACTION_URL))) {
       context.put(JsonKey.ACTION_URL, getValue(map, JsonKey.ACTION_URL));
     }
-    if (!StringUtils.isBlank((String) map.get(JsonKey.NAME))) {
+    if (StringUtils.isNotBlank((String) map.get(JsonKey.NAME))) {
       context.put(JsonKey.NAME, getValue(map, JsonKey.NAME));
     }
     context.put(JsonKey.BODY, getValue(map, JsonKey.BODY));
     context.put(JsonKey.FROM_EMAIL, getFromEmail());
     context.put(JsonKey.ORG_NAME, getValue(map, JsonKey.ORG_NAME));
-    String logoUrl = getSunbirdLogoUrl();
-    if (!StringUtils.isBlank(logoUrl)) {
+    String logoUrl = getSunbirdLogoUrl(map);
+    if (StringUtils.isNotBlank(logoUrl)) {
       context.put(JsonKey.ORG_IMAGE_URL, logoUrl);
     }
     context.put(JsonKey.ACTION_NAME, getValue(map, JsonKey.ACTION_NAME));
@@ -604,19 +604,13 @@ public class ProjectUtil {
     return context;
   }
 
-  private static String getSunbirdLogoUrl() {
-    String envLogoUrl = System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL);
-    ProjectLogger.log(
-        "Sunbird env logo url from Environment - " + envLogoUrl, LoggerEnum.INFO.name());
-    if (!StringUtils.isBlank(envLogoUrl)) {
-      return envLogoUrl;
-    } else if (!StringUtils.isBlank(propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL))) {
-      envLogoUrl = propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL);
-      ProjectLogger.log(
-          "Sunbird env logo url from Properties file - " + envLogoUrl, LoggerEnum.INFO.name());
-      return envLogoUrl;
+  private static String getSunbirdLogoUrl(Map<String, Object> map) {
+    String logoUrl = (String) getValue(map, JsonKey.ORG_IMAGE_URL);
+    if (StringUtils.isBlank(logoUrl)) {
+      logoUrl = getConfigValue(JsonKey.SUNBIRD_ENV_LOGO_URL);
     }
-    return "";
+    ProjectLogger.log("ProjectUtil:getSunbirdLogoUrl: url = " + logoUrl, LoggerEnum.INFO.name());
+    return logoUrl;
   }
 
   private static String getFromEmail() {
