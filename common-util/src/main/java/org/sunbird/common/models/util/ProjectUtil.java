@@ -609,14 +609,14 @@ public class ProjectUtil {
     if (StringUtils.isBlank(logoUrl)) {
       logoUrl = System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL);
       ProjectLogger.log(
-          "Sunbird env logo url from Environment - " + logoUrl, LoggerEnum.INFO.name());
+          "ProjectUtil:getSunbirdLogoUrl: url = " + logoUrl, LoggerEnum.INFO.name());
       if (StringUtils.isNotBlank(logoUrl)) {
         return logoUrl;
       } else if (StringUtils.isNotBlank(
-          propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL))) {
+        propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL))) {
         logoUrl = propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL);
         ProjectLogger.log(
-            "Sunbird env logo url from Properties file - " + logoUrl, LoggerEnum.INFO.name());
+          "ProjectUtil:getSunbirdLogoUrl: url = " + logoUrl, LoggerEnum.INFO.name());
         return logoUrl;
       }
     }
