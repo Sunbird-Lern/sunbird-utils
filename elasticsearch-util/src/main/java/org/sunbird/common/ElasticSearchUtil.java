@@ -103,9 +103,9 @@ public class ElasticSearchUtil {
   }
 
   /**
-   * This method will read indices and type values from Elastic Search configuration file. It verifies
-   * if configured indices and types exist in Elastic Search. If any index or type does not exist then
-   * it will be created in Elastic Search.
+   * This method will read indices and type values from Elastic Search configuration file. It
+   * verifies if configured indices and types exist in Elastic Search. If any index or type does not
+   * exist then it will be created in Elastic Search.
    *
    * @return True, if there is no exception. Otherwise, False is returned.
    */
@@ -860,8 +860,7 @@ public class ElasticSearchUtil {
   private static void verifyOrCreateType(String index, String... types) {
     for (String type : types) {
       if (!typeMap.containsKey(type)) {
-        TypesExistsRequest typesExistsRequest =
-            new TypesExistsRequest(new String[] {index}, type);
+        TypesExistsRequest typesExistsRequest = new TypesExistsRequest(new String[] {index}, type);
         try {
           boolean typeResponse =
               ConnectionManager.getClient()
@@ -881,9 +880,10 @@ public class ElasticSearchUtil {
           }
         } catch (InterruptedException | ExecutionException e) {
           ProjectLogger.log(e.getMessage(), e);
-          boolean response =
-              addOrUpdateMapping(index, type, ElasticSearchMapping.createMapping());
-          ProjectLogger.log("ElasticSearchUtil:verifyOrCreateType: Exception occurred with error message = " + response);
+          boolean response = addOrUpdateMapping(index, type, ElasticSearchMapping.createMapping());
+          ProjectLogger.log(
+              "ElasticSearchUtil:verifyOrCreateType: Exception occurred with error message = "
+                  + response);
           if (response) {
             typeMap.put(type, true);
           }
@@ -987,8 +987,7 @@ public class ElasticSearchUtil {
                   ConnectionManager.getClient(),
                   new BulkProcessor.Listener() {
                     @Override
-                    public void beforeBulk(long executionId, BulkRequest request) {
-                    }
+                    public void beforeBulk(long executionId, BulkRequest request) {}
 
                     @Override
                     public void afterBulk(
