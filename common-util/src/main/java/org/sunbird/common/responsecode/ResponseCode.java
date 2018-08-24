@@ -628,9 +628,11 @@ public enum ResponseCode {
       ResponseMessage.Key.DUPLICATE_EXTERNAL_IDS, ResponseMessage.Message.DUPLICATE_EXTERNAL_IDS),
   invalidDuplicateValue(
       ResponseMessage.Key.INVALID_DUPLICATE_VALUE, ResponseMessage.Message.INVALID_DUPLICATE_VALUE),
-  emailNotificationNotSent(
-      ResponseMessage.Key.EMAIL_NOTIFICATION_NOT_SENT,
-      ResponseMessage.Message.EMAIL_NOTIFICATION_NOT_SENT),
+  emailNotSentRecipientsExceededMaxLimit(
+      ResponseMessage.Key.EMAIL_RECIPIENTS_EXCEEDS_MAX_LIMIT,
+      ResponseMessage.Message.EMAIL_RECIPIENTS_EXCEEDS_MAX_LIMIT),
+  emailNotSentRecipientsZero(
+      ResponseMessage.Key.NO_EMAIL_RECIPIENTS, ResponseMessage.Message.NO_EMAIL_RECIPIENTS),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
