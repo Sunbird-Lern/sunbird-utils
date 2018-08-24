@@ -1,4 +1,3 @@
-/** */
 package org.sunbird.common;
 
 import static org.sunbird.common.models.util.ProjectUtil.isNotNull;
@@ -104,12 +103,11 @@ public class ElasticSearchUtil {
   }
 
   /**
-   * This method will read indices and type values from elasticsearch.conf file as type safe
-   * configuration, it will do verification for each indices and types in side elasticseach, if any
-   * indices or type is not present into elasticseach then it will create it. this method will be
-   * called only once time during class loading.
+   * This method will read indices and type values from Elastic Search configuration file. It verifies
+   * if configured indices and types exist in Elastic Search. If any index or type does not exist then
+   * it will be created in Elastic Search.
    *
-   * @return true or false.
+   * @return True, if there is no exception. Otherwise, False is returned.
    */
   private static boolean verifyAndCreateIndicesAndTypes() {
     boolean response = false;
@@ -127,18 +125,18 @@ public class ElasticSearchUtil {
           }
         } else {
           ProjectLogger.log(
-              "ElasticSearchUtil:verifyAndCreateIndicesAndTypes indices list is empty or null",
+              "ElasticSearchUtil:verifyAndCreateIndicesAndTypes: No index is configured",
               LoggerEnum.INFO.name());
         }
       } catch (Exception e) {
         ProjectLogger.log(
-            "ElasticSearchUtil:verifyAndCreateIndicesAndTypes error during elasticseach indices and type configuration: "
+            "ElasticSearchUtil:verifyAndCreateIndicesAndTypes: Exception occurred with error message = "
                 + e.getMessage(),
             e);
       }
     } else {
       ProjectLogger.log(
-          "ElasticSearchUtil:verifyAndCreateIndicesAndTypes type safe config object is null",
+          "ElasticSearchUtil:verifyAndCreateIndicesAndTypes: Config is null",
           LoggerEnum.INFO.name());
     }
     return response;
@@ -164,7 +162,7 @@ public class ElasticSearchUtil {
       }
     } catch (Exception e) {
       ProjectLogger.log(
-          "ElasticSearchUtil:verifyOrCreateIndex error during elasticseach index creation: "
+          "ElasticSearchUtil:verifyOrCreateIndex: Exception occurred with error message = "
               + e.getMessage(),
           e);
     }
@@ -854,16 +852,16 @@ public class ElasticSearchUtil {
   }
 
   /**
-   * This method will check types are created or not.
+   * Creates types (if not already existing) for given index in Elastic Search.
    *
-   * @param indices String
-   * @param types String var-arg
+   * @param index Index
+   * @param types Types for given index to verify or create
    */
-  private static void verifyOrCreateType(String indices, String... types) {
+  private static void verifyOrCreateType(String index, String... types) {
     for (String type : types) {
       if (!typeMap.containsKey(type)) {
         TypesExistsRequest typesExistsRequest =
-            new TypesExistsRequest(new String[] {indices}, type);
+            new TypesExistsRequest(new String[] {index}, type);
         try {
           boolean typeResponse =
               ConnectionManager.getClient()
@@ -876,7 +874,7 @@ public class ElasticSearchUtil {
             typeMap.put(type, true);
           } else {
             boolean response =
-                addOrUpdateMapping(indices, type, ElasticSearchMapping.createMapping());
+                addOrUpdateMapping(index, type, ElasticSearchMapping.createMapping());
             if (response) {
               typeMap.put(type, true);
             }
@@ -884,8 +882,8 @@ public class ElasticSearchUtil {
         } catch (InterruptedException | ExecutionException e) {
           ProjectLogger.log(e.getMessage(), e);
           boolean response =
-              addOrUpdateMapping(indices, type, ElasticSearchMapping.createMapping());
-          ProjectLogger.log("addOrUpdateMapping method call response ==" + response);
+              addOrUpdateMapping(index, type, ElasticSearchMapping.createMapping());
+          ProjectLogger.log("ElasticSearchUtil:verifyOrCreateType: Exception occurred with error message = " + response);
           if (response) {
             typeMap.put(type, true);
           }
@@ -990,7 +988,6 @@ public class ElasticSearchUtil {
                   new BulkProcessor.Listener() {
                     @Override
                     public void beforeBulk(long executionId, BulkRequest request) {
-                      // doing some pre processing task if required.
                     }
 
                     @Override
