@@ -672,6 +672,8 @@ public final class JsonKey {
   public static final String SUNBIRD_DEFAULT_WELCOME_MSG = "sunbird_default_welcome_sms";
   public static final String SUNBIRD_DEFAULT_USER_TYPE = "sunbird_default_user_type";
   public static final String RECIPIENT_SEARCH_QUERY = "recipientSearchQuery";
+  public static final String SUNBIRD_EMAIL_MAX_RECEPIENT_LIMIT =
+      "sunbird_email_max_recipients_limit";
 
   private JsonKey() {}
 }

@@ -628,6 +628,9 @@ public enum ResponseCode {
       ResponseMessage.Key.DUPLICATE_EXTERNAL_IDS, ResponseMessage.Message.DUPLICATE_EXTERNAL_IDS),
   invalidDuplicateValue(
       ResponseMessage.Key.INVALID_DUPLICATE_VALUE, ResponseMessage.Message.INVALID_DUPLICATE_VALUE),
+  emailNotificationNotSent(
+      ResponseMessage.Key.EMAIL_NOTIFICATION_NOT_SENT,
+      ResponseMessage.Message.EMAIL_NOTIFICATION_NOT_SENT),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
