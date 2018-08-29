@@ -13,4 +13,5 @@ public class TelemetryEnvKey {
   public static final String BADGE_CLASS = "BadgeClass";
   public static final String BADGE_ASSERTION = "BadgeAssertion";
   public static final String PAGE = "Page";
+  public static final String SYSTEM_SETTINGS = "SystemSettings";
 }
