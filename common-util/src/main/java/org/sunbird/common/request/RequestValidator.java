@@ -552,8 +552,6 @@ public final class RequestValidator {
     String startDate = (String) request.getRequest().get(JsonKey.START_DATE);
     String endDate = (String) request.getRequest().get(JsonKey.END_DATE);
 
-    //    validateStartDate(startDate);
-    // kirti
     validateBatchStartDateForBatchUpdate(startDate);
     validateEndDate(startDate, endDate);
 
@@ -587,7 +585,7 @@ public final class RequestValidator {
 
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
-    if (startDate != null || StringUtils.isNotBlank(startDate)) {
+    if (StringUtils.isNotBlank(startDate)) {
       try {
         format.parse(startDate);
       } catch (Exception e) {
