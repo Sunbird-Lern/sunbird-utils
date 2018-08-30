@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import org.apache.cassandra.cql3.Json;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.thrift.transport.TTransportException;
 import org.cassandraunit.CQLDataLoader;
@@ -148,14 +146,19 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
   private static ConsistencyLevel getConsistencyLevel() {
     String consistency = ProjectUtil.getConfigValue(JsonKey.SUNBIRD_CASSANDRA_CONSISTENCY_LEVEL);
 
-    ProjectLogger.log("CassandraConnectionManagerImpl:getConsistencyLevel: level = " + consistency, LoggerEnum.INFO);
+    ProjectLogger.log(
+        "CassandraConnectionManagerImpl:getConsistencyLevel: level = " + consistency,
+        LoggerEnum.INFO);
 
     if (StringUtils.isBlank(consistency)) return null;
 
     try {
       return ConsistencyLevel.valueOf(consistency.toUpperCase());
     } catch (IllegalArgumentException exception) {
-      ProjectLogger.log("CassandraConnectionManagerImpl:getConsistencyLevel: Exception occurred with error message = " + exception.getMessage(), LoggerEnum.ERROR);
+      ProjectLogger.log(
+          "CassandraConnectionManagerImpl:getConsistencyLevel: Exception occurred with error message = "
+              + exception.getMessage(),
+          LoggerEnum.ERROR);
     }
     return null;
   }
@@ -172,7 +175,8 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
    */
   private static Cluster createCluster(
       String ip, String port, String userName, String password, PoolingOptions poolingOptions) {
-    Cluster.Builder builder = Cluster.builder()
+    Cluster.Builder builder =
+        Cluster.builder()
             .addContactPoint(ip)
             .withPort(Integer.parseInt(port))
             .withProtocolVersion(ProtocolVersion.V3)
@@ -185,7 +189,9 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
     }
 
     ConsistencyLevel consistencyLevel = getConsistencyLevel();
-    ProjectLogger.log("CassandraConnectionManagerImpl:createCluster: Consistency level = " + consistencyLevel, LoggerEnum.INFO);
+    ProjectLogger.log(
+        "CassandraConnectionManagerImpl:createCluster: Consistency level = " + consistencyLevel,
+        LoggerEnum.INFO);
 
     if (consistencyLevel != null) {
       builder.withQueryOptions(new QueryOptions().setConsistencyLevel(consistencyLevel));
