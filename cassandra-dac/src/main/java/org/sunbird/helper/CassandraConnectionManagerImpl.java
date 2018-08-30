@@ -1,15 +1,6 @@
 package org.sunbird.helper;
 
-import com.datastax.driver.core.AtomicMonotonicTimestampGenerator;
-import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.Host;
-import com.datastax.driver.core.HostDistance;
-import com.datastax.driver.core.Metadata;
-import com.datastax.driver.core.PoolingOptions;
-import com.datastax.driver.core.ProtocolVersion;
-import com.datastax.driver.core.QueryLogger;
-import com.datastax.driver.core.Session;
-import com.datastax.driver.core.TableMetadata;
+import com.datastax.driver.core.*;
 import com.datastax.driver.core.policies.DefaultRetryPolicy;
 import java.io.IOException;
 import java.util.Collection;
@@ -24,9 +15,7 @@ import org.cassandraunit.dataset.cql.ClassPathCQLDataSet;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.sunbird.common.Constants;
 import org.sunbird.common.exception.ProjectCommonException;
-import org.sunbird.common.models.util.JsonKey;
-import org.sunbird.common.models.util.ProjectLogger;
-import org.sunbird.common.models.util.PropertiesCache;
+import org.sunbird.common.models.util.*;
 import org.sunbird.common.responsecode.ResponseCode;
 
 /**
@@ -119,6 +108,7 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
                 .withConstantThreshold(
                     Integer.parseInt(cache.getProperty(Constants.QUERY_LOGGER_THRESHOLD)))
                 .build();
+
         cluster.register(queryLogger);
         cassandraSession = cluster.connect(keyspace);
 
@@ -153,42 +143,73 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
     return connection;
   }
 
-  /**
-   * @param ip String
-   * @param port String
-   * @param userName String
-   * @param password String
-   * @param poolingOptions PoolingOptions
-   * @return Cluster Cluster
-   */
-  private static Cluster createCluster(
-      String ip, String port, String userName, String password, PoolingOptions poolingOptions) {
-    return Cluster.builder()
-        .addContactPoint(ip)
-        .withPort(Integer.parseInt(port))
-        .withProtocolVersion(ProtocolVersion.V3)
-        .withRetryPolicy(DefaultRetryPolicy.INSTANCE)
-        .withTimestampGenerator(new AtomicMonotonicTimestampGenerator())
-        .withPoolingOptions(poolingOptions)
-        .withCredentials(userName, password)
-        .build();
+  private static ConsistencyLevel getConsistencyLevel() {
+    String consistency = ProjectUtil.getConfigValue(JsonKey.SUNBIRD_CASSANDRA_CONSISTENCY_LEVEL);
+
+    ProjectLogger.log(
+        "CassandraConnectionManagerImpl:getConsistencyLevel: level = " + consistency,
+        LoggerEnum.INFO);
+
+    if (StringUtils.isBlank(consistency)) return null;
+
+    try {
+      return ConsistencyLevel.valueOf(consistency.toUpperCase());
+    } catch (IllegalArgumentException exception) {
+      ProjectLogger.log(
+          "CassandraConnectionManagerImpl:getConsistencyLevel: Exception occurred with error message = "
+              + exception.getMessage(),
+          LoggerEnum.ERROR);
+    }
+    return null;
   }
 
   /**
-   * @param ip String
-   * @param port String
-   * @param poolingOptions PoolingOptions
-   * @return Cluster Cluster
+   * Create cassandra cluster with user credentials.
+   *
+   * @param ip IP address of cluster node
+   * @param port Port of cluster node
+   * @param userName DB username
+   * @param password DB password
+   * @param poolingOptions Pooling options
+   * @return Cassandra cluster
+   */
+  private static Cluster createCluster(
+      String ip, String port, String userName, String password, PoolingOptions poolingOptions) {
+    Cluster.Builder builder =
+        Cluster.builder()
+            .addContactPoint(ip)
+            .withPort(Integer.parseInt(port))
+            .withProtocolVersion(ProtocolVersion.V3)
+            .withRetryPolicy(DefaultRetryPolicy.INSTANCE)
+            .withTimestampGenerator(new AtomicMonotonicTimestampGenerator())
+            .withPoolingOptions(poolingOptions);
+
+    if (StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(password)) {
+      builder.withCredentials(userName, password);
+    }
+
+    ConsistencyLevel consistencyLevel = getConsistencyLevel();
+    ProjectLogger.log(
+        "CassandraConnectionManagerImpl:createCluster: Consistency level = " + consistencyLevel,
+        LoggerEnum.INFO);
+
+    if (consistencyLevel != null) {
+      builder.withQueryOptions(new QueryOptions().setConsistencyLevel(consistencyLevel));
+    }
+
+    return builder.build();
+  }
+
+  /**
+   * Create cassandra cluster.
+   *
+   * @param ip IP address of cluster node
+   * @param port Port of cluster node
+   * @param poolingOptions Pooling options
+   * @return Cassandra cluster
    */
   private static Cluster createCluster(String ip, String port, PoolingOptions poolingOptions) {
-    return Cluster.builder()
-        .addContactPoint(ip)
-        .withPort(Integer.parseInt(port))
-        .withProtocolVersion(ProtocolVersion.V3)
-        .withRetryPolicy(DefaultRetryPolicy.INSTANCE)
-        .withTimestampGenerator(new AtomicMonotonicTimestampGenerator())
-        .withPoolingOptions(poolingOptions)
-        .build();
+    return createCluster(ip, port, null, null, poolingOptions);
   }
 
   /**
@@ -218,6 +239,7 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
                 .withPort(
                     Integer.parseInt(propertiesCache.getProperty(JsonKey.EMBEDDED_CASSANDRA_PORT)))
                 .build();
+
         cassandraSession = cluster.connect();
         CQLDataLoader dataLoader = new CQLDataLoader(cassandraSession);
         ProjectLogger.log("CASSANDRA EMBEDDED MODE - LOADING DATA");
