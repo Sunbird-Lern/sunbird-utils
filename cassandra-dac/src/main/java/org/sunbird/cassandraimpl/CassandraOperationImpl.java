@@ -99,8 +99,7 @@ public class CassandraOperationImpl implements CassandraOperation {
     Response response = new Response();
     try {
       String query = CassandraUtil.getUpdateQueryStatement(keyspaceName, tableName, request);
-      String updateQuery = query + Constants.IF_EXISTS;
-      PreparedStatement statement = connectionManager.getSession(keyspaceName).prepare(updateQuery);
+      PreparedStatement statement = connectionManager.getSession(keyspaceName).prepare(query);
       Object[] array = new Object[request.size()];
       int i = 0;
       String str = "";
@@ -348,7 +347,7 @@ public class CassandraOperationImpl implements CassandraOperation {
         "Cassandra Service upsertRecord method started at ==" + startTime, LoggerEnum.INFO);
     Response response = new Response();
     try {
-      String query = CassandraUtil.getPreparedStatementFrUpsert(keyspaceName, tableName, request);
+      String query = CassandraUtil.getPreparedStatement(keyspaceName, tableName, request);
       PreparedStatement statement = connectionManager.getSession(keyspaceName).prepare(query);
       BoundStatement boundStatement = new BoundStatement(statement);
       Iterator<Object> iterator = request.values().iterator();
