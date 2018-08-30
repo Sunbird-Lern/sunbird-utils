@@ -552,7 +552,7 @@ public final class RequestValidator {
     String startDate = (String) request.getRequest().get(JsonKey.START_DATE);
     String endDate = (String) request.getRequest().get(JsonKey.END_DATE);
 
-    validateBatchStartDateForBatchUpdate(startDate);
+    validateUpdateBatchStartDate(startDate);
     validateEndDate(startDate, endDate);
 
     boolean bool = validateDateWithTodayDate(endDate);
@@ -581,12 +581,10 @@ public final class RequestValidator {
     }
   }
 
-  private static void validateBatchStartDateForBatchUpdate(String startDate) {
-
-    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
+  private static void validateUpdateBatchStartDate(String startDate) {
     if (StringUtils.isNotBlank(startDate)) {
       try {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         format.parse(startDate);
       } catch (Exception e) {
         throw new ProjectCommonException(
