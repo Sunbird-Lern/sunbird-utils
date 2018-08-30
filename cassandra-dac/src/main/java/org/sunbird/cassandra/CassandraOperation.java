@@ -61,6 +61,16 @@ public interface CassandraOperation {
       String keyspaceName, String tableName, Map<String, String> compositeKeyMap);
 
   /**
+   * @desc This method is used to delete one or more records from Cassandra DB corresponding to
+   *     given list of primary keys
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param identifierList List of primary keys of records to be deleted
+   * @return Status of delete records operation
+   */
+  public boolean deleteRecords(String keyspaceName, String tableName, List<String> identifierList);
+
+  /**
    * @desc This method is used to fetch record based on given parameter and it's value (it only
    *     fetch the record on indexed property or column or it will throw exception.)
    * @param keyspaceName String (data base keyspace name)
@@ -264,4 +274,28 @@ public interface CassandraOperation {
    */
   Response getRecordsByCompositeKey(
       String keyspaceName, String tableName, Map<String, Object> compositeKeyMap);
+
+  /**
+   * Fetch records with specified columns for given identifiers.
+   *
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param properties List of columns to be returned in each record
+   * @param ids List of identifiers
+   * @return Response consisting of fetched records
+   */
+  Response getRecordsByIdsWithSpecifiedColumns(
+      String keyspaceName, String tableName, List<String> properties, List<String> ids);
+
+  /**
+   * Fetch records for given primary keys.
+   *
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param primaryKeys List of primary key values
+   * @param primaryKeyColumnName Name of the primary key column
+   * @return Response consisting of fetched records
+   */
+  Response getRecordsByPrimaryKeys(
+      String keyspaceName, String tableName, List<String> primaryKeys, String primaryKeyColumnName);
 }

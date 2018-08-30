@@ -346,6 +346,11 @@ public interface ResponseMessage {
         "Request failed as user access token is not provided.";
     String DUPLICATE_EXTERNAL_IDS =
         "Duplicate external IDs for given idType ({0}) and provider ({1}).";
+    String INVALID_DUPLICATE_VALUE = "Values for {0} and {1} cannot be same.";
+    String EMAIL_RECIPIENTS_EXCEEDS_MAX_LIMIT =
+        "Email notification is not sent as the number of recipients exceeded configured limit ({0}).";
+    String NO_EMAIL_RECIPIENTS =
+        "Email notification is not sent as the number of recipients is zero.";
   }
 
   interface Key {
@@ -648,5 +653,8 @@ public interface ResponseMessage {
     String ERROR_REGISTRY_ENTITY_ID_BLANK = "ERROR_REGISTRY_ENTITY_ID_BLANK";
     String ERROR_REGISTRY_ACCESS_TOKEN_BLANK = "ERROR_REGISTRY_ACCESS_TOKEN_BLANK";
     String DUPLICATE_EXTERNAL_IDS = "DUPLICATE_EXTERNAL_IDS";
+    String INVALID_DUPLICATE_VALUE = "INVALID_DUPLICATE_VALUE";
+    String EMAIL_RECIPIENTS_EXCEEDS_MAX_LIMIT = "EMAIL_RECIPIENTS_EXCEEDS_MAX_LIMIT";
+    String NO_EMAIL_RECIPIENTS = "NO_EMAIL_RECIPIENTS";
   }
 }

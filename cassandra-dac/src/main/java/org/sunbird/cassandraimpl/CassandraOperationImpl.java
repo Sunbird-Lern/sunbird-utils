@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.sunbird.cassandra.CassandraOperation;
 import org.sunbird.common.CassandraUtil;
 import org.sunbird.common.Constants;
@@ -259,7 +260,8 @@ public class CassandraOperationImpl implements CassandraOperation {
     try {
       Builder selectBuilder;
       if (CollectionUtils.isNotEmpty(fields)) {
-        selectBuilder = QueryBuilder.select((String[]) fields.toArray());
+        String[] dbFields = fields.toArray(new String[fields.size()]);
+        selectBuilder = QueryBuilder.select(dbFields);
       } else {
         selectBuilder = QueryBuilder.select().all();
       }
@@ -267,8 +269,12 @@ public class CassandraOperationImpl implements CassandraOperation {
       Where selectWhere = selectQuery.where();
       for (Entry<String, Object> entry : propertyMap.entrySet()) {
         if (entry.getValue() instanceof List) {
-          Clause clause = QueryBuilder.in(entry.getKey(), entry.getValue());
-          selectWhere.and(clause);
+          List<Object> list = (List) entry.getValue();
+          if (null != list) {
+            Object[] propertyValues = list.toArray(new Object[list.size()]);
+            Clause clause = QueryBuilder.in(entry.getKey(), propertyValues);
+            selectWhere.and(clause);
+          }
         } else {
           Clause clause = QueryBuilder.eq(entry.getKey(), entry.getValue());
           selectWhere.and(clause);
@@ -633,6 +639,35 @@ public class CassandraOperationImpl implements CassandraOperation {
   }
 
   @Override
+  public boolean deleteRecords(String keyspaceName, String tableName, List<String> identifierList) {
+    long startTime = System.currentTimeMillis();
+    ResultSet resultSet;
+    ProjectLogger.log(
+        "CassandraOperationImpl: deleteRecords called at " + startTime, LoggerEnum.INFO);
+    try {
+      Delete delete = QueryBuilder.delete().from(keyspaceName, tableName);
+      Delete.Where deleteWhere = delete.where();
+      Clause clause = QueryBuilder.in(JsonKey.ID, identifierList);
+      deleteWhere.and(clause);
+      resultSet = connectionManager.getSession(keyspaceName).execute(delete);
+    } catch (Exception e) {
+      ProjectLogger.log(
+          "CassandraOperationImpl: deleteRecords by list of primary key. "
+              + Constants.EXCEPTION_MSG_DELETE
+              + tableName
+              + " : "
+              + e.getMessage(),
+          e);
+      throw new ProjectCommonException(
+          ResponseCode.SERVER_ERROR.getErrorCode(),
+          ResponseCode.SERVER_ERROR.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    logQueryElapseTime("deleteRecords", startTime);
+    return resultSet.wasApplied();
+  }
+
+  @Override
   public Response getRecordsByCompositeKey(
       String keyspaceName, String tableName, Map<String, Object> compositeKeyMap) {
     long startTime = System.currentTimeMillis();
@@ -662,6 +697,82 @@ public class CassandraOperationImpl implements CassandraOperation {
           ResponseCode.SERVER_ERROR.getResponseCode());
     }
     logQueryElapseTime("getRecordsByCompositeKey", startTime);
+    return response;
+  }
+
+  @Override
+  public Response getRecordsByIdsWithSpecifiedColumns(
+      String keyspaceName, String tableName, List<String> properties, List<String> ids) {
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log(
+        "CassandraOperationImpl: getRecordsByIdsWithSpecifiedColumns call started at " + startTime,
+        LoggerEnum.INFO);
+    Response response = new Response();
+    try {
+      Builder selectBuilder;
+      if (CollectionUtils.isNotEmpty(properties)) {
+        selectBuilder = QueryBuilder.select(properties.toArray(new String[properties.size()]));
+      } else {
+        selectBuilder = QueryBuilder.select().all();
+      }
+      response = executeSelectQuery(keyspaceName, tableName, ids, selectBuilder, "");
+    } catch (Exception e) {
+      ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName + " : " + e.getMessage(), e);
+      throw new ProjectCommonException(
+          ResponseCode.SERVER_ERROR.getErrorCode(),
+          ResponseCode.SERVER_ERROR.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    logQueryElapseTime("getRecordsByIdsWithSpecifiedColumns", startTime);
+    return response;
+  }
+
+  private Response executeSelectQuery(
+      String keyspaceName,
+      String tableName,
+      List<String> ids,
+      Builder selectBuilder,
+      String primaryKeyColumnName) {
+    Response response;
+    Select selectQuery = selectBuilder.from(keyspaceName, tableName);
+    Where selectWhere = selectQuery.where();
+    Clause clause = null;
+    if (StringUtils.isBlank(primaryKeyColumnName)) {
+      clause = QueryBuilder.in(JsonKey.ID, ids.toArray(new Object[ids.size()]));
+    } else {
+      clause = QueryBuilder.in(primaryKeyColumnName, ids.toArray(new Object[ids.size()]));
+    }
+
+    selectWhere.and(clause);
+    ResultSet results = connectionManager.getSession(keyspaceName).execute(selectQuery);
+    response = CassandraUtil.createResponse(results);
+    return response;
+  }
+
+  @Override
+  public Response getRecordsByPrimaryKeys(
+      String keyspaceName,
+      String tableName,
+      List<String> primaryKeys,
+      String primaryKeyColumnName) {
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log(
+        "CassandraOperationImpl: getRecordsByPrimaryKeys call started at " + startTime,
+        LoggerEnum.INFO);
+    Response response = new Response();
+    try {
+      Builder selectBuilder = QueryBuilder.select().all();
+      response =
+          executeSelectQuery(
+              keyspaceName, tableName, primaryKeys, selectBuilder, primaryKeyColumnName);
+    } catch (Exception e) {
+      ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName + " : " + e.getMessage(), e);
+      throw new ProjectCommonException(
+          ResponseCode.SERVER_ERROR.getErrorCode(),
+          ResponseCode.SERVER_ERROR.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    logQueryElapseTime("getRecordsByPrimaryKeys", startTime);
     return response;
   }
 }
