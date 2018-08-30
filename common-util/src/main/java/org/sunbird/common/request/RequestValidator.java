@@ -3,23 +3,14 @@ package org.sunbird.common.request;
 import java.math.BigInteger;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
-import org.sunbird.common.models.util.JsonKey;
-import org.sunbird.common.models.util.ProjectLogger;
-import org.sunbird.common.models.util.ProjectUtil;
+import org.sunbird.common.models.util.*;
 import org.sunbird.common.models.util.ProjectUtil.ProgressStatus;
 import org.sunbird.common.models.util.ProjectUtil.Source;
-import org.sunbird.common.models.util.PropertiesCache;
-import org.sunbird.common.models.util.StringFormatter;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.common.responsecode.ResponseMessage;
 
@@ -561,7 +552,7 @@ public final class RequestValidator {
     String startDate = (String) request.getRequest().get(JsonKey.START_DATE);
     String endDate = (String) request.getRequest().get(JsonKey.END_DATE);
 
-    validateStartDate(startDate);
+    validateUpdateBatchStartDate(startDate);
     validateEndDate(startDate, endDate);
 
     boolean bool = validateDateWithTodayDate(endDate);
@@ -587,6 +578,20 @@ public final class RequestValidator {
           ResponseCode.dataTypeError.getErrorCode(),
           ResponseCode.dataTypeError.getErrorMessage(),
           ERROR_CODE);
+    }
+  }
+
+  private static void validateUpdateBatchStartDate(String startDate) {
+    if (StringUtils.isNotBlank(startDate)) {
+      try {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        format.parse(startDate);
+      } catch (Exception e) {
+        throw new ProjectCommonException(
+            ResponseCode.dateFormatError.getErrorCode(),
+            ResponseCode.dateFormatError.getErrorMessage(),
+            ERROR_CODE);
+      }
     }
   }
 
