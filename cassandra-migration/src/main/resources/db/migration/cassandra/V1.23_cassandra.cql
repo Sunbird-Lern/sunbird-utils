@@ -1,0 +1,1 @@
+create INDEX inx_system_settings on system_settings (field);
