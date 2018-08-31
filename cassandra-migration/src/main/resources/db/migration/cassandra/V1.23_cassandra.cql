@@ -1,0 +1,1 @@
+create INDEX fieldIndex on system_settings (field);
