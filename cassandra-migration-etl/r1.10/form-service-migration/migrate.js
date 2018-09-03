@@ -6,12 +6,12 @@
 // example: node migration.js 11.7.1.7:9200 username password
 
 const cassandra = require('cassandra-driver');
-let cassandraClientOptions = { contactPoints: [process.argv[2]] };
+let cassandra_client_options = { contactPoints: [process.argv[2]] };
 if(process.argv[3] && process.argv[4]){
-  cassandraClientOptions.authProvider = new cassandra.auth.PlainTextAuthProvider(process.argv[3], process.argv[4]);
+  cassandra_client_options.authProvider = new cassandra.auth.PlainTextAuthProvider(process.argv[3], process.argv[4]);
 }
 console.log('connecting to DB with', process.argv[2], process.argv[3], process.argv[4]);
-const client = new cassandra.Client(cassandraClientOptions);
+const client = new cassandra.Client(cassandra_client_options);
 
 let transformed_data = [];
 let dest_obj = {
@@ -25,8 +25,6 @@ let dest_obj = {
   last_modified: undefined,
   data: undefined
 }
-//create keyspace
-
 
 const query = 'SELECT * FROM sunbird.tenant_preference';
 client.execute(query)
@@ -50,7 +48,7 @@ client.execute(query)
           try {
             row.data = JSON.parse(row.data);
           } catch (e) {
-            console.log('JSON parse error! :', row.orgid, row.data);
+            console.log('JSON parse error! :', row.key, row.orgid, row.data);
           }
         if (typeof row.data === "object") {
           Object.keys(row.data).forEach((key) => {
