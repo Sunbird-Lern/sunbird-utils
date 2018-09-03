@@ -592,6 +592,11 @@ public final class RequestValidator {
             ResponseCode.dateFormatError.getErrorMessage(),
             ERROR_CODE);
       }
+    } else {
+      throw new ProjectCommonException(
+          ResponseCode.courseBatchStartDateRequired.getErrorCode(),
+          ResponseCode.courseBatchStartDateRequired.getErrorMessage(),
+          ERROR_CODE);
     }
   }
 
