@@ -1,1 +1,1 @@
-create INDEX inx_system_settings_field on system_settings (field);
+create INDEX inx_system_settings on system_settings (field);
