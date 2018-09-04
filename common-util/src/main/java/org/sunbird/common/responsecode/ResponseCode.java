@@ -633,6 +633,9 @@ public enum ResponseCode {
       ResponseMessage.Message.EMAIL_RECIPIENTS_EXCEEDS_MAX_LIMIT),
   emailNotSentRecipientsZero(
       ResponseMessage.Key.NO_EMAIL_RECIPIENTS, ResponseMessage.Message.NO_EMAIL_RECIPIENTS),
+  invalidOrgIdAndChannelRelation(
+      ResponseMessage.Key.INVALID_ORG_AND_CHANNEL_RELATION,
+      ResponseMessage.Message.INVALID_ORG_AND_CHANNEL_RELATION),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

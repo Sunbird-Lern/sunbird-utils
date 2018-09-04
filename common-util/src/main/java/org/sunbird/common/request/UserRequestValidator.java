@@ -51,6 +51,22 @@ public class UserRequestValidator {
     validateWebPages(userRequest);
   }
 
+  /**
+   * This method will validate create user data.
+   *
+   * @param userRequest Request
+   */
+  public static void validateCreateUserV2(Request userRequest) {
+    if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.CHANNEL))) {
+      throw new ProjectCommonException(
+          ResponseCode.mandatoryParamsMissing.getErrorCode(),
+          ProjectUtil.formatMessage(
+              ResponseCode.mandatoryParamsMissing.getErrorMessage(), JsonKey.CHANNEL),
+          ERROR_CODE);
+    }
+    validateCreateUser(userRequest);
+  }
+
   public static void fieldsNotAllowed(List<String> fields, Request userRequest) {
     for (String field : fields) {
       if (((userRequest.getRequest().get(field) instanceof String)

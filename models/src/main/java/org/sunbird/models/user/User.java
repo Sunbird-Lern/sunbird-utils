@@ -56,7 +56,16 @@ public class User implements Serializable {
   private String channel;
   private String loginId;
   private String registryId;
+  private String organisationId;
   private List<Map<String, String>> externalIds;
+
+  public String getOrganisationId() {
+    return organisationId;
+  }
+
+  public void setOrganisationId(String organisationId) {
+    this.organisationId = organisationId;
+  }
 
   public String getRegistryId() {
     return registryId;
