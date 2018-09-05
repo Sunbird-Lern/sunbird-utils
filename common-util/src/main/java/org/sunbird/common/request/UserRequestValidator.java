@@ -60,7 +60,8 @@ public class UserRequestValidator extends BaseRequestValidator {
     BaseRequestValidator requestValidator = new BaseRequestValidator();
     requestValidator.validateParam(
         (String) userRequest.getRequest().get(JsonKey.CHANNEL),
-        ResponseCode.mandatoryParamsMissing);
+        ResponseCode.mandatoryParamsMissing,
+        JsonKey.CHANNEL);
     validateCreateUser(userRequest);
   }
 
