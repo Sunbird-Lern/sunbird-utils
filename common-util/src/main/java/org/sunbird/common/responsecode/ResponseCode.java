@@ -634,8 +634,7 @@ public enum ResponseCode {
   emailNotSentRecipientsZero(
       ResponseMessage.Key.NO_EMAIL_RECIPIENTS, ResponseMessage.Message.NO_EMAIL_RECIPIENTS),
   invalidOrgIdAndChannelRelation(
-      ResponseMessage.Key.INVALID_ORG_AND_CHANNEL_RELATION,
-      ResponseMessage.Message.INVALID_ORG_AND_CHANNEL_RELATION),
+      ResponseMessage.Key.PARAMETER_MISMATCH, ResponseMessage.Message.PARAMETER_MISMATCH),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

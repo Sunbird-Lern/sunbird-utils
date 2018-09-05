@@ -351,8 +351,7 @@ public interface ResponseMessage {
         "Email notification is not sent as the number of recipients exceeded configured limit ({0}).";
     String NO_EMAIL_RECIPIENTS =
         "Email notification is not sent as the number of recipients is zero.";
-    String INVALID_ORG_AND_CHANNEL_RELATION =
-        "organisationId {0} does not belongs to given channel {1}.";
+    String PARAMETER_MISMATCH = "Mismatch of given parameters: {0}";
   }
 
   interface Key {
@@ -658,6 +657,6 @@ public interface ResponseMessage {
     String INVALID_DUPLICATE_VALUE = "INVALID_DUPLICATE_VALUE";
     String EMAIL_RECIPIENTS_EXCEEDS_MAX_LIMIT = "EMAIL_RECIPIENTS_EXCEEDS_MAX_LIMIT";
     String NO_EMAIL_RECIPIENTS = "NO_EMAIL_RECIPIENTS";
-    String INVALID_ORG_AND_CHANNEL_RELATION = "INVALID_ORG_AND_CHANNEL_RELATION";
+    String PARAMETER_MISMATCH = "PARAMETER_MISMATCH";
   }
 }

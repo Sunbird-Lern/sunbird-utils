@@ -14,7 +14,7 @@ import org.sunbird.common.models.util.StringFormatter;
 import org.sunbird.common.responsecode.ResponseCode;
 
 /** @author Amit Kumar */
-public class UserRequestValidator {
+public class UserRequestValidator extends BaseRequestValidator {
 
   private static final int ERROR_CODE = ResponseCode.CLIENT_ERROR.getResponseCode();
 
@@ -57,13 +57,10 @@ public class UserRequestValidator {
    * @param userRequest Request
    */
   public static void validateCreateUserV2(Request userRequest) {
-    if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.CHANNEL))) {
-      throw new ProjectCommonException(
-          ResponseCode.mandatoryParamsMissing.getErrorCode(),
-          ProjectUtil.formatMessage(
-              ResponseCode.mandatoryParamsMissing.getErrorMessage(), JsonKey.CHANNEL),
-          ERROR_CODE);
-    }
+    BaseRequestValidator requestValidator = new BaseRequestValidator();
+    requestValidator.validateParam(
+        (String) userRequest.getRequest().get(JsonKey.CHANNEL),
+        ResponseCode.mandatoryParamsMissing);
     validateCreateUser(userRequest);
   }
 
