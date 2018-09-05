@@ -4,17 +4,17 @@ import akka.actor.ActorRef;
 import org.sunbird.models.systemsetting.SystemSetting;
 
 /**
- * This class will provide utility methods for Location service
+ * This interface defines methods supported by System Setting service.
  *
  * @author Amit Kumar
  */
 public interface SystemSettingClient {
 
   /**
-   * @desc This method will fetch system setting details by id.
+   * @desc Get system setting information for given field (setting) name.
    * @param actorRef Actor reference.
-   * @param id SystemSetting id.
-   * @return SystemSetting details.
+   * @param field System setting field name.
+   * @return System setting details
    */
   SystemSetting getSystemSettingByField(ActorRef actorRef, String field);
 }
