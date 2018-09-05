@@ -351,7 +351,7 @@ public interface ResponseMessage {
         "Email notification is not sent as the number of recipients exceeded configured limit ({0}).";
     String NO_EMAIL_RECIPIENTS =
         "Email notification is not sent as the number of recipients is zero.";
-    String PARAMETER_MISMATCH = "Mismatch of given parameters: {0}";
+    String PARAMETER_MISMATCH = "Mismatch of given parameters: {0}.";
   }
 
   interface Key {
