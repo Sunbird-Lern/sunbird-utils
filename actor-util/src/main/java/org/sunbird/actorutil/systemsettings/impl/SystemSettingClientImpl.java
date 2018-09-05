@@ -23,32 +23,34 @@ public class SystemSettingClientImpl implements SystemSettingClient {
   public static SystemSettingClientImpl getInstance() {
     if (null == systemSettingClient) {
       systemSettingClient = new SystemSettingClientImpl();
-    } else {
-      return systemSettingClient;
     }
     return systemSettingClient;
   }
 
   @Override
   public SystemSetting getSystemSettingByField(ActorRef actorRef, String field) {
-    return getResponse(actorRef, JsonKey.FIELD, field);
+    return getSystemSetting(actorRef, JsonKey.FIELD, field);
   }
 
-  private SystemSetting getResponse(ActorRef actorRef, String param, Object value) {
+  private SystemSetting getSystemSetting(ActorRef actorRef, String param, Object value) {
     SystemSetting systemSetting = null;
     Request request = new Request();
     Map<String, Object> map = new HashMap<>();
     map.put(param, value);
     request.setRequest(map);
     request.setOperation(ActorOperations.GET_SYSTEM_SETTING.getValue());
-    ProjectLogger.log("SystemSettingClientImpl : call getSystemSetting ", LoggerEnum.INFO);
+    ProjectLogger.log("SystemSettingClientImpl: getSystemSetting called", LoggerEnum.INFO);
     Object obj = interServiceCommunication.getResponse(actorRef, request);
     if (obj instanceof Response) {
       Response responseObj = (Response) obj;
       return (SystemSetting) responseObj.getResult().get(JsonKey.RESPONSE);
+    } else if (obj instanceof ProjectCommonException) {
+      throw (ProjectCommonException) obj;
     } else {
-      systemSetting = new SystemSetting();
+      throw new ProjectCommonException(
+          ResponseCode.SERVER_ERROR.getErrorCode(),
+          ResponseCode.SERVER_ERROR.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
     }
-    return systemSetting;
   }
 }
