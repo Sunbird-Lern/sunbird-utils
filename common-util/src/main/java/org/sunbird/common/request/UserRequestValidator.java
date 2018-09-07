@@ -14,7 +14,7 @@ import org.sunbird.common.models.util.StringFormatter;
 import org.sunbird.common.responsecode.ResponseCode;
 
 /** @author Amit Kumar */
-public class UserRequestValidator {
+public class UserRequestValidator extends BaseRequestValidator {
 
   private static final int ERROR_CODE = ResponseCode.CLIENT_ERROR.getResponseCode();
 
@@ -49,6 +49,20 @@ public class UserRequestValidator {
     educationValidation(userRequest);
     jobProfileValidation(userRequest);
     validateWebPages(userRequest);
+  }
+
+  /**
+   * This method will validate create user data.
+   *
+   * @param userRequest Request
+   */
+  public static void validateCreateUserV2(Request userRequest) {
+    BaseRequestValidator requestValidator = new BaseRequestValidator();
+    requestValidator.validateParam(
+        (String) userRequest.getRequest().get(JsonKey.CHANNEL),
+        ResponseCode.mandatoryParamsMissing,
+        JsonKey.CHANNEL);
+    validateCreateUser(userRequest);
   }
 
   public static void fieldsNotAllowed(List<String> fields, Request userRequest) {

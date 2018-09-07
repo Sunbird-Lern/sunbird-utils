@@ -678,7 +678,11 @@ public final class JsonKey {
   public static final String ORIGINAL_EXTERNAL_ID = "originalExternalId";
   public static final String ORIGINAL_ID_TYPE = "originalIdType";
   public static final String ORIGINAL_PROVIDER = "originalProvider";
-  public static final String SUNBIRD_CASSANDRA_CONSISTENCY_LEVEL = "sunbird_cassandra_consistency_level";
+  public static final String SUNBIRD_CASSANDRA_CONSISTENCY_LEVEL =
+      "sunbird_cassandra_consistency_level";
+  public static final String VERSION_2 = "v2";
+  public static final String CUSTODIAN_ORG_CHANNEL = "custodianOrgChannel";
+  public static final String CUSTODIAN_ORG_ID = "custodianOrgId";
 
   private JsonKey() {}
 }
