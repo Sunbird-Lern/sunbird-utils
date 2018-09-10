@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import com.typesafe.config.Config;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -22,6 +23,7 @@ import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.responsecode.ResponseCode;
+import org.sunbird.common.util.ConfigUtil;
 import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
 import org.sunbird.helper.ConnectionManager.ResourceCleanUp;
@@ -669,5 +671,20 @@ public class ElasticSearchUtilTest {
   public void testcalculateEndTime() {
     long endTime = ElasticSearchUtil.calculateEndTime(startTime);
     assertTrue(endTime > startTime);
+  }
+
+  @Test
+  public void testVerifyAndCreateIndicesAndTypes() {
+    Config config = ConfigUtil.getConfig(ElasticSearchUtil.ES_CONFIG_FILE);
+    List<Object> list = (List) config.getAnyRefList("elasticsearch.indices");
+    for (Object obj : list) {
+      Map<String, Object> map = (Map) obj;
+      String indexName = (String) map.get(JsonKey.NAME);
+      List<String> types = (List<String>) map.get(JsonKey.ES_TYPES);
+      assertEquals(ElasticSearchUtil.indexMap.get(indexName), true);
+      for (String type : types) {
+        assertEquals(ElasticSearchUtil.typeMap.get(type), true);
+      }
+    }
   }
 }

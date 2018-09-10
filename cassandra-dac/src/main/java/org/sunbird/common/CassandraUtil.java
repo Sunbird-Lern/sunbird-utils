@@ -41,10 +41,10 @@ public final class CassandraUtil {
   /**
    * @desc This method is used to create prepared statement based on table name and column name
    *     provided in request
-   * @param keyspaceName String (data base keyspace name)
-   * @param tableName String
-   * @param map is key value pair (key is column name and value is value of column)
-   * @return String String
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param map Map where key is column name and value is column value
+   * @return Prepared statement
    */
   public static String getPreparedStatement(
       String keyspaceName, String tableName, Map<String, Object> map) {
@@ -60,7 +60,7 @@ public final class CassandraUtil {
         commaSepValueBuilder.append(Constants.COMMA);
       }
     }
-    query.append(commaSepValueBuilder + ")" + Constants.IF_NOT_EXISTS);
+    query.append(commaSepValueBuilder + Constants.CLOSING_BRACE);
     ProjectLogger.log(query.toString());
     return query.toString();
   }
@@ -139,33 +139,6 @@ public final class CassandraUtil {
             + Constants.IDENTIFIER
             + Constants.EQUAL
             + " ?; ");
-    ProjectLogger.log(query.toString());
-    return query.toString();
-  }
-
-  /**
-   * @desc This method is used to create prepared statement based on table name and column name
-   *     provided
-   * @param keyspaceName String (data base keyspace name)
-   * @param tableName String
-   * @param map is key value pair (key is column name and value is value of column)
-   * @return String String
-   */
-  public static String getPreparedStatementFrUpsert(
-      String keyspaceName, String tableName, Map<String, Object> map) {
-    StringBuilder query = new StringBuilder();
-    query.append(
-        Constants.INSERT_INTO + keyspaceName + Constants.DOT + tableName + Constants.OPEN_BRACE);
-    Set<String> keySet = map.keySet();
-    query.append(String.join(",", keySet) + Constants.VALUES_WITH_BRACE);
-    StringBuilder commaSepValueBuilder = new StringBuilder();
-    for (int i = 0; i < keySet.size(); i++) {
-      commaSepValueBuilder.append(Constants.QUE_MARK);
-      if (i != keySet.size() - 1) {
-        commaSepValueBuilder.append(Constants.COMMA);
-      }
-    }
-    query.append(commaSepValueBuilder + Constants.CLOSING_BRACE);
     ProjectLogger.log(query.toString());
     return query.toString();
   }

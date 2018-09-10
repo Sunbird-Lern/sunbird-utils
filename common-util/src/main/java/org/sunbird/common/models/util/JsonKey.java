@@ -223,7 +223,7 @@ public final class JsonKey {
   public static final String END_TIME = "endTime";
   public static final String ENDORSE_DATE = "endorseDate";
   public static final String ENDORSED_USER_ID = "endorsedUserId";
-  public static final String ENDORSEMENT_COUNT = "endorsementcount";
+  public static final String ENDORSEMENT_COUNT = "endorsementCount";
   public static final String ENDORSERS = "endorsers";
   public static final String ENDORSERS_LIST = "endorsersList";
   public static final String ENROLLMENT_END_DATE = "enrollmentEndDate";
@@ -671,6 +671,18 @@ public final class JsonKey {
   public static final String ONBOARDING_MAIL_MESSAGE = "onboarding_welcome_message";
   public static final String SUNBIRD_DEFAULT_WELCOME_MSG = "sunbird_default_welcome_sms";
   public static final String SUNBIRD_DEFAULT_USER_TYPE = "sunbird_default_user_type";
+  public static final String ES_TYPES = "types";
+  public static final String RECIPIENT_SEARCH_QUERY = "recipientSearchQuery";
+  public static final String SUNBIRD_EMAIL_MAX_RECEPIENT_LIMIT =
+      "sunbird_email_max_recipients_limit";
+  public static final String ORIGINAL_EXTERNAL_ID = "originalExternalId";
+  public static final String ORIGINAL_ID_TYPE = "originalIdType";
+  public static final String ORIGINAL_PROVIDER = "originalProvider";
+  public static final String SUNBIRD_CASSANDRA_CONSISTENCY_LEVEL =
+      "sunbird_cassandra_consistency_level";
+  public static final String VERSION_2 = "v2";
+  public static final String CUSTODIAN_ORG_CHANNEL = "custodianOrgChannel";
+  public static final String CUSTODIAN_ORG_ID = "custodianOrgId";
 
   private JsonKey() {}
 }

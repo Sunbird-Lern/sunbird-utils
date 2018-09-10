@@ -112,7 +112,9 @@ public enum ActorOperations {
   PROCESS_AUDIT_LOG("processAuditLog"),
   ADD_SKILL("addSkill"),
   GET_SKILL("getSkill"),
+  UPDATE_SKILL("updateSkill"),
   GET_SKILLS_LIST("getSkillsList"),
+  ADD_USER_SKILL_ENDORSEMENT("addUserSkillEndorsement"),
   PROFILE_VISIBILITY("profileVisibility"),
   CREATE_TENANT_PREFERENCE("createTanentPreference"),
   UPDATE_TENANT_PREFERENCE("updateTenantPreference"),
@@ -137,7 +139,10 @@ public enum ActorOperations {
   SEARCH_DATA("searchData"),
   GET_METRICS("getMetrics"),
   REG_CHANNEL("channelReg"),
-  UPDATE_LEARNER_STATE("updateLearnerState");
+  UPDATE_LEARNER_STATE("updateLearnerState"),
+  GET_SYSTEM_SETTING("getSystemSetting"),
+  GET_ALL_SYSTEM_SETTINGS("getAllSystemSettings"),
+  SET_SYSTEM_SETTING("setSystemSetting");
   private String value;
 
   /**
