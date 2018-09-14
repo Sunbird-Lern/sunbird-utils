@@ -199,7 +199,7 @@ public class TelemetryGenerator {
     if (StringUtils.isNotBlank(appId)) {
       Map<String, Object> appIdMap = new HashMap<>();
       appIdMap.put(JsonKey.ID, appId);
-      appIdMap.put(JsonKey.TYPE, JsonKey.SEARCH);
+      appIdMap.put(JsonKey.TYPE, JsonKey.APP_ID);
       eventContext.getCdata().add(appIdMap);
     }
     Map<String, Object> edata = generateSearchEdata(params);
