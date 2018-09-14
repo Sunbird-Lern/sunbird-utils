@@ -683,6 +683,7 @@ public final class JsonKey {
   public static final String VERSION_2 = "v2";
   public static final String CUSTODIAN_ORG_CHANNEL = "custodianOrgChannel";
   public static final String CUSTODIAN_ORG_ID = "custodianOrgId";
+  public static final String APP_ID = "appId";
 
   private JsonKey() {}
 }

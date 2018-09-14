@@ -164,6 +164,7 @@ public class TelemetryGenerator {
     } catch (Exception e) {
       ProjectLogger.log(e.getMessage(), e);
     }
+    System.out.println("Telemetry Data: " + event);
     return event;
   }
 
@@ -192,6 +193,14 @@ public class TelemetryGenerator {
       map.put(JsonKey.ID, reqId);
       map.put(JsonKey.TYPE, JsonKey.REQUEST);
       eventContext.getCdata().add(map);
+    }
+    // collect x-app-id and put it into cdata.
+    String appId = (String) context.get(JsonKey.APP_ID);
+    if (StringUtils.isNotBlank(appId)) {
+      Map<String, Object> appIdMap = new HashMap<>();
+      appIdMap.put(JsonKey.ID, appId);
+      appIdMap.put(JsonKey.TYPE, JsonKey.SEARCH);
+      eventContext.getCdata().add(appIdMap);
     }
     Map<String, Object> edata = generateSearchEdata(params);
     Telemetry telemetry =
