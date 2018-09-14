@@ -164,7 +164,6 @@ public class TelemetryGenerator {
     } catch (Exception e) {
       ProjectLogger.log(e.getMessage(), e);
     }
-    System.out.println("Telemetry Data: " + event);
     return event;
   }
 
