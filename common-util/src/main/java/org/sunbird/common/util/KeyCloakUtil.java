@@ -66,7 +66,7 @@ public class KeyCloakUtil {
     } else {
       request.put(LIFE_SPAN, "3600");
     }
-    // request.put(RE_DIRECT_URI, redirectUri);
+    request.put(RE_DIRECT_URI, redirectUri);
     request.put("isAuthRequired", "false");
     try {
       return generateLink(request);
@@ -114,9 +114,5 @@ public class KeyCloakUtil {
 
     HttpResponse<JsonNode> response = RestUtil.execute(request);
     return response.getBody().getObject().getString("access_token");
-  }
-
-  public static void main(String[] args) {
-    getUpdatePasswordOrVerifyEmailLink("", "", "");
   }
 }
