@@ -1,0 +1,328 @@
+basePath: /home/sudhirgiri/eclipse-workspace1/generator/yaml/template/
+definitions:
+  EmptyResult:
+    properties:
+      result:
+        description: Empty Result
+        type: object
+    title: Empty Result
+    type: object
+  ErrorResponse:
+    allOf:
+    - $ref: '#/definitions/EmptyResult'
+    - $ref: '#/definitions/ResponseHeader'
+    title: Error Response
+    type: object
+  RequiredId:
+    properties:
+      some_id:
+        description: Required Result id
+        type: string
+    title: Required Id
+    type: object
+  ResponseHeader:
+    properties:
+      id:
+        description: API Identifier
+        type: string
+      params:
+        $ref: '#/definitions/ResponseParams'
+      responseCode:
+        description: 'API response code '
+        type: object
+      ts:
+        description: API execution timespan
+        type: string
+      ver:
+        description: API version information
+        type: string
+    title: ResponseHeader
+    type: object
+  ResponseParams:
+    properties:
+      err:
+        description: Error code
+        type: string
+      errormsg:
+        description: Error message
+        type: object
+      msgid:
+        description: Message Id
+        type: string
+      resmsgid:
+        description: Response Message Id
+        type: string
+      status:
+        description: Status code
+        type: string
+    title: Response Parameter
+    type: object
+  ResultWithId:
+    properties:
+      result:
+        $ref: '#/definitions/RequiredId'
+    title: Result With Some Id
+    type: object
+  SuccessResponse:
+    allOf:
+    - $ref: '#/definitions/ResultWithId'
+    - $ref: '#/definitions/ResponseHeader'
+    title: Success Response
+    type: object
+host: staging.open-sunbird.org
+info:
+  description: 'Hey! This is description. '
+  title: User Notes API(s)
+  version: '1.0'
+paths:
+  /user/v1/badges/add:
+    post:
+      description: Write the description of this api method here
+      parameters:
+      - description: The Content Type entity is the media type of the resource. The
+          media types allowed is application/json
+        in: header
+        name: Content-Type
+        required: true
+        type: string
+      - description: Time Stamp at which creating user notes request was sent.
+        in: header
+        name: ts
+        required: true
+        type: string
+      - description: This Id Uniquely identifies a request if the same API is executed
+          multiple times.
+        in: header
+        name: X-msgid
+        required: true
+        type: string
+      - description: This field requires to authenticate the user by providing valid
+          token.
+        in: header
+        name: x-authenticated-user-token
+        required: true
+        type: string
+      - description: 'All User APIs require authorization for use. Specify the authorization
+          key received from the administrator when placing the request for use of
+          the API.The value should be jdksj - jsfs  njkskdjk nsnjfnfs nnskj '
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Request is successfully processed.
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        '400':
+          description: BAD REQUEST. CHECK THE REQUEST HEADER AND BODY
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '401':
+          description: Authorization Issue. Give the correct token required
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '404':
+          description: Requested resource not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '500':
+          description: You got us. Meanwhile, please keep refreshing and if the issue
+            persists feel free to contact at info@sunbird.org
+      summary: Create a new resource
+      tags:
+      - Tags of the API
+  /v1/badges/delete:
+    delete:
+      description: Write the description of this api method here
+      parameters:
+      - description: The Content Type entity is the media type of the resource. The
+          media types allowed is application/json
+        in: header
+        name: Content-Type
+        required: true
+        type: string
+      - description: Time Stamp at which creating user notes request was sent.
+        in: header
+        name: ts
+        required: true
+        type: string
+      - description: This Id Uniquely identifies a request if the same API is executed
+          multiple times.
+        in: header
+        name: X-msgid
+        required: true
+        type: string
+      - description: This field requires to authenticate the user by providing valid
+          token.
+        in: header
+        name: x-authenticated-user-token
+        required: true
+        type: string
+      - description: All User APIs require authorization for use. Specify the authorization
+          key received from the administrator when placing the request for use of
+          the API.The value should be application/json
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Request is successfully processed.
+          schema:
+            $ref: '#/definitions/SuccessRespons'
+        '400':
+          description: BAD REQUEST. CHECK THE REQUEST HEADER AND BODY
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '401':
+          description: Authorization Issue. Give the correct token required
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '404':
+          description: Requested resource not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '500':
+          description: You got us. Meanwhile, please keep refreshing and if the issue
+            persists feel free to contact at info@sunbird.org
+      summary: Delete an existing
+      tags:
+      - Tags of the API
+  /v1/badges/list:
+    get:
+      description: Write the description of this api method here
+      parameters:
+      - description: The Content Type entity is the media type of the resource. The
+          media types allowed is application/json
+        in: header
+        name: Content-Type
+        required: true
+        type: string
+      - description: Time Stamp at which creating user notes request was sent.
+        in: header
+        name: ts
+        required: true
+        type: string
+      - description: This Id Uniquely identifies a request if the same API is executed
+          multiple times.
+        in: header
+        name: X-msgid
+        required: true
+        type: string
+      - description: This field requires to authenticate the user by providing valid
+          token.
+        in: header
+        name: x-authenticated-user-token
+        required: true
+        type: string
+      - description: All User APIs require authorization for use. Specify the authorization
+          key received from the administrator when placing the request for use of
+          the API.The value should be application/json
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Request is successfully processed.
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        '400':
+          description: BAD REQUEST. CHECK THE REQUEST HEADER AND BODY
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '401':
+          description: Authorization Issue. Give the correct token required
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '404':
+          description: Requested resource not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '500':
+          description: You got us. Meanwhile, please keep refreshing and if the issue
+            persists feel free to contact at info@sunbird.org
+      summary: 'get existing '
+      tags:
+      - Tags of the API
+  /v1/badges/update:
+    put:
+      description: Write the description of this api method here
+      parameters:
+      - description: The Content Type entity is the media type of the resource. The
+          media types allowed is multipart/form-data
+        in: header
+        name: Content-Type
+        required: true
+        type: string
+      - description: Time Stamp at which creating user notes request was sent.
+        in: header
+        name: ts
+        required: true
+        type: string
+      - description: This Id Uniquely identifies a request if the same API is executed
+          multiple times.
+        in: header
+        name: X-msgid
+        required: true
+        type: string
+      - description: This field requires to authenticate the user by providing valid
+          token.
+        in: header
+        name: x-authenticated-user-token
+        required: true
+        type: string
+      - description: All User APIs require authorization for use. Specify the authorization
+          key received from the administrator when placing the request for use of
+          the API.The value should be application/json
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Request is successfully processed.
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        '400':
+          description: BAD REQUEST. CHECK THE REQUEST HEADER AND BODY
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '401':
+          description: Authorization Issue. Give the correct token required
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '404':
+          description: Requested resource not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '500':
+          description: You got us. Meanwhile, please keep refreshing and if the issue
+            persists feel free to contact at info@sunbird.org
+      summary: Update an existing
+      tags:
+      - Tags of the API
+schemes:
+- https
+- http
+- ws
+- wss
+securityDefinitions:
+  bearer:
+    in: header
+    name: Authorization
+    type: apiKey
+  userToken:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: '2.0'

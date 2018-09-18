@@ -1,0 +1,2 @@
+The Content Type entity is the media type of the resource. The media types allowed is ${value}
+

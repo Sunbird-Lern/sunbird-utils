@@ -1,0 +1,1 @@
+All User APIs require authorization for use. Specify the authorization key received from the administrator when placing the request for use of the API.The value should be ${value}

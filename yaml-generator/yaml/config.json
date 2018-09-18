@@ -1,0 +1,162 @@
+{
+  "header": {
+  	"basePath": "/home/sudhirgiri/eclipse-workspace1/generator/yaml/template/",
+    "info": {
+     "version" : "1.0",
+     "title" : "User Notes API(s)",
+     "description" : "Hey! This is description. "
+    		},
+    "securityDefinitions" : {
+    	"bearer" : {
+    		"type": "apiKey",
+    		"in": "header",
+    		"name": "Authorization"
+    			},
+    	"userToken" : {
+    		"type": "apiKey",
+    		"in": "header",
+    		"name": "Authorization"
+            }
+    
+    },
+    "schemes" : ["https", "http", "ws", "wss"]
+  },
+  "apis": [
+    {
+      "method": "GET",
+      "path": "/v1/badges/list",
+      "headers": {
+        "Content-Type": {
+        "required": true,
+        "value": "application/json"
+        },
+        "ts": {
+        "required": true,
+        "value": "application/json"
+        },
+        "X-msgid": {
+        "required": true,
+        "value": "application/json"
+        },
+        "x-authenticated-user-token": {
+        "required": true,
+        "value": "application/json"
+        },
+        "Authorization": {
+        "required": true,
+        "value": "application/json"
+        }
+      },
+      "response" : {
+      	"200" : {
+             "description" : "Request is successfully processed.",
+             "schema" :{
+                 "$ref" : "#/definitions/SuccessResponse"
+                        }
+                }
+        		}
+    },
+    {
+      "method": "POST",
+      "path": "/user/v1/badges/add",
+      "headers": {
+        "Content-Type": {
+        	"required": true,
+        	"value": "application/json"
+        		},
+        "ts": {
+        	"required": true,
+        	"value": "application/json"
+        	},
+        "X-msgid": {
+        	"required": true,
+        	"value": "application/json"
+        	},
+        "x-authenticated-user-token": {
+        	"required": true,
+        	"value": "nothing"
+        	},
+        "Authorization": {
+        	"required": true,
+        	"value": "jdksj - jsfs  njkskdjk nsnjfnfs nnskj "
+        }
+      },
+      "response" : {
+      	"200" : {
+             "description" : "Request is successfully processed.",
+             "schema" :{
+                 "$ref" : "#/definitions/SuccessResponse"
+                        }
+                }
+        		}
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/badges/update",
+      "headers": {
+        "Content-Type": {
+        "required": true,
+        "value": "multipart/form-data"
+        },
+        "ts": {
+        "required": true,
+        "value": "application/json"
+        },
+        "X-msgid": {
+        "required": true,
+        "value": "application/json"
+        },
+        "x-authenticated-user-token": {
+        "required": true,
+        "value": "application/json"
+        },
+        "Authorization": {
+        "required": true,
+        "value": "application/json"
+        }
+      },
+      "response" : {
+      	"200" : {
+             "description" : "Request is successfully processed.",
+             "schema" :{
+                 "$ref" : "#/definitions/SuccessResponse"
+                        }
+                }
+        		}
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/badges/delete",
+      "headers": {
+        "Content-Type": {
+        "required": true,
+        "value": "application/json"
+        },
+        "ts": {
+        "required": true,
+        "value": "application/json"
+        },
+        "X-msgid": {
+        "required": true,
+        "value": "application/json"
+        },
+        "x-authenticated-user-token": {
+        "required": true,
+        "value": "application/json"
+        },
+        "Authorization": {
+        "required": true,
+        "value": "application/json"
+        }
+      },
+      "response" : {
+      	"200" : {
+             "description" : "Request is successfully processed.",
+             "schema" :{
+                 "$ref" : "#/definitions/SuccessRespons"
+                        }
+                }
+        		}
+    }
+    ]
+}
