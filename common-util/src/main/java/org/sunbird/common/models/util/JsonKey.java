@@ -684,6 +684,7 @@ public final class JsonKey {
   public static final String CUSTODIAN_ORG_CHANNEL = "custodianOrgChannel";
   public static final String CUSTODIAN_ORG_ID = "custodianOrgId";
   public static final String APP_ID = "appId";
+  public static final String REDIRECT_URI = "redirectUri";
 
   private JsonKey() {}
 }

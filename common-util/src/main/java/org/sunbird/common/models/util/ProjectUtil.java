@@ -592,8 +592,14 @@ public class ProjectUtil {
       context.put(JsonKey.NAME, getValue(map, JsonKey.NAME));
     }
     context.put(JsonKey.BODY, getValue(map, JsonKey.BODY));
-    context.put(JsonKey.FROM_EMAIL, getFromEmail());
-    context.put(JsonKey.ORG_NAME, getValue(map, JsonKey.ORG_NAME));
+    String fromEmail = getFromEmail(map);
+    if (StringUtils.isNotBlank(fromEmail)) {
+      context.put(JsonKey.FROM_EMAIL, fromEmail);
+    }
+    String orgName = getOrgName(map);
+    if (StringUtils.isNotBlank(orgName)) {
+      context.put(JsonKey.ORG_NAME, orgName);
+    }
     String logoUrl = getSunbirdLogoUrl(map);
     if (StringUtils.isNotBlank(logoUrl)) {
       context.put(JsonKey.ORG_IMAGE_URL, logoUrl);
@@ -608,6 +614,15 @@ public class ProjectUtil {
     return context;
   }
 
+  private static String getOrgName(Map<String, Object> map) {
+    String orgName = (String) getValue(map, JsonKey.ORG_NAME);
+    if (StringUtils.isBlank(orgName)) {
+      orgName = getConfigValue(JsonKey.ORG_NAME);
+    }
+    ProjectLogger.log("ProjectUtil:getSunbirdLogoUrl: url = " + orgName, LoggerEnum.INFO.name());
+    return orgName;
+  }
+
   private static String getSunbirdLogoUrl(Map<String, Object> map) {
     String logoUrl = (String) getValue(map, JsonKey.ORG_IMAGE_URL);
     if (StringUtils.isBlank(logoUrl)) {
@@ -617,13 +632,14 @@ public class ProjectUtil {
     return logoUrl;
   }
 
-  private static String getFromEmail() {
-    if (!StringUtils.isBlank(System.getenv(JsonKey.EMAIL_SERVER_FROM))) {
-      return System.getenv(JsonKey.EMAIL_SERVER_FROM);
-    } else if (!StringUtils.isBlank(propertiesCache.getProperty(JsonKey.EMAIL_SERVER_FROM))) {
-      return propertiesCache.getProperty(JsonKey.EMAIL_SERVER_FROM);
+  private static String getFromEmail(Map<String, Object> map) {
+    String fromEmail = (String) getValue(map, JsonKey.EMAIL_SERVER_FROM);
+    if (StringUtils.isBlank(fromEmail)) {
+      fromEmail = getConfigValue(JsonKey.EMAIL_SERVER_FROM);
     }
-    return "";
+    ProjectLogger.log(
+        "ProjectUtil:getFromEmail: from email = " + fromEmail, LoggerEnum.INFO.name());
+    return fromEmail;
   }
 
   private static Object getValue(Map<String, Object> map, String key) {
