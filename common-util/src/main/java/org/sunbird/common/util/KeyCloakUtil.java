@@ -14,7 +14,6 @@ import org.apache.http.HttpHeaders;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
-import org.sunbird.common.models.util.RestUtil;
 
 /**
  * Contains utility methods of keycloak.
@@ -93,7 +92,6 @@ public class KeyCloakUtil {
             .headers(headers)
             .body(mapper.writeValueAsString(request));
     HttpResponse<JsonNode> response = baseRequest.asJson();
-
     return response.getBody().getObject().getString("link");
   }
 
@@ -112,7 +110,7 @@ public class KeyCloakUtil {
             .field("password", ProjectUtil.getConfigValue(SUNBIRD_KEYCLOAK_ADMIN_PASSWORD))
             .field("grant_type", "password");
 
-    HttpResponse<JsonNode> response = RestUtil.execute(request);
+    HttpResponse<JsonNode> response = request.asJson();
     return response.getBody().getObject().getString("access_token");
   }
 }
