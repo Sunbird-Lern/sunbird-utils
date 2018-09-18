@@ -596,9 +596,8 @@ public class ProjectUtil {
     if (StringUtils.isNotBlank(fromEmail)) {
       context.put(JsonKey.FROM_EMAIL, fromEmail);
     }
-    String orgName = getOrgName(map);
-    if (StringUtils.isNotBlank(orgName)) {
-      context.put(JsonKey.ORG_NAME, orgName);
+    if (StringUtils.isNotBlank((String) map.get(JsonKey.ORG_NAME))) {
+      context.put(JsonKey.ORG_NAME, getValue(map, JsonKey.ORG_NAME));
     }
     String logoUrl = getSunbirdLogoUrl(map);
     if (StringUtils.isNotBlank(logoUrl)) {
@@ -612,15 +611,6 @@ public class ProjectUtil {
       context.put(entry.getKey(), entry.getValue());
     }
     return context;
-  }
-
-  private static String getOrgName(Map<String, Object> map) {
-    String orgName = (String) getValue(map, JsonKey.ORG_NAME);
-    if (StringUtils.isBlank(orgName)) {
-      orgName = getConfigValue(JsonKey.ORG_NAME);
-    }
-    ProjectLogger.log("ProjectUtil:getSunbirdLogoUrl: url = " + orgName, LoggerEnum.INFO.name());
-    return orgName;
   }
 
   private static String getSunbirdLogoUrl(Map<String, Object> map) {
@@ -828,7 +818,7 @@ public class ProjectUtil {
       String webUrl,
       String instanceName,
       String appName,
-      String updatePasswordLink,
+      String setPasswordLink,
       String verifyEmailLink) {
     try {
       Properties props = new Properties();
@@ -848,12 +838,15 @@ public class ProjectUtil {
       if (StringUtils.isNotBlank(appName)) {
         params.put("appName", appName);
       }
-      params.put(
-          "updatePasswordLink",
-          StringUtils.isBlank(updatePasswordLink) ? "update_password_link" : updatePasswordLink);
-      params.put(
-          "verifyEmailLink",
-          StringUtils.isBlank(verifyEmailLink) ? "verify_email_link" : verifyEmailLink);
+      if (StringUtils.isBlank(setPasswordLink) && StringUtils.isBlank(verifyEmailLink)) {
+        throw new Exception("setPasswordLink or verifyEmailLink is empty.");
+      }
+      if (StringUtils.isNotBlank(setPasswordLink)) {
+        params.put("setPasswordLink", setPasswordLink);
+      }
+      if (StringUtils.isNotBlank(verifyEmailLink)) {
+        params.put("verifyEmailLink", verifyEmailLink);
+      }
       Template t = ve.getTemplate("/welcomeSmsTemplate.vm");
       VelocityContext context = new VelocityContext(params);
       StringWriter writer = new StringWriter();
