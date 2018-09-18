@@ -20,24 +20,23 @@ import org.sunbird.common.models.util.ProjectUtil;
  *
  * @author Amit Kumar
  */
-public class KeyCloakUtil {
+public class KeycloakRequiredActionLinkUtil {
 
-  public static final String UPDATE_PASSWORD_LINK = "updatePasswordLink";
-  public static final String VERIFY_EMAIL_LINK = "verifyEmailLink";
-  private static final String VERIFY_EMAIL = "VERIFY_EMAIL";
-  private static final String UPDATE_PASSWORD = "UPDATE_PASSWORD";
+  public static final String VERIFY_EMAIL = "VERIFY_EMAIL";
+  public static final String UPDATE_PASSWORD = "UPDATE_PASSWORD";
   private static final String CLIENT_ID = "clientId";
-  private static final String ACTION = "action";
+  private static final String REQUIRED_ACTION = "requiredAction";
   private static final String USERNAME = "userName";
-  private static final String LIFE_SPAN = "lifespan";
-  private static final String RE_DIRECT_URI = "redirectUri";
-  private static final String SUNBIRD_KEYCLOAK_CLIENT_ID = "sunbird_keycloak_client_id";
+  private static final String EXPIRATION_IN_SEC = "expirationInSecs";
+  private static final String REDIRECT_URI = "redirectUri";
+  private static final String ACCESS_TOKEN = "access_token";
+  private static final String GRANT_TYPE = "grant_type";
+  private static final String PASSWORD = "password";
+  private static final String USER_NAME = "username";
   private static final String SUNBIRD_KEYCLOAK_LINK_EXPIRATION_TIME =
-      "sunbird_keycloak_link_expiration_time";
-  private static final String SUNBIRD_KEYCLOAK_ADMIN_USERNAME = "sunbird_keycloak_admin_username";
-  private static final String SUNBIRD_KEYCLOAK_ADMIN_PASSWORD = "sunbird_keycloak_admin_password";
-  private static final String SUNBIRD_KEYCLOAK_BASE_URL = "sunbird_keycloak_base_url";
-  private static final String SUNBIRD_KEYCLOAK_REALM_NAME = "sunbird_keycloak_realm_name";
+      "sunbird_keycloak_required_action_link_expiration_seconds";
+  private static final String SUNBIRD_KEYCLOAK_REQD_ACTION_LINK = "/get-required-action-link";
+  private static final String LINK = "link";
 
   private static ObjectMapper mapper = new ObjectMapper();
 
@@ -49,23 +48,16 @@ public class KeyCloakUtil {
    * @param linkType link type.
    * @return String link.
    */
-  public static String getUpdatePasswordOrVerifyEmailLink(
-      String userName, String redirectUri, String linkType) {
+  public static String getLink(String userName, String redirectUri, String requiredAction) {
     Map<String, String> request = new HashMap<>();
-    request.put(CLIENT_ID, ProjectUtil.getConfigValue(SUNBIRD_KEYCLOAK_CLIENT_ID));
+    request.put(CLIENT_ID, ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_CLIENT_ID));
     request.put(USERNAME, userName);
-    if (linkType.equalsIgnoreCase(UPDATE_PASSWORD_LINK)) {
-      request.put(ACTION, UPDATE_PASSWORD);
-    } else {
-      request.put(ACTION, VERIFY_EMAIL);
+    request.put(REQUIRED_ACTION, requiredAction);
+    String expirationInSecs = ProjectUtil.getConfigValue(SUNBIRD_KEYCLOAK_LINK_EXPIRATION_TIME);
+    if (StringUtils.isNotBlank(expirationInSecs)) {
+      request.put(EXPIRATION_IN_SEC, expirationInSecs);
     }
-    String lifespan = ProjectUtil.getConfigValue(SUNBIRD_KEYCLOAK_LINK_EXPIRATION_TIME);
-    if (StringUtils.isNotBlank(lifespan)) {
-      request.put(LIFE_SPAN, lifespan);
-    } else {
-      request.put(LIFE_SPAN, "3600");
-    }
-    request.put(RE_DIRECT_URI, redirectUri);
+    request.put(REDIRECT_URI, redirectUri);
     request.put("isAuthRequired", "false");
     try {
       return generateLink(request);
@@ -85,14 +77,14 @@ public class KeyCloakUtil {
     }
     RequestBodyEntity baseRequest =
         Unirest.post(
-                ProjectUtil.getConfigValue(SUNBIRD_KEYCLOAK_BASE_URL)
+                ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_URL)
                     + "/realms/"
-                    + ProjectUtil.getConfigValue(SUNBIRD_KEYCLOAK_REALM_NAME)
-                    + "/getlink")
+                    + ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_RELAM)
+                    + SUNBIRD_KEYCLOAK_REQD_ACTION_LINK)
             .headers(headers)
             .body(mapper.writeValueAsString(request));
     HttpResponse<JsonNode> response = baseRequest.asJson();
-    return response.getBody().getObject().getString("link");
+    return response.getBody().getObject().getString(LINK);
   }
 
   private static String getAdminAccessToken() throws Exception {
@@ -100,17 +92,17 @@ public class KeyCloakUtil {
     headers.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED);
     BaseRequest request =
         Unirest.post(
-                ProjectUtil.getConfigValue(SUNBIRD_KEYCLOAK_BASE_URL)
+                ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_URL)
                     + "/realms/"
-                    + ProjectUtil.getConfigValue(SUNBIRD_KEYCLOAK_REALM_NAME)
+                    + ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_RELAM)
                     + "/protocol/openid-connect/token")
             .headers(headers)
-            .field("client_id", ProjectUtil.getConfigValue(SUNBIRD_KEYCLOAK_CLIENT_ID))
-            .field("username", ProjectUtil.getConfigValue(SUNBIRD_KEYCLOAK_ADMIN_USERNAME))
-            .field("password", ProjectUtil.getConfigValue(SUNBIRD_KEYCLOAK_ADMIN_PASSWORD))
-            .field("grant_type", "password");
+            .field("client_id", ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_CLIENT_ID))
+            .field(USER_NAME, ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_USERNAME))
+            .field(PASSWORD, ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_PASSWORD))
+            .field(GRANT_TYPE, PASSWORD);
 
     HttpResponse<JsonNode> response = request.asJson();
-    return response.getBody().getObject().getString("access_token");
+    return response.getBody().getObject().getString(ACCESS_TOKEN);
   }
 }
