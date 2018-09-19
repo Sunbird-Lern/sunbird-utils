@@ -230,6 +230,18 @@ public enum ResponseCode {
       ResponseMessage.Message.SRC_EXTERNAL_ID_ALREADY_EXIST),
   userAlreadyEnrolledThisCourse(
       ResponseMessage.Key.ALREADY_ENROLLED_COURSE, ResponseMessage.Message.ALREADY_ENROLLED_COURSE),
+  userNotEnrolledThisCourse(
+	      ResponseMessage.Key.NOT_ENROLLED_COURSE, ResponseMessage.Message.NOT_ENROLLED_COURSE),
+  courseAlreadyCompleted(
+	      ResponseMessage.Key.COURSE_ALREADY_COMPLETED, ResponseMessage.Message.COURSE_ALREADY_COMPLETED),
+  userAlreadyCompletedThisCourse(
+	      ResponseMessage.Key.USER_ALREADY_COMPLETED_COURSE, ResponseMessage.Message.USER_ALREADY_COMPLETED_COURSE),
+  InvalidUnenrollForBatchEnrolmentType(
+	      ResponseMessage.Key.INVALID_UNENROLL_FOR_BATCH_ENROLMENT_TYPE, ResponseMessage.Message.INVALID_UNENROLL_FOR_BATCH_ENROLMENT_TYPE),
+  BatchEndDateAlreadyPassed(
+	      ResponseMessage.Key.BATCH_END_DATE_ALREADY_PASSED, ResponseMessage.Message.BATCH_END_DATE_ALREADY_PASSED),
+  invalidMultipleUnenroll(
+	      ResponseMessage.Key.INVALID_MULTIPLE_UNENROLL, ResponseMessage.Message.INVALID_MULTIPLE_UNENROLL),
   pageAlreadyExist(
       ResponseMessage.Key.PAGE_ALREADY_EXIST, ResponseMessage.Message.PAGE_ALREADY_EXIST),
   contentTypeRequiredError(

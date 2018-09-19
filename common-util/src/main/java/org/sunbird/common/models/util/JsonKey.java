@@ -288,6 +288,7 @@ public final class JsonKey {
   public static final String IS_ROOT_ORG = "isRootOrg";
   public static final String IS_SSO_ENABLED = "sso.enabled";
   public static final String IS_VERIFIED = "isVerified";
+  public static final String IS_ENROLLED = "isEnrolled";
   public static final String JOB_NAME = "jobName";
   public static final String JOB_PROFILE = "jobProfile";
   public static final String JOB_PROFILE_DB = "user_job_profile";

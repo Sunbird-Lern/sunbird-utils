@@ -8,6 +8,7 @@ package org.sunbird.common.models.util;
  */
 public enum ActorOperations {
   ENROLL_COURSE("enrollCourse"),
+  UNENROLL_COURSE("unenrollCourse"),
   GET_COURSE("getCourse"),
   ADD_CONTENT("addContent"),
   GET_CONTENT("getContent"),
