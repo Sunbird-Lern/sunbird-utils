@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHeaders;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 
@@ -75,12 +76,16 @@ public class KeycloakRequiredActionLinkUtil {
     RequestBodyEntity baseRequest =
         Unirest.post(
                 ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_URL)
-                    + "/realms/"
+                    + "realms/"
                     + ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_RELAM)
                     + SUNBIRD_KEYCLOAK_REQD_ACTION_LINK)
             .headers(headers)
             .body(mapper.writeValueAsString(request));
     HttpResponse<JsonNode> response = baseRequest.asJson();
+    ProjectLogger.log(
+        "KeycloakRequiredActionLinkUtil:generateLink : called , response.getStatus()= "
+            + response.getStatus(),
+        LoggerEnum.DEBUG.name());
     return response.getBody().getObject().getString(LINK);
   }
 
@@ -90,7 +95,7 @@ public class KeycloakRequiredActionLinkUtil {
     BaseRequest request =
         Unirest.post(
                 ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_URL)
-                    + "/realms/"
+                    + "realms/"
                     + ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_RELAM)
                     + "/protocol/openid-connect/token")
             .headers(headers)
@@ -100,6 +105,10 @@ public class KeycloakRequiredActionLinkUtil {
             .field(GRANT_TYPE, PASSWORD);
 
     HttpResponse<JsonNode> response = request.asJson();
+    ProjectLogger.log(
+        "KeycloakRequiredActionLinkUtil:getAdminAccessToken : called , response.getStatus()= "
+            + response.getStatus(),
+        LoggerEnum.DEBUG.name());
     return response.getBody().getObject().getString(ACCESS_TOKEN);
   }
 }
