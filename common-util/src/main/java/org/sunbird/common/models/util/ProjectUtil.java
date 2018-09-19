@@ -1,4 +1,3 @@
-/** */
 package org.sunbird.common.models.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -628,7 +627,7 @@ public class ProjectUtil {
       fromEmail = getConfigValue(JsonKey.EMAIL_SERVER_FROM);
     }
     ProjectLogger.log(
-        "ProjectUtil:getFromEmail: from email = " + fromEmail, LoggerEnum.INFO.name());
+        "ProjectUtil:getFromEmail: fromEmail = " + fromEmail, LoggerEnum.INFO.name());
     return fromEmail;
   }
 
@@ -666,12 +665,6 @@ public class ProjectUtil {
     }
   }
 
-  /**
-   * @param serviceName
-   * @param isError
-   * @param e
-   * @return
-   */
   public static Map<String, Object> createCheckResponse(
       String serviceName, boolean isError, Exception e) {
     Map<String, Object> responseMap = new HashMap<>();
