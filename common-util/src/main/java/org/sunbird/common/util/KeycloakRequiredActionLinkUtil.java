@@ -17,7 +17,7 @@ import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 
 /**
- * Contains utility methods of keycloak.
+ * Keycloak utility to create required action links.
  *
  * @author Amit Kumar
  */
@@ -42,37 +42,42 @@ public class KeycloakRequiredActionLinkUtil {
   private static ObjectMapper mapper = new ObjectMapper();
 
   /**
-   * This method will generate the link for update password or verify email for given userName and
-   * link type(updatePasswordLink or verifyEmailLink)
+   * Get generated link for specified type and user from Keycloak service.
    *
-   * @param userName user name.
-   * @param linkType link type.
-   * @return String link.
+   * @param userName User name
+   * @param linkType Type of link to be generated. Supported types are UPDATE_PASSWORD and VERIFY_EMAIL.
+   *
+   * @return Generated link from Keycloak service
    */
   public static String getLink(String userName, String redirectUri, String requiredAction) {
     Map<String, String> request = new HashMap<>();
+    
     request.put(CLIENT_ID, ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_CLIENT_ID));
     request.put(USERNAME, userName);
     request.put(REQUIRED_ACTION, requiredAction);
+    
     String expirationInSecs = ProjectUtil.getConfigValue(SUNBIRD_KEYCLOAK_LINK_EXPIRATION_TIME);
     if (StringUtils.isNotBlank(expirationInSecs)) {
       request.put(EXPIRATION_IN_SEC, expirationInSecs);
     }
     request.put(REDIRECT_URI, redirectUri);
+    
     try {
       return generateLink(request);
     } catch (Exception ex) {
       ProjectLogger.log(
-          "KeyCloakUtil:getUpdatePasswordOrVerifyEmailLink: Exception occurred while generating link.",
+          "KeycloakRequiredActionLinkUtil:getLink: Exception occurred with error message = " + ex.getMessage(),
           ex);
-      return "";
     }
+    return null;
   }
 
   private static String generateLink(Map<String, String> request) throws Exception {
     Map<String, String> headers = new HashMap<>();
+    
     headers.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
     headers.put(JsonKey.AUTHORIZATION, JsonKey.BEARER + getAdminAccessToken());
+    
     RequestBodyEntity baseRequest =
         Unirest.post(
                 ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_URL)
@@ -82,10 +87,12 @@ public class KeycloakRequiredActionLinkUtil {
             .headers(headers)
             .body(mapper.writeValueAsString(request));
     HttpResponse<JsonNode> response = baseRequest.asJson();
+    
     ProjectLogger.log(
-        "KeycloakRequiredActionLinkUtil:generateLink : called , response.getStatus()= "
+        "KeycloakRequiredActionLinkUtil:generateLink: Response status = "
             + response.getStatus(),
         LoggerEnum.DEBUG.name());
+    
     return response.getBody().getObject().getString(LINK);
   }
 
@@ -106,9 +113,10 @@ public class KeycloakRequiredActionLinkUtil {
 
     HttpResponse<JsonNode> response = request.asJson();
     ProjectLogger.log(
-        "KeycloakRequiredActionLinkUtil:getAdminAccessToken : called , response.getStatus()= "
+        "KeycloakRequiredActionLinkUtil:getAdminAccessToken: Response status = "
             + response.getStatus(),
         LoggerEnum.DEBUG.name());
+    
     return response.getBody().getObject().getString(ACCESS_TOKEN);
   }
 }
