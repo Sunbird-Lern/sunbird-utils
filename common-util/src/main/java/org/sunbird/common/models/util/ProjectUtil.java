@@ -626,8 +626,7 @@ public class ProjectUtil {
     if (StringUtils.isBlank(fromEmail)) {
       fromEmail = getConfigValue(JsonKey.EMAIL_SERVER_FROM);
     }
-    ProjectLogger.log(
-        "ProjectUtil:getFromEmail: fromEmail = " + fromEmail, LoggerEnum.INFO.name());
+    ProjectLogger.log("ProjectUtil:getFromEmail: fromEmail = " + fromEmail, LoggerEnum.INFO.name());
     return fromEmail;
   }
 
@@ -832,10 +831,10 @@ public class ProjectUtil {
         params.put("appName", appName);
       }
       if (StringUtils.isNotBlank(setPasswordLink)) {
-        params.put("setPasswordLink", setPasswordLink);
+        params.put("link", setPasswordLink);
       }
       if (StringUtils.isNotBlank(verifyEmailLink)) {
-        params.put("verifyEmailLink", verifyEmailLink);
+        params.put("link", verifyEmailLink);
       }
       Template t = ve.getTemplate("/welcomeSmsTemplate.vm");
       VelocityContext context = new VelocityContext(params);
