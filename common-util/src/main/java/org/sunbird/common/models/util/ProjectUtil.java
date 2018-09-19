@@ -838,9 +838,6 @@ public class ProjectUtil {
       if (StringUtils.isNotBlank(appName)) {
         params.put("appName", appName);
       }
-      if (StringUtils.isBlank(setPasswordLink) && StringUtils.isBlank(verifyEmailLink)) {
-        throw new Exception("setPasswordLink or verifyEmailLink is empty.");
-      }
       if (StringUtils.isNotBlank(setPasswordLink)) {
         params.put("setPasswordLink", setPasswordLink);
       }
