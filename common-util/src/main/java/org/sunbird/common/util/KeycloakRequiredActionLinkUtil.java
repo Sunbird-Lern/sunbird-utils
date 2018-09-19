@@ -58,7 +58,6 @@ public class KeycloakRequiredActionLinkUtil {
       request.put(EXPIRATION_IN_SEC, expirationInSecs);
     }
     request.put(REDIRECT_URI, redirectUri);
-    request.put("isAuthRequired", "false");
     try {
       return generateLink(request);
     } catch (Exception ex) {
@@ -72,9 +71,7 @@ public class KeycloakRequiredActionLinkUtil {
   private static String generateLink(Map<String, String> request) throws Exception {
     Map<String, String> headers = new HashMap<>();
     headers.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
-    if (request.get("isAuthRequired").equalsIgnoreCase("true")) {
-      headers.put(JsonKey.AUTHORIZATION, JsonKey.BEARER + getAdminAccessToken());
-    }
+    headers.put(JsonKey.AUTHORIZATION, JsonKey.BEARER + getAdminAccessToken());
     RequestBodyEntity baseRequest =
         Unirest.post(
                 ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_URL)
