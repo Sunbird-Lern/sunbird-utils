@@ -831,10 +831,10 @@ public class ProjectUtil {
         params.put("appName", appName);
       }
       if (StringUtils.isNotBlank(setPasswordLink)) {
-        params.put("link", setPasswordLink);
+        params.put("setPasswordLink", setPasswordLink);
       }
       if (StringUtils.isNotBlank(verifyEmailLink)) {
-        params.put("link", verifyEmailLink);
+        params.put("verifyEmailLink", verifyEmailLink);
       }
       Template t = ve.getTemplate("/welcomeSmsTemplate.vm");
       VelocityContext context = new VelocityContext(params);
