@@ -133,6 +133,13 @@ public interface ResponseMessage {
         "Invalid Date format . Date format should be : yyyy-MM-dd hh:mm:ss:SSSZ";
     String SRC_EXTERNAL_ID_ALREADY_EXIST = "PROVIDER WITH EXTERNAL ID ALREADY EXIST .";
     String ALREADY_ENROLLED_COURSE = "User has already Enrolled this course .";
+    String NOT_ENROLLED_COURSE = "User has not Enrolled this course .";
+    String USER_ALREADY_COMPLETED_COURSE = "User already have completed course ";
+    String COURSE_ALREADY_COMPLETED = "Course has already been completed";
+    String INVALID_UNENROLL_FOR_BATCH_ENROLMENT_TYPE =
+        "Unenrollment cannot be done for an invite-only batch";
+    String BATCH_END_DATE_ALREADY_PASSED = "End Date of the requested batch is already passed";
+    String INVALID_MULTIPLE_UNENROLL = "User do not have permission for multiple un-enroll";
     String EXISTING_ORG_MEMBER = "You already have a membership of this organization.";
     String CONTENT_TYPE_ERROR = "Please add Content-Type header with value application/json";
     String INVALID_PROPERTY_ERROR = "invalid property {0}.";
@@ -466,6 +473,12 @@ public interface ResponseMessage {
     String INVALID_DATE_FORMAT = "INVALID_DATE_FORMAT";
     String SRC_EXTERNAL_ID_ALREADY_EXIST = "SRC_EXTERNAL_ID_ALREADY_EXIST";
     String ALREADY_ENROLLED_COURSE = "ALREADY_ENROLLED_COURSE";
+    String NOT_ENROLLED_COURSE = "NOT_ENROLLED_COURSE";
+    String USER_ALREADY_COMPLETED_COURSE = "USER_ALREADY_COMPLETED_COURSE";
+    String COURSE_ALREADY_COMPLETED = "COURSE_ALREADY_COMPLETED";
+    String INVALID_UNENROLL_FOR_BATCH_ENROLMENT_TYPE = "INVALID_UNENROLL_FOR_BATCH_ENROLMENT_TYPE";
+    String BATCH_END_DATE_ALREADY_PASSED = "BATCH_END_DATE_ALREADY_PASSED";
+    String INVALID_MULTIPLE_UNENROLL = "INVALID_MULTIPLE_UNENROLL";
     String CONTENT_TYPE_ERROR = "CONTENT_TYPE_ERROR";
     String INVALID_PROPERTY_ERROR = "INVALID_PROPERTY_ERROR";
     String USER_NAME_OR_ID_ERROR = "USER_NAME_OR_ID_ERROR";
