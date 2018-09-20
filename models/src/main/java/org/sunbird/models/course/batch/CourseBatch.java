@@ -8,74 +8,28 @@ public class CourseBatch implements Serializable {
 
   private static final long serialVersionUID = 1L;
   private String id;
-  private String countdecrementdate;
-  private boolean countdecrementstatus;
-  private String countincrementdate;
-  private boolean countincrementstatus;
-  private Map<String, String> courseadditionalinfo;
-  private String coursecreator;
-  private String courseid;
-  private String createdby;
-  private String createddate;
-  private List<String> createdfor;
+  private String countDecrementDate;
+  private boolean countDecrementStatus;
+  private String countIncrementDate;
+  private boolean countIncrementStatus;
+  private Map<String, String> courseAdditionalInfo;
+  private String courseCreator;
+  private String courseId;
+  private String createdBy;
+  private String createdDate;
+  private List<String> createdFor;
   private String description;
-  private String enddate;
-  private String enrollmenttype;
-  private String hashtagid;
+  private String endDate;
+  private String enrollmentType;
+  private String hashtagId;
   private List<String> mentors;
   private String name;
   private Map<String, Boolean> participant;
-  private String startdate;
+  private String startDate;
   private int status;
-  private String updateddate;
+  private String updatedDate;
 
   public CourseBatch() {}
-
-  public CourseBatch(
-      String id,
-      String countdecrementdate,
-      boolean countdecrementstatus,
-      String countincrementdate,
-      boolean countincrementstatus,
-      Map<String, String> courseadditionalinfo,
-      String coursecreator,
-      String courseid,
-      String createdby,
-      String createddate,
-      List<String> createdfor,
-      String description,
-      String enddate,
-      String enrollmenttype,
-      String hashtagid,
-      List<String> mentors,
-      String name,
-      Map<String, Boolean> participant,
-      String startdate,
-      int status,
-      String updateddate) {
-    super();
-    this.id = id;
-    this.countdecrementdate = countdecrementdate;
-    this.countdecrementstatus = countdecrementstatus;
-    this.countincrementdate = countincrementdate;
-    this.countincrementstatus = countincrementstatus;
-    this.courseadditionalinfo = courseadditionalinfo;
-    this.coursecreator = coursecreator;
-    this.courseid = courseid;
-    this.createdby = createdby;
-    this.createddate = createddate;
-    this.createdfor = createdfor;
-    this.description = description;
-    this.enddate = enddate;
-    this.enrollmenttype = enrollmenttype;
-    this.hashtagid = hashtagid;
-    this.mentors = mentors;
-    this.name = name;
-    this.participant = participant;
-    this.startdate = startdate;
-    this.status = status;
-    this.updateddate = updateddate;
-  }
 
   public String getId() {
     return id;
@@ -85,84 +39,84 @@ public class CourseBatch implements Serializable {
     this.id = id;
   }
 
-  public String getCountdecrementdate() {
-    return countdecrementdate;
+  public String getCountDecrementDate() {
+    return countDecrementDate;
   }
 
-  public void setCountdecrementdate(String countdecrementdate) {
-    this.countdecrementdate = countdecrementdate;
+  public void setCountDecrementDate(String countDecrementDate) {
+    this.countDecrementDate = countDecrementDate;
   }
 
-  public boolean isCountdecrementstatus() {
-    return countdecrementstatus;
+  public boolean isCountDecrementStatus() {
+    return countDecrementStatus;
   }
 
-  public void setCountdecrementstatus(boolean countdecrementstatus) {
-    this.countdecrementstatus = countdecrementstatus;
+  public void setCountDecrementStatus(boolean countDecrementStatus) {
+    this.countDecrementStatus = countDecrementStatus;
   }
 
-  public String getCountincrementdate() {
-    return countincrementdate;
+  public String getCountIncrementDate() {
+    return countIncrementDate;
   }
 
-  public void setCountincrementdate(String countincrementdate) {
-    this.countincrementdate = countincrementdate;
+  public void setCountIncrementDate(String countIncrementDate) {
+    this.countIncrementDate = countIncrementDate;
   }
 
-  public boolean isCountincrementstatus() {
-    return countincrementstatus;
+  public boolean isCountIncrementStatus() {
+    return countIncrementStatus;
   }
 
-  public void setCountincrementstatus(boolean countincrementstatus) {
-    this.countincrementstatus = countincrementstatus;
+  public void setCountIncrementStatus(boolean countIncrementStatus) {
+    this.countIncrementStatus = countIncrementStatus;
   }
 
-  public Map<String, String> getCourseadditionalinfo() {
-    return courseadditionalinfo;
+  public Map<String, String> getCourseAdditionalInfo() {
+    return courseAdditionalInfo;
   }
 
-  public void setCourseadditionalinfo(Map<String, String> courseadditionalinfo) {
-    this.courseadditionalinfo = courseadditionalinfo;
+  public void setCourseAdditionalInfo(Map<String, String> courseAdditionalInfo) {
+    this.courseAdditionalInfo = courseAdditionalInfo;
   }
 
-  public String getCoursecreator() {
-    return coursecreator;
+  public String getCourseCreator() {
+    return courseCreator;
   }
 
-  public void setCoursecreator(String coursecreator) {
-    this.coursecreator = coursecreator;
+  public void setCourseCreator(String courseCreator) {
+    this.courseCreator = courseCreator;
   }
 
-  public String getCourseid() {
-    return courseid;
+  public String getCourseId() {
+    return courseId;
   }
 
-  public void setCourseid(String courseid) {
-    this.courseid = courseid;
+  public void setCourseId(String courseId) {
+    this.courseId = courseId;
   }
 
-  public String getCreatedby() {
-    return createdby;
+  public String getCreatedBy() {
+    return createdBy;
   }
 
-  public void setCreatedby(String createdby) {
-    this.createdby = createdby;
+  public void setCreatedBy(String createdBy) {
+    this.createdBy = createdBy;
   }
 
-  public String getCreateddate() {
-    return createddate;
+  public String getCreatedDate() {
+    return createdDate;
   }
 
-  public void setCreateddate(String createddate) {
-    this.createddate = createddate;
+  public void setCreatedDate(String createdDate) {
+    this.createdDate = createdDate;
   }
 
-  public List<String> getCreatedfor() {
-    return createdfor;
+  public List<String> getCreatedFor() {
+    return createdFor;
   }
 
-  public void setCreatedfor(List<String> createdfor) {
-    this.createdfor = createdfor;
+  public void setCreatedFor(List<String> createdFor) {
+    this.createdFor = createdFor;
   }
 
   public String getDescription() {
@@ -173,28 +127,28 @@ public class CourseBatch implements Serializable {
     this.description = description;
   }
 
-  public String getEnddate() {
-    return enddate;
+  public String getEndDate() {
+    return endDate;
   }
 
-  public void setEnddate(String enddate) {
-    this.enddate = enddate;
+  public void setEndDate(String endDate) {
+    this.endDate = endDate;
   }
 
-  public String getEnrollmenttype() {
-    return enrollmenttype;
+  public String getEnrollmentType() {
+    return enrollmentType;
   }
 
-  public void setEnrollmenttype(String enrollmenttype) {
-    this.enrollmenttype = enrollmenttype;
+  public void setEnrollmentType(String enrollmentType) {
+    this.enrollmentType = enrollmentType;
   }
 
-  public String getHashtagid() {
-    return hashtagid;
+  public String getHashtagId() {
+    return hashtagId;
   }
 
-  public void setHashtagid(String hashtagid) {
-    this.hashtagid = hashtagid;
+  public void setHashtagId(String hashtagId) {
+    this.hashtagId = hashtagId;
   }
 
   public List<String> getMentors() {
@@ -221,12 +175,12 @@ public class CourseBatch implements Serializable {
     this.participant = participant;
   }
 
-  public String getStartdate() {
-    return startdate;
+  public String getStartDate() {
+    return startDate;
   }
 
-  public void setStartdate(String startdate) {
-    this.startdate = startdate;
+  public void setStartDate(String startDate) {
+    this.startDate = startDate;
   }
 
   public int getStatus() {
@@ -237,11 +191,11 @@ public class CourseBatch implements Serializable {
     this.status = status;
   }
 
-  public String getUpdateddate() {
-    return updateddate;
+  public String getUpdatedDate() {
+    return updatedDate;
   }
 
-  public void setUpdateddate(String updateddate) {
-    this.updateddate = updateddate;
+  public void setUpdatedDate(String updatedDate) {
+    this.updatedDate = updatedDate;
   }
 }
