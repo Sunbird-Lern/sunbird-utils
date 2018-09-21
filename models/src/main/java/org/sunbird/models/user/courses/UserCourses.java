@@ -26,8 +26,6 @@ public class UserCourses implements Serializable {
   private String tocurl;
   private String userId;
 
-  public UserCourses() {}
-
   public String getId() {
     return id;
   }
