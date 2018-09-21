@@ -23,7 +23,7 @@ public class UserCourses implements Serializable {
   private int leafNodesCount;
   private int progress;
   private int status;
-  private String tocurl;
+  private String tocUrl;
   private String userId;
 
   public String getId() {
@@ -170,12 +170,12 @@ public class UserCourses implements Serializable {
     this.status = status;
   }
 
-  public String getTocurl() {
-    return tocurl;
+  public String getTocUrl() {
+    return tocUrl;
   }
 
-  public void setTocurl(String tocurl) {
-    this.tocurl = tocurl;
+  public void setTocUrl(String tocUrl) {
+    this.tocUrl = tocUrl;
   }
 
   public String getUserId() {
