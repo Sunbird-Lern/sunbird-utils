@@ -830,12 +830,16 @@ public class ProjectUtil {
       if (StringUtils.isNotBlank(appName)) {
         params.put("appName", appName);
       }
+      params.put("newline", "\n");
       if (StringUtils.isNotBlank(setPasswordLink)) {
-        params.put("setPasswordLink", setPasswordLink);
+        params.put("link", setPasswordLink);
+        params.put("setPasswordLink", "true");
       }
       if (StringUtils.isNotBlank(verifyEmailLink)) {
-        params.put("verifyEmailLink", verifyEmailLink);
+        params.put("link", verifyEmailLink);
+        params.put("setPasswordLink", null);
       }
+
       Template t = ve.getTemplate("/welcomeSmsTemplate.vm");
       VelocityContext context = new VelocityContext(params);
       StringWriter writer = new StringWriter();
