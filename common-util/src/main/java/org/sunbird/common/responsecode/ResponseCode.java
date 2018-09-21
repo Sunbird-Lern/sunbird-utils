@@ -228,10 +228,10 @@ public enum ResponseCode {
   sourceAndExternalIdAlreadyExist(
       ResponseMessage.Key.SRC_EXTERNAL_ID_ALREADY_EXIST,
       ResponseMessage.Message.SRC_EXTERNAL_ID_ALREADY_EXIST),
-  userAlreadyEnrolledThisCourse(
-      ResponseMessage.Key.ALREADY_ENROLLED_COURSE, ResponseMessage.Message.ALREADY_ENROLLED_COURSE),
-  courseUserNotEnrolled(
-      ResponseMessage.Key.COURSE_USER_NOT_ENROLLED, ResponseMessage.Message.COURSE_USER_NOT_ENROLLED),
+  userAlreadyEnrolledCourse(
+      ResponseMessage.Key.USER_ALREADY_ENROLLED_COURSE, ResponseMessage.Message.USER_ALREADY_ENROLLED_COURSE),
+  userNotEnrolledCourse(
+      ResponseMessage.Key.USER_NOT_ENROLLED_COURSE, ResponseMessage.Message.USER_NOT_ENROLLED_COURSE),
   courseBatchAlreadyCompleted(
       ResponseMessage.Key.COURSE_BATCH_ALREADY_COMPLETED,
       ResponseMessage.Message.COURSE_BATCH_ALREADY_COMPLETED),
