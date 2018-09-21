@@ -132,7 +132,10 @@ public interface ResponseMessage {
     String INVALID_DATE_FORMAT =
         "Invalid Date format . Date format should be : yyyy-MM-dd hh:mm:ss:SSSZ";
     String SRC_EXTERNAL_ID_ALREADY_EXIST = "PROVIDER WITH EXTERNAL ID ALREADY EXIST .";
-    String ALREADY_ENROLLED_COURSE = "User has already Enrolled this course .";
+    String USER_ALREADY_ENROLLED_COURSE = "User has already Enrolled this course .";
+    String USER_NOT_ENROLLED_COURSE = "User is not enrolled to given course batch.";
+    String USER_ALREADY_COMPLETED_COURSE = "User already completed given course batch.";
+    String COURSE_BATCH_ALREADY_COMPLETED = "Course batch is already completed.";
     String EXISTING_ORG_MEMBER = "You already have a membership of this organization.";
     String CONTENT_TYPE_ERROR = "Please add Content-Type header with value application/json";
     String INVALID_PROPERTY_ERROR = "invalid property {0}.";
@@ -465,7 +468,10 @@ public interface ResponseMessage {
     String ROLES_MISSING = "ROLES_REQUIRED_ERROR";
     String INVALID_DATE_FORMAT = "INVALID_DATE_FORMAT";
     String SRC_EXTERNAL_ID_ALREADY_EXIST = "SRC_EXTERNAL_ID_ALREADY_EXIST";
-    String ALREADY_ENROLLED_COURSE = "ALREADY_ENROLLED_COURSE";
+    String USER_ALREADY_ENROLLED_COURSE = "USER_ALREADY_ENROLLED_COURSE";
+    String USER_NOT_ENROLLED_COURSE = "USER_NOT_ENROLLED_COURSE";
+    String USER_ALREADY_COMPLETED_COURSE = "USER_ALREADY_COMPLETED_COURSE";
+    String COURSE_ALREADY_COMPLETED = "COURSE_ALREADY_COMPLETED";
     String CONTENT_TYPE_ERROR = "CONTENT_TYPE_ERROR";
     String INVALID_PROPERTY_ERROR = "INVALID_PROPERTY_ERROR";
     String USER_NAME_OR_ID_ERROR = "USER_NAME_OR_ID_ERROR";

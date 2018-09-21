@@ -25,21 +25,6 @@ public final class RequestValidator {
   private RequestValidator() {}
 
   /**
-   * This method will do course enrollment request data validation. if all mandatory data is coming
-   * then it won't do any thing if any mandatory data is missing then it will throw exception.
-   *
-   * @param courseRequestDto CourseRequestDto
-   */
-  public static void validateEnrollCourse(Request courseRequestDto) {
-    if (courseRequestDto.getRequest().get(JsonKey.COURSE_ID) == null) {
-      throw new ProjectCommonException(
-          ResponseCode.courseIdRequiredError.getErrorCode(),
-          ResponseCode.courseIdRequiredError.getErrorMessage(),
-          ERROR_CODE);
-    }
-  }
-
-  /**
    * This method will do content state request data validation. if all mandatory data is coming then
    * it won't do any thing if any mandatory data is missing then it will throw exception.
    *
