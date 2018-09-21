@@ -51,7 +51,11 @@ public class PropertiesCache {
         }
       }
     }
+    
     return propertiesCache;
+  }
+  public void saveConfigProperty(String key , String value) {
+	  configProp.setProperty(key, value);
   }
 
   public String getProperty(String key) {
