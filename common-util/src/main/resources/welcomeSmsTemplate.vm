@@ -1,1 +1,1 @@
-$userName, Welcome to $instanceName. You can login using your mobile number. #if ($appName) Use $webUrl to login using browser, or download the $appName app from Playstore. #else Login at $webUrl. #end
+Welcome to $instanceName. $newline Your user account has now been created. Click on the link below to #if ($setPasswordLink) set a password #else verify your email ID #end and start using your account: $newline $link
