@@ -235,9 +235,9 @@ public enum ResponseCode {
   courseBatchAlreadyCompleted(
       ResponseMessage.Key.COURSE_BATCH_ALREADY_COMPLETED,
       ResponseMessage.Message.COURSE_BATCH_ALREADY_COMPLETED),
-  courseAlreadyCompletedByUser(
-      ResponseMessage.Key.COURSE_ALREADY_COMPLETED,
-      ResponseMessage.Message.COURSE_ALREADY_COMPLETED),
+  userAlreadyCompletedCourse(
+      ResponseMessage.Key.USER_ALREADY_COMPLETED_COURSE,
+      ResponseMessage.Message.USER_ALREADY_COMPLETED_COURSE),
   pageAlreadyExist(
       ResponseMessage.Key.PAGE_ALREADY_EXIST, ResponseMessage.Message.PAGE_ALREADY_EXIST),
   contentTypeRequiredError(
