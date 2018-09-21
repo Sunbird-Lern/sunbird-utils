@@ -29,8 +29,6 @@ public class CourseBatch implements Serializable {
   private int status;
   private String updatedDate;
 
-  public CourseBatch() {}
-
   public String getId() {
     return id;
   }
