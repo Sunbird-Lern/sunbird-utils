@@ -3,7 +3,7 @@
 // 1. contactPoints: IP with port of DB
 // 2. username: username for DB // optional
 // 3. password: password for DB // optional
-// example: node migration.js 11.7.1.7:9200 username password
+// example: node migration.js 127.0.0.1:9200 username password
 
 const cassandra = require('cassandra-driver');
 let cassandra_client_options = { contactPoints: [process.argv[2]] };
@@ -21,8 +21,8 @@ let dest_obj = {
   subtype: undefined,
   component: undefined,
   action: undefined,
-  created: new Date(),
-  last_modified: undefined,
+  created_on: new Date(),
+  last_modified_on: undefined,
   data: undefined
 }
 
@@ -48,7 +48,10 @@ client.execute(query)
           try {
             row.data = JSON.parse(row.data);
           } catch (e) {
-            console.log('JSON parse error! :', row.key, row.orgid, row.data);
+            console.log('JSON parse error! :');
+            console.log('row.key', row.key);
+            console.log('row.orgid', row.orgid);
+            console.log('row.data', row.data);
           }
         if (typeof row.data === "object") {
           Object.keys(row.data).forEach((key) => {
@@ -79,15 +82,14 @@ client.execute(query)
       subtype text,
       action text,
       component text,
-      created timestamp,
+      created_on timestamp,
       data text,
-      last_modified timestamp,
+      last_modified_on timestamp,
       PRIMARY KEY ((root_org, framework, type, subtype, action, component)))   
     `);
-
     for(const data of transformed_data) {
-      let query = "INSERT INTO qmzbm_form_service.form_data(root_org, framework, type, subtype, action, component, created, last_modified, data) values(?,?,?,?,?,?,?,?,?)"
-      await client.execute(query, [data.root_org, data.framework, data.type, data.subtype, data.action, data.component, data.created, data.last_modified, JSON.stringify(data.data)], { prepare: true });
+      let query = "INSERT INTO qmzbm_form_service.form_data(root_org, framework, type, subtype, action, component, created_on, last_modified_on, data) values(?,?,?,?,?,?,?,?,?)"
+      await client.execute(query, [data.root_org, data.framework, data.type, data.subtype, data.action, data.component, data.created_on, data.last_modified_on, JSON.stringify(data.data)], { prepare: true });
     }
     console.log('no. of records migrated after denorm:', transformed_data.length);
     process.exit(1);
