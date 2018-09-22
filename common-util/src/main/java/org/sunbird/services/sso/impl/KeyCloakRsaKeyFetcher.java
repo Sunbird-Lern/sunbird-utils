@@ -58,10 +58,10 @@ public class KeyCloakRsaKeyFetcher  {
 
 	}
 	private void saveToCache(PublicKey key) {
-	    byte[] encodedPublicKey = key.getEncoded();
-            String PublicKey = Base64.getEncoder().encodeToString(encodedPublicKey);
-            PropertiesCache cache=PropertiesCache.getInstance();
-            cache.saveConfigProperty(JsonKey.SSO_PUBLIC_KEY,PublicKey);
+		byte[] encodedPublicKey = key.getEncoded();
+        	String PublicKey = Base64.getEncoder().encodeToString(encodedPublicKey);
+        	PropertiesCache cache=PropertiesCache.getInstance();
+        	cache.saveConfigProperty(JsonKey.SSO_PUBLIC_KEY,PublicKey);
 	}
 	
 	private String requestKeyFromKeycloak(String url, String realm) {
