@@ -50,7 +50,7 @@ public class KeyCloakServiceImpl implements SSOManager {
           + KeyCloakConnectionProvider.SSO_REALM
           + "/protocol/openid-connect/token";
 
-  private static final PublicKey SSO_PUBLIC_KEY =   new KeyCloakRsaKeyFetcher().getPublicKeyFromKeycloak( KeyCloakConnectionProvider.SSO_URL,KeyCloakConnectionProvider.SSO_REALM);
+  private static final PublicKey SSO_PUBLIC_KEY =   new KeyCloakRsaKeyFetcher().getPublicKeyFromKeyCloak( KeyCloakConnectionProvider.SSO_URL,KeyCloakConnectionProvider.SSO_REALM);
   
   @Override
   public String verifyToken(String accessToken) {

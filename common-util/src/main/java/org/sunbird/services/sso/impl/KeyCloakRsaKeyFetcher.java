@@ -35,7 +35,7 @@ import com.google.gson.JsonParser;
 public class KeyCloakRsaKeyFetcher  {
 	
 	
-	public PublicKey getPublicKeyFromKeycloak(String url, String realm) {
+	public PublicKey getPublicKeyFromKeyCloak(String url, String realm) {
 		try {
 			Decoder urlDecoder = Base64.getUrlDecoder();
 			KeyFactory keyFactory = KeyFactory.getInstance("RSA");
