@@ -18,7 +18,9 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
+import org.sunbird.common.models.util.PropertiesCache;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -32,6 +34,7 @@ import com.google.gson.JsonParser;
 
 public class KeyCloakRsaKeyFetcher  {
 	
+	
 	public PublicKey getPublicKeyFromKeycloak(String url, String realm) {
 		try {
 			Decoder urlDecoder = Base64.getUrlDecoder();
@@ -40,6 +43,7 @@ public class KeyCloakRsaKeyFetcher  {
 			BigInteger modulus = new BigInteger(1, urlDecoder.decode(valueMap.get("modulusBase64")));
 			BigInteger publicExponent = new BigInteger(1, urlDecoder.decode(valueMap.get("exponentBase64")));
 			PublicKey key = keyFactory.generatePublic(new RSAPublicKeySpec(modulus, publicExponent));
+			saveToCache(key);
 			return key;
 		} catch (NoSuchAlgorithmException e) {
 			ProjectLogger.log(" Got NoSuchAlgorithmException " + e);
@@ -52,6 +56,12 @@ public class KeyCloakRsaKeyFetcher  {
 			return null;
 		}
 
+	}
+	private void saveToCache(PublicKey key) {
+		byte[] encodedPublicKey = key.getEncoded();
+        String PublicKey = Base64.getEncoder().encodeToString(encodedPublicKey);
+        PropertiesCache cache=PropertiesCache.getInstance();
+        cache.saveConfigProperty(JsonKey.SSO_PUBLIC_KEY,PublicKey);
 	}
 	
 	private String requestKeyFromKeycloak(String url, String realm) {
