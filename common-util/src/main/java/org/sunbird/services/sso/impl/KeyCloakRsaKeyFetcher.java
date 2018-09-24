@@ -27,7 +27,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 /**
- * @author github.com/iostream04 This class will connect to key cloak server and
+ * @author:  github.com/iostream04 This class will connect to key cloak server and
  *         fetch the sso_publicKey using http call.
  */
 
