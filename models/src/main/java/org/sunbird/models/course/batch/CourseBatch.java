@@ -21,7 +21,7 @@ public class CourseBatch implements Serializable {
   private String description;
   private String endDate;
   private String enrollmentType;
-  private String hashtagId;
+  private String hashTagId;
   private List<String> mentors;
   private String name;
   private Map<String, Boolean> participant;
@@ -141,12 +141,12 @@ public class CourseBatch implements Serializable {
     this.enrollmentType = enrollmentType;
   }
 
-  public String getHashtagId() {
-    return hashtagId;
+  public String getHashTagId() {
+    return hashTagId;
   }
 
-  public void setHashtagId(String hashtagId) {
-    this.hashtagId = hashtagId;
+  public void setHashTagId(String hashTagId) {
+    this.hashTagId = hashTagId;
   }
 
   public List<String> getMentors() {
