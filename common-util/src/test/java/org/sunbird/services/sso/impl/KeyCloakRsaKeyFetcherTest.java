@@ -13,11 +13,11 @@ import org.sunbird.common.models.util.KeyCloakConnectionProvider;
 
 public class KeyCloakRsaKeyFetcherTest {
 
-	@Test
-	public void getPublicKeyFromKeyCloakTest() {
-		PublicKey key = new KeyCloakRsaKeyFetcher().getPublicKeyFromKeyCloak(KeyCloakConnectionProvider.SSO_URL,
-				KeyCloakConnectionProvider.SSO_REALM);
-		Assert.assertNotNull(key);
-	}
+  @Test
+  public void getPublicKeyFromKeyCloakTest() {
+    PublicKey key = new KeyCloakRsaKeyFetcher().getPublicKeyFromKeyCloak(KeyCloakConnectionProvider.SSO_URL,
+			KeyCloakConnectionProvider.SSO_REALM);
+    Assert.assertNotNull(key);
+  }
 	
 }
