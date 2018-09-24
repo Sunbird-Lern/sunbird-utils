@@ -55,7 +55,7 @@ public class KeyCloakServiceImpl implements SSOManager {
   @Override
   public String verifyToken(String accessToken) {
     try {
-      PublicKey publicKey = toPublicKey(SSO_PUBLIC_KEY);
+      PublicKey publicKey = SSO_PUBLIC_KEY;
       AccessToken token =
           RSATokenVerifier.verifyToken(
               accessToken,
