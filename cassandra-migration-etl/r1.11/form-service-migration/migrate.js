@@ -15,15 +15,7 @@ const client = new cassandra.Client(cassandraClientOptions);
 
 let transformedData = [];
 let dest_obj = {
-  root_org: undefined,
-  framework: undefined,
-  type: undefined,
-  subtype: undefined,
-  component: undefined,
-  action: undefined,
-  created_on: new Date(),
-  last_modified_on: undefined,
-  data: undefined
+  created_on: new Date()
 }
 
 const query = "SELECT * FROM sunbird.tenant_preference";
@@ -34,9 +26,9 @@ client.execute(query)
       let temp = Object.assign({}, dest_obj);
       temp.root_org = row.orgid;
       if (row.key && row.key.length) {
-        temp.type = row.key.split(".")[0]
-        temp.subtype = row.key.split(".")[1]
-        temp.action = row.key.split(".")[2]
+        temp.type = row.key.split(".")[0];
+        temp.subtype = row.key.split(".")[1];
+        temp.action = row.key.split(".")[2];
       } else {
         temp.type = "*";
         temp.subtype = "*";
@@ -69,7 +61,7 @@ client.execute(query)
           transformedData.push(temp);
         }
       }
-    })
+    });
   })
   .then(async _ => {
     // create keyspace if not exist
