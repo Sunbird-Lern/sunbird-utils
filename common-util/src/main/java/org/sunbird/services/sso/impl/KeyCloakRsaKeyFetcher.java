@@ -31,7 +31,6 @@ import com.google.gson.JsonParser;
  *         fetch the sso_publicKey using http call.
  */
 
-<<<<<<< HEAD
 public class KeyCloakRsaKeyFetcher {
 
   public PublicKey getPublicKeyFromKeyCloak(String url, String realm) {
