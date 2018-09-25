@@ -29,6 +29,7 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.sunbird.common.exception.ProjectCommonException;
+import org.sunbird.common.models.util.url.URLShortnerImpl;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 
@@ -814,6 +815,7 @@ public class ProjectUtil {
       String verifyEmailLink) {
     try {
       Properties props = new Properties();
+      URLShortnerImpl urlShortner = new URLShortnerImpl();
       props.put("resource.loader", "class");
       props.put(
           "class.resource.loader.class",
@@ -832,11 +834,11 @@ public class ProjectUtil {
       }
       params.put("newline", "\n");
       if (StringUtils.isNotBlank(setPasswordLink)) {
-        params.put("link", setPasswordLink);
+        params.put("link", urlShortner.shortUrl(setPasswordLink));
         params.put("setPasswordLink", "true");
       }
       if (StringUtils.isNotBlank(verifyEmailLink)) {
-        params.put("link", verifyEmailLink);
+        params.put("link", urlShortner.shortUrl(setPasswordLink));
         params.put("setPasswordLink", null);
       }
 
