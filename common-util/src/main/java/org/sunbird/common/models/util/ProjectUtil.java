@@ -837,8 +837,7 @@ public class ProjectUtil {
       if (StringUtils.isNotBlank(setPasswordLink)) {
         params.put("link", urlShortner.shortUrl(setPasswordLink));
         params.put("setPasswordLink", "true");
-      }
-      if (StringUtils.isNotBlank(verifyEmailLink)) {
+      } else if (StringUtils.isNotBlank(verifyEmailLink)) {
         params.put("link", urlShortner.shortUrl(setPasswordLink));
         params.put("setPasswordLink", null);
       }
