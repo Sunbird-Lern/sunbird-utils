@@ -1,17 +1,24 @@
 package org.sunbird.models.course.batch;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.ProjectUtil;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CourseBatch implements Serializable {
 
   private static final long serialVersionUID = 1L;
   private String id;
   private String countDecrementDate;
-  private boolean countDecrementStatus;
+  private Boolean countDecrementStatus;
   private String countIncrementDate;
-  private boolean countIncrementStatus;
+  private Boolean countIncrementStatus;
   private Map<String, String> courseAdditionalInfo;
   private String courseCreator;
   private String courseId;
@@ -21,12 +28,12 @@ public class CourseBatch implements Serializable {
   private String description;
   private String endDate;
   private String enrollmentType;
-  private String hashtagId;
+  private String hashTagId;
   private List<String> mentors;
   private String name;
   private Map<String, Boolean> participant;
   private String startDate;
-  private int status;
+  private Integer status;
   private String updatedDate;
 
   public String getId() {
@@ -141,12 +148,12 @@ public class CourseBatch implements Serializable {
     this.enrollmentType = enrollmentType;
   }
 
-  public String getHashtagId() {
-    return hashtagId;
+  public String getHashTagId() {
+    return hashTagId;
   }
 
-  public void setHashtagId(String hashtagId) {
-    this.hashtagId = hashtagId;
+  public void setHashTagId(String hashTagId) {
+    this.hashTagId = hashTagId;
   }
 
   public List<String> getMentors() {
@@ -195,5 +202,38 @@ public class CourseBatch implements Serializable {
 
   public void setUpdatedDate(String updatedDate) {
     this.updatedDate = updatedDate;
+  }
+
+  public void initCount() {
+    this.setCountDecrementStatus(false);
+    this.setCountIncrementStatus(false);
+  }
+
+  public void setContentDetails(Map<String, Object> contentDetails, String createdBy) {
+    this.setCourseCreator((String) contentDetails.get(JsonKey.CREATED_BY));
+    this.setCourseAdditionalInfo(getAdditionalCourseInfo(contentDetails));
+    this.setCreatedBy(createdBy);
+    this.setCreatedDate(ProjectUtil.getFormattedDate());
+  }
+
+  private Map<String, String> getAdditionalCourseInfo(Map<String, Object> contentDetails) {
+
+    Map<String, String> courseMap = new HashMap<>();
+    courseMap.put(JsonKey.COURSE_LOGO_URL, getDataFromContent(contentDetails, JsonKey.APP_ICON));
+    courseMap.put(JsonKey.COURSE_NAME, getDataFromContent(contentDetails, JsonKey.NAME));
+    courseMap.put(JsonKey.DESCRIPTION, getDataFromContent(contentDetails, JsonKey.DESCRIPTION));
+    courseMap.put(JsonKey.TOC_URL, getDataFromContent(contentDetails, "toc_url"));
+    if (contentDetails.get(JsonKey.LEAF_NODE_COUNT) != null) {
+      courseMap.put(
+          JsonKey.LEAF_NODE_COUNT, (contentDetails.get(JsonKey.LEAF_NODE_COUNT)).toString());
+    }
+    courseMap.put(JsonKey.STATUS, (String) contentDetails.getOrDefault(JsonKey.STATUS, ""));
+    return courseMap;
+  }
+
+  private String getDataFromContent(Map<String, Object> contentDetails, String key) {
+    return contentDetails.getOrDefault(key, "") != null
+        ? (String) contentDetails.getOrDefault(key, "")
+        : "";
   }
 }

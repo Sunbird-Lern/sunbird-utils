@@ -24,6 +24,48 @@ public final class RequestValidator {
 
   private RequestValidator() {}
 
+  public static void validateUnenrollCourse(Request courseRequestDto) {
+    if (courseRequestDto.getRequest().get(JsonKey.COURSE_ID) == null) {
+      throw new ProjectCommonException(
+          ResponseCode.courseIdRequiredError.getErrorCode(),
+          ResponseCode.courseIdRequiredError.getErrorMessage(),
+          ERROR_CODE);
+    }
+
+    if (courseRequestDto.getRequest().get(JsonKey.BATCH_ID) == null) {
+      throw new ProjectCommonException(
+          ResponseCode.courseBatchIdRequired.getErrorCode(),
+          ResponseCode.courseBatchIdRequired.getErrorMessage(),
+          ERROR_CODE);
+    }
+
+    if (courseRequestDto.getRequest().get(JsonKey.USER_ID) == null) {
+      throw new ProjectCommonException(
+          ResponseCode.userIdRequired.getErrorCode(),
+          ResponseCode.userIdRequired.getErrorMessage(),
+          ERROR_CODE);
+    }
+
+    if (!courseRequestDto
+        .getRequest()
+        .get(JsonKey.USER_ID)
+        .equals(courseRequestDto.getContext().get(JsonKey.REQUESTED_BY))) {
+      throw new ProjectCommonException(
+          ResponseCode.invalidParameterValue.getErrorCode(),
+          ResponseCode.invalidParameterValue.getErrorMessage(),
+          ERROR_CODE);
+    }
+  }
+
+  public static void validateEnrollCourse(Request courseRequestDto) {
+    if (courseRequestDto.getRequest().get(JsonKey.COURSE_ID) == null) {
+      throw new ProjectCommonException(
+          ResponseCode.courseIdRequiredError.getErrorCode(),
+          ResponseCode.courseIdRequiredError.getErrorMessage(),
+          ERROR_CODE);
+    }
+  }
+
   /**
    * This method will do content state request data validation. if all mandatory data is coming then
    * it won't do any thing if any mandatory data is missing then it will throw exception.
