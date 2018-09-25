@@ -685,7 +685,7 @@ public final class JsonKey {
   public static final String CUSTODIAN_ORG_ID = "custodianOrgId";
   public static final String APP_ID = "appId";
   public static final String REDIRECT_URI = "redirectUri";
-  public static final String SUNBIRD_PORTAL_SSO_CLIENT_ID = "sunbird_portal_auth_server_client";
+  public static final String SUNBIRD_PORTAL_SSO_CLIENT_ID = "sunbird_sso_portal_client_id";
 
   private JsonKey() {}
 }
