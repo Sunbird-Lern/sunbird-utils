@@ -4,13 +4,13 @@ import akka.actor.ActorRef;
 import java.util.Map;
 import org.sunbird.common.models.response.Response;
 
-/** Created by rajatgupta on 25/09/18. */
 public interface CourseEnrollmentClient {
   /**
-   * @desc UnEnroll user from course.
-   * @param actorRef Actor reference.
-   * @param map containing unEnrollment map.
-   * @return Response
+   * Unenroll user from course.
+   *
+   * @param actorRef Actor reference
+   * @param request Request containing unenroll information
+   * @return Response containing unenroll request status
    */
-  Response unenroll(ActorRef actorRef, Map<String, Object> map);
+  Response unenroll(ActorRef actorRef, Map<String, Object> request);
 }
