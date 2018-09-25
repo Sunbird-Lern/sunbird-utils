@@ -29,6 +29,7 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.sunbird.common.exception.ProjectCommonException;
+import org.sunbird.common.models.util.url.URLShortner;
 import org.sunbird.common.models.util.url.URLShortnerImpl;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
@@ -815,7 +816,7 @@ public class ProjectUtil {
       String verifyEmailLink) {
     try {
       Properties props = new Properties();
-      URLShortnerImpl urlShortner = new URLShortnerImpl();
+      URLShortner urlShortner = new URLShortnerImpl();
       props.put("resource.loader", "class");
       props.put(
           "class.resource.loader.class",
