@@ -1,8 +1,11 @@
 package org.sunbird.models.course.batch;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.ProjectUtil;
 
 public class CourseBatch implements Serializable {
 
@@ -195,5 +198,51 @@ public class CourseBatch implements Serializable {
 
   public void setUpdatedDate(String updatedDate) {
     this.updatedDate = updatedDate;
+  }
+
+  public CourseBatch(Map<String, Object> request, String createdBy) {
+    this.setCountDecrementStatus(false);
+    this.setCountIncrementStatus(false);
+    this.setCourseId((String) request.get(JsonKey.COURSE_ID));
+    this.setCreatedBy(createdBy);
+    this.setCreatedDate(ProjectUtil.getFormattedDate());
+    this.setCreatedFor((List<String>) request.get(JsonKey.COURSE_CREATED_FOR));
+    this.setMentors((List<String>) request.get(JsonKey.MENTORS));
+  }
+
+  public void setContentDetails(Map<String, Object> contentDetails) {
+    this.setCourseCreator((String) contentDetails.get(JsonKey.CREATED_BY));
+    this.setCourseAdditionalInfo(getAdditionalCourseInfo(contentDetails));
+  }
+
+  private Map<String, String> getAdditionalCourseInfo(Map<String, Object> contentDetails) {
+
+    Map<String, String> courseMap = new HashMap<>();
+    courseMap.put(
+        JsonKey.COURSE_LOGO_URL,
+        contentDetails.getOrDefault(JsonKey.APP_ICON, "") != null
+            ? (String) contentDetails.getOrDefault(JsonKey.APP_ICON, "")
+            : "");
+    courseMap.put(
+        JsonKey.COURSE_NAME,
+        contentDetails.getOrDefault(JsonKey.NAME, "") != null
+            ? (String) contentDetails.getOrDefault(JsonKey.NAME, "")
+            : "");
+    courseMap.put(
+        JsonKey.DESCRIPTION,
+        contentDetails.getOrDefault(JsonKey.DESCRIPTION, "") != null
+            ? (String) contentDetails.getOrDefault(JsonKey.DESCRIPTION, "")
+            : "");
+    courseMap.put(
+        JsonKey.TOC_URL,
+        contentDetails.getOrDefault("toc_url", "") != null
+            ? (String) contentDetails.getOrDefault("toc_url", "")
+            : "");
+    if (contentDetails.get(JsonKey.LEAF_NODE_COUNT) != null) {
+      courseMap.put(
+          JsonKey.LEAF_NODE_COUNT, (contentDetails.get(JsonKey.LEAF_NODE_COUNT)).toString());
+    }
+    courseMap.put(JsonKey.STATUS, (String) contentDetails.getOrDefault(JsonKey.STATUS, ""));
+    return courseMap;
   }
 }
