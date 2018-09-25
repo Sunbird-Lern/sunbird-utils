@@ -24,7 +24,7 @@ public class CourseEnrollmentClientImpl implements CourseEnrollmentClient {
   }
 
   @Override
-  public Response createCourseUnEnrollment(ActorRef actorRef, Map<String, Object> map) {
+  public Response unenroll(ActorRef actorRef, Map<String, Object> map) {
     Request request = new Request();
     request.setOperation(ActorOperations.UNENROLL_COURSE.getValue());
     request.setRequest(map);

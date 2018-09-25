@@ -12,5 +12,5 @@ public interface CourseEnrollmentClient {
    * @param map containing unEnrollment map.
    * @return Response
    */
-  Response createCourseUnEnrollment(ActorRef actorRef, Map<String, Object> map);
+  Response unenroll(ActorRef actorRef, Map<String, Object> map);
 }
