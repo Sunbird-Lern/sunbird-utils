@@ -204,16 +204,16 @@ public class CourseBatch implements Serializable {
     this.updatedDate = updatedDate;
   }
 
-  public void init(String createdBy) {
+  public void initCount() {
     this.setCountDecrementStatus(false);
     this.setCountIncrementStatus(false);
-    this.setCreatedBy(createdBy);
-    this.setCreatedDate(ProjectUtil.getFormattedDate());
   }
 
-  public void setContentDetails(Map<String, Object> contentDetails) {
+  public void setContentDetails(Map<String, Object> contentDetails, String createdBy) {
     this.setCourseCreator((String) contentDetails.get(JsonKey.CREATED_BY));
     this.setCourseAdditionalInfo(getAdditionalCourseInfo(contentDetails));
+    this.setCreatedBy(createdBy);
+    this.setCreatedDate(ProjectUtil.getFormattedDate());
   }
 
   private Map<String, String> getAdditionalCourseInfo(Map<String, Object> contentDetails) {
