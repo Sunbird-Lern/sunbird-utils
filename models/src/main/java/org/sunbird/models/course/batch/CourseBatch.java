@@ -1,5 +1,6 @@
 package org.sunbird.models.course.batch;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -200,15 +201,13 @@ public class CourseBatch implements Serializable {
     this.updatedDate = updatedDate;
   }
 
-  public CourseBatch(Map<String, Object> request, String createdBy) {
-    this.setCountDecrementStatus(false);
-    this.setCountIncrementStatus(false);
-    this.setCourseId((String) request.get(JsonKey.COURSE_ID));
-    this.setCreatedBy(createdBy);
-    this.setCreatedDate(ProjectUtil.getFormattedDate());
-    this.setCreatedFor((List<String>) request.get(JsonKey.COURSE_CREATED_FOR));
-    this.setMentors((List<String>) request.get(JsonKey.MENTORS));
-    this.setEnrollmentType((String) request.get(JsonKey.ENROLLMENT_TYPE));
+  public CourseBatch init(Map<String, Object> request, String createdBy) {
+    CourseBatch courseBatch = new ObjectMapper().convertValue(request, CourseBatch.class);
+    courseBatch.setCountDecrementStatus(false);
+    courseBatch.setCountIncrementStatus(false);
+    courseBatch.setCreatedBy(createdBy);
+    courseBatch.setCreatedDate(ProjectUtil.getFormattedDate());
+    return courseBatch;
   }
 
   public void setContentDetails(Map<String, Object> contentDetails) {
