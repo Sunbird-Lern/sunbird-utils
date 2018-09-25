@@ -208,6 +208,7 @@ public class CourseBatch implements Serializable {
     this.setCreatedDate(ProjectUtil.getFormattedDate());
     this.setCreatedFor((List<String>) request.get(JsonKey.COURSE_CREATED_FOR));
     this.setMentors((List<String>) request.get(JsonKey.MENTORS));
+    this.setEnrollmentType((String) request.get(JsonKey.ENROLLMENT_TYPE));
   }
 
   public void setContentDetails(Map<String, Object> contentDetails) {
@@ -218,31 +219,21 @@ public class CourseBatch implements Serializable {
   private Map<String, String> getAdditionalCourseInfo(Map<String, Object> contentDetails) {
 
     Map<String, String> courseMap = new HashMap<>();
-    courseMap.put(
-        JsonKey.COURSE_LOGO_URL,
-        contentDetails.getOrDefault(JsonKey.APP_ICON, "") != null
-            ? (String) contentDetails.getOrDefault(JsonKey.APP_ICON, "")
-            : "");
-    courseMap.put(
-        JsonKey.COURSE_NAME,
-        contentDetails.getOrDefault(JsonKey.NAME, "") != null
-            ? (String) contentDetails.getOrDefault(JsonKey.NAME, "")
-            : "");
-    courseMap.put(
-        JsonKey.DESCRIPTION,
-        contentDetails.getOrDefault(JsonKey.DESCRIPTION, "") != null
-            ? (String) contentDetails.getOrDefault(JsonKey.DESCRIPTION, "")
-            : "");
-    courseMap.put(
-        JsonKey.TOC_URL,
-        contentDetails.getOrDefault("toc_url", "") != null
-            ? (String) contentDetails.getOrDefault("toc_url", "")
-            : "");
+    courseMap.put(JsonKey.COURSE_LOGO_URL, getDataFromContent(contentDetails, JsonKey.APP_ICON));
+    courseMap.put(JsonKey.COURSE_NAME, getDataFromContent(contentDetails, JsonKey.NAME));
+    courseMap.put(JsonKey.DESCRIPTION, getDataFromContent(contentDetails, JsonKey.DESCRIPTION));
+    courseMap.put(JsonKey.TOC_URL, getDataFromContent(contentDetails, "toc_url"));
     if (contentDetails.get(JsonKey.LEAF_NODE_COUNT) != null) {
       courseMap.put(
           JsonKey.LEAF_NODE_COUNT, (contentDetails.get(JsonKey.LEAF_NODE_COUNT)).toString());
     }
     courseMap.put(JsonKey.STATUS, (String) contentDetails.getOrDefault(JsonKey.STATUS, ""));
     return courseMap;
+  }
+
+  private String getDataFromContent(Map<String, Object> contentDetails, String key) {
+    return contentDetails.getOrDefault(key, "") != null
+        ? (String) contentDetails.getOrDefault(key, "")
+        : "";
   }
 }
