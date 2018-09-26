@@ -24,7 +24,6 @@ import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.AccessToken;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
-import org.mockito.internal.stubbing.answers.ThrowsException;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
@@ -57,41 +56,24 @@ public class KeyCloakServiceImpl implements SSOManager {
   public String verifyToken(String accessToken) {
     try {
       PublicKey publicKey = SSO_PUBLIC_KEY;
-      if(publicKey != null) {
-      AccessToken token =
-          RSATokenVerifier.verifyToken(
-              accessToken,
-              publicKey,
-              KeyCloakConnectionProvider.SSO_URL + "realms/" + KeyCloakConnectionProvider.SSO_REALM,
-              true,
-              true);
-      ProjectLogger.log(
-          token.getId()
-              + " "
-              + token.issuedFor
-              + " "
-              + token.getProfile()
-              + " "
-              + token.getSubject()
-              + " Active: "
-              + token.isActive()
-              + "  isExpired: "
-              + token.isExpired()
-              + " "
-              + token.issuedNow().getExpiration(),
-          LoggerEnum.INFO.name());
-      return token.getSubject();
-      }
-      else {
-        ProjectLogger.log("SSO_PUBLIC_KEY is NULL , Please start Keycloak server to verify Access Token", LoggerEnum.ERROR);
-        throw new NullPointerException();
+      if (publicKey != null) {
+        AccessToken token = RSATokenVerifier.verifyToken(accessToken, publicKey,
+            KeyCloakConnectionProvider.SSO_URL + "realms/" + KeyCloakConnectionProvider.SSO_REALM, true, true);
+        ProjectLogger.log(
+            token.getId() + " " + token.issuedFor + " " + token.getProfile() + " " + token.getSubject() + " Active: "
+                + token.isActive() + "  isExpired: " + token.isExpired() + " " + token.issuedNow().getExpiration(),
+            LoggerEnum.INFO.name());
+        return token.getSubject();
+      } else {
+        ProjectLogger.log("SSO_PUBLIC_KEY is NULL , Please start Keycloak server to verify Access Token",
+            LoggerEnum.ERROR);
+        throw new ProjectCommonException(ResponseCode.keyCloakDefaultError.getErrorCode(),
+            ResponseCode.keyCloakDefaultError.getErrorMessage(), ResponseCode.keyCloakDefaultError.getResponseCode());
       }
     } catch (Exception e) {
       ProjectLogger.log("User token is not authorized." + e);
-      throw new ProjectCommonException(
-          ResponseCode.unAuthorized.getErrorCode(),
-          ResponseCode.unAuthorized.getErrorMessage(),
-          ResponseCode.UNAUTHORIZED.getResponseCode());
+      throw new ProjectCommonException(ResponseCode.unAuthorized.getErrorCode(),
+          ResponseCode.unAuthorized.getErrorMessage(), ResponseCode.UNAUTHORIZED.getResponseCode());
     }
   }
 
