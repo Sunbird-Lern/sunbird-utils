@@ -835,10 +835,10 @@ public class ProjectUtil {
       }
       params.put("newline", "\n");
       if (StringUtils.isNotBlank(setPasswordLink)) {
-        params.put("link", urlShortner.shortUrl(setPasswordLink));
+        params.put("link", setPasswordLink);
         params.put("setPasswordLink", "true");
       } else if (StringUtils.isNotBlank(verifyEmailLink)) {
-        params.put("link", urlShortner.shortUrl(setPasswordLink));
+        params.put("link", setPasswordLink);
         params.put("setPasswordLink", null);
       }
 
