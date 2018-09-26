@@ -193,6 +193,14 @@ public class TelemetryGenerator {
       map.put(JsonKey.TYPE, JsonKey.REQUEST);
       eventContext.getCdata().add(map);
     }
+    // collect x-app-id and put it into cdata.
+    String appId = (String) context.get(JsonKey.APP_ID);
+    if (StringUtils.isNotBlank(appId)) {
+      Map<String, Object> appIdMap = new HashMap<>();
+      appIdMap.put(JsonKey.ID, appId);
+      appIdMap.put(JsonKey.TYPE, JsonKey.APP_ID);
+      eventContext.getCdata().add(appIdMap);
+    }
     Map<String, Object> edata = generateSearchEdata(params);
     Telemetry telemetry =
         new Telemetry(TelemetryEvents.SEARCH.getName(), actor, eventContext, edata);
