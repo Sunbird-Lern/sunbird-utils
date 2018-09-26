@@ -125,7 +125,7 @@ public interface ResponseMessage {
     String ROLES_MISSING = "user role is required.";
     String CHANNEL_REG_FAILED = "Channel Registration failed.";
     String INVALID_COURSE_CREATOR_ID = "Course creator id does not exist .";
-    String USER_NOT_ASSOCIATED_TO_ROOT_ORG = "User not associated to course creator root org.";
+    String USER_NOT_ASSOCIATED_TO_ROOT_ORG = "User (ID = {0}) not associated to course batch creator root org.";
     String SLUG_IS_NOT_UNIQUE =
         "Please provide different channel value. This channel value already exist.";
     String INVALID_CREATE_BADGE_ISSUER_DATA = "{0}";
