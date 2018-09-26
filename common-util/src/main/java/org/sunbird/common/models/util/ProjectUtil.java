@@ -835,11 +835,11 @@ public class ProjectUtil {
       }
       params.put("newline", "\n");
       if (StringUtils.isNotBlank(setPasswordLink)) {
-        params.put("link", setPasswordLink);
-        params.put("setPasswordLink", "true");
+        params.put(JsonKey.LINK, setPasswordLink);
+        params.put(JsonKey.SET_PW_LINK, "true");
       } else if (StringUtils.isNotBlank(verifyEmailLink)) {
-        params.put("link", setPasswordLink);
-        params.put("setPasswordLink", null);
+        params.put(JsonKey.LINK, setPasswordLink);
+        params.put(JsonKey.SET_PW_LINK, null);
       }
 
       Template t = ve.getTemplate("/welcomeSmsTemplate.vm");
