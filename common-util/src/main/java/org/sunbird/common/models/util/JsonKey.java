@@ -390,6 +390,7 @@ public final class JsonKey {
   public static final String PARENT_OF = "parentOf";
   public static final String PARENT_ORG_ID = "parentOrgId";
   public static final String PARTICIPANT = "participant";
+  public static final String PARTICIPANTS = "participants";
   public static final String PASSWORD = "password";
   public static final String PDATA = "pdata";
 
