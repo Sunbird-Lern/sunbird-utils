@@ -219,10 +219,10 @@ public class CourseBatch implements Serializable {
   private Map<String, String> getAdditionalCourseInfo(Map<String, Object> contentDetails) {
 
     Map<String, String> courseMap = new HashMap<>();
-    courseMap.put(JsonKey.COURSE_LOGO_URL, getDataFromContent(contentDetails, JsonKey.APP_ICON));
-    courseMap.put(JsonKey.COURSE_NAME, getDataFromContent(contentDetails, JsonKey.NAME));
-    courseMap.put(JsonKey.DESCRIPTION, getDataFromContent(contentDetails, JsonKey.DESCRIPTION));
-    courseMap.put(JsonKey.TOC_URL, getDataFromContent(contentDetails, "toc_url"));
+    courseMap.put(JsonKey.COURSE_LOGO_URL, getContentAttribute(contentDetails, JsonKey.APP_ICON));
+    courseMap.put(JsonKey.COURSE_NAME, getContentAttribute(contentDetails, JsonKey.NAME));
+    courseMap.put(JsonKey.DESCRIPTION, getContentAttribute(contentDetails, JsonKey.DESCRIPTION));
+    courseMap.put(JsonKey.TOC_URL, getContentAttribute(contentDetails, "toc_url"));
     if (contentDetails.get(JsonKey.LEAF_NODE_COUNT) != null) {
       courseMap.put(
           JsonKey.LEAF_NODE_COUNT, (contentDetails.get(JsonKey.LEAF_NODE_COUNT)).toString());
@@ -231,9 +231,7 @@ public class CourseBatch implements Serializable {
     return courseMap;
   }
 
-  private String getDataFromContent(Map<String, Object> contentDetails, String key) {
-    return contentDetails.getOrDefault(key, "") != null
-        ? (String) contentDetails.getOrDefault(key, "")
-        : "";
+  private String getContentAttribute(Map<String, Object> contentDetails, String key) {
+    return (String) contentDetails.getOrDefault(key, "");
   }
 }
