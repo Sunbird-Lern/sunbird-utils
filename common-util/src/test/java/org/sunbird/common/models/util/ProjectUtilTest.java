@@ -58,12 +58,11 @@ public class ProjectUtilTest {
     VelocityContext context = ProjectUtil.getContext(templateMap);
     if (envVal) {
       assertEquals(
-          System.getenv(JsonKey.EMAIL_SERVER_FROM),
-          (String) context.internalGet(JsonKey.FROM_EMAIL));
+          System.getenv(JsonKey.EMAIL_SERVER_FROM), context.internalGet(JsonKey.FROM_EMAIL));
     } else if (cacheVal) {
       assertEquals(
           propertiesCache.getProperty(JsonKey.EMAIL_SERVER_FROM),
-          (String) context.internalGet(JsonKey.FROM_EMAIL));
+          context.internalGet(JsonKey.FROM_EMAIL));
     }
   }
 
@@ -80,12 +79,11 @@ public class ProjectUtilTest {
     VelocityContext context = ProjectUtil.getContext(templateMap);
     if (envVal) {
       assertEquals(
-          System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL),
-          (String) context.internalGet(JsonKey.ORG_IMAGE_URL));
+          System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL), context.internalGet(JsonKey.ORG_IMAGE_URL));
     } else if (cacheVal) {
       assertEquals(
           propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL),
-          (String) context.internalGet(JsonKey.ORG_IMAGE_URL));
+          context.internalGet(JsonKey.ORG_IMAGE_URL));
     }
   }
 
@@ -175,13 +173,14 @@ public class ProjectUtilTest {
 
   @Test
   public void testSendSMSWithDetails() {
-    String msg = ProjectUtil.getSMSBody("AMIT@BLR", "www.sunbird.org", "sunbird.com", "diksha");
+    String msg =
+        ProjectUtil.getSMSBody("AMIT@BLR", "www.sunbird.org", "sunbird.com", "diksha", "", "");
     assertTrue(msg.contains("sunbird.org"));
   }
 
   @Test
   public void testSendSMSWithoutDetails() {
-    String msg = ProjectUtil.getSMSBody("", "", "", "");
+    String msg = ProjectUtil.getSMSBody("", "", "", "", "", "");
     assertTrue(msg.contains("user_name"));
   }
 

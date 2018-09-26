@@ -1,4 +1,3 @@
-/** */
 package org.sunbird.common.models.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -592,8 +591,13 @@ public class ProjectUtil {
       context.put(JsonKey.NAME, getValue(map, JsonKey.NAME));
     }
     context.put(JsonKey.BODY, getValue(map, JsonKey.BODY));
-    context.put(JsonKey.FROM_EMAIL, getFromEmail());
-    context.put(JsonKey.ORG_NAME, getValue(map, JsonKey.ORG_NAME));
+    String fromEmail = getFromEmail(map);
+    if (StringUtils.isNotBlank(fromEmail)) {
+      context.put(JsonKey.FROM_EMAIL, fromEmail);
+    }
+    if (StringUtils.isNotBlank((String) map.get(JsonKey.ORG_NAME))) {
+      context.put(JsonKey.ORG_NAME, getValue(map, JsonKey.ORG_NAME));
+    }
     String logoUrl = getSunbirdLogoUrl(map);
     if (StringUtils.isNotBlank(logoUrl)) {
       context.put(JsonKey.ORG_IMAGE_URL, logoUrl);
@@ -617,13 +621,13 @@ public class ProjectUtil {
     return logoUrl;
   }
 
-  private static String getFromEmail() {
-    if (!StringUtils.isBlank(System.getenv(JsonKey.EMAIL_SERVER_FROM))) {
-      return System.getenv(JsonKey.EMAIL_SERVER_FROM);
-    } else if (!StringUtils.isBlank(propertiesCache.getProperty(JsonKey.EMAIL_SERVER_FROM))) {
-      return propertiesCache.getProperty(JsonKey.EMAIL_SERVER_FROM);
+  private static String getFromEmail(Map<String, Object> map) {
+    String fromEmail = (String) getValue(map, JsonKey.EMAIL_SERVER_FROM);
+    if (StringUtils.isBlank(fromEmail)) {
+      fromEmail = getConfigValue(JsonKey.EMAIL_SERVER_FROM);
     }
-    return "";
+    ProjectLogger.log("ProjectUtil:getFromEmail: fromEmail = " + fromEmail, LoggerEnum.INFO.name());
+    return fromEmail;
   }
 
   private static Object getValue(Map<String, Object> map, String key) {
@@ -660,12 +664,6 @@ public class ProjectUtil {
     }
   }
 
-  /**
-   * @param serviceName
-   * @param isError
-   * @param e
-   * @return
-   */
   public static Map<String, Object> createCheckResponse(
       String serviceName, boolean isError, Exception e) {
     Map<String, Object> responseMap = new HashMap<>();
@@ -808,7 +806,12 @@ public class ProjectUtil {
   }
 
   public static String getSMSBody(
-      String userName, String webUrl, String instanceName, String appName) {
+      String userName,
+      String webUrl,
+      String instanceName,
+      String appName,
+      String setPasswordLink,
+      String verifyEmailLink) {
     try {
       Properties props = new Properties();
       props.put("resource.loader", "class");
@@ -827,6 +830,15 @@ public class ProjectUtil {
       if (StringUtils.isNotBlank(appName)) {
         params.put("appName", appName);
       }
+      params.put("newline", "\n");
+      if (StringUtils.isNotBlank(setPasswordLink)) {
+        params.put(JsonKey.LINK, setPasswordLink);
+        params.put(JsonKey.SET_PW_LINK, "true");
+      } else if (StringUtils.isNotBlank(verifyEmailLink)) {
+        params.put(JsonKey.LINK, setPasswordLink);
+        params.put(JsonKey.SET_PW_LINK, null);
+      }
+
       Template t = ve.getTemplate("/welcomeSmsTemplate.vm");
       VelocityContext context = new VelocityContext(params);
       StringWriter writer = new StringWriter();

@@ -18,36 +18,6 @@ import org.sunbird.common.responsecode.ResponseCode;
 public class CommonRequestValidatorTest {
 
   @Test
-  public void enrollCourseValidationSuccess() {
-    Request request = new Request();
-    boolean response = false;
-    Map<String, Object> requestObj = new HashMap<>();
-    requestObj.put(JsonKey.COURSE_ID, "do_1233343");
-    request.setRequest(requestObj);
-    try {
-      RequestValidator.validateEnrollCourse(request);
-      response = true;
-    } catch (ProjectCommonException e) {
-      Assert.assertNull(e);
-    }
-    assertEquals(true, response);
-  }
-
-  @Test
-  public void enrollCourseValidationWithOutCourseId() {
-    Request request = new Request();
-    Map<String, Object> requestObj = new HashMap<>();
-    request.setRequest(requestObj);
-    request.setRequest(requestObj);
-    try {
-      RequestValidator.validateEnrollCourse(request);
-    } catch (ProjectCommonException e) {
-      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
-      assertEquals(ResponseCode.courseIdRequiredError.getErrorCode(), e.getCode());
-    }
-  }
-
-  @Test
   public void validateUpdateContentSuccess() {
     Request request = new Request();
     boolean response = false;

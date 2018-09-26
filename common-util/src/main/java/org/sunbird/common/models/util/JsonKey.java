@@ -390,6 +390,7 @@ public final class JsonKey {
   public static final String PARENT_OF = "parentOf";
   public static final String PARENT_ORG_ID = "parentOrgId";
   public static final String PARTICIPANT = "participant";
+  public static final String PARTICIPANTS = "participants";
   public static final String PASSWORD = "password";
   public static final String PDATA = "pdata";
 
@@ -684,6 +685,12 @@ public final class JsonKey {
   public static final String CUSTODIAN_ORG_CHANNEL = "custodianOrgChannel";
   public static final String CUSTODIAN_ORG_ID = "custodianOrgId";
   public static final String APP_ID = "appId";
+  public static final String REDIRECT_URI = "redirectUri";
+  public static final String SET_PASSWORD_LINK = "set_password_link";
+  public static final String VERIFY_EMAIL_LINK = "verify_email_link";
+  public static final String LINK = "link";
+  public static final String SET_PW_LINK = "setPasswordLink";
+  public static final String SUNBIRD_URL_SHORTNER_ENABLE = "sunbird_url_shortner_enable";
   public static final String USER_PROFILE_CONFIG = "userProfileConfig";
   public static final String USER_DATA_FIELDS = "userDataFields";
   public static final String ETERNAL_PUBLIC_FIELDS = "eternalPublicFields";
