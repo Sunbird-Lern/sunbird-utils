@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.HttpUtil;
+import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
+import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 
 /** @author Amit Kumar */
@@ -17,30 +19,40 @@ public class URLShortnerImpl implements URLShortner {
 
   @Override
   public String shortUrl(String url) {
-    String baseUrl = PropertiesCache.getInstance().getProperty("sunbird_url_shortner_base_url");
-    String accessToken = System.getenv("url_shortner_access_token");
-    if (StringUtils.isBlank(accessToken)) {
-      accessToken = PropertiesCache.getInstance().getProperty("sunbird_url_shortner_access_token");
-    }
-    String requestURL = baseUrl + accessToken + "&longUrl=" + url;
-    String response = "";
+    boolean flag = false;
     try {
-      response = HttpUtil.sendGetRequest(requestURL, null);
-    } catch (IOException e) {
-      ProjectLogger.log("Exception occurred while sending request for URL shortening", e);
+      flag = Boolean.parseBoolean(ProjectUtil.getConfigValue(JsonKey.SUNBIRD_URL_SHORTNER_ENABLE));
+    } catch (Exception ex) {
+      ProjectLogger.log(
+          "URLShortnerImpl:shortUrl : Exception occurred while parsing sunbird_url_shortner_enable key");
     }
-    ObjectMapper mapper = new ObjectMapper();
-    Map<String, Object> map = null;
-    if (!StringUtils.isBlank(response)) {
-      try {
-        map = mapper.readValue(response, HashMap.class);
-        Map<String, String> dataMap = (Map<String, String>) map.get("data");
-        return dataMap.get("url");
-      } catch (IOException | ClassCastException e) {
-        ProjectLogger.log(e.getMessage(), e);
+    if (flag) {
+      String baseUrl = PropertiesCache.getInstance().getProperty("sunbird_url_shortner_base_url");
+      String accessToken = System.getenv("url_shortner_access_token");
+      if (StringUtils.isBlank(accessToken)) {
+        accessToken =
+            PropertiesCache.getInstance().getProperty("sunbird_url_shortner_access_token");
       }
+      String requestURL = baseUrl + accessToken + "&longUrl=" + url;
+      String response = "";
+      try {
+        response = HttpUtil.sendGetRequest(requestURL, null);
+      } catch (IOException e) {
+        ProjectLogger.log("Exception occurred while sending request for URL shortening", e);
+      }
+      ObjectMapper mapper = new ObjectMapper();
+      Map<String, Object> map = null;
+      if (!StringUtils.isBlank(response)) {
+        try {
+          map = mapper.readValue(response, HashMap.class);
+          Map<String, String> dataMap = (Map<String, String>) map.get("data");
+          return dataMap.get("url");
+        } catch (IOException | ClassCastException e) {
+          ProjectLogger.log(e.getMessage(), e);
+        }
+      }
+      ProjectLogger.log("unable to do url short");
     }
-    ProjectLogger.log("unable to do url short");
     return url;
   }
 
