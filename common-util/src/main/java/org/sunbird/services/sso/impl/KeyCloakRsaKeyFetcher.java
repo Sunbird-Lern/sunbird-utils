@@ -39,13 +39,15 @@ public class KeyCloakRsaKeyFetcher {
       Decoder urlDecoder = Base64.getUrlDecoder();
       KeyFactory keyFactory = KeyFactory.getInstance("RSA");
       String publicKeyString = requestKeyFromKeycloak(url, realm);
-      if(publicKeyString != null) {
-      Map<String, String> valueMap = getValuesFromJson(publicKeyString);
-      BigInteger modulus = new BigInteger(1, urlDecoder.decode(valueMap.get("modulusBase64")));
-      BigInteger publicExponent = new BigInteger(1, urlDecoder.decode(valueMap.get("exponentBase64")));
-      PublicKey key = keyFactory.generatePublic(new RSAPublicKeySpec(modulus, publicExponent));
-      saveToCache(key);
-      return key;
+      if (publicKeyString != null) {
+        Map<String, String> valueMap = getValuesFromJson(publicKeyString);
+        if (valueMap != null) {
+          BigInteger modulus = new BigInteger(1, urlDecoder.decode(valueMap.get("modulusBase64")));
+          BigInteger publicExponent = new BigInteger(1, urlDecoder.decode(valueMap.get("exponentBase64")));
+          PublicKey key = keyFactory.generatePublic(new RSAPublicKeySpec(modulus, publicExponent));
+          saveToCache(key);
+          return key;
+        }
       }
       return null;
     } catch (NoSuchAlgorithmException e) {
