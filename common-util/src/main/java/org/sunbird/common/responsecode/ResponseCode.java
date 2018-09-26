@@ -635,6 +635,36 @@ public enum ResponseCode {
       ResponseMessage.Key.NO_EMAIL_RECIPIENTS, ResponseMessage.Message.NO_EMAIL_RECIPIENTS),
   parameterMismatch(
       ResponseMessage.Key.PARAMETER_MISMATCH, ResponseMessage.Message.PARAMETER_MISMATCH),
+  errorConfigLoadEmptyString(
+      ResponseMessage.Key.ERROR_CONFIG_LOAD_EMPTY_STRING,
+      ResponseMessage.Message.ERROR_CONFIG_LOAD_EMPTY_STRING),
+  errorConfigLoadParseString(
+      ResponseMessage.Key.ERROR_CONFIG_LOAD_PARSE_STRING,
+      ResponseMessage.Message.ERROR_CONFIG_LOAD_PARSE_STRING),
+  errorConfigLoadEmptyConfig(
+      ResponseMessage.Key.ERROR_CONFIG_LOAD_EMPTY_CONFIG,
+      ResponseMessage.Message.ERROR_CONFIG_LOAD_EMPTY_CONFIG),
+  defaultProfileVisibilityInvalidConfig(
+      ResponseMessage.Key.DEFAULT_PROFILE_VISIBILITY_INVALID_CONFIG,
+      ResponseMessage.Message.DEFAULT_PROFILE_VISIBILITY_INVALID_CONFIG),
+  userDataFieldsNotConfigured(
+      ResponseMessage.Key.USER_DATA_FIELDS_NOT_CONFIGURED,
+      ResponseMessage.Message.USER_DATA_FIELDS_NOT_CONFIGURED),
+  eternalPublicFieldsNotConfigured(
+      ResponseMessage.Key.ETERNAL_PUBLIC_FIELDS_NOT_CONFIGURED,
+      ResponseMessage.Message.ETERNAL_PUBLIC_FIELDS_NOT_CONFIGURED),
+  eternalPrivateFieldsNotConfigured(
+      ResponseMessage.Key.ETERNAL_PRIVATE_FIELDS_NOT_CONFIGURED,
+      ResponseMessage.Message.ETERNAL_PRIVATE_FIELDS_NOT_CONFIGURED),
+  fieldConfiguredInMultipleEternalLists(
+      ResponseMessage.Key.FIELD_CONFIGURED_IN_MULTIPLE_ETERNAL_LISTS,
+      ResponseMessage.Message.FIELD_CONFIGURED_IN_MULTIPLE_ETERNAL_LISTS),
+  errorSystemSettingNotFound(
+      ResponseMessage.Key.ERROR_SYSTEM_SETTING_NOT_FOUND,
+      ResponseMessage.Message.ERROR_SYSTEM_SETTING_NOT_FOUND),
+  errorFetchSystemSettings(
+      ResponseMessage.Key.ERROR_FETCH_SYSTEM_SETTINGS,
+      ResponseMessage.Message.ERROR_FETCH_SYSTEM_SETTINGS),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

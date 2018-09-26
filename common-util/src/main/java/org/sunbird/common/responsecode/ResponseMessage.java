@@ -352,6 +352,19 @@ public interface ResponseMessage {
     String NO_EMAIL_RECIPIENTS =
         "Email notification is not sent as the number of recipients is zero.";
     String PARAMETER_MISMATCH = "Mismatch of given parameters: {0}.";
+    String ERROR_CONFIG_LOAD_EMPTY_STRING =
+        "Load configuration failed as empty string is passed as parameter.";
+    String ERROR_CONFIG_LOAD_PARSE_STRING = "Load configuration failed due to parsing error.";
+    String ERROR_CONFIG_LOAD_EMPTY_CONFIG = "Load configuration failed.";
+    String DEFAULT_PROFILE_VISIBILITY_INVALID_CONFIG =
+        "Invalid configuration - {0} - for default profile visibility(public/private).";
+    String USER_DATA_FIELDS_NOT_CONFIGURED = "User data fields  are not configured.";
+    String ETERNAL_PUBLIC_FIELDS_NOT_CONFIGURED = "Eternal public fields are not configured.";
+    String ETERNAL_PRIVATE_FIELDS_NOT_CONFIGURED = "Eternal private fields are not configured.";
+    String FIELD_CONFIGURED_IN_MULTIPLE_ETERNAL_LISTS =
+        "{0} fields are configured in multiple eternal lists.";
+    String ERROR_SYSTEM_SETTING_NOT_FOUND = "System Setting not found for id - {0}.";
+    String ERROR_FETCH_SYSTEM_SETTINGS = "System Settings fetch failure.";
   }
 
   interface Key {
@@ -658,5 +671,16 @@ public interface ResponseMessage {
     String EMAIL_RECIPIENTS_EXCEEDS_MAX_LIMIT = "EMAIL_RECIPIENTS_EXCEEDS_MAX_LIMIT";
     String NO_EMAIL_RECIPIENTS = "NO_EMAIL_RECIPIENTS";
     String PARAMETER_MISMATCH = "PARAMETER_MISMATCH";
+    String ERROR_CONFIG_LOAD_EMPTY_STRING = "ERROR_CONFIG_LOAD_EMPTY_STRING";
+    String ERROR_CONFIG_LOAD_PARSE_STRING = "ERROR_CONFIG_LOAD_PARSE_STRING";
+    String ERROR_CONFIG_LOAD_EMPTY_CONFIG = "ERROR_CONFIG_LOAD_EMPTY_CONFIG";
+    String DEFAULT_PROFILE_VISIBILITY_INVALID_CONFIG = "DEFAULT_PROFILE_VISIBILITY_INVALID_CONFIG";
+    String USER_DATA_FIELDS_NOT_CONFIGURED = "USER_DATA_FIELDS_NOT_CONFIGURED";
+    String ETERNAL_PUBLIC_FIELDS_NOT_CONFIGURED = "ETERNAL_PUBLIC_FIELDS_NOT_CONFIGURED";
+    String ETERNAL_PRIVATE_FIELDS_NOT_CONFIGURED = "ETERNAL_PRIVATE_FIELDS_NOT_CONFIGURED";
+    String FIELD_CONFIGURED_IN_MULTIPLE_ETERNAL_LISTS =
+        "FIELD_CONFIGURED_IN_MULTIPLE_ETERNAL_LISTS";
+    String ERROR_SYSTEM_SETTING_NOT_FOUND = "ERROR_SYSTEM_SETTING_NOT_FOUND";
+    String ERROR_FETCH_SYSTEM_SETTINGS = "ERROR_FETCH_SYSTEM_SETTINGS";
   }
 }

@@ -684,6 +684,13 @@ public final class JsonKey {
   public static final String CUSTODIAN_ORG_CHANNEL = "custodianOrgChannel";
   public static final String CUSTODIAN_ORG_ID = "custodianOrgId";
   public static final String APP_ID = "appId";
+  public static final String USER_PROFILE_CONFIG = "userProfileConfig";
+  public static final String USER_DATA_FIELDS = "userDataFields";
+  public static final String ETERNAL_PUBLIC_FIELDS = "eternalPublicFields";
+  public static final String ETERNAL_PRIVATE_FIELDS = "eternalPrivateFields";
+  public static final String SUNBIRD_DEFAULT_USER_PROFILE_VISIBILITY =
+      "sunbird_default_user_profile_visibility";
+  public static final String DEFAULT_USER_PROFILE_VISIBILITY = "defaultUserProfileVisibility";
 
   private JsonKey() {}
 }

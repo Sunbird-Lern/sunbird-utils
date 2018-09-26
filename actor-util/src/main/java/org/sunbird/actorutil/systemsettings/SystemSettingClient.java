@@ -1,6 +1,7 @@
 package org.sunbird.actorutil.systemsettings;
 
 import akka.actor.ActorRef;
+import java.util.List;
 import org.sunbird.models.systemsetting.SystemSetting;
 
 /**
@@ -17,4 +18,11 @@ public interface SystemSettingClient {
    * @return System setting details
    */
   SystemSetting getSystemSettingByField(ActorRef actorRef, String field);
+
+  /**
+   * @desc Fetch all System Settings
+   * @param actorRef Actor reference
+   * @return List of System Settings
+   */
+  List<SystemSetting> getAllSystemSettings(ActorRef actorRef);
 }
