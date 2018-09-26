@@ -104,6 +104,7 @@ public class KeyCloakRsaKeyFetcher {
       }
     } catch (NullPointerException e) {
       ProjectLogger.log(" NULL values returned from keycloak server for sso_public keys ", LoggerEnum.ERROR);
+      return null;
     }
 
     return values;
