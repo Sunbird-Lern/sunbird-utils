@@ -52,7 +52,7 @@ public class KeycloakRequiredActionLinkUtil {
   public static String getLink(String userName, String redirectUri, String requiredAction) {
     Map<String, String> request = new HashMap<>();
 
-    request.put(CLIENT_ID, ProjectUtil.getConfigValue(JsonKey.SUNBIRD_PORTAL_SSO_CLIENT_ID));
+    request.put(CLIENT_ID, ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_CLIENT_ID));
     request.put(USERNAME, userName);
     request.put(REQUIRED_ACTION, requiredAction);
 
@@ -106,7 +106,7 @@ public class KeycloakRequiredActionLinkUtil {
                     + ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_RELAM)
                     + "/protocol/openid-connect/token")
             .headers(headers)
-            .field("client_id", ProjectUtil.getConfigValue(JsonKey.SUNBIRD_PORTAL_SSO_CLIENT_ID))
+            .field("client_id", ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_CLIENT_ID))
             .field(USER_NAME, ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_USERNAME))
             .field(PASSWORD, ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_PASSWORD))
             .field(GRANT_TYPE, PASSWORD);
