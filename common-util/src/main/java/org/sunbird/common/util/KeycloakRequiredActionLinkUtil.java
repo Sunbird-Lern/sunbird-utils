@@ -91,7 +91,7 @@ public class KeycloakRequiredActionLinkUtil {
 
     ProjectLogger.log(
         "KeycloakRequiredActionLinkUtil:generateLink: Response status = " + response.getStatus(),
-        LoggerEnum.DEBUG.name());
+        LoggerEnum.INFO.name());
 
     return response.getBody().getObject().getString(LINK);
   }
@@ -115,7 +115,7 @@ public class KeycloakRequiredActionLinkUtil {
     ProjectLogger.log(
         "KeycloakRequiredActionLinkUtil:getAdminAccessToken: Response status = "
             + response.getStatus(),
-        LoggerEnum.DEBUG.name());
+        LoggerEnum.INFO.name());
 
     return response.getBody().getObject().getString(ACCESS_TOKEN);
   }

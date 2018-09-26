@@ -691,6 +691,7 @@ public final class JsonKey {
   public static final String VERIFY_EMAIL_LINK = "verify_email_link";
   public static final String LINK = "link";
   public static final String SET_PW_LINK = "setPasswordLink";
+  public static final String SUNBIRD_URL_SHORTNER_ENABLE = "sunbird_url_shortner_enable";
 
   private JsonKey() {}
 }
