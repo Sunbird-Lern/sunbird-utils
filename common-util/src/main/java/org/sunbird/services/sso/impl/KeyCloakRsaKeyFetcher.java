@@ -19,6 +19,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.PropertiesCache;
 
@@ -37,20 +38,24 @@ public class KeyCloakRsaKeyFetcher {
     try {
       Decoder urlDecoder = Base64.getUrlDecoder();
       KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-      Map<String, String> valueMap = getValuesFromJson(requestKeyFromKeycloak(url, realm));
+      String publicKeyString = requestKeyFromKeycloak(url, realm);
+      if(publicKeyString != null) {
+      Map<String, String> valueMap = getValuesFromJson(publicKeyString);
       BigInteger modulus = new BigInteger(1, urlDecoder.decode(valueMap.get("modulusBase64")));
       BigInteger publicExponent = new BigInteger(1, urlDecoder.decode(valueMap.get("exponentBase64")));
       PublicKey key = keyFactory.generatePublic(new RSAPublicKeySpec(modulus, publicExponent));
       saveToCache(key);
       return key;
+      }
+      return null;
     } catch (NoSuchAlgorithmException e) {
-      ProjectLogger.log(" Got NoSuchAlgorithmException " + e);
+      ProjectLogger.log(" Got NoSuchAlgorithmException " + e, LoggerEnum.ERROR);
       return null;
     } catch (InvalidKeySpecException e) {
-      ProjectLogger.log(" Got InvalidKeySpecException " + e);
+      ProjectLogger.log(" Got InvalidKeySpecException " + e, LoggerEnum.ERROR);
       return null;
     } catch (Exception e) {
-      ProjectLogger.log("Got Errors while getting public key " + e);
+      ProjectLogger.log("Got Errors while getting public key " + e, LoggerEnum.ERROR);
       return null;
     }
 
@@ -58,9 +63,9 @@ public class KeyCloakRsaKeyFetcher {
 
   private void saveToCache(PublicKey key) {
     byte[] encodedPublicKey = key.getEncoded();
-    String PublicKey = Base64.getEncoder().encodeToString(encodedPublicKey);
+    String publicKey = Base64.getEncoder().encodeToString(encodedPublicKey);
     PropertiesCache cache = PropertiesCache.getInstance();
-    cache.saveConfigProperty(JsonKey.SSO_PUBLIC_KEY, PublicKey);
+    cache.saveConfigProperty(JsonKey.SSO_PUBLIC_KEY, publicKey);
   }
 
   private String requestKeyFromKeycloak(String url, String realm) {
@@ -75,11 +80,11 @@ public class KeyCloakRsaKeyFetcher {
       if (entity != null) {
         return EntityUtils.toString(entity);
       } else {
-        ProjectLogger.log(" Not able to fetch key cloak sso_publickey from keycloak server ");
+        ProjectLogger.log(" Not able to fetch key cloak sso_publickey from keycloak server ", LoggerEnum.ERROR);
       }
 
     } catch (IOException e) {
-      e.printStackTrace();
+      ProjectLogger.log("IOException occured while requesting public key from keycloak server "+e, LoggerEnum.ERROR);
     }
     return null;
   }
@@ -98,7 +103,7 @@ public class KeyCloakRsaKeyFetcher {
 
       }
     } catch (NullPointerException e) {
-      ProjectLogger.log(" NULL values returned from keycloak server for sso_public keys ");
+      ProjectLogger.log(" NULL values returned from keycloak server for sso_public keys ", LoggerEnum.ERROR);
     }
 
     return values;

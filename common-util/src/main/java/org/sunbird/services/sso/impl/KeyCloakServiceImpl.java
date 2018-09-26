@@ -24,6 +24,7 @@ import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.AccessToken;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.mockito.internal.stubbing.answers.ThrowsException;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
@@ -56,6 +57,7 @@ public class KeyCloakServiceImpl implements SSOManager {
   public String verifyToken(String accessToken) {
     try {
       PublicKey publicKey = SSO_PUBLIC_KEY;
+      if(publicKey != null) {
       AccessToken token =
           RSATokenVerifier.verifyToken(
               accessToken,
@@ -79,6 +81,11 @@ public class KeyCloakServiceImpl implements SSOManager {
               + token.issuedNow().getExpiration(),
           LoggerEnum.INFO.name());
       return token.getSubject();
+      }
+      else {
+        ProjectLogger.log("SSO_PUBLIC_KEY is NULL , Please start Keycloak server to verify Access Token", LoggerEnum.ERROR);
+        throw new NullPointerException();
+      }
     } catch (Exception e) {
       ProjectLogger.log("User token is not authorized." + e);
       throw new ProjectCommonException(
