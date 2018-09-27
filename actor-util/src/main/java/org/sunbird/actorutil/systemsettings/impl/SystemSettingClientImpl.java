@@ -37,10 +37,12 @@ public class SystemSettingClientImpl implements SystemSettingClient {
 
   @Override
   public List<SystemSetting> getAllSystemSettings(ActorRef actorRef) {
+    ProjectLogger.log("SystemSettingClientImpl: getAllSystemSettings called", LoggerEnum.DEBUG);
+    
     Request request = new Request();
     request.setOperation(ActorOperations.GET_ALL_SYSTEM_SETTINGS.getValue());
-    ProjectLogger.log("SystemSettingClientImpl: getAllSystemSettings called", LoggerEnum.INFO);
     Object obj = interServiceCommunication.getResponse(actorRef, request);
+    
     if (obj instanceof Response) {
       Response responseObj = (Response) obj;
       return (List<SystemSetting>) responseObj.getResult().get(JsonKey.RESPONSE);
@@ -55,13 +57,15 @@ public class SystemSettingClientImpl implements SystemSettingClient {
   }
 
   private SystemSetting getSystemSetting(ActorRef actorRef, String param, Object value) {
+    ProjectLogger.log("SystemSettingClientImpl: getSystemSetting called", LoggerEnum.INFO);
+    
     Request request = new Request();
     Map<String, Object> map = new HashMap<>();
     map.put(param, value);
     request.setRequest(map);
     request.setOperation(ActorOperations.GET_SYSTEM_SETTING.getValue());
-    ProjectLogger.log("SystemSettingClientImpl: getSystemSetting called", LoggerEnum.INFO);
     Object obj = interServiceCommunication.getResponse(actorRef, request);
+    
     if (obj instanceof Response) {
       Response responseObj = (Response) obj;
       return (SystemSetting) responseObj.getResult().get(JsonKey.RESPONSE);
