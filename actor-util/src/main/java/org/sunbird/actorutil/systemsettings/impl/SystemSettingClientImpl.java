@@ -2,7 +2,6 @@ package org.sunbird.actorutil.systemsettings.impl;
 
 import akka.actor.ActorRef;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.sunbird.actorutil.InterServiceCommunication;
 import org.sunbird.actorutil.InterServiceCommunicationFactory;
@@ -22,6 +21,8 @@ public class SystemSettingClientImpl implements SystemSettingClient {
   private static InterServiceCommunication interServiceCommunication =
       InterServiceCommunicationFactory.getInstance();
   private static SystemSettingClientImpl systemSettingClient = null;
+  private static Map<String, SystemSetting> systemSettingsMap =
+      new HashMap<String, SystemSetting>();
 
   public static SystemSettingClientImpl getInstance() {
     if (null == systemSettingClient) {
@@ -32,40 +33,24 @@ public class SystemSettingClientImpl implements SystemSettingClient {
 
   @Override
   public SystemSetting getSystemSettingByField(ActorRef actorRef, String field) {
-    return getSystemSetting(actorRef, JsonKey.FIELD, field);
-  }
-
-  @Override
-  public List<SystemSetting> getAllSystemSettings(ActorRef actorRef) {
-    ProjectLogger.log("SystemSettingClientImpl: getAllSystemSettings called", LoggerEnum.DEBUG);
-    
-    Request request = new Request();
-    request.setOperation(ActorOperations.GET_ALL_SYSTEM_SETTINGS.getValue());
-    Object obj = interServiceCommunication.getResponse(actorRef, request);
-    
-    if (obj instanceof Response) {
-      Response responseObj = (Response) obj;
-      return (List<SystemSetting>) responseObj.getResult().get(JsonKey.RESPONSE);
-    } else if (obj instanceof ProjectCommonException) {
-      throw (ProjectCommonException) obj;
-    } else {
-      throw new ProjectCommonException(
-          ResponseCode.SERVER_ERROR.getErrorCode(),
-          ResponseCode.SERVER_ERROR.getErrorMessage(),
-          ResponseCode.SERVER_ERROR.getResponseCode());
+    if (systemSettingsMap.containsKey(field)) {
+      return systemSettingsMap.get(field);
     }
+    SystemSetting systemSetting = getSystemSetting(actorRef, JsonKey.FIELD, field);
+    systemSettingsMap.put(field, systemSetting);
+    return systemSetting;
   }
 
   private SystemSetting getSystemSetting(ActorRef actorRef, String param, Object value) {
     ProjectLogger.log("SystemSettingClientImpl: getSystemSetting called", LoggerEnum.INFO);
-    
+
     Request request = new Request();
     Map<String, Object> map = new HashMap<>();
     map.put(param, value);
     request.setRequest(map);
     request.setOperation(ActorOperations.GET_SYSTEM_SETTING.getValue());
     Object obj = interServiceCommunication.getResponse(actorRef, request);
-    
+
     if (obj instanceof Response) {
       Response responseObj = (Response) obj;
       return (SystemSetting) responseObj.getResult().get(JsonKey.RESPONSE);

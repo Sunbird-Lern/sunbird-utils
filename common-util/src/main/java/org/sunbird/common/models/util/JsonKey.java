@@ -692,12 +692,12 @@ public final class JsonKey {
   public static final String SET_PW_LINK = "setPasswordLink";
   public static final String SUNBIRD_URL_SHORTNER_ENABLE = "sunbird_url_shortner_enable";
   public static final String USER_PROFILE_CONFIG = "userProfileConfig";
-  public static final String USER_DATA_FIELDS = "userDataFields";
-  public static final String ETERNAL_PUBLIC_FIELDS = "eternalPublicFields";
-  public static final String ETERNAL_PRIVATE_FIELDS = "eternalPrivateFields";
-  public static final String SUNBIRD_DEFAULT_USER_PROFILE_VISIBILITY =
-      "sunbird_default_user_profile_visibility";
-  public static final String DEFAULT_USER_PROFILE_VISIBILITY = "defaultUserProfileVisibility";
+  public static final String USER_DATA_FIELDS = "fields";
+  public static final String PUBLIC_FIELDS = "publicFields";
+  public static final String PRIVATE_FIELDS = "privateFields";
+  public static final String SUNBIRD_USER_PROFILE_FIELD_DEFAULT_VISIBILITY =
+      "sunbird_user_profile_field_default_visibility";
+  public static final String DEFAULT_PROFILE_FIELD_VISIBILITY = "defaultProfileFieldVisibility";
 
   private JsonKey() {}
 }
