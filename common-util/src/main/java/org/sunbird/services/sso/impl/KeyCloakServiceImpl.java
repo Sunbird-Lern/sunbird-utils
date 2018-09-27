@@ -65,13 +65,13 @@ public class KeyCloakServiceImpl implements SSOManager {
             LoggerEnum.INFO.name());
         return token.getSubject();
       } else {
-        ProjectLogger.log("SSO_PUBLIC_KEY is NULL , Please start Keycloak server to verify Access Token",
+        ProjectLogger.log("KeyCloakServiceImpl:verifyToken: SSO_PUBLIC_KEY is NULL. Keycloak server may need to be started.",
             LoggerEnum.ERROR);
         throw new ProjectCommonException(ResponseCode.keyCloakDefaultError.getErrorCode(),
             ResponseCode.keyCloakDefaultError.getErrorMessage(), ResponseCode.keyCloakDefaultError.getResponseCode());
       }
     } catch (Exception e) {
-      ProjectLogger.log("User token is not authorized." + e);
+      ProjectLogger.log("KeyCloakServiceImpl:verifyToken: Exception occurred with message = " + e.getMessage(), LoggerEnum.ERROR);
       throw new ProjectCommonException(ResponseCode.unAuthorized.getErrorCode(),
           ResponseCode.unAuthorized.getErrorMessage(), ResponseCode.UNAUTHORIZED.getResponseCode());
     }
