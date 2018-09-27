@@ -835,7 +835,7 @@ public class ProjectUtil {
         params.put(JsonKey.LINK, setPasswordLink);
         params.put(JsonKey.SET_PW_LINK, "true");
       } else if (StringUtils.isNotBlank(verifyEmailLink)) {
-        params.put(JsonKey.LINK, setPasswordLink);
+        params.put(JsonKey.LINK, verifyEmailLink);
         params.put(JsonKey.SET_PW_LINK, null);
       }
 
