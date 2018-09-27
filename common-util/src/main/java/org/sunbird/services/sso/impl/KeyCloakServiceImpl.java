@@ -48,32 +48,62 @@ public class KeyCloakServiceImpl implements SSOManager {
           + "realms/"
           + KeyCloakConnectionProvider.SSO_REALM
           + "/protocol/openid-connect/token";
-  
-  private static final PublicKey SSO_PUBLIC_KEY = new KeyCloakRsaKeyFetcher()
-      .getPublicKeyFromKeyCloak(KeyCloakConnectionProvider.SSO_URL, KeyCloakConnectionProvider.SSO_REALM);
-  
+
+  private static final PublicKey SSO_PUBLIC_KEY =
+      new KeyCloakRsaKeyFetcher()
+          .getPublicKeyFromKeyCloak(
+              KeyCloakConnectionProvider.SSO_URL, KeyCloakConnectionProvider.SSO_REALM);
+
   @Override
   public String verifyToken(String accessToken) {
     try {
       PublicKey publicKey = SSO_PUBLIC_KEY;
+      if (publicKey == null) {
+        publicKey = toPublicKey(System.getenv(JsonKey.SSO_PUBLIC_KEY));
+      }
       if (publicKey != null) {
-        AccessToken token = RSATokenVerifier.verifyToken(accessToken, publicKey,
-            KeyCloakConnectionProvider.SSO_URL + "realms/" + KeyCloakConnectionProvider.SSO_REALM, true, true);
+        AccessToken token =
+            RSATokenVerifier.verifyToken(
+                accessToken,
+                publicKey,
+                KeyCloakConnectionProvider.SSO_URL
+                    + "realms/"
+                    + KeyCloakConnectionProvider.SSO_REALM,
+                true,
+                true);
         ProjectLogger.log(
-            token.getId() + " " + token.issuedFor + " " + token.getProfile() + " " + token.getSubject() + " Active: "
-                + token.isActive() + "  isExpired: " + token.isExpired() + " " + token.issuedNow().getExpiration(),
+            token.getId()
+                + " "
+                + token.issuedFor
+                + " "
+                + token.getProfile()
+                + " "
+                + token.getSubject()
+                + " Active: "
+                + token.isActive()
+                + "  isExpired: "
+                + token.isExpired()
+                + " "
+                + token.issuedNow().getExpiration(),
             LoggerEnum.INFO.name());
         return token.getSubject();
       } else {
-        ProjectLogger.log("KeyCloakServiceImpl:verifyToken: SSO_PUBLIC_KEY is NULL. Keycloak server may need to be started.",
+        ProjectLogger.log(
+            "KeyCloakServiceImpl:verifyToken: SSO_PUBLIC_KEY is NULL. Keycloak server may need to be started.",
             LoggerEnum.ERROR);
-        throw new ProjectCommonException(ResponseCode.keyCloakDefaultError.getErrorCode(),
-            ResponseCode.keyCloakDefaultError.getErrorMessage(), ResponseCode.keyCloakDefaultError.getResponseCode());
+        throw new ProjectCommonException(
+            ResponseCode.keyCloakDefaultError.getErrorCode(),
+            ResponseCode.keyCloakDefaultError.getErrorMessage(),
+            ResponseCode.keyCloakDefaultError.getResponseCode());
       }
     } catch (Exception e) {
-      ProjectLogger.log("KeyCloakServiceImpl:verifyToken: Exception occurred with message = " + e.getMessage(), LoggerEnum.ERROR);
-      throw new ProjectCommonException(ResponseCode.unAuthorized.getErrorCode(),
-          ResponseCode.unAuthorized.getErrorMessage(), ResponseCode.UNAUTHORIZED.getResponseCode());
+      ProjectLogger.log(
+          "KeyCloakServiceImpl:verifyToken: Exception occurred with message = " + e.getMessage(),
+          LoggerEnum.ERROR);
+      throw new ProjectCommonException(
+          ResponseCode.unAuthorized.getErrorCode(),
+          ResponseCode.unAuthorized.getErrorMessage(),
+          ResponseCode.UNAUTHORIZED.getResponseCode());
     }
   }
 
