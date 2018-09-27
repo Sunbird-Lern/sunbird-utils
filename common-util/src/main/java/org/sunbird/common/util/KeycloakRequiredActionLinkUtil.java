@@ -93,7 +93,10 @@ public class KeycloakRequiredActionLinkUtil {
         "KeycloakRequiredActionLinkUtil:generateLink: Response status = " + response.getStatus(),
         LoggerEnum.INFO.name());
 
-    return response.getBody().getObject().getString(LINK);
+    String link = response.getBody().getObject().getString(LINK);
+    ProjectLogger.log(
+        "KeycloakRequiredActionLinkUtil:generateLink: link : = " + link, LoggerEnum.INFO.name());
+    return link;
   }
 
   private static String getAdminAccessToken() throws Exception {
