@@ -28,10 +28,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 /**
- * @author  github.com/iostream04 This class will connect to key cloak server and
- *         fetch the sso_publicKey using http call.
+ * Class to fetch SSO public key from Keycloak server using 'certs' HTTP API call.
  */
-
 public class KeyCloakRsaKeyFetcher {
 
   public PublicKey getPublicKeyFromKeyCloak(String url, String realm) {
@@ -49,18 +47,10 @@ public class KeyCloakRsaKeyFetcher {
           return key;
         }
       }
-      return null;
-    } catch (NoSuchAlgorithmException e) {
-      ProjectLogger.log(" Got NoSuchAlgorithmException " + e, LoggerEnum.ERROR);
-      return null;
-    } catch (InvalidKeySpecException e) {
-      ProjectLogger.log(" Got InvalidKeySpecException " + e, LoggerEnum.ERROR);
-      return null;
     } catch (Exception e) {
-      ProjectLogger.log("Got Errors while getting public key " + e, LoggerEnum.ERROR);
-      return null;
+      ProjectLogger.log("KeyCloakRsaKeyFetcher:getPublicKeyFromKeyCloak: Exception occurred with message = " + e.getMessage(), LoggerEnum.ERROR);
     }
-
+    return null;
   }
 
   private void saveToCache(PublicKey key) {
@@ -71,7 +61,6 @@ public class KeyCloakRsaKeyFetcher {
   }
 
   private String requestKeyFromKeycloak(String url, String realm) {
-
     HttpClient client = HttpClientBuilder.create().build();
     HttpGet request = new HttpGet(url + "/auth/realms/" + realm + "/protocol/openid-connect/certs");
 
@@ -82,11 +71,10 @@ public class KeyCloakRsaKeyFetcher {
       if (entity != null) {
         return EntityUtils.toString(entity);
       } else {
-        ProjectLogger.log(" Not able to fetch key cloak sso_publickey from keycloak server ", LoggerEnum.ERROR);
+        ProjectLogger.log("KeyCloakRsaKeyFetcher:requestKeyFromKeycloak: Not able to fetch SSO public key from keycloak server", LoggerEnum.ERROR);
       }
-
     } catch (IOException e) {
-      ProjectLogger.log("IOException occured while requesting public key from keycloak server "+e, LoggerEnum.ERROR);
+      ProjectLogger.log("KeyCloakRsaKeyFetcher:requestKeyFromKeycloak: Exception occurred with message = " + e.getMessage(), LoggerEnum.ERROR);
     }
     return null;
   }
@@ -105,12 +93,10 @@ public class KeyCloakRsaKeyFetcher {
 
       }
     } catch (NullPointerException e) {
-      ProjectLogger.log(" NULL values returned from keycloak server for sso_public keys ", LoggerEnum.ERROR);
+      ProjectLogger.log("KeyCloakRsaKeyFetcher:getValuesFromJson: Exception occurred with message = " + e.getMessage(), LoggerEnum.ERROR);
       return null;
     }
 
     return values;
   }
-
-
 }
