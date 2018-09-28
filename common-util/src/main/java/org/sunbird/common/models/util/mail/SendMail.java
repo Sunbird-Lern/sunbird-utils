@@ -262,7 +262,7 @@ public class SendMail {
       MimeMessage message = new MimeMessage(session);
       message.setFrom(new InternetAddress(fromEmail));
       for (String email : emailList) {
-        message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+        message.addRecipient(Message.RecipientType.BCC, new InternetAddress(email));
       }
       message.setSubject(subject);
       message.setContent(writer.toString(), "text/html");

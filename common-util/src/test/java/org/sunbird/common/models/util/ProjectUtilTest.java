@@ -172,19 +172,6 @@ public class ProjectUtilTest {
   }
 
   @Test
-  public void testSendSMSWithDetails() {
-    String msg =
-        ProjectUtil.getSMSBody("AMIT@BLR", "www.sunbird.org", "sunbird.com", "diksha", "", "");
-    assertTrue(msg.contains("sunbird.org"));
-  }
-
-  @Test
-  public void testSendSMSWithoutDetails() {
-    String msg = ProjectUtil.getSMSBody("", "", "", "", "", "");
-    assertTrue(msg.contains("user_name"));
-  }
-
-  @Test
   public void testisDateValidFormat() {
     boolean bool =
         ProjectUtil.isDateValidFormat("yyyy-MM-dd HH:mm:ss:SSSZ", "2017-12-18 10:47:30:707+0530");
