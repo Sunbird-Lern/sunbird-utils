@@ -356,6 +356,7 @@ public interface ResponseMessage {
     String NO_EMAIL_RECIPIENTS =
         "Email notification is not sent as the number of recipients is zero.";
     String PARAMETER_MISMATCH = "Mismatch of given parameters: {0}.";
+    String FORBIDDEN = "You are forbidden from accessing specified resource.";
     String ERROR_CONFIG_LOAD_EMPTY_STRING =
         "Loading {0} configuration failed as empty string is passed as parameter.";
     String ERROR_CONFIG_LOAD_PARSE_STRING =
@@ -673,6 +674,7 @@ public interface ResponseMessage {
     String EMAIL_RECIPIENTS_EXCEEDS_MAX_LIMIT = "EMAIL_RECIPIENTS_EXCEEDS_MAX_LIMIT";
     String NO_EMAIL_RECIPIENTS = "NO_EMAIL_RECIPIENTS";
     String PARAMETER_MISMATCH = "PARAMETER_MISMATCH";
+    String FORBIDDEN = "FORBIDDEN";
     String ERROR_CONFIG_LOAD_EMPTY_STRING = "ERROR_CONFIG_LOAD_EMPTY_STRING";
     String ERROR_CONFIG_LOAD_PARSE_STRING = "ERROR_CONFIG_LOAD_PARSE_STRING";
     String ERROR_CONFIG_LOAD_EMPTY_CONFIG = "ERROR_CONFIG_LOAD_EMPTY_CONFIG";

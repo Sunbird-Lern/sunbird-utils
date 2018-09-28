@@ -645,6 +645,7 @@ public enum ResponseCode {
       ResponseMessage.Key.NO_EMAIL_RECIPIENTS, ResponseMessage.Message.NO_EMAIL_RECIPIENTS),
   parameterMismatch(
       ResponseMessage.Key.PARAMETER_MISMATCH, ResponseMessage.Message.PARAMETER_MISMATCH),
+  errorForbidden(ResponseMessage.Key.FORBIDDEN, ResponseMessage.Message.FORBIDDEN),
   errorConfigLoadEmptyString(
       ResponseMessage.Key.ERROR_CONFIG_LOAD_EMPTY_STRING,
       ResponseMessage.Message.ERROR_CONFIG_LOAD_EMPTY_STRING),
@@ -665,6 +666,7 @@ public enum ResponseCode {
   SERVER_ERROR(500),
   RESOURCE_NOT_FOUND(404),
   UNAUTHORIZED(401),
+  FORBIDDEN(403),
   REDIRECTION_REQUIRED(302);
   private int responseCode;
   /** error code contains String value */
