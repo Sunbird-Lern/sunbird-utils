@@ -262,7 +262,11 @@ public class SendMail {
       MimeMessage message = new MimeMessage(session);
       message.setFrom(new InternetAddress(fromEmail));
       for (String email : emailList) {
-        message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+        if (emailList.length > 1) {
+          message.addRecipient(Message.RecipientType.BCC, new InternetAddress(email));
+        } else {
+          message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+        }
       }
       message.setSubject(subject);
       message.setContent(writer.toString(), "text/html");
@@ -271,6 +275,7 @@ public class SendMail {
       transport.sendMessage(message, message.getAllRecipients());
       transport.close();
     } catch (Exception e) {
+
       sentStatus = false;
       ProjectLogger.log(
           "SendMail:sendMail: Exception occurred with message = " + e.getMessage(), e);

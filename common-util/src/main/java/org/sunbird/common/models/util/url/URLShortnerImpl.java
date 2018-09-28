@@ -7,7 +7,6 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
-import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
@@ -47,14 +46,11 @@ public class URLShortnerImpl implements URLShortner {
         try {
           map = mapper.readValue(response, HashMap.class);
           Map<String, String> dataMap = (Map<String, String>) map.get("data");
-          ProjectLogger.log(
-              "URLShortnerImpl:shortUrl: link : = " + dataMap.get("url"), LoggerEnum.INFO.name());
           return dataMap.get("url");
         } catch (IOException | ClassCastException e) {
           ProjectLogger.log(e.getMessage(), e);
         }
       }
-      ProjectLogger.log("unable to do url short");
     }
     return url;
   }
