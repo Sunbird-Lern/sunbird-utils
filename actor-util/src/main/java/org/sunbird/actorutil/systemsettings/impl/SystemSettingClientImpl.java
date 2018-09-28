@@ -21,6 +21,8 @@ public class SystemSettingClientImpl implements SystemSettingClient {
   private static InterServiceCommunication interServiceCommunication =
       InterServiceCommunicationFactory.getInstance();
   private static SystemSettingClientImpl systemSettingClient = null;
+  private static Map<String, SystemSetting> systemSettingsMap =
+      new HashMap<String, SystemSetting>();
 
   public static SystemSettingClientImpl getInstance() {
     if (null == systemSettingClient) {
@@ -31,17 +33,24 @@ public class SystemSettingClientImpl implements SystemSettingClient {
 
   @Override
   public SystemSetting getSystemSettingByField(ActorRef actorRef, String field) {
-    return getSystemSetting(actorRef, JsonKey.FIELD, field);
+    if (systemSettingsMap.containsKey(field)) {
+      return systemSettingsMap.get(field);
+    }
+    SystemSetting systemSetting = getSystemSetting(actorRef, JsonKey.FIELD, field);
+    systemSettingsMap.put(field, systemSetting);
+    return systemSetting;
   }
 
   private SystemSetting getSystemSetting(ActorRef actorRef, String param, Object value) {
+    ProjectLogger.log("SystemSettingClientImpl: getSystemSetting called", LoggerEnum.DEBUG);
+
     Request request = new Request();
     Map<String, Object> map = new HashMap<>();
     map.put(param, value);
     request.setRequest(map);
     request.setOperation(ActorOperations.GET_SYSTEM_SETTING.getValue());
-    ProjectLogger.log("SystemSettingClientImpl: getSystemSetting called", LoggerEnum.INFO);
     Object obj = interServiceCommunication.getResponse(actorRef, request);
+
     if (obj instanceof Response) {
       Response responseObj = (Response) obj;
       return (SystemSetting) responseObj.getResult().get(JsonKey.RESPONSE);
