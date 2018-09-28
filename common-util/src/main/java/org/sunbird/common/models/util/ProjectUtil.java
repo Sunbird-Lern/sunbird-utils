@@ -805,13 +805,7 @@ public class ProjectUtil {
     }
   }
 
-  public static String getSMSBody(
-      String userName,
-      String webUrl,
-      String instanceName,
-      String appName,
-      String setPasswordLink,
-      String verifyEmailLink) {
+  public static String getSMSBody(Map<String, String> smsTemplate) {
     try {
       Properties props = new Properties();
       props.put("resource.loader", "class");
@@ -821,26 +815,14 @@ public class ProjectUtil {
 
       VelocityEngine ve = new VelocityEngine();
       ve.init(props);
-
-      Map<String, String> params = new HashMap<>();
-      params.put("userName", StringUtils.isBlank(userName) ? "user_name" : userName);
-      params.put("webUrl", StringUtils.isBlank(webUrl) ? "web_url" : webUrl);
-      params.put(
-          "instanceName", StringUtils.isBlank(instanceName) ? "instance_name" : instanceName);
-      if (StringUtils.isNotBlank(appName)) {
-        params.put("appName", appName);
-      }
-      params.put("newline", "\n");
-      if (StringUtils.isNotBlank(setPasswordLink)) {
-        params.put(JsonKey.LINK, setPasswordLink);
-        params.put(JsonKey.SET_PW_LINK, "true");
-      } else if (StringUtils.isNotBlank(verifyEmailLink)) {
-        params.put(JsonKey.LINK, verifyEmailLink);
-        params.put(JsonKey.SET_PW_LINK, null);
-      }
-
+      smsTemplate.put("newline", "\n");
+      smsTemplate.put(
+          "instanceName",
+          StringUtils.isBlank(smsTemplate.get("instanceName"))
+              ? ""
+              : smsTemplate.get("instanceName"));
       Template t = ve.getTemplate("/welcomeSmsTemplate.vm");
-      VelocityContext context = new VelocityContext(params);
+      VelocityContext context = new VelocityContext(smsTemplate);
       StringWriter writer = new StringWriter();
       t.merge(context, writer);
       return writer.toString();
