@@ -267,7 +267,6 @@ public class SendMail {
         recipientType = Message.RecipientType.BCC;
       } else {
         recipientType = Message.RecipientType.TO;
-        ;
       }
       for (String email : emailList) {
         message.addRecipient(recipientType, new InternetAddress(email));
