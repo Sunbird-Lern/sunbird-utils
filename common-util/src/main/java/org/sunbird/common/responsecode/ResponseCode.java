@@ -229,9 +229,11 @@ public enum ResponseCode {
       ResponseMessage.Key.SRC_EXTERNAL_ID_ALREADY_EXIST,
       ResponseMessage.Message.SRC_EXTERNAL_ID_ALREADY_EXIST),
   userAlreadyEnrolledCourse(
-      ResponseMessage.Key.USER_ALREADY_ENROLLED_COURSE, ResponseMessage.Message.USER_ALREADY_ENROLLED_COURSE),
+      ResponseMessage.Key.USER_ALREADY_ENROLLED_COURSE,
+      ResponseMessage.Message.USER_ALREADY_ENROLLED_COURSE),
   userNotEnrolledCourse(
-      ResponseMessage.Key.USER_NOT_ENROLLED_COURSE, ResponseMessage.Message.USER_NOT_ENROLLED_COURSE),
+      ResponseMessage.Key.USER_NOT_ENROLLED_COURSE,
+      ResponseMessage.Message.USER_NOT_ENROLLED_COURSE),
   courseBatchAlreadyCompleted(
       ResponseMessage.Key.COURSE_BATCH_ALREADY_COMPLETED,
       ResponseMessage.Message.COURSE_BATCH_ALREADY_COMPLETED),
@@ -643,11 +645,13 @@ public enum ResponseCode {
       ResponseMessage.Key.NO_EMAIL_RECIPIENTS, ResponseMessage.Message.NO_EMAIL_RECIPIENTS),
   parameterMismatch(
       ResponseMessage.Key.PARAMETER_MISMATCH, ResponseMessage.Message.PARAMETER_MISMATCH),
+  forbidden(ResponseMessage.Key.FORBIDDEN_USER, ResponseMessage.Message.FORBIDDEN_USER),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
   RESOURCE_NOT_FOUND(404),
   UNAUTHORIZED(401),
+  FORBIDDEN(403),
   REDIRECTION_REQUIRED(302);
   private int responseCode;
   /** error code contains String value */

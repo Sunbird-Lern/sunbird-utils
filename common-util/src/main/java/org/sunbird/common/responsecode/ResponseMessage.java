@@ -125,7 +125,8 @@ public interface ResponseMessage {
     String ROLES_MISSING = "user role is required.";
     String CHANNEL_REG_FAILED = "Channel Registration failed.";
     String INVALID_COURSE_CREATOR_ID = "Course creator id does not exist .";
-    String USER_NOT_ASSOCIATED_TO_ROOT_ORG = "User (ID = {0}) not associated to course batch creator root org.";
+    String USER_NOT_ASSOCIATED_TO_ROOT_ORG =
+        "User (ID = {0}) not associated to course batch creator root org.";
     String SLUG_IS_NOT_UNIQUE =
         "Please provide different channel value. This channel value already exist.";
     String INVALID_CREATE_BADGE_ISSUER_DATA = "{0}";
@@ -355,6 +356,7 @@ public interface ResponseMessage {
     String NO_EMAIL_RECIPIENTS =
         "Email notification is not sent as the number of recipients is zero.";
     String PARAMETER_MISMATCH = "Mismatch of given parameters: {0}.";
+    String FORBIDDEN_USER = "You are forbidden from accessing specified resource.";
   }
 
   interface Key {
@@ -664,5 +666,6 @@ public interface ResponseMessage {
     String EMAIL_RECIPIENTS_EXCEEDS_MAX_LIMIT = "EMAIL_RECIPIENTS_EXCEEDS_MAX_LIMIT";
     String NO_EMAIL_RECIPIENTS = "NO_EMAIL_RECIPIENTS";
     String PARAMETER_MISMATCH = "PARAMETER_MISMATCH";
+    String FORBIDDEN_USER = "FORBIDDEN_USER";
   }
 }
