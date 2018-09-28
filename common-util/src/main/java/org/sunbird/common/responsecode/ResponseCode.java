@@ -645,7 +645,7 @@ public enum ResponseCode {
       ResponseMessage.Key.NO_EMAIL_RECIPIENTS, ResponseMessage.Message.NO_EMAIL_RECIPIENTS),
   parameterMismatch(
       ResponseMessage.Key.PARAMETER_MISMATCH, ResponseMessage.Message.PARAMETER_MISMATCH),
-  forbidden(ResponseMessage.Key.FORBIDDEN_USER, ResponseMessage.Message.FORBIDDEN_USER),
+  errorForbidden(ResponseMessage.Key.FORBIDDEN, ResponseMessage.Message.FORBIDDEN),
   errorConfigLoadEmptyString(
       ResponseMessage.Key.ERROR_CONFIG_LOAD_EMPTY_STRING,
       ResponseMessage.Message.ERROR_CONFIG_LOAD_EMPTY_STRING),
