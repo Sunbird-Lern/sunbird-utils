@@ -654,9 +654,9 @@ public enum ResponseCode {
   errorConfigLoadEmptyConfig(
       ResponseMessage.Key.ERROR_CONFIG_LOAD_EMPTY_CONFIG,
       ResponseMessage.Message.ERROR_CONFIG_LOAD_EMPTY_CONFIG),
-  fieldConfiguredInMultipleFieldsLists(
-      ResponseMessage.Key.FIELD_CONFIGURED_IN_MULTIPLE_FIELDS_LISTS,
-      ResponseMessage.Message.FIELD_CONFIGURED_IN_MULTIPLE_FIELDS_LISTS),
+  errorConflictingFieldConfiguration(
+      ResponseMessage.Key.ERROR_CONFLICTING_FIELD_CONFIGURATION,
+      ResponseMessage.Message.ERROR_CONFLICTING_FIELD_CONFIGURATION),
   errorSystemSettingNotFound(
       ResponseMessage.Key.ERROR_SYSTEM_SETTING_NOT_FOUND,
       ResponseMessage.Message.ERROR_SYSTEM_SETTING_NOT_FOUND),
