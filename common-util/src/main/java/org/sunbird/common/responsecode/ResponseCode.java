@@ -646,6 +646,21 @@ public enum ResponseCode {
   parameterMismatch(
       ResponseMessage.Key.PARAMETER_MISMATCH, ResponseMessage.Message.PARAMETER_MISMATCH),
   forbidden(ResponseMessage.Key.FORBIDDEN_USER, ResponseMessage.Message.FORBIDDEN_USER),
+  errorConfigLoadEmptyString(
+      ResponseMessage.Key.ERROR_CONFIG_LOAD_EMPTY_STRING,
+      ResponseMessage.Message.ERROR_CONFIG_LOAD_EMPTY_STRING),
+  errorConfigLoadParseString(
+      ResponseMessage.Key.ERROR_CONFIG_LOAD_PARSE_STRING,
+      ResponseMessage.Message.ERROR_CONFIG_LOAD_PARSE_STRING),
+  errorConfigLoadEmptyConfig(
+      ResponseMessage.Key.ERROR_CONFIG_LOAD_EMPTY_CONFIG,
+      ResponseMessage.Message.ERROR_CONFIG_LOAD_EMPTY_CONFIG),
+  errorConflictingFieldConfiguration(
+      ResponseMessage.Key.ERROR_CONFLICTING_FIELD_CONFIGURATION,
+      ResponseMessage.Message.ERROR_CONFLICTING_FIELD_CONFIGURATION),
+  errorSystemSettingNotFound(
+      ResponseMessage.Key.ERROR_SYSTEM_SETTING_NOT_FOUND,
+      ResponseMessage.Message.ERROR_SYSTEM_SETTING_NOT_FOUND),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

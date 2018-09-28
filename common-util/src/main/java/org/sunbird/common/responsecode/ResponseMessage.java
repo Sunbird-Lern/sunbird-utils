@@ -357,6 +357,14 @@ public interface ResponseMessage {
         "Email notification is not sent as the number of recipients is zero.";
     String PARAMETER_MISMATCH = "Mismatch of given parameters: {0}.";
     String FORBIDDEN_USER = "You are forbidden from accessing specified resource.";
+    String ERROR_CONFIG_LOAD_EMPTY_STRING =
+        "Loading {0} configuration failed as empty string is passed as parameter.";
+    String ERROR_CONFIG_LOAD_PARSE_STRING =
+        "Loading {0} configuration failed due to parsing error.";
+    String ERROR_CONFIG_LOAD_EMPTY_CONFIG = "Loading {0} configuration failed.";
+    String ERROR_CONFLICTING_FIELD_CONFIGURATION =
+        "Field {0} in {1} configuration is conflicting in {2} and {3}.";
+    String ERROR_SYSTEM_SETTING_NOT_FOUND = "System Setting not found for id: {0}";
   }
 
   interface Key {
@@ -667,5 +675,10 @@ public interface ResponseMessage {
     String NO_EMAIL_RECIPIENTS = "NO_EMAIL_RECIPIENTS";
     String PARAMETER_MISMATCH = "PARAMETER_MISMATCH";
     String FORBIDDEN_USER = "FORBIDDEN_USER";
+    String ERROR_CONFIG_LOAD_EMPTY_STRING = "ERROR_CONFIG_LOAD_EMPTY_STRING";
+    String ERROR_CONFIG_LOAD_PARSE_STRING = "ERROR_CONFIG_LOAD_PARSE_STRING";
+    String ERROR_CONFIG_LOAD_EMPTY_CONFIG = "ERROR_CONFIG_LOAD_EMPTY_CONFIG";
+    String ERROR_CONFLICTING_FIELD_CONFIGURATION = "ERROR_CONFLICTING_FIELD_CONFIGURATION";
+    String ERROR_SYSTEM_SETTING_NOT_FOUND = "ERROR_SYSTEM_SETTING_NOT_FOUND";
   }
 }
