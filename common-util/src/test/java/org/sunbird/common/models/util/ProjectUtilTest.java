@@ -172,6 +172,15 @@ public class ProjectUtilTest {
   }
 
   @Test
+  public void testSendSMSWithDetails() {
+    Map<String, String> map = new HashMap<>();
+    map.put("instanceName", "Diksha");
+    map.put("link", "www.sunbird.org");
+    String msg = ProjectUtil.getSMSBody(map);
+    assertTrue(msg.contains("sunbird.org"));
+  }
+
+  @Test
   public void testisDateValidFormat() {
     boolean bool =
         ProjectUtil.isDateValidFormat("yyyy-MM-dd HH:mm:ss:SSSZ", "2017-12-18 10:47:30:707+0530");

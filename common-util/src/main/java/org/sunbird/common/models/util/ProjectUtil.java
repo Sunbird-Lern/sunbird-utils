@@ -819,7 +819,7 @@ public class ProjectUtil {
       smsTemplate.put(
           "instanceName",
           StringUtils.isBlank(smsTemplate.get("instanceName"))
-              ? "instance_name"
+              ? ""
               : smsTemplate.get("instanceName"));
       Template t = ve.getTemplate("/welcomeSmsTemplate.vm");
       VelocityContext context = new VelocityContext(smsTemplate);
