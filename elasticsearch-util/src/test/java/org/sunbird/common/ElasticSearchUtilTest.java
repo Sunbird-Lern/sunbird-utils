@@ -261,14 +261,14 @@ public class ElasticSearchUtilTest {
 			doReturn(indExistResponse).when(actFtrIndex).get();
 			doReturn(true).when(indExistResponse).isExists();
 		} catch (InterruptedException | ExecutionException e) {
-			throw new RuntimeException(e);
+			Assert.fail("Initialization of test case failed due to " + e.getLocalizedMessage());
 		}
 
 		try {
 			doReturn(typeExistsResponse).when(actFtrType).get();
 			doReturn(true).when(typeExistsResponse).isExists();
 		} catch (InterruptedException | ExecutionException e) {
-			throw new RuntimeException(e);
+			Assert.fail("Initialization of test case failed due to " + e.getLocalizedMessage());
 		}
 		doReturn(mockCreateIndexReqBldr).when(indicesAdminMock).prepareCreate(Mockito.anyString());
 
@@ -290,7 +290,7 @@ public class ElasticSearchUtilTest {
 		try {
 			when(HttpUtil.sendPostRequest(Mockito.anyString(), Mockito.anyString(), Mockito.anyMap())).thenReturn("{}");
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			Assert.fail("Initialization of test case failed due to " + e.getLocalizedMessage());
 		}
 	}
 	
