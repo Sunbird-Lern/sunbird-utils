@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.AfterClass;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.sunbird.common.models.util.JsonKey;
@@ -11,6 +12,7 @@ import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.helper.CassandraConnectionManagerImpl;
 import org.sunbird.helper.CassandraConnectionMngrFactory;
 
+@Ignore
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CassandraTest {
 
