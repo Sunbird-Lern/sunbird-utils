@@ -57,6 +57,7 @@ import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.sort.SortOrder;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -114,7 +115,7 @@ public class ElasticSearchUtilTest {
 		try {
 			doNothing().when(ConnectionManager.class, "registerShutDownHook");
 		} catch (Exception e) {
-			throw new RuntimeException("Failed while mocking for registerShutdownHook of ConnectionManager" , e);
+			Assert.fail("Initialization of test case failed due to " + e.getLocalizedMessage());
 		}
 		when(ConnectionManager.getClient()).thenReturn(client);
 	
@@ -215,9 +216,8 @@ public class ElasticSearchUtilTest {
 		when(client.update(Mockito.any(UpdateRequest.class))).thenReturn(actFtr);
 		try {
 			when(actFtr.get()).thenReturn(updateResponse);
-//			when(updateResponse.getResult()).thenReturn(Result.UPDATED);
 		} catch (InterruptedException | ExecutionException e) {
-			throw new RuntimeException(e);
+			Assert.fail("Initialization of test case failed due to " + e.getLocalizedMessage());
 		}
 	}
 
