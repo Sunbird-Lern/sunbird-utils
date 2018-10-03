@@ -56,7 +56,6 @@ import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.sort.SortOrder;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -91,25 +90,635 @@ import com.typesafe.config.Config;
 		HttpUtil.class, BulkProcessor.class })
 @SuppressStaticInitializationFor({ "org.sunbird.common.ConnectionManager" })
 public class ElasticSearchUtilTest {
-	private static Map<String, Object> map = null;
-	private static Map<String, Object> map1 = null;
+	private static Map<String, Object> chemistryMap = null;
+	private static Map<String, Object> physicsMap = null;
 	private static TransportClient client = null;
-	private static final String indexName = "sbtestindex";
-	private static final String typeName = "sbtesttype";
+	private static final String INDEX_NAME = "sbtestindex";
+	private static final String TYPE_NAME = "sbtesttype";
 	private static final String STARTS_WITH = "startsWith";
 	private static final String ENDS_WITH = "endsWith";
-	private static long startTime = System.currentTimeMillis();
+	private static final long START_TIME = System.currentTimeMillis();
 
 	@BeforeClass
 	public static void initClass() throws Exception {
-		map = intitialiseMap(5);
-		map1 = intitialiseMap1(60);
+		chemistryMap = initializeChemistryCourse(5);
+		physicsMap = intitializePhysicsCourse(60);
 		
 
 	}
 
 	@Before
 	public void initBeforeTest()  {
+		
+		//Initialize mock objects before the tests.
+		mockBaseRules();
+		mockRulesForGet();
+		mockRulesForInsert();
+		mockRulesForUpdate();
+		mockRulesForDelete();
+		
+		mockRulesForIndexes();
+		mockRulesHttpRequest();
+		mockRulesBulkInsert();
+
+	}
+	
+	@Test
+	public void testConnectionSuccess() {
+		TransportClient client = mock(TransportClient.class);
+		assertNotNull(client);
+	}
+
+	@Test
+	public void testCreateIndexSuccess() {
+		boolean response = ElasticSearchUtil.createIndex(INDEX_NAME, TYPE_NAME, ElasticSearchMapping.createMapping(),
+				ElasticSearchSettings.createSettingsForIndex());
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			ProjectLogger.log("Index creation time out");
+		}
+		assertTrue(response);
+	}
+
+	@Test
+	public void testCreateDataSuccess() {
+
+		String responseId = ElasticSearchUtil.createData(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"), chemistryMap);
+		// inserting second record
+		ElasticSearchUtil.createData(INDEX_NAME, TYPE_NAME, (String) physicsMap.get("courseId"), physicsMap);
+		assertEquals(responseId, chemistryMap.get("courseId"));
+		// wait for 1 second since the created data will reflect after some time
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			ProjectLogger.log(e.getMessage(), e);
+		}
+	}
+
+	@Test
+	public void testGetByIdentifierSuccess() {
+		Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(INDEX_NAME, TYPE_NAME,
+				(String) chemistryMap.get("courseId"));
+		assertEquals(responseMap.get("courseId"), chemistryMap.get("courseId"));
+	}
+
+	@Test
+	public void testUpdateByIdentifierSuccess() {
+		Map<String, Object> innermap = new HashMap<>();
+		innermap.put("courseName", "updatedCourese name");
+		innermap.put("organisationId", "updatedOrgId");
+		
+		GetRequestBuilder grb = mock(GetRequestBuilder.class);
+		GetResponse getResponse = mock(GetResponse.class);
+		when(client.prepareGet(Mockito.anyString(), Mockito.anyString(), Mockito.eq((String) chemistryMap.get("courseId"))))
+				.thenReturn(grb);
+		when(grb.get()).thenReturn(getResponse);
+		when(getResponse.getSource()).thenReturn(innermap);
+		
+		
+		boolean response = ElasticSearchUtil.updateData(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"), innermap);
+		assertTrue(response);
+		Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(INDEX_NAME, TYPE_NAME,
+				(String) chemistryMap.get("courseId"));
+		assertEquals(responseMap.get("courseName"), "updatedCourese name");
+	}
+
+	@Test
+	public void testComplexSearchSuccess() throws Exception {
+		SearchDTO searchDTO = new SearchDTO();
+		List<String> fields = new ArrayList<String>();
+		fields.add("courseId");
+		fields.add("courseType");
+		fields.add("createdOn");
+		fields.add("description");
+		List<String> excludefields = new ArrayList<String>();
+		excludefields.add("createdOn");
+		Map<String, String> sortMap = new HashMap<>();
+		sortMap.put("courseType", "ASC");
+		searchDTO.setSortBy(sortMap);
+		searchDTO.setExcludedFields(excludefields);
+		searchDTO.setLimit(20);
+		searchDTO.setOffset(0);
+		Map<String, Object> additionalPro = new HashMap<String, Object>();
+		searchDTO.addAdditionalProperty("test", additionalPro);
+		Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+		List<String> existsList = new ArrayList<String>();
+		existsList.add("pkgVersion");
+		existsList.add("size");
+
+		additionalProperties.put(JsonKey.EXISTS, existsList);
+		List<String> description = new ArrayList<String>();
+		description.add("This is for chemistry");
+		description.add("Hindi Jii");
+		List<Integer> sizes = new ArrayList<Integer>();
+		sizes.add(10);
+		sizes.add(20);
+		Map<String, Object> filterMap = new HashMap<String, Object>();
+		filterMap.put("description", description);
+		filterMap.put("size", sizes);
+		additionalProperties.put(JsonKey.FILTERS, filterMap);
+		Map<String, Object> rangeMap = new HashMap<String, Object>();
+		rangeMap.put(">", 0);
+		filterMap.put("pkgVersion", rangeMap);
+		Map<String, Object> lexicalMap = new HashMap<>();
+		lexicalMap.put(STARTS_WITH, "type");
+		filterMap.put("courseType", lexicalMap);
+		Map<String, Object> lexicalMap1 = new HashMap<>();
+		lexicalMap1.put(ENDS_WITH, "sunbird");
+		filterMap.put("courseAddedByName", lexicalMap1);
+		// for exact math key value pair
+		filterMap.put("orgName", "Name of the organisation");
+
+		searchDTO.setAdditionalProperties(additionalProperties);
+		searchDTO.setFields(fields);
+		searchDTO.setQuery("organisation");
+		// facets
+		List<Map<String, String>> facets = new ArrayList<>();
+		Map<String, String> m1 = new HashMap<>();
+		m1.put("description", null);
+		m1.put("createdOn", JsonKey.DATE_HISTOGRAM);
+		facets.add(m1);
+		searchDTO.setFacets(facets);
+
+		// soft constraints
+		List<String> mode = Arrays.asList("soft");
+		searchDTO.setMode(mode);
+		Map<String, Integer> constraintMap = new HashMap<String, Integer>();
+		constraintMap.put("grades", 10);
+		constraintMap.put("pkgVersion", 5);
+		searchDTO.setSoftConstraints(constraintMap);
+		searchDTO.setQuery("organisation Name published");
+		mockRulesForSearch(3);
+		Map map = ElasticSearchUtil.complexSearch(searchDTO, INDEX_NAME, TYPE_NAME);
+
+		assertEquals(3, map.size());
+	}
+
+	@Test
+	public void testComplexSearchWithRangeGreaterThanSuccess() {
+		SearchDTO searchDTO = new SearchDTO();
+		Map<String, Object> additionalProperties = new HashMap<String, Object>();
+		List<Integer> sizes = new ArrayList<Integer>();
+		sizes.add(10);
+		sizes.add(20);
+		Map<String, Object> filterMap = new HashMap<String, Object>();
+		filterMap.put("size", sizes);
+		Map<String, String> innerMap = new HashMap<>();
+		innerMap.put("createdOn", "2017-11-06");
+		filterMap.put(">=", innerMap);
+		additionalProperties.put(JsonKey.FILTERS, filterMap);
+		Map<String, Object> rangeMap = new HashMap<String, Object>();
+		rangeMap.put(">", 0);
+		filterMap.put("pkgVersion", rangeMap);
+		Map<String, Object> lexicalMap = new HashMap<>();
+		lexicalMap.put(STARTS_WITH, "type");
+		filterMap.put("courseType", lexicalMap);
+		Map<String, Object> lexicalMap1 = new HashMap<>();
+		lexicalMap1.put(ENDS_WITH, "sunbird");
+		filterMap.put("courseAddedByName", lexicalMap1);
+		// for exact math key value pair
+		filterMap.put("orgName", "Name of the organisation");
+
+		searchDTO.setAdditionalProperties(additionalProperties);
+		searchDTO.setQuery("organisation");
+		mockRulesForSearch(3);
+
+		Map map = ElasticSearchUtil.complexSearch(searchDTO, INDEX_NAME, TYPE_NAME);
+		assertEquals(2, map.size());
+	}
+
+	@Test
+	public void testComplexSearchWithRangeLessThanSuccess() {
+		SearchDTO searchDTO = new SearchDTO();
+		Map<String, Object> additionalProperties = new HashMap<String, Object>();
+		List<Integer> sizes = new ArrayList<Integer>();
+		sizes.add(10);
+		sizes.add(20);
+		Map<String, Object> filterMap = new HashMap<String, Object>();
+		filterMap.put("size", sizes);
+		Map<String, String> innerMap = new HashMap<>();
+		innerMap.put("createdOn", "2017-11-06");
+		filterMap.put("<=", innerMap);
+		additionalProperties.put(JsonKey.FILTERS, filterMap);
+		Map<String, Object> rangeMap = new HashMap<String, Object>();
+		rangeMap.put(">", 0);
+		filterMap.put("pkgVersion", rangeMap);
+		Map<String, Object> lexicalMap = new HashMap<>();
+		lexicalMap.put(STARTS_WITH, "type");
+		filterMap.put("courseType", lexicalMap);
+		Map<String, Object> lexicalMap1 = new HashMap<>();
+		lexicalMap1.put(ENDS_WITH, "sunbird");
+		filterMap.put("courseAddedByName", lexicalMap1);
+		// for exact math key value pair
+		filterMap.put("orgName", "Name of the organisation");
+
+		searchDTO.setAdditionalProperties(additionalProperties);
+		searchDTO.setQuery("organisation");
+		mockRulesForSearch(3);
+		Map map = ElasticSearchUtil.complexSearch(searchDTO, INDEX_NAME, TYPE_NAME);
+		assertEquals(2, map.size());
+	}
+
+	@Test
+	public void testGetByIdentifierWithoutIndexFailure() {
+		Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(null, TYPE_NAME,
+				(String) chemistryMap.get("courseId"));
+		assertEquals(0, responseMap.size());
+	}
+
+	@Test
+	public void testGetByIdentifierWithoutTypeFailure() {
+		mockRulesForGet(true);
+		Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(INDEX_NAME, null, "testcourse123");
+
+		assertEquals(0, responseMap.size());
+	}
+
+	@Test
+	public void testGetByIdentifierWithoutTypeAndIndexIdentifierFailure() {
+		Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(null, null, "");
+		assertEquals(0, responseMap.size());
+	}
+
+	@Test
+	public void testGetDataWithoutIdentifierFailure() {
+		Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(INDEX_NAME, TYPE_NAME, "");
+		assertEquals(0, responseMap.size());
+	}
+
+	@Test
+	public void testUpdateDataWithutIdentifierFailure() {
+		Map<String, Object> innermap = new HashMap<>();
+		innermap.put("courseName", "updatedCourese name");
+		innermap.put("organisationId", "updatedOrgId");
+		boolean response = ElasticSearchUtil.updateData(INDEX_NAME, TYPE_NAME, null, innermap);
+		assertFalse(response);
+	}
+
+	@Test
+	public void testUpdateWithEmptyMapFailure() {
+		Map<String, Object> innermap = new HashMap<>();
+		boolean response = ElasticSearchUtil.updateData(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"), innermap);
+		assertFalse(response);
+	}
+
+	@Test
+	public void testUpdateWithNullMapFailure() {
+		boolean response = ElasticSearchUtil.updateData(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"), null);
+		assertFalse(response);
+	}
+
+	@Test
+	public void testUpsertDataWithoutIdentifierFailure() {
+		Map<String, Object> innermap = new HashMap<>();
+		innermap.put("courseName", "updatedCourese name");
+		innermap.put("organisationId", "updatedOrgId");
+		boolean response = ElasticSearchUtil.upsertData(INDEX_NAME, TYPE_NAME, null, innermap);
+		assertFalse(response);
+	}
+
+	@Test
+	public void testUpsertDataWithoutIndexFailure() {
+		Map<String, Object> innermap = new HashMap<>();
+		innermap.put("courseName", "updatedCourese name");
+		innermap.put("organisationId", "updatedOrgId");
+		boolean response = ElasticSearchUtil.upsertData(null, TYPE_NAME, (String) chemistryMap.get("courseId"), innermap);
+		assertFalse(response);
+	}
+
+	@Test
+	public void testUpsertDataWithoutIndexTypeFailure() {
+		Map<String, Object> innermap = new HashMap<>();
+		innermap.put("courseName", "updatedCourese name");
+		innermap.put("organisationId", "updatedOrgId");
+		boolean response = ElasticSearchUtil.upsertData(null, null, (String) chemistryMap.get("courseId"), innermap);
+		assertFalse(response);
+	}
+
+	@Test
+	public void testUpsertDataWithEmptyMapFailure() {
+		Map<String, Object> innermap = new HashMap<>();
+		boolean response = ElasticSearchUtil.upsertData(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"), innermap);
+		assertFalse(response);
+	}
+
+	@Test
+	public void testCreateIndexWithEmptyIndexNameFailure() {
+		boolean response = ElasticSearchUtil.createIndex("", TYPE_NAME, ElasticSearchMapping.createMapping(),
+				ElasticSearchSettings.createSettingsForIndex());
+		assertFalse(response);
+	}
+
+	@Test
+	public void testCreateIndexWithEmptyIndexNameAndTypeFailure() {
+		boolean response = ElasticSearchUtil.createIndex("", null, ElasticSearchMapping.createMapping(),
+				ElasticSearchSettings.createSettingsForIndex());
+		assertFalse(response);
+	}
+
+	@Test
+	public void testCreateIndexWithEmptyMappingFailure() {
+		mockRulesForIndexes(false);
+		boolean response = ElasticSearchUtil.createIndex(INDEX_NAME, TYPE_NAME, null,
+				ElasticSearchSettings.createSettingsForIndex());
+		assertFalse(response);
+	}
+
+	@Test
+	public void testCreateIndexWithEmptySettingsFailure() {
+		mockRulesForIndexes(false);
+		boolean response = ElasticSearchUtil.createIndex(INDEX_NAME, TYPE_NAME, ElasticSearchMapping.createMapping(),
+				null);
+		assertFalse(response);
+	}
+
+
+
+	
+
+	@Test
+	public void testSaveDataWithoutIndexNameFailure() {
+		String responseMap = ElasticSearchUtil.createData("", TYPE_NAME, (String) chemistryMap.get("courseId"), chemistryMap);
+		assertEquals("ERROR", responseMap);
+	}
+
+	@Test
+	public void testSaveDataWithoutTypeNameFailure() {
+		String responseMap = ElasticSearchUtil.createData(INDEX_NAME, "", (String) chemistryMap.get("courseId"), chemistryMap);
+		assertEquals("ERROR", responseMap);
+	}
+
+	@Test
+	public void testGetDataByEmptyIdentifierFailure() {
+		Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(INDEX_NAME, TYPE_NAME, "");
+		assertEquals(0, responseMap.size());
+	}
+
+	@Test
+	public void testSearchDtoQueryTestSuccess() {
+		SearchDTO dto = new SearchDTO();
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> map = new HashMap<>();
+		map.put("name", "test1");
+		list.add(map);
+		dto.setGroupQuery(list);
+		list = dto.getGroupQuery();
+		assertEquals(1, list.size());
+		dto.setOperation("add");
+		assertEquals("add", dto.getOperation());
+		dto.setFuzzySearch(true);
+		assertTrue(dto.isFuzzySearch());
+	}
+
+	@Test
+	public void testSearchDtoArgumentedConstSuccess() {
+		List<Map> list = new ArrayList<>();
+		Map map = new HashMap();
+		map.put("name", "test1");
+		list.add(map);
+		SearchDTO dto = new SearchDTO(list, "add", 5);
+		assertEquals(1, dto.getProperties().size());
+		map.put("city", "mycity");
+		list.add(map);
+		dto.setProperties(list);
+		assertEquals(2, dto.getProperties().get(0).size());
+	}
+
+	@Test
+	public void testRemoveDataByIdentifierSuccess() {
+		boolean response = ElasticSearchUtil.removeData(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"));
+		assertEquals(true, response);
+	}
+
+	@Test
+	public void testRemoveDataByIdentifierEmptyFailure() {
+		boolean response = ElasticSearchUtil.removeData(INDEX_NAME, TYPE_NAME, "");
+		assertEquals(false, response);
+	}
+
+	
+
+
+	@Test
+	public void testFailureConnectionFromPropertiesFailure() {
+		boolean response = ConnectionManager.initialiseConnectionFromPropertiesFile("Test", "localhost1,128.0.0.1",
+				"9200,9300");
+		assertFalse(response);
+	}
+
+	@Test
+	public void testElasticSearchHealthCheckSuccess() {
+		boolean response = false;
+		try {
+			response = ElasticSearchUtil.healthCheck();
+		} catch (Exception e) {
+
+		}
+		assertEquals(true, response);
+	}
+
+	@Test
+	public void testUpsertDataSuccess() {
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("test", "test");
+		boolean response = ElasticSearchUtil.upsertData(INDEX_NAME, TYPE_NAME, "test-12349", data);
+		assertEquals(true, response);
+	}
+
+	
+
+	@Test
+	public void testBulkInsertSuccess() {
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("test1", "test");
+		data.put("test2", "manzarul");
+		List<Map<String, Object>> listOfMap = new ArrayList<Map<String, Object>>();
+		listOfMap.add(data);
+		boolean response = ElasticSearchUtil.bulkInsertData(INDEX_NAME, TYPE_NAME, listOfMap);
+		assertEquals(true, response);
+	}
+
+	@Test
+	public void testSearchSuccess() {
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("test1", "test");
+		try {
+			Map<String, Object> map = ElasticSearchUtil.searchData(INDEX_NAME, TYPE_NAME, data);
+			assertTrue(map != null);
+			assertTrue(map.size() == 0);
+		} catch (Exception e) {
+		}
+	}
+
+	@Test
+	public void testAddOrUpdateMappingSuccess() {
+		boolean bool = ElasticSearchUtil.addOrUpdateMapping(INDEX_NAME, TYPE_NAME, ElasticSearchMapping.createMapping());
+		assertTrue(bool);
+	}
+
+	@Test
+	public void testSearchMetricsDataSuccess() {
+		String index = "searchindex";
+		String type = "user";
+		String rawQuery = "{\"query\":{\"match_none\":{}}}";
+		Response response = ElasticSearchUtil.searchMetricsData(index, type, rawQuery);
+		assertEquals(ResponseCode.OK, response.getResponseCode());
+	}
+
+	@Test
+	public void testSearchMetricsDataFailure() {
+		String index = "searchtest";
+		String type = "usertest";
+		String rawQuery = "{\"query\":{\"match_none\":{}}}";
+		try {
+			ElasticSearchUtil.searchMetricsData(index, type, rawQuery);
+		} catch (ProjectCommonException e) {
+			assertEquals(ResponseCode.unableToConnectToES.getErrorCode(), e.getCode());
+		}
+	}
+
+	public void testCalculatedEndTimeSuccess() {
+		long endTime = ElasticSearchUtil.calculateEndTime(START_TIME);
+		assertTrue(endTime > START_TIME);
+	}
+
+	@Test
+	public void testCreatedIndexAndTypesSuccess() {
+		Config config = ConfigUtil.getConfig(ElasticSearchUtil.ES_CONFIG_FILE);
+		List<Object> list = (List) config.getAnyRefList("elasticsearch.indices");
+		for (Object obj : list) {
+			Map<String, Object> map = (Map) obj;
+			String indexName = (String) map.get(JsonKey.NAME);
+			List<String> types = (List<String>) map.get(JsonKey.ES_TYPES);
+			assertEquals(ElasticSearchUtil.indexMap.get(indexName), true);
+			for (String type : types) {
+				assertEquals(ElasticSearchUtil.typeMap.get(type), true);
+			}
+		}
+	}
+	
+	
+	
+	private static Map<String, Object> initializeChemistryCourse(int appendVal) {
+		Map<String, Object> chemistryMap = new HashMap<>();
+		chemistryMap.put("courseType", "type of the course. all , private");
+		chemistryMap.put("description", "This is for chemistry");
+		chemistryMap.put("size", 10);
+		chemistryMap.put("objectType", "course");
+		chemistryMap.put("courseId", "course id_" + appendVal);
+		chemistryMap.put("courseName", "NTP course_" + appendVal);
+		chemistryMap.put("courseDuration", appendVal);
+		chemistryMap.put("noOfLecture", 30 + appendVal);
+		chemistryMap.put("organisationId", "org id");
+		chemistryMap.put("orgName", "Name of the organisation");
+		chemistryMap.put("courseAddedById", "who added the course in NTP");
+		chemistryMap.put("courseAddedByName", "Name of the person who added the course under sunbird");
+		chemistryMap.put("coursePublishedById", "who published the course");
+		chemistryMap.put("coursePublishedByName", "who published the course");
+		chemistryMap.put("enrollementStartDate", new Date());
+		chemistryMap.put("publishedDate", new Date());
+		chemistryMap.put("updatedDate", new Date());
+		chemistryMap.put("updatedById", "last updated by id");
+		chemistryMap.put("updatedByName", "last updated person name");
+
+		chemistryMap.put("facultyId", "faculty for this course");
+		chemistryMap.put("facultyName", "name of the faculty");
+		chemistryMap.put("CoursecontentType", "list of course content type as comma separated , pdf, video, wordDoc");
+		chemistryMap.put("availableFor", "[\"C.B.S.C\",\"I.C.S.C\",\"all\"]");
+		chemistryMap.put("tutor", "[{\"id\":\"name\"},{\"id\":\"name\"}]");
+		chemistryMap.put("operationType", "add/updated/delete");
+		chemistryMap.put("owner", "EkStep");
+		// map.put("identifier","do_112228048362078208130");
+		chemistryMap.put("visibility", "Default");
+		chemistryMap.put("downloadUrl",
+				"https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_112228048362078208130/test-content-1_1493905653021_do_112228048362078208130_5.0.ecar");
+
+		chemistryMap.put("language", "[\"Hindi\"]");
+		chemistryMap.put("mediaType", "content");
+		chemistryMap.put("variants",
+				"{\"spine\": {\"ecarUrl\": \"https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_112228048362078208130/test-content-1_1493905655272_do_112228048362078208130_5.0_spine.ecar\",\"size\": 863}}");
+		chemistryMap.put("mimeType", "application/vnd.ekstep.html-archive");
+		chemistryMap.put("osId", "org.ekstep.quiz.app");
+		chemistryMap.put("languageCode", "hi");
+		chemistryMap.put("createdOn", "2017-05-04T13:47:32.676+0000");
+		chemistryMap.put("pkgVersion", appendVal);
+		chemistryMap.put("versionKey", "1495646809112");
+
+		chemistryMap.put("lastPublishedOn", "2017-05-04T13:47:33.000+0000");
+		chemistryMap.put("collections",
+				"[{\"identifier\": \"do_1121912573615472641169\",\"name\": \"A\",\"objectType\": \"Content\",\"relation\": \"hasSequenceMember\",\"description\": \"A.\",\"index\": null}]");
+		chemistryMap.put("name", "Test Content 1");
+		chemistryMap.put("artifactUrl",
+				"https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/do_112228048362078208130/artifact/advancedenglishassessment1_1533_1489654074_1489653812104_1492681721669.zip");
+		chemistryMap.put("lastUpdatedOn", "2017-05-24T17:26:49.112+0000");
+		chemistryMap.put("contentType", "Story");
+		chemistryMap.put("status", "Live");
+		chemistryMap.put("channel", "NTP");
+		return chemistryMap;
+	}
+
+	private static Map<String, Object> intitializePhysicsCourse(int appendVal) {
+		Map<String, Object> physicsCourseMap = new HashMap<>();
+		physicsCourseMap.put("courseType", "type of the course. all , private");
+		physicsCourseMap.put("description", "This is for physics");
+		physicsCourseMap.put("size", 20);
+		physicsCourseMap.put("objectType", "course");
+		physicsCourseMap.put("courseId", "course id_" + appendVal);
+		physicsCourseMap.put("courseName", "NTP course_" + appendVal);
+		physicsCourseMap.put("courseDuration", appendVal);
+		physicsCourseMap.put("noOfLecture", 30 + appendVal);
+		physicsCourseMap.put("organisationId", "org id");
+		physicsCourseMap.put("orgName", "Name of the organisation");
+		physicsCourseMap.put("courseAddedById", "who added the course in NTP");
+		physicsCourseMap.put("courseAddedByName", "Name of the person who added the course under sunbird");
+		physicsCourseMap.put("coursePublishedById", "who published the course");
+		physicsCourseMap.put("coursePublishedByName", "who published the course");
+		physicsCourseMap.put("enrollementStartDate", new Date());
+		physicsCourseMap.put("publishedDate", new Date());
+		physicsCourseMap.put("updatedDate", new Date());
+		physicsCourseMap.put("updatedById", "last updated by id");
+		physicsCourseMap.put("updatedByName", "last updated person name");
+
+		physicsCourseMap.put("facultyId", "faculty for this course");
+		physicsCourseMap.put("facultyName", "name of the faculty");
+		physicsCourseMap.put("CoursecontentType", "list of course content type as comma separated , pdf, video, wordDoc");
+		physicsCourseMap.put("availableFor", "[\"C.B.S.C\",\"I.C.S.C\",\"all\"]");
+		physicsCourseMap.put("tutor", "[{\"id\":\"name\"},{\"id\":\"name\"}]");
+		physicsCourseMap.put("operationType", "add/updated/delete");
+		physicsCourseMap.put("owner", "EkStep");
+		// map.put("identifier","do_112228048362078208130");
+		physicsCourseMap.put("visibility", "Default");
+		physicsCourseMap.put("downloadUrl",
+				"https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_112228048362078208130/test-content-1_1493905653021_do_112228048362078208130_5.0.ecar");
+
+		physicsCourseMap.put("language", "[\"Hindi\"]");
+		physicsCourseMap.put("mediaType", "content");
+		physicsCourseMap.put("variants",
+				"{\"spine\": {\"ecarUrl\": \"https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_112228048362078208130/test-content-1_1493905655272_do_112228048362078208130_5.0_spine.ecar\",\"size\": 863}}");
+		physicsCourseMap.put("mimeType", "application/vnd.ekstep.html-archive");
+		physicsCourseMap.put("osId", "org.ekstep.quiz.app");
+		physicsCourseMap.put("languageCode", "hi");
+		physicsCourseMap.put("createdOn", "2017-06-04T13:47:32.676+0000");
+		physicsCourseMap.put("pkgVersion", appendVal);
+		physicsCourseMap.put("versionKey", "1495646809112");
+
+		physicsCourseMap.put("lastPublishedOn", "2017-05-04T13:47:33.000+0000");
+		physicsCourseMap.put("collections",
+				"[{\"identifier\": \"do_1121912573615472641169\",\"name\": \"A\",\"objectType\": \"Content\",\"relation\": \"hasSequenceMember\",\"description\": \"A.\",\"index\": null}]");
+		physicsCourseMap.put("name", "Test Content 1");
+		physicsCourseMap.put("artifactUrl",
+				"https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/do_112228048362078208130/artifact/advancedenglishassessment1_1533_1489654074_1489653812104_1492681721669.zip");
+		physicsCourseMap.put("lastUpdatedOn", "2017-05-24T17:26:49.112+0000");
+		physicsCourseMap.put("contentType", "Story");
+		physicsCourseMap.put("status", "Live");
+		physicsCourseMap.put("channel", "NTP");
+		return physicsCourseMap;
+	}
+	
+	
+	private void mockBaseRules() {
 		client = mock(TransportClient.class);
 		PowerMockito.mockStatic(ConnectionManager.class);
 		try {
@@ -118,21 +727,8 @@ public class ElasticSearchUtilTest {
 			Assert.fail("Initialization of test case failed due to " + e.getLocalizedMessage());
 		}
 		when(ConnectionManager.getClient()).thenReturn(client);
-	
-		
-		mockRulesForGet();
-		mockRulesForInsert();
-		mockRulesForUpdate();
-		mockRulesForDelete();
-		
-		mockRulesForIndexes();
-		
-		mockRulesHttpRequest();
-		mockRulesBulkInsert();
-
 	}
-
-
+	
 	private static void mockRulesForGet() {
 		mockRulesForGet(false);
 	}
@@ -146,7 +742,7 @@ public class ElasticSearchUtilTest {
 		when(grb.setIndex(Mockito.anyString())).thenReturn(grb);
 		when(grb.setId(Mockito.anyString())).thenReturn(grb);
 		when(grb.get()).thenReturn(gResp);
-		Map expMap = expectedEmptyMap?Collections.emptyMap():map;
+		Map expMap = expectedEmptyMap?Collections.emptyMap():chemistryMap;
 		when(gResp.getSource()).thenReturn(expMap);
 	}
 
@@ -191,7 +787,7 @@ public class ElasticSearchUtilTest {
 		when(client.prepareIndex(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())).thenReturn(irb);
 		when(irb.setSource(Mockito.anyMap())).thenReturn(irb);
 		when(irb.get()).thenReturn(ir);
-		when(ir.getId()).thenReturn((String) map.get("courseId"));
+		when(ir.getId()).thenReturn((String) chemistryMap.get("courseId"));
 	}
 
 	
@@ -306,622 +902,4 @@ public class ElasticSearchUtilTest {
 
 	}
 
-	@Test
-	public void testConnectionSuccess() {
-		TransportClient client = mock(TransportClient.class);
-		assertNotNull(client);
-	}
-
-	@Test
-	public void acreateIndex() {
-//	mockRulesForIndexes(true);
-		boolean response = ElasticSearchUtil.createIndex(indexName, typeName, ElasticSearchMapping.createMapping(),
-				ElasticSearchSettings.createSettingsForIndex());
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			ProjectLogger.log("Index creation time out");
-		}
-		assertTrue(response);
-	}
-
-	@Test
-	public void createDataTest() {
-
-		String responseId = ElasticSearchUtil.createData(indexName, typeName, (String) map.get("courseId"), map);
-		// inserting second record
-		ElasticSearchUtil.createData(indexName, typeName, (String) map1.get("courseId"), map1);
-		assertEquals(responseId, map.get("courseId"));
-		// wait for 1 second since the created data will reflect after some time
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			ProjectLogger.log(e.getMessage(), e);
-		}
-	}
-
-	@Test
-	public void getByIdentifier() {
-		Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(indexName, typeName,
-				(String) map.get("courseId"));
-		assertEquals(responseMap.get("courseId"), map.get("courseId"));
-	}
-
-	@Test
-	public void updateByIdentifier() {
-		Map<String, Object> innermap = new HashMap<>();
-		innermap.put("courseName", "updatedCourese name");
-		innermap.put("organisationId", "updatedOrgId");
-		boolean response = ElasticSearchUtil.updateData(indexName, typeName, (String) map.get("courseId"), innermap);
-		assertTrue(response);
-	}
-
-	@Test
-	public void updateByIdentifierTest() {
-		Map<String, Object> expMap = new HashMap(map);
-		expMap.put("courseName", "updatedCourese name");
-		expMap.put("organisationId", "updatedOrgId");
-		GetRequestBuilder grb = mock(GetRequestBuilder.class);
-		GetResponse getResponse = mock(GetResponse.class);
-		when(client.prepareGet(Mockito.anyString(), Mockito.anyString(), Mockito.eq((String) map.get("courseId"))))
-				.thenReturn(grb);
-		when(grb.get()).thenReturn(getResponse);
-		when(getResponse.getSource()).thenReturn(expMap);
-
-		Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(indexName, typeName,
-				(String) map.get("courseId"));
-		assertEquals(responseMap.get("courseName"), "updatedCourese name");
-	}
-
-	@Test
-	public void testComplexSearch() throws Exception {
-		SearchDTO searchDTO = new SearchDTO();
-		List<String> fields = new ArrayList<String>();
-		fields.add("courseId");
-		fields.add("courseType");
-		fields.add("createdOn");
-		fields.add("description");
-		List<String> excludefields = new ArrayList<String>();
-		excludefields.add("createdOn");
-		Map<String, String> sortMap = new HashMap<>();
-		sortMap.put("courseType", "ASC");
-		searchDTO.setSortBy(sortMap);
-		searchDTO.setExcludedFields(excludefields);
-		searchDTO.setLimit(20);
-		searchDTO.setOffset(0);
-		Map<String, Object> additionalPro = new HashMap<String, Object>();
-		searchDTO.addAdditionalProperty("test", additionalPro);
-		Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
-		List<String> existsList = new ArrayList<String>();
-		existsList.add("pkgVersion");
-		existsList.add("size");
-
-		additionalProperties.put(JsonKey.EXISTS, existsList);
-		List<String> description = new ArrayList<String>();
-		description.add("This is for chemistry");
-		description.add("Hindi Jii");
-		List<Integer> sizes = new ArrayList<Integer>();
-		sizes.add(10);
-		sizes.add(20);
-		Map<String, Object> filterMap = new HashMap<String, Object>();
-		filterMap.put("description", description);
-		filterMap.put("size", sizes);
-		additionalProperties.put(JsonKey.FILTERS, filterMap);
-		Map<String, Object> rangeMap = new HashMap<String, Object>();
-		rangeMap.put(">", 0);
-		filterMap.put("pkgVersion", rangeMap);
-		Map<String, Object> lexicalMap = new HashMap<>();
-		lexicalMap.put(STARTS_WITH, "type");
-		filterMap.put("courseType", lexicalMap);
-		Map<String, Object> lexicalMap1 = new HashMap<>();
-		lexicalMap1.put(ENDS_WITH, "sunbird");
-		filterMap.put("courseAddedByName", lexicalMap1);
-		// for exact math key value pair
-		filterMap.put("orgName", "Name of the organisation");
-
-		searchDTO.setAdditionalProperties(additionalProperties);
-		searchDTO.setFields(fields);
-		searchDTO.setQuery("organisation");
-		// facets
-		List<Map<String, String>> facets = new ArrayList<>();
-		Map<String, String> m1 = new HashMap<>();
-		m1.put("description", null);
-		m1.put("createdOn", JsonKey.DATE_HISTOGRAM);
-		facets.add(m1);
-		searchDTO.setFacets(facets);
-
-		// soft constraints
-		List<String> mode = Arrays.asList("soft");
-		searchDTO.setMode(mode);
-		Map<String, Integer> constraintMap = new HashMap<String, Integer>();
-		constraintMap.put("grades", 10);
-		constraintMap.put("pkgVersion", 5);
-		searchDTO.setSoftConstraints(constraintMap);
-		searchDTO.setQuery("organisation Name published");
-		mockRulesForSearch(3);
-		Map map = ElasticSearchUtil.complexSearch(searchDTO, indexName, typeName);
-
-		assertEquals(3, map.size());
-	}
-
-	@Test
-	public void testComplexSearchWithRangeGreater() {
-		SearchDTO searchDTO = new SearchDTO();
-		Map<String, Object> additionalProperties = new HashMap<String, Object>();
-		List<Integer> sizes = new ArrayList<Integer>();
-		sizes.add(10);
-		sizes.add(20);
-		Map<String, Object> filterMap = new HashMap<String, Object>();
-		filterMap.put("size", sizes);
-		Map<String, String> innerMap = new HashMap<>();
-		innerMap.put("createdOn", "2017-11-06");
-		filterMap.put(">=", innerMap);
-		additionalProperties.put(JsonKey.FILTERS, filterMap);
-		Map<String, Object> rangeMap = new HashMap<String, Object>();
-		rangeMap.put(">", 0);
-		filterMap.put("pkgVersion", rangeMap);
-		Map<String, Object> lexicalMap = new HashMap<>();
-		lexicalMap.put(STARTS_WITH, "type");
-		filterMap.put("courseType", lexicalMap);
-		Map<String, Object> lexicalMap1 = new HashMap<>();
-		lexicalMap1.put(ENDS_WITH, "sunbird");
-		filterMap.put("courseAddedByName", lexicalMap1);
-		// for exact math key value pair
-		filterMap.put("orgName", "Name of the organisation");
-
-		searchDTO.setAdditionalProperties(additionalProperties);
-		searchDTO.setQuery("organisation");
-		mockRulesForSearch(3);
-
-		Map map = ElasticSearchUtil.complexSearch(searchDTO, indexName, typeName);
-		assertEquals(2, map.size());
-	}
-
-	@Test
-	public void testComplexSearchWithRangeLessThan() {
-		SearchDTO searchDTO = new SearchDTO();
-		Map<String, Object> additionalProperties = new HashMap<String, Object>();
-		List<Integer> sizes = new ArrayList<Integer>();
-		sizes.add(10);
-		sizes.add(20);
-		Map<String, Object> filterMap = new HashMap<String, Object>();
-		filterMap.put("size", sizes);
-		Map<String, String> innerMap = new HashMap<>();
-		innerMap.put("createdOn", "2017-11-06");
-		filterMap.put("<=", innerMap);
-		additionalProperties.put(JsonKey.FILTERS, filterMap);
-		Map<String, Object> rangeMap = new HashMap<String, Object>();
-		rangeMap.put(">", 0);
-		filterMap.put("pkgVersion", rangeMap);
-		Map<String, Object> lexicalMap = new HashMap<>();
-		lexicalMap.put(STARTS_WITH, "type");
-		filterMap.put("courseType", lexicalMap);
-		Map<String, Object> lexicalMap1 = new HashMap<>();
-		lexicalMap1.put(ENDS_WITH, "sunbird");
-		filterMap.put("courseAddedByName", lexicalMap1);
-		// for exact math key value pair
-		filterMap.put("orgName", "Name of the organisation");
-
-		searchDTO.setAdditionalProperties(additionalProperties);
-		searchDTO.setQuery("organisation");
-		mockRulesForSearch(3);
-		Map map = ElasticSearchUtil.complexSearch(searchDTO, indexName, typeName);
-		assertEquals(2, map.size());
-	}
-
-	@Test
-	public void getByIdentifierWithOutIndex() {
-		Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(null, typeName,
-				(String) map.get("courseId"));
-		assertEquals(0, responseMap.size());
-	}
-
-	@Test
-	public void getByIdentifierWithOutType() {
-		mockRulesForGet(true);
-		Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(indexName, null, "testcourse123");
-
-		assertEquals(0, responseMap.size());
-	}
-
-	@Test
-	public void getByIdentifierWithOutTypeIndexIdentifier() {
-		Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(null, null, "");
-		assertEquals(0, responseMap.size());
-	}
-
-	@Test
-	public void getDataWithOutIdentifier() {
-		Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(indexName, typeName, "");
-		assertEquals(0, responseMap.size());
-	}
-
-	@Test
-	public void updateDataWithOutIdentifier() {
-		Map<String, Object> innermap = new HashMap<>();
-		innermap.put("courseName", "updatedCourese name");
-		innermap.put("organisationId", "updatedOrgId");
-		boolean response = ElasticSearchUtil.updateData(indexName, typeName, null, innermap);
-		assertFalse(response);
-	}
-
-	@Test
-	public void updateWithEmptyMap() {
-		Map<String, Object> innermap = new HashMap<>();
-		boolean response = ElasticSearchUtil.updateData(indexName, typeName, (String) map.get("courseId"), innermap);
-		assertFalse(response);
-	}
-
-	@Test
-	public void updateWithNullMap() {
-		boolean response = ElasticSearchUtil.updateData(indexName, typeName, (String) map.get("courseId"), null);
-		assertFalse(response);
-	}
-
-	@Test
-	public void upsertDataWithOutIdentifier() {
-		Map<String, Object> innermap = new HashMap<>();
-		innermap.put("courseName", "updatedCourese name");
-		innermap.put("organisationId", "updatedOrgId");
-		boolean response = ElasticSearchUtil.upsertData(indexName, typeName, null, innermap);
-		assertFalse(response);
-	}
-
-	@Test
-	public void upsertDataWithOutIndex() {
-		Map<String, Object> innermap = new HashMap<>();
-		innermap.put("courseName", "updatedCourese name");
-		innermap.put("organisationId", "updatedOrgId");
-		boolean response = ElasticSearchUtil.upsertData(null, typeName, (String) map.get("courseId"), innermap);
-		assertFalse(response);
-	}
-
-	@Test
-	public void upsertDataWithOutIndexType() {
-		Map<String, Object> innermap = new HashMap<>();
-		innermap.put("courseName", "updatedCourese name");
-		innermap.put("organisationId", "updatedOrgId");
-		boolean response = ElasticSearchUtil.upsertData(null, null, (String) map.get("courseId"), innermap);
-		assertFalse(response);
-	}
-
-	@Test
-	public void upsertDataWithEmptyMap() {
-		Map<String, Object> innermap = new HashMap<>();
-		boolean response = ElasticSearchUtil.upsertData(indexName, typeName, (String) map.get("courseId"), innermap);
-		assertFalse(response);
-	}
-
-	@Test
-	public void createIndexWithEmptyIndexName() {
-		boolean response = ElasticSearchUtil.createIndex("", typeName, ElasticSearchMapping.createMapping(),
-				ElasticSearchSettings.createSettingsForIndex());
-		assertFalse(response);
-	}
-
-	@Test
-	public void createIndexWithEmptyIndexNameAndType() {
-		boolean response = ElasticSearchUtil.createIndex("", null, ElasticSearchMapping.createMapping(),
-				ElasticSearchSettings.createSettingsForIndex());
-		assertFalse(response);
-	}
-
-	@Test
-	public void createIndexWithEmptyMapping() {
-		mockRulesForIndexes(false);
-		boolean response = ElasticSearchUtil.createIndex(indexName, typeName, null,
-				ElasticSearchSettings.createSettingsForIndex());
-		assertFalse(response);
-	}
-
-	@Test
-	public void createIndexWithEmptySettings() {
-		mockRulesForIndexes(false);
-		boolean response = ElasticSearchUtil.createIndex(indexName, typeName, ElasticSearchMapping.createMapping(),
-				null);
-		assertFalse(response);
-	}
-
-	@AfterClass
-	public static void destroy() {
-//    ElasticSearchUtil.deleteIndex(indexName);
-		map = null;
-//    ConnectionManager.closeClient();
-//    ConnectionManager.ResourceCleanUp clean = new ResourceCleanUp();
-//    clean.start();
-	}
-
-	private static Map<String, Object> intitialiseMap(int val) {
-		Map<String, Object> map = new HashMap<>();
-		map.put("courseType", "type of the course. all , private");
-		map.put("description", "This is for chemistry");
-		map.put("size", 10);
-		map.put("objectType", "course");
-		map.put("courseId", "course id_" + val);
-		map.put("courseName", "NTP course_" + val);
-		map.put("courseDuration", val);
-		map.put("noOfLecture", 30 + val);
-		map.put("organisationId", "org id");
-		map.put("orgName", "Name of the organisation");
-		map.put("courseAddedById", "who added the course in NTP");
-		map.put("courseAddedByName", "Name of the person who added the course under sunbird");
-		map.put("coursePublishedById", "who published the course");
-		map.put("coursePublishedByName", "who published the course");
-		map.put("enrollementStartDate", new Date());
-		map.put("publishedDate", new Date());
-		map.put("updatedDate", new Date());
-		map.put("updatedById", "last updated by id");
-		map.put("updatedByName", "last updated person name");
-
-		map.put("facultyId", "faculty for this course");
-		map.put("facultyName", "name of the faculty");
-		map.put("CoursecontentType", "list of course content type as comma separated , pdf, video, wordDoc");
-		map.put("availableFor", "[\"C.B.S.C\",\"I.C.S.C\",\"all\"]");
-		map.put("tutor", "[{\"id\":\"name\"},{\"id\":\"name\"}]");
-		map.put("operationType", "add/updated/delete");
-		map.put("owner", "EkStep");
-		// map.put("identifier","do_112228048362078208130");
-		map.put("visibility", "Default");
-		map.put("downloadUrl",
-				"https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_112228048362078208130/test-content-1_1493905653021_do_112228048362078208130_5.0.ecar");
-
-		map.put("language", "[\"Hindi\"]");
-		map.put("mediaType", "content");
-		map.put("variants",
-				"{\"spine\": {\"ecarUrl\": \"https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_112228048362078208130/test-content-1_1493905655272_do_112228048362078208130_5.0_spine.ecar\",\"size\": 863}}");
-		map.put("mimeType", "application/vnd.ekstep.html-archive");
-		map.put("osId", "org.ekstep.quiz.app");
-		map.put("languageCode", "hi");
-		map.put("createdOn", "2017-05-04T13:47:32.676+0000");
-		map.put("pkgVersion", val);
-		map.put("versionKey", "1495646809112");
-
-		map.put("lastPublishedOn", "2017-05-04T13:47:33.000+0000");
-		map.put("collections",
-				"[{\"identifier\": \"do_1121912573615472641169\",\"name\": \"A\",\"objectType\": \"Content\",\"relation\": \"hasSequenceMember\",\"description\": \"A.\",\"index\": null}]");
-		map.put("name", "Test Content 1");
-		map.put("artifactUrl",
-				"https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/do_112228048362078208130/artifact/advancedenglishassessment1_1533_1489654074_1489653812104_1492681721669.zip");
-		map.put("lastUpdatedOn", "2017-05-24T17:26:49.112+0000");
-		map.put("contentType", "Story");
-		map.put("status", "Live");
-		map.put("channel", "NTP");
-		return map;
-	}
-
-	private static Map<String, Object> intitialiseMap1(int val) {
-		Map<String, Object> map = new HashMap<>();
-		map.put("courseType", "type of the course. all , private");
-		map.put("description", "This is for physics");
-		map.put("size", 20);
-		map.put("objectType", "course");
-		map.put("courseId", "course id_" + val);
-		map.put("courseName", "NTP course_" + val);
-		map.put("courseDuration", val);
-		map.put("noOfLecture", 30 + val);
-		map.put("organisationId", "org id");
-		map.put("orgName", "Name of the organisation");
-		map.put("courseAddedById", "who added the course in NTP");
-		map.put("courseAddedByName", "Name of the person who added the course under sunbird");
-		map.put("coursePublishedById", "who published the course");
-		map.put("coursePublishedByName", "who published the course");
-		map.put("enrollementStartDate", new Date());
-		map.put("publishedDate", new Date());
-		map.put("updatedDate", new Date());
-		map.put("updatedById", "last updated by id");
-		map.put("updatedByName", "last updated person name");
-
-		map.put("facultyId", "faculty for this course");
-		map.put("facultyName", "name of the faculty");
-		map.put("CoursecontentType", "list of course content type as comma separated , pdf, video, wordDoc");
-		map.put("availableFor", "[\"C.B.S.C\",\"I.C.S.C\",\"all\"]");
-		map.put("tutor", "[{\"id\":\"name\"},{\"id\":\"name\"}]");
-		map.put("operationType", "add/updated/delete");
-		map.put("owner", "EkStep");
-		// map.put("identifier","do_112228048362078208130");
-		map.put("visibility", "Default");
-		map.put("downloadUrl",
-				"https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_112228048362078208130/test-content-1_1493905653021_do_112228048362078208130_5.0.ecar");
-
-		map.put("language", "[\"Hindi\"]");
-		map.put("mediaType", "content");
-		map.put("variants",
-				"{\"spine\": {\"ecarUrl\": \"https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_112228048362078208130/test-content-1_1493905655272_do_112228048362078208130_5.0_spine.ecar\",\"size\": 863}}");
-		map.put("mimeType", "application/vnd.ekstep.html-archive");
-		map.put("osId", "org.ekstep.quiz.app");
-		map.put("languageCode", "hi");
-		map.put("createdOn", "2017-06-04T13:47:32.676+0000");
-		map.put("pkgVersion", val);
-		map.put("versionKey", "1495646809112");
-
-		map.put("lastPublishedOn", "2017-05-04T13:47:33.000+0000");
-		map.put("collections",
-				"[{\"identifier\": \"do_1121912573615472641169\",\"name\": \"A\",\"objectType\": \"Content\",\"relation\": \"hasSequenceMember\",\"description\": \"A.\",\"index\": null}]");
-		map.put("name", "Test Content 1");
-		map.put("artifactUrl",
-				"https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/do_112228048362078208130/artifact/advancedenglishassessment1_1533_1489654074_1489653812104_1492681721669.zip");
-		map.put("lastUpdatedOn", "2017-05-24T17:26:49.112+0000");
-		map.put("contentType", "Story");
-		map.put("status", "Live");
-		map.put("channel", "NTP");
-		return map;
-	}
-
-	@Test
-	public void saveDataWithOutIndexname() {
-		String responseMap = ElasticSearchUtil.createData("", typeName, (String) map.get("courseId"), map);
-		assertEquals("ERROR", responseMap);
-	}
-
-	@Test
-	public void saveDataWithOutTypeName() {
-		String responseMap = ElasticSearchUtil.createData(indexName, "", (String) map.get("courseId"), map);
-		assertEquals("ERROR", responseMap);
-	}
-
-	@Test
-	public void getDataByEmptyIdentifier() {
-		Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(indexName, typeName, "");
-		assertEquals(0, responseMap.size());
-	}
-
-	@Test
-	public void searchDtoGetQueryTest() {
-		SearchDTO dto = new SearchDTO();
-		List<Map<String, Object>> list = new ArrayList<>();
-		Map<String, Object> map = new HashMap<>();
-		map.put("name", "test1");
-		list.add(map);
-		dto.setGroupQuery(list);
-		list = dto.getGroupQuery();
-		assertEquals(1, list.size());
-		dto.setOperation("add");
-		assertEquals("add", dto.getOperation());
-		dto.setFuzzySearch(true);
-		assertTrue(dto.isFuzzySearch());
-	}
-
-	@Test
-	public void searchDtoArgumentedConst() {
-		List<Map> list = new ArrayList<>();
-		Map map = new HashMap();
-		map.put("name", "test1");
-		list.add(map);
-		SearchDTO dto = new SearchDTO(list, "add", 5);
-		assertEquals(1, dto.getProperties().size());
-		map.put("city", "mycity");
-		list.add(map);
-		dto.setProperties(list);
-		assertEquals(2, dto.getProperties().get(0).size());
-	}
-
-	@Test
-	public void zRemoveDataByIdentifier() {
-		boolean response = ElasticSearchUtil.removeData(indexName, typeName, (String) map.get("courseId"));
-		assertEquals(true, response);
-	}
-
-	@Test
-	public void zyRemoveDataByIdentifierFailure() {
-		boolean response = ElasticSearchUtil.removeData(indexName, typeName, "");
-		assertEquals(false, response);
-	}
-
-	@Test
-	public void checkMappingObject() {
-		ElasticSearchMapping mapping = new ElasticSearchMapping();
-		assertTrue(mapping != null);
-	}
-
-	@Test
-	public void checkSettingsObject() {
-		ElasticSearchSettings settings = new ElasticSearchSettings();
-		assertTrue(settings != null);
-	}
-
-	// @Test
-	public void zzyTestWhenClusterisNull() {
-		ElasticSearchUtil.deleteIndex(indexName);
-		ConnectionManager.closeClient();
-		ConnectionManager.getClient();
-	}
-
-	@Test
-	public void failureConnectionTestFromProperties() {
-		boolean response = ConnectionManager.initialiseConnectionFromPropertiesFile("Test", "localhost1,128.0.0.1",
-				"9200,9300");
-		assertFalse(response);
-	}
-
-	@Test
-	public void checkHealth() {
-		boolean response = false;
-		try {
-			response = ElasticSearchUtil.healthCheck();
-		} catch (Exception e) {
-
-		}
-		assertEquals(true, response);
-	}
-
-	@Test
-	public void upsertDataTest() {
-		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("test", "test");
-		boolean response = ElasticSearchUtil.upsertData(indexName, typeName, "test-12349", data);
-		assertEquals(true, response);
-	}
-
-	
-
-	@Test
-	public void bulkInsertTest() {
-		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("test1", "test");
-		data.put("test2", "manzarul");
-		List<Map<String, Object>> listOfMap = new ArrayList<Map<String, Object>>();
-		listOfMap.add(data);
-		boolean response = ElasticSearchUtil.bulkInsertData(indexName, typeName, listOfMap);
-		assertEquals(true, response);
-	}
-
-	@Test
-	public void search() {
-		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("test1", "test");
-		try {
-			Map<String, Object> map = ElasticSearchUtil.searchData(indexName, typeName, data);
-			assertTrue(map != null);
-			assertTrue(map.size() == 0);
-		} catch (Exception e) {
-		}
-	}
-
-	@Test
-	public void mappingAddOrUpdateTest() {
-		boolean bool = ElasticSearchUtil.addOrUpdateMapping(indexName, typeName, ElasticSearchMapping.createMapping());
-		assertTrue(bool);
-	}
-
-	@Test
-	public void searchMetricsDataTestSuccess() {
-		String index = "searchindex";
-		String type = "user";
-		String rawQuery = "{\"query\":{\"match_none\":{}}}";
-		Response response = ElasticSearchUtil.searchMetricsData(index, type, rawQuery);
-		assertEquals(ResponseCode.OK, response.getResponseCode());
-	}
-
-	@Test
-	public void searchMetricsDataTestException() {
-		String index = "searchtest";
-		String type = "usertest";
-		String rawQuery = "{\"query\":{\"match_none\":{}}}";
-		try {
-			ElasticSearchUtil.searchMetricsData(index, type, rawQuery);
-		} catch (ProjectCommonException e) {
-			assertEquals(ResponseCode.unableToConnectToES.getErrorCode(), e.getCode());
-		}
-	}
-
-	public void testcalculateEndTime() {
-		long endTime = ElasticSearchUtil.calculateEndTime(startTime);
-		assertTrue(endTime > startTime);
-	}
-
-	@Test
-	public void testVerifyAndCreateIndicesAndTypes() {
-		Config config = ConfigUtil.getConfig(ElasticSearchUtil.ES_CONFIG_FILE);
-		List<Object> list = (List) config.getAnyRefList("elasticsearch.indices");
-		for (Object obj : list) {
-			Map<String, Object> map = (Map) obj;
-			String indexName = (String) map.get(JsonKey.NAME);
-			List<String> types = (List<String>) map.get(JsonKey.ES_TYPES);
-			assertEquals(ElasticSearchUtil.indexMap.get(indexName), true);
-			for (String type : types) {
-				assertEquals(ElasticSearchUtil.typeMap.get(type), true);
-			}
-		}
-	}
 }
