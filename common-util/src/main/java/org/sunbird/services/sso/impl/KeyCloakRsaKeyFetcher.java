@@ -34,6 +34,7 @@ public class KeyCloakRsaKeyFetcher {
 
   public PublicKey getPublicKeyFromKeyCloak(String url, String realm) {
     try {
+      
       Decoder urlDecoder = Base64.getUrlDecoder();
       KeyFactory keyFactory = KeyFactory.getInstance("RSA");
       String publicKeyString = requestKeyFromKeycloak(url, realm);
