@@ -3,17 +3,17 @@ package org.sunbird.cassandra;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.TableMetadata;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.sunbird.common.exception.ProjectCommonException;
@@ -24,6 +24,10 @@ import org.sunbird.helper.CassandraConnectionManagerImpl;
 import org.sunbird.helper.CassandraConnectionMngrFactory;
 import org.sunbird.helper.ServiceFactory;
 
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.TableMetadata;
+
+@Ignore
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CassandraStandaloneTest {
 

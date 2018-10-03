@@ -2,6 +2,7 @@ package org.sunbird.notification.sms;
 
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.sunbird.notification.sms.providerimpl.Msg91SmsProvider;
@@ -10,6 +11,7 @@ import org.sunbird.notification.sms.providerimpl.Msg91SmsProvider;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class Message91GetSMSTest {
 
+  @Ignore	
   @Test
   public void testSmsGetMethodSuccess() {
     Msg91SmsProvider megObj = new Msg91SmsProvider();
