@@ -49,17 +49,22 @@ public class KeyCloakServiceImpl implements SSOManager {
           + KeyCloakConnectionProvider.SSO_REALM
           + "/protocol/openid-connect/token";
 
-  private static final PublicKey SSO_PUBLIC_KEY =
-      new KeyCloakRsaKeyFetcher()
-          .getPublicKeyFromKeyCloak(
-              KeyCloakConnectionProvider.SSO_URL, KeyCloakConnectionProvider.SSO_REALM);
+  private static PublicKey SSO_PUBLIC_KEY = null;
+
+  public PublicKey getPublicKey() {
+    if (null == SSO_PUBLIC_KEY) {
+      SSO_PUBLIC_KEY =
+          new KeyCloakRsaKeyFetcher()
+              .getPublicKeyFromKeyCloak(
+                  KeyCloakConnectionProvider.SSO_URL, KeyCloakConnectionProvider.SSO_REALM);
+    }
+    return SSO_PUBLIC_KEY;
+  }
 
   @Override
   public String verifyToken(String accessToken) {
     try {
-      if (publicKey == null) {
-        publicKey = toPublicKey(System.getenv(JsonKey.SSO_PUBLIC_KEY));
-      }
+      PublicKey publicKey = toPublicKey(System.getenv(JsonKey.SSO_PUBLIC_KEY));
       if (publicKey != null) {
         AccessToken token =
             RSATokenVerifier.verifyToken(

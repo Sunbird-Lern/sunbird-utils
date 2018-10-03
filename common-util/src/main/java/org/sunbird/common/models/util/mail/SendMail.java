@@ -7,6 +7,7 @@ import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 import javax.mail.BodyPart;
 import javax.mail.Message;
+import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Session;
@@ -261,8 +262,14 @@ public class SendMail {
       Session session = Session.getInstance(props, new GMailAuthenticator(userName, password));
       MimeMessage message = new MimeMessage(session);
       message.setFrom(new InternetAddress(fromEmail));
+      RecipientType recipientType = null;
+      if (emailList.length > 1) {
+        recipientType = Message.RecipientType.BCC;
+      } else {
+        recipientType = Message.RecipientType.TO;
+      }
       for (String email : emailList) {
-        message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+        message.addRecipient(recipientType, new InternetAddress(email));
       }
       message.setSubject(subject);
       message.setContent(writer.toString(), "text/html");
@@ -271,6 +278,7 @@ public class SendMail {
       transport.sendMessage(message, message.getAllRecipients());
       transport.close();
     } catch (Exception e) {
+
       sentStatus = false;
       ProjectLogger.log(
           "SendMail:sendMail: Exception occurred with message = " + e.getMessage(), e);

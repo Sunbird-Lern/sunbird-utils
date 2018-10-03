@@ -173,15 +173,11 @@ public class ProjectUtilTest {
 
   @Test
   public void testSendSMSWithDetails() {
-    String msg =
-        ProjectUtil.getSMSBody("AMIT@BLR", "www.sunbird.org", "sunbird.com", "diksha", "", "");
+    Map<String, String> map = new HashMap<>();
+    map.put("instanceName", "Diksha");
+    map.put("link", "www.sunbird.org");
+    String msg = ProjectUtil.getSMSBody(map);
     assertTrue(msg.contains("sunbird.org"));
-  }
-
-  @Test
-  public void testSendSMSWithoutDetails() {
-    String msg = ProjectUtil.getSMSBody("", "", "", "", "", "");
-    assertTrue(msg.contains("user_name"));
   }
 
   @Test

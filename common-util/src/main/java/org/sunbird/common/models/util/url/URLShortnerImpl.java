@@ -51,7 +51,6 @@ public class URLShortnerImpl implements URLShortner {
           ProjectLogger.log(e.getMessage(), e);
         }
       }
-      ProjectLogger.log("unable to do url short");
     }
     return url;
   }
