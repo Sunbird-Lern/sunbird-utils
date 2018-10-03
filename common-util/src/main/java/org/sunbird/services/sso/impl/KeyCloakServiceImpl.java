@@ -52,6 +52,8 @@ public class KeyCloakServiceImpl implements SSOManager {
   private static PublicKey SSO_PUBLIC_KEY = null;
 
   public PublicKey getPublicKey() {
+    ProjectLogger.log("in get publicKey");
+    
     if (null == SSO_PUBLIC_KEY) {
       SSO_PUBLIC_KEY =
           new KeyCloakRsaKeyFetcher()
@@ -64,7 +66,12 @@ public class KeyCloakServiceImpl implements SSOManager {
   @Override
   public String verifyToken(String accessToken) {
     try {
-      PublicKey publicKey = toPublicKey(System.getenv(JsonKey.SSO_PUBLIC_KEY));
+      PublicKey publicKey = getPublicKey();
+      ProjectLogger.log("in get publcKey "+ publicKey);
+      if(publicKey!=null) {
+        publicKey = toPublicKey(System.getenv(JsonKey.SSO_PUBLIC_KEY));
+        
+      }
       if (publicKey != null) {
         AccessToken token =
             RSATokenVerifier.verifyToken(
