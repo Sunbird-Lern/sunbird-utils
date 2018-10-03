@@ -2,17 +2,37 @@ package org.sunbird.notification.sms;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.http.impl.client.HttpClients;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.sunbird.notification.sms.provider.ISmsProvider;
 import org.sunbird.notification.sms.providerimpl.Msg91SmsProvider;
+import org.sunbird.notification.utils.PropertiesCache;
 import org.sunbird.notification.utils.SMSFactory;
 
 /** @author Manzarul */
+
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@RunWith(PowerMockRunner.class)
+@PowerMockIgnore({ "javax.management.*", "javax.net.ssl.*", "javax.security.*" })
+@PrepareForTest({ HttpClients.class ,PropertiesCache.class})
 public class Message91Test {
+
+  @BeforeClass
+	public static void initiateMockRules() {
+	  	//Using common method of initiating mock rules.
+		Message91GetSMSTest.initiateMockRules();
+	}
+  
+  
 
   @Test
   public void testSuccessInit() {
@@ -32,6 +52,7 @@ public class Message91Test {
     Assert.assertTrue(object instanceof Msg91SmsProvider);
   }
 
+  
   @Test
   public void sendSMSTest() {
     ISmsProvider object = SMSFactory.getInstance("91SMS");
@@ -46,6 +67,7 @@ public class Message91Test {
     Assert.assertFalse(response);
   }
 
+  
   @Test
   public void sendSMSWithcountryCode() {
     ISmsProvider object = SMSFactory.getInstance("91SMS");
@@ -53,6 +75,7 @@ public class Message91Test {
     Assert.assertTrue(response);
   }
 
+  
   @Test
   public void sendSMSWithcountryCodeWithPlus() {
     ISmsProvider object = SMSFactory.getInstance("91SMS");
@@ -88,6 +111,7 @@ public class Message91Test {
     Assert.assertFalse(response);
   }
 
+  
   @Test
   public void sendSMSWithInvalidPhone() {
     ISmsProvider object = SMSFactory.getInstance("91SMS");
@@ -95,6 +119,7 @@ public class Message91Test {
     Assert.assertTrue(response);
   }
 
+  
   @Test
   public void sendSMSWithWithCountryCode() {
     ISmsProvider object = SMSFactory.getInstance("91SMS");
@@ -102,6 +127,7 @@ public class Message91Test {
     Assert.assertTrue(response);
   }
 
+  
   @Test
   public void sendSMSWithWithCountryCodeWithPrefixPlus() {
     ISmsProvider object = SMSFactory.getInstance("91SMS");
