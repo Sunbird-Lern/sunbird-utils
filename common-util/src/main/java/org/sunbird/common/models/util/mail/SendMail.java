@@ -179,7 +179,7 @@ public class SendMail {
       Template template = engine.getTemplate(templateName);
       StringWriter writer = new StringWriter();
       template.merge(context, writer);
-      message.setContent(writer.toString(), "text/html");
+      message.setContent(writer.toString(), "text/html; charset=utf-8");
       transport = session.getTransport("smtp");
       transport.connect(host, userName, password);
       transport.sendMessage(message, message.getAllRecipients());
@@ -221,7 +221,7 @@ public class SendMail {
       }
       message.setSubject(subject);
       BodyPart messageBodyPart = new MimeBodyPart();
-      messageBodyPart.setContent(emailBody, "text/html");
+      messageBodyPart.setContent(emailBody, "text/html; charset=utf-8");
       // messageBodyPart.setText(mail);
       // Create a multipar message
       Multipart multipart = new MimeMultipart();
@@ -272,7 +272,7 @@ public class SendMail {
         message.addRecipient(recipientType, new InternetAddress(email));
       }
       message.setSubject(subject);
-      message.setContent(writer.toString(), "text/html");
+      message.setContent(writer.toString(), "text/html; charset=utf-8");
       transport = session.getTransport("smtp");
       transport.connect(host, userName, password);
       transport.sendMessage(message, message.getAllRecipients());
