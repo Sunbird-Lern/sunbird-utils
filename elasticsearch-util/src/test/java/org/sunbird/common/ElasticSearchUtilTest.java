@@ -73,7 +73,6 @@ import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
-import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.common.util.ConfigUtil;
 import org.sunbird.dto.SearchDTO;
@@ -123,37 +122,22 @@ public class ElasticSearchUtilTest {
 
 	}
 	
-	@Test
-	public void testConnectionSuccess() {
-		TransportClient client = mock(TransportClient.class);
-		assertNotNull(client);
-	}
 
 	@Test
 	public void testCreateIndexSuccess() {
 		boolean response = ElasticSearchUtil.createIndex(INDEX_NAME, TYPE_NAME, ElasticSearchMapping.createMapping(),
 				ElasticSearchSettings.createSettingsForIndex());
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			ProjectLogger.log("Index creation time out");
-		}
 		assertTrue(response);
 	}
 
 	@Test
 	public void testCreateDataSuccess() {
-
-		String responseId = ElasticSearchUtil.createData(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"), chemistryMap);
+		mockRulesForInsert();
+		String chemMapId = ElasticSearchUtil.createData(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"), chemistryMap);
+		assertNotNull(chemistryMap.get("courseId"));
 		// inserting second record
-		ElasticSearchUtil.createData(INDEX_NAME, TYPE_NAME, (String) physicsMap.get("courseId"), physicsMap);
-		assertEquals(responseId, chemistryMap.get("courseId"));
-		// wait for 1 second since the created data will reflect after some time
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			ProjectLogger.log(e.getMessage(), e);
-		}
+		String physicsMapId =ElasticSearchUtil.createData(INDEX_NAME, TYPE_NAME, (String) physicsMap.get("courseId"), physicsMap);
+		assertNotNull(physicsMap.get("courseId"));
 	}
 
 	@Test
@@ -164,7 +148,7 @@ public class ElasticSearchUtilTest {
 	}
 
 	@Test
-	public void testUpdateByIdentifierSuccess() {
+	public void testUpdateSuccess() {
 		Map<String, Object> innermap = new HashMap<>();
 		innermap.put("courseName", "updatedCourese name");
 		innermap.put("organisationId", "updatedOrgId");
@@ -176,12 +160,9 @@ public class ElasticSearchUtilTest {
 		when(grb.get()).thenReturn(getResponse);
 		when(getResponse.getSource()).thenReturn(innermap);
 		
-		
 		boolean response = ElasticSearchUtil.updateData(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"), innermap);
 		assertTrue(response);
-		Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(INDEX_NAME, TYPE_NAME,
-				(String) chemistryMap.get("courseId"));
-		assertEquals(responseMap.get("courseName"), "updatedCourese name");
+		
 	}
 
 	@Test
@@ -192,12 +173,12 @@ public class ElasticSearchUtilTest {
 		fields.add("courseType");
 		fields.add("createdOn");
 		fields.add("description");
-		List<String> excludefields = new ArrayList<String>();
-		excludefields.add("createdOn");
+		List<String> excludedFields = new ArrayList<String>();
+		excludedFields.add("createdOn");
 		Map<String, String> sortMap = new HashMap<>();
 		sortMap.put("courseType", "ASC");
 		searchDTO.setSortBy(sortMap);
-		searchDTO.setExcludedFields(excludefields);
+		searchDTO.setExcludedFields(excludedFields);
 		searchDTO.setLimit(20);
 		searchDTO.setOffset(0);
 		Map<String, Object> additionalPro = new HashMap<String, Object>();
@@ -257,7 +238,7 @@ public class ElasticSearchUtilTest {
 	}
 
 	@Test
-	public void testComplexSearchWithRangeGreaterThanSuccess() {
+	public void testComplexSearchSuccessWithRangeGreaterThan() {
 		SearchDTO searchDTO = new SearchDTO();
 		Map<String, Object> additionalProperties = new HashMap<String, Object>();
 		List<Integer> sizes = new ArrayList<Integer>();
@@ -290,7 +271,7 @@ public class ElasticSearchUtilTest {
 	}
 
 	@Test
-	public void testComplexSearchWithRangeLessThanSuccess() {
+	public void testComplexSearchSuccessWithRangeLessThan() {
 		SearchDTO searchDTO = new SearchDTO();
 		Map<String, Object> additionalProperties = new HashMap<String, Object>();
 		List<Integer> sizes = new ArrayList<Integer>();
@@ -322,14 +303,14 @@ public class ElasticSearchUtilTest {
 	}
 
 	@Test
-	public void testGetByIdentifierWithoutIndexFailure() {
+	public void testGetByIdentifierFailureWithoutIndex() {
 		Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(null, TYPE_NAME,
 				(String) chemistryMap.get("courseId"));
 		assertEquals(0, responseMap.size());
 	}
 
 	@Test
-	public void testGetByIdentifierWithoutTypeFailure() {
+	public void testGetByIdentifierFailureWithoutType() {
 		mockRulesForGet(true);
 		Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(INDEX_NAME, null, "testcourse123");
 
@@ -337,89 +318,89 @@ public class ElasticSearchUtilTest {
 	}
 
 	@Test
-	public void testGetByIdentifierWithoutTypeAndIndexIdentifierFailure() {
+	public void testGetByIdentifierFailureWithoutTypeAndIndexIdentifier() {
 		Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(null, null, "");
 		assertEquals(0, responseMap.size());
 	}
 
 	@Test
-	public void testGetDataWithoutIdentifierFailure() {
+	public void testGetDataFailureWithoutIdentifier() {
 		Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(INDEX_NAME, TYPE_NAME, "");
 		assertEquals(0, responseMap.size());
 	}
 
 	@Test
-	public void testUpdateDataWithutIdentifierFailure() {
+	public void testUpdateDataFailureWithoutIdentifier() {
 		Map<String, Object> innermap = new HashMap<>();
-		innermap.put("courseName", "updatedCourese name");
+		innermap.put("courseName", "Updated Course Name");
 		innermap.put("organisationId", "updatedOrgId");
 		boolean response = ElasticSearchUtil.updateData(INDEX_NAME, TYPE_NAME, null, innermap);
 		assertFalse(response);
 	}
 
 	@Test
-	public void testUpdateWithEmptyMapFailure() {
+	public void testUpdateFailureWithEmptyMap() {
 		Map<String, Object> innermap = new HashMap<>();
 		boolean response = ElasticSearchUtil.updateData(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"), innermap);
 		assertFalse(response);
 	}
 
 	@Test
-	public void testUpdateWithNullMapFailure() {
+	public void testUpdateFailureWithNullMap() {
 		boolean response = ElasticSearchUtil.updateData(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"), null);
 		assertFalse(response);
 	}
 
 	@Test
-	public void testUpsertDataWithoutIdentifierFailure() {
+	public void testUpsertDataFailureWithoutIdentifier() {
 		Map<String, Object> innermap = new HashMap<>();
-		innermap.put("courseName", "updatedCourese name");
+		innermap.put("courseName", "Updated Course Name");
 		innermap.put("organisationId", "updatedOrgId");
 		boolean response = ElasticSearchUtil.upsertData(INDEX_NAME, TYPE_NAME, null, innermap);
 		assertFalse(response);
 	}
 
 	@Test
-	public void testUpsertDataWithoutIndexFailure() {
+	public void testUpsertDataFailureWithoutIndex() {
 		Map<String, Object> innermap = new HashMap<>();
-		innermap.put("courseName", "updatedCourese name");
+		innermap.put("courseName", "Updated Course Name");
 		innermap.put("organisationId", "updatedOrgId");
 		boolean response = ElasticSearchUtil.upsertData(null, TYPE_NAME, (String) chemistryMap.get("courseId"), innermap);
 		assertFalse(response);
 	}
 
 	@Test
-	public void testUpsertDataWithoutIndexTypeFailure() {
+	public void testUpsertDataFailureWithoutIndexType() {
 		Map<String, Object> innermap = new HashMap<>();
-		innermap.put("courseName", "updatedCourese name");
+		innermap.put("courseName", "Updated Course Name");
 		innermap.put("organisationId", "updatedOrgId");
-		boolean response = ElasticSearchUtil.upsertData(null, null, (String) chemistryMap.get("courseId"), innermap);
+		boolean response = ElasticSearchUtil.upsertData(INDEX_NAME, null, (String) chemistryMap.get("courseId"), innermap);
 		assertFalse(response);
 	}
 
 	@Test
-	public void testUpsertDataWithEmptyMapFailure() {
+	public void testUpsertDataFailureWithEmptyMap() {
 		Map<String, Object> innermap = new HashMap<>();
 		boolean response = ElasticSearchUtil.upsertData(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"), innermap);
 		assertFalse(response);
 	}
 
 	@Test
-	public void testCreateIndexWithEmptyIndexNameFailure() {
+	public void testCreateIndexFailureWithEmptyIndexName() {
 		boolean response = ElasticSearchUtil.createIndex("", TYPE_NAME, ElasticSearchMapping.createMapping(),
 				ElasticSearchSettings.createSettingsForIndex());
 		assertFalse(response);
 	}
 
 	@Test
-	public void testCreateIndexWithEmptyIndexNameAndTypeFailure() {
+	public void testCreateIndexFailureWithEmptyIndexNameAndType() {
 		boolean response = ElasticSearchUtil.createIndex("", null, ElasticSearchMapping.createMapping(),
 				ElasticSearchSettings.createSettingsForIndex());
 		assertFalse(response);
 	}
 
 	@Test
-	public void testCreateIndexWithEmptyMappingFailure() {
+	public void testCreateIndexFailureWithEmptyMapping() {
 		mockRulesForIndexes(false);
 		boolean response = ElasticSearchUtil.createIndex(INDEX_NAME, TYPE_NAME, null,
 				ElasticSearchSettings.createSettingsForIndex());
@@ -427,7 +408,7 @@ public class ElasticSearchUtilTest {
 	}
 
 	@Test
-	public void testCreateIndexWithEmptySettingsFailure() {
+	public void testCreateIndexFailureWithEmptySettings() {
 		mockRulesForIndexes(false);
 		boolean response = ElasticSearchUtil.createIndex(INDEX_NAME, TYPE_NAME, ElasticSearchMapping.createMapping(),
 				null);
@@ -439,70 +420,42 @@ public class ElasticSearchUtilTest {
 	
 
 	@Test
-	public void testSaveDataWithoutIndexNameFailure() {
+	public void testSaveDataFailureWithoutIndexName() {
 		String responseMap = ElasticSearchUtil.createData("", TYPE_NAME, (String) chemistryMap.get("courseId"), chemistryMap);
 		assertEquals("ERROR", responseMap);
 	}
 
 	@Test
-	public void testSaveDataWithoutTypeNameFailure() {
+	public void testSaveDataFailureWithoutTypeName() {
 		String responseMap = ElasticSearchUtil.createData(INDEX_NAME, "", (String) chemistryMap.get("courseId"), chemistryMap);
 		assertEquals("ERROR", responseMap);
 	}
 
 	@Test
-	public void testGetDataByEmptyIdentifierFailure() {
+	public void testGetDataFailureByEmptyIdentifier() {
 		Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(INDEX_NAME, TYPE_NAME, "");
 		assertEquals(0, responseMap.size());
 	}
 
-	@Test
-	public void testSearchDtoQueryTestSuccess() {
-		SearchDTO dto = new SearchDTO();
-		List<Map<String, Object>> list = new ArrayList<>();
-		Map<String, Object> map = new HashMap<>();
-		map.put("name", "test1");
-		list.add(map);
-		dto.setGroupQuery(list);
-		list = dto.getGroupQuery();
-		assertEquals(1, list.size());
-		dto.setOperation("add");
-		assertEquals("add", dto.getOperation());
-		dto.setFuzzySearch(true);
-		assertTrue(dto.isFuzzySearch());
-	}
+	
+
+	
 
 	@Test
-	public void testSearchDtoArgumentedConstSuccess() {
-		List<Map> list = new ArrayList<>();
-		Map map = new HashMap();
-		map.put("name", "test1");
-		list.add(map);
-		SearchDTO dto = new SearchDTO(list, "add", 5);
-		assertEquals(1, dto.getProperties().size());
-		map.put("city", "mycity");
-		list.add(map);
-		dto.setProperties(list);
-		assertEquals(2, dto.getProperties().get(0).size());
-	}
-
-	@Test
-	public void testRemoveDataByIdentifierSuccess() {
+	public void testRemoveDataSuccessByIdentifier() {
 		boolean response = ElasticSearchUtil.removeData(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"));
 		assertEquals(true, response);
 	}
 
 	@Test
-	public void testRemoveDataByIdentifierEmptyFailure() {
+	public void testRemoveDataFailureByIdentifierEmpty() {
 		boolean response = ElasticSearchUtil.removeData(INDEX_NAME, TYPE_NAME, "");
 		assertEquals(false, response);
 	}
 
-	
-
-
+		
 	@Test
-	public void testFailureConnectionFromPropertiesFailure() {
+	public void testConnectionFailureFromProperties() {
 		boolean response = ConnectionManager.initialiseConnectionFromPropertiesFile("Test", "localhost1,128.0.0.1",
 				"9200,9300");
 		assertFalse(response);
@@ -510,12 +463,7 @@ public class ElasticSearchUtilTest {
 
 	@Test
 	public void testElasticSearchHealthCheckSuccess() {
-		boolean response = false;
-		try {
-			response = ElasticSearchUtil.healthCheck();
-		} catch (Exception e) {
-
-		}
+		boolean response = ElasticSearchUtil.healthCheck();
 		assertEquals(true, response);
 	}
 
