@@ -17,7 +17,7 @@ import org.sunbird.common.responsecode.ResponseCode;
 public class PageSectionValidatorTest {
 
   @Test
-  public void validategetPageData() {
+  public void testValidateGetPageDataSuccess() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.SOURCE, "web");
@@ -34,7 +34,7 @@ public class PageSectionValidatorTest {
   }
 
   @Test
-  public void validategetPageDataWithOutSource() {
+  public void testValidateGetPageDataFailureWithoutSource() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PAGE_NAME, "resource");
@@ -51,7 +51,7 @@ public class PageSectionValidatorTest {
   }
 
   @Test
-  public void validategetPageDataWithSourceWithoutPageName() {
+  public void testValidateGetPageDataFailureWithoutPageName() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.SOURCE, "web");
@@ -68,7 +68,7 @@ public class PageSectionValidatorTest {
   }
 
   @Test
-  public void validateCreateSectionData() {
+  public void testValidateCreateSectionSuccess() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.SECTION_NAME, "latest resource");
@@ -86,7 +86,7 @@ public class PageSectionValidatorTest {
   }
 
   @Test
-  public void validateCreateSectionDataWithOutName() {
+  public void testValidateCreateSectionFailureWithoutSectionName() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(
@@ -104,7 +104,7 @@ public class PageSectionValidatorTest {
   }
 
   @Test
-  public void validateCreateSectionDataWithOutSectionData() {
+  public void testValidateCreateSectionFailureWithoutSectionDataType() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.SECTION_NAME, "latest resource");
@@ -121,7 +121,7 @@ public class PageSectionValidatorTest {
   }
 
   @Test
-  public void validateUpdateSectionData() {
+  public void testValidateUpdateSectionSuccess() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.SECTION_NAME, "latest resource");
@@ -140,7 +140,7 @@ public class PageSectionValidatorTest {
   }
 
   @Test
-  public void validateUpdateSectionWithOutId() {
+  public void testValidateUpdateSectionFailureWithoutId() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.SECTION_NAME, "latest resource");
@@ -159,46 +159,48 @@ public class PageSectionValidatorTest {
   }
 
   @Test
-  @Ignore
-  public void validateUpdateSectionWithOutSectionName() {
+  public void testValidateUpdateSectionFailureWithoutSectioName() {
     Request request = new Request();
+    boolean reqSuccess = false;
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(
         JsonKey.SECTION_DATA_TYPE, "{\"request\": { \"search\": {\"contentType\": [\"Story\"] }}}");
     requestObj.put(JsonKey.ID, "some section id");
+    requestObj.put(JsonKey.SECTION_NAME, "");
     request.setRequest(requestObj);
     try {
       // this method will either throw projectCommonException or it return void
       RequestValidator.validateUpdateSection(request);
-      requestObj.put("ext", "success");
+      reqSuccess = true;
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.sectionNameRequired.getErrorCode(), e.getCode());
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
     }
-    assertEquals(null, (String) requestObj.get("ext"));
+    assertEquals(false, reqSuccess);
   }
 
   @Test
-  @Ignore
-  public void validateUpdateSectionWithOutSectionData() {
+  public void testValidateUpdateSectionFailureWithoutSectioData() {
     Request request = new Request();
+    boolean reqSuccess = false;
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.SECTION_NAME, "latest resource");
+    requestObj.put(JsonKey.SECTION_DATA_TYPE, "");
     requestObj.put(JsonKey.ID, "some section id");
     request.setRequest(requestObj);
     try {
       // this method will either throw projectCommonException or it return void
       RequestValidator.validateUpdateSection(request);
-      requestObj.put("ext", "success");
+      reqSuccess = true;
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.sectionDataTypeRequired.getErrorCode(), e.getCode());
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
     }
-    assertEquals(null, (String) requestObj.get("ext"));
+    assertEquals(false, reqSuccess);
   }
 
   @Test
-  public void validateCreatePageSuccess() {
+  public void testValidateCreatePageSuccess() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PAGE_NAME, "some page name that need to be build");
@@ -214,7 +216,7 @@ public class PageSectionValidatorTest {
   }
 
   @Test
-  public void validateCreatePageWithOutPageName() {
+  public void testValidateCreatePageFailureWithoutPageName() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     request.setRequest(requestObj);
@@ -230,7 +232,7 @@ public class PageSectionValidatorTest {
   }
 
   @Test
-  public void validateUpdatePage() {
+  public void testValidateUpdatePageSuccess() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PAGE_NAME, "some page name that need to be build");
@@ -247,25 +249,26 @@ public class PageSectionValidatorTest {
   }
 
   @Test
-  @Ignore
-  public void validateUpdatePageWithOutPageName() {
+  public void testValidateUpdatePageFailureWithoutPageName() {
+	boolean reqSuccess = false;
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.ID, "identifier of the page");
+    requestObj.put(JsonKey.PAGE_NAME, null);
     request.setRequest(requestObj);
     try {
       // this method will either throw projectCommonException or it return void
       RequestValidator.validateUpdatepage(request);
-      requestObj.put("ext", "success");
+      reqSuccess = false;
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.pageNameRequired.getErrorCode(), e.getCode());
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
     }
-    assertEquals(null, (String) requestObj.get("ext"));
+    assertEquals(false, reqSuccess);
   }
 
   @Test
-  public void validateUpdatePageWithOutPageId() {
+  public void testValidateUpdatePageFailureWithoutId() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PAGE_NAME, "some page name that need to be build");

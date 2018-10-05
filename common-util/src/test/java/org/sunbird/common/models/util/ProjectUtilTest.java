@@ -16,19 +16,18 @@ import java.util.TimeZone;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.VelocityContext;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 
 /** Created by arvind on 6/10/17. */
-public class ProjectUtilTest {
+public class ProjectUtilTest extends BaseForHttpTest{
 
   private PropertiesCache propertiesCache = ProjectUtil.propertiesCache;
 
   @Test
-  public void testMailTemplateContextNameAsent() {
+  public void testMailTemplateFailureWithNameAbsent() {
 
     Map<String, Object> templateMap = new HashMap<>();
     templateMap.put(JsonKey.ACTION_URL, "googli.com");
@@ -38,7 +37,7 @@ public class ProjectUtilTest {
   }
 
   @Test
-  public void testMailTemplateContextActionUrlAbsent() {
+  public void testMailTemplateFailureWithActionUrlAbsent() {
 
     Map<String, Object> templateMap = new HashMap<>();
     templateMap.put(JsonKey.NAME, "userName");
@@ -48,7 +47,7 @@ public class ProjectUtilTest {
   }
 
   @Test
-  public void testMailTemplateContextCheckFromMail() {
+  public void testMailTemplateContextSuccessWithFromMail() {
 
     Map<String, Object> templateMap = new HashMap<>();
     templateMap.put(JsonKey.ACTION_URL, "googli.com");
@@ -69,7 +68,7 @@ public class ProjectUtilTest {
   }
 
   @Test
-  public void testMailTemplateContextCheckOrgImageUrl() {
+  public void testMailTemplateSuccessWithOrgImageUrl() {
 
     Map<String, Object> templateMap = new HashMap<>();
     templateMap.put(JsonKey.ACTION_URL, "googli.com");
@@ -90,23 +89,23 @@ public class ProjectUtilTest {
   }
 
   @Test
-  public void testCreateAuthToken() {
+  public void testCreateAuthTokenSuccess() {
     String authToken = ProjectUtil.createAuthToken("test", "tset1234");
     assertNotNull(authToken);
   }
 
   @Test
-  public void testValidateInValidPhoneNumberSuccess() {
+  public void testValidatePhnWithInvalidNumber() {
     assertFalse(ProjectUtil.validatePhoneNumber("312"));
   }
 
   @Test
-  public void testValidateValidPhoneNumber() {
+  public void testValidatePhoneNumberSuccess() {
     assertTrue(ProjectUtil.validatePhoneNumber("9844016699"));
   }
 
   @Test
-  public void testValidateGenerateRandomPassword() {
+  public void testGenerateRandomPasswordSuccess() {
     assertNotNull(ProjectUtil.generateRandomPassword());
   }
 
@@ -118,7 +117,7 @@ public class ProjectUtilTest {
   }
 
   @Test
-  public void testCreateCheckResponseException() {
+  public void testCreateCheckResponseFailureWithException() {
     Map<String, Object> responseMap =
         ProjectUtil.createCheckResponse(
             "LearnerService",
@@ -134,7 +133,7 @@ public class ProjectUtilTest {
   }
 
   @Test
-  public void testUpdateMapSomeValueToLowerCase() {
+  public void testUpdateMapSomeValueToLowerCaseSuccess() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.SOURCE, "Test");
@@ -156,25 +155,25 @@ public class ProjectUtilTest {
   }
 
   @Test
-  public void testFormatMessage() {
+  public void testFormatMessageSuccess() {
     String msg = ProjectUtil.formatMessage("Hello {0}", "user");
     assertEquals("Hello user", msg);
   }
 
   @Test
-  public void testFormatMessageInvalid() {
+  public void testFormatMessageFailureWithInvalidVariable() {
     String msg = ProjectUtil.formatMessage("Hello ", "user");
     assertNotEquals("Hello user", msg);
   }
 
   @Test
-  public void testisEmailvalid() {
+  public void testIsEmailValidFailureWithWrongEmail() {
     boolean msg = ProjectUtil.isEmailvalid("Hello ");
     assertFalse(msg);
   }
 
   @Test
-  public void testSendSMSWithDetails() {
+  public void testGetSMSBodySuccess() {
     Map<String, String> map = new HashMap<>();
     map.put("instanceName", "Diksha");
     map.put("link", "www.sunbird.org");
@@ -183,40 +182,39 @@ public class ProjectUtilTest {
   }
 
   @Test
-  public void testisDateValidFormat() {
+  public void testIsDateValidFormatSuccess() {
     boolean bool =
         ProjectUtil.isDateValidFormat("yyyy-MM-dd HH:mm:ss:SSSZ", "2017-12-18 10:47:30:707+0530");
     assertTrue(bool);
   }
 
   @Test
-  public void testisDateValidFormat2() {
+  public void testIsDateValidFormatFailureWithEmptyDate() {
     boolean bool = ProjectUtil.isDateValidFormat("yyyy-MM-dd", "");
     assertFalse(bool);
   }
 
   @Test
-  public void testisDateValidFormat3() {
+  public void testIsDateValidFormatFailureWithInvalidDate() {
     boolean bool = ProjectUtil.isDateValidFormat("yyyy-MM-dd", "2017-12-18");
     assertTrue(bool);
   }
 
   @Test
-  public void testisDateValidFormat4() {
+  public void testIsDateValidFormatFailureWithEmptyDateTime() {
     boolean bool = ProjectUtil.isDateValidFormat("yyyy-MM-dd HH:mm:ss:SSSZ", "");
     assertFalse(bool);
   }
 
   @Test
-  public void getEkstepHeaderTest() {
+  public void testGetEkStepHeaderSuccess() {
     Map<String, String> map = ProjectUtil.getEkstepHeader();
     assertEquals(map.get("Content-Type"), "application/json");
     assertNotNull(map.get(JsonKey.AUTHORIZATION));
   }
 
-  @Ignore
   @Test
-  public void registertagTest() {
+  public void testRegisterTagSuccess() {
     String response = null;
     try {
       response = ProjectUtil.registertag("testTag", "{}", ProjectUtil.getEkstepHeader());
@@ -227,7 +225,7 @@ public class ProjectUtilTest {
   }
 
   @Test
-  public void reportTrackingStatusTest() {
+  public void testReportTrackingStatusSuccess() {
     assertEquals(0, ProjectUtil.ReportTrackingStatus.NEW.getValue());
     assertEquals(1, ProjectUtil.ReportTrackingStatus.GENERATING_DATA.getValue());
     assertEquals(2, ProjectUtil.ReportTrackingStatus.UPLOADING_FILE.getValue());
@@ -238,14 +236,14 @@ public class ProjectUtilTest {
   }
 
   @Test
-  public void getDefaultTemplateTest() {
+  public void testGetTemplateSuccess() {
     Map<String, Object> map = new HashMap<>();
     String template = ProjectUtil.getTemplate(map);
     assertEquals("/emailtemplate.vm", template);
   }
 
   @Test
-  public void getTemplateTest() {
+  public void testGetTemplateSuccessWithEmailTemplateType() {
     Map<String, Object> map = new HashMap<>();
     map.put(JsonKey.EMAIL_TEMPLATE_TYPE, "/test.vm");
     String template = ProjectUtil.getTemplate(map);
@@ -253,7 +251,7 @@ public class ProjectUtilTest {
   }
 
   @Test
-  public void getEsTypeTest() {
+  public void testEsTypeSuccess() {
     assertEquals("content", ProjectUtil.EsType.content.getTypeName());
     assertEquals("course", ProjectUtil.EsType.course.getTypeName());
     assertEquals("user", ProjectUtil.EsType.user.getTypeName());
@@ -265,13 +263,13 @@ public class ProjectUtilTest {
   }
 
   @Test
-  public void getEsIndexTest() {
+  public void testEsIndexSuccess() {
     assertEquals("searchindex", ProjectUtil.EsIndex.sunbird.getIndexName());
     assertEquals("sunbirddataaudit", ProjectUtil.EsIndex.sunbirdDataAudit.getIndexName());
   }
 
   @Test
-  public void getUserRoleTest() {
+  public void testUserRoleSuccess() {
     assertEquals("PUBLIC", ProjectUtil.UserRole.PUBLIC.getValue());
     assertEquals("CONTENT_CREATOR", ProjectUtil.UserRole.CONTENT_CREATOR.getValue());
     assertEquals("CONTENT_REVIEWER", ProjectUtil.UserRole.CONTENT_REVIEWER.getValue());
@@ -280,7 +278,7 @@ public class ProjectUtilTest {
   }
 
   @Test
-  public void getBulkProcessStatusTest() {
+  public void testBulkProcessStatusSuccess() {
     assertEquals(0, ProjectUtil.BulkProcessStatus.NEW.getValue());
     assertEquals(1, ProjectUtil.BulkProcessStatus.IN_PROGRESS.getValue());
     assertEquals(2, ProjectUtil.BulkProcessStatus.INTERRUPT.getValue());
@@ -289,7 +287,7 @@ public class ProjectUtilTest {
   }
 
   @Test
-  public void getOrgStatusTest() {
+  public void testOrgStatusSuccess() {
     assertEquals(new Integer(0), ProjectUtil.OrgStatus.INACTIVE.getValue());
     assertEquals(new Integer(1), ProjectUtil.OrgStatus.ACTIVE.getValue());
     assertEquals(new Integer(2), ProjectUtil.OrgStatus.BLOCKED.getValue());
@@ -297,48 +295,48 @@ public class ProjectUtilTest {
   }
 
   @Test
-  public void getCourseMngTest() {
+  public void testCourseMgmtStatusSuccess() {
     assertEquals("draft", ProjectUtil.CourseMgmtStatus.DRAFT.getValue());
     assertEquals("live", ProjectUtil.CourseMgmtStatus.LIVE.getValue());
     assertEquals("retired", ProjectUtil.CourseMgmtStatus.RETIRED.getValue());
   }
 
   @Test
-  public void getProgressStatusTest() {
+  public void testProgressStatusSuccess() {
     assertEquals(0, ProjectUtil.ProgressStatus.NOT_STARTED.getValue());
     assertEquals(1, ProjectUtil.ProgressStatus.STARTED.getValue());
     assertEquals(2, ProjectUtil.ProgressStatus.COMPLETED.getValue());
   }
 
   @Test
-  public void getEnvTest() {
+  public void testEnvironmentSuccess() {
     assertEquals(1, ProjectUtil.Environment.dev.getValue());
     assertEquals(2, ProjectUtil.Environment.qa.getValue());
     assertEquals(3, ProjectUtil.Environment.prod.getValue());
   }
 
   @Test
-  public void getObjectType() {
+  public void testObjectTypesSuccess() {
     assertEquals("batch", ProjectUtil.ObjectTypes.batch.getValue());
     assertEquals("user", ProjectUtil.ObjectTypes.user.getValue());
     assertEquals("organisation", ProjectUtil.ObjectTypes.organisation.getValue());
   }
 
   @Test
-  public void getSourceTest() {
+  public void testSourceSuccess() {
     assertEquals("web", ProjectUtil.Source.WEB.getValue());
     assertEquals("android", ProjectUtil.Source.ANDROID.getValue());
     assertEquals("ios", ProjectUtil.Source.IOS.getValue());
   }
 
   @Test
-  public void getSectionDataType() {
+  public void testSectionDataTypeSuccess() {
     assertEquals("course", ProjectUtil.SectionDataType.course.getTypeName());
     assertEquals("content", ProjectUtil.SectionDataType.content.getTypeName());
   }
 
   @Test
-  public void getStatusTest() {
+  public void testStatusSuccess() {
     assertEquals(1, ProjectUtil.Status.ACTIVE.getValue());
     assertEquals(0, ProjectUtil.Status.INACTIVE.getValue());
     assertEquals(false, ProjectUtil.ActiveStatus.INACTIVE.getValue());
@@ -348,7 +346,7 @@ public class ProjectUtilTest {
   }
 
   @Test
-  public void serverExceptionTest() {
+  public void testThrowServerErrorSuccess() {
     try {
       ProjectUtil.createAndThrowServerError();
     } catch (ProjectCommonException e) {
@@ -358,7 +356,7 @@ public class ProjectUtilTest {
   }
 
   @Test
-  public void invalidUserDataExceptionTest() {
+  public void testInvalidUserDataExceptionSuccess() {
     try {
       ProjectUtil.createAndThrowInvalidUserDataException();
     } catch (ProjectCommonException e) {
@@ -368,7 +366,7 @@ public class ProjectUtilTest {
   }
 
   @Test
-  public void testValidDateRange() {
+  public void testDateRangeSuccess() {
     int noOfDays = 7;
     Map<String, String> map = ProjectUtil.getDateRange(noOfDays);
     Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
@@ -380,7 +378,7 @@ public class ProjectUtilTest {
   }
 
   @Test
-  public void testInvalidDateRange() {
+  public void testDateRangeFailure() {
     int noOfDays = 14;
     Map<String, String> map = ProjectUtil.getDateRange(noOfDays);
     Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
@@ -392,7 +390,7 @@ public class ProjectUtilTest {
   }
 
   @Test
-  public void testZeroDateRange() {
+  public void testDateRangeFailureWithZeroDays() {
     int noOfDays = 0;
     Map<String, String> map = ProjectUtil.getDateRange(noOfDays);
     assertNull(map.get("startDate"));
@@ -400,10 +398,11 @@ public class ProjectUtilTest {
   }
 
   @Test
-  public void testNegativeDateRange() {
+  public void testDteRangeFailureWithNegativeValue() {
     int noOfDays = -100;
     Map<String, String> map = ProjectUtil.getDateRange(noOfDays);
     assertNull(map.get("startDate"));
     assertNull(map.get("endDate"));
   }
+ 
 }
