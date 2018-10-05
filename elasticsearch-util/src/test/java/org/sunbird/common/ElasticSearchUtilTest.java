@@ -133,10 +133,10 @@ public class ElasticSearchUtilTest {
 	@Test
 	public void testCreateDataSuccess() {
 		mockRulesForInsert();
-		String chemMapId = ElasticSearchUtil.createData(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"), chemistryMap);
+		ElasticSearchUtil.createData(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"), chemistryMap);
 		assertNotNull(chemistryMap.get("courseId"));
 		// inserting second record
-		String physicsMapId =ElasticSearchUtil.createData(INDEX_NAME, TYPE_NAME, (String) physicsMap.get("courseId"), physicsMap);
+		ElasticSearchUtil.createData(INDEX_NAME, TYPE_NAME, (String) physicsMap.get("courseId"), physicsMap);
 		assertNotNull(physicsMap.get("courseId"));
 	}
 
