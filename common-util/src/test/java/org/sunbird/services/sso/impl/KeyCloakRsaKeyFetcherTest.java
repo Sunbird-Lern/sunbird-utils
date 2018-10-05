@@ -2,6 +2,7 @@ package org.sunbird.services.sso.impl;
 
 import java.security.PublicKey;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sunbird.common.models.util.KeyCloakConnectionProvider;
 
@@ -12,6 +13,7 @@ import org.sunbird.common.models.util.KeyCloakConnectionProvider;
 public class KeyCloakRsaKeyFetcherTest {
   public static final String FAIL_TEST = "fail-check";
 
+  @Ignore
   @Test
   public void getPublicKeyFromKeyCloakTest() {
     PublicKey key =

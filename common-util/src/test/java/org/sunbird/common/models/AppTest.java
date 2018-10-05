@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
@@ -45,6 +47,7 @@ public class AppTest {
   }
 
   @Test
+  @Ignore
   public void testPostResourceMethod() throws Exception {
     String ekStepBaseUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);
     if (StringUtils.isBlank(ekStepBaseUrl)) {

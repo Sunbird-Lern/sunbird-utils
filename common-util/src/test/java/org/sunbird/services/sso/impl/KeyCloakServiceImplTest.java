@@ -4,9 +4,11 @@ import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.sunbird.common.exception.ProjectCommonException;
@@ -49,6 +51,7 @@ public class KeyCloakServiceImplTest {
   }
 
   @Test
+  @Ignore
   public void createUserTest() {
 
     Map<String, Object> request = new HashMap<String, Object>();
@@ -91,6 +94,7 @@ public class KeyCloakServiceImplTest {
   }
 
   @Test
+  @Ignore
   public void updateUserTest() {
     Map<String, Object> request = new HashMap<String, Object>();
     request.put(JsonKey.USER_ID, userId.get(JsonKey.USER_ID));
@@ -104,6 +108,7 @@ public class KeyCloakServiceImplTest {
   }
 
   @Test
+  @Ignore
   public void updateUserWithOutProviderTest() {
     Map<String, Object> request = new HashMap<String, Object>();
     request.put(JsonKey.USER_ID, userId.get(JsonKey.USER_ID));
@@ -117,6 +122,7 @@ public class KeyCloakServiceImplTest {
   }
 
   @Test
+  @Ignore
   public void updateUserWithOutProviderAndCountryCodeTest() {
     Map<String, Object> request = new HashMap<String, Object>();
     request.put(JsonKey.USER_ID, userId.get(JsonKey.USER_ID));
@@ -129,6 +135,7 @@ public class KeyCloakServiceImplTest {
   }
 
   @Test
+  @Ignore
   public void updateUserTestWithOutPassingAnyField() {
 
     Map<String, Object> request = new HashMap<String, Object>();
@@ -138,6 +145,7 @@ public class KeyCloakServiceImplTest {
   }
 
   @Test
+  @Ignore
   public void updateUserTestWithAllFieldsExceptProvider() {
 
     Map<String, Object> request = new HashMap<String, Object>();
@@ -152,6 +160,7 @@ public class KeyCloakServiceImplTest {
   }
 
   @Test
+  @Ignore
   public void vdeactivateUserTest() {
 
     Map<String, Object> request = new HashMap<String, Object>();
@@ -162,6 +171,7 @@ public class KeyCloakServiceImplTest {
   }
 
   @Test
+  @Ignore
   public void zremoveUserTest() {
 
     Map<String, Object> request = new HashMap<String, Object>();
@@ -177,30 +187,35 @@ public class KeyCloakServiceImplTest {
   }
 
   @Test
+  @Ignore
   public void xaddLoginTimeTest() {
     boolean response = keyCloakService.addUserLoginTime(userId.get(JsonKey.USER_ID));
     Assert.assertEquals(true, response);
   }
 
   @Test
+  @Ignore
   public void yverifyLastLoginTime() {
     String lastLoginTime = keyCloakService.getLastLoginTime(userId.get(JsonKey.USER_ID));
     Assert.assertNull(lastLoginTime);
   }
 
   @Test
+  @Ignore
   public void yxddLoginTimeTest() {
     boolean response = keyCloakService.addUserLoginTime(userId.get(JsonKey.USER_ID));
     Assert.assertEquals(true, response);
   }
 
   @Test
+  @Ignore
   public void yyerifyLastLoginTime() {
     String lastLoginTime = keyCloakService.getLastLoginTime(userId.get(JsonKey.USER_ID));
     Assert.assertNotNull(lastLoginTime);
   }
 
   @Test
+  @Ignore
   public void makeUserActive() {
     Map<String, Object> reqMap = new HashMap<>();
     reqMap.put(JsonKey.USER_ID, userId.get(JsonKey.USER_ID));
@@ -222,6 +237,7 @@ public class KeyCloakServiceImplTest {
   }
 
   @Test
+  @Ignore
   public void loginSuccessTest() {
     String authKey = keyCloakService.login(userName, "password");
     Assert.assertNotEquals("", authKey);
@@ -234,12 +250,14 @@ public class KeyCloakServiceImplTest {
   }
 
   @Test
+  @Ignore
   public void emailVerifiedTest() {
     boolean response = keyCloakService.isEmailVerified(userId.get(JsonKey.USER_ID));
     Assert.assertEquals(false, response);
   }
 
   @Test
+  @Ignore
   public void setEmailVerifiedAsFalseTest() {
     keyCloakService.setEmailVerifiedAsFalse(userId.get(JsonKey.USER_ID));
     boolean response = keyCloakService.isEmailVerified(userId.get(JsonKey.USER_ID));
@@ -247,6 +265,7 @@ public class KeyCloakServiceImplTest {
   }
 
   @Test
+  @Ignore
   public void setEmailVerifiedUpdatedFlagWithFalse() {
     keyCloakService.setEmailVerifiedUpdatedFlag(userId.get(JsonKey.USER_ID), "false");
     String response = keyCloakService.getEmailVerifiedUpdatedFlag(userId.get(JsonKey.USER_ID));
@@ -254,6 +273,7 @@ public class KeyCloakServiceImplTest {
   }
 
   @Test
+  @Ignore
   public void setEmailVerifiedUpdatedFlagWithTrue() {
     keyCloakService.setEmailVerifiedUpdatedFlag(userId.get(JsonKey.USER_ID), "true");
     String response = keyCloakService.getEmailVerifiedUpdatedFlag(userId.get(JsonKey.USER_ID));
@@ -261,12 +281,14 @@ public class KeyCloakServiceImplTest {
   }
 
   @Test
+  @Ignore
   public void setEmailVerifiedFlagWithTrue() {
     String response = keyCloakService.setEmailVerifiedTrue(userId.get(JsonKey.USER_ID));
     Assert.assertEquals(JsonKey.SUCCESS, response);
   }
 
   @Test
+  @Ignore
   public void syncUserDataSuccess() {
     Map<String, Object> request = new HashMap<String, Object>();
     request.put(JsonKey.USERNAME, userName);
@@ -283,6 +305,7 @@ public class KeyCloakServiceImplTest {
   }
 
   @Test
+  @Ignore
   public void syncUserDataSuccessWithOutCountryCode() {
     Map<String, Object> request = new HashMap<String, Object>();
     request.put(JsonKey.USERNAME, userName);
@@ -298,6 +321,7 @@ public class KeyCloakServiceImplTest {
   }
 
   @Test
+  @Ignore
   public void syncUserDataSuccessWithOutProvider() {
     Map<String, Object> request = new HashMap<String, Object>();
     request.put(JsonKey.USERNAME, userName);
@@ -330,6 +354,7 @@ public class KeyCloakServiceImplTest {
   }
 
   @Test
+  @Ignore
   public void passwordUppdateTest() {
     boolean response = keyCloakService.doPasswordUpdate(userId.get(JsonKey.USER_ID), "password");
     Assert.assertEquals(true, response);
