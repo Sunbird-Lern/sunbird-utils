@@ -143,7 +143,10 @@ public enum ActorOperations {
   UPDATE_LEARNER_STATE("updateLearnerState"),
   GET_SYSTEM_SETTING("getSystemSetting"),
   GET_ALL_SYSTEM_SETTINGS("getAllSystemSettings"),
-  SET_SYSTEM_SETTING("setSystemSetting");
+  SET_SYSTEM_SETTING("setSystemSetting"),
+  BATCH_BULK("batchBulk"),
+  BATCH_UPDATE("batchUpdate"),
+  BATCH_OPERATION("batchOperation");
   private String value;
 
   /**
