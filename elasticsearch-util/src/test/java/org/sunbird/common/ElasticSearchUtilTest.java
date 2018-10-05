@@ -102,14 +102,10 @@ public class ElasticSearchUtilTest {
 	public static void initClass() throws Exception {
 		chemistryMap = initializeChemistryCourse(5);
 		physicsMap = intitializePhysicsCourse(60);
-		
-
 	}
 
 	@Before
 	public void initBeforeTest()  {
-		
-		//Initialize mock objects before the tests.
 		mockBaseRules();
 		mockRulesForGet();
 		mockRulesForInsert();
@@ -119,9 +115,7 @@ public class ElasticSearchUtilTest {
 		mockRulesForIndexes();
 		mockRulesHttpRequest();
 		mockRulesBulkInsert();
-
 	}
-	
 
 	@Test
 	public void testCreateIndexSuccess() {
@@ -133,9 +127,10 @@ public class ElasticSearchUtilTest {
 	@Test
 	public void testCreateDataSuccess() {
 		mockRulesForInsert();
+
 		ElasticSearchUtil.createData(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"), chemistryMap);
 		assertNotNull(chemistryMap.get("courseId"));
-		// inserting second record
+		
 		ElasticSearchUtil.createData(INDEX_NAME, TYPE_NAME, (String) physicsMap.get("courseId"), physicsMap);
 		assertNotNull(physicsMap.get("courseId"));
 	}
@@ -148,9 +143,9 @@ public class ElasticSearchUtilTest {
 	}
 
 	@Test
-	public void testUpdateSuccess() {
+	public void testUpdateDataSuccess() {
 		Map<String, Object> innermap = new HashMap<>();
-		innermap.put("courseName", "updatedCourese name");
+		innermap.put("courseName", "Updated course name");
 		innermap.put("organisationId", "updatedOrgId");
 		
 		GetRequestBuilder grb = mock(GetRequestBuilder.class);
@@ -161,61 +156,69 @@ public class ElasticSearchUtilTest {
 		when(getResponse.getSource()).thenReturn(innermap);
 		
 		boolean response = ElasticSearchUtil.updateData(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"), innermap);
-		assertTrue(response);
-		
+		assertTrue(response);		
 	}
 
 	@Test
 	public void testComplexSearchSuccess() throws Exception {
 		SearchDTO searchDTO = new SearchDTO();
+		
 		List<String> fields = new ArrayList<String>();
 		fields.add("courseId");
 		fields.add("courseType");
 		fields.add("createdOn");
 		fields.add("description");
-		List<String> excludedFields = new ArrayList<String>();
-		excludedFields.add("createdOn");
+		
 		Map<String, String> sortMap = new HashMap<>();
 		sortMap.put("courseType", "ASC");
 		searchDTO.setSortBy(sortMap);
+		
+		List<String> excludedFields = new ArrayList<String>();
+		excludedFields.add("createdOn");		
 		searchDTO.setExcludedFields(excludedFields);
+		
 		searchDTO.setLimit(20);
 		searchDTO.setOffset(0);
+		
 		Map<String, Object> additionalPro = new HashMap<String, Object>();
 		searchDTO.addAdditionalProperty("test", additionalPro);
-		Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
 		List<String> existsList = new ArrayList<String>();
 		existsList.add("pkgVersion");
 		existsList.add("size");
 
+		Map<String, Object> additionalProperties = new HashMap<String, Object>();
 		additionalProperties.put(JsonKey.EXISTS, existsList);
+		
 		List<String> description = new ArrayList<String>();
 		description.add("This is for chemistry");
 		description.add("Hindi Jii");
+		
 		List<Integer> sizes = new ArrayList<Integer>();
 		sizes.add(10);
 		sizes.add(20);
+		
 		Map<String, Object> filterMap = new HashMap<String, Object>();
 		filterMap.put("description", description);
 		filterMap.put("size", sizes);
 		additionalProperties.put(JsonKey.FILTERS, filterMap);
+		
 		Map<String, Object> rangeMap = new HashMap<String, Object>();
 		rangeMap.put(">", 0);
 		filterMap.put("pkgVersion", rangeMap);
+		
 		Map<String, Object> lexicalMap = new HashMap<>();
 		lexicalMap.put(STARTS_WITH, "type");
 		filterMap.put("courseType", lexicalMap);
 		Map<String, Object> lexicalMap1 = new HashMap<>();
 		lexicalMap1.put(ENDS_WITH, "sunbird");
 		filterMap.put("courseAddedByName", lexicalMap1);
-		// for exact math key value pair
 		filterMap.put("orgName", "Name of the organisation");
 
 		searchDTO.setAdditionalProperties(additionalProperties);
 		searchDTO.setFields(fields);
 		searchDTO.setQuery("organisation");
-		// facets
+		
 		List<Map<String, String>> facets = new ArrayList<>();
 		Map<String, String> m1 = new HashMap<>();
 		m1.put("description", null);
@@ -223,7 +226,6 @@ public class ElasticSearchUtilTest {
 		facets.add(m1);
 		searchDTO.setFacets(facets);
 
-		// soft constraints
 		List<String> mode = Arrays.asList("soft");
 		searchDTO.setMode(mode);
 		Map<String, Integer> constraintMap = new HashMap<String, Integer>();
@@ -259,7 +261,6 @@ public class ElasticSearchUtilTest {
 		Map<String, Object> lexicalMap1 = new HashMap<>();
 		lexicalMap1.put(ENDS_WITH, "sunbird");
 		filterMap.put("courseAddedByName", lexicalMap1);
-		// for exact math key value pair
 		filterMap.put("orgName", "Name of the organisation");
 
 		searchDTO.setAdditionalProperties(additionalProperties);
@@ -292,7 +293,6 @@ public class ElasticSearchUtilTest {
 		Map<String, Object> lexicalMap1 = new HashMap<>();
 		lexicalMap1.put(ENDS_WITH, "sunbird");
 		filterMap.put("courseAddedByName", lexicalMap1);
-		// for exact math key value pair
 		filterMap.put("orgName", "Name of the organisation");
 
 		searchDTO.setAdditionalProperties(additionalProperties);
@@ -313,7 +313,6 @@ public class ElasticSearchUtilTest {
 	public void testGetByIdentifierFailureWithoutType() {
 		mockRulesForGet(true);
 		Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(INDEX_NAME, null, "testcourse123");
-
 		assertEquals(0, responseMap.size());
 	}
 
@@ -324,7 +323,7 @@ public class ElasticSearchUtilTest {
 	}
 
 	@Test
-	public void testGetDataFailureWithoutIdentifier() {
+	public void testGetDataByIdentifierFailureWithoutIdentifier() {
 		Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(INDEX_NAME, TYPE_NAME, "");
 		assertEquals(0, responseMap.size());
 	}
@@ -339,14 +338,14 @@ public class ElasticSearchUtilTest {
 	}
 
 	@Test
-	public void testUpdateFailureWithEmptyMap() {
+	public void testUpdateDataFailureWithEmptyMap() {
 		Map<String, Object> innermap = new HashMap<>();
 		boolean response = ElasticSearchUtil.updateData(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"), innermap);
 		assertFalse(response);
 	}
 
 	@Test
-	public void testUpdateFailureWithNullMap() {
+	public void testUpdateDataFailureWithNullMap() {
 		boolean response = ElasticSearchUtil.updateData(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"), null);
 		assertFalse(response);
 	}
@@ -415,10 +414,6 @@ public class ElasticSearchUtilTest {
 		assertFalse(response);
 	}
 
-
-
-	
-
 	@Test
 	public void testSaveDataFailureWithoutIndexName() {
 		String responseMap = ElasticSearchUtil.createData("", TYPE_NAME, (String) chemistryMap.get("courseId"), chemistryMap);
@@ -432,14 +427,10 @@ public class ElasticSearchUtilTest {
 	}
 
 	@Test
-	public void testGetDataFailureByEmptyIdentifier() {
+	public void testGetDataByIdentifierFailureByEmptyIdentifier() {
 		Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(INDEX_NAME, TYPE_NAME, "");
 		assertEquals(0, responseMap.size());
 	}
-
-	
-
-	
 
 	@Test
 	public void testRemoveDataSuccessByIdentifier() {
@@ -452,17 +443,16 @@ public class ElasticSearchUtilTest {
 		boolean response = ElasticSearchUtil.removeData(INDEX_NAME, TYPE_NAME, "");
 		assertEquals(false, response);
 	}
-
 		
 	@Test
-	public void testConnectionFailureFromProperties() {
+	public void testInitialiseConnectionFailureFromProperties() {
 		boolean response = ConnectionManager.initialiseConnectionFromPropertiesFile("Test", "localhost1,128.0.0.1",
 				"9200,9300");
 		assertFalse(response);
 	}
 
 	@Test
-	public void testElasticSearchHealthCheckSuccess() {
+	public void testHealthCheckSuccess() {
 		boolean response = ElasticSearchUtil.healthCheck();
 		assertEquals(true, response);
 	}
@@ -475,10 +465,8 @@ public class ElasticSearchUtilTest {
 		assertEquals(true, response);
 	}
 
-	
-
 	@Test
-	public void testBulkInsertSuccess() {
+	public void testBulkInsertDataSuccess() {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("test1", "test");
 		data.put("test2", "manzarul");
@@ -489,7 +477,7 @@ public class ElasticSearchUtilTest {
 	}
 
 	@Test
-	public void testSearchSuccess() {
+	public void testSearchDataSuccess() {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("test1", "test");
 		try {
@@ -547,8 +535,6 @@ public class ElasticSearchUtilTest {
 		}
 	}
 	
-	
-	
 	private static Map<String, Object> initializeChemistryCourse(int appendVal) {
 		Map<String, Object> chemistryMap = new HashMap<>();
 		chemistryMap.put("courseType", "type of the course. all , private");
@@ -578,7 +564,7 @@ public class ElasticSearchUtilTest {
 		chemistryMap.put("tutor", "[{\"id\":\"name\"},{\"id\":\"name\"}]");
 		chemistryMap.put("operationType", "add/updated/delete");
 		chemistryMap.put("owner", "EkStep");
-		// map.put("identifier","do_112228048362078208130");
+
 		chemistryMap.put("visibility", "Default");
 		chemistryMap.put("downloadUrl",
 				"https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_112228048362078208130/test-content-1_1493905653021_do_112228048362078208130_5.0.ecar");
@@ -636,7 +622,7 @@ public class ElasticSearchUtilTest {
 		physicsCourseMap.put("tutor", "[{\"id\":\"name\"},{\"id\":\"name\"}]");
 		physicsCourseMap.put("operationType", "add/updated/delete");
 		physicsCourseMap.put("owner", "EkStep");
-		// map.put("identifier","do_112228048362078208130");
+
 		physicsCourseMap.put("visibility", "Default");
 		physicsCourseMap.put("downloadUrl",
 				"https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_112228048362078208130/test-content-1_1493905653021_do_112228048362078208130_5.0.ecar");
@@ -665,7 +651,6 @@ public class ElasticSearchUtilTest {
 		return physicsCourseMap;
 	}
 	
-	
 	private void mockBaseRules() {
 		client = mock(TransportClient.class);
 		PowerMockito.mockStatic(ConnectionManager.class);
@@ -693,8 +678,6 @@ public class ElasticSearchUtilTest {
 		Map expMap = expectedEmptyMap?Collections.emptyMap():chemistryMap;
 		when(gResp.getSource()).thenReturn(expMap);
 	}
-
-
 
 	private void mockRulesForSearch(long expectedValue) {
 		SearchRequestBuilder srb = mock(SearchRequestBuilder.class);
@@ -737,7 +720,6 @@ public class ElasticSearchUtilTest {
 		when(irb.get()).thenReturn(ir);
 		when(ir.getId()).thenReturn((String) chemistryMap.get("courseId"));
 	}
-
 	
 	private static void mockRulesForUpdate() {
 		UpdateRequestBuilder urbForUpdate = mock(UpdateRequestBuilder.class);
@@ -792,7 +774,6 @@ public class ElasticSearchUtilTest {
 		PutMappingRequestBuilder mockPutMappingReqBldr = mock(PutMappingRequestBuilder.class);
 		PutMappingResponse mockPutMappingResponse = mock(PutMappingResponse.class);
 		CreateIndexResponse mockCreateIndResp = mock(CreateIndexResponse.class);
-		// AbstractClient client = mock(AbstractClient.class);
 
 		doReturn(adminMock).when(client).admin();
 		doReturn(indicesAdminMock).when(adminMock).indices();
@@ -828,7 +809,6 @@ public class ElasticSearchUtilTest {
 		doReturn(mappingsDone).when(mockPutMappingResponse).isAcknowledged();
 	}
 	
-	
 	private static void mockRulesHttpRequest() {
 		PowerMockito.mockStatic(HttpUtil.class);
 		try {
@@ -847,7 +827,5 @@ public class ElasticSearchUtilTest {
 		when(bldr.setConcurrentRequests(Mockito.anyInt())).thenReturn(bldr);
 		when(bldr.build()).thenReturn(bProcessor);
 		when(bProcessor.add(Mockito.any(IndexRequest.class))).thenReturn(bProcessor);
-
 	}
-
 }
