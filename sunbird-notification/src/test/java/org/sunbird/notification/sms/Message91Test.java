@@ -44,14 +44,14 @@ public class Message91Test extends BaseMessageTest {
 	}
 
 	@Test
-	public void testSendSuccessWithCountryCode() {
+	public void testSendSuccessWithoutCountryCodeArg() {
 		ISmsProvider object = SMSFactory.getInstance("91SMS");
 		boolean response = object.send("919666666666", "test sms 122");
 		Assert.assertTrue(response);
 	}
 
 	@Test
-	public void testSendSuccessWithCountryCodeAndPlus() {
+	public void testSendSuccessWithoutCountryCodeArgAndPlus() {
 		ISmsProvider object = SMSFactory.getInstance("91SMS");
 		boolean response = object.send("+919666666666", "test sms 122");
 		Assert.assertTrue(response);
