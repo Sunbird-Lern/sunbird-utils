@@ -8,6 +8,7 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
@@ -91,6 +92,7 @@ public class LocationRequestValidatorTest {
   }
 
   /** Test to validate location code and get the corresponding location ids till top level. */
+  @Ignore
   @Test
   public void testValidateLocationCode() {
     List<String> list = null;
@@ -98,6 +100,7 @@ public class LocationRequestValidatorTest {
     Assert.assertNotNull(list);
   }
 
+  @Ignore
   @Test(expected = ProjectCommonException.class)
   public void testValidateLocationCodeFail() {
     validator.getValidatedLocationIds(null, null);
