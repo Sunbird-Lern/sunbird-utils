@@ -23,16 +23,21 @@ import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.PropertiesCache;
 
-/** Class to fetch SSO public key from Keycloak server using 'certs' HTTP API call. */
+/** 
+ * author : github/iostream04
+ * Class to fetch SSO public key from Keycloak server using 'certs' HTTP API call.
+ * 
+ */
 public class KeyCloakRsaKeyFetcher {
 
   public PublicKey getPublicKeyFromKeyCloak(String url, String realm) {
     try {
+      Map<String, String> valueMap = new HashMap<String,String>();
       Decoder urlDecoder = Base64.getUrlDecoder();
       KeyFactory keyFactory = KeyFactory.getInstance("RSA");
       String publicKeyString = requestKeyFromKeycloak(url, realm);
       if (publicKeyString != null) {
-        Map<String, String> valueMap = getValuesFromJson(publicKeyString);
+        valueMap = getValuesFromJson(publicKeyString);
         if (valueMap != null) {
           BigInteger modulus = new BigInteger(1, urlDecoder.decode(valueMap.get("modulusBase64")));
           BigInteger publicExponent =
@@ -60,7 +65,7 @@ public class KeyCloakRsaKeyFetcher {
 
   private String requestKeyFromKeycloak(String url, String realm) {
     HttpClient client = HttpClientBuilder.create().build();
-    HttpGet request = new HttpGet(url + "/auth/realms/" + realm + "/protocol/openid-connect/certs");
+    HttpGet request = new HttpGet(url + "/realms/" + realm + "/protocol/openid-connect/certs");
 
     try {
       HttpResponse response = client.execute(request);
@@ -91,8 +96,8 @@ public class KeyCloakRsaKeyFetcher {
       if (key != null) {
         JsonArray value = (JsonArray) parser.parse(key.toString());
         JsonObject v = (JsonObject) value.get(0);
-        values.put("modulusBase64", v.get("n").toString());
-        values.put("exponentBase64", v.get("e").toString());
+        values.put("modulusBase64", v.get("n").getAsString().toString());
+        values.put("exponentBase64", v.get("e").getAsString().toString());
       }
     } catch (NullPointerException e) {
       ProjectLogger.log(
