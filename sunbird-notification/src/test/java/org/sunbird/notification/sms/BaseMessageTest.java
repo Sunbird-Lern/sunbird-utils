@@ -30,7 +30,7 @@ import org.sunbird.notification.utils.PropertiesCache;
 public abstract class BaseMessageTest {
 
 	@BeforeClass
-	public static void initiateMockRules() {
+	public static void initMockRules() {
 		CloseableHttpClient httpClient = mock(CloseableHttpClient.class);
 		CloseableHttpResponse httpResp = mock(CloseableHttpResponse.class);
 		StatusLine statusLine = mock(StatusLine.class);
@@ -53,7 +53,6 @@ public abstract class BaseMessageTest {
 		}
 		doReturn("randomString").when(pc).getProperty(Mockito.eq("sunbird.msg.91.auth"));
 		doCallRealMethod().when(pc).getProperty(AdditionalMatchers.not(Mockito.eq("sunbird.msg.91.auth")));
-
 	}
 
 }
