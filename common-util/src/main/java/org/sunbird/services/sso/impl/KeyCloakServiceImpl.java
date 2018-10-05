@@ -65,7 +65,7 @@ public class KeyCloakServiceImpl implements SSOManager {
   public String verifyToken(String accessToken) {
     try {
       PublicKey publicKey = getPublicKey();
-      if(publicKey == null) {
+      if (publicKey == null) {
         publicKey = toPublicKey(System.getenv(JsonKey.SSO_PUBLIC_KEY));
       }
       if (publicKey != null) {

@@ -23,16 +23,15 @@ import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.PropertiesCache;
 
-/** 
- * author : github/iostream04
- * Class to fetch SSO public key from Keycloak server using 'certs' HTTP API call.
- * 
+/**
+ * author : github/iostream04 Class to fetch SSO public key from Keycloak server using 'certs' HTTP
+ * API call.
  */
 public class KeyCloakRsaKeyFetcher {
 
   public PublicKey getPublicKeyFromKeyCloak(String url, String realm) {
     try {
-      Map<String, String> valueMap = new HashMap<String,String>();
+      Map<String, String> valueMap = new HashMap<String, String>();
       Decoder urlDecoder = Base64.getUrlDecoder();
       KeyFactory keyFactory = KeyFactory.getInstance("RSA");
       String publicKeyString = requestKeyFromKeycloak(url, realm);
