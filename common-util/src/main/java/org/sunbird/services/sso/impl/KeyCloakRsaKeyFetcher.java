@@ -29,9 +29,13 @@ import org.sunbird.common.models.util.PropertiesCache;
  */
 public class KeyCloakRsaKeyFetcher {
 
-  /*
-  * This method will connect to server get modulus, exponent values and genrated publickey
-  */
+  /**
+   *This method will accept keycloak baseUrl and realm name, Based on provided values it will fetch PublicKey from keycloak.
+   * @param url, A string value having keycloak baseUrl
+   * @param realm , keycloak realm name
+   * @return PublicKey , used to verify user access token.
+   */
+
   public PublicKey getPublicKeyFromKeyCloak(String url, String realm) {
     try {
       Map<String, String> valueMap = null;
