@@ -68,7 +68,7 @@ public class KeyCloakServiceImpl implements SSOManager {
       if (publicKey == null) {
         ProjectLogger.log(
             "KeyCloakServiceImpl: SSO_PUBLIC_KEY is NULL. Keycloak server may need to be started. reading it from env",
-            LoggerEnum.ERROR);
+            LoggerEnum.INFO);
         publicKey = toPublicKey(System.getenv(JsonKey.SSO_PUBLIC_KEY));
       }
       if (publicKey != null) {
