@@ -29,6 +29,9 @@ import org.sunbird.common.models.util.PropertiesCache;
  */
 public class KeyCloakRsaKeyFetcher {
 
+  /*
+  * This method will connect to server get modulus, exponent values and genrated publickey
+  */
   public PublicKey getPublicKeyFromKeyCloak(String url, String realm) {
     try {
       Map<String, String> valueMap = new HashMap<String, String>();
@@ -54,14 +57,18 @@ public class KeyCloakRsaKeyFetcher {
     }
     return null;
   }
-
+  
+  /*This method will save the public key string value to cache
+  */
   private void saveToCache(PublicKey key) {
     byte[] encodedPublicKey = key.getEncoded();
     String publicKey = Base64.getEncoder().encodeToString(encodedPublicKey);
     PropertiesCache cache = PropertiesCache.getInstance();
     cache.saveConfigProperty(JsonKey.SSO_PUBLIC_KEY, publicKey);
   }
-
+  /*This method will connect to keycloak server using API call from getting key
+  * returns JsonString.
+  */
   private String requestKeyFromKeycloak(String url, String realm) {
     HttpClient client = HttpClientBuilder.create().build();
     HttpGet request = new HttpGet(url + "/realms/" + realm + "/protocol/openid-connect/certs");
@@ -85,7 +92,8 @@ public class KeyCloakRsaKeyFetcher {
     }
     return null;
   }
-
+  /*This methode will return values from JsonString
+  */ 
   private Map<String, String> getValuesFromJson(String response) {
     JsonParser parser = new JsonParser();
     Map<String, String> values = new HashMap<>();
