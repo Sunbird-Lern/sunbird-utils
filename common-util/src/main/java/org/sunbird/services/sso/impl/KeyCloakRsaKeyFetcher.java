@@ -24,18 +24,17 @@ import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.PropertiesCache;
 
 /**
- * author : github/iostream04 Class to fetch SSO public key from Keycloak server using 'certs' HTTP
- * API call.
+ * Class to fetch SSO public key from Keycloak server using 'certs' HTTP API call.
  */
 public class KeyCloakRsaKeyFetcher {
 
   /**
-   *This method will accept keycloak baseUrl and realm name, Based on provided values it will fetch PublicKey from keycloak.
-   * @param url, A string value having keycloak baseUrl
-   * @param realm , keycloak realm name
-   * @return PublicKey , used to verify user access token.
+   * This method will accept keycloak base URL and realm name. Based on provided values it will fetch public key from keycloak.
+   *
+   * @param url A string value having keycloak base URL
+   * @param realm Keycloak realm name
+   * @return Public key used to verify user access token.
    */
-
   public PublicKey getPublicKeyFromKeyCloak(String url, String realm) {
     try {
       Map<String, String> valueMap = null;
@@ -62,17 +61,25 @@ public class KeyCloakRsaKeyFetcher {
     return null;
   }
   
-  /*This method will save the public key string value to cache
-  */
+  /** 
+   * This method will save the public key string value to cache
+   * 
+   * @param key Public key to save in cache
+   */
   private void saveToCache(PublicKey key) {
     byte[] encodedPublicKey = key.getEncoded();
     String publicKey = Base64.getEncoder().encodeToString(encodedPublicKey);
     PropertiesCache cache = PropertiesCache.getInstance();
     cache.saveConfigProperty(JsonKey.SSO_PUBLIC_KEY, publicKey);
   }
-  /*This method will connect to keycloak server using API call from getting key
-  * returns JsonString.
-  */
+
+  /**
+   * This method will connect to keycloak server using API call for getting public key.
+   *
+   * @param url A string value having keycloak base URL
+   * @param realm Keycloak realm name
+   * @return Public key JSON response string
+   */
   private String requestKeyFromKeycloak(String url, String realm) {
     HttpClient client = HttpClientBuilder.create().build();
     HttpGet request = new HttpGet(url + "/realms/" + realm + "/protocol/openid-connect/certs");
@@ -96,8 +103,12 @@ public class KeyCloakRsaKeyFetcher {
     }
     return null;
   }
-  /*This methode will return values from JsonString
-  */ 
+  
+  /**
+   * This method will return a map containing values extracted from public key JSON string.
+   *
+   * @param response Public key JSON response string
+   */ 
   private Map<String, String> getValuesFromJson(String response) {
     JsonParser parser = new JsonParser();
     Map<String, String> values = new HashMap<>();
