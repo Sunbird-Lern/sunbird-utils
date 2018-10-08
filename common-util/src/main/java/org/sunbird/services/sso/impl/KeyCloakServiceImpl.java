@@ -64,7 +64,13 @@ public class KeyCloakServiceImpl implements SSOManager {
   @Override
   public String verifyToken(String accessToken) {
     try {
-      PublicKey publicKey = toPublicKey(System.getenv(JsonKey.SSO_PUBLIC_KEY));
+      PublicKey publicKey = getPublicKey();
+      if (publicKey == null) {
+        ProjectLogger.log(
+            "KeyCloakServiceImpl: SSO_PUBLIC_KEY is NULL. Keycloak server may need to be started. reading it from env",
+            LoggerEnum.INFO);
+        publicKey = toPublicKey(System.getenv(JsonKey.SSO_PUBLIC_KEY));
+      }
       if (publicKey != null) {
         AccessToken token =
             RSATokenVerifier.verifyToken(
@@ -93,7 +99,7 @@ public class KeyCloakServiceImpl implements SSOManager {
         return token.getSubject();
       } else {
         ProjectLogger.log(
-            "KeyCloakServiceImpl:verifyToken: SSO_PUBLIC_KEY is NULL. Keycloak server may need to be started.",
+            "KeyCloakServiceImpl:verifyToken: SSO_PUBLIC_KEY is NULL.",
             LoggerEnum.ERROR);
         throw new ProjectCommonException(
             ResponseCode.keyCloakDefaultError.getErrorCode(),
