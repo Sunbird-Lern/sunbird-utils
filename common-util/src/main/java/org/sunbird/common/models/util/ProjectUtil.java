@@ -602,6 +602,24 @@ public class ProjectUtil {
     if (StringUtils.isNotBlank(logoUrl)) {
       context.put(JsonKey.ORG_IMAGE_URL, logoUrl);
     }
+    if (StringUtils.isNotBlank((String) map.get(JsonKey.COURSE_NAME))) {
+      context.put(JsonKey.COURSE_NAME, map.remove(JsonKey.COURSE_NAME));
+    }
+    if (StringUtils.isNotBlank((String) map.get(JsonKey.START_DATE))) {
+      context.put(JsonKey.BATCH_START_DATE, map.remove(JsonKey.START_DATE));
+    }
+    if (StringUtils.isNotBlank((String) map.get(JsonKey.END_DATE))) {
+      context.put(JsonKey.BATCH_END_DATE, map.remove(JsonKey.END_DATE));
+    }
+    if (StringUtils.isNotBlank((String) map.get(JsonKey.NAME))) {
+      context.put(JsonKey.BATCH_NAME, map.remove(JsonKey.NAME));
+    }
+    if (StringUtils.isNotBlank((String) map.get(JsonKey.FIRST_NAME))) {
+      context.put(JsonKey.NAME, map.remove(JsonKey.FIRST_NAME));
+    } else {
+      context.put(JsonKey.NAME, "");
+    }
+
     context.put(JsonKey.ACTION_NAME, getValue(map, JsonKey.ACTION_NAME));
     context.put(JsonKey.USERNAME, getValue(map, JsonKey.USERNAME));
     context.put(JsonKey.TEMPORARY_PASSWORD, getValue(map, JsonKey.TEMPORARY_PASSWORD));
