@@ -23,12 +23,12 @@ import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.PropertiesCache;
 
-/** Class to fetch SSO public key from Keycloak server using 'certs' HTTP API call. */
+/**
+ * Class to fetch SSO public key from Keycloak server using 'certs' HTTP API call.
+ */
 public class KeyCloakRsaKeyFetcher {
 
   /**
-   * This method will accept keycloak base URL and realm name. Based on provided values it will
-   * fetch public key from keycloak.
    *
    * @param url A string value having keycloak base URL
    * @param realm Keycloak realm name
@@ -60,9 +60,10 @@ public class KeyCloakRsaKeyFetcher {
     return null;
   }
 
-  /**
+  
+  /** 
    * This method will save the public key string value to cache
-   *
+   * 
    * @param key Public key to save in cache
    */
   private void saveToCache(PublicKey key) {
@@ -103,11 +104,13 @@ public class KeyCloakRsaKeyFetcher {
     return null;
   }
 
+  
   /**
    * This method will return a map containing values extracted from public key JSON string.
    *
    * @param response Public key JSON response string
    */
+   */ 
   private Map<String, String> getValuesFromJson(String response) {
     JsonParser parser = new JsonParser();
     Map<String, String> values = new HashMap<>();
