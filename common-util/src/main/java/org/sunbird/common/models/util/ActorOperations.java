@@ -131,6 +131,7 @@ public enum ActorOperations {
   UPDATE_USER_COUNT_TO_LOCATIONID("updateUserCountToLocationID"),
   SEND_NOTIFICATION("sendNotification"),
   SYNC_KEYCLOAK("syncKeycloak"),
+  SYNC_ELASTIC_SEARCH("syncElasticSearch"),
   UPDATE_SYSTEM_SETTINGS("updateSystemSettings"),
   CREATE_DATA("createData"),
   UPDATE_DATA("updateData"),
