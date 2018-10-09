@@ -329,7 +329,6 @@ public final class JsonKey {
   public static final String MASTER_KEY = "masterKey";
   public static final String MEDIA_TYPE_DB = "mediaTypeDB";
   public static final String MENTORS = "mentors";
-  public static final String MENTOR = "mentor";
   public static final String MESSAGE = "message";
   public static final String MESSAGE_Id = "message_id";
   public static final String MESSAGE_ID = "X-msgId";
@@ -710,6 +709,7 @@ public final class JsonKey {
   public static final String BATCH_NAME = "batchName";
   public static final String UNENROLL_FROM_COURSE = "Unenrolled from Course";
   public static final String OPEN_BATCH_LEARNER_UNENROL = "openBatchLearnerUnenrol";
+  public static final String MENTOR = "mentor";
 
   private JsonKey() {}
 }
