@@ -710,6 +710,10 @@ public final class JsonKey {
   public static final String UNENROLL_FROM_COURSE = "Unenrolled from Course";
   public static final String OPEN_BATCH_LEARNER_UNENROL = "openBatchLearnerUnenrol";
   public static final String MENTOR = "mentor";
+  public static final String COURSE_MAP = "courseMap";
+  public static final String OLD = "old";
+  public static final String NEW = "new";
+  public static final String COURSE_BATCH = "courseBatch";
 
   private JsonKey() {}
 }
