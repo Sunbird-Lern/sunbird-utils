@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.sunbird.common.models.util.JsonKey;
@@ -19,6 +20,7 @@ import org.sunbird.common.models.util.JsonKey;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class FCMNotificationTest {
 
+  @Ignore
   @Test
   public void successNotificationWithStringAndObjectData() {
     Map<String, Object> map = new HashMap<>();
@@ -36,6 +38,7 @@ public class FCMNotificationTest {
     Assert.assertNotEquals(JsonKey.FAILURE, val);
   }
 
+  @Ignore
   @Test
   public void successNotificationWithStringAndStringData() {
     Map<String, Object> map = new HashMap<>();

@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.sunbird.common.exception.ProjectCommonException;
@@ -24,6 +25,7 @@ import org.sunbird.helper.CassandraConnectionManagerImpl;
 import org.sunbird.helper.CassandraConnectionMngrFactory;
 import org.sunbird.helper.ServiceFactory;
 
+@Ignore
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CassandraStandaloneTest {
 

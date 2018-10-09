@@ -9,6 +9,7 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
@@ -41,6 +42,7 @@ public class AzureServiceFactoryTest {
     Assert.assertTrue(obj.equals(obj1));
   }
 
+  @Ignore
   @Test
   public void testCheckContainerWithAccessPublic() {
     container = AzureConnectionManager.getContainer(containerName, true);
@@ -48,6 +50,7 @@ public class AzureServiceFactoryTest {
   }
 
   @Test
+  @Ignore
   public void testCheckContainerWithOutPublicAccess() {
     container1 = AzureConnectionManager.getContainerReference(containerName);
     Assert.assertNotNull(container1);
@@ -109,6 +112,7 @@ public class AzureServiceFactoryTest {
     Assert.assertFalse(isFileDeleted);
   }
 
+  @Ignore
   @Test
   public void testDeleteContainer() {
     CloudService service = (CloudService) obj;

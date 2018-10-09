@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -110,6 +111,10 @@
 			<exclusions>
 				<exclusion>
 					<groupId>com.fasterxml.jackson.core</groupId>
+					<artifactId>jackson-annotations</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.fasterxml.jackson.core</groupId>
 					<artifactId>jackson-databind</artifactId>
 				</exclusion>
 			</exclusions>
@@ -141,6 +146,11 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
+			<version>2.9.5</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
 			<version>2.9.5</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-csv -->
@@ -188,30 +198,30 @@
 			<version>4.5.2</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.powermock/powermock-api-easymock -->
-	    <dependency>
-	      <groupId>org.powermock</groupId>
-	      <artifactId>powermock-module-junit4</artifactId>
-	      <version>1.6.5</version>
-	      <!--<scope>test</scope>-->
-	    </dependency>
-	
-	    <dependency>
-	      <groupId>org.powermock</groupId>
-	      <artifactId>powermock-api-mockito</artifactId>
-	      <version>1.6.5</version>
-	      <!--<scope>test</scope>-->
-	    </dependency>
-	    
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<version>1.6.5</version>
+			<!--<scope>test</scope> -->
+		</dependency>
+
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<version>1.6.5</version>
+			<!--<scope>test</scope> -->
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore -->
 		<dependency>
-		    <groupId>org.apache.httpcomponents</groupId>
-		    <artifactId>httpcore</artifactId>
-		    <version>4.4.4</version>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.4.4</version>
 		</dependency>
 		<dependency>
-    			<groupId>com.mashape.unirest</groupId>
-    			<artifactId>unirest-java</artifactId>
-    			<version>1.4.9</version>
+			<groupId>com.mashape.unirest</groupId>
+			<artifactId>unirest-java</artifactId>
+			<version>1.4.9</version>
 		</dependency>
 
 		<dependency>

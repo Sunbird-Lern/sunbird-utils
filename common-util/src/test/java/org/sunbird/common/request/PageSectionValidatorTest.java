@@ -6,6 +6,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
@@ -157,6 +158,7 @@ public class PageSectionValidatorTest {
   }
 
   @Test
+  @Ignore
   public void validateUpdateSectionWithOutSectionName() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
@@ -176,6 +178,7 @@ public class PageSectionValidatorTest {
   }
 
   @Test
+  @Ignore
   public void validateUpdateSectionWithOutSectionData() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
@@ -243,6 +246,7 @@ public class PageSectionValidatorTest {
   }
 
   @Test
+  @Ignore
   public void validateUpdatePageWithOutPageName() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
