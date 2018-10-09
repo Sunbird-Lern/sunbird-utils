@@ -1,4 +1,3 @@
-/** */
 package org.sunbird.services.sso.impl;
 
 import static java.util.Arrays.asList;
@@ -52,8 +51,6 @@ public class KeyCloakServiceImpl implements SSOManager {
   private static PublicKey SSO_PUBLIC_KEY = null;
 
   public PublicKey getPublicKey() {
-    ProjectLogger.log("in get publicKey");
-    
     if (null == SSO_PUBLIC_KEY) {
       SSO_PUBLIC_KEY =
           new KeyCloakRsaKeyFetcher()
@@ -67,10 +64,11 @@ public class KeyCloakServiceImpl implements SSOManager {
   public String verifyToken(String accessToken) {
     try {
       PublicKey publicKey = getPublicKey();
-      ProjectLogger.log("in get publcKey "+ publicKey);
-      if(publicKey!=null) {
+      if (publicKey == null) {
+        ProjectLogger.log(
+            "KeyCloakServiceImpl: SSO_PUBLIC_KEY is NULL. Keycloak server may need to be started. reading it from env",
+            LoggerEnum.INFO);
         publicKey = toPublicKey(System.getenv(JsonKey.SSO_PUBLIC_KEY));
-        
       }
       if (publicKey != null) {
         AccessToken token =
@@ -100,8 +98,7 @@ public class KeyCloakServiceImpl implements SSOManager {
         return token.getSubject();
       } else {
         ProjectLogger.log(
-            "KeyCloakServiceImpl:verifyToken: SSO_PUBLIC_KEY is NULL. Keycloak server may need to be started.",
-            LoggerEnum.ERROR);
+            "KeyCloakServiceImpl:verifyToken: SSO_PUBLIC_KEY is NULL.", LoggerEnum.ERROR);
         throw new ProjectCommonException(
             ResponseCode.keyCloakDefaultError.getErrorCode(),
             ResponseCode.keyCloakDefaultError.getErrorMessage(),
