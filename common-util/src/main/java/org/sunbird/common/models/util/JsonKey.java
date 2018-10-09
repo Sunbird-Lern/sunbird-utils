@@ -714,6 +714,7 @@ public final class JsonKey {
   public static final String OLD = "old";
   public static final String NEW = "new";
   public static final String COURSE_BATCH = "courseBatch";
+  public static final String USER_TYPE = "userType";
 
   private JsonKey() {}
 }
