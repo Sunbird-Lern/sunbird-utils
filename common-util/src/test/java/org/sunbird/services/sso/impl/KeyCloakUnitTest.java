@@ -1,7 +1,10 @@
 package org.sunbird.services.sso.impl;
 
+import static org.powermock.api.mockito.PowerMockito.when;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import java.security.PublicKey;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -21,81 +24,74 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.sunbird.common.models.util.KeyCloakConnectionProvider;
 
-import java.security.PublicKey;
-
-import static org.powermock.api.mockito.PowerMockito.when;
-
-
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-//** @author kirti. Junit test cases *//*
+// ** @author kirti. Junit test cases *//*
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({
-        HttpClientBuilder.class,
-        CloseableHttpClient.class,
-        HttpGet.class,
-        CloseableHttpResponse.class,
-        HttpResponse.class,
-        HttpEntity.class,
-        EntityUtils.class,
-        JsonObject.class,
-        JsonParser.class
+  HttpClientBuilder.class,
+  CloseableHttpClient.class,
+  HttpGet.class,
+  CloseableHttpResponse.class,
+  HttpResponse.class,
+  HttpEntity.class,
+  EntityUtils.class,
+  JsonObject.class,
+  JsonParser.class
 })
-
 public class KeyCloakUnitTest {
 
-    public static final String FAIL_TEST = "fail-check";
-    private static final HttpClientBuilder httpClientBuilder = PowerMockito.mock(HttpClientBuilder.class);
-    private static CloseableHttpClient client = null;
-    private static CloseableHttpResponse response;
-    private static HttpEntity httpEntity;
-    private final JsonParser jsonParser = PowerMockito.mock(JsonParser.class);
+  public static final String FAIL_TEST = "fail-check";
+  private static final HttpClientBuilder httpClientBuilder =
+      PowerMockito.mock(HttpClientBuilder.class);
+  private static CloseableHttpClient client = null;
+  private static CloseableHttpResponse response;
+  private static HttpEntity httpEntity;
+  private final JsonParser jsonParser = PowerMockito.mock(JsonParser.class);
 
-    @Before
-    public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
 
-        client = PowerMockito.mock(CloseableHttpClient.class);
-        PowerMockito.mockStatic(HttpClientBuilder.class);
-        when(HttpClientBuilder.create()).thenReturn(httpClientBuilder);
-        when(httpClientBuilder.build()).thenReturn(client);
+    client = PowerMockito.mock(CloseableHttpClient.class);
+    PowerMockito.mockStatic(HttpClientBuilder.class);
+    when(HttpClientBuilder.create()).thenReturn(httpClientBuilder);
+    when(httpClientBuilder.build()).thenReturn(client);
+    response = PowerMockito.mock(CloseableHttpResponse.class);
+    when(client.execute(Mockito.any())).thenReturn(response);
+    httpEntity = PowerMockito.mock(HttpEntity.class);
+    when(response.getEntity()).thenReturn(httpEntity);
+    PowerMockito.mockStatic(EntityUtils.class);
 
-        response = PowerMockito.mock(CloseableHttpResponse.class);
-        when(client.execute(Mockito.any())).thenReturn(response);
-        httpEntity = PowerMockito.mock(HttpEntity.class);
-        when(response.getEntity()).thenReturn(httpEntity);
-        PowerMockito.mockStatic(EntityUtils.class);
+    PowerMockito.whenNew(JsonParser.class).withNoArguments().thenReturn(jsonParser);
+  }
 
-        PowerMockito.whenNew(JsonParser.class)
-                .withNoArguments()
-                .thenReturn(jsonParser);
-    }
+  @Test
+  public void getPublicKeyFromKeyCloakTest() throws Exception {
 
-    @Test
-    public void getPublicKeyFromKeyCloakTest() throws Exception {
+    String jsonString =
+        "{\"keys\":[{\"kid\":\"YOw4KbDjM0_HIdGkf_QhRfKc9qHc4W_8Bni91nKFyck\",\"kty\":\"RSA\",\"alg\":\"RS256\",\"use\":\"sig\",\"n\":\""
+            + "5OwCfx4UZTUfUDSBjOg65HuE4ReOg9GhZyoDJNqbWFrsY3dz7C12lmM3rewBHoY0F5_KW0A7rniS9LcqDg2RODvV8pRtJZ_Ge-jsnPMBY5nDJeEW35PH9ewaBhbY3Dj0bZQda2KdHGwiQ"
+            + "zItMT4vw0uITKsFq9o1bcYj0QvPq10AE_wOx3T5xsysuTTkcvQ6evbbs6P5yz_SHhQFRTk7_ZhMwhBeTolvg9wF4yl4qwr220A1ORsLAwwydpmfMHU9RD97nzHDlhXTBAOhDoA3Z3wA8KG6V"
+            + "i3LxqTLNRVS4hgq310fHzWfCX7shFQxygijW9zit-X1WVXaS1NxazuLJw\",\"e\":\"AQAB\"}]}";
 
-        String jsonString = "{\"keys\":[{\"kid\":\"YOw4KbDjM0_HIdGkf_QhRfKc9qHc4W_8Bni91nKFyck\",\"kty\":\"RSA\",\"alg\":\"RS256\",\"use\":\"sig\",\"n\":\"" +
-                "5OwCfx4UZTUfUDSBjOg65HuE4ReOg9GhZyoDJNqbWFrsY3dz7C12lmM3rewBHoY0F5_KW0A7rniS9LcqDg2RODvV8pRtJZ_Ge-jsnPMBY5nDJeEW35PH9ewaBhbY3Dj0bZQda2KdHGwiQ" +
-                "zItMT4vw0uITKsFq9o1bcYj0QvPq10AE_wOx3T5xsysuTTkcvQ6evbbs6P5yz_SHhQFRTk7_ZhMwhBeTolvg9wF4yl4qwr220A1ORsLAwwydpmfMHU9RD97nzHDlhXTBAOhDoA3Z3wA8KG6V" +
-                "i3LxqTLNRVS4hgq310fHzWfCX7shFQxygijW9zit-X1WVXaS1NxazuLJw\",\"e\":\"AQAB\"}]}";
+    when(EntityUtils.toString(httpEntity)).thenReturn(jsonString);
 
-        when(EntityUtils.toString(httpEntity)).thenReturn(jsonString);
+    PublicKey key =
+        new KeyCloakRsaKeyFetcher()
+            .getPublicKeyFromKeyCloak(
+                KeyCloakConnectionProvider.SSO_URL, KeyCloakConnectionProvider.SSO_REALM);
+    Assert.assertNotNull(key);
+  }
 
-        PublicKey key =
-                new KeyCloakRsaKeyFetcher()
-                        .getPublicKeyFromKeyCloak(
-                                KeyCloakConnectionProvider.SSO_URL, KeyCloakConnectionProvider.SSO_REALM);
-        Assert.assertNotNull(key);
-    }
+  @Test
+  public void getPublicKeyFromKeyCloakTestFail() throws Exception {
 
-    @Test
-    public void getPublicKeyFromKeyCloakTestFail() throws Exception {
+    String jsonString = "InvalidPublicKey";
+    when(EntityUtils.toString(httpEntity)).thenReturn(jsonString);
 
-        String jsonString = "InvalidPublicKey";
-        when(EntityUtils.toString(httpEntity)).thenReturn(jsonString);
+    PublicKey key =
+        new KeyCloakRsaKeyFetcher()
+            .getPublicKeyFromKeyCloak(KeyCloakConnectionProvider.SSO_URL, FAIL_TEST);
 
-        PublicKey key =
-                new KeyCloakRsaKeyFetcher()
-                        .getPublicKeyFromKeyCloak(KeyCloakConnectionProvider.SSO_URL, FAIL_TEST);
-
-        Assert.assertTrue(key == null);
-    }
+    Assert.assertTrue(key == null);
+  }
 }
