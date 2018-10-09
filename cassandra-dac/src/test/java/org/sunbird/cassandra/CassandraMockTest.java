@@ -11,7 +11,10 @@ import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
 import com.google.common.util.concurrent.Uninterruptibles;
 import java.util.*;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.mockito.Mockito;
@@ -63,7 +66,6 @@ public class CassandraMockTest {
   private static Cluster cluster;
   private static Session session = PowerMockito.mock(Session.class);;
   private static PreparedStatement statement;
-  private static QueryBuilder queryBuilder;
   private static ResultSet resultSet;
   private static Select selectQuery;
   private static Select.Where where;
@@ -99,8 +101,8 @@ public class CassandraMockTest {
     when(cluster.connect(Mockito.anyString())).thenReturn(session);
     metadata = PowerMockito.mock(Metadata.class);
     when(cluster.getMetadata()).thenReturn(metadata);
-    when(Cluster.builder()).thenReturn(builder);
 
+    when(Cluster.builder()).thenReturn(builder);
     when(builder.addContactPoint(Mockito.anyString())).thenReturn(builder);
     when(builder.withPort(Mockito.anyInt())).thenReturn(builder);
     when(builder.withProtocolVersion(Mockito.any())).thenReturn(builder);
@@ -108,7 +110,6 @@ public class CassandraMockTest {
     when(builder.withTimestampGenerator(Mockito.any())).thenReturn(builder);
     when(builder.withPoolingOptions(Mockito.any())).thenReturn(builder);
     when(builder.build()).thenReturn(cluster);
-
     connectionManager.createConnection(host, port, "cassandra", "password", cassandraKeySpace);
   }
 
@@ -146,12 +147,32 @@ public class CassandraMockTest {
     when(delete.where(QueryBuilder.eq(Constants.IDENTIFIER, "123"))).thenReturn(deleteWhere);
     when(selectQuery.where()).thenReturn(where);
     when(metadata.getKeyspace("sunbird")).thenReturn(keyspaceMetadata);
+
+    when(cluster.connect(Mockito.anyString())).thenReturn(session);
+
+    boundStatement = PowerMockito.mock(BoundStatement.class);
+    PowerMockito.whenNew(BoundStatement.class)
+        .withArguments(Mockito.any(PreparedStatement.class))
+        .thenReturn(boundStatement);
+    when(session.execute(boundStatement)).thenReturn(resultSet);
+    when(session.prepare(Mockito.anyString())).thenReturn(statement);
+
+    when(selectSelection.all()).thenReturn(selectBuilder);
+    when(selectBuilder.from(Mockito.anyString(), Mockito.anyString())).thenReturn(selectQuery);
+    when(session.execute(selectQuery)).thenReturn(resultSet);
+    when(session.execute(boundStatement.bind("123"))).thenReturn(resultSet);
+
+    ColumnDefinitions cd = PowerMockito.mock(ColumnDefinitions.class);
+    String str = "qwertypower(king";
+    when(resultSet.getColumnDefinitions()).thenReturn(cd);
+    when(cd.toString()).thenReturn(str);
+    when(str.substring(8, resultSet.getColumnDefinitions().toString().length() - 1))
+        .thenReturn(str);
   }
 
   @Test
   public void testCassandraConnectionWithoutUserNameAndPassword() throws Exception {
 
-    when(cluster.connect(Mockito.anyString())).thenReturn(session);
     boolean bool = connectionManager.createConnection(host, port, null, null, cassandraKeySpace);
     assertEquals(true, bool);
   }
@@ -159,7 +180,6 @@ public class CassandraMockTest {
   @Test
   public void testCassandraConnectionWithUserNameAndPassword() throws Exception {
 
-    when(cluster.connect(Mockito.anyString())).thenReturn(session);
     Boolean bool =
         connectionManager.createConnection(host, port, "cassandra", "password", cassandraKeySpace);
     assertEquals(true, bool);
@@ -172,17 +192,11 @@ public class CassandraMockTest {
       connectionManager.createConnection("127.0.0.1", "9042", "cassandra", "pass", "eySpace");
     } catch (Exception ex) {
     }
-    Assert.assertTrue(500 == ResponseCode.SERVER_ERROR.getResponseCode());
+    assertTrue(500 == ResponseCode.SERVER_ERROR.getResponseCode());
   }
 
   @Test
   public void testCassandraInsertOperation() throws Exception {
-
-    boundStatement = PowerMockito.mock(BoundStatement.class);
-    PowerMockito.whenNew(BoundStatement.class)
-        .withArguments(Mockito.any(PreparedStatement.class))
-        .thenReturn(boundStatement);
-    when(session.execute(boundStatement)).thenReturn(resultSet);
 
     Response response = operation.insertRecord(cassandraKeySpace, "address1", address);
     assertEquals("SUCCESS", response.get("response"));
@@ -205,13 +219,11 @@ public class CassandraMockTest {
     } catch (Exception ex) {
       exception = ex;
     }
-    Assert.assertTrue("DB insert operation failed.".equals(exception.getMessage()));
+    assertTrue("DB insert operation failed.".equals(exception.getMessage()));
   }
 
   @Test
   public void testCassandraInsertFailedOperationWithInvalidProperty() throws Exception {
-
-    boundStatement = PowerMockito.mock(BoundStatement.class);
 
     Throwable exception = null;
     PowerMockito.whenNew(BoundStatement.class)
@@ -227,7 +239,7 @@ public class CassandraMockTest {
     } catch (Exception exp) {
       exception = exp;
     }
-    Assert.assertTrue("invalid property .".equals(exception.getMessage()));
+    assertTrue("invalid property .".equals(exception.getMessage()));
   }
 
   @Test
@@ -235,8 +247,6 @@ public class CassandraMockTest {
 
     address.put(JsonKey.CITY, "city");
     address.put(JsonKey.ADD_TYPE, "addrType");
-
-    when(session.prepare(Mockito.anyString())).thenReturn(statement);
 
     Response response = operation.updateRecord(cassandraKeySpace, "address", address);
     assertEquals("SUCCESS", response.get("response"));
@@ -262,7 +272,7 @@ public class CassandraMockTest {
     } catch (Exception ex) {
       exception = ex;
     }
-    Assert.assertTrue("Db update operation failed.".equals(exception.getMessage()));
+    assertTrue("Db update operation failed.".equals(exception.getMessage()));
   }
 
   @Test
@@ -281,49 +291,28 @@ public class CassandraMockTest {
     } catch (Exception exp) {
       exception = exp;
     }
-    Assert.assertTrue("invalid property .".equals(exception.getMessage()));
+    assertTrue("invalid property .".equals(exception.getMessage()));
   }
 
   @Test
   public void testCassandraGetAllRecordsOperation() throws Exception {
-
-    when(cluster.connect(Mockito.anyString())).thenReturn(session);
-    connectionManager.createConnection(host, port, "cassandra", "password", cassandraKeySpace);
-    when(selectSelection.all()).thenReturn(selectBuilder);
-    when(selectBuilder.from(Mockito.anyString(), Mockito.anyString())).thenReturn(selectQuery);
-    when(session.execute(selectQuery)).thenReturn(resultSet);
 
     List<Row> rows = new ArrayList<>();
     Row row = Mockito.mock(Row.class);
     rows.add(row);
     when(resultSet.all()).thenReturn(rows);
 
-    String str = "qwertypower(king";
-    ColumnDefinitions cd = PowerMockito.mock(ColumnDefinitions.class);
-
-    when(resultSet.getColumnDefinitions()).thenReturn(cd);
-    when(cd.toString()).thenReturn(str);
-    when(str.substring(8, resultSet.getColumnDefinitions().toString().length() - 1))
-        .thenReturn(str);
-
-    boundStatement = PowerMockito.mock(BoundStatement.class);
     PowerMockito.whenNew(BoundStatement.class)
         .withArguments(Mockito.any(PreparedStatement.class))
         .thenReturn(boundStatement);
 
-    when(session.execute(boundStatement.bind("123"))).thenReturn(resultSet);
-    when(session.prepare(Mockito.anyString())).thenReturn(statement);
     Response response = operation.getAllRecords(cassandraKeySpace, "address");
-    Assert.assertTrue(response.getResult().size() > 0);
+    assertTrue(response.getResult().size() > 0);
   }
 
   @Test
   public void testCassandraGetAllRecordsFailedOperation() throws Exception {
 
-    when(cluster.connect(Mockito.anyString())).thenReturn(session);
-    connectionManager.createConnection(host, port, "cassandra", "password", cassandraKeySpace);
-    when(selectSelection.all()).thenReturn(selectBuilder);
-    when(selectBuilder.from(Mockito.anyString(), Mockito.anyString())).thenReturn(selectQuery);
     when(session.execute(selectQuery))
         .thenThrow(
             new ProjectCommonException(
@@ -336,15 +325,6 @@ public class CassandraMockTest {
     rows.add(row);
     when(resultSet.all()).thenReturn(rows);
 
-    String str = "qwertypower(king";
-    ColumnDefinitions cd = PowerMockito.mock(ColumnDefinitions.class);
-
-    when(resultSet.getColumnDefinitions()).thenReturn(cd);
-    when(cd.toString()).thenReturn(str);
-    when(str.substring(8, resultSet.getColumnDefinitions().toString().length() - 1))
-        .thenReturn(str);
-
-    boundStatement = PowerMockito.mock(BoundStatement.class);
     PowerMockito.whenNew(BoundStatement.class)
         .withArguments(Mockito.any(PreparedStatement.class))
         .thenReturn(boundStatement);
@@ -355,49 +335,28 @@ public class CassandraMockTest {
     } catch (Exception ex) {
       exception = ex;
     }
-    Assert.assertTrue((((ProjectCommonException) exception).getResponseCode()) == 500);
+    assertTrue((((ProjectCommonException) exception).getResponseCode()) == 500);
   }
 
   @Test
   public void testCassandraGetPropertiesValueByIdOperation() throws Exception {
-
-    when(cluster.connect(Mockito.anyString())).thenReturn(session);
-    connectionManager.createConnection(host, port, "cassandra", "password", cassandraKeySpace);
 
     List<Row> rows = new ArrayList<>();
     Row row = Mockito.mock(Row.class);
     rows.add(row);
     when(resultSet.all()).thenReturn(rows);
 
-    String str = "qwertypower(king";
-    ColumnDefinitions cd = PowerMockito.mock(ColumnDefinitions.class);
-
-    when(resultSet.getColumnDefinitions()).thenReturn(cd);
-    when(cd.toString()).thenReturn(str);
-    when(str.substring(8, resultSet.getColumnDefinitions().toString().length() - 1))
-        .thenReturn(str);
-
-    boundStatement = PowerMockito.mock(BoundStatement.class);
     PowerMockito.whenNew(BoundStatement.class)
         .withArguments(Mockito.any(PreparedStatement.class))
         .thenReturn(boundStatement);
-
-    when(session.execute(boundStatement.bind("123"))).thenReturn(resultSet);
-
-    when(session.prepare(Mockito.anyString())).thenReturn(statement);
     Response response =
         operation.getPropertiesValueById(
             cassandraKeySpace, "address", "123", JsonKey.ID, JsonKey.CITY, JsonKey.ADD_TYPE);
-    Assert.assertTrue(response.getResult().size() > 0);
+    assertTrue(response.getResult().size() > 0);
   }
 
   @Test
   public void testCassandraGetPropertiesValueByIdFailedOperation() throws Exception {
-
-    when(cluster.connect(Mockito.anyString())).thenReturn(session);
-    connectionManager.createConnection(host, port, "cassandra", "password", cassandraKeySpace);
-    when(session.prepare(Mockito.anyString())).thenReturn(statement);
-    boundStatement = PowerMockito.mock(BoundStatement.class);
 
     Throwable exception = null;
     PowerMockito.whenNew(BoundStatement.class)
@@ -414,47 +373,28 @@ public class CassandraMockTest {
     } catch (Exception ex) {
       exception = ex;
     }
-    Assert.assertTrue((((ProjectCommonException) exception).getResponseCode()) == 500);
+    assertTrue((((ProjectCommonException) exception).getResponseCode()) == 500);
   }
 
   @Test
   public void testCassandraGetRecordByIdOperation() {
-
-    when(cluster.connect(Mockito.anyString())).thenReturn(session);
-    connectionManager.createConnection(host, port, "cassandra", "password", cassandraKeySpace);
-    when(session.prepare(Mockito.anyString())).thenReturn(statement);
-    boundStatement = PowerMockito.mock(BoundStatement.class);
 
     List<Row> rows = new ArrayList<>();
     Row row = Mockito.mock(Row.class);
     rows.add(row);
     when(resultSet.all()).thenReturn(rows);
 
-    String str = "qwertypower(king";
-    ColumnDefinitions cd = PowerMockito.mock(ColumnDefinitions.class);
-
-    when(resultSet.getColumnDefinitions()).thenReturn(cd);
-    when(cd.toString()).thenReturn(str);
-    when(str.substring(8, resultSet.getColumnDefinitions().toString().length() - 1))
-        .thenReturn(str);
-
     when(session.execute(boundStatement.bind("123"))).thenReturn(resultSet);
     when(session.execute(where)).thenReturn(resultSet);
-
     when(selectBuilder.from(Mockito.anyString(), Mockito.anyString())).thenReturn(selectQuery);
     when(selectSelection.all()).thenReturn(selectBuilder);
 
     Response response = operation.getRecordById(cassandraKeySpace, "address", "123");
-    Assert.assertTrue(response.getResult().size() > 0);
+    assertTrue(response.getResult().size() > 0);
   }
 
   @Test
   public void testCassandraGetRecordByIdFailedOperation() throws Exception {
-
-    when(cluster.connect(Mockito.anyString())).thenReturn(session);
-    connectionManager.createConnection(host, port, "cassandra", "password", cassandraKeySpace);
-    when(session.prepare(Mockito.anyString())).thenReturn(statement);
-    boundStatement = PowerMockito.mock(BoundStatement.class);
 
     Throwable exception = null;
     PowerMockito.whenNew(BoundStatement.class)
@@ -470,7 +410,7 @@ public class CassandraMockTest {
     } catch (Exception ex) {
       exception = ex;
     }
-    Assert.assertTrue((((ProjectCommonException) exception).getResponseCode()) == 500);
+    assertTrue((((ProjectCommonException) exception).getResponseCode()) == 500);
   }
 
   @Test
@@ -480,32 +420,13 @@ public class CassandraMockTest {
     map.put(JsonKey.USER_ID, "USR1");
     map.put(JsonKey.ADD_TYPE, "addrType");
 
-    when(cluster.connect(Mockito.anyString())).thenReturn(session);
-    connectionManager.createConnection(host, port, "cassandra", "password", cassandraKeySpace);
-    when(session.prepare(Mockito.anyString())).thenReturn(statement);
-    boundStatement = PowerMockito.mock(BoundStatement.class);
-
     List<Row> rows = new ArrayList<>();
     Row row = Mockito.mock(Row.class);
     rows.add(row);
     when(resultSet.all()).thenReturn(rows);
 
-    String str = "qwertypower(king";
-    ColumnDefinitions cd = PowerMockito.mock(ColumnDefinitions.class);
-
-    when(resultSet.getColumnDefinitions()).thenReturn(cd);
-    when(cd.toString()).thenReturn(str);
-    when(str.substring(8, resultSet.getColumnDefinitions().toString().length() - 1))
-        .thenReturn(str);
-
-    when(selectBuilder.from(Mockito.anyString(), Mockito.anyString())).thenReturn(selectQuery);
-    when(selectSelection.all()).thenReturn(selectBuilder);
-
-    when(session.execute(boundStatement.bind("123"))).thenReturn(resultSet);
-    when(session.execute(where)).thenReturn(resultSet);
-
     Response response = operation.getRecordsByProperties(cassandraKeySpace, "address", map);
-    Assert.assertTrue(response.getResult().size() > 0);
+    assertTrue(response.getResult().size() > 0);
   }
 
   @Test
@@ -515,23 +436,10 @@ public class CassandraMockTest {
     map.put(JsonKey.USER_ID, "USR1");
     map.put(JsonKey.ADD_TYPE, "addrType");
 
-    when(cluster.connect(Mockito.anyString())).thenReturn(session);
-    connectionManager.createConnection(host, port, "cassandra", "password", cassandraKeySpace);
-    when(session.prepare(Mockito.anyString())).thenReturn(statement);
-
     List<Row> rows = new ArrayList<>();
     Row row = Mockito.mock(Row.class);
     rows.add(row);
     when(resultSet.all()).thenReturn(rows);
-
-    String str = "qwertypower(king";
-    ColumnDefinitions cd = PowerMockito.mock(ColumnDefinitions.class);
-
-    when(resultSet.getColumnDefinitions()).thenReturn(cd);
-    when(cd.toString()).thenReturn(str);
-    when(str.substring(8, resultSet.getColumnDefinitions().toString().length() - 1))
-        .thenReturn(str);
-    when(session.execute(where)).thenReturn(resultSet);
 
     when(selectSelection.all())
         .thenThrow(
@@ -546,7 +454,7 @@ public class CassandraMockTest {
     } catch (Exception ex) {
       exception = ex;
     }
-    Assert.assertTrue((((ProjectCommonException) exception).getResponseCode()) == 500);
+    assertTrue((((ProjectCommonException) exception).getResponseCode()) == 500);
   }
 
   @Test
@@ -556,34 +464,14 @@ public class CassandraMockTest {
     list.add("123");
     list.add("321");
 
-    when(cluster.connect(Mockito.anyString())).thenReturn(session);
-    connectionManager.createConnection(host, port, "cassandra", "password", cassandraKeySpace);
-    when(session.prepare(Mockito.anyString())).thenReturn(statement);
-
     List<Row> rows = new ArrayList<>();
     Row row = Mockito.mock(Row.class);
     rows.add(row);
     when(resultSet.all()).thenReturn(rows);
 
-    String str = "qwertypower(king";
-    ColumnDefinitions cd = PowerMockito.mock(ColumnDefinitions.class);
-
-    when(resultSet.getColumnDefinitions()).thenReturn(cd);
-    when(cd.toString()).thenReturn(str);
-    when(str.substring(8, resultSet.getColumnDefinitions().toString().length() - 1))
-        .thenReturn(str);
-
-    boundStatement = PowerMockito.mock(BoundStatement.class);
-    when(session.execute(boundStatement.bind("123"))).thenReturn(resultSet);
-    when(session.execute(where)).thenReturn(resultSet);
-    when(selectSelection.all()).thenReturn(selectBuilder);
-
-    when(selectBuilder.from(Mockito.anyString(), Mockito.anyString())).thenReturn(selectQuery);
-    when(selectSelection.all()).thenReturn(selectBuilder);
-
     Response response =
         operation.getRecordsByProperty(cassandraKeySpace, "address", JsonKey.ID, list);
-    Assert.assertTrue(response.getResult().size() > 0);
+    assertTrue(response.getResult().size() > 0);
   }
 
   @Test
@@ -593,26 +481,10 @@ public class CassandraMockTest {
     list.add("123");
     list.add("321");
 
-    when(cluster.connect(Mockito.anyString())).thenReturn(session);
-    connectionManager.createConnection(host, port, "cassandra", "password", cassandraKeySpace);
-    when(session.prepare(Mockito.anyString())).thenReturn(statement);
-
     List<Row> rows = new ArrayList<>();
     Row row = Mockito.mock(Row.class);
     rows.add(row);
     when(resultSet.all()).thenReturn(rows);
-
-    String str = "qwertypower(king";
-    ColumnDefinitions cd = PowerMockito.mock(ColumnDefinitions.class);
-
-    when(resultSet.getColumnDefinitions()).thenReturn(cd);
-    when(cd.toString()).thenReturn(str);
-    when(str.substring(8, resultSet.getColumnDefinitions().toString().length() - 1))
-        .thenReturn(str);
-
-    boundStatement = PowerMockito.mock(BoundStatement.class);
-    when(session.execute(boundStatement.bind("123"))).thenReturn(resultSet);
-    when(session.execute(where)).thenReturn(resultSet);
 
     when(selectSelection.all())
         .thenThrow(
@@ -627,7 +499,7 @@ public class CassandraMockTest {
     } catch (Exception ex) {
       exception = ex;
     }
-    Assert.assertTrue((((ProjectCommonException) exception).getResponseCode()) == 500);
+    assertTrue((((ProjectCommonException) exception).getResponseCode()) == 500);
   }
 
   @Test
@@ -638,28 +510,9 @@ public class CassandraMockTest {
     rows.add(row);
     when(resultSet.all()).thenReturn(rows);
 
-    when(cluster.connect(Mockito.anyString())).thenReturn(session);
-    connectionManager.createConnection(host, port, "cassandra", "password", cassandraKeySpace);
-    when(session.prepare(Mockito.anyString())).thenReturn(statement);
-
-    String str = "qwertypower(king";
-    ColumnDefinitions cd = PowerMockito.mock(ColumnDefinitions.class);
-
-    when(resultSet.getColumnDefinitions()).thenReturn(cd);
-    when(cd.toString()).thenReturn(str);
-    when(str.substring(8, resultSet.getColumnDefinitions().toString().length() - 1))
-        .thenReturn(str);
-
-    boundStatement = PowerMockito.mock(BoundStatement.class);
-    when(session.execute(boundStatement.bind("123"))).thenReturn(resultSet);
-    when(session.execute(where)).thenReturn(resultSet);
-    when(selectSelection.all()).thenReturn(selectBuilder);
-    when(selectBuilder.from(Mockito.anyString(), Mockito.anyString())).thenReturn(selectQuery);
-    when(selectQuery.where()).thenReturn(where);
-
     Response response =
         operation.getRecordsByProperty(cassandraKeySpace, "address", JsonKey.ADD_TYPE, "addrType");
-    Assert.assertTrue(response.getResult().size() > 0);
+    assertTrue(response.getResult().size() > 0);
   }
 
   @Test
@@ -670,21 +523,6 @@ public class CassandraMockTest {
     rows.add(row);
     when(resultSet.all()).thenReturn(rows);
 
-    when(cluster.connect(Mockito.anyString())).thenReturn(session);
-    connectionManager.createConnection(host, port, "cassandra", "password", cassandraKeySpace);
-    when(session.prepare(Mockito.anyString())).thenReturn(statement);
-
-    String str = "qwertypower(king";
-    ColumnDefinitions cd = PowerMockito.mock(ColumnDefinitions.class);
-
-    when(resultSet.getColumnDefinitions()).thenReturn(cd);
-    when(cd.toString()).thenReturn(str);
-    when(str.substring(8, resultSet.getColumnDefinitions().toString().length() - 1))
-        .thenReturn(str);
-
-    boundStatement = PowerMockito.mock(BoundStatement.class);
-    when(session.execute(boundStatement.bind("123"))).thenReturn(resultSet);
-    when(session.execute(where)).thenReturn(resultSet);
     when(selectSelection.all())
         .thenThrow(
             new ProjectCommonException(
@@ -698,7 +536,7 @@ public class CassandraMockTest {
     } catch (Exception ex) {
       exception = ex;
     }
-    Assert.assertTrue((((ProjectCommonException) exception).getResponseCode()) == 500);
+    assertTrue((((ProjectCommonException) exception).getResponseCode()) == 500);
   }
 
   @Test
@@ -708,27 +546,11 @@ public class CassandraMockTest {
     Row row = Mockito.mock(Row.class);
     rows.add(row);
     when(resultSet.all()).thenReturn(rows);
-
-    when(cluster.connect(Mockito.anyString())).thenReturn(session);
-    connectionManager.createConnection(host, port, "cassandra", "password", cassandraKeySpace);
-    when(session.prepare(Mockito.anyString())).thenReturn(statement);
-
-    String str = "qwertypower(king";
-    ColumnDefinitions cd = PowerMockito.mock(ColumnDefinitions.class);
-
-    when(resultSet.getColumnDefinitions()).thenReturn(cd);
-    when(cd.toString()).thenReturn(str);
-    when(str.substring(8, resultSet.getColumnDefinitions().toString().length() - 1))
-        .thenReturn(str);
-
-    when(selectBuilder.from(Mockito.anyString(), Mockito.anyString())).thenReturn(selectQuery);
-    boundStatement = PowerMockito.mock(BoundStatement.class);
-    when(session.execute(boundStatement.bind("123"))).thenReturn(resultSet);
     when(session.execute(where)).thenReturn(resultSet);
     when(selectSelection.all()).thenReturn(selectBuilder);
 
     Response response = operation.getRecordById(cassandraKeySpace, "address", "123");
-    Assert.assertTrue(response.getResult().size() > 0);
+    assertTrue(response.getResult().size() > 0);
   }
 
   @Test
@@ -739,21 +561,6 @@ public class CassandraMockTest {
     rows.add(row);
     when(resultSet.all()).thenReturn(rows);
 
-    when(cluster.connect(Mockito.anyString())).thenReturn(session);
-    connectionManager.createConnection(host, port, "cassandra", "password", cassandraKeySpace);
-    when(session.prepare(Mockito.anyString())).thenReturn(statement);
-
-    String str = "qwertypower(king";
-    ColumnDefinitions cd = PowerMockito.mock(ColumnDefinitions.class);
-
-    when(resultSet.getColumnDefinitions()).thenReturn(cd);
-    when(cd.toString()).thenReturn(str);
-    when(str.substring(8, resultSet.getColumnDefinitions().toString().length() - 1))
-        .thenReturn(str);
-
-    boundStatement = PowerMockito.mock(BoundStatement.class);
-    when(session.execute(boundStatement.bind("123"))).thenReturn(resultSet);
-    when(session.execute(where)).thenReturn(resultSet);
     when(selectSelection.all())
         .thenThrow(
             new ProjectCommonException(
@@ -768,7 +575,7 @@ public class CassandraMockTest {
     } catch (Exception ex) {
       exception = ex;
     }
-    Assert.assertTrue((((ProjectCommonException) exception).getResponseCode()) == 500);
+    assertTrue((((ProjectCommonException) exception).getResponseCode()) == 500);
   }
 
   @Test
@@ -793,15 +600,11 @@ public class CassandraMockTest {
     } catch (Exception ex) {
       exception = ex;
     }
-    Assert.assertTrue((Constants.SESSION_IS_NULL + "sunbird").equals(exception.getMessage()));
+    assertTrue((Constants.SESSION_IS_NULL + "sunbird").equals(exception.getMessage()));
   }
 
   @Test
   public void testCassandraGetTableList() throws Exception {
-
-    when(cluster.connect(Mockito.anyString())).thenReturn(session);
-    connectionManager.createConnection(host, port, "cassandra", "password", cassandraKeySpace);
-    when(session.prepare(Mockito.anyString())).thenReturn(statement);
 
     Collection<TableMetadata> tables = new ArrayList<>();
     TableMetadata table = Mockito.mock(TableMetadata.class);
@@ -815,9 +618,6 @@ public class CassandraMockTest {
   @Test
   public void testCassandraGetCluster() throws Exception {
 
-    when(cluster.connect(Mockito.anyString())).thenReturn(session);
-    connectionManager.createConnection(host, port, "cassandra", "password", cassandraKeySpace);
-    when(session.prepare(Mockito.anyString())).thenReturn(statement);
     Cluster cluster = connectionManager.getCluster("sunbird");
     assertTrue(cluster != null);
   }
@@ -831,8 +631,7 @@ public class CassandraMockTest {
     } catch (Exception ex) {
       exception = ex;
     }
-    Assert.assertTrue(
-        "cassandra cluster value is null for this sun".equals(exception.getMessage()));
+    assertTrue("cassandra cluster value is null for this sun".equals(exception.getMessage()));
   }
 
   private Response getCassandraResponse() {
