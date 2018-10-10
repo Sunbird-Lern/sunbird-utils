@@ -34,7 +34,7 @@ public class SystemSettingClientImpl implements SystemSettingClient {
   @Override
   public SystemSetting getSystemSettingByField(ActorRef actorRef, String field) {
     ProjectLogger.log(
-        "SystemSettingClientImpl:getSystemSettingByField: ActorRef is " + actorRef,
+        "SystemSettingClientImpl:getSystemSettingByField: actorRef is " + actorRef,
         LoggerEnum.INFO.name());
     ProjectLogger.log(
         "SystemSettingClientImpl:getSystemSettingByField: field is " + field,
