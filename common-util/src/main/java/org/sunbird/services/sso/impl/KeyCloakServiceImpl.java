@@ -64,13 +64,7 @@ public class KeyCloakServiceImpl implements SSOManager {
   @Override
   public String verifyToken(String accessToken) {
     try {
-      PublicKey publicKey = getPublicKey();
-      if (publicKey == null) {
-        ProjectLogger.log(
-            "KeyCloakServiceImpl: SSO_PUBLIC_KEY is NULL. Keycloak server may need to be started. reading it from env",
-            LoggerEnum.INFO);
-        publicKey = toPublicKey(System.getenv(JsonKey.SSO_PUBLIC_KEY));
-      }
+      PublicKey publicKey = toPublicKey(System.getenv(JsonKey.SSO_PUBLIC_KEY));
       if (publicKey != null) {
         AccessToken token =
             RSATokenVerifier.verifyToken(
@@ -99,7 +93,7 @@ public class KeyCloakServiceImpl implements SSOManager {
         return token.getSubject();
       } else {
         ProjectLogger.log(
-            "KeyCloakServiceImpl:verifyToken: SSO_PUBLIC_KEY is NULL.",
+            "KeyCloakServiceImpl:verifyToken: SSO_PUBLIC_KEY is NULL. Keycloak server may need to be started.",
             LoggerEnum.ERROR);
         throw new ProjectCommonException(
             ResponseCode.keyCloakDefaultError.getErrorCode(),
@@ -348,7 +342,6 @@ public class KeyCloakServiceImpl implements SSOManager {
    */
   @Override
   public String removeUser(Map<String, Object> request) {
-    Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
     String userId = (String) request.get(JsonKey.USER_ID);
     try {
       UserResource resource =
@@ -398,7 +391,6 @@ public class KeyCloakServiceImpl implements SSOManager {
   private void makeUserActiveOrInactive(String userId, boolean status) {
     try {
       validateUserId(userId);
-      Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
       UserResource resource =
           keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
       UserRepresentation ur = resource.toRepresentation();
