@@ -33,11 +33,25 @@ public class SystemSettingClientImpl implements SystemSettingClient {
 
   @Override
   public SystemSetting getSystemSettingByField(ActorRef actorRef, String field) {
+    ProjectLogger.log(
+        "SystemSettingClientImpl:getSystemSettingByField: ActorRef is " + actorRef,
+        LoggerEnum.INFO.name());
+    ProjectLogger.log(
+        "SystemSettingClientImpl:getSystemSettingByField: field is " + field,
+        LoggerEnum.INFO.name());
+    ProjectLogger.log(
+        "SystemSettingClientImpl:getSystemSettingByField: systemSettingsMap is "
+            + systemSettingsMap,
+        LoggerEnum.INFO.name());
     if (systemSettingsMap.containsKey(field)) {
       return systemSettingsMap.get(field);
     }
     SystemSetting systemSetting = getSystemSetting(actorRef, JsonKey.FIELD, field);
     systemSettingsMap.put(field, systemSetting);
+    ProjectLogger.log(
+        "SystemSettingClientImpl:getSystemSettingByField: systemSettingsMap after fetch is "
+            + systemSettingsMap,
+        LoggerEnum.INFO.name());
     return systemSetting;
   }
 
