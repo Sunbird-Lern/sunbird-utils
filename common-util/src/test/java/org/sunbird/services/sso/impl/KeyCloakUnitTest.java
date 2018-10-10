@@ -60,7 +60,6 @@ public class KeyCloakUnitTest {
     httpEntity = PowerMockito.mock(HttpEntity.class);
     when(response.getEntity()).thenReturn(httpEntity);
     PowerMockito.mockStatic(EntityUtils.class);
-
     PowerMockito.whenNew(JsonParser.class).withNoArguments().thenReturn(jsonParser);
   }
 

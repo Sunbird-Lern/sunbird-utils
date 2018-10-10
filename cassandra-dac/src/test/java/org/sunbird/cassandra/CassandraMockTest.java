@@ -64,7 +64,7 @@ import org.sunbird.helper.ServiceFactory;
 public class CassandraMockTest {
 
   private static Cluster cluster;
-  private static Session session = PowerMockito.mock(Session.class);;
+  private static Session session = PowerMockito.mock(Session.class);
   private static PreparedStatement statement;
   private static ResultSet resultSet;
   private static Select selectQuery;
@@ -156,7 +156,6 @@ public class CassandraMockTest {
         .thenReturn(boundStatement);
     when(session.execute(boundStatement)).thenReturn(resultSet);
     when(session.prepare(Mockito.anyString())).thenReturn(statement);
-
     when(selectSelection.all()).thenReturn(selectBuilder);
     when(selectBuilder.from(Mockito.anyString(), Mockito.anyString())).thenReturn(selectQuery);
     when(session.execute(selectQuery)).thenReturn(resultSet);
