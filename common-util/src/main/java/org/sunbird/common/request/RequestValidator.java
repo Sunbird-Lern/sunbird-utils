@@ -97,17 +97,6 @@ public final class RequestValidator {
     }
   }
 
-  public static void validateOrg(Request request) {
-    if (StringUtils.isEmpty((String) request.getRequest().get(JsonKey.ORGANISATION_ID))
-        && ((StringUtils.isEmpty((String) request.getRequest().get(JsonKey.PROVIDER)))
-            || (StringUtils.isBlank((String) request.getRequest().get(JsonKey.EXTERNAL_ID))))) {
-      throw new ProjectCommonException(
-          ResponseCode.sourceAndExternalIdValidationError.getErrorCode(),
-          ResponseCode.sourceAndExternalIdValidationError.getErrorMessage(),
-          ERROR_CODE);
-    }
-  }
-
   /**
    * This method will validate get page data api.
    *
@@ -337,49 +326,6 @@ public final class RequestValidator {
           ResponseCode.pageIdRequired.getErrorCode(),
           ResponseCode.pageIdRequired.getErrorMessage(),
           ERROR_CODE);
-    }
-  }
-
-  /**
-   * This method will validate user org requested data.
-   *
-   * @param userRequest Request
-   */
-  public static void validateUserOrg(Request userRequest) {
-    validateOrg(userRequest);
-    if ((StringUtils.isEmpty((String) userRequest.getRequest().get(JsonKey.USERNAME))
-            || StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PROVIDER)))
-        && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.USER_ID))) {
-      throw new ProjectCommonException(
-          ResponseCode.usrValidationError.getErrorCode(),
-          ResponseCode.usrValidationError.getErrorMessage(),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
-    }
-  }
-
-  /**
-   * This method will validate user org requested data.
-   *
-   * @param userRequest Request
-   */
-  @SuppressWarnings("rawtypes")
-  public static void validateAddMember(Request userRequest) {
-    validateOrg(userRequest);
-    if (userRequest.getRequest().containsKey(JsonKey.ROLES)
-        && (!(userRequest.getRequest().get(JsonKey.ROLES) instanceof List)
-            || ((List) userRequest.getRequest().get(JsonKey.ROLES)).isEmpty())) {
-      throw new ProjectCommonException(
-          ResponseCode.roleRequired.getErrorCode(),
-          ResponseCode.roleRequired.getErrorMessage(),
-          ERROR_CODE);
-    }
-    if ((StringUtils.isEmpty((String) userRequest.getRequest().get(JsonKey.USERNAME))
-            || StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PROVIDER)))
-        && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.USER_ID))) {
-      throw new ProjectCommonException(
-          ResponseCode.usrValidationError.getErrorCode(),
-          ResponseCode.usrValidationError.getErrorMessage(),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
     }
   }
 
