@@ -144,9 +144,9 @@ public enum ActorOperations {
   GET_SYSTEM_SETTING("getSystemSetting"),
   GET_ALL_SYSTEM_SETTINGS("getAllSystemSettings"),
   SET_SYSTEM_SETTING("setSystemSetting"),
-  BATCH_BULK("batchBulk"),
-  BATCH_UPDATE("batchUpdate"),
-  BATCH_OPERATION("batchOperation");
+  BATCH_BULK("batchBulkNotification"),
+  BATCH_UPDATE("batchUpdateNotification"),
+  BATCH_OPERATION("batchEnrollOperation");
   private String value;
 
   /**
