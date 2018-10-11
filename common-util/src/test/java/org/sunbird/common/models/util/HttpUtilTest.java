@@ -36,8 +36,8 @@ public class HttpUtilTest extends BaseForHttpTest {
 		headers.put("Authorization", "123456");
 		String url = "http://localhost:8000/v1/issuer/issuers";
 		try {
-			String response2 = (String) HttpUtil.postFormData(reqData, fileData, headers, url).getBody();
-			assertTrue(response2.equals("{\"message\":\"success\"}"));
+			String response = (String) HttpUtil.postFormData(reqData, fileData, headers, url).getBody();
+			assertTrue("{\"message\":\"success\"}".equals(response));
 		} catch (IOException e) {
 			ProjectLogger.log(e.getMessage());
 		}
@@ -69,7 +69,7 @@ public class HttpUtilTest extends BaseForHttpTest {
 					.thenReturn(closeableHttpResponseMock);
 
 			String response = HttpUtil.sendPatchRequest(url, "{\"message\":\"success\"}", headers);
-			assertTrue(response.equals("SUCCESS"));
+			assertTrue("SUCCESS".equals(response));
 		} catch (IOException e) {
 			ProjectLogger.log(e.getMessage());
 		}
@@ -81,8 +81,8 @@ public class HttpUtilTest extends BaseForHttpTest {
 		headers.put("Authorization", "123456");
 		String url = "http://localhost:8000/v1/issuer/issuers";
 		try {
-			String response2 = HttpUtil.sendPostRequest(url, "{\"message\":\"success\"}", headers);
-			assertTrue(response2.equals("{\"message\":\"success\"}"));
+			String response = HttpUtil.sendPostRequest(url, "{\"message\":\"success\"}", headers);
+			assertTrue("{\"message\":\"success\"}".equals(response));
 		} catch (IOException e) {
 			ProjectLogger.log(e.getMessage());
 		}
@@ -96,7 +96,7 @@ public class HttpUtilTest extends BaseForHttpTest {
 		String urlString = "http://localhost:8000/v1/issuer/issuers";
 		try {
 			String response = HttpUtil.sendGetRequest(urlString, headers);
-			assertTrue(response.equals("{\"message\":\"success\"}"));
+			assertTrue("{\"message\":\"success\"}".equals(response));
 		} catch (Exception e) {
 			ProjectLogger.log(e.getMessage());
 		}

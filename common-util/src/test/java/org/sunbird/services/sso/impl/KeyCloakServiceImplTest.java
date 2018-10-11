@@ -2,7 +2,6 @@ package org.sunbird.services.sso.impl;
 
 import static org.powermock.api.mockito.PowerMockito.doNothing;
 import static org.powermock.api.mockito.PowerMockito.doReturn;
-import static org.powermock.api.mockito.PowerMockito.doThrow;
 import static org.powermock.api.mockito.PowerMockito.mock;
 
 import java.lang.reflect.Constructor;
@@ -41,7 +40,7 @@ public class KeyCloakServiceImplTest extends BaseForHttpTest{
 	private static Class t = null;
 	
 	private static final Map<String,Object> USER_SUCCESS = new HashMap<>();
-	{
+	static{
 		USER_SUCCESS.put(JsonKey.USERNAME, userName);
 		USER_SUCCESS.put(JsonKey.PASSWORD, "password");
 		USER_SUCCESS.put(JsonKey.FIRST_NAME, "A");
@@ -51,7 +50,7 @@ public class KeyCloakServiceImplTest extends BaseForHttpTest{
 	}
 	
 	private static final Map<String,Object> USER_SAME_EMAIL = new HashMap<>();
-	{
+	static{
 		USER_SAME_EMAIL.put(JsonKey.USERNAME, userName);
 		USER_SAME_EMAIL.put(JsonKey.PASSWORD, "password");
 		USER_SAME_EMAIL.put(JsonKey.FIRST_NAME, "A");

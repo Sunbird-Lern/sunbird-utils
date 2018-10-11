@@ -72,7 +72,7 @@ public class FCMNotificationTest {
   }
 
   @Test
-  public void testSendNotificationFailureWithEmptyFCM_URL() {
+  public void testSendNotificationFailureWithEmptyFcmUrl() {
     Map<String, Object> map = new HashMap<>();
     map.put("title", "some title");
     map.put("summary", "some value");
@@ -100,7 +100,7 @@ public class FCMNotificationTest {
   public void addMockRules() {
 	  
 	  PowerMockito.mockStatic(System.class);
-	  URL url =PowerMockito.mock(URL.class);
+	  URL url =mock(URL.class);
 	  HttpURLConnection connection = mock(HttpURLConnection.class);
 	  OutputStream outStream = mock(OutputStream.class);
 	  InputStream inStream = mock(InputStream.class);

@@ -49,7 +49,7 @@ public abstract class BaseForHttpTest {
 	}
 
 	protected void httpRules(String urlContains, String outputexpected, boolean throwError, String paramContains) {
-		URL url = PowerMockito.mock(URL.class);
+		URL url = mock(URL.class);
 		HttpURLConnection connection = mock(HttpURLConnection.class);
 		OutputStream outStream = mock(OutputStream.class);
 		OutputStreamWriter outStreamWriter = mock(OutputStreamWriter.class);
