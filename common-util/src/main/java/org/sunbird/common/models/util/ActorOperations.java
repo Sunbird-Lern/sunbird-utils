@@ -76,6 +76,7 @@ public enum ActorOperations {
   REMOVE_USER_ORG_ES("removeUserOrgES"),
   UPDATE_USER_ROLES_ES("updateUserRoles"),
   SYNC("sync"),
+  BACKGROUND_SYNC("backgroundSync"),
   INSERT_USR_COURSES_INFO_ELASTIC("insertUserCoursesInfoToElastic"),
   UPDATE_USR_COURSES_INFO_ELASTIC("updateUserCoursesInfoToElastic"),
   SCHEDULE_BULK_UPLOAD("scheduleBulkUpload"),
