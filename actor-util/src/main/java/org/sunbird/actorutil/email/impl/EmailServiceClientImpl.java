@@ -13,16 +13,16 @@ import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 
-public class EmailServiceClinetImpl implements EmailServiceClient {
-  private static EmailServiceClinetImpl emailServiceClinet = null;
+public class EmailServiceClientImpl implements EmailServiceClient {
+  private static EmailServiceClientImpl emailServiceClient = null;
   private static InterServiceCommunication interServiceCommunication =
       InterServiceCommunicationFactory.getInstance();
 
-  public static EmailServiceClinetImpl getInstance() {
-    if (null == emailServiceClinet) {
-      emailServiceClinet = new EmailServiceClinetImpl();
+  public static EmailServiceClientImpl getInstance() {
+    if (null == emailServiceClient) {
+      emailServiceClient = new EmailServiceClientImpl();
     }
-    return emailServiceClinet;
+    return emailServiceClient;
   }
 
   @Override
