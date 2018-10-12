@@ -1,22 +1,20 @@
-package org.sunbird.common.request;
+package org.sunbird.common.request.orgvalidator;
 
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 
-public class OrgTypeRequestValidator extends BaseRequestValidator {
+public class OrgTypeRequestValidator extends BaseOrgRequestValidator {
 
-  public void validateUpdateOrgType(Request request) {
-    validateParam(
-        (String) request.getRequest().get(JsonKey.NAME),
-        ResponseCode.mandatoryParamsMissing,
-        JsonKey.NAME);
+  public void validateUpdateOrgTypeRequest(Request request) {
+    validateCreateOrgTypeRequest(request);
     validateParam(
         (String) request.getRequest().get(JsonKey.ID),
         ResponseCode.mandatoryParamsMissing,
         JsonKey.ID);
   }
 
-  public void validateCreateOrgType(Request request) {
+  public void validateCreateOrgTypeRequest(Request request) {
     validateParam(
         (String) request.getRequest().get(JsonKey.NAME),
         ResponseCode.mandatoryParamsMissing,

@@ -505,44 +505,17 @@ public class ProjectUtil {
    *
    * @param reqObj Request
    */
-  public static void updateMapSomeValueTOLowerCase(Request reqObj) {
-    if (reqObj.getRequest().get(JsonKey.SOURCE) != null) {
-      reqObj
-          .getRequest()
-          .put(JsonKey.SOURCE, ((String) reqObj.getRequest().get(JsonKey.SOURCE)).toLowerCase());
-    }
-    if (reqObj.getRequest().get(JsonKey.EXTERNAL_ID) != null) {
-      reqObj
-          .getRequest()
-          .put(
-              JsonKey.EXTERNAL_ID,
-              ((String) reqObj.getRequest().get(JsonKey.EXTERNAL_ID)).toLowerCase());
-    }
-    if (reqObj.getRequest().get(JsonKey.USERNAME) != null) {
-      reqObj
-          .getRequest()
-          .put(
-              JsonKey.USERNAME, ((String) reqObj.getRequest().get(JsonKey.USERNAME)).toLowerCase());
-    }
-    if (reqObj.getRequest().get(JsonKey.USER_NAME) != null) {
-      reqObj
-          .getRequest()
-          .put(
-              JsonKey.USER_NAME,
-              ((String) reqObj.getRequest().get(JsonKey.USER_NAME)).toLowerCase());
-    }
-    if (reqObj.getRequest().get(JsonKey.PROVIDER) != null) {
-      reqObj
-          .getRequest()
-          .put(
-              JsonKey.PROVIDER, ((String) reqObj.getRequest().get(JsonKey.PROVIDER)).toLowerCase());
-    }
-    if (reqObj.getRequest().get(JsonKey.LOGIN_ID) != null) {
-      reqObj
-          .getRequest()
-          .put(
-              JsonKey.LOGIN_ID, ((String) reqObj.getRequest().get(JsonKey.LOGIN_ID)).toLowerCase());
-    }
+  public static void toLower(Request reqObj, List<String> fields) {
+    fields
+        .stream()
+        .forEach(
+            field -> {
+              if (StringUtils.isNotBlank((String) reqObj.getRequest().get(field))) {
+                reqObj
+                    .getRequest()
+                    .put(field, ((String) reqObj.getRequest().get(field)).toLowerCase());
+              }
+            });
   }
 
   public static SimpleDateFormat getDateFormatter() {
