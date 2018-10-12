@@ -7,6 +7,7 @@ import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 import javax.mail.BodyPart;
 import javax.mail.Message;
+import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Session;
@@ -178,7 +179,7 @@ public class SendMail {
       Template template = engine.getTemplate(templateName);
       StringWriter writer = new StringWriter();
       template.merge(context, writer);
-      message.setContent(writer.toString(), "text/html");
+      message.setContent(writer.toString(), "text/html; charset=utf-8");
       transport = session.getTransport("smtp");
       transport.connect(host, userName, password);
       transport.sendMessage(message, message.getAllRecipients());
@@ -220,7 +221,7 @@ public class SendMail {
       }
       message.setSubject(subject);
       BodyPart messageBodyPart = new MimeBodyPart();
-      messageBodyPart.setContent(emailBody, "text/html");
+      messageBodyPart.setContent(emailBody, "text/html; charset=utf-8");
       // messageBodyPart.setText(mail);
       // Create a multipar message
       Multipart multipart = new MimeMultipart();
@@ -261,16 +262,23 @@ public class SendMail {
       Session session = Session.getInstance(props, new GMailAuthenticator(userName, password));
       MimeMessage message = new MimeMessage(session);
       message.setFrom(new InternetAddress(fromEmail));
+      RecipientType recipientType = null;
+      if (emailList.length > 1) {
+        recipientType = Message.RecipientType.BCC;
+      } else {
+        recipientType = Message.RecipientType.TO;
+      }
       for (String email : emailList) {
-        message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+        message.addRecipient(recipientType, new InternetAddress(email));
       }
       message.setSubject(subject);
-      message.setContent(writer.toString(), "text/html");
+      message.setContent(writer.toString(), "text/html; charset=utf-8");
       transport = session.getTransport("smtp");
       transport.connect(host, userName, password);
       transport.sendMessage(message, message.getAllRecipients());
       transport.close();
     } catch (Exception e) {
+
       sentStatus = false;
       ProjectLogger.log(
           "SendMail:sendMail: Exception occurred with message = " + e.getMessage(), e);

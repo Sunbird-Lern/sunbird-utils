@@ -228,8 +228,18 @@ public enum ResponseCode {
   sourceAndExternalIdAlreadyExist(
       ResponseMessage.Key.SRC_EXTERNAL_ID_ALREADY_EXIST,
       ResponseMessage.Message.SRC_EXTERNAL_ID_ALREADY_EXIST),
-  userAlreadyEnrolledThisCourse(
-      ResponseMessage.Key.ALREADY_ENROLLED_COURSE, ResponseMessage.Message.ALREADY_ENROLLED_COURSE),
+  userAlreadyEnrolledCourse(
+      ResponseMessage.Key.USER_ALREADY_ENROLLED_COURSE,
+      ResponseMessage.Message.USER_ALREADY_ENROLLED_COURSE),
+  userNotEnrolledCourse(
+      ResponseMessage.Key.USER_NOT_ENROLLED_COURSE,
+      ResponseMessage.Message.USER_NOT_ENROLLED_COURSE),
+  courseBatchAlreadyCompleted(
+      ResponseMessage.Key.COURSE_BATCH_ALREADY_COMPLETED,
+      ResponseMessage.Message.COURSE_BATCH_ALREADY_COMPLETED),
+  userAlreadyCompletedCourse(
+      ResponseMessage.Key.USER_ALREADY_COMPLETED_COURSE,
+      ResponseMessage.Message.USER_ALREADY_COMPLETED_COURSE),
   pageAlreadyExist(
       ResponseMessage.Key.PAGE_ALREADY_EXIST, ResponseMessage.Message.PAGE_ALREADY_EXIST),
   contentTypeRequiredError(
@@ -635,11 +645,28 @@ public enum ResponseCode {
       ResponseMessage.Key.NO_EMAIL_RECIPIENTS, ResponseMessage.Message.NO_EMAIL_RECIPIENTS),
   parameterMismatch(
       ResponseMessage.Key.PARAMETER_MISMATCH, ResponseMessage.Message.PARAMETER_MISMATCH),
+  errorForbidden(ResponseMessage.Key.FORBIDDEN, ResponseMessage.Message.FORBIDDEN),
+  errorConfigLoadEmptyString(
+      ResponseMessage.Key.ERROR_CONFIG_LOAD_EMPTY_STRING,
+      ResponseMessage.Message.ERROR_CONFIG_LOAD_EMPTY_STRING),
+  errorConfigLoadParseString(
+      ResponseMessage.Key.ERROR_CONFIG_LOAD_PARSE_STRING,
+      ResponseMessage.Message.ERROR_CONFIG_LOAD_PARSE_STRING),
+  errorConfigLoadEmptyConfig(
+      ResponseMessage.Key.ERROR_CONFIG_LOAD_EMPTY_CONFIG,
+      ResponseMessage.Message.ERROR_CONFIG_LOAD_EMPTY_CONFIG),
+  errorConflictingFieldConfiguration(
+      ResponseMessage.Key.ERROR_CONFLICTING_FIELD_CONFIGURATION,
+      ResponseMessage.Message.ERROR_CONFLICTING_FIELD_CONFIGURATION),
+  errorSystemSettingNotFound(
+      ResponseMessage.Key.ERROR_SYSTEM_SETTING_NOT_FOUND,
+      ResponseMessage.Message.ERROR_SYSTEM_SETTING_NOT_FOUND),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
   RESOURCE_NOT_FOUND(404),
   UNAUTHORIZED(401),
+  FORBIDDEN(403),
   REDIRECTION_REQUIRED(302);
   private int responseCode;
   /** error code contains String value */
