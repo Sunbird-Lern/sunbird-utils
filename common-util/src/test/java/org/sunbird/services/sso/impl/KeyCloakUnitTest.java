@@ -26,6 +26,7 @@ import org.sunbird.common.models.util.KeyCloakConnectionProvider;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 // ** @author kirti. Junit test cases *//*
+
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({
   HttpClientBuilder.class,
@@ -55,16 +56,17 @@ public class KeyCloakUnitTest {
     PowerMockito.mockStatic(HttpClientBuilder.class);
     when(HttpClientBuilder.create()).thenReturn(httpClientBuilder);
     when(httpClientBuilder.build()).thenReturn(client);
-    response = PowerMockito.mock(CloseableHttpResponse.class);
-    when(client.execute(Mockito.any())).thenReturn(response);
     httpEntity = PowerMockito.mock(HttpEntity.class);
-    when(response.getEntity()).thenReturn(httpEntity);
     PowerMockito.mockStatic(EntityUtils.class);
     PowerMockito.whenNew(JsonParser.class).withNoArguments().thenReturn(jsonParser);
   }
 
   @Test
   public void getPublicKeyFromKeyCloakTest() throws Exception {
+
+    response = PowerMockito.mock(CloseableHttpResponse.class);
+    when(client.execute(Mockito.any())).thenReturn(response);
+    when(response.getEntity()).thenReturn(httpEntity);
 
     String jsonString =
         "{\"keys\":[{\"kid\":\"YOw4KbDjM0_HIdGkf_QhRfKc9qHc4W_8Bni91nKFyck\",\"kty\":\"RSA\",\"alg\":\"RS256\",\"use\":\"sig\",\"n\":\""
@@ -84,13 +86,9 @@ public class KeyCloakUnitTest {
   @Test
   public void getPublicKeyFromKeyCloakTestFail() throws Exception {
 
-    String jsonString = "InvalidPublicKey";
-    when(EntityUtils.toString(httpEntity)).thenReturn(jsonString);
-
     PublicKey key =
         new KeyCloakRsaKeyFetcher()
             .getPublicKeyFromKeyCloak(KeyCloakConnectionProvider.SSO_URL, FAIL_TEST);
-
-    Assert.assertTrue(key == null);
+    Assert.assertEquals(key, null);
   }
 }
