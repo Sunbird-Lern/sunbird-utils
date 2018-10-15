@@ -19,7 +19,7 @@ public class BaseOrgRequestValidator extends BaseRequestValidator {
         JsonKey.ORGANISATION_ID);
   }
 
-  public void channelRequiredWithRootOrgIdValidation(Request request) {
+  public void validateRootOrgChannel(Request request) {
     if ((null != request.getRequest().get(JsonKey.IS_ROOT_ORG)
             && (Boolean) request.getRequest().get(JsonKey.IS_ROOT_ORG))
         && StringUtils.isEmpty((String) request.getRequest().get(JsonKey.CHANNEL))) {

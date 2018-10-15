@@ -22,7 +22,7 @@ public class OrgRequestValidator extends BaseOrgRequestValidator {
         ResponseCode.mandatoryParamsMissing,
         JsonKey.ORG_NAME);
 
-    channelRequiredWithRootOrgIdValidation(orgRequest);
+    validateRootOrgChannel(orgRequest);
 
     Map<String, Object> address =
         (Map<String, Object>) orgRequest.getRequest().get(JsonKey.ADDRESS);
@@ -48,7 +48,7 @@ public class OrgRequestValidator extends BaseOrgRequestValidator {
           ERROR_CODE);
     }
 
-    channelRequiredWithRootOrgIdValidation(request);
+    validateRootOrgChannel(request);
 
     Map<String, Object> address = (Map<String, Object>) request.getRequest().get(JsonKey.ADDRESS);
     if (MapUtils.isNotEmpty(address)) {

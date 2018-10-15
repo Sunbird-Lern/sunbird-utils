@@ -10,7 +10,7 @@ import org.sunbird.common.responsecode.ResponseCode;
 public class OrgMemberRequestValidator extends BaseOrgRequestValidator {
 
   public void validateAddMemberRequest(Request request) {
-    validateOrgMemberRequest(request);
+    validateCommon(request);
     if (request.getRequest().containsKey(JsonKey.ROLES)
         && (!(request.getRequest().get(JsonKey.ROLES) instanceof List))) {
       throw new ProjectCommonException(
@@ -21,7 +21,7 @@ public class OrgMemberRequestValidator extends BaseOrgRequestValidator {
     }
   }
 
-  public void validateOrgMemberRequest(Request request) {
+  public void validateCommon(Request request) {
     validateOrgReference(request);
     validateParam(
         (String) request.getRequest().get(JsonKey.USER_ID),
