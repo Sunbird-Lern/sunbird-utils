@@ -18,5 +18,5 @@
     <module>common-service</module>
     <module>kafka-client</module>
     <module>extensions</module>
-  </modules>
+  </modules> 
 </project>
