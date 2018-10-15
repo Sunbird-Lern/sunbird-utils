@@ -3,6 +3,7 @@ package org.sunbird.common.request;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
@@ -51,6 +52,24 @@ public class Request implements Serializable {
             ExecutionContext.getCurrent()
                 .getGlobalContext()
                 .get(HeaderParam.REQUEST_ID.getParamName());
+  }
+
+  /**
+   * This method will make some requested key value as lower case.
+   *
+   * @param reqObj Request
+   */
+  public static void toLower(Request reqObj, List<String> fields) {
+    fields
+        .stream()
+        .forEach(
+            field -> {
+              if (StringUtils.isNotBlank((String) reqObj.getRequest().get(field))) {
+                reqObj
+                    .getRequest()
+                    .put(field, ((String) reqObj.getRequest().get(field)).toLowerCase());
+              }
+            });
   }
 
   public Request(Request request) {

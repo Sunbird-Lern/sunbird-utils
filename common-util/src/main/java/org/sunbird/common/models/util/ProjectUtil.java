@@ -500,24 +500,6 @@ public class ProjectUtil {
     return MessageFormat.format(exceptionMsg, fieldValue);
   }
 
-  /**
-   * This method will make some requested key value as lower case.
-   *
-   * @param reqObj Request
-   */
-  public static void toLower(Request reqObj, List<String> fields) {
-    fields
-        .stream()
-        .forEach(
-            field -> {
-              if (StringUtils.isNotBlank((String) reqObj.getRequest().get(field))) {
-                reqObj
-                    .getRequest()
-                    .put(field, ((String) reqObj.getRequest().get(field)).toLowerCase());
-              }
-            });
-  }
-
   public static SimpleDateFormat getDateFormatter() {
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSSZ");
     simpleDateFormat.setLenient(false);
