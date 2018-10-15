@@ -80,6 +80,7 @@ public class KeyCloakUnitTest {
         new KeyCloakRsaKeyFetcher()
             .getPublicKeyFromKeyCloak(
                 KeyCloakConnectionProvider.SSO_URL, KeyCloakConnectionProvider.SSO_REALM);
+
     Assert.assertNotNull(key);
   }
 
@@ -89,6 +90,7 @@ public class KeyCloakUnitTest {
     PublicKey key =
         new KeyCloakRsaKeyFetcher()
             .getPublicKeyFromKeyCloak(KeyCloakConnectionProvider.SSO_URL, FAIL_TEST);
+
     Assert.assertEquals(key, null);
   }
 }
