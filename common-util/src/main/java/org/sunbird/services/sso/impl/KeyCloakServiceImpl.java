@@ -348,7 +348,7 @@ public class KeyCloakServiceImpl implements SSOManager {
    */
   @Override
   public String removeUser(Map<String, Object> request) {
-    Keycloak keycloak = KeyCloakConnectionProvider.getConnection();    
+    Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
     String userId = (String) request.get(JsonKey.USER_ID);
     try {
       UserResource resource =
