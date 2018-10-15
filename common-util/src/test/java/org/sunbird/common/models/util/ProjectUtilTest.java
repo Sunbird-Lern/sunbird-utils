@@ -13,8 +13,10 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.VelocityContext;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.request.Request;
@@ -58,12 +60,11 @@ public class ProjectUtilTest {
     VelocityContext context = ProjectUtil.getContext(templateMap);
     if (envVal) {
       assertEquals(
-          System.getenv(JsonKey.EMAIL_SERVER_FROM),
-          (String) context.internalGet(JsonKey.FROM_EMAIL));
+          System.getenv(JsonKey.EMAIL_SERVER_FROM), context.internalGet(JsonKey.FROM_EMAIL));
     } else if (cacheVal) {
       assertEquals(
           propertiesCache.getProperty(JsonKey.EMAIL_SERVER_FROM),
-          (String) context.internalGet(JsonKey.FROM_EMAIL));
+          context.internalGet(JsonKey.FROM_EMAIL));
     }
   }
 
@@ -80,12 +81,11 @@ public class ProjectUtilTest {
     VelocityContext context = ProjectUtil.getContext(templateMap);
     if (envVal) {
       assertEquals(
-          System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL),
-          (String) context.internalGet(JsonKey.ORG_IMAGE_URL));
+          System.getenv(JsonKey.SUNBIRD_ENV_LOGO_URL), context.internalGet(JsonKey.ORG_IMAGE_URL));
     } else if (cacheVal) {
       assertEquals(
           propertiesCache.getProperty(JsonKey.SUNBIRD_ENV_LOGO_URL),
-          (String) context.internalGet(JsonKey.ORG_IMAGE_URL));
+          context.internalGet(JsonKey.ORG_IMAGE_URL));
     }
   }
 
@@ -175,14 +175,11 @@ public class ProjectUtilTest {
 
   @Test
   public void testSendSMSWithDetails() {
-    String msg = ProjectUtil.getSMSBody("AMIT@BLR", "www.sunbird.org", "sunbird.com", "diksha");
+    Map<String, String> map = new HashMap<>();
+    map.put("instanceName", "Diksha");
+    map.put("link", "www.sunbird.org");
+    String msg = ProjectUtil.getSMSBody(map);
     assertTrue(msg.contains("sunbird.org"));
-  }
-
-  @Test
-  public void testSendSMSWithoutDetails() {
-    String msg = ProjectUtil.getSMSBody("", "", "", "");
-    assertTrue(msg.contains("user_name"));
   }
 
   @Test
@@ -217,6 +214,7 @@ public class ProjectUtilTest {
     assertNotNull(map.get(JsonKey.AUTHORIZATION));
   }
 
+  @Ignore
   @Test
   public void registertagTest() {
     String response = null;

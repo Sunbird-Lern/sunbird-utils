@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
+import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.responsecode.ResponseCode;
 
 /**
@@ -80,5 +81,53 @@ public class ConfigUtil {
     Config defaultConf = ConfigFactory.load(fileName);
     Config envConf = ConfigFactory.systemEnvironment();
     return envConf.withFallback(defaultConf);
+  }
+
+  /*
+   * Parse configuration in JSON format and return a type safe config object.
+   *
+   * @param jsonString Configuration in JSON format
+   * @return Type safe config object
+   */
+  public static Config getConfigFromJsonString(String jsonString, String configType) {
+    ProjectLogger.log("ConfigUtil: getConfigFromJsonString called", LoggerEnum.DEBUG.name());
+
+    if (null == jsonString || StringUtils.isBlank(jsonString)) {
+      ProjectLogger.log(
+          "ConfigUtil:getConfigFromJsonString: Empty string", LoggerEnum.ERROR.name());
+      ProjectCommonException.throwServerErrorException(
+          ResponseCode.errorConfigLoadEmptyString,
+          ProjectUtil.formatMessage(
+              ResponseCode.errorConfigLoadEmptyString.getErrorMessage(), configType));
+    }
+
+    Config jsonConfig = null;
+    try {
+      jsonConfig = ConfigFactory.parseString(jsonString);
+    } catch (Exception e) {
+      ProjectLogger.log(
+          "ConfigUtil:getConfigFromJsonString: Exception occurred during parse with error message = "
+              + e.getMessage(),
+          LoggerEnum.ERROR.name());
+      ProjectCommonException.throwServerErrorException(
+          ResponseCode.errorConfigLoadParseString,
+          ProjectUtil.formatMessage(
+              ResponseCode.errorConfigLoadParseString.getErrorMessage(), configType));
+    }
+
+    if (null == jsonConfig || jsonConfig.isEmpty()) {
+      ProjectLogger.log(
+          "ConfigUtil:getConfigFromJsonString: Empty configuration", LoggerEnum.ERROR.name());
+      ProjectCommonException.throwServerErrorException(
+          ResponseCode.errorConfigLoadEmptyConfig,
+          ProjectUtil.formatMessage(
+              ResponseCode.errorConfigLoadEmptyConfig.getErrorMessage(), configType));
+    }
+
+    ProjectLogger.log(
+        "ConfigUtil:getConfigFromJsonString: Successfully constructed type safe configuration",
+        LoggerEnum.DEBUG.name());
+
+    return jsonConfig;
   }
 }
