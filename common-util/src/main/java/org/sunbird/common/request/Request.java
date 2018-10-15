@@ -56,11 +56,6 @@ public class Request implements Serializable {
                 .get(HeaderParam.REQUEST_ID.getParamName());
   }
 
-  /**
-   * This method will make some requested key value as lower case.
-   *
-   * @param reqObj Request
-   */
   public void toLower() {
     Arrays.asList(
             ProjectUtil.getConfigValue(JsonKey.SUNBIRD_API_REQUEST_LOWER_CASE_FIELDS).split(","))
