@@ -1,7 +1,6 @@
 package org.sunbird.common.request.orgvalidator;
 
 import java.math.BigInteger;
-import java.text.MessageFormat;
 import java.util.Map;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -71,24 +70,6 @@ public class OrgRequestValidator extends BaseOrgRequestValidator {
       throw new ProjectCommonException(
           ResponseCode.invalidRequestData.getErrorCode(),
           ResponseCode.invalidRequestData.getErrorMessage(),
-          ERROR_CODE);
-    }
-  }
-
-  public void validateOrgSearchRequest(Request request) {
-    if (null == request.getRequest().get(JsonKey.FILTERS)) {
-      throw new ProjectCommonException(
-          ResponseCode.mandatoryParamsMissing.getErrorCode(),
-          MessageFormat.format(
-              ResponseCode.mandatoryParamsMissing.getErrorMessage(), JsonKey.FILTERS),
-          ERROR_CODE);
-    }
-    if (request.getRequest().containsKey(JsonKey.FILTERS)
-        && (!(request.getRequest().get(JsonKey.FILTERS) instanceof Map))) {
-      throw new ProjectCommonException(
-          ResponseCode.dataTypeError.getErrorCode(),
-          MessageFormat.format(
-              ResponseCode.dataTypeError.getErrorMessage(), JsonKey.FILTERS, "Map"),
           ERROR_CODE);
     }
   }
