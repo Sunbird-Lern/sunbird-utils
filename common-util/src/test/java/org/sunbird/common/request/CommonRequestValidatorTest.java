@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -353,6 +352,7 @@ public class CommonRequestValidatorTest {
   }
 
   @Test
+<<<<<<< HEAD
   public void testValidateAddMemberSuccessWithExternalId() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
@@ -571,6 +571,9 @@ public class CommonRequestValidatorTest {
 
   @Test
   public void testValidateUserOrgTypeSuccess() {
+=======
+  public void validateupdateOrgType() {
+>>>>>>> 026a3761e63592c2a017e3d0bdc2866c7f2a9f62
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.NAME, "orgtypeName");

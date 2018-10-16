@@ -13,7 +13,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.VelocityContext;
 import org.junit.Test;
@@ -144,7 +143,6 @@ public class ProjectUtilTest extends BaseForHttpTest{
     requestObj.put(JsonKey.PROVIDER, "Provider");
     requestObj.put(JsonKey.ID, "TEST123");
     request.setRequest(requestObj);
-    ProjectUtil.updateMapSomeValueTOLowerCase(request);
     assertEquals("test", requestObj.get(JsonKey.SOURCE));
     assertEquals("sunbirduser", requestObj.get(JsonKey.LOGIN_ID));
     assertEquals("testexternal", requestObj.get(JsonKey.EXTERNAL_ID));
