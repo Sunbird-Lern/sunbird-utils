@@ -138,9 +138,9 @@ public class UserRequestValidatorTest {
 
   @Test
   public void testCreateUserSuccess() {
-	boolean response = false;
+    boolean response = false;
     Request request = initailizeRequest();
-    Map<String,Object> requestObj = request.getRequest();
+    Map<String, Object> requestObj = request.getRequest();
     List<String> roles = new ArrayList<String>();
     roles.add("PUBLIC");
     roles.add("CONTENT-CREATOR");
@@ -183,8 +183,8 @@ public class UserRequestValidatorTest {
 
   @Test
   public void testValidateCreateUserFailureWithWrongAddType() {
-	Request request = initailizeRequest();
-	Map<String, Object> requestObj = request.getRequest();
+    Request request = initailizeRequest();
+    Map<String, Object> requestObj = request.getRequest();
     List<String> roles = new ArrayList<String>();
     roles.add("PUBLIC");
     roles.add("CONTENT-CREATOR");
@@ -319,7 +319,6 @@ public class UserRequestValidatorTest {
     }
   }
 
-  
   @Test
   public void testPhoneValidationFailureWithEmptyPhoneVerified() {
     Request request = new Request();
@@ -374,7 +373,7 @@ public class UserRequestValidatorTest {
     Map<String, Object> requestObj = request.getRequest();
     requestObj.remove(JsonKey.USERNAME);
     requestObj.put(JsonKey.USER_ID, "userId");
-    
+
     List<String> roles = new ArrayList<String>();
     roles.add("PUBLIC");
     roles.add("CONTENT-CREATOR");
@@ -423,7 +422,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.ORGANISATION_ID, "ORG-1233");
     requestObj.put(JsonKey.EXTERNAL_ID_PROVIDER, "EXT_ID_PROVIDER");
     requestObj.put(JsonKey.FILE, "EXT_ID_PROVIDER");
-    
+
     try {
       RequestValidator.validateUploadUser(requestObj);
       response = true;
@@ -657,8 +656,6 @@ public class UserRequestValidatorTest {
     }
   }
 
- 
-
   @Test
   public void testCreateUserValidationFailureWithInvalidRoles() {
     Request request = new Request();
@@ -759,16 +756,16 @@ public class UserRequestValidatorTest {
 
   @Test
   public void testCreateUserValidationFailureWithInvalidCountryCode() {
-	  Request request = new Request();
-	    Map<String, Object> requestObj = new HashMap<>();
-	    requestObj.put(JsonKey.PHONE, "9321234123");
-	    requestObj.put(JsonKey.PHONE_VERIFIED, true);
-	    requestObj.put(JsonKey.EMAIL, "test123@test.com");
-	    requestObj.put(JsonKey.USERNAME, "test123");
-	    requestObj.put(JsonKey.FIRST_NAME, "test123");
-	    request.setRequest(requestObj);
+    Request request = new Request();
+    Map<String, Object> requestObj = new HashMap<>();
+    requestObj.put(JsonKey.PHONE, "9321234123");
+    requestObj.put(JsonKey.PHONE_VERIFIED, true);
+    requestObj.put(JsonKey.EMAIL, "test123@test.com");
+    requestObj.put(JsonKey.USERNAME, "test123");
+    requestObj.put(JsonKey.FIRST_NAME, "test123");
+    request.setRequest(requestObj);
     request.getRequest().put(JsonKey.COUNTRY_CODE, "+as");
-    
+
     try {
       UserRequestValidator.validateCreateUser(request);
     } catch (ProjectCommonException e) {
@@ -788,7 +785,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.EMAIL, "");
     requestObj.put(JsonKey.PHONE, "");
     request.setRequest(requestObj);
-    
+
     try {
       UserRequestValidator.validateCreateUser(request);
     } catch (ProjectCommonException e) {
@@ -814,7 +811,7 @@ public class UserRequestValidatorTest {
   public void testValidateCreateUserFailureWithoutPhoneVerified() {
     Request request = initailizeRequest();
     request.getRequest().put(JsonKey.PHONE, "7894561230");
-    
+
     try {
       UserRequestValidator.validateCreateUser(request);
     } catch (ProjectCommonException e) {
@@ -869,9 +866,9 @@ public class UserRequestValidatorTest {
 
   @Test
   public void testValidateCreateUserFailureWithEmptyEducationDegree() {
-	Request request = initailizeRequest();
-	request.getRequest().put(JsonKey.PHONE_VERIFIED, true);    
-	Map<String, Object> map = new HashMap<>();
+    Request request = initailizeRequest();
+    request.getRequest().put(JsonKey.PHONE_VERIFIED, true);
+    Map<String, Object> map = new HashMap<>();
     map.put(JsonKey.NAME, "name");
     map.put(JsonKey.DEGREE, "");
     List<Map<String, Object>> list = new ArrayList<>();
@@ -888,8 +885,8 @@ public class UserRequestValidatorTest {
 
   @Test
   public void testValidateCreateUserFailureWithEmptyEducationAddress() {
-	Request request = initailizeRequest();
-	request.getRequest().put(JsonKey.PHONE_VERIFIED, true);
+    Request request = initailizeRequest();
+    request.getRequest().put(JsonKey.PHONE_VERIFIED, true);
     Map<String, Object> map = new HashMap<>();
     map.put(JsonKey.NAME, "name");
     map.put(JsonKey.DEGREE, "degree");
@@ -909,9 +906,9 @@ public class UserRequestValidatorTest {
 
   @Test
   public void testValidateCreateUserFailureWithEmptyEducationCity() {
-	Request request = initailizeRequest();
-	request.getRequest().put(JsonKey.PHONE_VERIFIED, true);
-	
+    Request request = initailizeRequest();
+    request.getRequest().put(JsonKey.PHONE_VERIFIED, true);
+
     Map<String, Object> map = new HashMap<>();
     map.put(JsonKey.NAME, "name");
     map.put(JsonKey.DEGREE, "degree");
@@ -932,8 +929,8 @@ public class UserRequestValidatorTest {
 
   @Test
   public void testValidateCreateUserFailureWithEmptyJobProfile() {
-	Request request = initailizeRequest();
-	request.getRequest().put(JsonKey.PHONE_VERIFIED, true);
+    Request request = initailizeRequest();
+    request.getRequest().put(JsonKey.PHONE_VERIFIED, true);
     request.getRequest().put(JsonKey.JOB_PROFILE, "");
     try {
       UserRequestValidator.validateCreateUser(request);
@@ -945,7 +942,7 @@ public class UserRequestValidatorTest {
 
   @Test
   public void testValidateCreateUserFailureWithEmptyJobName() {
-	Request request = initailizeRequest();
+    Request request = initailizeRequest();
     Map<String, Object> map = new HashMap<>();
     map.put(JsonKey.JOB_NAME, "");
     map.put(JsonKey.ORG_NAME, "degree");
@@ -962,7 +959,7 @@ public class UserRequestValidatorTest {
 
   @Test
   public void testValidateCreateUserFailureWithInvalidJobProfileJoiningDate() {
-	Request request = initailizeRequest();
+    Request request = initailizeRequest();
     Map<String, Object> map = new HashMap<>();
     map.put(JsonKey.JOB_NAME, "kijklo");
     map.put(JsonKey.ORG_NAME, "degree");
@@ -980,7 +977,7 @@ public class UserRequestValidatorTest {
 
   @Test
   public void testValidateCreateUserFailureWithInvalidJobProfileEndDate() {
-	Request request = initailizeRequest();
+    Request request = initailizeRequest();
     Map<String, Object> map = new HashMap<>();
     map.put(JsonKey.JOB_NAME, "kijklo");
     map.put(JsonKey.ORG_NAME, "degree");
@@ -998,7 +995,7 @@ public class UserRequestValidatorTest {
 
   @Test
   public void testValidateCreateUserFailureWithEmptyJobProfileOrgName() {
-	Request request = initailizeRequest();
+    Request request = initailizeRequest();
     Map<String, Object> map = new HashMap<>();
     map.put(JsonKey.JOB_NAME, "kijklo");
     map.put(JsonKey.ORG_NAME, "");
@@ -1141,16 +1138,15 @@ public class UserRequestValidatorTest {
       assertEquals(ResponseCode.functionalityMissing.getErrorCode(), e.getCode());
     }
   }
-  
-  
+
   private Request initailizeRequest() {
-	  Request request = new Request();
-	    Map<String, Object> requestObj = new HashMap<>();
-	    requestObj.put(JsonKey.USERNAME, "test123");
-	    requestObj.put(JsonKey.PHONE, "9321234123");
-	    requestObj.put(JsonKey.PHONE_VERIFIED, true);
-	    requestObj.put(JsonKey.FIRST_NAME, "test123");
-	    request.setRequest(requestObj);
-	    return request;
+    Request request = new Request();
+    Map<String, Object> requestObj = new HashMap<>();
+    requestObj.put(JsonKey.USERNAME, "test123");
+    requestObj.put(JsonKey.PHONE, "9321234123");
+    requestObj.put(JsonKey.PHONE_VERIFIED, true);
+    requestObj.put(JsonKey.FIRST_NAME, "test123");
+    request.setRequest(requestObj);
+    return request;
   }
 }

@@ -38,11 +38,17 @@ import org.sunbird.common.models.util.JsonKey;
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({HttpClients.class,URL.class,BufferedReader.class,HttpUtil.class, System.class, Notification.class})
+@PrepareForTest({
+  HttpClients.class,
+  URL.class,
+  BufferedReader.class,
+  HttpUtil.class,
+  System.class,
+  Notification.class
+})
 @PowerMockIgnore({"javax.management.*", "javax.net.ssl.*", "javax.security.*"})
 public class FCMNotificationTest {
 
- 
   @Test
   public void testSendNotificationSuccessWithListAndStrings() {
     Map<String, Object> map = new HashMap<>();
@@ -56,10 +62,9 @@ public class FCMNotificationTest {
     innerMap.put("title", "some value");
     innerMap.put("link", "https://google.com");
     map.put("map", innerMap);
-   
+
     String val = Notification.sendNotification("nameOFTopic", map, Notification.FCM_URL);
     Assert.assertNotEquals(JsonKey.FAILURE, val);
-   
   }
 
   @Test
@@ -95,30 +100,30 @@ public class FCMNotificationTest {
     String val = Notification.sendNotification("", map, "");
     Assert.assertEquals(JsonKey.FAILURE, val);
   }
-  
+
   @Before
   public void addMockRules() {
-	  
-	  PowerMockito.mockStatic(System.class);
-	  URL url =mock(URL.class);
-	  HttpURLConnection connection = mock(HttpURLConnection.class);
-	  OutputStream outStream = mock(OutputStream.class);
-	  InputStream inStream = mock(InputStream.class);
-	  BufferedReader reader = mock(BufferedReader.class);
-	  try {
-		when(System.getenv(JsonKey.SUNBIRD_FCM_ACCOUNT_KEY)).thenReturn("FCM_KEY");
-		when(System.getenv(AdditionalMatchers.not(Mockito.eq(JsonKey.SUNBIRD_FCM_ACCOUNT_KEY)))).thenCallRealMethod();
-		  
-		whenNew(URL.class).withAnyArguments().thenReturn(url);
-		when(url.openConnection()).thenReturn(connection);
-		when(connection.getOutputStream()).thenReturn(outStream);
-		when(connection.getInputStream()).thenReturn(inStream);
-		whenNew(BufferedReader.class).withAnyArguments().thenReturn(reader);
-		when(reader.readLine()).thenReturn("{\"" + JsonKey.MESSAGE_Id + "\": 123}", (String)null);
-	} catch (Exception e) {
-		e.printStackTrace();
-		Assert.fail("Mock rules addition failed "+ e.getMessage());
-	}
-	  
+
+    PowerMockito.mockStatic(System.class);
+    URL url = mock(URL.class);
+    HttpURLConnection connection = mock(HttpURLConnection.class);
+    OutputStream outStream = mock(OutputStream.class);
+    InputStream inStream = mock(InputStream.class);
+    BufferedReader reader = mock(BufferedReader.class);
+    try {
+      when(System.getenv(JsonKey.SUNBIRD_FCM_ACCOUNT_KEY)).thenReturn("FCM_KEY");
+      when(System.getenv(AdditionalMatchers.not(Mockito.eq(JsonKey.SUNBIRD_FCM_ACCOUNT_KEY))))
+          .thenCallRealMethod();
+
+      whenNew(URL.class).withAnyArguments().thenReturn(url);
+      when(url.openConnection()).thenReturn(connection);
+      when(connection.getOutputStream()).thenReturn(outStream);
+      when(connection.getInputStream()).thenReturn(inStream);
+      whenNew(BufferedReader.class).withAnyArguments().thenReturn(reader);
+      when(reader.readLine()).thenReturn("{\"" + JsonKey.MESSAGE_Id + "\": 123}", (String) null);
+    } catch (Exception e) {
+      e.printStackTrace();
+      Assert.fail("Mock rules addition failed " + e.getMessage());
+    }
   }
 }

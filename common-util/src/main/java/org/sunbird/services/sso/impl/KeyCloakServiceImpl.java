@@ -99,8 +99,7 @@ public class KeyCloakServiceImpl implements SSOManager {
         return token.getSubject();
       } else {
         ProjectLogger.log(
-            "KeyCloakServiceImpl:verifyToken: SSO_PUBLIC_KEY is NULL.",
-            LoggerEnum.ERROR);
+            "KeyCloakServiceImpl:verifyToken: SSO_PUBLIC_KEY is NULL.", LoggerEnum.ERROR);
         throw new ProjectCommonException(
             ResponseCode.keyCloakDefaultError.getErrorCode(),
             ResponseCode.keyCloakDefaultError.getErrorMessage(),

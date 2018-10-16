@@ -21,7 +21,7 @@ import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 
 /** Created by arvind on 6/10/17. */
-public class ProjectUtilTest extends BaseForHttpTest{
+public class ProjectUtilTest extends BaseForHttpTest {
 
   private PropertiesCache propertiesCache = ProjectUtil.propertiesCache;
 
@@ -402,5 +402,4 @@ public class ProjectUtilTest extends BaseForHttpTest{
     assertNull(map.get("startDate"));
     assertNull(map.get("endDate"));
   }
- 
 }

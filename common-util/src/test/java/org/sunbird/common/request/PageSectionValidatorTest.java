@@ -250,7 +250,7 @@ public class PageSectionValidatorTest {
 
   @Test
   public void testValidateUpdatePageFailureWithoutPageName() {
-	boolean reqSuccess = false;
+    boolean reqSuccess = false;
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.ID, "identifier of the page");

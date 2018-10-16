@@ -32,9 +32,18 @@ import com.microsoft.azure.storage.blob.ListBlobItem;
 /** @author Manzarul */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({CloudStorageAccount.class,CloudBlobClient.class,CloudBlobContainer.class, ListBlobItem.class})
-@PowerMockIgnore({"javax.management.*", "javax.net.ssl.*", "javax.security.*",
-	"com.microsoft.azure.storage.*"})
+@PrepareForTest({
+  CloudStorageAccount.class,
+  CloudBlobClient.class,
+  CloudBlobContainer.class,
+  ListBlobItem.class
+})
+@PowerMockIgnore({
+  "javax.management.*",
+  "javax.net.ssl.*",
+  "javax.security.*",
+  "com.microsoft.azure.storage.*"
+})
 public class AzureServiceFactoryTest {
 
   private static Object obj = null;
@@ -47,34 +56,30 @@ public class AzureServiceFactoryTest {
     obj = CloudServiceFactory.get("Azure");
     Assert.assertTrue(obj instanceof CloudService);
     Assert.assertNotNull(obj);
-    
   }
-  
+
   @Before
   public void addMockRules() {
-	  CloudStorageAccount cloudStorageAccount = mock(CloudStorageAccount.class);
-	  CloudBlobClient cloudBlobClient = mock(CloudBlobClient.class);
-	  CloudBlobContainer cloudBlobContainer  = mock(CloudBlobContainer.class);
-	  
-	  ListBlobItem listBlobItem = mock(ListBlobItem.class);
-	  List<ListBlobItem> lst=new ArrayList<>();
-	  lst.add(listBlobItem);
-	  PowerMockito.mockStatic(CloudStorageAccount.class);
-	  try {
-		  doReturn(cloudStorageAccount).when(CloudStorageAccount.class,"parse",Mockito.anyString());
-		  doReturn(cloudBlobClient).when(cloudStorageAccount).createCloudBlobClient();
-		  doReturn(cloudBlobContainer).when(cloudBlobClient).getContainerReference(Mockito.anyString());
-		  doReturn(true).when(cloudBlobContainer).exists();
-		  when(cloudBlobContainer.listBlobs()).thenReturn(lst);
-		  when(listBlobItem.getUri()).thenReturn(new URI("http://www.google.com"));
-		  
-	  } catch (Exception e) {
-		  Assert.fail("Could not initalize mocks, underlying reason " + e.getLocalizedMessage());
-	  }
+    CloudStorageAccount cloudStorageAccount = mock(CloudStorageAccount.class);
+    CloudBlobClient cloudBlobClient = mock(CloudBlobClient.class);
+    CloudBlobContainer cloudBlobContainer = mock(CloudBlobContainer.class);
+
+    ListBlobItem listBlobItem = mock(ListBlobItem.class);
+    List<ListBlobItem> lst = new ArrayList<>();
+    lst.add(listBlobItem);
+    PowerMockito.mockStatic(CloudStorageAccount.class);
+    try {
+      doReturn(cloudStorageAccount).when(CloudStorageAccount.class, "parse", Mockito.anyString());
+      doReturn(cloudBlobClient).when(cloudStorageAccount).createCloudBlobClient();
+      doReturn(cloudBlobContainer).when(cloudBlobClient).getContainerReference(Mockito.anyString());
+      doReturn(true).when(cloudBlobContainer).exists();
+      when(cloudBlobContainer.listBlobs()).thenReturn(lst);
+      when(listBlobItem.getUri()).thenReturn(new URI("http://www.google.com"));
+
+    } catch (Exception e) {
+      Assert.fail("Could not initalize mocks, underlying reason " + e.getLocalizedMessage());
+    }
   }
-  
-  
-  
 
   @Test
   public void testGetFailureWithWrongType() {
@@ -89,18 +94,16 @@ public class AzureServiceFactoryTest {
     Assert.assertTrue(obj.equals(obj1));
   }
 
- 
-  
   @Test
   public void testCheckContainerSuccessWithAccessPublic() {
-	
+
     container = AzureConnectionManager.getContainer(containerName, true);
     Assert.assertNotNull(container);
   }
 
   @Test
   public void testGetContainerReferenceSuccess() {
-	
+
     container1 = AzureConnectionManager.getContainerReference(containerName);
     Assert.assertNotNull(container1);
   }
@@ -161,7 +164,6 @@ public class AzureServiceFactoryTest {
     Assert.assertFalse(isFileDeleted);
   }
 
-  
   @Test
   public void testDeleteContainerSuccess() {
     CloudService service = (CloudService) obj;
@@ -176,4 +178,3 @@ public class AzureServiceFactoryTest {
     obj = null;
   }
 }
-
