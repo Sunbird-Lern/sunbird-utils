@@ -2,6 +2,7 @@ package org.sunbird.actorutil.org;
 
 import akka.actor.ActorRef;
 import java.util.Map;
+import org.sunbird.models.organization.Organization;
 
 public interface OrganisationClient {
 
@@ -20,4 +21,12 @@ public interface OrganisationClient {
    * @return Response.
    */
   String updateOrg(ActorRef actorRef, Map<String, Object> orgMap);
+
+  /**
+   * @desc This method will update org.
+   * @param actorRef Actor reference.
+   * @param orgId id for organization
+   * @return Organization.
+   */
+  Organization getOrgById(ActorRef actorRef, String orgId);
 }
