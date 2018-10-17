@@ -697,6 +697,25 @@ public final class JsonKey {
   public static final String SUNBIRD_USER_PROFILE_FIELD_DEFAULT_VISIBILITY =
       "sunbird_user_profile_field_default_visibility";
   public static final String DEFAULT_PROFILE_FIELD_VISIBILITY = "defaultProfileFieldVisibility";
+  public static final String SUNBIRD_COURSE_BATCH_NOTIFICATIONS_ACTIVE =
+      "sunbird_course_batch_notification_active";
+  public static final String BATCH_END_DATE = "batchEndDate";
+  public static final String BATCH_START_DATE = "batchStartDate";
+  public static final String TEMPLATE_NAME = "templateName";
+  public static final String BATCH_MENTOR_ENROL = "batchMentorEnrol";
+  public static final String BATCH_LEARNER_ENROL = "batchLearnerEnrol";
+  public static final String COURSE_INVITATION = "Course Invitation";
+  public static final String BATCH_LEARNER_UNENROL = "batchLearnerUnenrol";
+  public static final String BATCH_MENTOR_UNENROL = "batchMentorUnenrol";
+  public static final String BATCH_NAME = "batchName";
+  public static final String UNENROLL_FROM_COURSE_BATCH = "Unenrolled from Course";
+  public static final String OPEN_BATCH_LEARNER_UNENROL = "openBatchLearnerUnenrol";
+  public static final String MENTOR = "mentor";
+  public static final String COURSE_MAP = "courseMap";
+  public static final String OLD = "old";
+  public static final String NEW = "new";
+  public static final String COURSE_BATCH = "courseBatch";
+  public static final String USER_TYPE = "userType";
 
   private JsonKey() {}
 }
