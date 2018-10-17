@@ -297,4 +297,22 @@ public class BaseRequestValidator {
           JsonKey.USER_ID);
     }
   }
+
+  public void validateSearchRequest(Request request) {
+    if (null == request.getRequest().get(JsonKey.FILTERS)) {
+      throw new ProjectCommonException(
+          ResponseCode.mandatoryParamsMissing.getErrorCode(),
+          MessageFormat.format(
+              ResponseCode.mandatoryParamsMissing.getErrorMessage(), JsonKey.FILTERS),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    if (request.getRequest().containsKey(JsonKey.FILTERS)
+        && (!(request.getRequest().get(JsonKey.FILTERS) instanceof Map))) {
+      throw new ProjectCommonException(
+          ResponseCode.dataTypeError.getErrorCode(),
+          MessageFormat.format(
+              ResponseCode.dataTypeError.getErrorMessage(), JsonKey.FILTERS, "Map"),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+  }
 }

@@ -9,7 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectUtil;
-import org.sunbird.common.models.util.ProjectUtil.AddressType;
 import org.sunbird.common.models.util.StringFormatter;
 import org.sunbird.common.responsecode.ResponseCode;
 
@@ -204,7 +203,7 @@ public class UserRequestValidator extends BaseRequestValidator {
             (List<Map<String, Object>>) userRequest.get(JsonKey.ADDRESS);
         for (int i = 0; i < reqList.size(); i++) {
           addrReqMap = reqList.get(i);
-          validateAddress(addrReqMap, JsonKey.ADDRESS);
+          new AddressRequestValidator().validateAddress(addrReqMap, JsonKey.ADDRESS);
         }
       }
     }
@@ -246,7 +245,7 @@ public class UserRequestValidator extends BaseRequestValidator {
           }
           if (reqMap.containsKey(JsonKey.ADDRESS) && null != reqMap.get(JsonKey.ADDRESS)) {
             addrReqMap = (Map<String, Object>) reqMap.get(JsonKey.ADDRESS);
-            validateAddress(addrReqMap, JsonKey.EDUCATION);
+            new AddressRequestValidator().validateAddress(addrReqMap, JsonKey.EDUCATION);
           }
         }
       }
@@ -316,7 +315,7 @@ public class UserRequestValidator extends BaseRequestValidator {
       }
       if (reqMap.containsKey(JsonKey.ADDRESS) && null != reqMap.get(JsonKey.ADDRESS)) {
         addrReqMap = (Map<String, Object>) reqMap.get(JsonKey.ADDRESS);
-        validateAddress(addrReqMap, JsonKey.JOB_PROFILE);
+        new AddressRequestValidator().validateAddress(addrReqMap, JsonKey.JOB_PROFILE);
       }
     }
   }
@@ -333,50 +332,6 @@ public class UserRequestValidator extends BaseRequestValidator {
             ERROR_CODE);
       }
     }
-  }
-
-  private static void validateAddress(Map<String, Object> address, String type) {
-    if (StringUtils.isBlank((String) address.get(JsonKey.ADDRESS_LINE1))) {
-      throw new ProjectCommonException(
-          ResponseCode.addressError.getErrorCode(),
-          ProjectUtil.formatMessage(
-              ResponseCode.addressError.getErrorMessage(), type, JsonKey.ADDRESS_LINE1),
-          ERROR_CODE);
-    }
-    if (StringUtils.isBlank((String) address.get(JsonKey.CITY))) {
-      throw new ProjectCommonException(
-          ResponseCode.addressError.getErrorCode(),
-          ProjectUtil.formatMessage(
-              ResponseCode.addressError.getErrorMessage(), type, JsonKey.CITY),
-          ERROR_CODE);
-    }
-    if (address.containsKey(JsonKey.ADD_TYPE) && type.equals(JsonKey.ADDRESS)) {
-
-      if (StringUtils.isBlank((String) address.get(JsonKey.ADD_TYPE))) {
-        throw new ProjectCommonException(
-            ResponseCode.addressError.getErrorCode(),
-            ProjectUtil.formatMessage(
-                ResponseCode.addressError.getErrorMessage(), type, JsonKey.TYPE),
-            ERROR_CODE);
-      }
-
-      if (!StringUtils.isBlank((String) address.get(JsonKey.ADD_TYPE))
-          && !checkAddressType((String) address.get(JsonKey.ADD_TYPE))) {
-        throw new ProjectCommonException(
-            ResponseCode.addressTypeError.getErrorCode(),
-            ResponseCode.addressTypeError.getErrorMessage(),
-            ERROR_CODE);
-      }
-    }
-  }
-
-  private static boolean checkAddressType(String addrType) {
-    for (AddressType type : AddressType.values()) {
-      if (type.getTypeName().equals(addrType)) {
-        return true;
-      }
-    }
-    return false;
   }
 
   private static boolean validatePhoneNo(String phone, String countryCode) {
@@ -589,7 +544,7 @@ public class UserRequestValidator extends BaseRequestValidator {
           || (reqMap.containsKey(JsonKey.IS_DELETED)
               && (null == reqMap.get(JsonKey.IS_DELETED)
                   || !(boolean) reqMap.get(JsonKey.IS_DELETED)))) {
-        validateAddress(reqMap, JsonKey.ADDRESS);
+        new AddressRequestValidator().validateAddress(reqMap, JsonKey.ADDRESS);
       }
     }
   }
