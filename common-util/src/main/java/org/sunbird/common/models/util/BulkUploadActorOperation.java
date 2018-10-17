@@ -1,15 +1,12 @@
 package org.sunbird.common.models.util;
 
-/**
- * enum to represent the bulk upload operations.
- *
- * @author arvind.
- */
+/** Enum to represent bulk upload operations */
 public enum BulkUploadActorOperation {
   LOCATION_BULK_UPLOAD("locationBulkUpload"),
   LOCATION_BULK_UPLOAD_BACKGROUND_JOB("locationBulkUploadBackground"),
-  ORG_BULK_UPLOAD_BACKGROUND_JOB("orgBulkUploadBackground"),
-  ORG_BULK_UPLOAD("orgBulkUpload");
+
+  ORG_BULK_UPLOAD("orgBulkUpload"),
+  ORG_BULK_UPLOAD_BACKGROUND_JOB("orgBulkUploadBackground");
 
   private String value;
 

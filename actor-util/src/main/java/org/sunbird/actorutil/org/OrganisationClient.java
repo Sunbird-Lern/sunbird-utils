@@ -7,20 +7,21 @@ import org.sunbird.models.organization.Organization;
 public interface OrganisationClient {
 
   /**
-   * @desc This method will create org.
-   * @param actorRef Actor reference.
-   * @param orgMap List of location code.
-   * @return Response.
+   * Create organisation.
+   *
+   * @param actorRef Actor reference
+   * @param orgMap Organisation details
+   * @return Organisation ID
    */
   String createOrg(ActorRef actorRef, Map<String, Object> orgMap);
 
   /**
-   * @desc This method will update org.
-   * @param actorRef Actor reference.
-   * @param orgMap List of location code.
-   * @return Response.
+   * Update organisation details.
+   *
+   * @param actorRef Actor reference
+   * @param orgMap Organisation details
    */
-  String updateOrg(ActorRef actorRef, Map<String, Object> orgMap);
+  void updateOrg(ActorRef actorRef, Map<String, Object> orgMap);
 
   /**
    * @desc This method will update org.
