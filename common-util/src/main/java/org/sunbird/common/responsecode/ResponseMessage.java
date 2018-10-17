@@ -150,6 +150,7 @@ public interface ResponseMessage {
     String DATA_SIZE_EXCEEDED = "Maximum upload data size should be {0}";
     String INVALID_COLUMN_NAME = "Invalid column name.";
     String USER_ALREADY_ACTIVE = "User is already active";
+    String USER_ALREADY_INACTIVE = "User is already inactive";
     String ENROLMENT_TYPE_REQUIRED = "Enrolment type is mandatory.";
     String ENROLMENT_TYPE_VALUE_ERROR = "EnrolmentType value must be either open or invite-only.";
     String COURSE_BATCH_START_DATE_REQUIRED = "Batch start date is mandatory.";
@@ -492,6 +493,7 @@ public interface ResponseMessage {
     String DATA_SIZE_EXCEEDED = "DATA_SIZE_EXCEEDED";
     String INVALID_COLUMN_NAME = "INVALID_COLUMN_NAME";
     String USER_ALREADY_ACTIVE = "USER_ALREADY_ACTIVE";
+    String USER_ALREADY_INACTIVE = "USER_ALREADY_INACTIVE";
     String ENROLMENT_TYPE_REQUIRED = "ENROLMENT_TYPE_REQUIRED";
     String ENROLMENT_TYPE_VALUE_ERROR = "ENROLMENT_TYPE_VALUE_ERROR";
     String COURSE_BATCH_START_DATE_REQUIRED = "COURSE_BATCH_START_DATE_REQUIRED";
