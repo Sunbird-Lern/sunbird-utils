@@ -178,7 +178,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.JOB_PROFILE, jobProfileList);
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      UserRequestValidator.validateCreateUserRequest(request);
       response = true;
     } catch (ProjectCommonException e) {
       Assert.assertNull(e);
@@ -227,7 +227,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.JOB_PROFILE, jobProfileList);
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      UserRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.addressTypeError.getErrorCode(), e.getCode());
     }
@@ -274,7 +274,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.JOB_PROFILE, jobProfileList);
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      UserRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.addressError.getErrorCode(), e.getCode());
     }
@@ -442,7 +442,7 @@ public class UserRequestValidatorTest {
     boolean response = false;
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateUpdateUser(request);
+      UserRequestValidator.validateUpdateUserRequest(request);
       response = true;
     } catch (ProjectCommonException e) {
       Assert.assertNull(e);
@@ -728,7 +728,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.LANGUAGE, "");
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      UserRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.dataTypeError.getErrorCode(), e.getCode());
@@ -747,7 +747,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.ADDRESS, "");
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      UserRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.dataTypeError.getErrorCode(), e.getCode());
@@ -766,7 +766,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.EDUCATION, "");
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      UserRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.dataTypeError.getErrorCode(), e.getCode());
@@ -792,7 +792,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.ADDRESS, addressList);
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      UserRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.addressTypeError.getErrorCode(), e.getCode());
@@ -804,7 +804,7 @@ public class UserRequestValidatorTest {
     Request request = new Request();
     request.getRequest().put(JsonKey.COUNTRY_CODE, "+as");
     try {
-      UserRequestValidator.validateCreateUser(request);
+      UserRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.invalidCountryCode.getErrorCode(), e.getCode());
@@ -817,7 +817,7 @@ public class UserRequestValidatorTest {
     request.getRequest().put(JsonKey.EMAIL, "");
     request.getRequest().put(JsonKey.PHONE, "");
     try {
-      UserRequestValidator.validateCreateUser(request);
+      UserRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.emailorPhoneRequired.getErrorCode(), e.getCode());
@@ -830,7 +830,7 @@ public class UserRequestValidatorTest {
     request.getRequest().put(JsonKey.EMAIL, "am@ds@cmo");
 
     try {
-      UserRequestValidator.validateCreateUser(request);
+      UserRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.emailFormatError.getErrorCode(), e.getCode());
@@ -843,7 +843,7 @@ public class UserRequestValidatorTest {
     request.getRequest().put(JsonKey.PROVIDER, "BLR");
     request.getRequest().put(JsonKey.PHONE, "7894561230");
     try {
-      UserRequestValidator.validateCreateUser(request);
+      UserRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.phoneVerifiedError.getErrorCode(), e.getCode());
@@ -857,7 +857,7 @@ public class UserRequestValidatorTest {
     request.getRequest().put(JsonKey.PHONE, "7894561230");
     request.getRequest().put(JsonKey.PHONE_VERIFIED, "true");
     try {
-      UserRequestValidator.validateCreateUser(request);
+      UserRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.phoneVerifiedError.getErrorCode(), e.getCode());
@@ -871,7 +871,7 @@ public class UserRequestValidatorTest {
     request.getRequest().put(JsonKey.PHONE, "7894561230");
     request.getRequest().put(JsonKey.PHONE_VERIFIED, false);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      UserRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.phoneVerifiedError.getErrorCode(), e.getCode());
@@ -893,7 +893,7 @@ public class UserRequestValidatorTest {
 
     request.getRequest().put(JsonKey.EDUCATION, list);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      UserRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.educationNameError.getErrorCode(), e.getCode());
@@ -916,7 +916,7 @@ public class UserRequestValidatorTest {
 
     request.getRequest().put(JsonKey.EDUCATION, list);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      UserRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.educationDegreeError.getErrorCode(), e.getCode());
@@ -941,7 +941,7 @@ public class UserRequestValidatorTest {
     list.add(map);
     request.getRequest().put(JsonKey.EDUCATION, list);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      UserRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.addressError.getErrorCode(), e.getCode());
@@ -967,7 +967,7 @@ public class UserRequestValidatorTest {
     list.add(map);
     request.getRequest().put(JsonKey.EDUCATION, list);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      UserRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.addressError.getErrorCode(), e.getCode());
@@ -984,7 +984,7 @@ public class UserRequestValidatorTest {
     request.getRequest().put(JsonKey.FIRST_NAME, "98745");
     request.getRequest().put(JsonKey.JOB_PROFILE, "");
     try {
-      UserRequestValidator.validateCreateUser(request);
+      UserRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.dataTypeError.getErrorCode(), e.getCode());
@@ -1006,7 +1006,7 @@ public class UserRequestValidatorTest {
     list.add(map);
     request.getRequest().put(JsonKey.JOB_PROFILE, list);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      UserRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.jobNameError.getErrorCode(), e.getCode());
@@ -1029,7 +1029,7 @@ public class UserRequestValidatorTest {
     list.add(map);
     request.getRequest().put(JsonKey.JOB_PROFILE, list);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      UserRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.dateFormatError.getErrorCode(), e.getCode());
@@ -1052,7 +1052,7 @@ public class UserRequestValidatorTest {
     list.add(map);
     request.getRequest().put(JsonKey.JOB_PROFILE, list);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      UserRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.dateFormatError.getErrorCode(), e.getCode());
@@ -1074,7 +1074,7 @@ public class UserRequestValidatorTest {
     list.add(map);
     request.getRequest().put(JsonKey.JOB_PROFILE, list);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      UserRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.organisationNameError.getErrorCode(), e.getCode());
@@ -1100,7 +1100,7 @@ public class UserRequestValidatorTest {
     list.add(map);
     request.getRequest().put(JsonKey.JOB_PROFILE, list);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      UserRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.addressError.getErrorCode(), e.getCode());
@@ -1116,7 +1116,7 @@ public class UserRequestValidatorTest {
     request.getRequest().put(JsonKey.USERNAME, "98745");
     request.getRequest().put(JsonKey.FIRST_NAME, "98745");
     try {
-      UserRequestValidator.validateCreateUser(request);
+      UserRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.phoneNoFormatError.getErrorCode(), e.getCode());
