@@ -2,7 +2,7 @@ package org.sunbird.actorutil.org;
 
 import akka.actor.ActorRef;
 import java.util.Map;
-import org.sunbird.models.organization.Organisation;
+import org.sunbird.models.organisation.Organisation;
 
 public interface OrganisationClient {
 
