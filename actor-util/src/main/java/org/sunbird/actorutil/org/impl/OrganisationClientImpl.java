@@ -57,18 +57,21 @@ public class OrganisationClientImpl implements OrganisationClient {
 
   @Override
   public Organisation getOrgById(ActorRef actorRef, String orgId) {
+    ProjectLogger.log("OrganisationClientImpl: getOrgById called", LoggerEnum.INFO);
+    Organisation organisation = null;
+    
     Request request = new Request();
     Map<String, Object> requestMap = new HashMap<>();
     requestMap.put(JsonKey.ORGANISATION_ID, orgId);
     request.setRequest(requestMap);
     request.setOperation(ActorOperations.GET_ORG_DETAILS.getValue());
-    ProjectLogger.log("OrganisationClientImpl : callGetOrgById ", LoggerEnum.INFO);
+    
     Object obj = interServiceCommunication.getResponse(actorRef, request);
-    Organisation organization = null;
+    
     if (obj instanceof Response) {
       ObjectMapper objectMapper = new ObjectMapper();
       Response response = (Response) obj;
-      organization = objectMapper.convertValue(response.get(JsonKey.RESPONSE), Organisation.class);
+      organisation = objectMapper.convertValue(response.get(JsonKey.RESPONSE), Organisation.class);
     } else if (obj instanceof ProjectCommonException) {
       throw (ProjectCommonException) obj;
     } else if (obj instanceof Exception) {
@@ -78,6 +81,6 @@ public class OrganisationClientImpl implements OrganisationClient {
           ResponseCode.SERVER_ERROR.getResponseCode());
     }
 
-    return organization;
+    return organisation;
   }
 }

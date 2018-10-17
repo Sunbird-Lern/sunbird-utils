@@ -24,10 +24,11 @@ public interface OrganisationClient {
   void updateOrg(ActorRef actorRef, Map<String, Object> orgMap);
 
   /**
-   * @desc This method will update org.
-   * @param actorRef Actor reference.
-   * @param orgId id for organization
-   * @return Organisation.
+   * Get details of organisation for given ID.
+   *
+   * @param actorRef Actor reference
+   * @param orgId Organisation ID
+   * @return Organisation details
    */
   Organisation getOrgById(ActorRef actorRef, String orgId);
 }
