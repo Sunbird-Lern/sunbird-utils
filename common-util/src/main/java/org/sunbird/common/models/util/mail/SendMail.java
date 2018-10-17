@@ -271,6 +271,8 @@ public class SendMail {
       for (String email : emailList) {
         message.addRecipient(recipientType, new InternetAddress(email));
       }
+      if (recipientType == Message.RecipientType.BCC)
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(fromEmail));
       message.setSubject(subject);
       message.setContent(writer.toString(), "text/html; charset=utf-8");
       transport = session.getTransport("smtp");
