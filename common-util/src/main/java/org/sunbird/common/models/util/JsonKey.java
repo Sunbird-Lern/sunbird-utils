@@ -717,5 +717,9 @@ public final class JsonKey {
   public static final String COURSE_BATCH = "courseBatch";
   public static final String USER_TYPE = "userType";
 
+  public static final String SUNBIRD_API_REQUEST_LOWER_CASE_FIELDS =
+      "sunbird_api_request_lower_case_fields";
+
+
   private JsonKey() {}
 }
