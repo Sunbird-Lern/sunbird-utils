@@ -24,7 +24,7 @@ public class UserRequestValidator extends BaseRequestValidator {
    *
    * @param userRequest Request
    */
-  public static void validateCreateUser(Request userRequest) {
+  public static void validateCreateUserRequest(Request userRequest) {
     externalIdsValidation(userRequest, JsonKey.CREATE);
     fieldsNotAllowed(
         Arrays.asList(
@@ -50,18 +50,22 @@ public class UserRequestValidator extends BaseRequestValidator {
     validateWebPages(userRequest);
   }
 
+  public static void validateCreateUserV1Request(Request userRequest) {
+    validateCreateUserRequest(userRequest);
+    fieldsNotAllowed(Arrays.asList(JsonKey.ORGANISATION_ID), userRequest);
+  }
   /**
    * This method will validate create user data.
    *
    * @param userRequest Request
    */
-  public static void validateCreateUserV2(Request userRequest) {
+  public static void validateCreateUserV2Request(Request userRequest) {
     BaseRequestValidator requestValidator = new BaseRequestValidator();
     requestValidator.validateParam(
         (String) userRequest.getRequest().get(JsonKey.CHANNEL),
         ResponseCode.mandatoryParamsMissing,
         JsonKey.CHANNEL);
-    validateCreateUser(userRequest);
+    validateCreateUserRequest(userRequest);
   }
 
   public static void fieldsNotAllowed(List<String> fields, Request userRequest) {
@@ -357,7 +361,7 @@ public class UserRequestValidator extends BaseRequestValidator {
    * @param userRequest Request
    */
   @SuppressWarnings({"rawtypes"})
-  public static void validateUpdateUser(Request userRequest) {
+  public static void validateUpdateUserRequest(Request userRequest) {
     externalIdsValidation(userRequest, JsonKey.UPDATE);
     phoneValidation(userRequest);
     updateUserBasicValidation(userRequest);
