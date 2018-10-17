@@ -21,5 +21,5 @@ public interface OrganisationClient {
    * @param actorRef Actor reference
    * @param orgMap Organisation details
    */
-  String updateOrg(ActorRef actorRef, Map<String, Object> orgMap);
+  void updateOrg(ActorRef actorRef, Map<String, Object> orgMap);
 }
