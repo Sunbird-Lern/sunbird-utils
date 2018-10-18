@@ -12,16 +12,10 @@ import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.StringFormatter;
 import org.sunbird.common.responsecode.ResponseCode;
 
-/** @author Amit Kumar */
 public class UserRequestValidator extends BaseRequestValidator {
 
   private static final int ERROR_CODE = ResponseCode.CLIENT_ERROR.getResponseCode();
 
-  /**
-   * This method will validate create user data.
-   *
-   * @param userRequest Request
-   */
   public void validateCreateUserRequest(Request userRequest) {
     externalIdsValidation(userRequest, JsonKey.CREATE);
     fieldsNotAllowed(
@@ -52,11 +46,7 @@ public class UserRequestValidator extends BaseRequestValidator {
     validateCreateUserRequest(userRequest);
     fieldsNotAllowed(Arrays.asList(JsonKey.ORGANISATION_ID), userRequest);
   }
-  /**
-   * This method will validate create user data.
-   *
-   * @param userRequest Request
-   */
+
   public void validateCreateUserV2Request(Request userRequest) {
     validateParam(
         (String) userRequest.getRequest().get(JsonKey.CHANNEL),
