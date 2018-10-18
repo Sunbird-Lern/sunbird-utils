@@ -10,36 +10,27 @@ public class UserProfileRequestValidator extends BaseRequestValidator {
 
   @SuppressWarnings("unchecked")
   public void validateProfileVisibility(Request request) {
-	validateParam((String)request.getRequest().get(JsonKey.USER_ID), ResponseCode.mandatoryParamsMissing, JsonKey.USER_ID);
+    validateParam((String)request.getRequest().get(JsonKey.USER_ID), ResponseCode.mandatoryParamsMissing, JsonKey.USER_ID);
     validateUserId(request, JsonKey.USER_ID);
-    checkExistenceAndDataTypeForPublicPrivate(request);
+    validatePublicAndPrivateFields(request);
     checkKeyNotPresentInPublicPrivate(request);
   }
 
-  private void checkExistenceAndDataTypeForPublicPrivate(Request request) {
-    if (request.getRequest().get(JsonKey.PRIVATE) == null
-        && request.getRequest().get(JsonKey.PUBLIC) == null) {
+  private void validatePublicAndPrivateFields(Request request) {
+    List<String> publicList = (List<String>) request.getRequest().get(JsonKey.PUBLIC);
+    List<String> privateList = (List<String>) request.getRequest().get(JsonKey.PRIVATE);
+
+    if (publicList == null && privateList == null) {
       throw new ProjectCommonException(
           ResponseCode.invalidData.getErrorCode(),
           ResponseCode.invalidData.getErrorMessage(),
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
-    validateListParam(request.getRequest(), JsonKey.PRIVATE, JsonKey.PUBLIC);
-    
+
+    validateListElementsAreDisjoint(publicList, privateList);
   }
 
-  private void checkKeyNotPresentInPublicPrivate(Request request) {
-    if (null != request.getRequest().get(JsonKey.PRIVATE)
-        && null != request.getRequest().get(JsonKey.PUBLIC)) {
-      List<String> privateList = (List<String>) request.getRequest().get(JsonKey.PRIVATE);
-      List<String> publicList = (List<String>) request.getRequest().get(JsonKey.PUBLIC);
-      
-      validatePublicAndPrivateFields(publicList, privateList);
-      
-    }
-  }
-
-  private void validatePublicAndPrivateFields(List<String> list1, List<String> list2) {
+  private void validateListElementsAreDisjoint(List<String> list1, List<String> list2) {
     for (String field : list2) {
       if (list1.contains(field)) {
         throw new ProjectCommonException(
@@ -49,4 +40,5 @@ public class UserProfileRequestValidator extends BaseRequestValidator {
       }
     }
   }
+
 }
