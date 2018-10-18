@@ -15,12 +15,10 @@ import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.responsecode.ResponseCode;
 
-/** @author Manzarul */
 public class UserRequestValidatorTest {
 
   private static final UserRequestValidator userRequestValidator = new UserRequestValidator();
   
-
   @Test
   public void testValidateForgotPasswordSuccess() {
     Request request = new Request();
@@ -510,10 +508,8 @@ public class UserRequestValidatorTest {
     assertEquals(true, response);
   }
 
- 
-
   @Test
-  public void testValidateWebPageFailureWithEmptyList() {
+  public void testValidateWebPagesFailureWithEmptyList() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.WEB_PAGES, new ArrayList<>());
@@ -527,7 +523,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void testValidateWebPageFailureWithNull() {
+  public void testValidateWebPagesFailureWithNull() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.WEB_PAGES, null);
@@ -718,7 +714,7 @@ public class UserRequestValidatorTest {
   }
 
   // @Test
-  public void testValidateCreateUserRequestnFailureWithInvalidCountryCode() {
+  public void testValidateCreateUserRequestFailureWithInvalidCountryCode() {
     Request request = new Request();
     request.getRequest().put(JsonKey.COUNTRY_CODE, "+as");
     try {
@@ -730,7 +726,7 @@ public class UserRequestValidatorTest {
   }
 
   // @Test
-  public void testValidateCreateUserRequestnFailureWithoutEmailAndPhone() {
+  public void testValidateCreateUserRequestFailureWithoutEmailAndPhone() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "");
     request.getRequest().put(JsonKey.PHONE, "");
@@ -743,7 +739,7 @@ public class UserRequestValidatorTest {
   }
 
   // @Test
-  public void testValidateCreateUserRequestnFailureWithInvalidEmailFormat() {
+  public void testValidateCreateUserRequestFailureWithInvalidEmailFormat() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "am@ds@cmo");
 
@@ -756,7 +752,7 @@ public class UserRequestValidatorTest {
   }
 
   // @Test
-  public void testValidateCreateUserRequestnFailureWithoutPhoneVerified() {
+  public void testValidateCreateUserRequestFailureWithoutPhoneVerified() {
     Request request = new Request();
     request.getRequest().put(JsonKey.PROVIDER, "BLR");
     request.getRequest().put(JsonKey.PHONE, "7894561230");
@@ -769,7 +765,7 @@ public class UserRequestValidatorTest {
   }
 
   // @Test
-  public void testValidateCreateUserRequestnFailureWithPhoneVerifiedEmpty() {
+  public void testValidateCreateUserRequestFailureWithPhoneVerifiedEmpty() {
     Request request = new Request();
     request.getRequest().put(JsonKey.PROVIDER, "BLR");
     request.getRequest().put(JsonKey.PHONE, "7894561230");
@@ -783,7 +779,7 @@ public class UserRequestValidatorTest {
   }
 
   // @Test
-  public void testValidateCreateUserRequestnFailureWithPhoneVerifiedFalse() {
+  public void testValidateCreateUserRequestFailureWithPhoneVerifiedFalse() {
     Request request = new Request();
     request.getRequest().put(JsonKey.PROVIDER, "BLR");
     request.getRequest().put(JsonKey.PHONE, "7894561230");
@@ -798,7 +794,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void testValidateCreateUserRequestnFailureWithoutEducationName() {
+  public void testValidateCreateUserRequestFailureWithoutEducationName() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
     request.getRequest().put(JsonKey.PHONE, "9874561230");
@@ -820,7 +816,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void testValidateCreateUserRequestnFailureWithoutEducationDegree() {
+  public void testValidateCreateUserRequestFailureWithoutEducationDegree() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
     request.getRequest().put(JsonKey.PHONE, "9874561230");
@@ -843,7 +839,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void testValidateCreateUserRequestnFailureWithoutAddressLine1() {
+  public void testValidateCreateUserRequestFailureWithoutAddressLine1() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
     request.getRequest().put(JsonKey.PHONE, "9874561230");
@@ -868,7 +864,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void testValidateCreateUserRequestnFailureWithoutCity() {
+  public void testValidateCreateUserRequestFailureWithoutCity() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
     request.getRequest().put(JsonKey.PHONE, "9874561230");
@@ -894,7 +890,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void testValidateCreateUserRequestnFailureWithInvalidJobProfileType() {
+  public void testValidateCreateUserRequestFailureWithInvalidJobProfileType() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
     request.getRequest().put(JsonKey.PHONE, "9874561230");
@@ -911,7 +907,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void testValidateCreateUserRequestnFailureWithoutJobName() {
+  public void testValidateCreateUserRequestFailureWithoutJobName() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
     request.getRequest().put(JsonKey.PHONE, "9874561230");
@@ -933,7 +929,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void testValidateCreateUserRequestnFailureWithInvalidJoinDate() {
+  public void testValidateCreateUserRequestFailureWithInvalidJoinDate() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
     request.getRequest().put(JsonKey.PHONE, "9874561230");
@@ -956,7 +952,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void testValidateCreateUserRequestnFailureWithInvalidEndDate() {
+  public void testValidateCreateUserRequestFailureWithInvalidEndDate() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
     request.getRequest().put(JsonKey.PHONE, "9874561230");
@@ -979,7 +975,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void testValidateCreateUserRequestnFailureWithEmptyOrgName() {
+  public void testValidateCreateUserRequestFailureWithEmptyOrgName() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
     request.getRequest().put(JsonKey.PHONE, "9874561230");
@@ -1001,7 +997,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void testValidateCreateUserRequestnFailureWithEmptyCity() {
+  public void testValidateCreateUserRequestFailureWithEmptyCity() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
     request.getRequest().put(JsonKey.PHONE, "9874561230");
@@ -1026,7 +1022,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void testValidateCreateUserRequestnFailureWithWrongPhoneFormat() {
+  public void testValidateCreateUserRequestFailureWithWrongPhoneFormat() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
     request.getRequest().put(JsonKey.PHONE, "9874561230");
@@ -1118,7 +1114,7 @@ public class UserRequestValidatorTest {
   }
 
    @Test
-  public void testValidteVerifyUserSuccess() {
+  public void testValidateVerifyUserSuccess() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.LOGIN_ID, "username@provider");
@@ -1134,7 +1130,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void testValidteVerifyUserFailureWithEmptyLogin() {
+  public void testValidateVerifyUserFailureWithEmptyLogin() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.LOGIN_ID, "");
