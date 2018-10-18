@@ -13,7 +13,6 @@ public class UserProfileRequestValidator extends BaseRequestValidator {
     validateParam((String)request.getRequest().get(JsonKey.USER_ID), ResponseCode.mandatoryParamsMissing, JsonKey.USER_ID);
     validateUserId(request, JsonKey.USER_ID);
     validatePublicAndPrivateFields(request);
-    checkKeyNotPresentInPublicPrivate(request);
   }
 
   private void validatePublicAndPrivateFields(Request request) {
