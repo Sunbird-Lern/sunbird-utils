@@ -58,8 +58,7 @@ public class UserRequestValidator extends BaseRequestValidator {
    * @param userRequest Request
    */
   public void validateCreateUserV2Request(Request userRequest) {
-    BaseRequestValidator requestValidator = new BaseRequestValidator();
-    requestValidator.validateParam(
+    validateParam(
         (String) userRequest.getRequest().get(JsonKey.CHANNEL),
         ResponseCode.mandatoryParamsMissing,
         JsonKey.CHANNEL);
@@ -154,12 +153,7 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   private void createUserBasicProfileFieldsValidation(Request userRequest) {
-    if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.FIRST_NAME))) {
-      throw new ProjectCommonException(
-          ResponseCode.firstNameRequired.getErrorCode(),
-          ResponseCode.firstNameRequired.getErrorMessage(),
-          ERROR_CODE);
-    }
+	validateParam((String) userRequest.getRequest().get(JsonKey.FIRST_NAME), ResponseCode.mandatoryParamsMissing,JsonKey.FIRST_NAME);
     if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.EMAIL))
         && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PHONE))) {
       throw new ProjectCommonException(
@@ -747,7 +741,7 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   /** @param request */
-  public void validateForgotpassword(Request request) {
+  public void validateForgotPassword(Request request) {
     if (request.getRequest().get(JsonKey.USERNAME) == null
         || StringUtils.isBlank((String) request.getRequest().get(JsonKey.USERNAME))) {
       throw new ProjectCommonException(

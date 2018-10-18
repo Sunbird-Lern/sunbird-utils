@@ -16,7 +16,7 @@ public class UserProfileRequestValidatorTest {
       new UserProfileRequestValidator();
 
   @Test
-  public void profileVisibilityValidatorTest() {
+  public void testValidateProfileVisibilityFailureWithFieldInPrivateAndPublic() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.USER_ID, "9878888888");
@@ -35,7 +35,7 @@ public class UserProfileRequestValidatorTest {
   }
 
   @Test
-  public void profileVisibilityInvalidUserTest() {
+  public void testValidateProfileVisibilityFailureWithEmptyUserId() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.USER_ID, "");
@@ -48,7 +48,7 @@ public class UserProfileRequestValidatorTest {
   }
 
   @Test
-  public void profileVisibilityInvalidPrivateFieldsTest() {
+  public void testValidateProfileVisibilityFailureWithInvalidPrivateType() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.USER_ID, "123");
@@ -62,7 +62,7 @@ public class UserProfileRequestValidatorTest {
   }
 
   @Test
-  public void profileVisibilityInvalidPublicFieldsTest() {
+  public void testValidateProfileVisibilityFailureWithInvalidPublicType() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.USER_ID, "123");
