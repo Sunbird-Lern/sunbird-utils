@@ -403,39 +403,6 @@ public class CommonRequestValidatorTest {
   }
 
   @Test
-  public void validateVerifyUserTest() {
-    Request request = new Request();
-    Map<String, Object> requestObj = new HashMap<>();
-    requestObj.put(JsonKey.LOGIN_ID, "username@provider");
-    request.setRequest(requestObj);
-    boolean response = false;
-    try {
-      UserRequestValidator.validateVerifyUser(request);
-      response = true;
-    } catch (ProjectCommonException e) {
-      Assert.assertNull(e);
-    }
-    Assert.assertTrue(response);
-  }
-
-  @Test
-  public void validateVerifyUserWithOutLoginIdTest() {
-    Request request = new Request();
-    Map<String, Object> requestObj = new HashMap<>();
-    requestObj.put(JsonKey.LOGIN_ID, "");
-    request.setRequest(requestObj);
-    boolean response = false;
-    try {
-      UserRequestValidator.validateVerifyUser(request);
-      response = true;
-    } catch (ProjectCommonException e) {
-      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
-      assertEquals(ResponseCode.loginIdRequired.getErrorCode(), e.getCode());
-    }
-    Assert.assertFalse(response);
-  }
-
-  @Test
   public void validateCreateOrgTypeTest() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
