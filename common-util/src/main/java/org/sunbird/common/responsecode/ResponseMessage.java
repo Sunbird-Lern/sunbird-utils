@@ -123,7 +123,7 @@ public interface ResponseMessage {
     String JOB_NAME_ERROR = "Job Name is required.";
     String NAME_OF_ORGANISATION_ERROR = "Organization Name is required.";
     String ROLES_MISSING = "user role is required.";
-    String EMPTY_ROLES_PROVIDED = "roles cannot be empty";
+    String EMPTY_ROLES_PROVIDED = "Roles cannot be empty.";
     String CHANNEL_REG_FAILED = "Channel Registration failed.";
     String INVALID_COURSE_CREATOR_ID = "Course creator id does not exist .";
     String USER_NOT_ASSOCIATED_TO_ROOT_ORG =
