@@ -150,8 +150,8 @@ public interface ResponseMessage {
         "Please provide either organization Id or external Id & provider value.";
     String DATA_SIZE_EXCEEDED = "Maximum upload data size should be {0}";
     String INVALID_COLUMN_NAME = "Invalid column name.";
-    String USER_ALREADY_ACTIVE = "User is already active";
-    String USER_ALREADY_INACTIVE = "User is already inactive";
+    String USER_ALREADY_ACTIVE = "User is already active.";
+    String USER_ALREADY_INACTIVE = "User is already inactive.";
     String ENROLMENT_TYPE_REQUIRED = "Enrolment type is mandatory.";
     String ENROLMENT_TYPE_VALUE_ERROR = "EnrolmentType value must be either open or invite-only.";
     String COURSE_BATCH_START_DATE_REQUIRED = "Batch start date is mandatory.";
