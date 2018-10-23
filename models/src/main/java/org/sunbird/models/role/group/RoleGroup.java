@@ -11,7 +11,7 @@ public class RoleGroup implements Serializable {
   private static final long serialVersionUID = 1L;
   private String id;
   private String name;
-  private List<String> urlActionIds;
+  private List<String> url_Action_Ids;
 
   public String getId() {
     return id;
@@ -30,10 +30,10 @@ public class RoleGroup implements Serializable {
   }
 
   public List<String> getUrlActionIds() {
-    return urlActionIds;
+    return url_Action_Ids;
   }
 
-  public void setUrlActionIds(List<String> urlActionIds) {
-    this.urlActionIds = urlActionIds;
+  public void setUrlActionIds(List<String> url_Action_Ids) {
+    this.url_Action_Ids = url_Action_Ids;
   }
 }

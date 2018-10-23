@@ -123,6 +123,7 @@ public interface ResponseMessage {
     String JOB_NAME_ERROR = "Job Name is required.";
     String NAME_OF_ORGANISATION_ERROR = "Organization Name is required.";
     String ROLES_MISSING = "user role is required.";
+    String EMPTY_ROLES_PROVIDED = "roles cannot be empty";
     String CHANNEL_REG_FAILED = "Channel Registration failed.";
     String INVALID_COURSE_CREATOR_ID = "Course creator id does not exist .";
     String USER_NOT_ASSOCIATED_TO_ROOT_ORG =
@@ -477,6 +478,7 @@ public interface ResponseMessage {
     String JOB_NAME_ERROR = "JOB_NAME_ERROR";
     String NAME_OF_ORGANISATION_ERROR = "NAME_OF_ORGANIZATION_ERROR";
     String ROLES_MISSING = "ROLES_REQUIRED_ERROR";
+    String EMPTY_ROLES_PROVIDED = "EMPTY_ROLES_PROVIDED";
     String INVALID_DATE_FORMAT = "INVALID_DATE_FORMAT";
     String SRC_EXTERNAL_ID_ALREADY_EXIST = "SRC_EXTERNAL_ID_ALREADY_EXIST";
     String USER_ALREADY_ENROLLED_COURSE = "USER_ALREADY_ENROLLED_COURSE";
