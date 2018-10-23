@@ -3,6 +3,7 @@ package org.sunbird.actorutil.systemsettings.impl;
 import akka.actor.ActorRef;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.sunbird.actorutil.InterServiceCommunication;
 import org.sunbird.actorutil.InterServiceCommunicationFactory;
 import org.sunbird.actorutil.systemsettings.SystemSettingClient;
@@ -22,7 +23,7 @@ public class SystemSettingClientImpl implements SystemSettingClient {
       InterServiceCommunicationFactory.getInstance();
   private static SystemSettingClientImpl systemSettingClient = null;
   private static Map<String, SystemSetting> systemSettingsMap =
-      new HashMap<String, SystemSetting>();
+      new ConcurrentHashMap<String, SystemSetting>();
 
   public static SystemSettingClientImpl getInstance() {
     if (null == systemSettingClient) {
