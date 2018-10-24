@@ -223,6 +223,8 @@ public enum ResponseCode {
       ResponseMessage.Key.NAME_OF_ORGANISATION_ERROR,
       ResponseMessage.Message.NAME_OF_ORGANISATION_ERROR),
   rolesRequired(ResponseMessage.Key.ROLES_MISSING, ResponseMessage.Message.ROLES_MISSING),
+  emptyRolesProvided(
+      ResponseMessage.Key.EMPTY_ROLES_PROVIDED, ResponseMessage.Message.EMPTY_ROLES_PROVIDED),
   invalidDateFormat(
       ResponseMessage.Key.INVALID_DATE_FORMAT, ResponseMessage.Message.INVALID_DATE_FORMAT),
   sourceAndExternalIdAlreadyExist(
@@ -261,6 +263,8 @@ public enum ResponseCode {
       ResponseMessage.Key.USER_ACCOUNT_BLOCKED, ResponseMessage.Message.USER_ACCOUNT_BLOCKED),
   userAlreadyActive(
       ResponseMessage.Key.USER_ALREADY_ACTIVE, ResponseMessage.Message.USER_ALREADY_ACTIVE),
+  userAlreadyInactive(
+      ResponseMessage.Key.USER_ALREADY_INACTIVE, ResponseMessage.Message.USER_ALREADY_INACTIVE),
   enrolmentTypeRequired(
       ResponseMessage.Key.ENROLMENT_TYPE_REQUIRED, ResponseMessage.Message.ENROLMENT_TYPE_REQUIRED),
   enrolmentIncorrectValue(
