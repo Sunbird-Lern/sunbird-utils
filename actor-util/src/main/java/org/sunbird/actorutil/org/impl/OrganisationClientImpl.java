@@ -71,7 +71,10 @@ public class OrganisationClientImpl implements OrganisationClient {
     if (obj instanceof Response) {
       ObjectMapper objectMapper = new ObjectMapper();
       Response response = (Response) obj;
-      organisation = objectMapper.convertValue(response.get(JsonKey.RESPONSE), Organisation.class);
+      //Temp Fix as this result is coming from elastic-search and ORganisation object is built based on cassandra definition.
+      Map<String,Object> map = (Map)response.get(JsonKey.RESPONSE);
+      map.put(JsonKey.CONTACT_DETAILS, String.valueOf(map.get(JsonKey.CONTACT_DETAILS)));
+      organisation = objectMapper.convertValue(map, Organisation.class);
     } else if (obj instanceof ProjectCommonException) {
       throw (ProjectCommonException) obj;
     } else if (obj instanceof Exception) {
