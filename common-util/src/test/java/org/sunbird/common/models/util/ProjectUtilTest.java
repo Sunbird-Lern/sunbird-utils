@@ -15,18 +15,34 @@ import java.util.Map;
 import java.util.TimeZone;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.VelocityContext;
+import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 
 /** Created by arvind on 6/10/17. */
-public class ProjectUtilTest extends BaseForHttpTest {
+public class ProjectUtilTest extends BaseHttpTest {
 
   private PropertiesCache propertiesCache = ProjectUtil.propertiesCache;
+  
+  private static Map<String, String> headers = new HashMap<String, String>();
+
+  @BeforeClass
+  public static void init() {
+    headers.put("content-type", "application/json");
+    headers.put("accept", "application/json");
+    headers.put("user-id", "mahesh");
+    String header = System.getenv(JsonKey.EKSTEP_AUTHORIZATION);
+    if (StringUtils.isBlank(header)) {
+      header = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_AUTHORIZATION);
+    }
+    headers.put("authorization", "Bearer " + header);
+  }
 
   @Test
-  public void testMailTemplateFailureWithNameAbsent() {
+  public void testGetContextFailureWithNameAbsent() {
 
     Map<String, Object> templateMap = new HashMap<>();
     templateMap.put(JsonKey.ACTION_URL, "googli.com");
@@ -46,7 +62,7 @@ public class ProjectUtilTest extends BaseForHttpTest {
   }
 
   @Test
-  public void testMailTemplateContextSuccessWithFromMail() {
+  public void testGetContextSuccessWithFromMail() {
 
     Map<String, Object> templateMap = new HashMap<>();
     templateMap.put(JsonKey.ACTION_URL, "googli.com");
@@ -67,7 +83,7 @@ public class ProjectUtilTest extends BaseForHttpTest {
   }
 
   @Test
-  public void testMailTemplateSuccessWithOrgImageUrl() {
+  public void testGetContextSuccessWithOrgImageUrl() {
 
     Map<String, Object> templateMap = new HashMap<>();
     templateMap.put(JsonKey.ACTION_URL, "googli.com");
@@ -94,7 +110,7 @@ public class ProjectUtilTest extends BaseForHttpTest {
   }
 
   @Test
-  public void testValidatePhnWithInvalidNumber() {
+  public void testValidatePhoneNumberWithInvalidNumber() {
     assertFalse(ProjectUtil.validatePhoneNumber("312"));
   }
 
@@ -132,7 +148,7 @@ public class ProjectUtilTest extends BaseForHttpTest {
   }
 
   @Test
-  public void testUpdateMapSomeValueToLowerCaseSuccess() {
+  public void testSetRequestParamsToLowerCaseSuccess() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.SOURCE, "Test");
@@ -344,7 +360,7 @@ public class ProjectUtilTest extends BaseForHttpTest {
   }
 
   @Test
-  public void testThrowServerErrorSuccess() {
+  public void testCreateAndThrowServerErrorSuccess() {
     try {
       ProjectUtil.createAndThrowServerError();
     } catch (ProjectCommonException e) {
@@ -354,7 +370,7 @@ public class ProjectUtilTest extends BaseForHttpTest {
   }
 
   @Test
-  public void testInvalidUserDataExceptionSuccess() {
+  public void testCreateAndThrowInvalidUserDataExceptionSuccess() {
     try {
       ProjectUtil.createAndThrowInvalidUserDataException();
     } catch (ProjectCommonException e) {
@@ -364,7 +380,7 @@ public class ProjectUtilTest extends BaseForHttpTest {
   }
 
   @Test
-  public void testDateRangeSuccess() {
+  public void testGetDateRangeSuccess() {
     int noOfDays = 7;
     Map<String, String> map = ProjectUtil.getDateRange(noOfDays);
     Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
@@ -376,7 +392,7 @@ public class ProjectUtilTest extends BaseForHttpTest {
   }
 
   @Test
-  public void testDateRangeFailure() {
+  public void testGetDateRangeFailure() {
     int noOfDays = 14;
     Map<String, String> map = ProjectUtil.getDateRange(noOfDays);
     Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
@@ -388,7 +404,7 @@ public class ProjectUtilTest extends BaseForHttpTest {
   }
 
   @Test
-  public void testDateRangeFailureWithZeroDays() {
+  public void testGetDateRangeFailureWithZeroDays() {
     int noOfDays = 0;
     Map<String, String> map = ProjectUtil.getDateRange(noOfDays);
     assertNull(map.get("startDate"));
@@ -396,10 +412,35 @@ public class ProjectUtilTest extends BaseForHttpTest {
   }
 
   @Test
-  public void testDteRangeFailureWithNegativeValue() {
+  public void testGetDateRangeFailureWithNegativeValue() {
     int noOfDays = -100;
     Map<String, String> map = ProjectUtil.getDateRange(noOfDays);
     assertNull(map.get("startDate"));
     assertNull(map.get("endDate"));
   }
+  
+  @Test
+  public void testIsEmailValidFailureWithInvalidFormat() {
+    boolean bool = ProjectUtil.isEmailvalid("amit.kumartarento.com");
+    Assert.assertFalse(bool);
+  }
+  
+  
+  @Test
+  public void testIsEmailValidSuccess() {
+    boolean bool = ProjectUtil.isEmailvalid("amit.kumar@tarento.com");
+    assertTrue(bool);
+  }
+  
+  @Test
+  public void testSendGetRequestSuccessWithEkStepBaseUrl() throws Exception {
+    String ekStepBaseUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);
+    if (StringUtils.isBlank(ekStepBaseUrl)) {
+      ekStepBaseUrl = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_BASE_URL);
+    }
+    String response = HttpUtil.sendGetRequest(ekStepBaseUrl + "/search/health", headers);
+    Assert.assertNotNull(response);
+  }
+
+
 }

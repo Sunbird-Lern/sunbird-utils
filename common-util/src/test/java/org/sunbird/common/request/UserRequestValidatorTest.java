@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
@@ -109,7 +108,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void testValidateChangePasswordFailureWithOldNewSame() {
+  public void testValidateChangePasswordFailureWithSameOldPassword() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.NEW_PASSWORD, "password");
@@ -474,7 +473,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void testValidateUploadUserSuccessWithProviderAndExternalId() {
+  public void testValidateAssignRoleSuccessWithProviderAndExternalId() {
     Request request = new Request();
     boolean response = false;
     Map<String, Object> requestObj = new HashMap<>();
@@ -526,7 +525,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void testCreateUserValidationFailureWithEmptyFirstName() {
+  public void testCreateUserBasicValidationFailureWithEmptyFirstName() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.FIRST_NAME, "");
@@ -540,7 +539,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void testCreateUserValidationFailureWithInvalidDOB() {
+  public void testCreateUserBasicValidationFailureWithInvalidDOB() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.USERNAME, "test123");
@@ -556,7 +555,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void testCreateUserValidationFailureWithoutEmailAndPhone() {
+  public void testCreateUserBasicValidationFailureWithoutEmailAndPhone() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.USERNAME, "test123");
@@ -572,7 +571,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void testCreateUserValidationFailureWithInvalidEmail() {
+  public void testCreateUserBasicValidationFailureWithInvalidEmail() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.USERNAME, "test123");
@@ -589,7 +588,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void testCreateUserValidationFailureWithInvalidRoles() {
+  public void testCreateUserBasicValidationFailureWithInvalidRoles() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.USERNAME, "test123");
@@ -605,7 +604,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void testCreateUserValidationFailureWithInvalidLanguage() {
+  public void testValidateCreateUserRequestFailureWithInvalidLanguage() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PHONE, "9321234123");
@@ -623,7 +622,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void testCreateUserValidationFailureWithInvalidAddress() {
+  public void testValidateCreateUserRequestFailureWithInvalidAddress() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PHONE, "9321234123");
@@ -642,7 +641,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void testCreateUserValidationFailureWithInvalidEducation() {
+  public void testValidaeCreateUserRequestFailureWithInvalidEducation() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PHONE, "9321234123");
@@ -661,7 +660,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void testCreateUserValidationFailureWithInvalidAddressType() {
+  public void testValidateCreateUserRequestFailureWithInvalidAddressType() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PHONE, "9321234123");
@@ -687,7 +686,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void testCreateUserValidationFailureWithInvalidCountryCode() {
+  public void testValidateCreateUserRequestFailureWithInvalidCountryCode() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PHONE, "9321234123");
@@ -707,7 +706,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void testCreateUserValidationFailureWithEmptyEmailAndPhone() {
+  public void testValidateCreateUserRequestFailureWithEmptyEmailAndPhone() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.USERNAME, "test123");
@@ -1098,4 +1097,23 @@ public class UserRequestValidatorTest {
     request.setRequest(requestObj);
     return request;
   }
+  
+  @Test
+  public void testValidateVerifyUserFailureWithEmptyId() {
+    Request request = new Request();
+    Map<String, Object> requestObj = new HashMap<>();
+    requestObj.put(JsonKey.LOGIN_ID, "");
+    request.setRequest(requestObj);
+    boolean response = false;
+    try {
+      userRequestValidator.validateVerifyUser(request);
+      response = true;
+    } catch (ProjectCommonException e) {
+      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+      assertEquals(ResponseCode.loginIdRequired.getErrorCode(), e.getCode());
+    }
+    Assert.assertFalse(response);
+  }
+  
+ 
 }

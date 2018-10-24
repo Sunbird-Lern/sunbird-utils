@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.sunbird.common.models.util.BaseForHttpTest;
+import org.sunbird.common.models.util.BaseHttpTest;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
@@ -17,7 +17,7 @@ import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 
 /** Unit test for simple App. */
-public class AppTest extends BaseForHttpTest {
+public class AppTest extends BaseHttpTest {
   private static final String data =
       "{\"request\": { \"search\": {\"contentType\": [\"Story\"] }}}";
   private static Map<String, String> headers = new HashMap<String, String>();
@@ -34,16 +34,7 @@ public class AppTest extends BaseForHttpTest {
     headers.put("authorization", "Bearer " + header);
   }
 
-  @Test
-  public void testGetResourceSuccess() throws Exception {
-    String ekStepBaseUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);
-    if (StringUtils.isBlank(ekStepBaseUrl)) {
-      ekStepBaseUrl = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_BASE_URL);
-    }
-    String response = HttpUtil.sendGetRequest(ekStepBaseUrl + "/search/health", headers);
-    Assert.assertNotNull(response);
-  }
-
+  
   @Test
   public void testPostResourceSuccess() throws Exception {
     String ekStepBaseUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);
@@ -93,15 +84,6 @@ public class AppTest extends BaseForHttpTest {
     Assert.assertNotNull(response);
   }
 
-  @Test
-  public void testEmailValidationSuccess() {
-    boolean bool = ProjectUtil.isEmailvalid("amit.kumar@tarento.com");
-    assertTrue(bool);
-  }
-
-  @Test
-  public void testEmailFailureWithWrongFormat() {
-    boolean bool = ProjectUtil.isEmailvalid("amit.kumartarento.com");
-    Assert.assertFalse(bool);
-  }
+  
+ 
 }

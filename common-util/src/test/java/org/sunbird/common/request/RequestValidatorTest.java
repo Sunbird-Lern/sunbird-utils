@@ -18,7 +18,7 @@ import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.responsecode.ResponseCode;
 
 /** @author Manzarul */
-public class CommonRequestValidatorTest {
+public class RequestValidatorTest {
 
   @Test
   public void testValidateUpdateContentSuccess() {
@@ -405,38 +405,9 @@ public class CommonRequestValidatorTest {
     Assert.assertFalse(response);
   }
 
-  @Test
-  public void testValidateVerifyUserSuccess() {
-    Request request = new Request();
-    Map<String, Object> requestObj = new HashMap<>();
-    requestObj.put(JsonKey.LOGIN_ID, "username@provider");
-    request.setRequest(requestObj);
-    boolean response = false;
-    try {
-      new UserRequestValidator().validateVerifyUser(request);
-      response = true;
-    } catch (ProjectCommonException e) {
-      Assert.assertNull(e);
-    }
-    Assert.assertTrue(response);
-  }
+ 
 
-  @Test
-  public void testValidateVerifyUserFailureWithEmptyId() {
-    Request request = new Request();
-    Map<String, Object> requestObj = new HashMap<>();
-    requestObj.put(JsonKey.LOGIN_ID, "");
-    request.setRequest(requestObj);
-    boolean response = false;
-    try {
-      new UserRequestValidator().validateVerifyUser(request);
-      response = true;
-    } catch (ProjectCommonException e) {
-      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
-      assertEquals(ResponseCode.loginIdRequired.getErrorCode(), e.getCode());
-    }
-    Assert.assertFalse(response);
-  }
+  
 
   @Test
   public void testValidateCreateOrgTypeSuccess() {

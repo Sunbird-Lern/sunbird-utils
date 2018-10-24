@@ -19,11 +19,11 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class HttpUtilTest extends BaseForHttpTest {
+public class HttpUtilTest extends BaseHttpTest {
   public static final String JSON_STRING_DATA = "asdasasfasfsdfdsfdsfgsd";
 
   @Test
-  public void testPostFormSuccess() {
+  public void testPostFormDataSuccess() {
     Map<String, String> reqData = new HashMap<>();
     reqData.put("field1", "value1");
     reqData.put("field2", "value2");
@@ -43,7 +43,7 @@ public class HttpUtilTest extends BaseForHttpTest {
   }
 
   @Test
-  public void testPatchRequestSuccess() {
+  public void testSendPatchRequestSuccess() {
 
     Map<String, String> headers = new HashMap<>();
     headers.put("Authorization", "123456");
@@ -89,7 +89,7 @@ public class HttpUtilTest extends BaseForHttpTest {
   }
 
   @Test
-  public void testGetRequestSuccess() {
+  public void testSendGetRequestSuccess() {
     Map<String, String> headers = new HashMap<>();
     headers.put("Authorization", "123456");
     String urlString = "http://localhost:8000/v1/issuer/issuers";

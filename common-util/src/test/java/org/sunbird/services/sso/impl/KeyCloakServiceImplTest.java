@@ -23,7 +23,7 @@ import org.keycloak.representations.idm.UserRepresentation;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.sunbird.common.exception.ProjectCommonException;
-import org.sunbird.common.models.util.BaseForHttpTest;
+import org.sunbird.common.models.util.BaseHttpTest;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.KeyCloakConnectionProvider;
 import org.sunbird.common.responsecode.ResponseCode;
@@ -31,7 +31,7 @@ import org.sunbird.services.sso.SSOManager;
 import org.sunbird.services.sso.SSOServiceFactory;
 
 /** @author arvind */
-public class KeyCloakServiceImplTest extends BaseForHttpTest {
+public class KeyCloakServiceImplTest extends BaseHttpTest {
 
   private SSOManager keyCloakService = SSOServiceFactory.getInstance();
 
@@ -110,7 +110,7 @@ public class KeyCloakServiceImplTest extends BaseForHttpTest {
 
   @SuppressWarnings("deprecation")
   @Test
-  public void testInstanceCreationSucccess() {
+  public void testNewInstanceSucccess() {
     Exception exp = null;
     try {
       Constructor<SSOServiceFactory> constructor = t.getDeclaredConstructor();
@@ -139,7 +139,7 @@ public class KeyCloakServiceImplTest extends BaseForHttpTest {
   }
 
   @Test
-  public void testUserUpdateTestSuccesWithAllData() {
+  public void testUserUpdateTestSuccessWithAllData() {
     Map<String, Object> request = new HashMap<String, Object>();
     request.put(JsonKey.USER_ID, userId.get(JsonKey.USER_ID));
     request.put(JsonKey.FIRST_NAME, userName);
@@ -205,19 +205,19 @@ public class KeyCloakServiceImplTest extends BaseForHttpTest {
   }
 
   @Test(expected = ProjectCommonException.class)
-  public void testVerifTokenSuccess() {
+  public void testVerifyTokenSuccess() {
     keyCloakService.verifyToken(
         "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI5emhhVnZDbl81OEtheHpldHBzYXNZQ2lEallkemJIX3U2LV93SDk4SEc0In0.eyJqdGkiOiI5ZmQzNzgzYy01YjZmLTQ3OWQtYmMzYy0yZWEzOGUzZmRmYzgiLCJleHAiOjE1MDUxMTQyNDYsIm5iZiI6MCwiaWF0IjoxNTA1MTEzNjQ2LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvYXV0aC9yZWFsbXMvbWFzdGVyIiwiYXVkIjoic2VjdXJpdHktYWRtaW4tY29uc29sZSIsInN1YiI6ImIzYTZkMTY4LWJjZmQtNDE2MS1hYzVmLTljZjYyODIyNzlmMyIsInR5cCI6IkJlYXJlciIsImF6cCI6InNlY3VyaXR5LWFkbWluLWNvbnNvbGUiLCJub25jZSI6ImMxOGVlMDM2LTAyMWItNGVlZC04NWVhLTc0MjMyYzg2ZmI4ZSIsImF1dGhfdGltZSI6MTUwNTExMzY0Niwic2Vzc2lvbl9zdGF0ZSI6ImRiZTU2NDlmLTY4MDktNDA3NS05Njk5LTVhYjIyNWMwZTkyMiIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOltdLCJyZXNvdXJjZV9hY2Nlc3MiOnt9LCJuYW1lIjoiTWFuemFydWwgaGFxdWUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0ZXN0MTIzNDU2NyIsImdpdmVuX25hbWUiOiJNYW56YXJ1bCBoYXF1ZSIsImVtYWlsIjoidGVzdDEyM0B0LmNvbSJ9.Xdjqe16MSkiR94g-Uj_pVZ2L3gnIdKpkJ6aB82W_w_c3yEmx1mXYBdkxe4zMz3ks4OX_PWwSFEbJECHcnujUwF6Ula0xtXTfuESB9hFyiWHtVAhuh5UlCCwPnsihv5EqK6u-Qzo0aa6qZOiQK3Zo7FLpnPUDxn4yHyo3mRZUiWf76KTl8PhSMoXoWxcR2vGW0b-cPixILTZPV0xXUZoozCui70QnvTgOJDWqr7y80EWDkS4Ptn-QM3q2nJlw63mZreOG3XTdraOlcKIP5vFK992dyyHlYGqWVzigortS9Ah4cprFVuLlX8mu1cQvqHBtW-0Dq_JlcTMaztEnqvJ6XA");
   }
 
   @Test
-  public void testAddLoginTimeSuccess() {
+  public void testAddUserLoginTimeSuccess() {
     boolean response = keyCloakService.addUserLoginTime(userId.get(JsonKey.USER_ID));
     Assert.assertEquals(true, response);
   }
 
   @Test
-  public void testVerifyLastLoginSuccess() {
+  public void testGetLastLoginTimeSuccess() {
     String lastLoginTime = keyCloakService.getLastLoginTime(userId.get(JsonKey.USER_ID));
     Assert.assertNull(lastLoginTime);
   }
@@ -245,14 +245,14 @@ public class KeyCloakServiceImplTest extends BaseForHttpTest {
 
   @Test
   public void testLoginSuccess() {
-    httpRules("realms/sunbird/protocol/openid-connect/token", "{\"access_token\":\"_your_token\"}");
+	mockHttpUrlResponse("realms/sunbird/protocol/openid-connect/token", "{\"access_token\":\"_your_token\"}");
     String authKey = keyCloakService.login(userName, "password");
     Assert.assertNotEquals("", authKey);
   }
 
   @Test
   public void testLoginFailureWithInvalidPassword() {
-    httpRules("realms/sunbird/protocol/openid-connect/token", null, true, "&password=password123&");
+	mockHttpUrlResponse("realms/sunbird/protocol/openid-connect/token", null, true, "&password=password123&");
     String authKey = keyCloakService.login(userName, "password123");
     Assert.assertEquals("", authKey);
   }
@@ -264,28 +264,28 @@ public class KeyCloakServiceImplTest extends BaseForHttpTest {
   }
 
   @Test
-  public void testEmailVerifiedSuccessWithVerifiedFalse() {
+  public void testSetEmailVerifiedSuccessWithVerifiedFalse() {
     keyCloakService.setEmailVerifiedAsFalse(userId.get(JsonKey.USER_ID));
     boolean response = keyCloakService.isEmailVerified(userId.get(JsonKey.USER_ID));
     Assert.assertNotEquals(true, response);
   }
 
   @Test
-  public void testEmailVerifiedSuccessWithVerifiedUpdateFalse() {
+  public void testSetEmailVerifiedSuccessWithVerifiedUpdateFalse() {
     keyCloakService.setEmailVerifiedUpdatedFlag(userId.get(JsonKey.USER_ID), "false");
     String response = keyCloakService.getEmailVerifiedUpdatedFlag(userId.get(JsonKey.USER_ID));
     Assert.assertEquals(false + "", response);
   }
 
   @Test
-  public void testEmailVerifiedSuccessWithVerifiedUpdateTrue() {
+  public void testSetEmailVerifiedTrueSuccessWithVerifiedTrue() {
     keyCloakService.setEmailVerifiedUpdatedFlag(userId.get(JsonKey.USER_ID), "true");
     String response = keyCloakService.getEmailVerifiedUpdatedFlag(userId.get(JsonKey.USER_ID));
     Assert.assertEquals(true + "", response);
   }
 
   @Test
-  public void testEmailVerifiedSuccessWithVerifiedTrue() {
+  public void testSetEmailVerifiedSuccessWithVerifiedTrue() {
     String response = keyCloakService.setEmailVerifiedTrue(userId.get(JsonKey.USER_ID));
     Assert.assertEquals(JsonKey.SUCCESS, response);
   }
@@ -307,7 +307,7 @@ public class KeyCloakServiceImplTest extends BaseForHttpTest {
   }
 
   @Test
-  public void testSyncUserDataSuccessWithoutConuntryCode() {
+  public void testSyncUserDataSuccessWithoutCountryCode() {
     Map<String, Object> request = new HashMap<String, Object>();
     request.put(JsonKey.USERNAME, userName);
     request.put(JsonKey.PROVIDER, "ntp");
@@ -336,7 +336,7 @@ public class KeyCloakServiceImplTest extends BaseForHttpTest {
   }
 
   @Test
-  public void testSyncUserDataSuccessWithoInvalidUser() {
+  public void testSyncUserDataSuccessWithInvalidUser() {
     Map<String, Object> request = new HashMap<String, Object>();
     request.put(JsonKey.USERNAME, userName);
     request.put(JsonKey.PASSWORD, "password");
@@ -354,7 +354,7 @@ public class KeyCloakServiceImplTest extends BaseForHttpTest {
   }
 
   @Test
-  public void testUpdatePasswordSuccess() {
+  public void testDoPasswordUpdateSuccess() {
     boolean response = keyCloakService.doPasswordUpdate(userId.get(JsonKey.USER_ID), "password");
     Assert.assertEquals(true, response);
   }

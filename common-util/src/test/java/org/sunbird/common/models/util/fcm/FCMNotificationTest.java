@@ -1,4 +1,4 @@
-/** */
+	/** */
 package org.sunbird.common.models.util.fcm;
 
 import static org.powermock.api.mockito.PowerMockito.mock;
@@ -50,7 +50,7 @@ import org.sunbird.common.models.util.JsonKey;
 public class FCMNotificationTest {
 
   @Test
-  public void testSendNotificationSuccessWithListAndStrings() {
+  public void testSendNotificationSuccessWithListAndStringData() {
     Map<String, Object> map = new HashMap<>();
     map.put("title", "some title");
     map.put("summary", "some value");
@@ -86,7 +86,7 @@ public class FCMNotificationTest {
   }
 
   @Test
-  public void testSendNotificationFailureWithNullMap() {
+  public void testSendNotificationFailureWithNullData() {
     Map<String, Object> map = null;
     String val = Notification.sendNotification("nameOFTopic", map, "");
     Assert.assertEquals(JsonKey.FAILURE, val);

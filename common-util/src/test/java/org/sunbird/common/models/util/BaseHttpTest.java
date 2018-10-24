@@ -38,24 +38,24 @@ import org.sunbird.services.sso.impl.KeyCloakServiceImpl;
   KeyCloakConnectionProvider.class,
   KeyCloakServiceImpl.class
 })
-public abstract class BaseForHttpTest {
+public abstract class BaseHttpTest {
 
   @Before
   public void addMockRules() {
 
-    httpRules("content/v3/list", "not-empty-output");
-    httpRules("/search/health", "not-empty-output");
-    httpRules("/content/wrong/v3/list", null, true, null);
-    httpRules("v1/issuer/issuers", "{\"message\":\"success\"}");
-    httpRules("https://dev.ekstep.in/api/data/v3", "{\"message\":\"success\"}");
+	mockHttpUrlResponse("content/v3/list", "not-empty-output");
+    mockHttpUrlResponse("/search/health", "not-empty-output");
+    mockHttpUrlResponse("/content/wrong/v3/list", null, true, null);
+    mockHttpUrlResponse("v1/issuer/issuers", "{\"message\":\"success\"}");
+    mockHttpUrlResponse("https://dev.ekstep.in/api/data/v3", "{\"message\":\"success\"}");
   }
 
-  protected void httpRules(String urlContains, String outputexpected) {
-    httpRules(urlContains, outputexpected, false, null);
+  protected void mockHttpUrlResponse(String urlContains, String outputExpected) {
+	  mockHttpUrlResponse(urlContains, outputExpected, false, null);
   }
 
-  protected void httpRules(
-      String urlContains, String outputexpected, boolean throwError, String paramContains) {
+  protected void mockHttpUrlResponse(
+      String urlContains, String outputExpected, boolean throwError, String paramContains) {
     URL url = mock(URL.class);
     HttpURLConnection connection = mock(HttpURLConnection.class);
     OutputStream outStream = mock(OutputStream.class);
@@ -77,7 +77,7 @@ public abstract class BaseForHttpTest {
         when(connection.getInputStream()).thenReturn(inStream);
       }
       whenNew(BufferedReader.class).withAnyArguments().thenReturn(reader);
-      when(reader.readLine()).thenReturn(outputexpected, null);
+      when(reader.readLine()).thenReturn(outputExpected, null);
     } catch (Exception e) {
       Assert.fail("Mock rules addition failed " + e.getMessage());
     }
