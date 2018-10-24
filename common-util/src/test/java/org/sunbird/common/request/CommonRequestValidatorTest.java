@@ -413,7 +413,7 @@ public class CommonRequestValidatorTest {
     request.setRequest(requestObj);
     boolean response = false;
     try {
-      UserRequestValidator.validateVerifyUser(request);
+      new UserRequestValidator().validateVerifyUser(request);
       response = true;
     } catch (ProjectCommonException e) {
       Assert.assertNull(e);
@@ -429,7 +429,7 @@ public class CommonRequestValidatorTest {
     request.setRequest(requestObj);
     boolean response = false;
     try {
-      UserRequestValidator.validateVerifyUser(request);
+      new UserRequestValidator().validateVerifyUser(request);
       response = true;
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
