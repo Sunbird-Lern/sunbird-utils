@@ -367,6 +367,7 @@ public interface ResponseMessage {
     String ERROR_CONFLICTING_FIELD_CONFIGURATION =
         "Field {0} in {1} configuration is conflicting in {2} and {3}.";
     String ERROR_SYSTEM_SETTING_NOT_FOUND = "System Setting not found for id: {0}";
+    String ERROR_NO_ROOT_ORG_ASSOCIATED = "Not able to associate with root org";
   }
 
   interface Key {
@@ -684,5 +685,6 @@ public interface ResponseMessage {
     String ERROR_CONFIG_LOAD_EMPTY_CONFIG = "ERROR_CONFIG_LOAD_EMPTY_CONFIG";
     String ERROR_CONFLICTING_FIELD_CONFIGURATION = "ERROR_CONFLICTING_FIELD_CONFIGURATION";
     String ERROR_SYSTEM_SETTING_NOT_FOUND = "ERROR_SYSTEM_SETTING_NOT_FOUND";
+    String ERROR_NO_ROOT_ORG_ASSOCIATED = "ERROR_NO_ROOT_ORG_ASSOCIATED";
   }
 }
