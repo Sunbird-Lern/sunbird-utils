@@ -1,0 +1,1 @@
+CREATE INDEX inx_org_isrootorg ON sunbird.organisation (isrootorg);

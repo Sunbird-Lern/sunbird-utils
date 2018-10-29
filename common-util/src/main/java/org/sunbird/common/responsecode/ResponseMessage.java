@@ -123,6 +123,7 @@ public interface ResponseMessage {
     String JOB_NAME_ERROR = "Job Name is required.";
     String NAME_OF_ORGANISATION_ERROR = "Organization Name is required.";
     String ROLES_MISSING = "user role is required.";
+    String EMPTY_ROLES_PROVIDED = "Roles cannot be empty.";
     String CHANNEL_REG_FAILED = "Channel Registration failed.";
     String INVALID_COURSE_CREATOR_ID = "Course creator id does not exist .";
     String USER_NOT_ASSOCIATED_TO_ROOT_ORG =
@@ -149,7 +150,8 @@ public interface ResponseMessage {
         "Please provide either organization Id or external Id & provider value.";
     String DATA_SIZE_EXCEEDED = "Maximum upload data size should be {0}";
     String INVALID_COLUMN_NAME = "Invalid column name.";
-    String USER_ALREADY_ACTIVE = "User is already active";
+    String USER_ALREADY_ACTIVE = "User is already active.";
+    String USER_ALREADY_INACTIVE = "User is already inactive.";
     String ENROLMENT_TYPE_REQUIRED = "Enrolment type is mandatory.";
     String ENROLMENT_TYPE_VALUE_ERROR = "EnrolmentType value must be either open or invite-only.";
     String COURSE_BATCH_START_DATE_REQUIRED = "Batch start date is mandatory.";
@@ -365,6 +367,7 @@ public interface ResponseMessage {
     String ERROR_CONFLICTING_FIELD_CONFIGURATION =
         "Field {0} in {1} configuration is conflicting in {2} and {3}.";
     String ERROR_SYSTEM_SETTING_NOT_FOUND = "System Setting not found for id: {0}";
+    String ERROR_NO_ROOT_ORG_ASSOCIATED = "Not able to associate with root org";
   }
 
   interface Key {
@@ -476,6 +479,7 @@ public interface ResponseMessage {
     String JOB_NAME_ERROR = "JOB_NAME_ERROR";
     String NAME_OF_ORGANISATION_ERROR = "NAME_OF_ORGANIZATION_ERROR";
     String ROLES_MISSING = "ROLES_REQUIRED_ERROR";
+    String EMPTY_ROLES_PROVIDED = "EMPTY_ROLES_PROVIDED";
     String INVALID_DATE_FORMAT = "INVALID_DATE_FORMAT";
     String SRC_EXTERNAL_ID_ALREADY_EXIST = "SRC_EXTERNAL_ID_ALREADY_EXIST";
     String USER_ALREADY_ENROLLED_COURSE = "USER_ALREADY_ENROLLED_COURSE";
@@ -492,6 +496,7 @@ public interface ResponseMessage {
     String DATA_SIZE_EXCEEDED = "DATA_SIZE_EXCEEDED";
     String INVALID_COLUMN_NAME = "INVALID_COLUMN_NAME";
     String USER_ALREADY_ACTIVE = "USER_ALREADY_ACTIVE";
+    String USER_ALREADY_INACTIVE = "USER_ALREADY_INACTIVE";
     String ENROLMENT_TYPE_REQUIRED = "ENROLMENT_TYPE_REQUIRED";
     String ENROLMENT_TYPE_VALUE_ERROR = "ENROLMENT_TYPE_VALUE_ERROR";
     String COURSE_BATCH_START_DATE_REQUIRED = "COURSE_BATCH_START_DATE_REQUIRED";
@@ -680,5 +685,6 @@ public interface ResponseMessage {
     String ERROR_CONFIG_LOAD_EMPTY_CONFIG = "ERROR_CONFIG_LOAD_EMPTY_CONFIG";
     String ERROR_CONFLICTING_FIELD_CONFIGURATION = "ERROR_CONFLICTING_FIELD_CONFIGURATION";
     String ERROR_SYSTEM_SETTING_NOT_FOUND = "ERROR_SYSTEM_SETTING_NOT_FOUND";
+    String ERROR_NO_ROOT_ORG_ASSOCIATED = "ERROR_NO_ROOT_ORG_ASSOCIATED";
   }
 }

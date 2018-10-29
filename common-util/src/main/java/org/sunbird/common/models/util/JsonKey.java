@@ -38,6 +38,7 @@ public final class JsonKey {
   public static final String ADDRESS_TYPE = "address type";
   public static final String AGGREGATIONS = "aggregations";
   public static final String ALL = "all";
+  public static final String ALLOWED_LOGIN = "allowedLogin";
   public static final String ANNOUNCEMENT = "announcement";
   public static final String API_ACCESS = "api_access";
   public static final String API_ACTOR_PROVIDER = "api_actor_provider";
@@ -504,6 +505,7 @@ public final class JsonKey {
   public static final String SUCCESS_RESULT = "successResult";
   public static final String SUMMARY = "summary";
   public static final String SUNBIRD = "sunbird";
+  public static final String SUNBIRD_ALLOWED_LOGIN = "sunbird_allowed_login";
   public static final String SUNBIRD_APP_URL = "sunbird_app_url";
   public static final String SUNBIRD_CASSANDRA_IP = "sunbird_cassandra_host";
   public static final String SUNBIRD_CASSANDRA_KEYSPACE = "sunbird_cassandra_keyspace";
@@ -716,6 +718,8 @@ public final class JsonKey {
   public static final String NEW = "new";
   public static final String COURSE_BATCH = "courseBatch";
   public static final String USER_TYPE = "userType";
+  public static final String SUNBIRD_API_REQUEST_LOWER_CASE_FIELDS =
+      "sunbird_api_request_lower_case_fields";
 
   private JsonKey() {}
 }

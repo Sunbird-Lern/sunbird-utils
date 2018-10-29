@@ -2,9 +2,12 @@ package org.sunbird.common.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
+import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.ProjectUtil;
 
 /** @author Manzarul */
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -51,6 +54,18 @@ public class Request implements Serializable {
             ExecutionContext.getCurrent()
                 .getGlobalContext()
                 .get(HeaderParam.REQUEST_ID.getParamName());
+  }
+
+  public void toLower() {
+    Arrays.asList(
+            ProjectUtil.getConfigValue(JsonKey.SUNBIRD_API_REQUEST_LOWER_CASE_FIELDS).split(","))
+        .stream()
+        .forEach(
+            field -> {
+              if (StringUtils.isNotBlank((String) this.getRequest().get(field))) {
+                this.getRequest().put(field, ((String) this.getRequest().get(field)).toLowerCase());
+              }
+            });
   }
 
   public Request(Request request) {

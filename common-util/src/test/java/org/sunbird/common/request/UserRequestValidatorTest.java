@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -15,18 +14,19 @@ import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.responsecode.ResponseCode;
 
-/** @author Manzarul */
 public class UserRequestValidatorTest {
 
+  private static final UserRequestValidator userRequestValidator = new UserRequestValidator();
+
   @Test
-  public void validateForgotPasswordSuccess() {
+  public void testValidateForgotPasswordSuccess() {
     Request request = new Request();
     boolean response = false;
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.USERNAME, "manzarul07");
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateForgotpassword(request);
+      userRequestValidator.validateForgotPassword(request);
       response = true;
     } catch (ProjectCommonException e) {
       Assert.assertNull(e);
@@ -35,13 +35,13 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void validateForgotPasswordUserNameEmpty() {
+  public void testValidateForgotPasswordFailureWithEmptyUserName() {
     try {
       Request request = new Request();
       Map<String, Object> requestObj = new HashMap<>();
       requestObj.put(JsonKey.USERNAME, "");
       request.setRequest(requestObj);
-      UserRequestValidator.validateForgotpassword(request);
+      userRequestValidator.validateForgotPassword(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.userNameRequired.getErrorCode(), e.getCode());
@@ -49,12 +49,12 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void validateForgotPasswordUserNameKeyMissing() {
+  public void testValidateForgotPasswordFailureWithoutUserName() {
     try {
       Request request = new Request();
       Map<String, Object> requestObj = new HashMap<>();
       request.setRequest(requestObj);
-      UserRequestValidator.validateForgotpassword(request);
+      userRequestValidator.validateForgotPassword(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.userNameRequired.getErrorCode(), e.getCode());
@@ -62,7 +62,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void validateChangePasswordSuccess() {
+  public void testValidateChangePasswordSuccess() {
     Request request = new Request();
     boolean response = false;
     Map<String, Object> requestObj = new HashMap<>();
@@ -70,7 +70,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.PASSWORD, "password");
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateChangePassword(request);
+      userRequestValidator.validateChangePassword(request);
       response = true;
     } catch (ProjectCommonException e) {
       Assert.assertNull(e);
@@ -79,14 +79,14 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void validateChangePasswordWithEmptyNewPass() {
+  public void testValidateChangePasswordFailureWithEmptyNewPassword() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.NEW_PASSWORD, "");
     requestObj.put(JsonKey.PASSWORD, "password");
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateChangePassword(request);
+      userRequestValidator.validateChangePassword(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.newPasswordEmpty.getErrorCode(), e.getCode());
@@ -94,13 +94,13 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void validateChangePasswordWithMissingNewPass() {
+  public void testValidateChangePasswordFailureWithoutNewPassword() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PASSWORD, "password");
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateChangePassword(request);
+      userRequestValidator.validateChangePassword(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.newPasswordRequired.getErrorCode(), e.getCode());
@@ -108,14 +108,14 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void validateChangePasswordWithSameOldAndNewPass() {
+  public void testValidateChangePasswordFailureWithSameOldNewPassword() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.NEW_PASSWORD, "password");
     requestObj.put(JsonKey.PASSWORD, "password");
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateChangePassword(request);
+      userRequestValidator.validateChangePassword(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.samePasswordError.getErrorCode(), e.getCode());
@@ -123,13 +123,13 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void validateChangePasswordWithPassWordMissing() {
+  public void testValidateChangePasswordFailureWithoutOldPassword() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.NEW_PASSWORD, "password");
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateChangePassword(request);
+      userRequestValidator.validateChangePassword(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.passwordRequired.getErrorCode(), e.getCode());
@@ -138,7 +138,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void validateCreateUserSuccessWithAllFields() {
+  public void testValidateCreateUserSuccessWithAllFields() {
     Request request = new Request();
     boolean response = false;
     Map<String, Object> requestObj = new HashMap<>();
@@ -178,7 +178,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.JOB_PROFILE, jobProfileList);
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      userRequestValidator.validateCreateUserRequest(request);
       response = true;
     } catch (ProjectCommonException e) {
       Assert.assertNull(e);
@@ -188,7 +188,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void validateCreateUser1() {
+  public void testValidateCreateUserFailureWithoutAddressType() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PHONE, "9321234123");
@@ -227,7 +227,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.JOB_PROFILE, jobProfileList);
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      userRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.addressTypeError.getErrorCode(), e.getCode());
     }
@@ -235,7 +235,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void validateCreateUser2() {
+  public void testValidateCreateUserFailureWithEmptyAddressType() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PHONE, "9321234123");
@@ -274,14 +274,14 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.JOB_PROFILE, jobProfileList);
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      userRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.addressError.getErrorCode(), e.getCode());
     }
   }
 
   @Test
-  public void validatePhoneAndEmailUpdateSuccess() {
+  public void testValidatePhoneAndEmailSuccess() {
     Request request = new Request();
     boolean response = false;
     Map<String, Object> requestObj = new HashMap<>();
@@ -292,7 +292,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.EMAIL_VERIFIED, true);
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.phoneValidation(request);
+      userRequestValidator.phoneValidation(request);
       response = true;
     } catch (ProjectCommonException e) {
       Assert.assertNull(e);
@@ -301,7 +301,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void validatePhone() {
+  public void testValidatePhoneFailureWithInvalidPhone() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PHONE, "+9321234123");
@@ -311,14 +311,14 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.EMAIL_VERIFIED, true);
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.phoneValidation(request);
+      userRequestValidator.phoneValidation(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.invalidPhoneNumber.getErrorCode(), e.getCode());
     }
   }
 
   @Test
-  public void validatePhoneAndEmailUpdate1() {
+  public void testValidatePhoneFailureWithInvalidCountryCode() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PHONE, "+9321234123");
@@ -328,31 +328,14 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.EMAIL_VERIFIED, true);
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.phoneValidation(request);
+      userRequestValidator.phoneValidation(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.invalidCountryCode.getErrorCode(), e.getCode());
     }
   }
 
   @Test
-  public void validatePhoneAndEmailUpdate2() {
-    Request request = new Request();
-    Map<String, Object> requestObj = new HashMap<>();
-    requestObj.put(JsonKey.PHONE, "9321234123");
-    requestObj.put(JsonKey.COUNTRY_CODE, "+91968");
-    requestObj.put(JsonKey.PROVIDER, "sunbird");
-    requestObj.put(JsonKey.PHONE_VERIFIED, true);
-    requestObj.put(JsonKey.EMAIL_VERIFIED, true);
-    request.setRequest(requestObj);
-    try {
-      UserRequestValidator.phoneValidation(request);
-    } catch (ProjectCommonException e) {
-      assertEquals(ResponseCode.invalidCountryCode.getErrorCode(), e.getCode());
-    }
-  }
-
-  @Test
-  public void validatePhoneAndEmailUpdate3() {
+  public void testValidatePhoneFailureWithEmptyPhoneVerified() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PHONE, "9321234123");
@@ -361,14 +344,14 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.PHONE_VERIFIED, "");
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.phoneValidation(request);
+      userRequestValidator.phoneValidation(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.phoneVerifiedError.getErrorCode(), e.getCode());
     }
   }
 
   @Test
-  public void validatePhoneAndEmailUpdate4() {
+  public void testValidatePhoneFailureWithPhoneVerifiedFalse() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PHONE, "9321234123");
@@ -377,14 +360,14 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.PHONE_VERIFIED, false);
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.phoneValidation(request);
+      userRequestValidator.phoneValidation(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.phoneVerifiedError.getErrorCode(), e.getCode());
     }
   }
 
   @Test
-  public void validatePhoneAndEmailUpdate5() {
+  public void testValidatePhoneFailureWithPhoneVerifiedNull() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PHONE, "9321234123");
@@ -393,7 +376,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.PHONE_VERIFIED, null);
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.phoneValidation(request);
+      userRequestValidator.phoneValidation(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.phoneVerifiedError.getErrorCode(), e.getCode());
     }
@@ -401,7 +384,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void validateUpdateUserSuccess() {
+  public void testValidateUpdateUserSuccess() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PHONE, "9321234123");
@@ -442,7 +425,7 @@ public class UserRequestValidatorTest {
     boolean response = false;
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateUpdateUser(request);
+      userRequestValidator.validateUpdateUserRequest(request);
       response = true;
     } catch (ProjectCommonException e) {
       Assert.assertNull(e);
@@ -452,7 +435,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void validateUploadUserWithOrgId() {
+  public void testValidateUpdateUserSuccessWithOrgId() {
     boolean response = false;
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.ORGANISATION_ID, "ORG-1233");
@@ -467,7 +450,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void validateUploadUserWithProviderAndExternalId() {
+  public void testValidateUpdateUserSuccessWithProviderAndExternalId() {
     boolean response = false;
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PROVIDER, "ORG-provider");
@@ -483,7 +466,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void validateAssignRoleWithUserId() {
+  public void testValidateUpdateUserSuccessWithUserId() {
     Request request = new Request();
     boolean response = false;
     Map<String, Object> requestObj = new HashMap<>();
@@ -493,7 +476,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.ROLES, roles);
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateAssignRole(request);
+      userRequestValidator.validateAssignRole(request);
       response = true;
     } catch (ProjectCommonException e) {
       Assert.assertNull(e);
@@ -503,7 +486,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void validateAssignRoleWithProviderAndExternalId() {
+  public void testValidateUpdateUserSuccessWithExternalIdAndProvider() {
     Request request = new Request();
     boolean response = false;
     Map<String, Object> requestObj = new HashMap<>();
@@ -514,7 +497,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.ROLES, roles);
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateAssignRole(request);
+      userRequestValidator.validateAssignRole(request);
       response = true;
     } catch (ProjectCommonException e) {
       Assert.assertNull(e);
@@ -522,86 +505,14 @@ public class UserRequestValidatorTest {
     assertEquals(true, response);
   }
 
-  /*
-   * @Test public void phoneAndEmailValidationForUpdateUser () { Request request =
-   * new Request(); boolean response = false; Map<String, Object> requestObj = new
-   * HashMap<>(); requestObj.put(JsonKey.PHONE, "9878888888");
-   * requestObj.put(JsonKey.COUNTRY_CODE, "+91"); requestObj.put(JsonKey.PROVIDER,
-   * "sunbird"); requestObj.put(JsonKey.EMAIL, "test123@test.com");
-   * requestObj.put(JsonKey.PHONE_VERIFIED, true); request.setRequest(requestObj);
-   * try { UserRequestValidator.phoneAndEmailValidationForUpdateUser(request);
-   * response = true; } catch (ProjectCommonException e) { Assert.assertNull(e); }
-   * assertEquals(true, response); }
-   */
-
   @Test
-  public void profileVisibilityValidatorTest() {
-    Request request = new Request();
-    Map<String, Object> requestObj = new HashMap<>();
-    requestObj.put(JsonKey.USER_ID, "9878888888");
-    List<String> publicList = new ArrayList<>();
-    publicList.add("Education");
-    requestObj.put(JsonKey.PUBLIC, publicList);
-    List<String> privateList = new ArrayList<>();
-    privateList.add("Education");
-    requestObj.put(JsonKey.PRIVATE, privateList);
-    request.setRequest(requestObj);
-    try {
-      UserRequestValidator.validateProfileVisibility(request);
-    } catch (ProjectCommonException e) {
-      Assert.assertNotNull(e);
-    }
-  }
-
-  @Test
-  public void profileVisibilityInvalidUserTest() {
-    Request request = new Request();
-    Map<String, Object> requestObj = new HashMap<>();
-    requestObj.put(JsonKey.USER_ID, "");
-    request.setRequest(requestObj);
-    try {
-      UserRequestValidator.validateProfileVisibility(request);
-    } catch (ProjectCommonException e) {
-      Assert.assertNotNull(e);
-    }
-  }
-
-  @Test
-  public void profileVisibilityInvalidPrivateFieldsTest() {
-    Request request = new Request();
-    Map<String, Object> requestObj = new HashMap<>();
-    requestObj.put(JsonKey.USER_ID, "123");
-    requestObj.put(JsonKey.PRIVATE, "");
-    request.setRequest(requestObj);
-    try {
-      UserRequestValidator.validateProfileVisibility(request);
-    } catch (ProjectCommonException e) {
-      Assert.assertNotNull(e);
-    }
-  }
-
-  @Test
-  public void profileVisibilityInvalidPublicFieldsTest() {
-    Request request = new Request();
-    Map<String, Object> requestObj = new HashMap<>();
-    requestObj.put(JsonKey.USER_ID, "123");
-    requestObj.put(JsonKey.PUBLIC, "");
-    request.setRequest(requestObj);
-    try {
-      UserRequestValidator.validateProfileVisibility(request);
-    } catch (ProjectCommonException e) {
-      Assert.assertNotNull(e);
-    }
-  }
-
-  @Test
-  public void validateWebPagesTest() {
+  public void testValidateWebPagesFailureWithEmptyList() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.WEB_PAGES, new ArrayList<>());
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateWebPages(request);
+      userRequestValidator.validateWebPages(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.invalidWebPageData.getErrorCode(), e.getCode());
@@ -609,13 +520,13 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void validateWebPagesTestWhenNull() {
+  public void testValidateWebPagesFailureWithNull() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.WEB_PAGES, null);
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateWebPages(request);
+      userRequestValidator.validateWebPages(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.invalidWebPageData.getErrorCode(), e.getCode());
@@ -624,13 +535,13 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void doUserBasicValidationUserNameTest() {
+  public void testCreateUserBasicValidationFailureWithEmptyUserName() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.USERNAME, "");
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.createUserBasicValidation(request);
+      userRequestValidator.createUserBasicValidation(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.userNameRequired.getErrorCode(), e.getCode());
@@ -638,7 +549,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void doUserBasicValidationTest() {
+  public void testCreateUserBasicValidationFailureWithInvalidDobFormat() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.USERNAME, "test123");
@@ -646,7 +557,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.DOB, "20-10-15");
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.createUserBasicValidation(request);
+      userRequestValidator.createUserBasicValidation(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.dateFormatError.getErrorCode(), e.getCode());
@@ -654,7 +565,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void doUserBasicValidationTest1() {
+  public void testCreateUserBasicValidationFailureWithoutEmailAndPhone() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.USERNAME, "test123");
@@ -662,7 +573,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.DOB, "2018-10-15");
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.createUserBasicValidation(request);
+      userRequestValidator.createUserBasicValidation(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.emailorPhoneRequired.getErrorCode(), e.getCode());
@@ -670,7 +581,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void doUserBasicValidationTest2() {
+  public void testCreateUserBasicValidationFailureWithInvalidEmailFormat() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.USERNAME, "test123");
@@ -679,7 +590,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.EMAIL, "asd@as");
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.createUserBasicValidation(request);
+      userRequestValidator.createUserBasicValidation(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.emailFormatError.getErrorCode(), e.getCode());
@@ -687,14 +598,14 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void doUserBasicValidationFirstNameTest() {
+  public void testCreateUserBasicValidationFailureWithEmptyFirstName() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.USERNAME, "test123");
     requestObj.put(JsonKey.FIRST_NAME, "");
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.createUserBasicValidation(request);
+      userRequestValidator.createUserBasicValidation(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.firstNameRequired.getErrorCode(), e.getCode());
@@ -702,7 +613,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void doUserBasicValidationRolesTest() {
+  public void testCreateUserBasicValidationFailureWithInvalidRoleDataType() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.USERNAME, "test123");
@@ -710,7 +621,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.ROLES, "");
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.createUserBasicValidation(request);
+      userRequestValidator.createUserBasicValidation(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.dataTypeError.getErrorCode(), e.getCode());
@@ -718,7 +629,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void doUserBasicValidationLanguageTest() {
+  public void testValidateCreateUserRequestnFailureWithInvalidLangaugeDataType() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PHONE, "9321234123");
@@ -728,7 +639,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.LANGUAGE, "");
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      userRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.dataTypeError.getErrorCode(), e.getCode());
@@ -737,7 +648,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void createUserAddressTest() {
+  public void testValidateCreateUserRequestnFailureWithInvalidAddressDataType() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PHONE, "9321234123");
@@ -747,7 +658,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.ADDRESS, "");
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      userRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.dataTypeError.getErrorCode(), e.getCode());
@@ -756,7 +667,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void createUserEducationTest() {
+  public void testValidateCreateUserRequestnFailureWithInvalidEducationDataType() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PHONE, "9321234123");
@@ -766,7 +677,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.EDUCATION, "");
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      userRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.dataTypeError.getErrorCode(), e.getCode());
@@ -775,7 +686,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void createUserAddressTypeTest() {
+  public void testValidateCreateUserRequestnFailureWithInvalidAddressType() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PHONE, "9321234123");
@@ -792,7 +703,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.ADDRESS, addressList);
     request.setRequest(requestObj);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      userRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.addressTypeError.getErrorCode(), e.getCode());
@@ -800,11 +711,11 @@ public class UserRequestValidatorTest {
   }
 
   // @Test
-  public void phoneAndEmailValidationForCreateUserTest() {
+  public void testValidateCreateUserRequestFailureWithInvalidCountryCode() {
     Request request = new Request();
     request.getRequest().put(JsonKey.COUNTRY_CODE, "+as");
     try {
-      UserRequestValidator.validateCreateUser(request);
+      userRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.invalidCountryCode.getErrorCode(), e.getCode());
@@ -812,12 +723,12 @@ public class UserRequestValidatorTest {
   }
 
   // @Test
-  public void phoneAndEmailValidationForCreateUserTest2() {
+  public void testValidateCreateUserRequestFailureWithoutEmailAndPhone() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "");
     request.getRequest().put(JsonKey.PHONE, "");
     try {
-      UserRequestValidator.validateCreateUser(request);
+      userRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.emailorPhoneRequired.getErrorCode(), e.getCode());
@@ -825,12 +736,12 @@ public class UserRequestValidatorTest {
   }
 
   // @Test
-  public void phoneAndEmailValidationForCreateUserTest3() {
+  public void testValidateCreateUserRequestFailureWithInvalidEmailFormat() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "am@ds@cmo");
 
     try {
-      UserRequestValidator.validateCreateUser(request);
+      userRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.emailFormatError.getErrorCode(), e.getCode());
@@ -838,12 +749,12 @@ public class UserRequestValidatorTest {
   }
 
   // @Test
-  public void phoneAndEmailValidationForCreateUserTest4() {
+  public void testValidateCreateUserRequestFailureWithoutPhoneVerified() {
     Request request = new Request();
     request.getRequest().put(JsonKey.PROVIDER, "BLR");
     request.getRequest().put(JsonKey.PHONE, "7894561230");
     try {
-      UserRequestValidator.validateCreateUser(request);
+      userRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.phoneVerifiedError.getErrorCode(), e.getCode());
@@ -851,13 +762,13 @@ public class UserRequestValidatorTest {
   }
 
   // @Test
-  public void phoneAndEmailValidationForCreateUserTest5() {
+  public void testValidateCreateUserRequestFailureWithPhoneVerifiedEmpty() {
     Request request = new Request();
     request.getRequest().put(JsonKey.PROVIDER, "BLR");
     request.getRequest().put(JsonKey.PHONE, "7894561230");
-    request.getRequest().put(JsonKey.PHONE_VERIFIED, "true");
+    request.getRequest().put(JsonKey.PHONE_VERIFIED, "");
     try {
-      UserRequestValidator.validateCreateUser(request);
+      userRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.phoneVerifiedError.getErrorCode(), e.getCode());
@@ -865,13 +776,13 @@ public class UserRequestValidatorTest {
   }
 
   // @Test
-  public void phoneAndEmailValidationForCreateUserTest6() {
+  public void testValidateCreateUserRequestFailureWithPhoneVerifiedFalse() {
     Request request = new Request();
     request.getRequest().put(JsonKey.PROVIDER, "BLR");
     request.getRequest().put(JsonKey.PHONE, "7894561230");
     request.getRequest().put(JsonKey.PHONE_VERIFIED, false);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      userRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.phoneVerifiedError.getErrorCode(), e.getCode());
@@ -880,7 +791,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void educationValidationTest1() {
+  public void testValidateCreateUserRequestFailureWithoutEducationName() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
     request.getRequest().put(JsonKey.PHONE, "9874561230");
@@ -893,7 +804,7 @@ public class UserRequestValidatorTest {
 
     request.getRequest().put(JsonKey.EDUCATION, list);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      userRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.educationNameError.getErrorCode(), e.getCode());
@@ -902,7 +813,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void educationValidationTest2() {
+  public void testValidateCreateUserRequestFailureWithoutEducationDegree() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
     request.getRequest().put(JsonKey.PHONE, "9874561230");
@@ -916,7 +827,7 @@ public class UserRequestValidatorTest {
 
     request.getRequest().put(JsonKey.EDUCATION, list);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      userRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.educationDegreeError.getErrorCode(), e.getCode());
@@ -925,7 +836,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void educationValidationAddressTest3() {
+  public void testValidateCreateUserRequestFailureWithoutAddressLine1() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
     request.getRequest().put(JsonKey.PHONE, "9874561230");
@@ -941,7 +852,7 @@ public class UserRequestValidatorTest {
     list.add(map);
     request.getRequest().put(JsonKey.EDUCATION, list);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      userRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.addressError.getErrorCode(), e.getCode());
@@ -950,7 +861,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void educationValidationAddressTest4() {
+  public void testValidateCreateUserRequestFailureWithoutCity() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
     request.getRequest().put(JsonKey.PHONE, "9874561230");
@@ -967,7 +878,7 @@ public class UserRequestValidatorTest {
     list.add(map);
     request.getRequest().put(JsonKey.EDUCATION, list);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      userRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.addressError.getErrorCode(), e.getCode());
@@ -976,7 +887,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void jobProfileValidationTest() {
+  public void testValidateCreateUserRequestFailureWithInvalidJobProfileType() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
     request.getRequest().put(JsonKey.PHONE, "9874561230");
@@ -984,7 +895,7 @@ public class UserRequestValidatorTest {
     request.getRequest().put(JsonKey.FIRST_NAME, "98745");
     request.getRequest().put(JsonKey.JOB_PROFILE, "");
     try {
-      UserRequestValidator.validateCreateUser(request);
+      userRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.dataTypeError.getErrorCode(), e.getCode());
@@ -993,7 +904,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void jobProfileValidationTest1() {
+  public void testValidateCreateUserRequestFailureWithoutJobName() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
     request.getRequest().put(JsonKey.PHONE, "9874561230");
@@ -1006,7 +917,7 @@ public class UserRequestValidatorTest {
     list.add(map);
     request.getRequest().put(JsonKey.JOB_PROFILE, list);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      userRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.jobNameError.getErrorCode(), e.getCode());
@@ -1015,7 +926,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void jobProfileValidationTest3() {
+  public void testValidateCreateUserRequestFailureWithInvalidJoinDate() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
     request.getRequest().put(JsonKey.PHONE, "9874561230");
@@ -1029,7 +940,7 @@ public class UserRequestValidatorTest {
     list.add(map);
     request.getRequest().put(JsonKey.JOB_PROFILE, list);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      userRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.dateFormatError.getErrorCode(), e.getCode());
@@ -1038,7 +949,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void jobProfileValidationTest4() {
+  public void testValidateCreateUserRequestFailureWithInvalidEndDate() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
     request.getRequest().put(JsonKey.PHONE, "9874561230");
@@ -1052,7 +963,7 @@ public class UserRequestValidatorTest {
     list.add(map);
     request.getRequest().put(JsonKey.JOB_PROFILE, list);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      userRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.dateFormatError.getErrorCode(), e.getCode());
@@ -1061,7 +972,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void jobProfileValidationTest5() {
+  public void testValidateCreateUserRequestFailureWithEmptyOrgName() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
     request.getRequest().put(JsonKey.PHONE, "9874561230");
@@ -1074,7 +985,7 @@ public class UserRequestValidatorTest {
     list.add(map);
     request.getRequest().put(JsonKey.JOB_PROFILE, list);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      userRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.organisationNameError.getErrorCode(), e.getCode());
@@ -1083,7 +994,7 @@ public class UserRequestValidatorTest {
 
   @Test
   @Ignore
-  public void jobProfileValidationTest2() {
+  public void testValidateCreateUserRequestFailureWithEmptyCity() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
     request.getRequest().put(JsonKey.PHONE, "9874561230");
@@ -1100,7 +1011,7 @@ public class UserRequestValidatorTest {
     list.add(map);
     request.getRequest().put(JsonKey.JOB_PROFILE, list);
     try {
-      UserRequestValidator.validateCreateUser(request);
+      userRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.addressError.getErrorCode(), e.getCode());
@@ -1108,7 +1019,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void validatePhoneNoTest() {
+  public void testValidateCreateUserRequestFailureWithWrongPhoneFormat() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
     request.getRequest().put(JsonKey.PHONE, "9874561230");
@@ -1116,7 +1027,7 @@ public class UserRequestValidatorTest {
     request.getRequest().put(JsonKey.USERNAME, "98745");
     request.getRequest().put(JsonKey.FIRST_NAME, "98745");
     try {
-      UserRequestValidator.validateCreateUser(request);
+      userRequestValidator.validateCreateUserRequest(request);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.phoneNoFormatError.getErrorCode(), e.getCode());
@@ -1124,7 +1035,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void validateGetUserCountTest() {
+  public void testValdateGetUserCountFailureWithInvalidLocationIdsType() {
     Request request = new Request();
     request.getRequest().put(JsonKey.LOCATION_IDS, "");
 
@@ -1137,7 +1048,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void validateGetUserCountTest1() {
+  public void testValdateGetUserCountFailureWithEmptyLocationIdList() {
     Request request = new Request();
     List<String> list = new ArrayList<>();
     list.add("");
@@ -1152,7 +1063,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void validateGetUserCountTest2() {
+  public void testValdateGetUserCountFailureWithNullLocationIdList() {
     Request request = new Request();
     List<String> list = new ArrayList<>();
     list.add("4645");
@@ -1168,7 +1079,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void validateGetUserCountTest3() {
+  public void testValdateGetUserCountFailureWithEmptyFunctionalityMissing() {
     Request request = new Request();
     List<String> list = new ArrayList<>();
     list.add("4645");
@@ -1184,7 +1095,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void validateGetUserCountTest4() {
+  public void testValdateGetUserCountFailureWithInvalidEstCntReqType() {
     Request request = new Request();
     List<String> list = new ArrayList<>();
     list.add("4645");
@@ -1200,18 +1111,35 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void validateGetUserCountTest5() {
+  public void testValidateVerifyUserSuccess() {
     Request request = new Request();
-    List<String> list = new ArrayList<>();
-    list.add("4645");
-    request.getRequest().put(JsonKey.LOCATION_IDS, list);
-    request.getRequest().put(JsonKey.ESTIMATED_COUNT_REQ, true);
-
+    Map<String, Object> requestObj = new HashMap<>();
+    requestObj.put(JsonKey.LOGIN_ID, "username@provider");
+    request.setRequest(requestObj);
+    boolean response = false;
     try {
-      RequestValidator.validateGetUserCount(request);
+      new UserRequestValidator().validateVerifyUser(request);
+      response = true;
+    } catch (ProjectCommonException e) {
+      Assert.assertNull(e);
+    }
+    Assert.assertTrue(response);
+  }
+
+  @Test
+  public void testValidateVerifyUserFailureWithEmptyLogin() {
+    Request request = new Request();
+    Map<String, Object> requestObj = new HashMap<>();
+    requestObj.put(JsonKey.LOGIN_ID, "");
+    request.setRequest(requestObj);
+    boolean response = false;
+    try {
+      new UserRequestValidator().validateVerifyUser(request);
+      response = true;
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
-      assertEquals(ResponseCode.functionalityMissing.getErrorCode(), e.getCode());
+      assertEquals(ResponseCode.loginIdRequired.getErrorCode(), e.getCode());
     }
+    Assert.assertFalse(response);
   }
 }
