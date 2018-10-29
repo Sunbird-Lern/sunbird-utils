@@ -1,4 +1,4 @@
-package org.sunbird.models.organization;
+package org.sunbird.models.organisation;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -9,12 +9,12 @@ import java.sql.Timestamp;
 import java.util.List;
 
 /**
- * @desc POJO class for Organization
+ * @desc POJO class for Organisation
  * @author Amit Kumar
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
-public class Organization implements Serializable {
+public class Organisation implements Serializable {
 
   private static final long serialVersionUID = 3617862727235741692L;
   private String id;
