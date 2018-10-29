@@ -12,22 +12,26 @@ public class UserOrg implements Serializable {
 
   private static final long serialVersionUID = 1L;
   private String id;
-  private String addedby;
-  private String addedbyname;
-  private String approvaldate;
-  private String approvedby;
-  private String hashtagid;
-  private boolean isapproved;
-  private boolean isdeleted;
-  private boolean isrejected;
-  private String organisationid;
-  private String orgjoindate;
-  private String orgleftdate;
+  private String addedBy;
+  private String addedByName;
+  private String approvalDate;
+  private String approvedBy;
+  private String hashtagId;
+  private boolean isApproved;
+  private boolean isDeleted;
+  private boolean isRejected;
+  private String organisationId;
+  private String orgJoinDate;
+  private String orgLeftDate;
   private String position;
   private List<String> roles;
-  private String updatedby;
-  private String updateddate;
-  private String userid;
+  private String updatedBy;
+  private String updatedDate;
+  private String userId;
+
+  public static long getSerialversionuid() {
+    return serialVersionUID;
+  }
 
   public String getId() {
     return id;
@@ -37,92 +41,92 @@ public class UserOrg implements Serializable {
     this.id = id;
   }
 
-  public String getAddedby() {
-    return addedby;
+  public String getAddedBy() {
+    return addedBy;
   }
 
-  public void setAddedby(String addedby) {
-    this.addedby = addedby;
+  public void setAddedBy(String addedBy) {
+    this.addedBy = addedBy;
   }
 
-  public String getAddedbyname() {
-    return addedbyname;
+  public String getAddedByName() {
+    return addedByName;
   }
 
-  public void setAddedbyname(String addedbyname) {
-    this.addedbyname = addedbyname;
+  public void setAddedByName(String addedByName) {
+    this.addedByName = addedByName;
   }
 
-  public String getApprovaldate() {
-    return approvaldate;
+  public String getApprovalDate() {
+    return approvalDate;
   }
 
-  public void setApprovaldate(String approvaldate) {
-    this.approvaldate = approvaldate;
+  public void setApprovalDate(String approvalDate) {
+    this.approvalDate = approvalDate;
   }
 
-  public String getApprovedby() {
-    return approvedby;
+  public String getApprovedBy() {
+    return approvedBy;
   }
 
-  public void setApprovedby(String approvedby) {
-    this.approvedby = approvedby;
+  public void setApprovedBy(String approvedBy) {
+    this.approvedBy = approvedBy;
   }
 
-  public String getHashtagid() {
-    return hashtagid;
+  public String getHashtagId() {
+    return hashtagId;
   }
 
-  public void setHashtagid(String hashtagid) {
-    this.hashtagid = hashtagid;
+  public void setHashtagId(String hashtagId) {
+    this.hashtagId = hashtagId;
   }
 
-  public boolean isIsapproved() {
-    return isapproved;
+  public boolean isApproved() {
+    return isApproved;
   }
 
-  public void setIsapproved(boolean isapproved) {
-    this.isapproved = isapproved;
+  public void setApproved(boolean isApproved) {
+    this.isApproved = isApproved;
   }
 
-  public boolean isIsdeleted() {
-    return isdeleted;
+  public boolean isDeleted() {
+    return isDeleted;
   }
 
-  public void setIsdeleted(boolean isdeleted) {
-    this.isdeleted = isdeleted;
+  public void setDeleted(boolean isDeleted) {
+    this.isDeleted = isDeleted;
   }
 
-  public boolean isIsrejected() {
-    return isrejected;
+  public boolean isRejected() {
+    return isRejected;
   }
 
-  public void setIsrejected(boolean isrejected) {
-    this.isrejected = isrejected;
+  public void setRejected(boolean isRejected) {
+    this.isRejected = isRejected;
   }
 
-  public String getOrganisationid() {
-    return organisationid;
+  public String getOrganisationId() {
+    return organisationId;
   }
 
-  public void setOrganisationid(String organisationid) {
-    this.organisationid = organisationid;
+  public void setOrganisationId(String organisationId) {
+    this.organisationId = organisationId;
   }
 
-  public String getOrgjoindate() {
-    return orgjoindate;
+  public String getOrgJoinDate() {
+    return orgJoinDate;
   }
 
-  public void setOrgjoindate(String orgjoindate) {
-    this.orgjoindate = orgjoindate;
+  public void setOrgJoinDate(String orgJoinDate) {
+    this.orgJoinDate = orgJoinDate;
   }
 
-  public String getOrgleftdate() {
-    return orgleftdate;
+  public String getOrgLeftDate() {
+    return orgLeftDate;
   }
 
-  public void setOrgleftdate(String orgleftdate) {
-    this.orgleftdate = orgleftdate;
+  public void setOrgLeftDate(String orgLeftDate) {
+    this.orgLeftDate = orgLeftDate;
   }
 
   public String getPosition() {
@@ -141,31 +145,27 @@ public class UserOrg implements Serializable {
     this.roles = roles;
   }
 
-  public String getUpdatedby() {
-    return updatedby;
+  public String getUpdatedBy() {
+    return updatedBy;
   }
 
-  public void setUpdatedby(String updatedby) {
-    this.updatedby = updatedby;
+  public void setUpdatedBy(String updatedBy) {
+    this.updatedBy = updatedBy;
   }
 
-  public String getUpdateddate() {
-    return updateddate;
+  public String getUpdatedDate() {
+    return updatedDate;
   }
 
-  public void setUpdateddate(String updateddate) {
-    this.updateddate = updateddate;
+  public void setUpdatedDate(String updatedDate) {
+    this.updatedDate = updatedDate;
   }
 
-  public String getUserid() {
-    return userid;
+  public String getUserId() {
+    return userId;
   }
 
-  public void setUserid(String userid) {
-    this.userid = userid;
-  }
-
-  public static long getSerialversionuid() {
-    return serialVersionUID;
+  public void setUserId(String userId) {
+    this.userId = userId;
   }
 }
