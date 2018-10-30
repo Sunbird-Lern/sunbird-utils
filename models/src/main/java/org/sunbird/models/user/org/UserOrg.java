@@ -9,14 +9,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserOrg implements Serializable {
-
   private static final long serialVersionUID = 1L;
+  
   private String id;
   private String addedBy;
   private String addedByName;
   private String approvalDate;
   private String approvedBy;
-  private String hashtagId;
+  private String hashTagId;
   private boolean isApproved;
   private boolean isDeleted;
   private boolean isRejected;
@@ -29,7 +29,7 @@ public class UserOrg implements Serializable {
   private String updatedDate;
   private String userId;
 
-  public static long getSerialversionuid() {
+  public static long getSerialVersionUID() {
     return serialVersionUID;
   }
 
@@ -73,12 +73,12 @@ public class UserOrg implements Serializable {
     this.approvedBy = approvedBy;
   }
 
-  public String getHashtagId() {
-    return hashtagId;
+  public String getHashTagId() {
+    return hashTagId;
   }
 
-  public void setHashtagId(String hashtagId) {
-    this.hashtagId = hashtagId;
+  public void setHashTagId(String hashTagId) {
+    this.hashTagId = hashTagId;
   }
 
   public boolean isApproved() {
@@ -168,4 +168,5 @@ public class UserOrg implements Serializable {
   public void setUserId(String userId) {
     this.userId = userId;
   }
+
 }
