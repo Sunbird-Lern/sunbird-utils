@@ -665,6 +665,9 @@ public enum ResponseCode {
   errorSystemSettingNotFound(
       ResponseMessage.Key.ERROR_SYSTEM_SETTING_NOT_FOUND,
       ResponseMessage.Message.ERROR_SYSTEM_SETTING_NOT_FOUND),
+  errorNoRootOrgAssociated(
+      ResponseMessage.Key.ERROR_NO_ROOT_ORG_ASSOCIATED,
+      ResponseMessage.Message.ERROR_NO_ROOT_ORG_ASSOCIATED),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

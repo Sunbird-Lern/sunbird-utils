@@ -51,7 +51,7 @@ public class User implements Serializable {
   private String updatedDate;
   private String userId;
   private String userName;
-  private List<Map<String, Object>> webPages;
+  private List<Map<String, String>> webPages;
   private String externalId;
   private String channel;
   private String loginId;
@@ -356,11 +356,11 @@ public class User implements Serializable {
     this.userName = userName;
   }
 
-  public List<Map<String, Object>> getWebPages() {
+  public List<Map<String, String>> getWebPages() {
     return webPages;
   }
 
-  public void setWebPages(List<Map<String, Object>> webPages) {
+  public void setWebPages(List<Map<String, String>> webPages) {
     this.webPages = webPages;
   }
 
