@@ -18,7 +18,7 @@ public interface UserClient {
    * Update user details.
    *
    * @param actorRef Actor reference
-   * @param userMap Organisation details
+   * @param userMap user details
    */
   void updateUser(ActorRef actorRef, Map<String, Object> userMap);
 }
