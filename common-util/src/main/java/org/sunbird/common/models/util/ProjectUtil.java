@@ -560,6 +560,7 @@ public class ProjectUtil {
     context.put(JsonKey.ACTION_NAME, getValue(map, JsonKey.ACTION_NAME));
     context.put(JsonKey.USERNAME, getValue(map, JsonKey.USERNAME));
     context.put(JsonKey.TEMPORARY_PASSWORD, getValue(map, JsonKey.TEMPORARY_PASSWORD));
+
     if (StringUtils.isNotBlank((String) map.get(JsonKey.COURSE_NAME))) {
       context.put(JsonKey.COURSE_NAME, map.remove(JsonKey.COURSE_NAME));
     }

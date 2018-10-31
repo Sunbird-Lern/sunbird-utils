@@ -12,11 +12,6 @@ import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 
-/*
- *@author github.com/iostream04
- *
- */
-
 public class EmailServiceClientImpl implements EmailServiceClient {
   private static InterServiceCommunication interServiceCommunication =
       InterServiceCommunicationFactory.getInstance();

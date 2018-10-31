@@ -4,10 +4,6 @@ import akka.actor.ActorRef;
 import java.util.Map;
 import org.sunbird.common.models.response.Response;
 
-/*
- *@author github.com/iostream04
- */
-
 public interface EmailServiceClient {
   /**
    * Send mail user from course.
