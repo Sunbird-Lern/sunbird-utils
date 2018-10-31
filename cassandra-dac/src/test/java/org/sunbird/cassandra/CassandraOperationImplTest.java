@@ -10,6 +10,7 @@ import com.datastax.driver.core.querybuilder.Delete;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
 import com.google.common.util.concurrent.Uninterruptibles;
+import java.text.MessageFormat;
 import java.util.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -61,7 +62,7 @@ import org.sunbird.helper.ServiceFactory;
   Delete.Selection.class
 })
 @PowerMockIgnore("javax.management.*")
-public class CassandraMockTest {
+public class CassandraOperationImplTest {
 
   private static Cluster cluster;
   private static Session session = PowerMockito.mock(Session.class);
@@ -160,40 +161,15 @@ public class CassandraMockTest {
   }
 
   @Test
-  public void testCassandraConnectionSuccessWithoutUserNameAndPassword() throws Exception {
-
-    boolean bool = connectionManager.createConnection(host, port, null, null, cassandraKeySpace);
-    assertEquals(true, bool);
-  }
-
-  @Test
-  public void testCassandraConnectionSuccessWithUserNameAndPassword() throws Exception {
-
-    Boolean bool =
-        connectionManager.createConnection(host, port, "cassandra", "password", cassandraKeySpace);
-    assertEquals(true, bool);
-  }
-
-  @Test
-  public void testCassandraConnectionFailure() {
-
-    try {
-      connectionManager.createConnection("127.0.0.1", "9042", "cassandra", "pass", "eySpace");
-    } catch (Exception ex) {
-    }
-    assertTrue(500 == ResponseCode.SERVER_ERROR.getResponseCode());
-  }
-
-  @Test
-  public void testCassandraInsertSuccess() throws Exception {
+  public void testInsertRecordSuccess() throws Exception {
 
     when(session.execute(boundStatement.bind("123"))).thenReturn(resultSet);
     Response response = operation.insertRecord(cassandraKeySpace, "address1", address);
-    assertEquals("SUCCESS", response.get("response"));
+    assertEquals(ResponseCode.success.getErrorCode(), response.get("response"));
   }
 
   @Test
-  public void testCassandraInsertFailure() throws Exception {
+  public void testInsertRecordFailure() throws Exception {
 
     when(session.execute(boundStatement.bind("123")))
         .thenThrow(
@@ -208,11 +184,11 @@ public class CassandraMockTest {
     } catch (Exception ex) {
       exception = ex;
     }
-    assertTrue("DB insert operation failed.".equals(exception.getMessage()));
+    assertEquals(ResponseCode.dbInsertionError.getErrorMessage(), exception.getMessage());
   }
 
   @Test
-  public void testCassandraInsertFailureWithInvalidProperty() throws Exception {
+  public void testInsertRecordFailureWithInvalidProperty() throws Exception {
 
     when(session.execute(boundStatement.bind("123")))
         .thenThrow(
@@ -227,22 +203,25 @@ public class CassandraMockTest {
     } catch (Exception exp) {
       exception = exp;
     }
-    assertTrue("invalid property .".equals(exception.getMessage()));
+    Object[] args = {""};
+    assertEquals(
+        new MessageFormat(ResponseCode.invalidPropertyError.getErrorMessage()).format(args),
+        exception.getMessage());
   }
 
   @Test
-  public void testCassandraUpdateSuccess() {
+  public void testUpdateRecordSuccess() {
 
     address.put(JsonKey.CITY, "city");
     address.put(JsonKey.ADD_TYPE, "addrType");
 
     when(session.execute(boundStatement)).thenReturn(resultSet);
     Response response = operation.updateRecord(cassandraKeySpace, "address", address);
-    assertEquals("SUCCESS", response.get("response"));
+    assertEquals(ResponseCode.success.getErrorCode(), response.get("response"));
   }
 
   @Test
-  public void testCassandraUpdateFailure() throws Exception {
+  public void testUpdateRecordFailure() throws Exception {
 
     dummyAddress.put(JsonKey.CITY, "city");
     dummyAddress.put(JsonKey.ADD_TYPE, "addrType");
@@ -261,11 +240,11 @@ public class CassandraMockTest {
     } catch (Exception ex) {
       exception = ex;
     }
-    assertTrue("Db update operation failed.".equals(exception.getMessage()));
+    assertEquals(ResponseCode.dbUpdateError.getErrorMessage(), exception.getMessage());
   }
 
   @Test
-  public void testCassandraUpdateFailureWithInvalidProperty() throws Exception {
+  public void testUpdateRecordFailureWithInvalidProperty() throws Exception {
 
     dummyAddress.put(JsonKey.CITY, "city");
     dummyAddress.put(JsonKey.ADD_TYPE, "addrType");
@@ -283,11 +262,14 @@ public class CassandraMockTest {
     } catch (Exception exp) {
       exception = exp;
     }
-    assertTrue("invalid property .".equals(exception.getMessage()));
+    Object[] args = {""};
+    assertEquals(
+        new MessageFormat(ResponseCode.invalidPropertyError.getErrorMessage()).format(args),
+        exception.getMessage());
   }
 
   @Test
-  public void testCassandraGetAllRecordsSuccess() throws Exception {
+  public void testGetAllRecordsSuccess() throws Exception {
 
     List<Row> rows = new ArrayList<>();
     Row row = Mockito.mock(Row.class);
@@ -303,7 +285,7 @@ public class CassandraMockTest {
   }
 
   @Test
-  public void testCassandraGetAllRecordsFailure() throws Exception {
+  public void testGetAllRecordsFailure() throws Exception {
 
     when(session.execute(selectQuery))
         .thenThrow(
@@ -327,11 +309,13 @@ public class CassandraMockTest {
     } catch (Exception ex) {
       exception = ex;
     }
-    assertTrue((((ProjectCommonException) exception).getResponseCode()) == 500);
+    assertTrue(
+        (((ProjectCommonException) exception).getResponseCode())
+            == ResponseCode.SERVER_ERROR.getResponseCode());
   }
 
   @Test
-  public void testCassandraGetPropertiesValueByIdSuccess() throws Exception {
+  public void testGetPropertiesValueSuccessById() throws Exception {
 
     List<Row> rows = new ArrayList<>();
     Row row = Mockito.mock(Row.class);
@@ -349,7 +333,7 @@ public class CassandraMockTest {
   }
 
   @Test
-  public void testCassandraGetPropertiesValueByIdFailure() throws Exception {
+  public void testGetPropertiesValueFailureById() throws Exception {
 
     Throwable exception = null;
     PowerMockito.whenNew(BoundStatement.class)
@@ -366,11 +350,13 @@ public class CassandraMockTest {
     } catch (Exception ex) {
       exception = ex;
     }
-    assertTrue((((ProjectCommonException) exception).getResponseCode()) == 500);
+    assertTrue(
+        (((ProjectCommonException) exception).getResponseCode())
+            == ResponseCode.SERVER_ERROR.getResponseCode());
   }
 
   @Test
-  public void testCassandraGetRecordByIdSuccess() {
+  public void testGetRecordSuccessById() {
 
     List<Row> rows = new ArrayList<>();
     Row row = Mockito.mock(Row.class);
@@ -387,7 +373,7 @@ public class CassandraMockTest {
   }
 
   @Test
-  public void testCassandraGetRecordByIdFailure() throws Exception {
+  public void testGetRecordFailureById() throws Exception {
 
     Throwable exception = null;
     PowerMockito.whenNew(BoundStatement.class)
@@ -403,11 +389,13 @@ public class CassandraMockTest {
     } catch (Exception ex) {
       exception = ex;
     }
-    assertTrue((((ProjectCommonException) exception).getResponseCode()) == 500);
+    assertTrue(
+        (((ProjectCommonException) exception).getResponseCode())
+            == ResponseCode.SERVER_ERROR.getResponseCode());
   }
 
   @Test
-  public void testCassandraGetRecordByPropertiesSuccess() throws Exception {
+  public void testGetRecordSuccessByProperties() throws Exception {
 
     Map<String, Object> map = new HashMap<>();
     map.put(JsonKey.USER_ID, "USR1");
@@ -424,7 +412,7 @@ public class CassandraMockTest {
   }
 
   @Test
-  public void testCassandraGetRecordByPropertiesFailureServer() throws Exception {
+  public void testGetRecordFailureByProperties() throws Exception {
 
     Map<String, Object> map = new HashMap<>();
     map.put(JsonKey.USER_ID, "USR1");
@@ -448,11 +436,13 @@ public class CassandraMockTest {
     } catch (Exception ex) {
       exception = ex;
     }
-    assertTrue((((ProjectCommonException) exception).getResponseCode()) == 500);
+    assertTrue(
+        (((ProjectCommonException) exception).getResponseCode())
+            == ResponseCode.SERVER_ERROR.getResponseCode());
   }
 
   @Test
-  public void testCassandraGetRecordByPropertiesForListSuccess() throws Exception {
+  public void testGetRecordForListSuccessByProperties() throws Exception {
 
     List<Object> list = new ArrayList<>();
     list.add("123");
@@ -470,7 +460,7 @@ public class CassandraMockTest {
   }
 
   @Test
-  public void testCassandraGetRecordByPropertiesForListFailedOperation() throws Exception {
+  public void testGetRecordForListFailreByProperties() throws Exception {
 
     List<Object> list = new ArrayList<>();
     list.add("123");
@@ -494,11 +484,13 @@ public class CassandraMockTest {
     } catch (Exception ex) {
       exception = ex;
     }
-    assertTrue((((ProjectCommonException) exception).getResponseCode()) == 500);
+    assertTrue(
+        (((ProjectCommonException) exception).getResponseCode())
+            == ResponseCode.SERVER_ERROR.getResponseCode());
   }
 
   @Test
-  public void testCassandraGetRecordsByPropertySuccess() throws Exception {
+  public void testGetRecordsSuccessByProperty() throws Exception {
 
     List<Row> rows = new ArrayList<>();
     Row row = Mockito.mock(Row.class);
@@ -512,7 +504,7 @@ public class CassandraMockTest {
   }
 
   @Test
-  public void testCassandraGetRecordsByPropertyFailure() throws Exception {
+  public void testGetRecordsFailureByProperty() throws Exception {
 
     List<Row> rows = new ArrayList<>();
     Row row = Mockito.mock(Row.class);
@@ -532,11 +524,13 @@ public class CassandraMockTest {
     } catch (Exception ex) {
       exception = ex;
     }
-    assertTrue((((ProjectCommonException) exception).getResponseCode()) == 500);
+    assertTrue(
+        (((ProjectCommonException) exception).getResponseCode())
+            == ResponseCode.SERVER_ERROR.getResponseCode());
   }
 
   @Test
-  public void testCassandraGetRecordsByIdSuccess() {
+  public void testGetRecordsSuccessById() {
 
     List<Row> rows = new ArrayList<>();
     Row row = Mockito.mock(Row.class);
@@ -550,7 +544,7 @@ public class CassandraMockTest {
   }
 
   @Test
-  public void testCassandraGetRecordsByIdFailureServer() throws Exception {
+  public void testGetRecordsFailureById() throws Exception {
 
     List<Row> rows = new ArrayList<>();
     Row row = Mockito.mock(Row.class);
@@ -571,11 +565,13 @@ public class CassandraMockTest {
     } catch (Exception ex) {
       exception = ex;
     }
-    assertTrue((((ProjectCommonException) exception).getResponseCode()) == 500);
+    assertTrue(
+        (((ProjectCommonException) exception).getResponseCode())
+            == ResponseCode.SERVER_ERROR.getResponseCode());
   }
 
   @Test
-  public void testCassandraDeleteSuccess() throws Exception {
+  public void testDeleteRecordSuccess() throws Exception {
 
     when(QueryBuilder.delete()).thenReturn(deleteSelection);
     Response response = new Response();
@@ -585,7 +581,7 @@ public class CassandraMockTest {
   }
 
   @Test
-  public void testCassandraDeleteFailure() {
+  public void testDeleteRecordFailure() {
 
     when(QueryBuilder.delete())
         .thenThrow(
@@ -601,11 +597,13 @@ public class CassandraMockTest {
     } catch (Exception ex) {
       exception = ex;
     }
-    assertTrue((((ProjectCommonException) exception).getResponseCode()) == 500);
+    assertTrue(
+        (((ProjectCommonException) exception).getResponseCode())
+            == ResponseCode.SERVER_ERROR.getResponseCode());
   }
 
   @Test
-  public void testCassandraGetTableListSuccess() throws Exception {
+  public void testGetTableListSuccess() throws Exception {
 
     Collection<TableMetadata> tables = new ArrayList<>();
     TableMetadata table = Mockito.mock(TableMetadata.class);
@@ -617,14 +615,14 @@ public class CassandraMockTest {
   }
 
   @Test
-  public void testCassandraGetClusterSuccess() throws Exception {
+  public void testGetClusterSuccess() throws Exception {
 
     Cluster cluster = connectionManager.getCluster("sunbird");
     assertTrue(cluster != null);
   }
 
   @Test
-  public void testCassandraGetClusterFailureWithInvalidKeySpace() {
+  public void testGetClusterFailureWithInvalidKeySpace() {
 
     Throwable exception = null;
     try {
