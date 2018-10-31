@@ -71,7 +71,12 @@ public class OrganisationClientImpl implements OrganisationClient {
     if (obj instanceof Response) {
       ObjectMapper objectMapper = new ObjectMapper();
       Response response = (Response) obj;
-      organisation = objectMapper.convertValue(response.get(JsonKey.RESPONSE), Organisation.class);
+
+      // Convert contact details (received from ES) format from map to
+      // JSON string (as in Cassandra contact details are stored as text)
+      Map<String,Object> map = (Map)response.get(JsonKey.RESPONSE);
+      map.put(JsonKey.CONTACT_DETAILS, String.valueOf(map.get(JsonKey.CONTACT_DETAILS)));
+      organisation = objectMapper.convertValue(map, Organisation.class);
     } else if (obj instanceof ProjectCommonException) {
       throw (ProjectCommonException) obj;
     } else if (obj instanceof Exception) {

@@ -103,4 +103,11 @@ public class ProjectCommonException extends RuntimeException {
         StringUtils.isBlank(exceptionMessage) ? responseCode.getErrorMessage() : exceptionMessage,
         ResponseCode.SERVER_ERROR.getResponseCode());
   }
+
+  public static void throwUnauthorizedErrorException() {
+    throw new ProjectCommonException(
+        ResponseCode.unAuthorized.getErrorCode(),
+        ResponseCode.unAuthorized.getErrorMessage(),
+        ResponseCode.UNAUTHORIZED.getResponseCode());
+  }
 }
