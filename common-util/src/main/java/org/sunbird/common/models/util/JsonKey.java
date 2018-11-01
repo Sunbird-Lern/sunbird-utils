@@ -718,9 +718,9 @@ public final class JsonKey {
   public static final String NEW = "new";
   public static final String COURSE_BATCH = "courseBatch";
   public static final String USER_TYPE = "userType";
-  public static final String UPDATED_MENTORS = "updatedMentors";
+  public static final String ADDED_MENTORS = "addedMentors";
   public static final String REMOVED_MENTORS = "removedMentors";
-  public static final String UPDATED_PARTICIPANTS = "updatedParticipants";
+  public static final String ADDED_PARTICIPANTS = "addedParticipants";
   public static final String REMOVED_PARTICIPANTS = "removedParticipants";
 
   public static final String SUNBIRD_API_REQUEST_LOWER_CASE_FIELDS =
