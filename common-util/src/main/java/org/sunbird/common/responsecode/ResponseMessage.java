@@ -368,6 +368,11 @@ public interface ResponseMessage {
         "Field {0} in {1} configuration is conflicting in {2} and {3}.";
     String ERROR_SYSTEM_SETTING_NOT_FOUND = "System Setting not found for id: {0}";
     String ERROR_NO_ROOT_ORG_ASSOCIATED = "Not able to associate with root org";
+    String UNSUPPORTED_CLOUD_STORAGE = "Cloud Storage Type passed {0} is not supported";
+    String ERROR_GENERATING_DOWNLOAD_LINK =
+        "Could not generate download link for process {0} due to {1}";
+    String ERROR_DOWNLOAD_LINK_NOT_AVAILABLE =
+        "Download link not available for process {0}. This function is not available for older bulk upload process";
   }
 
   interface Key {
@@ -686,5 +691,8 @@ public interface ResponseMessage {
     String ERROR_CONFLICTING_FIELD_CONFIGURATION = "ERROR_CONFLICTING_FIELD_CONFIGURATION";
     String ERROR_SYSTEM_SETTING_NOT_FOUND = "ERROR_SYSTEM_SETTING_NOT_FOUND";
     String ERROR_NO_ROOT_ORG_ASSOCIATED = "ERROR_NO_ROOT_ORG_ASSOCIATED";
+    String UNSUPPORTED_CLOUD_STORAGE = "UNSUPPORTED_CLOUD_STORAGE";
+    String ERROR_GENERATING_DOWNLOAD_LINK = "ERROR_GENERATING_DOWNLOAD_LINK";
+    String ERROR_DOWNLOAD_LINK_NOT_AVAILABLE = "ERROR_DOWNLOAD_LINK_NOT_AVAILABLE";
   }
 }

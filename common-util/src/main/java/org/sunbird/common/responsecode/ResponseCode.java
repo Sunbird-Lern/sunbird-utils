@@ -668,6 +668,16 @@ public enum ResponseCode {
   errorNoRootOrgAssociated(
       ResponseMessage.Key.ERROR_NO_ROOT_ORG_ASSOCIATED,
       ResponseMessage.Message.ERROR_NO_ROOT_ORG_ASSOCIATED),
+  unSupportedCloudStorage(
+      ResponseMessage.Key.UNSUPPORTED_CLOUD_STORAGE,
+      ResponseMessage.Message.UNSUPPORTED_CLOUD_STORAGE),
+  errorGeneatingBulkDownloadStatusLinnk(
+      ResponseMessage.Key.ERROR_GENERATING_DOWNLOAD_LINK,
+      ResponseMessage.Message.ERROR_GENERATING_DOWNLOAD_LINK),
+  errorDownloadLinkNotAvailable(
+      ResponseMessage.Key.ERROR_DOWNLOAD_LINK_NOT_AVAILABLE,
+      ResponseMessage.Message.ERROR_DOWNLOAD_LINK_NOT_AVAILABLE),
+
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
