@@ -3,15 +3,18 @@ package org.sunbird.actorutil.org.impl;
 import akka.actor.ActorRef;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.sunbird.actorutil.InterServiceCommunication;
 import org.sunbird.actorutil.InterServiceCommunicationFactory;
 import org.sunbird.actorutil.org.OrganisationClient;
+import org.sunbird.common.ElasticSearchUtil;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.*;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
+import org.sunbird.dto.SearchDTO;
 import org.sunbird.models.organisation.Organisation;
 
 public class OrganisationClientImpl implements OrganisationClient {
@@ -90,13 +93,26 @@ public class OrganisationClientImpl implements OrganisationClient {
   }
 
   @Override
-  public Organisation esGetOrgByExternalId(ActorRef actorRef, String externalId, String provider) {
-    Request request = new Request();
-    Map<String, Object> requestMap = new HashMap<>();
-    requestMap.put(JsonKey.ORGANISATION_ID, orgId);
-    request.setRequest(requestMap);
-    request.setOperation(ActorOperations.GET_ORG_DETAILS.getValue());
-
-    return null;
+  public Organisation esGetOrgByExternalId(String externalId, String provider) {
+    Organisation organisation = null;
+    Map<String, Object> map = null;
+    ObjectMapper objectMapper = new ObjectMapper();
+    SearchDTO searchDto = new SearchDTO();
+    Map<String, Object> filter = new HashMap<>();
+    filter.put(JsonKey.EXTERNAL_ID, externalId);
+    filter.put(JsonKey.PROVIDER, provider);
+    searchDto.getAdditionalProperties().put(JsonKey.FILTERS, filter);
+    Map<String, Object> esResponse =
+        ElasticSearchUtil.complexSearch(
+            searchDto,
+            ProjectUtil.EsIndex.sunbird.getIndexName(),
+            ProjectUtil.EsType.organisation.getTypeName());
+    List<Map<String, Object>> list = (List<Map<String, Object>>) esResponse.get(JsonKey.CONTENT);
+    if (!list.isEmpty()) {
+      map = list.get(0);
+    }
+    map.put(JsonKey.CONTACT_DETAILS, String.valueOf(map.get(JsonKey.CONTACT_DETAILS)));
+    organisation = objectMapper.convertValue(map, Organisation.class);
+    return organisation;
   }
 }

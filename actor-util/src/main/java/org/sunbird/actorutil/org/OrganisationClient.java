@@ -35,10 +35,9 @@ public interface OrganisationClient {
   /**
    * Get details of organisation for given externalId and provider.
    *
-   * @param actorRef Actor reference
    * @param externalId External ID
    * @param provider provider
    * @return Organisation details
    */
-  Organisation esGetOrgByExternalId(ActorRef actorRef, String externalId, String provider);
+  Organisation esGetOrgByExternalId(String externalId, String provider);
 }
