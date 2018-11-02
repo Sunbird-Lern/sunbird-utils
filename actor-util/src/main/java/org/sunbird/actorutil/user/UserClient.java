@@ -9,7 +9,7 @@ public interface UserClient {
    * Create user.
    *
    * @param actorRef Actor reference
-   * @param userMap user details
+   * @param userMap User details
    * @return User ID
    */
   String createUser(ActorRef actorRef, Map<String, Object> userMap);
@@ -18,7 +18,8 @@ public interface UserClient {
    * Update user details.
    *
    * @param actorRef Actor reference
-   * @param userMap user details
+   * @param userMap User details
    */
   void updateUser(ActorRef actorRef, Map<String, Object> userMap);
+
 }

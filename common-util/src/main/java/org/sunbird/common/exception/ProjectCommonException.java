@@ -106,8 +106,8 @@ public class ProjectCommonException extends RuntimeException {
 
   public static void throwUnauthorizedErrorException() {
     throw new ProjectCommonException(
-        ResponseCode.UNAUTHORIZED.getErrorCode(),
-        ResponseCode.UNAUTHORIZED.getErrorMessage(),
-        ResponseCode.CLIENT_ERROR.getResponseCode());
+        ResponseCode.unAuthorized.getErrorCode(),
+        ResponseCode.unAuthorized.getErrorMessage(),
+        ResponseCode.UNAUTHORIZED.getResponseCode());
   }
 }

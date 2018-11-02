@@ -20,13 +20,13 @@ public class UserClientImpl implements UserClient {
 
   @Override
   public String createUser(ActorRef actorRef, Map<String, Object> userMap) {
-    ProjectLogger.log("UserClientImpl: createOrg called", LoggerEnum.INFO);
+    ProjectLogger.log("UserClientImpl: createUser called", LoggerEnum.INFO);
     return upsertUser(actorRef, userMap, ActorOperations.CREATE_USER.getValue());
   }
 
   @Override
   public void updateUser(ActorRef actorRef, Map<String, Object> userMap) {
-    ProjectLogger.log("UserClientImpl: createOrg called", LoggerEnum.INFO);
+    ProjectLogger.log("UserClientImpl: updateUser called", LoggerEnum.INFO);
     upsertUser(actorRef, userMap, ActorOperations.UPDATE_USER.getValue());
   }
 
