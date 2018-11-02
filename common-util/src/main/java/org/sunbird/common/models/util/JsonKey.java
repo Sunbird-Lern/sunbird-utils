@@ -81,6 +81,7 @@ public final class JsonKey {
   public static final String BATCH_RELATIONS = "batch_relations";
   public static final String BEARER = "Bearer ";
   public static final String BLOCKED = "blocked";
+  public static final String BOARD = "board";
   public static final String BODY = "body";
   public static final String BULK_OP_DB = "BulkOpDb";
   public static final String BULK_UPLOAD_BATCH_DATA_SIZE = "bulk_upload_batch_data_size";
@@ -261,6 +262,7 @@ public final class JsonKey {
   public static final String FIRST_NAME = "firstName";
   public static final String FORM_PARAMS = "formParams";
   public static final String FORMAT = "format";
+  public static final String FRAMEWORK = "framework";
   public static final String FROM_EMAIL = "fromEmail";
   public static final String GENDER = "gender";
   public static final String GEO_LOCATION_DB = "geoLocationDb";
@@ -323,12 +325,14 @@ public final class JsonKey {
   public static final String LOGIN_ID_DELIMETER = "@";
   public static final String LOGIN_TYPE = "type";
   public static final String MAIL_NOTE = "mail_note";
+  public static final String MAP = "map";
   public static final String MAPPED_FORM_PARAMS = "mappedFormParams";
   public static final String MASKED_EMAIL = "maskedEmail";
   public static final String MASKED_PHONE = "maskedPhone";
   public static final String MASTER_ACTION = "master_action";
   public static final String MASTER_KEY = "masterKey";
   public static final String MEDIA_TYPE_DB = "mediaTypeDB";
+  public static final String MEDIUM = "medium";
   public static final String MENTORS = "mentors";
   public static final String MESSAGE = "message";
   public static final String MESSAGE_Id = "message_id";

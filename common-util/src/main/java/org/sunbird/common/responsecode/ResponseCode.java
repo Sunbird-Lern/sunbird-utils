@@ -225,6 +225,8 @@ public enum ResponseCode {
   rolesRequired(ResponseMessage.Key.ROLES_MISSING, ResponseMessage.Message.ROLES_MISSING),
   emptyRolesProvided(
       ResponseMessage.Key.EMPTY_ROLES_PROVIDED, ResponseMessage.Message.EMPTY_ROLES_PROVIDED),
+  emptyListProvided(
+      ResponseMessage.Key.EMPTY_LIST_PROVIDED, ResponseMessage.Message.EMPTY_LIST_PROVIDED),
   invalidDateFormat(
       ResponseMessage.Key.INVALID_DATE_FORMAT, ResponseMessage.Message.INVALID_DATE_FORMAT),
   sourceAndExternalIdAlreadyExist(
