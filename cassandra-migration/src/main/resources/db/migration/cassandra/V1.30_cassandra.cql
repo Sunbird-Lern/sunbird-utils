@@ -1,2 +1,1 @@
-INSERT INTO sunbird.system_settings(id, field, value) VALUES('orgMandatoryFieldConfig', 'orgMandatoryFieldConfig', '{ "fields": [orgName,locationId,status]}');
-INSERT INTO sunbird.system_settings(id, field, value) VALUES('orgParamMappingConfig', 'orgParamMappingConfig', '{ "SCHOOL NAME": "orgName","BLOCK CODE":"locationId","SCHOOL ID": "orgId"}');
+INSERT INTO sunbird.system_settings(id, field, value) VALUES('orgProfileConfig', 'orgProfileConfig', '{"csv":{"supportedColumns":{"School Name":"orgName","BLOCK CODE":"locationCode","STATUS":"status","SCHOOL ID":"orgId","EXTERNAL ID":"externalId","DESCRIPTION":"description"},"mandatoryColumns":["orgName","locationCode","status"]}}');
