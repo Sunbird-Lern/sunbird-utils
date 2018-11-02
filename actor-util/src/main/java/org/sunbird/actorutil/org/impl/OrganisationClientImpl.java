@@ -3,15 +3,18 @@ package org.sunbird.actorutil.org.impl;
 import akka.actor.ActorRef;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.sunbird.actorutil.InterServiceCommunication;
 import org.sunbird.actorutil.InterServiceCommunicationFactory;
 import org.sunbird.actorutil.org.OrganisationClient;
+import org.sunbird.common.ElasticSearchUtil;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.*;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
+import org.sunbird.dto.SearchDTO;
 import org.sunbird.models.organisation.Organisation;
 
 public class OrganisationClientImpl implements OrganisationClient {
@@ -59,22 +62,22 @@ public class OrganisationClientImpl implements OrganisationClient {
   public Organisation getOrgById(ActorRef actorRef, String orgId) {
     ProjectLogger.log("OrganisationClientImpl: getOrgById called", LoggerEnum.INFO);
     Organisation organisation = null;
-    
+
     Request request = new Request();
     Map<String, Object> requestMap = new HashMap<>();
     requestMap.put(JsonKey.ORGANISATION_ID, orgId);
     request.setRequest(requestMap);
     request.setOperation(ActorOperations.GET_ORG_DETAILS.getValue());
-    
+
     Object obj = interServiceCommunication.getResponse(actorRef, request);
-    
+
     if (obj instanceof Response) {
       ObjectMapper objectMapper = new ObjectMapper();
       Response response = (Response) obj;
 
       // Convert contact details (received from ES) format from map to
       // JSON string (as in Cassandra contact details are stored as text)
-      Map<String,Object> map = (Map)response.get(JsonKey.RESPONSE);
+      Map<String, Object> map = (Map) response.get(JsonKey.RESPONSE);
       map.put(JsonKey.CONTACT_DETAILS, String.valueOf(map.get(JsonKey.CONTACT_DETAILS)));
       organisation = objectMapper.convertValue(map, Organisation.class);
     } else if (obj instanceof ProjectCommonException) {
@@ -86,6 +89,30 @@ public class OrganisationClientImpl implements OrganisationClient {
           ResponseCode.SERVER_ERROR.getResponseCode());
     }
 
+    return organisation;
+  }
+
+  @Override
+  public Organisation esGetOrgByExternalId(String externalId, String provider) {
+    Organisation organisation = null;
+    Map<String, Object> map = null;
+    ObjectMapper objectMapper = new ObjectMapper();
+    SearchDTO searchDto = new SearchDTO();
+    Map<String, Object> filter = new HashMap<>();
+    filter.put(JsonKey.EXTERNAL_ID, externalId);
+    filter.put(JsonKey.PROVIDER, provider);
+    searchDto.getAdditionalProperties().put(JsonKey.FILTERS, filter);
+    Map<String, Object> esResponse =
+        ElasticSearchUtil.complexSearch(
+            searchDto,
+            ProjectUtil.EsIndex.sunbird.getIndexName(),
+            ProjectUtil.EsType.organisation.getTypeName());
+    List<Map<String, Object>> list = (List<Map<String, Object>>) esResponse.get(JsonKey.CONTENT);
+    if (!list.isEmpty()) {
+      map = list.get(0);
+      map.put(JsonKey.CONTACT_DETAILS, String.valueOf(map.get(JsonKey.CONTACT_DETAILS)));
+      organisation = objectMapper.convertValue(map, Organisation.class);
+    }
     return organisation;
   }
 }
