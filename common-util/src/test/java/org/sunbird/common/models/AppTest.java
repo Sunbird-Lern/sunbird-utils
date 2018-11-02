@@ -16,7 +16,6 @@ import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 
-/** Unit test for simple App. */
 public class AppTest extends BaseHttpTest {
   private static final String data =
       "{\"request\": { \"search\": {\"contentType\": [\"Story\"] }}}";
@@ -33,10 +32,9 @@ public class AppTest extends BaseHttpTest {
     }
     headers.put("authorization", "Bearer " + header);
   }
-
   
   @Test
-  public void testPostResourceSuccess() throws Exception {
+  public void testSendPostRequestSuccess() throws Exception {
     String ekStepBaseUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);
     if (StringUtils.isBlank(ekStepBaseUrl)) {
       ekStepBaseUrl = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_BASE_URL);
@@ -46,8 +44,7 @@ public class AppTest extends BaseHttpTest {
   }
 
   @Test()
-  public void testPostResourceFailureWithWrongUrl() {
-    // passing wrong url
+  public void testSendPostRequestFailureWithWrongUrl() {
     String ekStepBaseUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);
     if (StringUtils.isBlank(ekStepBaseUrl)) {
       ekStepBaseUrl = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_BASE_URL);
@@ -64,7 +61,7 @@ public class AppTest extends BaseHttpTest {
   }
 
   @Test()
-  public void testPatchRequestSuccess() {
+  public void testSendPatchRequestSuccess() {
     String response = null;
     try {
       String ekStepBaseUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);
@@ -84,6 +81,4 @@ public class AppTest extends BaseHttpTest {
     Assert.assertNotNull(response);
   }
 
-  
- 
 }
