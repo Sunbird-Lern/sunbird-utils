@@ -3,6 +3,7 @@ package org.sunbird.actorutil.impl;
 import static akka.pattern.PatternsCS.ask;
 
 import akka.actor.ActorRef;
+import akka.pattern.Patterns;
 import akka.util.Timeout;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -12,6 +13,7 @@ import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
+import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 
 public class InterServiceCommunicationImpl implements InterServiceCommunication {
@@ -32,6 +34,29 @@ public class InterServiceCommunicationImpl implements InterServiceCommunication 
     CompletableFuture<Object> future = ask(actorRef, request, t).toCompletableFuture();
     try {
       return future.get(WAIT_TIME + 2, TimeUnit.SECONDS);
+    } catch (Exception e) {
+      ProjectLogger.log(
+          "InterServiceCommunicationImpl : Interservice communication error " + e.getMessage(), e);
+      throw new ProjectCommonException(
+          ResponseCode.unableToCommunicateWithActor.getErrorCode(),
+          ResponseCode.unableToCommunicateWithActor.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+  }
+
+  @Override
+  public Future<Object> getFuture(ActorRef actorRef, Request request) {
+    Timeout t = new Timeout(Duration.create(WAIT_TIME, TimeUnit.SECONDS));
+    if (null == actorRef) {
+      ProjectLogger.log(
+          "InterServiceCommunicationImpl : getResponse - actorRef is null ", LoggerEnum.INFO);
+      throw new ProjectCommonException(
+          ResponseCode.unableToCommunicateWithActor.getErrorCode(),
+          ResponseCode.unableToCommunicateWithActor.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    try {
+      return Patterns.ask(actorRef, request, t);
     } catch (Exception e) {
       ProjectLogger.log(
           "InterServiceCommunicationImpl : Interservice communication error " + e.getMessage(), e);
