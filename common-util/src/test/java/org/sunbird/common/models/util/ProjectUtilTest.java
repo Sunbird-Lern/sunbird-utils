@@ -26,7 +26,7 @@ import org.sunbird.common.responsecode.ResponseCode;
 public class ProjectUtilTest extends BaseHttpTest {
 
   private PropertiesCache propertiesCache = ProjectUtil.propertiesCache;
-  
+
   private static Map<String, String> headers = new HashMap<String, String>();
 
   @BeforeClass
@@ -52,7 +52,7 @@ public class ProjectUtilTest extends BaseHttpTest {
   }
 
   @Test
-  public void testMailTemplateFailureWithActionUrlAbsent() {
+  public void testGetContextFailureWithoutActionUrl() {
 
     Map<String, Object> templateMap = new HashMap<>();
     templateMap.put(JsonKey.NAME, "userName");
@@ -110,7 +110,7 @@ public class ProjectUtilTest extends BaseHttpTest {
   }
 
   @Test
-  public void testValidatePhoneNumberWithInvalidNumber() {
+  public void testValidatePhoneNumberFailureWithInvalidPhoneNumber() {
     assertFalse(ProjectUtil.validatePhoneNumber("312"));
   }
 
@@ -148,7 +148,7 @@ public class ProjectUtilTest extends BaseHttpTest {
   }
 
   @Test
-  public void testSetRequestParamsToLowerCaseSuccess() {
+  public void testSetRequestSuccessWithLowerCaseValues() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.SOURCE, "Test");
@@ -221,7 +221,7 @@ public class ProjectUtilTest extends BaseHttpTest {
   }
 
   @Test
-  public void testGetEkStepHeaderSuccess() {
+  public void testGetEkstepHeaderSuccess() {
     Map<String, String> map = ProjectUtil.getEkstepHeader();
     assertEquals(map.get("Content-Type"), "application/json");
     assertNotNull(map.get(JsonKey.AUTHORIZATION));
@@ -418,20 +418,19 @@ public class ProjectUtilTest extends BaseHttpTest {
     assertNull(map.get("startDate"));
     assertNull(map.get("endDate"));
   }
-  
+
   @Test
   public void testIsEmailValidFailureWithInvalidFormat() {
     boolean bool = ProjectUtil.isEmailvalid("amit.kumartarento.com");
     Assert.assertFalse(bool);
   }
-  
-  
+
   @Test
   public void testIsEmailValidSuccess() {
     boolean bool = ProjectUtil.isEmailvalid("amit.kumar@tarento.com");
     assertTrue(bool);
   }
-  
+
   @Test
   public void testSendGetRequestSuccessWithEkStepBaseUrl() throws Exception {
     String ekStepBaseUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);
@@ -439,8 +438,6 @@ public class ProjectUtilTest extends BaseHttpTest {
       ekStepBaseUrl = PropertiesCache.getInstance().getProperty(JsonKey.EKSTEP_BASE_URL);
     }
     String response = HttpUtil.sendGetRequest(ekStepBaseUrl + "/search/health", headers);
-    Assert.assertNotNull(response);
+    assertNotNull(response);
   }
-
-
 }

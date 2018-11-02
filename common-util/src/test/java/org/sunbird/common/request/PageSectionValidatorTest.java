@@ -5,9 +5,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
@@ -245,7 +243,7 @@ public class PageSectionValidatorTest {
     } catch (ProjectCommonException e) {
       Assert.assertNull(e);
     }
-    assertEquals("success", (String) requestObj.get("ext"));
+    assertEquals("success", requestObj.get("ext"));
   }
 
   @Test

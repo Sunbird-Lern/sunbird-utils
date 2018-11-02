@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.sunbird.common.exception.ProjectCommonException;
@@ -17,7 +16,7 @@ import org.sunbird.common.responsecode.ResponseCode;
 public class UserRequestValidatorTest {
 
   private static final UserRequestValidator userRequestValidator = new UserRequestValidator();
-  
+
   @Test
   public void testValidateForgotPasswordSuccess() {
     Request request = new Request();
@@ -492,9 +491,6 @@ public class UserRequestValidatorTest {
     }
     assertEquals(true, response);
   }
-
- 
-
 
   @Test
   public void testValidateWebPagesFailureWithEmptyWebPages() {
@@ -1054,7 +1050,7 @@ public class UserRequestValidatorTest {
     }
   }
 
-   @Test
+  @Test
   public void testValidateVerifyUserSuccess() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
@@ -1097,7 +1093,7 @@ public class UserRequestValidatorTest {
     request.setRequest(requestObj);
     return request;
   }
-  
+
   @Test
   public void testValidateVerifyUserFailureWithEmptyId() {
     Request request = new Request();
@@ -1114,6 +1110,4 @@ public class UserRequestValidatorTest {
     }
     Assert.assertFalse(response);
   }
-  
- 
 }

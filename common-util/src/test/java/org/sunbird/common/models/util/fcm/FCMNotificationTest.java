@@ -1,4 +1,4 @@
-	/** */
+/** */
 package org.sunbird.common.models.util.fcm;
 
 import static org.powermock.api.mockito.PowerMockito.mock;
@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.http.impl.client.HttpClients;
 import org.junit.Assert;
 import org.junit.Before;
@@ -68,7 +67,7 @@ public class FCMNotificationTest {
   }
 
   @Test
-  public void testSendNotificaitonSuccessWithStringData() {
+  public void testSendNotificationSuccessWithStringData() {
     Map<String, Object> map = new HashMap<>();
     map.put("title", "some title");
     map.put("summary", "some value");
@@ -103,7 +102,6 @@ public class FCMNotificationTest {
 
   @Before
   public void addMockRules() {
-
     PowerMockito.mockStatic(System.class);
     URL url = mock(URL.class);
     HttpURLConnection connection = mock(HttpURLConnection.class);

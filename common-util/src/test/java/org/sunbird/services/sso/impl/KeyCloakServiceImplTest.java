@@ -9,9 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
 import javax.ws.rs.core.Response;
-
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -30,7 +28,6 @@ import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.services.sso.SSOManager;
 import org.sunbird.services.sso.SSOServiceFactory;
 
-/** @author arvind */
 public class KeyCloakServiceImplTest extends BaseHttpTest {
 
   private SSOManager keyCloakService = SSOServiceFactory.getInstance();
@@ -245,14 +242,16 @@ public class KeyCloakServiceImplTest extends BaseHttpTest {
 
   @Test
   public void testLoginSuccess() {
-	mockHttpUrlResponse("realms/sunbird/protocol/openid-connect/token", "{\"access_token\":\"_your_token\"}");
+    mockHttpUrlResponse(
+        "realms/sunbird/protocol/openid-connect/token", "{\"access_token\":\"_your_token\"}");
     String authKey = keyCloakService.login(userName, "password");
     Assert.assertNotEquals("", authKey);
   }
 
   @Test
   public void testLoginFailureWithInvalidPassword() {
-	mockHttpUrlResponse("realms/sunbird/protocol/openid-connect/token", null, true, "&password=password123&");
+    mockHttpUrlResponse(
+        "realms/sunbird/protocol/openid-connect/token", null, true, "&password=password123&");
     String authKey = keyCloakService.login(userName, "password123");
     Assert.assertEquals("", authKey);
   }

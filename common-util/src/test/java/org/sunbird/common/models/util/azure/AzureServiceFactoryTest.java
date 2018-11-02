@@ -5,11 +5,14 @@ import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
+import com.microsoft.azure.storage.CloudStorageAccount;
+import com.microsoft.azure.storage.blob.CloudBlobClient;
+import com.microsoft.azure.storage.blob.CloudBlobContainer;
+import com.microsoft.azure.storage.blob.ListBlobItem;
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -23,11 +26,6 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
-import com.microsoft.azure.storage.CloudStorageAccount;
-import com.microsoft.azure.storage.blob.CloudBlobClient;
-import com.microsoft.azure.storage.blob.CloudBlobContainer;
-import com.microsoft.azure.storage.blob.ListBlobItem;
 
 /** @author Manzarul */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -95,15 +93,13 @@ public class AzureServiceFactoryTest {
   }
 
   @Test
-  public void testCheckContainerSuccessWithAccessPublic() {
-
+  public void testGetContainerSuccessWithAccessPublic() {
     container = AzureConnectionManager.getContainer(containerName, true);
     Assert.assertNotNull(container);
   }
 
   @Test
   public void testGetContainerReferenceSuccess() {
-
     container1 = AzureConnectionManager.getContainerReference(containerName);
     Assert.assertNotNull(container1);
   }
@@ -123,14 +119,14 @@ public class AzureServiceFactoryTest {
   }
 
   @Test
-  public void testUploadFileWithMultiplePath() {
+  public void testUploadFileSuccessWithMultiplePath() {
     CloudService service = (CloudService) obj;
     String url = service.uploadFile("/tez/po/" + containerName, new File("test.txt"));
     Assert.assertEquals(null, url);
   }
 
   @Test
-  public void testUploadFileObject() {
+  public void testUploadFileSuccessWithFileLocation() {
     CloudService service = (CloudService) obj;
     String url = service.uploadFile(containerName, "test.txt", "");
     Assert.assertEquals(null, url);

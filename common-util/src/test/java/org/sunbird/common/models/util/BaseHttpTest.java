@@ -1,9 +1,9 @@
 package org.sunbird.common.models.util;
 
+import static org.powermock.api.mockito.PowerMockito.doThrow;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
-import static org.powermock.api.mockito.PowerMockito.doThrow;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -12,15 +12,12 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
 import javax.management.Notification;
-
 import org.apache.http.impl.client.HttpClients;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -43,7 +40,7 @@ public abstract class BaseHttpTest {
   @Before
   public void addMockRules() {
 
-	mockHttpUrlResponse("content/v3/list", "not-empty-output");
+    mockHttpUrlResponse("content/v3/list", "not-empty-output");
     mockHttpUrlResponse("/search/health", "not-empty-output");
     mockHttpUrlResponse("/content/wrong/v3/list", null, true, null);
     mockHttpUrlResponse("v1/issuer/issuers", "{\"message\":\"success\"}");
@@ -51,7 +48,7 @@ public abstract class BaseHttpTest {
   }
 
   protected void mockHttpUrlResponse(String urlContains, String outputExpected) {
-	  mockHttpUrlResponse(urlContains, outputExpected, false, null);
+    mockHttpUrlResponse(urlContains, outputExpected, false, null);
   }
 
   protected void mockHttpUrlResponse(
