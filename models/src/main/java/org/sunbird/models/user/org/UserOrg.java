@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -80,7 +81,8 @@ public class UserOrg implements Serializable {
   public void setHashTagId(String hashTagId) {
     this.hashTagId = hashTagId;
   }
-
+  
+  @JsonProperty(value="isApproved")
   public boolean isApproved() {
     return isApproved;
   }
@@ -88,7 +90,8 @@ public class UserOrg implements Serializable {
   public void setApproved(boolean isApproved) {
     this.isApproved = isApproved;
   }
-
+  
+  @JsonProperty(value="isDeleted")
   public boolean isDeleted() {
     return isDeleted;
   }
@@ -96,7 +99,8 @@ public class UserOrg implements Serializable {
   public void setDeleted(boolean isDeleted) {
     this.isDeleted = isDeleted;
   }
-
+  
+  @JsonProperty(value="isRejected")
   public boolean isRejected() {
     return isRejected;
   }
