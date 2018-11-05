@@ -376,7 +376,6 @@ public class UserRequestValidator extends BaseRequestValidator {
           ERROR_CODE);
     }
     validateExtIdTypeAndProvider(userRequest);
-    validateFrameworkDetails(userRequest);
   }
 
   private void validateAddressField(Request userRequest) {
@@ -811,57 +810,6 @@ public class UserRequestValidator extends BaseRequestValidator {
         }
       }
       checkedList.add(externalId);
-    }
-  }
-
-  @SuppressWarnings("unchecked")
-  private void validateFrameworkDetails(Request request) {
-    if (request.getRequest().containsKey(JsonKey.FRAMEWORK)) {
-      if (!(request.getRequest().get(JsonKey.FRAMEWORK) instanceof Map)) {
-        throw new ProjectCommonException(
-            ResponseCode.dataTypeError.getErrorCode(),
-            ResponseCode.dataTypeError.getErrorMessage(),
-            ERROR_CODE,
-            JsonKey.FRAMEWORK,
-            JsonKey.MAP);
-      }
-      Map<String, Object> frameworkMap =
-          (Map<String, Object>) request.getRequest().get(JsonKey.FRAMEWORK);
-      validateParam(
-          (String) frameworkMap.get(JsonKey.ID), ResponseCode.mandatoryParamsMissing, JsonKey.ID);
-      validateMandatoryListDataType(frameworkMap, JsonKey.BOARD, JsonKey.CLASS, JsonKey.MEDIUM);
-      if (frameworkMap.containsKey(JsonKey.SUBJECT)
-          && !(frameworkMap.get(JsonKey.SUBJECT) instanceof List)) {
-        throw new ProjectCommonException(
-            ResponseCode.dataTypeError.getErrorCode(),
-            ResponseCode.dataTypeError.getErrorMessage(),
-            ERROR_CODE,
-            JsonKey.SUBJECT,
-            JsonKey.LIST);
-      }
-    }
-  }
-
-  private void validateMandatoryListDataType(Map<String, Object> map, String... parameters) {
-    for (String parameter : parameters) {
-      if (!map.containsKey(parameter)) {
-        validateParam(null, ResponseCode.mandatoryParamsMissing, parameter);
-      }
-      if (!(map.get(parameter) instanceof List))
-        throw new ProjectCommonException(
-            ResponseCode.dataTypeError.getErrorCode(),
-            ResponseCode.dataTypeError.getErrorMessage(),
-            ERROR_CODE,
-            parameter,
-            JsonKey.LIST);
-      List<Object> parameterValue = (List) map.get(parameter);
-      if (parameterValue.isEmpty()) {
-        throw new ProjectCommonException(
-            ResponseCode.emptyListProvided.getErrorCode(),
-            ResponseCode.emptyListProvided.getErrorMessage(),
-            ERROR_CODE,
-            parameter);
-      }
     }
   }
 }
