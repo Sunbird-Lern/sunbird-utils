@@ -1,6 +1,7 @@
 package org.sunbird.actorutil.systemsettings.impl;
 
 import akka.actor.ActorRef;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,15 +59,19 @@ public class SystemSettingClientImpl implements SystemSettingClient {
   }
 
   @Override
-  public Map<String, Object> getSystemSettingByField(ActorRef actorRef, String field, String key) {
+  public Map<String, Object> getSystemSettingByFieldKey(
+      ActorRef actorRef, String field, String key, TypeReference typeReference) {
     SystemSetting systemSetting = getSystemSettingByField(actorRef, field);
     ObjectMapper objectMapper = new ObjectMapper();
     if (systemSetting != null) {
       try {
         Map<String, Object> valueMap = objectMapper.readValue(systemSetting.getValue(), Map.class);
-        Map<String, Object> csvMap = objectMapper.convertValue(valueMap.get(key), Map.class);
-
-        return csvMap;
+        String[] keys = key.split("\\.");
+        int keysSize = keys.length;
+        for (int i = 0; i < keysSize - 1; i++) {
+          valueMap = objectMapper.convertValue(valueMap.get(keys[i]), Map.class);
+        }
+        return objectMapper.convertValue(valueMap.get(keys[keysSize - 1]), typeReference);
       } catch (Exception e) {
         ProjectLogger.log(
             "SystemSettingClientImpl:getSystemSettingByField: Exception while fetching system settings "
