@@ -5,23 +5,22 @@ import org.sunbird.common.request.Request;
 import scala.concurrent.Future;
 
 /**
- * @Desc This interface will provide utility method to communicate between two actor
- *
- * @author Arvind
+ * Interface for actor to actor communication.
  */
 public interface InterServiceCommunication {
 
   /**
    * @param actorRef Actor reference
-   * @param Request Request object
-   * @return Object Response Object
+   * @param request Request object
+   * @return Response object
    */
   public Object getResponse(ActorRef actorRef, Request request);
 
   /*
    * @param actorRef Actor reference
-   * @param Request Request object
-   * @return CompletableFuture<Object> Future Object
+   * @param request Request object
+   * @return Future for given actor and request operation
    */
   public Future<Object> getFuture(ActorRef actorRef, Request request);
+
 }
