@@ -21,6 +21,7 @@ public enum ActorOperations {
   UPDATE_USER("updateUser"),
   USER_AUTH("userAuth"),
   GET_PROFILE("getUserProfile"),
+  GET_PROFILEV2("getUserProfileV2"),
   CREATE_ORG("createOrg"),
   UPDATE_ORG("updateOrg"),
   UPDATE_ORG_STATUS("updateOrgStatus"),
