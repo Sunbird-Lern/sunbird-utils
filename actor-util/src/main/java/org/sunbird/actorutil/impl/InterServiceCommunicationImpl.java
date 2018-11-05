@@ -25,7 +25,7 @@ public class InterServiceCommunicationImpl implements InterServiceCommunication 
     Timeout t = new Timeout(Duration.create(WAIT_TIME, TimeUnit.SECONDS));
     if (null == actorRef) {
       ProjectLogger.log(
-          "InterServiceCommunicationImpl : getResponse - actorRef is null ", LoggerEnum.INFO);
+          "InterServiceCommunicationImpl:getResponse: actorRef is null", LoggerEnum.INFO);
       throw new ProjectCommonException(
           ResponseCode.unableToCommunicateWithActor.getErrorCode(),
           ResponseCode.unableToCommunicateWithActor.getErrorMessage(),
@@ -36,7 +36,7 @@ public class InterServiceCommunicationImpl implements InterServiceCommunication 
       return future.get(WAIT_TIME + 2, TimeUnit.SECONDS);
     } catch (Exception e) {
       ProjectLogger.log(
-          "InterServiceCommunicationImpl : Interservice communication error " + e.getMessage(), e);
+          "InterServiceCommunicationImpl:getResponse: Exception occurred with error message = " + e.getMessage(), e);
       throw new ProjectCommonException(
           ResponseCode.unableToCommunicateWithActor.getErrorCode(),
           ResponseCode.unableToCommunicateWithActor.getErrorMessage(),
@@ -49,7 +49,7 @@ public class InterServiceCommunicationImpl implements InterServiceCommunication 
     Timeout t = new Timeout(Duration.create(WAIT_TIME, TimeUnit.SECONDS));
     if (null == actorRef) {
       ProjectLogger.log(
-          "InterServiceCommunicationImpl : getResponse - actorRef is null ", LoggerEnum.INFO);
+          "InterServiceCommunicationImpl:getFuture: actorRef is null", LoggerEnum.INFO);
       throw new ProjectCommonException(
           ResponseCode.unableToCommunicateWithActor.getErrorCode(),
           ResponseCode.unableToCommunicateWithActor.getErrorMessage(),
@@ -59,7 +59,7 @@ public class InterServiceCommunicationImpl implements InterServiceCommunication 
       return Patterns.ask(actorRef, request, t);
     } catch (Exception e) {
       ProjectLogger.log(
-          "InterServiceCommunicationImpl : Interservice communication error " + e.getMessage(), e);
+          "InterServiceCommunicationImpl:getFuture: Exception occured with error message = " + e.getMessage(), e);
       throw new ProjectCommonException(
           ResponseCode.unableToCommunicateWithActor.getErrorCode(),
           ResponseCode.unableToCommunicateWithActor.getErrorMessage(),
