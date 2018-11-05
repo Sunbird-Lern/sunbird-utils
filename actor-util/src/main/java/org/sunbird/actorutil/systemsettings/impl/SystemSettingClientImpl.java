@@ -59,7 +59,7 @@ public class SystemSettingClientImpl implements SystemSettingClient {
   }
 
   @Override
-  public Map<String, Object> getSystemSettingByFieldKey(
+  public Object getSystemSettingByFieldAndKey(
       ActorRef actorRef, String field, String key, TypeReference typeReference) {
     SystemSetting systemSetting = getSystemSettingByField(actorRef, field);
     ObjectMapper objectMapper = new ObjectMapper();
@@ -67,16 +67,16 @@ public class SystemSettingClientImpl implements SystemSettingClient {
       try {
         Map<String, Object> valueMap = objectMapper.readValue(systemSetting.getValue(), Map.class);
         String[] keys = key.split("\\.");
-        int keysSize = keys.length;
-        for (int i = 0; i < keysSize - 1; i++) {
+        int numKeys = keys.length;
+        for (int i = 0; i < numKeys - 1; i++) {
           valueMap = objectMapper.convertValue(valueMap.get(keys[i]), Map.class);
         }
-        return objectMapper.convertValue(valueMap.get(keys[keysSize - 1]), typeReference);
+        return objectMapper.convertValue(valueMap.get(keys[numKeys - 1]), typeReference);
       } catch (Exception e) {
         ProjectLogger.log(
-            "SystemSettingClientImpl:getSystemSettingByField: Exception while fetching system settings "
+            "SystemSettingClientImpl:getSystemSettingByFieldAndKey: Exception occurred with error message = "
                 + e.getMessage(),
-            LoggerEnum.INFO.name());
+            LoggerEnum.ERROR.name());
       }
     }
     return null;
