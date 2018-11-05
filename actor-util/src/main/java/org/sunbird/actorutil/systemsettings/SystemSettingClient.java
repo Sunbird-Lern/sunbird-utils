@@ -1,6 +1,7 @@
 package org.sunbird.actorutil.systemsettings;
 
 import akka.actor.ActorRef;
+import java.util.Map;
 import org.sunbird.models.systemsetting.SystemSetting;
 
 /**
@@ -18,4 +19,6 @@ public interface SystemSettingClient {
    * @return System setting details
    */
   SystemSetting getSystemSettingByField(ActorRef actorRef, String field);
+
+  Map<String, Object> getSystemSettingByField(ActorRef actorRef, String field, String key);
 }
