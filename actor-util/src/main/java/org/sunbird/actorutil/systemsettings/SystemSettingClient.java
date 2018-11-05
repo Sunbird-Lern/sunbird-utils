@@ -20,5 +20,13 @@ public interface SystemSettingClient {
    */
   SystemSetting getSystemSettingByField(ActorRef actorRef, String field);
 
+  /**
+   * Get system setting information for given field (setting) name.
+   *
+   * @param actorRef Actor reference
+   * @param field System setting field name
+   * @param key Key inside system setting value
+   * @return Value inside system setting
+   */
   Map<String, Object> getSystemSettingByField(ActorRef actorRef, String field, String key);
 }
