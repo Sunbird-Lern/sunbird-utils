@@ -21,13 +21,13 @@ public interface SystemSettingClient {
   SystemSetting getSystemSettingByField(ActorRef actorRef, String field);
 
   /**
-   * Get system setting information for given key and field (setting) name.
+   * Get system setting information for given field (setting) and key name.
    *
    * @param actorRef Actor reference
    * @param field System setting field name
    * @param key Key (e.g. csv.mandatoryColumns) within system setting information 
    * @param typeReference Type reference for value corresponding to specified key
-   * @return System setting value corresponding to given key and field name
+   * @return System setting value corresponding to given field and key name
    */
   Object getSystemSettingByFieldAndKey(
       ActorRef actorRef, String field, String key, TypeReference typeReference);
