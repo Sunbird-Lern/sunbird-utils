@@ -840,14 +840,8 @@ public class UserRequestValidator extends BaseRequestValidator {
           if (!frameworkRequest.containsKey(parameter)) {
             validateParam(null, ResponseCode.mandatoryParamsMissing, parameter);
           }
-          if (!(frameworkRequest.get(parameter) instanceof List))
-            throw new ProjectCommonException(
-                ResponseCode.dataTypeError.getErrorCode(),
-                ResponseCode.dataTypeError.getErrorMessage(),
-                ERROR_CODE,
-                StringFormatter.joinByDot(JsonKey.FRAMEWORK, parameter),
-                JsonKey.LIST);
-          List<Object> parameterValue = (List) frameworkRequest.get(parameter);
+          validateListParam(JsonKey.FRAMEWORK, frameworkRequest, parameter);
+          List<String> parameterValue = (List) frameworkRequest.get(parameter);
           if (parameterValue.isEmpty()) {
             throw new ProjectCommonException(
                 ResponseCode.errorMandatoryParamsEmpty.getErrorCode(),

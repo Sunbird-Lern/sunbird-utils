@@ -12,6 +12,7 @@ import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
+import org.sunbird.common.models.util.StringFormatter;
 import org.sunbird.common.responsecode.ResponseCode;
 
 /**
@@ -222,6 +223,34 @@ public class BaseRequestValidator {
                     ResponseCode.CLIENT_ERROR.getResponseCode());
               }
             });
+  }
+
+  /**
+   * Helper method which throws an exception if each field is not of type List.
+   *
+   * @param requestMap Request information
+   * @param fields List of fields
+   */
+  public void validateListParam(String prefix, Map<String, Object> requestMap, String... fields) {
+    if (StringUtils.isEmpty(prefix)) {
+      validateListParam(requestMap, fields);
+    } else {
+      Arrays.stream(fields)
+          .forEach(
+              field -> {
+                if (requestMap.containsKey(field)
+                    && null != requestMap.get(field)
+                    && !(requestMap.get(field) instanceof List)) {
+                  throw new ProjectCommonException(
+                      ResponseCode.dataTypeError.getErrorCode(),
+                      ProjectUtil.formatMessage(
+                          ResponseCode.dataTypeError.getErrorMessage(),
+                          StringFormatter.joinByDot(prefix, field),
+                          JsonKey.LIST),
+                      ResponseCode.CLIENT_ERROR.getResponseCode());
+                }
+              });
+    }
   }
 
   /**
