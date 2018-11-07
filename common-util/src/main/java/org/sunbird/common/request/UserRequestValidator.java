@@ -839,26 +839,39 @@ public class UserRequestValidator extends BaseRequestValidator {
   public void validateFrameworkRequestData(Config userProfileConfig, Map<String, Object> userMap) {
     if (userMap.containsKey(JsonKey.FRAMEWORK)) {
       Config frameworkDetails = userProfileConfig.getConfig(JsonKey.FRAMEWORK);
+      List<String> frameworkFields = frameworkDetails.getStringList(JsonKey.FIELDS);
       List<String> mandatoryFields = frameworkDetails.getStringList(JsonKey.MANDATORY_FIELDS);
       Map<String, Object> frameworkRequest = (Map<String, Object>) userMap.get(JsonKey.FRAMEWORK);
-      for (String parameter : mandatoryFields) {
-        if (!frameworkRequest.containsKey(parameter)) {
-          validateParam(null, ResponseCode.mandatoryParamsMissing, parameter);
-        }
-        if (!(frameworkRequest.get(parameter) instanceof List))
-          throw new ProjectCommonException(
-              ResponseCode.dataTypeError.getErrorCode(),
-              ResponseCode.dataTypeError.getErrorMessage(),
-              ERROR_CODE,
-              parameter,
-              JsonKey.LIST);
-        List<Object> parameterValue = (List) frameworkRequest.get(parameter);
-        if (parameterValue.isEmpty()) {
-          throw new ProjectCommonException(
-              ResponseCode.emptyListProvided.getErrorCode(),
-              ResponseCode.emptyListProvided.getErrorMessage(),
-              ERROR_CODE,
-              parameter);
+      for (String parameter : frameworkFields) {
+        if (mandatoryFields.contains(parameter)) {
+          if (!frameworkRequest.containsKey(parameter)) {
+            validateParam(null, ResponseCode.mandatoryParamsMissing, parameter);
+          }
+          if (!(frameworkRequest.get(parameter) instanceof List))
+            throw new ProjectCommonException(
+                ResponseCode.dataTypeError.getErrorCode(),
+                ResponseCode.dataTypeError.getErrorMessage(),
+                ERROR_CODE,
+                parameter,
+                JsonKey.LIST);
+          List<Object> parameterValue = (List) frameworkRequest.get(parameter);
+          if (parameterValue.isEmpty()) {
+            throw new ProjectCommonException(
+                ResponseCode.emptyListProvided.getErrorCode(),
+                ResponseCode.emptyListProvided.getErrorMessage(),
+                ERROR_CODE,
+                parameter);
+          }
+        } else {
+          if (frameworkRequest.containsKey(parameter)
+              && !(frameworkRequest.get(parameter) instanceof List)) {
+            throw new ProjectCommonException(
+                ResponseCode.dataTypeError.getErrorCode(),
+                ResponseCode.dataTypeError.getErrorMessage(),
+                ERROR_CODE,
+                parameter,
+                JsonKey.LIST);
+          }
         }
       }
     }
