@@ -703,7 +703,7 @@ public final class JsonKey {
       "sunbird_api_request_lower_case_fields";
   public static final String ROLE_LIST = "roleList";
   public static final String SUNBIRD_USER_PROFILE_RESPONSE_EXCLUDE =
-      "sunbird_user_profile_response_exclude";
+      "userProfileConfig.read.excludedFields";
 
   private JsonKey() {}
 }
