@@ -225,8 +225,6 @@ public enum ResponseCode {
   rolesRequired(ResponseMessage.Key.ROLES_MISSING, ResponseMessage.Message.ROLES_MISSING),
   emptyRolesProvided(
       ResponseMessage.Key.EMPTY_ROLES_PROVIDED, ResponseMessage.Message.EMPTY_ROLES_PROVIDED),
-  emptyListProvided(
-      ResponseMessage.Key.EMPTY_LIST_PROVIDED, ResponseMessage.Message.EMPTY_LIST_PROVIDED),
   invalidDateFormat(
       ResponseMessage.Key.INVALID_DATE_FORMAT, ResponseMessage.Message.INVALID_DATE_FORMAT),
   sourceAndExternalIdAlreadyExist(
@@ -539,6 +537,9 @@ public enum ResponseCode {
   mandatoryParamsMissing(
       ResponseMessage.Key.MANDATORY_PARAMETER_MISSING,
       ResponseMessage.Message.MANDATORY_PARAMETER_MISSING),
+  errorMandatoryParamsEmpty(
+      ResponseMessage.Key.MANDATORY_PARAMETER_EMPTY,
+      ResponseMessage.Message.MANDATORY_PARAMETER_EMPTY),
   unupdatableField(
       ResponseMessage.Key.UPDATE_NOT_ALLOWED, ResponseMessage.Message.UPDATE_NOT_ALLOWED),
   mandatoryHeadersMissing(

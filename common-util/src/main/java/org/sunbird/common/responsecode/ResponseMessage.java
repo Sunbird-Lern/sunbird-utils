@@ -124,7 +124,6 @@ public interface ResponseMessage {
     String NAME_OF_ORGANISATION_ERROR = "Organization Name is required.";
     String ROLES_MISSING = "user role is required.";
     String EMPTY_ROLES_PROVIDED = "Roles cannot be empty.";
-    String EMPTY_LIST_PROVIDED = "Empty list provided for {0}";
     String CHANNEL_REG_FAILED = "Channel Registration failed.";
     String INVALID_COURSE_CREATOR_ID = "Course creator id does not exist .";
     String USER_NOT_ASSOCIATED_TO_ROOT_ORG =
@@ -292,6 +291,7 @@ public interface ResponseMessage {
         "One or more locations have a parent reference to given location and hence cannot be deleted.";
     String LOCATION_TYPE_CONFLICTS = "Location type conflicts with its parent location type.";
     String MANDATORY_PARAMETER_MISSING = "Mandatory parameter {0} is missing.";
+    String MANDATORY_PARAMETER_EMPTY = "Mandatory parameter {0} is empty.";
     String INVALID_LOCN_ID = "Please provide valid locationId.";
     String UPDATE_NOT_ALLOWED = "Update of {0} is not allowed.";
     String MANDATORY_HEADER_MISSING = "Mandatory header {0} is missing.";
@@ -481,7 +481,6 @@ public interface ResponseMessage {
     String NAME_OF_ORGANISATION_ERROR = "NAME_OF_ORGANIZATION_ERROR";
     String ROLES_MISSING = "ROLES_REQUIRED_ERROR";
     String EMPTY_ROLES_PROVIDED = "EMPTY_ROLES_PROVIDED";
-    String EMPTY_LIST_PROVIDED = "EMPTY_LIST_PROVIDED";
     String INVALID_DATE_FORMAT = "INVALID_DATE_FORMAT";
     String SRC_EXTERNAL_ID_ALREADY_EXIST = "SRC_EXTERNAL_ID_ALREADY_EXIST";
     String USER_ALREADY_ENROLLED_COURSE = "USER_ALREADY_ENROLLED_COURSE";
@@ -636,6 +635,7 @@ public interface ResponseMessage {
     String INVALID_LOCATION_DELETE_REQUEST = "INVALID_LOCATION_DELETE_REQUEST";
     String LOCATION_TYPE_CONFLICTS = "LOCATION_TYPE_CONFLICTS";
     String MANDATORY_PARAMETER_MISSING = "MANDATORY_PARAMETER_MISSING";
+    String MANDATORY_PARAMETER_EMPTY = "MANDATORY_PARAMETER_EMPTY";
     String INVALID_LOCN_ID = "INVALID_LOCATION_ID";
     String UPDATE_NOT_ALLOWED = "UPDATE_NOT_ALLOWED";
     String MANDATORY_HEADER_MISSING = "MANDATORY_HEADER_MISSING";

@@ -81,7 +81,6 @@ public final class JsonKey {
   public static final String BATCH_RELATIONS = "batch_relations";
   public static final String BEARER = "Bearer ";
   public static final String BLOCKED = "blocked";
-  public static final String BOARD = "board";
   public static final String BODY = "body";
   public static final String BULK_OP_DB = "BulkOpDb";
   public static final String BULK_UPLOAD_BATCH_DATA_SIZE = "bulk_upload_batch_data_size";
@@ -333,7 +332,6 @@ public final class JsonKey {
   public static final String MASTER_ACTION = "master_action";
   public static final String MASTER_KEY = "masterKey";
   public static final String MEDIA_TYPE_DB = "mediaTypeDB";
-  public static final String MEDIUM = "medium";
   public static final String MENTORS = "mentors";
   public static final String MESSAGE = "message";
   public static final String MESSAGE_Id = "message_id";
