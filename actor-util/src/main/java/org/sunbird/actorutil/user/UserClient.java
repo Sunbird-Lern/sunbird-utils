@@ -21,5 +21,4 @@ public interface UserClient {
    * @param userMap User details
    */
   void updateUser(ActorRef actorRef, Map<String, Object> userMap);
-
 }
