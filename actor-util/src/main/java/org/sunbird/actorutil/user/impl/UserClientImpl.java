@@ -15,6 +15,7 @@ import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 
 public class UserClientImpl implements UserClient {
+
   private static InterServiceCommunication interServiceCommunication =
       InterServiceCommunicationFactory.getInstance();
 
@@ -36,9 +37,7 @@ public class UserClientImpl implements UserClient {
     Request request = new Request();
     request.setRequest(userMap);
     request.setOperation(operation);
-
     Object obj = interServiceCommunication.getResponse(actorRef, request);
-
     if (obj instanceof Response) {
       Response response = (Response) obj;
       userId = (String) response.get(JsonKey.USER_ID);
