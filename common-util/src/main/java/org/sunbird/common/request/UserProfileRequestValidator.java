@@ -32,6 +32,9 @@ public class UserProfileRequestValidator extends BaseRequestValidator {
   }
 
   private void validateListElementsAreDisjoint(List<String> list1, List<String> list2) {
+    if (list1 == null || list2 == null) {
+      return;
+    }
     for (String field : list2) {
       if (list1.contains(field)) {
         throw new ProjectCommonException(
