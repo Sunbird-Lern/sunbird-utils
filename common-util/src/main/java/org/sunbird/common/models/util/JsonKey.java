@@ -325,6 +325,7 @@ public final class JsonKey {
   public static final String LOGIN_ID_DELIMETER = "@";
   public static final String LOGIN_TYPE = "type";
   public static final String MAIL_NOTE = "mail_note";
+  public static final String MANDATORY_FIELDS = "mandatoryFields";
   public static final String MAP = "map";
   public static final String MAPPED_FORM_PARAMS = "mappedFormParams";
   public static final String MASKED_EMAIL = "maskedEmail";

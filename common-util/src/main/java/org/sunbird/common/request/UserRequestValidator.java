@@ -1,5 +1,6 @@
 package org.sunbird.common.request;
 
+import com.typesafe.config.Config;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -376,6 +377,7 @@ public class UserRequestValidator extends BaseRequestValidator {
           ERROR_CODE);
     }
     validateExtIdTypeAndProvider(userRequest);
+    validateFrameworkDetails(userRequest);
   }
 
   private void validateAddressField(Request userRequest) {
@@ -810,6 +812,55 @@ public class UserRequestValidator extends BaseRequestValidator {
         }
       }
       checkedList.add(externalId);
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  private void validateFrameworkDetails(Request request) {
+    if (request.getRequest().containsKey(JsonKey.FRAMEWORK)) {
+      if (!(request.getRequest().get(JsonKey.FRAMEWORK) instanceof Map)) {
+        throw new ProjectCommonException(
+            ResponseCode.dataTypeError.getErrorCode(),
+            ResponseCode.dataTypeError.getErrorMessage(),
+            ERROR_CODE,
+            JsonKey.FRAMEWORK,
+            JsonKey.MAP);
+      }
+      Map<String, Object> frameworkMap =
+          (Map<String, Object>) request.getRequest().get(JsonKey.FRAMEWORK);
+      validateParam(
+          (String) frameworkMap.get(JsonKey.ROOT_ORG_ID),
+          ResponseCode.mandatoryParamsMissing,
+          JsonKey.ROOT_ORG_ID);
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  public void validateFrameworkRequestData(Config userProfileConfig, Map<String, Object> userMap) {
+    if (userMap.containsKey(JsonKey.FRAMEWORK)) {
+      Config frameworkDetails = userProfileConfig.getConfig(JsonKey.FRAMEWORK);
+      List<String> mandatoryFields = frameworkDetails.getStringList(JsonKey.MANDATORY_FIELDS);
+      Map<String, Object> frameworkRequest = (Map<String, Object>) userMap.get(JsonKey.FRAMEWORK);
+      for (String parameter : mandatoryFields) {
+        if (!frameworkRequest.containsKey(parameter)) {
+          validateParam(null, ResponseCode.mandatoryParamsMissing, parameter);
+        }
+        if (!(frameworkRequest.get(parameter) instanceof List))
+          throw new ProjectCommonException(
+              ResponseCode.dataTypeError.getErrorCode(),
+              ResponseCode.dataTypeError.getErrorMessage(),
+              ERROR_CODE,
+              parameter,
+              JsonKey.LIST);
+        List<Object> parameterValue = (List) frameworkRequest.get(parameter);
+        if (parameterValue.isEmpty()) {
+          throw new ProjectCommonException(
+              ResponseCode.emptyListProvided.getErrorCode(),
+              ResponseCode.emptyListProvided.getErrorMessage(),
+              ERROR_CODE,
+              parameter);
+        }
+      }
     }
   }
 }
