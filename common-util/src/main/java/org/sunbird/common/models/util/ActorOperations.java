@@ -145,7 +145,8 @@ public enum ActorOperations {
   UPDATE_LEARNER_STATE("updateLearnerState"),
   GET_SYSTEM_SETTING("getSystemSetting"),
   GET_ALL_SYSTEM_SETTINGS("getAllSystemSettings"),
-  SET_SYSTEM_SETTING("setSystemSetting");
+  SET_SYSTEM_SETTING("setSystemSetting"),
+  COURSE_BATCH_NOTIFICATION("courseBatchNotification");
   private String value;
 
   /**

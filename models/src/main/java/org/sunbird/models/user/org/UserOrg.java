@@ -1,17 +1,16 @@
 package org.sunbird.models.user.org;
 
-import java.io.Serializable;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
+import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserOrg implements Serializable {
   private static final long serialVersionUID = 1L;
-  
+
   private String id;
   private String addedBy;
   private String addedByName;
@@ -81,8 +80,8 @@ public class UserOrg implements Serializable {
   public void setHashTagId(String hashTagId) {
     this.hashTagId = hashTagId;
   }
-  
-  @JsonProperty(value="isApproved")
+
+  @JsonProperty(value = "isApproved")
   public boolean isApproved() {
     return isApproved;
   }
@@ -90,8 +89,8 @@ public class UserOrg implements Serializable {
   public void setApproved(boolean isApproved) {
     this.isApproved = isApproved;
   }
-  
-  @JsonProperty(value="isDeleted")
+
+  @JsonProperty(value = "isDeleted")
   public boolean isDeleted() {
     return isDeleted;
   }
@@ -99,8 +98,8 @@ public class UserOrg implements Serializable {
   public void setDeleted(boolean isDeleted) {
     this.isDeleted = isDeleted;
   }
-  
-  @JsonProperty(value="isRejected")
+
+  @JsonProperty(value = "isRejected")
   public boolean isRejected() {
     return isRejected;
   }
@@ -172,5 +171,4 @@ public class UserOrg implements Serializable {
   public void setUserId(String userId) {
     this.userId = userId;
   }
-
 }
