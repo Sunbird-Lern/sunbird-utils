@@ -140,7 +140,7 @@ public interface ResponseMessage {
     String COURSE_BATCH_ALREADY_COMPLETED = "Course batch is already completed.";
     String EXISTING_ORG_MEMBER = "You already have a membership of this organization.";
     String CONTENT_TYPE_ERROR = "Please add Content-Type header with value application/json";
-    String INVALID_PROPERTY_ERROR = "invalid property {0}.";
+    String INVALID_PROPERTY_ERROR = "Invalid property {0}.";
     String USER_NAME_OR_ID_ERROR = "Please provide either username or userId.";
     String USER_ACCOUNT_BLOCKED = "User account has been blocked .";
     String EMAIL_VERIFY_ERROR = "Please provide a verified email in order to create user.";

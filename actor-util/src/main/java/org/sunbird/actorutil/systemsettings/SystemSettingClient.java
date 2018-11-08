@@ -25,11 +25,10 @@ public interface SystemSettingClient {
    *
    * @param actorRef Actor reference
    * @param field System setting field name
-   * @param key Key (e.g. csv.mandatoryColumns) within system setting information 
+   * @param key Key (e.g. csv.mandatoryColumns) within system setting information
    * @param typeReference Type reference for value corresponding to specified key
    * @return System setting value corresponding to given field and key name
    */
   <T> T getSystemSettingByFieldAndKey(
       ActorRef actorRef, String field, String key, TypeReference typeReference);
-
 }
