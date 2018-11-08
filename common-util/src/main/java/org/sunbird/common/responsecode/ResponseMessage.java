@@ -371,7 +371,7 @@ public interface ResponseMessage {
     String ERROR_NO_ROOT_ORG_ASSOCIATED = "Not able to associate with root org";
     String ERROR_UNSUPPORTED_CLOUD_STORAGE = "Unsupported cloud storage type {0}.";
     String ERROR_GENERATE_DOWNLOAD_LINK = "Error in generating download link";
-    String ERROR_DOWNLOAD_LINK_NOT_AVAILABLE = "Download link is unavailable.";
+    String ERROR_DOWNLOAD_LINK_UNAVAILABLE = "Download link is unavailable.";
     String ERROR_SAVING_STORAGE_DETAILS = "Error saving storage details for download link";
   }
 
@@ -694,7 +694,8 @@ public interface ResponseMessage {
     String ERROR_NO_ROOT_ORG_ASSOCIATED = "ERROR_NO_ROOT_ORG_ASSOCIATED";
     String ERROR_UNSUPPORTED_CLOUD_STORAGE = "ERROR_ UNSUPPORTED_CLOUD_STORAGE";
     String ERROR_GENERATE_DOWNLOAD_LINK = "ERROR_GENERATING_DOWNLOAD_LINK";
-    String ERROR_DOWNLOAD_LINK_NOT_AVAILABLE = "ERROR_DOWNLOAD_LINK_NOT_AVAILABLE";
+    String ERROR_DOWNLOAD_LINK_UNAVAILABLE = "ERROR_DOWNLOAD_LINK_UNAVAILABLE";
     String ERROR_SAVING_STORAGE_DETAILS = "ERROR_SAVING_STORAGE_DETAILS";
   }
+
 }
