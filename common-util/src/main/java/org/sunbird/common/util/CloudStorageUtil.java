@@ -12,6 +12,7 @@ import org.sunbird.common.responsecode.ResponseCode;
 import scala.Some;
 
 public class CloudStorageUtil {
+  private static final int STORAGE_SERVICE_API_RETRY_COUNT = 3;
 
   public enum CloudStorageType {
     AZURE("azure");
@@ -50,7 +51,7 @@ public class CloudStorageUtil {
         Some.apply(false),
         Some.apply(false),
         Some.empty(),
-        Some.apply(3));
+        Some.apply(STORAGE_SERVICE_API_RETRY_COUNT));
   }
 
   public static String getSignedUrl(
@@ -76,4 +77,5 @@ public class CloudStorageUtil {
     		ProjectUtil.getConfigValue(JsonKey.DOWNLOAD_LINK_EXPIRY_TIMEOUT);
     return Integer.parseInt(timeoutInSecondsStr);
   }
+
 }
