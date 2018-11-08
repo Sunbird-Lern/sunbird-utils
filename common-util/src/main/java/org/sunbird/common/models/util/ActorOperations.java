@@ -64,7 +64,7 @@ public enum ActorOperations {
   INSERT_COURSE_BATCH_ES("insertCourseBatchToEs"),
   UPDATE_COURSE_BATCH_ES("updateCourseBatchToEs"),
   GET_BULK_OP_STATUS("getBulkOpStatus"),
-  GET_BULK_STATUS_DOWNLOAD_LINK("getStatusDownloadLink"),
+  GET_BULK_UPLOAD_STATUS_DOWNLOAD_LINK("getBulkUploadStatusDownloadLink"),
   ORG_CREATION_METRICS("orgCreationMetrics"),
   ORG_CONSUMPTION_METRICS("orgConsumptionMetrics"),
   ORG_CREATION_METRICS_DATA("orgCreationMetricsData"),

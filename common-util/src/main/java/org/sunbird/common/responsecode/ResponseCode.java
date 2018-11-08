@@ -671,15 +671,16 @@ public enum ResponseCode {
   errorNoRootOrgAssociated(
       ResponseMessage.Key.ERROR_NO_ROOT_ORG_ASSOCIATED,
       ResponseMessage.Message.ERROR_NO_ROOT_ORG_ASSOCIATED),
-  unSupportedCloudStorage(
-      ResponseMessage.Key.UNSUPPORTED_CLOUD_STORAGE,
-      ResponseMessage.Message.UNSUPPORTED_CLOUD_STORAGE),
-  errorGeneatingBulkDownloadStatusLinnk(
-      ResponseMessage.Key.ERROR_GENERATING_DOWNLOAD_LINK,
-      ResponseMessage.Message.ERROR_GENERATING_DOWNLOAD_LINK),
-  errorDownloadLinkNotAvailable(
+  errorUnsupportedCloudStorage(
+      ResponseMessage.Key.ERROR_UNSUPPORTED_CLOUD_STORAGE,
+      ResponseMessage.Message.ERROR_UNSUPPORTED_CLOUD_STORAGE),
+  errorGenerateDownloadLink(
+      ResponseMessage.Key.ERROR_GENERATE_DOWNLOAD_LINK,
+      ResponseMessage.Message.ERROR_GENERATE_DOWNLOAD_LINK),
+  errorUnavailableDownloadLink(
       ResponseMessage.Key.ERROR_DOWNLOAD_LINK_NOT_AVAILABLE,
       ResponseMessage.Message.ERROR_DOWNLOAD_LINK_NOT_AVAILABLE),
+  errorSavingStorageDetails(ResponseMessage.Key.ERROR_SAVING_STORAGE_DETAILS,ResponseMessage.Message.ERROR_SAVING_STORAGE_DETAILS),
 
   OK(200),
   CLIENT_ERROR(400),

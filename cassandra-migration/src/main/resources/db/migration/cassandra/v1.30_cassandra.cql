@@ -1,1 +1,0 @@
-ALTER TABLE bulk_upload_process ADD cloudstoragedata text;

@@ -16,8 +16,8 @@ public final class JsonKey {
   public static final String ACCESSTOKEN = "accessToken";
   public static final String ACCOUNT_KEY = "sunbird_account_key";
   public static final String ACCOUNT_NAME = "sunbird_account_name";
-  public static final String BULK_UPLOAD_STORAGE_TIMEOUT_SECONDS =
-      "bulk_upload_storage_timeout_seconds";
+  public static final String DOWNLOAD_LINK_EXPIRY_TIMEOUT =
+      "download_link_expiry_timeout";
   public static final String SIGNED_URL = "signedUrl";
   public static final String BULK_UPLOAD_STATUS = "Upload Status";
   public static final String BULK_UPLOAD_ERROR = "Upload Error";

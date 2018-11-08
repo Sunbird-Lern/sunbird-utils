@@ -11,13 +11,13 @@ import org.sunbird.common.responsecode.ResponseCode;
 
 import scala.Some;
 
-public class CloudUploadUtil {
+public class CloudStorageUtil {
 
-  public enum CloudStorageTypes {
+  public enum CloudStorageType {
     AZURE("azure");
     private String type;
 
-    private CloudStorageTypes(String type) {
+    private CloudStorageType(String type) {
       this.type = type;
     }
 
@@ -25,43 +25,43 @@ public class CloudUploadUtil {
       return this.type;
     }
 
-    public static CloudStorageTypes getByName(String type) {
+    public static CloudStorageType getByName(String type) {
       if (AZURE.type.equals(type)) {
-        return CloudStorageTypes.AZURE;
+        return CloudStorageType.AZURE;
       } else {
         ProjectCommonException.throwClientErrorException(
-            ResponseCode.unSupportedCloudStorage,
+            ResponseCode.errorUnsupportedCloudStorage,
             ProjectUtil.formatMessage(
-                ResponseCode.unSupportedCloudStorage.getErrorMessage(), type));
+                ResponseCode.errorUnsupportedCloudStorage.getErrorMessage(), type));
         return null;
       }
     }
   }
 
   public static String upload(
-      CloudStorageTypes storageType, String container, String objectKey, String filePath) {
+      CloudStorageType storageType, String container, String objectKey, String filePath) {
 
     IStorageService storageService = getStorageService(storageType);
-    int timeoutInSeconds = getTimeoutInSeconds();
+    
     return storageService.upload(
         container,
         filePath,
         objectKey,
-        Some.apply(true),
         Some.apply(false),
-        Some.apply(300),
-        Some.apply(1));
+        Some.apply(false),
+        Some.empty(),
+        Some.apply(3));
   }
 
   public static String getSignedUrl(
-      CloudStorageTypes storageType, String container, String objectKey) {
+      CloudStorageType storageType, String container, String objectKey) {
     IStorageService storageService = getStorageService(storageType);
     int timeoutInSeconds = getTimeoutInSeconds();
     return storageService.getSignedURL(
         container, objectKey, Some.apply(timeoutInSeconds), Some.apply("r"));
   }
 
-  private static IStorageService getStorageService(CloudStorageTypes storageType) {
+  private static IStorageService getStorageService(CloudStorageType storageType) {
     String storageKey = PropertiesCache.getInstance().getProperty(JsonKey.ACCOUNT_NAME);
     String storageSecret = PropertiesCache.getInstance().getProperty(JsonKey.ACCOUNT_KEY);
 
@@ -73,18 +73,7 @@ public class CloudUploadUtil {
 
   private static int getTimeoutInSeconds() {
     String timeoutInSecondsStr =
-        PropertiesCache.getInstance().getProperty(JsonKey.BULK_UPLOAD_STORAGE_TIMEOUT_SECONDS);
+    		ProjectUtil.getConfigValue(JsonKey.DOWNLOAD_LINK_EXPIRY_TIMEOUT);
     return Integer.parseInt(timeoutInSecondsStr);
-  }
-
-  public static void main(String[] args) {
-
-    CloudUploadUtil.upload(
-        CloudStorageTypes.AZURE,
-        "orgcontainer",
-        "org1.csv",
-        "/Users/amolgolvelkar/Downloads/org1.csv");
-    System.out.println(
-        CloudUploadUtil.getSignedUrl(CloudStorageTypes.AZURE, "orgcontainer", "org1.csv"));
   }
 }
