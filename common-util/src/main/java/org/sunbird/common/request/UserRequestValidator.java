@@ -1,6 +1,5 @@
 package org.sunbird.common.request;
 
-import com.typesafe.config.Config;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -828,11 +827,9 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   @SuppressWarnings("unchecked")
-  public void validateFrameworkRequestData(Config userProfileConfig, Map<String, Object> userMap) {
+  public void validateFrameworkRequestData(
+      List<String> frameworkFields, List<String> mandatoryFields, Map<String, Object> userMap) {
     if (userMap.containsKey(JsonKey.FRAMEWORK)) {
-      Config frameworkDetails = userProfileConfig.getConfig(JsonKey.FRAMEWORK);
-      List<String> frameworkFields = frameworkDetails.getStringList(JsonKey.FIELDS);
-      List<String> mandatoryFields = frameworkDetails.getStringList(JsonKey.MANDATORY_FIELDS);
       Map<String, Object> frameworkRequest = (Map<String, Object>) userMap.get(JsonKey.FRAMEWORK);
       for (String parameter : frameworkFields) {
         if (mandatoryFields.contains(parameter)) {
