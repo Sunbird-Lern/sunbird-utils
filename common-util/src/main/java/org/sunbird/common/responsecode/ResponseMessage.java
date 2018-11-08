@@ -291,7 +291,7 @@ public interface ResponseMessage {
         "One or more locations have a parent reference to given location and hence cannot be deleted.";
     String LOCATION_TYPE_CONFLICTS = "Location type conflicts with its parent location type.";
     String MANDATORY_PARAMETER_MISSING = "Mandatory parameter {0} is missing.";
-    String MANDATORY_PARAMETER_EMPTY = "Mandatory parameter {0} is empty.";
+    String ERROR_MANDATORY_PARAMETER_EMPTY = "Mandatory parameter {0} is empty.";
     String INVALID_LOCN_ID = "Please provide valid locationId.";
     String UPDATE_NOT_ALLOWED = "Update of {0} is not allowed.";
     String MANDATORY_HEADER_MISSING = "Mandatory header {0} is missing.";
@@ -635,7 +635,7 @@ public interface ResponseMessage {
     String INVALID_LOCATION_DELETE_REQUEST = "INVALID_LOCATION_DELETE_REQUEST";
     String LOCATION_TYPE_CONFLICTS = "LOCATION_TYPE_CONFLICTS";
     String MANDATORY_PARAMETER_MISSING = "MANDATORY_PARAMETER_MISSING";
-    String MANDATORY_PARAMETER_EMPTY = "MANDATORY_PARAMETER_EMPTY";
+    String ERROR_MANDATORY_PARAMETER_EMPTY = "MANDATORY_PARAMETER_EMPTY";
     String INVALID_LOCN_ID = "INVALID_LOCATION_ID";
     String UPDATE_NOT_ALLOWED = "UPDATE_NOT_ALLOWED";
     String MANDATORY_HEADER_MISSING = "MANDATORY_HEADER_MISSING";
