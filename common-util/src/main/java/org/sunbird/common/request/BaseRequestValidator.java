@@ -232,22 +232,25 @@ public class BaseRequestValidator {
    * @param fieldPrefix Field prefix
    * @param fields List of fields
    */
-  public void validateListParamWithPrefix(Map<String, Object> requestMap, String fieldPrefix, String fields) {
+  public void validateListParamWithPrefix(
+      Map<String, Object> requestMap, String fieldPrefix, String... fields) {
     Arrays.stream(fields)
         .forEach(
             field -> {
               if (requestMap.containsKey(field)
                   && null != requestMap.get(field)
                   && !(requestMap.get(field) instanceof List)) {
-                
-                String fieldWithPrefix = fieldPrefix != null ? StringFormatter.joinByDot(fieldPrefix, field) : field;              
+
+                String fieldWithPrefix =
+                    fieldPrefix != null ? StringFormatter.joinByDot(fieldPrefix, field) : field;
 
                 throw new ProjectCommonException(
                     ResponseCode.dataTypeError.getErrorCode(),
                     ProjectUtil.formatMessage(
-                        ResponseCode.dataTypeError.getErrorMessage(), fieldWithPrefix, JsonKey.LIST),
+                        ResponseCode.dataTypeError.getErrorMessage(),
+                        fieldWithPrefix,
+                        JsonKey.LIST),
                     ResponseCode.CLIENT_ERROR.getResponseCode());
-
               }
             });
   }

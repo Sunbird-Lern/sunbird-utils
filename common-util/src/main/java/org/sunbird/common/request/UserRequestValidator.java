@@ -816,15 +816,14 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   private void validateFrameworkDetails(Request request) {
-    if (request.getRequest().containsKey(JsonKey.FRAMEWORK)) {
-      if (!(request.getRequest().get(JsonKey.FRAMEWORK) instanceof Map)) {
-        throw new ProjectCommonException(
-            ResponseCode.dataTypeError.getErrorCode(),
-            ResponseCode.dataTypeError.getErrorMessage(),
-            ERROR_CODE,
-            JsonKey.FRAMEWORK,
-            JsonKey.MAP);
-      }
+    if (request.getRequest().containsKey(JsonKey.FRAMEWORK)
+        && (!(request.getRequest().get(JsonKey.FRAMEWORK) instanceof Map))) {
+      throw new ProjectCommonException(
+          ResponseCode.dataTypeError.getErrorCode(),
+          ResponseCode.dataTypeError.getErrorMessage(),
+          ERROR_CODE,
+          JsonKey.FRAMEWORK,
+          JsonKey.MAP);
     }
   }
 
@@ -840,7 +839,7 @@ public class UserRequestValidator extends BaseRequestValidator {
           if (!frameworkRequest.containsKey(parameter)) {
             validateParam(null, ResponseCode.mandatoryParamsMissing, parameter);
           }
-          validateListParam(JsonKey.FRAMEWORK, frameworkRequest, parameter);
+          validateListParamWithPrefix(frameworkRequest, JsonKey.FRAMEWORK, parameter);
           List<String> parameterValue = (List) frameworkRequest.get(parameter);
           if (parameterValue.isEmpty()) {
             throw new ProjectCommonException(
