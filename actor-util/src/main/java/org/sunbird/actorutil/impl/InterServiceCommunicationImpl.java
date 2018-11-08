@@ -16,8 +16,7 @@ import scala.concurrent.duration.Duration;
 
 public class InterServiceCommunicationImpl implements InterServiceCommunication {
 
-  private static final Integer WAIT_TIME = 10;
-  Timeout t = new Timeout(Duration.create(WAIT_TIME, TimeUnit.SECONDS));
+  private Timeout t = new Timeout(Duration.create(10, TimeUnit.SECONDS));
 
   @Override
   public Object getResponse(ActorRef actorRef, Request request) {
@@ -25,7 +24,9 @@ public class InterServiceCommunicationImpl implements InterServiceCommunication 
       return Await.result(getFuture(actorRef, request), t.duration());
     } catch (Exception e) {
       ProjectLogger.log(
-          "InterServiceCommunicationImpl : Interservice communication error " + e.getMessage(), e);
+          "InterServiceCommunicationImpl:getResponse: Exception occurred with error message = "
+              + e.getMessage(),
+          e);
       throw new ProjectCommonException(
           ResponseCode.unableToCommunicateWithActor.getErrorCode(),
           ResponseCode.unableToCommunicateWithActor.getErrorMessage(),
@@ -37,7 +38,7 @@ public class InterServiceCommunicationImpl implements InterServiceCommunication 
   public Future<Object> getFuture(ActorRef actorRef, Request request) {
     if (null == actorRef) {
       ProjectLogger.log(
-          "InterServiceCommunicationImpl : getResponse - actorRef is null ", LoggerEnum.INFO);
+          "InterServiceCommunicationImpl:getFuture: actorRef is null", LoggerEnum.INFO);
       throw new ProjectCommonException(
           ResponseCode.unableToCommunicateWithActor.getErrorCode(),
           ResponseCode.unableToCommunicateWithActor.getErrorMessage(),
@@ -47,7 +48,9 @@ public class InterServiceCommunicationImpl implements InterServiceCommunication 
       return Patterns.ask(actorRef, request, t);
     } catch (Exception e) {
       ProjectLogger.log(
-          "InterServiceCommunicationImpl : Interservice communication error " + e.getMessage(), e);
+          "InterServiceCommunicationImpl:getFuture: Exception occured with error message = "
+              + e.getMessage(),
+          e);
       throw new ProjectCommonException(
           ResponseCode.unableToCommunicateWithActor.getErrorCode(),
           ResponseCode.unableToCommunicateWithActor.getErrorMessage(),
