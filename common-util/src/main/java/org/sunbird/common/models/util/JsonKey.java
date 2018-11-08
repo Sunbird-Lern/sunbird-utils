@@ -704,6 +704,9 @@ public final class JsonKey {
   public static final String DEFAULT_PROFILE_FIELD_VISIBILITY = "defaultProfileFieldVisibility";
   public static final String SUNBIRD_COURSE_BATCH_NOTIFICATIONS_ACTIVE =
       "sunbird_course_batch_notification_active";
+  public static final String BATCH_START_DATE = "batchStartDate";
+  public static final String BATCH_END_DATE = "batchEndDate";
+  public static final String BATCH_NAME = "batchName";
   public static final String BATCH_MENTOR_ENROL = "batchMentorEnrol";
   public static final String BATCH_LEARNER_ENROL = "batchLearnerEnrol";
   public static final String COURSE_INVITATION = "Course Invitation";
