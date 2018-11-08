@@ -370,9 +370,9 @@ public interface ResponseMessage {
     String ERROR_SYSTEM_SETTING_NOT_FOUND = "System Setting not found for id: {0}";
     String ERROR_NO_ROOT_ORG_ASSOCIATED = "Not able to associate with root org";
     String ERROR_UNSUPPORTED_CLOUD_STORAGE = "Unsupported cloud storage type {0}.";
-    String ERROR_GENERATE_DOWNLOAD_LINK = "Error in generating download link";
+    String ERROR_GENERATE_DOWNLOAD_LINK = "Error in generating download link.";
     String ERROR_DOWNLOAD_LINK_UNAVAILABLE = "Download link is unavailable.";
-    String ERROR_SAVING_STORAGE_DETAILS = "Error saving storage details for download link";
+    String ERROR_SAVING_STORAGE_DETAILS = "Error saving storage details for download link.";
   }
 
   interface Key {
