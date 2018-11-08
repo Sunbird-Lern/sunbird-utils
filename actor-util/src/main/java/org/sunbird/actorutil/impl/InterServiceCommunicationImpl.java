@@ -1,11 +1,8 @@
 package org.sunbird.actorutil.impl;
 
-import static akka.pattern.PatternsCS.ask;
-
 import akka.actor.ActorRef;
 import akka.pattern.Patterns;
 import akka.util.Timeout;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import org.sunbird.actorutil.InterServiceCommunication;
 import org.sunbird.common.exception.ProjectCommonException;
@@ -13,6 +10,7 @@ import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
+import scala.concurrent.Await;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 
@@ -23,17 +21,8 @@ public class InterServiceCommunicationImpl implements InterServiceCommunication 
 
   @Override
   public Object getResponse(ActorRef actorRef, Request request) {
-    if (null == actorRef) {
-      ProjectLogger.log(
-          "InterServiceCommunicationImpl : getResponse - actorRef is null ", LoggerEnum.INFO);
-      throw new ProjectCommonException(
-          ResponseCode.unableToCommunicateWithActor.getErrorCode(),
-          ResponseCode.unableToCommunicateWithActor.getErrorMessage(),
-          ResponseCode.SERVER_ERROR.getResponseCode());
-    }
-    CompletableFuture<Object> future = ask(actorRef, request, t).toCompletableFuture();
     try {
-      return future.get(WAIT_TIME + 2, TimeUnit.SECONDS);
+      return Await.result(getFuture(actorRef, request), t.duration());
     } catch (Exception e) {
       ProjectLogger.log(
           "InterServiceCommunicationImpl : Interservice communication error " + e.getMessage(), e);
