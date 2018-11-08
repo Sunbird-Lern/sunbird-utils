@@ -229,28 +229,27 @@ public class BaseRequestValidator {
    * Helper method which throws an exception if each field is not of type List.
    *
    * @param requestMap Request information
+   * @param fieldPrefix Field prefix
    * @param fields List of fields
    */
-  public void validateListParam(String prefix, Map<String, Object> requestMap, String... fields) {
-    if (StringUtils.isEmpty(prefix)) {
-      validateListParam(requestMap, fields);
-    } else {
-      Arrays.stream(fields)
-          .forEach(
-              field -> {
-                if (requestMap.containsKey(field)
-                    && null != requestMap.get(field)
-                    && !(requestMap.get(field) instanceof List)) {
-                  throw new ProjectCommonException(
-                      ResponseCode.dataTypeError.getErrorCode(),
-                      ProjectUtil.formatMessage(
-                          ResponseCode.dataTypeError.getErrorMessage(),
-                          StringFormatter.joinByDot(prefix, field),
-                          JsonKey.LIST),
-                      ResponseCode.CLIENT_ERROR.getResponseCode());
-                }
-              });
-    }
+  public void validateListParamWithPrefix(Map<String, Object> requestMap, String fieldPrefix, String fields) {
+    Arrays.stream(fields)
+        .forEach(
+            field -> {
+              if (requestMap.containsKey(field)
+                  && null != requestMap.get(field)
+                  && !(requestMap.get(field) instanceof List)) {
+                
+                String fieldWithPrefix = fieldPrefix != null ? StringFormatter.joinByDot(fieldPrefix, field) : field;              
+
+                throw new ProjectCommonException(
+                    ResponseCode.dataTypeError.getErrorCode(),
+                    ProjectUtil.formatMessage(
+                        ResponseCode.dataTypeError.getErrorMessage(), fieldWithPrefix, JsonKey.LIST),
+                    ResponseCode.CLIENT_ERROR.getResponseCode());
+
+              }
+            });
   }
 
   /**
@@ -260,19 +259,7 @@ public class BaseRequestValidator {
    * @param fields List of fields
    */
   public void validateListParam(Map<String, Object> requestMap, String... fields) {
-    Arrays.stream(fields)
-        .forEach(
-            field -> {
-              if (requestMap.containsKey(field)
-                  && null != requestMap.get(field)
-                  && !(requestMap.get(field) instanceof List)) {
-                throw new ProjectCommonException(
-                    ResponseCode.dataTypeError.getErrorCode(),
-                    ProjectUtil.formatMessage(
-                        ResponseCode.dataTypeError.getErrorMessage(), field, JsonKey.LIST),
-                    ResponseCode.CLIENT_ERROR.getResponseCode());
-              }
-            });
+    validateListParamWithPrefix(requestMap, null, fields);
   }
 
   /**
