@@ -58,6 +58,24 @@ public class User implements Serializable {
   private String registryId;
   private String organisationId;
   private List<Map<String, String>> externalIds;
+  private String userType;
+  private String signupType;
+
+  public String getUserType() {
+    return userType;
+  }
+
+  public void setUserType(String userType) {
+    this.userType = userType;
+  }
+
+  public String getSignupType() {
+    return signupType;
+  }
+
+  public void setSignupType(String signupType) {
+    this.signupType = signupType;
+  }
 
   public String getOrganisationId() {
     return organisationId;
