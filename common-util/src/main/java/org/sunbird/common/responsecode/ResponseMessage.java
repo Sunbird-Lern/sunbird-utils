@@ -140,7 +140,7 @@ public interface ResponseMessage {
     String COURSE_BATCH_ALREADY_COMPLETED = "Course batch is already completed.";
     String EXISTING_ORG_MEMBER = "You already have a membership of this organization.";
     String CONTENT_TYPE_ERROR = "Please add Content-Type header with value application/json";
-    String INVALID_PROPERTY_ERROR = "invalid property {0}.";
+    String INVALID_PROPERTY_ERROR = "Invalid property {0}.";
     String USER_NAME_OR_ID_ERROR = "Please provide either username or userId.";
     String USER_ACCOUNT_BLOCKED = "User account has been blocked .";
     String EMAIL_VERIFY_ERROR = "Please provide a verified email in order to create user.";
@@ -291,6 +291,7 @@ public interface ResponseMessage {
         "One or more locations have a parent reference to given location and hence cannot be deleted.";
     String LOCATION_TYPE_CONFLICTS = "Location type conflicts with its parent location type.";
     String MANDATORY_PARAMETER_MISSING = "Mandatory parameter {0} is missing.";
+    String ERROR_MANDATORY_PARAMETER_EMPTY = "Mandatory parameter {0} is empty.";
     String INVALID_LOCN_ID = "Please provide valid locationId.";
     String UPDATE_NOT_ALLOWED = "Update of {0} is not allowed.";
     String MANDATORY_HEADER_MISSING = "Mandatory header {0} is missing.";
@@ -634,6 +635,7 @@ public interface ResponseMessage {
     String INVALID_LOCATION_DELETE_REQUEST = "INVALID_LOCATION_DELETE_REQUEST";
     String LOCATION_TYPE_CONFLICTS = "LOCATION_TYPE_CONFLICTS";
     String MANDATORY_PARAMETER_MISSING = "MANDATORY_PARAMETER_MISSING";
+    String ERROR_MANDATORY_PARAMETER_EMPTY = "ERROR_MANDATORY_PARAMETER_EMPTY";
     String INVALID_LOCN_ID = "INVALID_LOCATION_ID";
     String UPDATE_NOT_ALLOWED = "UPDATE_NOT_ALLOWED";
     String MANDATORY_HEADER_MISSING = "MANDATORY_HEADER_MISSING";
