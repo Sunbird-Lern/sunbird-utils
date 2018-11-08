@@ -834,28 +834,28 @@ public class UserRequestValidator extends BaseRequestValidator {
       List<String> frameworkFields = frameworkDetails.getStringList(JsonKey.FIELDS);
       List<String> mandatoryFields = frameworkDetails.getStringList(JsonKey.MANDATORY_FIELDS);
       Map<String, Object> frameworkRequest = (Map<String, Object>) userMap.get(JsonKey.FRAMEWORK);
-      for (String parameter : frameworkFields) {
-        if (mandatoryFields.contains(parameter)) {
-          if (!frameworkRequest.containsKey(parameter)) {
-            validateParam(null, ResponseCode.mandatoryParamsMissing, parameter);
+      for (String field : frameworkFields) {
+        if (mandatoryFields.contains(field)) {
+          if (!frameworkRequest.containsKey(field)) {
+            validateParam(null, ResponseCode.mandatoryParamsMissing, field);
           }
-          validateListParamWithPrefix(frameworkRequest, JsonKey.FRAMEWORK, parameter);
-          List<String> parameterValue = (List) frameworkRequest.get(parameter);
-          if (parameterValue.isEmpty()) {
+          validateListParamWithPrefix(frameworkRequest, JsonKey.FRAMEWORK, field);
+          List<String> fieldValue = (List) frameworkRequest.get(field);
+          if (fieldValue.isEmpty()) {
             throw new ProjectCommonException(
                 ResponseCode.errorMandatoryParamsEmpty.getErrorCode(),
                 ResponseCode.errorMandatoryParamsEmpty.getErrorMessage(),
                 ERROR_CODE,
-                StringFormatter.joinByDot(JsonKey.FRAMEWORK, parameter));
+                StringFormatter.joinByDot(JsonKey.FRAMEWORK, field));
           }
         } else {
-          if (frameworkRequest.containsKey(parameter)
-              && !(frameworkRequest.get(parameter) instanceof List)) {
+          if (frameworkRequest.containsKey(field)
+              && !(frameworkRequest.get(field) instanceof List)) {
             throw new ProjectCommonException(
                 ResponseCode.dataTypeError.getErrorCode(),
                 ResponseCode.dataTypeError.getErrorMessage(),
                 ERROR_CODE,
-                parameter,
+                field,
                 JsonKey.LIST);
           }
         }
