@@ -31,6 +31,7 @@ public class InterServiceCommunicationImpl implements InterServiceCommunication 
           ResponseCode.unableToCommunicateWithActor,
           ResponseCode.unableToCommunicateWithActor.getErrorMessage());
     }
+    return null;
   }
 
   @Override
@@ -53,6 +54,6 @@ public class InterServiceCommunicationImpl implements InterServiceCommunication 
           ResponseCode.unableToCommunicateWithActor,
           ResponseCode.unableToCommunicateWithActor.getErrorMessage());
     }
+    return null;
   }
-
 }
