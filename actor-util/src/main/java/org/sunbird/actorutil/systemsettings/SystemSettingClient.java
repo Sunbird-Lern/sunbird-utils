@@ -29,7 +29,7 @@ public interface SystemSettingClient {
    * @param typeReference Type reference for value corresponding to specified key
    * @return System setting value corresponding to given field and key name
    */
-  Object getSystemSettingByFieldAndKey(
+  <T> T getSystemSettingByFieldAndKey(
       ActorRef actorRef, String field, String key, TypeReference typeReference);
 
 }
