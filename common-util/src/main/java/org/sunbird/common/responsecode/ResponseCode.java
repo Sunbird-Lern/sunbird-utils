@@ -668,6 +668,8 @@ public enum ResponseCode {
   errorNoRootOrgAssociated(
       ResponseMessage.Key.ERROR_NO_ROOT_ORG_ASSOCIATED,
       ResponseMessage.Message.ERROR_NO_ROOT_ORG_ASSOCIATED),
+  errorInActiveCustodianOrg(
+      ResponseMessage.Key.INACTIVE_CUSTODIAN_ORG, ResponseMessage.Message.INACTIVE_CUSTODIAN_ORG),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

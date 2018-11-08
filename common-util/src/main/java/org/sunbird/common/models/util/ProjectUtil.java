@@ -387,11 +387,6 @@ public class ProjectUtil {
     }
   }
 
-  /**
-   * This enum will hold all the Section data type name.
-   *
-   * @author Amit Kumar
-   */
   public enum SectionDataType {
     course("course"),
     content("content");
@@ -406,11 +401,6 @@ public class ProjectUtil {
     }
   }
 
-  /**
-   * This enum will hold all the Address type name.
-   *
-   * @author Amit Kumar
-   */
   public enum AddressType {
     permanent("permanent"),
     current("current"),
@@ -419,6 +409,36 @@ public class ProjectUtil {
     private String typeName;
 
     private AddressType(String name) {
+      this.typeName = name;
+    }
+
+    public String getTypeName() {
+      return typeName;
+    }
+  }
+
+  public enum SignupType {
+    SELF_SIGNUP("SELF_SIGNUP"),
+    BULK_USER_CREATION("BULK_USER_CREATION");
+
+    private String typeName;
+
+    private SignupType(String name) {
+      this.typeName = name;
+    }
+
+    public String getTypeName() {
+      return typeName;
+    }
+  }
+
+  public enum UserType {
+    teacher("teacher"),
+    others("others");
+
+    private String typeName;
+
+    private UserType(String name) {
       this.typeName = name;
     }
 

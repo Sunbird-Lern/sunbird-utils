@@ -42,12 +42,31 @@ public class UserRequestValidator extends BaseRequestValidator {
     validateWebPages(userRequest);
   }
 
-  public void validateCreateUserV1Request(Request userRequest) {
+  private void validateUserName(Request userRequest) {
+    if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.USERNAME))) {
+      throw new ProjectCommonException(
+          ResponseCode.userNameRequired.getErrorCode(),
+          ResponseCode.userNameRequired.getErrorMessage(),
+          ERROR_CODE);
+    }
+  }
+
+  public void validateCreateUserV3Request(Request userRequest) {
     validateCreateUserRequest(userRequest);
+    validateParam(
+        (String) userRequest.getRequest().get(JsonKey.PASSWORD),
+        ResponseCode.mandatoryParamsMissing,
+        JsonKey.PASSWORD);
     fieldsNotAllowed(Arrays.asList(JsonKey.ORGANISATION_ID), userRequest);
   }
 
+  public void validateCreateUserV1Request(Request userRequest) {
+    validateUserName(userRequest);
+    validateCreateUserV3Request(userRequest);
+  }
+
   public void validateCreateUserV2Request(Request userRequest) {
+    validateUserName(userRequest);
     validateParam(
         (String) userRequest.getRequest().get(JsonKey.CHANNEL),
         ResponseCode.mandatoryParamsMissing,
@@ -143,7 +162,10 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   private void createUserBasicProfileFieldsValidation(Request userRequest) {
-	validateParam((String) userRequest.getRequest().get(JsonKey.FIRST_NAME), ResponseCode.mandatoryParamsMissing,JsonKey.FIRST_NAME);
+    validateParam(
+        (String) userRequest.getRequest().get(JsonKey.FIRST_NAME),
+        ResponseCode.mandatoryParamsMissing,
+        JsonKey.FIRST_NAME);
     if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.EMAIL))
         && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PHONE))) {
       throw new ProjectCommonException(
@@ -265,7 +287,7 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   private void validateJob(Request userRequest) {
-   
+
     Map<String, Object> reqMap = null;
     List<Map<String, Object>> reqList =
         (List<Map<String, Object>>) userRequest.get(JsonKey.JOB_PROFILE);
@@ -275,50 +297,50 @@ public class UserRequestValidator extends BaseRequestValidator {
       validateJobOrgNameAndAddress(reqMap);
     }
   }
-  
+
   private void validateJoinEndDate(Map reqMap) {
-	  if (null != reqMap.get(JsonKey.JOINING_DATE)) {
-	        boolean bool =
-	            ProjectUtil.isDateValidFormat(
-	                ProjectUtil.YEAR_MONTH_DATE_FORMAT, (String) reqMap.get(JsonKey.JOINING_DATE));
-	        if (!bool) {
-	          throw new ProjectCommonException(
-	              ResponseCode.dateFormatError.getErrorCode(),
-	              ResponseCode.dateFormatError.getErrorMessage(),
-	              ERROR_CODE);
-	        }
-	      }
-	      if (null != reqMap.get(JsonKey.END_DATE)) {
-	        boolean bool =
-	            ProjectUtil.isDateValidFormat(
-	                ProjectUtil.YEAR_MONTH_DATE_FORMAT, (String) reqMap.get(JsonKey.END_DATE));
-	        if (!bool) {
-	          throw new ProjectCommonException(
-	              ResponseCode.dateFormatError.getErrorCode(),
-	              ResponseCode.dateFormatError.getErrorMessage(),
-	              ERROR_CODE);
-	        }
-	      }
+    if (null != reqMap.get(JsonKey.JOINING_DATE)) {
+      boolean bool =
+          ProjectUtil.isDateValidFormat(
+              ProjectUtil.YEAR_MONTH_DATE_FORMAT, (String) reqMap.get(JsonKey.JOINING_DATE));
+      if (!bool) {
+        throw new ProjectCommonException(
+            ResponseCode.dateFormatError.getErrorCode(),
+            ResponseCode.dateFormatError.getErrorMessage(),
+            ERROR_CODE);
+      }
+    }
+    if (null != reqMap.get(JsonKey.END_DATE)) {
+      boolean bool =
+          ProjectUtil.isDateValidFormat(
+              ProjectUtil.YEAR_MONTH_DATE_FORMAT, (String) reqMap.get(JsonKey.END_DATE));
+      if (!bool) {
+        throw new ProjectCommonException(
+            ResponseCode.dateFormatError.getErrorCode(),
+            ResponseCode.dateFormatError.getErrorMessage(),
+            ERROR_CODE);
+      }
+    }
   }
-  
+
   private void validateJobOrgNameAndAddress(Map reqMap) {
-	  Map<String, Object> addrReqMap = null;
-	  if (StringUtils.isBlank((String) reqMap.get(JsonKey.JOB_NAME))) {
-	        throw new ProjectCommonException(
-	            ResponseCode.jobNameError.getErrorCode(),
-	            ResponseCode.jobNameError.getErrorMessage(),
-	            ERROR_CODE);
-	      }
-	      if (StringUtils.isBlank((String) reqMap.get(JsonKey.ORG_NAME))) {
-	        throw new ProjectCommonException(
-	            ResponseCode.organisationNameError.getErrorCode(),
-	            ResponseCode.organisationNameError.getErrorMessage(),
-	            ERROR_CODE);
-	      }
-	      if (reqMap.containsKey(JsonKey.ADDRESS) && null != reqMap.get(JsonKey.ADDRESS)) {
-	        addrReqMap = (Map<String, Object>) reqMap.get(JsonKey.ADDRESS);
-	        new AddressRequestValidator().validateAddress(addrReqMap, JsonKey.JOB_PROFILE);
-	      }
+    Map<String, Object> addrReqMap = null;
+    if (StringUtils.isBlank((String) reqMap.get(JsonKey.JOB_NAME))) {
+      throw new ProjectCommonException(
+          ResponseCode.jobNameError.getErrorCode(),
+          ResponseCode.jobNameError.getErrorMessage(),
+          ERROR_CODE);
+    }
+    if (StringUtils.isBlank((String) reqMap.get(JsonKey.ORG_NAME))) {
+      throw new ProjectCommonException(
+          ResponseCode.organisationNameError.getErrorCode(),
+          ResponseCode.organisationNameError.getErrorMessage(),
+          ERROR_CODE);
+    }
+    if (reqMap.containsKey(JsonKey.ADDRESS) && null != reqMap.get(JsonKey.ADDRESS)) {
+      addrReqMap = (Map<String, Object>) reqMap.get(JsonKey.ADDRESS);
+      new AddressRequestValidator().validateAddress(addrReqMap, JsonKey.JOB_PROFILE);
+    }
   }
 
   @SuppressWarnings("unchecked")
@@ -357,7 +379,6 @@ public class UserRequestValidator extends BaseRequestValidator {
    *
    * @param userRequest Request
    */
-  @SuppressWarnings({"rawtypes"})
   public void validateUpdateUserRequest(Request userRequest) {
     externalIdsValidation(userRequest, JsonKey.UPDATE);
     phoneValidation(userRequest);
