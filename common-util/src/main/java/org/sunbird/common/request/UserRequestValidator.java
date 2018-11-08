@@ -1,5 +1,6 @@
 package org.sunbird.common.request;
 
+import com.typesafe.config.Config;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -393,8 +394,8 @@ public class UserRequestValidator extends BaseRequestValidator {
           ResponseCode.invalidRootOrganisationId.getErrorMessage(),
           ERROR_CODE);
     }
-
     validateExtIdTypeAndProvider(userRequest);
+    validateFrameworkDetails(userRequest);
   }
 
   private void validateAddressField(Request userRequest) {
@@ -829,6 +830,54 @@ public class UserRequestValidator extends BaseRequestValidator {
         }
       }
       checkedList.add(externalId);
+    }
+  }
+
+  private void validateFrameworkDetails(Request request) {
+    if (request.getRequest().containsKey(JsonKey.FRAMEWORK)
+        && (!(request.getRequest().get(JsonKey.FRAMEWORK) instanceof Map))) {
+      throw new ProjectCommonException(
+          ResponseCode.dataTypeError.getErrorCode(),
+          ResponseCode.dataTypeError.getErrorMessage(),
+          ERROR_CODE,
+          JsonKey.FRAMEWORK,
+          JsonKey.MAP);
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  public void validateFrameworkRequestData(Config userProfileConfig, Map<String, Object> userMap) {
+    if (userMap.containsKey(JsonKey.FRAMEWORK)) {
+      Config frameworkDetails = userProfileConfig.getConfig(JsonKey.FRAMEWORK);
+      List<String> frameworkFields = frameworkDetails.getStringList(JsonKey.FIELDS);
+      List<String> mandatoryFields = frameworkDetails.getStringList(JsonKey.MANDATORY_FIELDS);
+      Map<String, Object> frameworkRequest = (Map<String, Object>) userMap.get(JsonKey.FRAMEWORK);
+      for (String field : frameworkFields) {
+        if (mandatoryFields.contains(field)) {
+          if (!frameworkRequest.containsKey(field)) {
+            validateParam(null, ResponseCode.mandatoryParamsMissing, field);
+          }
+          validateListParamWithPrefix(frameworkRequest, JsonKey.FRAMEWORK, field);
+          List<String> fieldValue = (List) frameworkRequest.get(field);
+          if (fieldValue.isEmpty()) {
+            throw new ProjectCommonException(
+                ResponseCode.errorMandatoryParamsEmpty.getErrorCode(),
+                ResponseCode.errorMandatoryParamsEmpty.getErrorMessage(),
+                ERROR_CODE,
+                StringFormatter.joinByDot(JsonKey.FRAMEWORK, field));
+          }
+        } else {
+          if (frameworkRequest.containsKey(field)
+              && !(frameworkRequest.get(field) instanceof List)) {
+            throw new ProjectCommonException(
+                ResponseCode.dataTypeError.getErrorCode(),
+                ResponseCode.dataTypeError.getErrorMessage(),
+                ERROR_CODE,
+                field,
+                JsonKey.LIST);
+          }
+        }
+      }
     }
   }
 }

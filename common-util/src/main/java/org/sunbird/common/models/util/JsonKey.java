@@ -261,6 +261,7 @@ public final class JsonKey {
   public static final String FIRST_NAME = "firstName";
   public static final String FORM_PARAMS = "formParams";
   public static final String FORMAT = "format";
+  public static final String FRAMEWORK = "framework";
   public static final String FROM_EMAIL = "fromEmail";
   public static final String GENDER = "gender";
   public static final String GEO_LOCATION_DB = "geoLocationDb";
@@ -323,6 +324,8 @@ public final class JsonKey {
   public static final String LOGIN_ID_DELIMETER = "@";
   public static final String LOGIN_TYPE = "type";
   public static final String MAIL_NOTE = "mail_note";
+  public static final String MANDATORY_FIELDS = "mandatoryFields";
+  public static final String MAP = "map";
   public static final String MAPPED_FORM_PARAMS = "mappedFormParams";
   public static final String MASKED_EMAIL = "maskedEmail";
   public static final String MASKED_PHONE = "maskedPhone";

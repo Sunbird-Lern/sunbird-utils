@@ -27,10 +27,9 @@ public class InterServiceCommunicationImpl implements InterServiceCommunication 
           "InterServiceCommunicationImpl:getResponse: Exception occurred with error message = "
               + e.getMessage(),
           e);
-      throw new ProjectCommonException(
-          ResponseCode.unableToCommunicateWithActor.getErrorCode(),
-          ResponseCode.unableToCommunicateWithActor.getErrorMessage(),
-          ResponseCode.SERVER_ERROR.getResponseCode());
+      ProjectCommonException.throwServerErrorException(
+          ResponseCode.unableToCommunicateWithActor,
+          ResponseCode.unableToCommunicateWithActor.getErrorMessage());
     }
   }
 
@@ -39,10 +38,9 @@ public class InterServiceCommunicationImpl implements InterServiceCommunication 
     if (null == actorRef) {
       ProjectLogger.log(
           "InterServiceCommunicationImpl:getFuture: actorRef is null", LoggerEnum.INFO);
-      throw new ProjectCommonException(
-          ResponseCode.unableToCommunicateWithActor.getErrorCode(),
-          ResponseCode.unableToCommunicateWithActor.getErrorMessage(),
-          ResponseCode.SERVER_ERROR.getResponseCode());
+      ProjectCommonException.throwServerErrorException(
+          ResponseCode.unableToCommunicateWithActor,
+          ResponseCode.unableToCommunicateWithActor.getErrorMessage());
     }
     try {
       return Patterns.ask(actorRef, request, t);
@@ -51,10 +49,10 @@ public class InterServiceCommunicationImpl implements InterServiceCommunication 
           "InterServiceCommunicationImpl:getFuture: Exception occured with error message = "
               + e.getMessage(),
           e);
-      throw new ProjectCommonException(
-          ResponseCode.unableToCommunicateWithActor.getErrorCode(),
-          ResponseCode.unableToCommunicateWithActor.getErrorMessage(),
-          ResponseCode.SERVER_ERROR.getResponseCode());
+      ProjectCommonException.throwServerErrorException(
+          ResponseCode.unableToCommunicateWithActor,
+          ResponseCode.unableToCommunicateWithActor.getErrorMessage());
     }
   }
+
 }
