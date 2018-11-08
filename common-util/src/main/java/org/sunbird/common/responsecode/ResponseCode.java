@@ -678,8 +678,8 @@ public enum ResponseCode {
       ResponseMessage.Key.ERROR_GENERATE_DOWNLOAD_LINK,
       ResponseMessage.Message.ERROR_GENERATE_DOWNLOAD_LINK),
   errorUnavailableDownloadLink(
-      ResponseMessage.Key.ERROR_DOWNLOAD_LINK_NOT_AVAILABLE,
-      ResponseMessage.Message.ERROR_DOWNLOAD_LINK_NOT_AVAILABLE),
+      ResponseMessage.Key.ERROR_DOWNLOAD_LINK_UNAVAILABLE,
+      ResponseMessage.Message.ERROR_DOWNLOAD_LINK_UNAVAILABLE),
   errorSavingStorageDetails(ResponseMessage.Key.ERROR_SAVING_STORAGE_DETAILS,ResponseMessage.Message.ERROR_SAVING_STORAGE_DETAILS),
 
   OK(200),
