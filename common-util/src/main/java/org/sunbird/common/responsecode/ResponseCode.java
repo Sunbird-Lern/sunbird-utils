@@ -671,8 +671,8 @@ public enum ResponseCode {
   errorNoRootOrgAssociated(
       ResponseMessage.Key.ERROR_NO_ROOT_ORG_ASSOCIATED,
       ResponseMessage.Message.ERROR_NO_ROOT_ORG_ASSOCIATED),
-  errorInActiveCustodianOrg(
-      ResponseMessage.Key.INACTIVE_CUSTODIAN_ORG, ResponseMessage.Message.INACTIVE_CUSTODIAN_ORG),
+  errorInactiveCustodianOrg(
+      ResponseMessage.Key.ERROR_INACTIVE_CUSTODIAN_ORG, ResponseMessage.Message.ERROR_INACTIVE_CUSTODIAN_ORG),
   errorUnsupportedCloudStorage(
       ResponseMessage.Key.ERROR_UNSUPPORTED_CLOUD_STORAGE,
       ResponseMessage.Message.ERROR_UNSUPPORTED_CLOUD_STORAGE),
