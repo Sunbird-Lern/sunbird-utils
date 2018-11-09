@@ -387,11 +387,6 @@ public class ProjectUtil {
     }
   }
 
-  /**
-   * This enum will hold all the Section data type name.
-   *
-   * @author Amit Kumar
-   */
   public enum SectionDataType {
     course("course"),
     content("content");
@@ -406,11 +401,6 @@ public class ProjectUtil {
     }
   }
 
-  /**
-   * This enum will hold all the Address type name.
-   *
-   * @author Amit Kumar
-   */
   public enum AddressType {
     permanent("permanent"),
     current("current"),

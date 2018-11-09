@@ -8,7 +8,6 @@ import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.responsecode.ResponseCode;
-
 import scala.Some;
 
 public class CloudStorageUtil {
@@ -43,7 +42,7 @@ public class CloudStorageUtil {
       CloudStorageType storageType, String container, String objectKey, String filePath) {
 
     IStorageService storageService = getStorageService(storageType);
-    
+
     return storageService.upload(
         container,
         filePath,
@@ -73,9 +72,7 @@ public class CloudStorageUtil {
   }
 
   private static int getTimeoutInSeconds() {
-    String timeoutInSecondsStr =
-    		ProjectUtil.getConfigValue(JsonKey.DOWNLOAD_LINK_EXPIRY_TIMEOUT);
+    String timeoutInSecondsStr = ProjectUtil.getConfigValue(JsonKey.DOWNLOAD_LINK_EXPIRY_TIMEOUT);
     return Integer.parseInt(timeoutInSecondsStr);
   }
-
 }

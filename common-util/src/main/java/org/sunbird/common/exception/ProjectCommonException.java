@@ -104,6 +104,14 @@ public class ProjectCommonException extends RuntimeException {
         ResponseCode.SERVER_ERROR.getResponseCode());
   }
 
+  public static void throwServerErrorException(ResponseCode responseCode) {
+    throwServerErrorException(responseCode, responseCode.getErrorMessage());
+  }
+
+  public static void throwClientErrorException(ResponseCode responseCode) {
+    throwClientErrorException(responseCode, responseCode.getErrorMessage());
+  }
+
   public static void throwUnauthorizedErrorException() {
     throw new ProjectCommonException(
         ResponseCode.unAuthorized.getErrorCode(),
