@@ -703,6 +703,6 @@ public class KeyCloakServiceImpl implements SSOManager {
     UserRepresentation userRepresentation = resource.toRepresentation();
     userRepresentation.setRequiredActions(asList(requiredAction));
 
-    resource.update(ur);
+    resource.update(userRepresentation);
   }
 }
