@@ -701,6 +701,7 @@ public final class JsonKey {
   public static final String DEFAULT_PROFILE_FIELD_VISIBILITY = "defaultProfileFieldVisibility";
   public static final String SUNBIRD_API_REQUEST_LOWER_CASE_FIELDS =
       "sunbird_api_request_lower_case_fields";
+  public static final String COMPLETED_ON = "completedOn";
 
   private JsonKey() {}
 }
