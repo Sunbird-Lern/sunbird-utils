@@ -68,14 +68,6 @@ public class User implements Serializable {
     this.userType = userType;
   }
 
-  public String getSignupType() {
-    return signupType;
-  }
-
-  public void setSignupType(String signupType) {
-    this.signupType = signupType;
-  }
-
   public String getOrganisationId() {
     return organisationId;
   }
