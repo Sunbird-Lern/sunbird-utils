@@ -34,7 +34,6 @@ public class User implements Serializable {
   private String lastLoginTime;
   private String lastName;
   private String location;
-  private String password;
   private String phone;
   private String profileSummary;
   private Map<String, String> profileVisibility;
@@ -236,14 +235,6 @@ public class User implements Serializable {
 
   public void setLocation(String location) {
     this.location = location;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
   }
 
   public String getPhone() {
