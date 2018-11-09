@@ -673,6 +673,18 @@ public enum ResponseCode {
       ResponseMessage.Message.ERROR_NO_ROOT_ORG_ASSOCIATED),
   errorInActiveCustodianOrg(
       ResponseMessage.Key.INACTIVE_CUSTODIAN_ORG, ResponseMessage.Message.INACTIVE_CUSTODIAN_ORG),
+  errorUnsupportedCloudStorage(
+      ResponseMessage.Key.ERROR_UNSUPPORTED_CLOUD_STORAGE,
+      ResponseMessage.Message.ERROR_UNSUPPORTED_CLOUD_STORAGE),
+  errorGenerateDownloadLink(
+      ResponseMessage.Key.ERROR_GENERATE_DOWNLOAD_LINK,
+      ResponseMessage.Message.ERROR_GENERATE_DOWNLOAD_LINK),
+  errorUnavailableDownloadLink(
+      ResponseMessage.Key.ERROR_DOWNLOAD_LINK_UNAVAILABLE,
+      ResponseMessage.Message.ERROR_DOWNLOAD_LINK_UNAVAILABLE),
+  errorSavingStorageDetails(
+      ResponseMessage.Key.ERROR_SAVING_STORAGE_DETAILS,
+      ResponseMessage.Message.ERROR_SAVING_STORAGE_DETAILS),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

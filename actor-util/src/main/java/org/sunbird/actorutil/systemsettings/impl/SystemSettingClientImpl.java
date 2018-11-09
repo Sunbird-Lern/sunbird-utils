@@ -59,7 +59,7 @@ public class SystemSettingClientImpl implements SystemSettingClient {
   }
 
   @Override
-  public Object getSystemSettingByFieldAndKey(
+  public <T> T getSystemSettingByFieldAndKey(
       ActorRef actorRef, String field, String key, TypeReference typeReference) {
     SystemSetting systemSetting = getSystemSettingByField(actorRef, field);
     ObjectMapper objectMapper = new ObjectMapper();
