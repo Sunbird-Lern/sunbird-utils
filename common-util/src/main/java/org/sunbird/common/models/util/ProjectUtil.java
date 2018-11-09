@@ -417,36 +417,6 @@ public class ProjectUtil {
     }
   }
 
-  public enum SignupType {
-    SELF_SIGNUP("SELF_SIGNUP"),
-    BULK_USER_CREATION("BULK_USER_CREATION");
-
-    private String typeName;
-
-    private SignupType(String name) {
-      this.typeName = name;
-    }
-
-    public String getTypeName() {
-      return typeName;
-    }
-  }
-
-  public enum UserType {
-    teacher("teacher"),
-    others("others");
-
-    private String typeName;
-
-    private UserType(String name) {
-      this.typeName = name;
-    }
-
-    public String getTypeName() {
-      return typeName;
-    }
-  }
-
   public enum AssessmentResult {
     gradeA("A", "Pass"),
     gradeB("B", "Pass"),
