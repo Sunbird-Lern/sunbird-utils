@@ -32,8 +32,10 @@ public class CloudStorageUtilTest {
   public void initTest() {
     BaseStorageService service = mock(BaseStorageService.class);
     mockStatic(StorageServiceFactory.class);
+
     try {
       when(StorageServiceFactory.class, "getStorageService", Mockito.any()).thenReturn(service);
+
       when(service.upload(
               Mockito.anyString(),
               Mockito.anyString(),
@@ -50,8 +52,8 @@ public class CloudStorageUtilTest {
               Mockito.any(Option.class),
               Mockito.any(Option.class)))
           .thenReturn(SIGNED_URL);
-    } catch (Exception e) {
 
+    } catch (Exception e) {
       Assert.fail(e.getMessage());
     }
   }
@@ -63,7 +65,7 @@ public class CloudStorageUtilTest {
   }
 
   @Test(expected = ProjectCommonException.class)
-  public void testGetStorageTypeFailWithWrongType() {
+  public void testGetStorageTypeFailureWithWrongType() {
     CloudStorageType.getByName("wrongstorage");
   }
 
@@ -79,4 +81,5 @@ public class CloudStorageUtilTest {
     String signedUrl = CloudStorageUtil.getSignedUrl(CloudStorageType.AZURE, "container", "key");
     assertTrue(SIGNED_URL.equals(signedUrl));
   }
+
 }
