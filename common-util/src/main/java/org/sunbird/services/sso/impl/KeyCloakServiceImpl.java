@@ -695,4 +695,16 @@ public class KeyCloakServiceImpl implements SSOManager {
       ProjectUtil.createAndThrowInvalidUserDataException();
     }
   }
+
+  @Override
+  public void setRequiredAction(String userId, String requiredAction) {
+    UserResource resource =
+        keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
+    List<String> list = new ArrayList<>();
+    System.out.println("requiredAction : " + requiredAction);
+    list.add(requiredAction);
+    UserRepresentation ur = resource.toRepresentation();
+    ur.setRequiredActions(list);
+    resource.update(ur);
+  }
 }
