@@ -1,4 +1,3 @@
-/** */
 package org.sunbird.services.sso.impl;
 
 import static java.util.Arrays.asList;
@@ -700,11 +699,10 @@ public class KeyCloakServiceImpl implements SSOManager {
   public void setRequiredAction(String userId, String requiredAction) {
     UserResource resource =
         keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
-    List<String> list = new ArrayList<>();
-    System.out.println("requiredAction : " + requiredAction);
-    list.add(requiredAction);
-    UserRepresentation ur = resource.toRepresentation();
-    ur.setRequiredActions(list);
+
+    UserRepresentation userRepresentation = resource.toRepresentation();
+    userRepresentation.setRequiredActions(asList(requiredAction));
+
     resource.update(ur);
   }
 }
