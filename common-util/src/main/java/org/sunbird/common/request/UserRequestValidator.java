@@ -42,12 +42,24 @@ public class UserRequestValidator extends BaseRequestValidator {
     validateWebPages(userRequest);
   }
 
-  public void validateCreateUserV1Request(Request userRequest) {
+  private void validateUserName(Request userRequest) {
+    validateParam(
+        (String) userRequest.getRequest().get(JsonKey.USERNAME),
+        ResponseCode.mandatoryParamsMissing,
+        JsonKey.USERNAME);
+  }
+
+  public void validateCreateUserV3Request(Request userRequest) {
     validateCreateUserRequest(userRequest);
-    fieldsNotAllowed(Arrays.asList(JsonKey.ORGANISATION_ID), userRequest);
+  }
+
+  public void validateCreateUserV1Request(Request userRequest) {
+    validateUserName(userRequest);
+    validateCreateUserV3Request(userRequest);
   }
 
   public void validateCreateUserV2Request(Request userRequest) {
+    validateUserName(userRequest);
     validateParam(
         (String) userRequest.getRequest().get(JsonKey.CHANNEL),
         ResponseCode.mandatoryParamsMissing,
@@ -360,7 +372,6 @@ public class UserRequestValidator extends BaseRequestValidator {
    *
    * @param userRequest Request
    */
-  @SuppressWarnings({"rawtypes"})
   public void validateUpdateUserRequest(Request userRequest) {
     externalIdsValidation(userRequest, JsonKey.UPDATE);
     phoneValidation(userRequest);

@@ -140,7 +140,7 @@ public interface ResponseMessage {
     String COURSE_BATCH_ALREADY_COMPLETED = "Course batch is already completed.";
     String EXISTING_ORG_MEMBER = "You already have a membership of this organization.";
     String CONTENT_TYPE_ERROR = "Please add Content-Type header with value application/json";
-    String INVALID_PROPERTY_ERROR = "invalid property {0}.";
+    String INVALID_PROPERTY_ERROR = "Invalid property {0}.";
     String USER_NAME_OR_ID_ERROR = "Please provide either username or userId.";
     String USER_ACCOUNT_BLOCKED = "User account has been blocked .";
     String EMAIL_VERIFY_ERROR = "Please provide a verified email in order to create user.";
@@ -370,6 +370,11 @@ public interface ResponseMessage {
         "Field {0} in {1} configuration is conflicting in {2} and {3}.";
     String ERROR_SYSTEM_SETTING_NOT_FOUND = "System Setting not found for id: {0}";
     String ERROR_NO_ROOT_ORG_ASSOCIATED = "Not able to associate with root org";
+    String ERROR_INACTIVE_CUSTODIAN_ORG = "Custodian organisation is inactive.";
+    String ERROR_UNSUPPORTED_CLOUD_STORAGE = "Unsupported cloud storage type {0}.";
+    String ERROR_GENERATE_DOWNLOAD_LINK = "Error in generating download link.";
+    String ERROR_DOWNLOAD_LINK_UNAVAILABLE = "Download link is unavailable.";
+    String ERROR_SAVING_STORAGE_DETAILS = "Error saving storage details for download link.";
   }
 
   interface Key {
@@ -690,5 +695,10 @@ public interface ResponseMessage {
     String ERROR_CONFLICTING_FIELD_CONFIGURATION = "ERROR_CONFLICTING_FIELD_CONFIGURATION";
     String ERROR_SYSTEM_SETTING_NOT_FOUND = "ERROR_SYSTEM_SETTING_NOT_FOUND";
     String ERROR_NO_ROOT_ORG_ASSOCIATED = "ERROR_NO_ROOT_ORG_ASSOCIATED";
+    String ERROR_INACTIVE_CUSTODIAN_ORG = "ERROR_INACTIVE_CUSTODIAN_ORG";
+    String ERROR_UNSUPPORTED_CLOUD_STORAGE = "ERROR_ UNSUPPORTED_CLOUD_STORAGE";
+    String ERROR_GENERATE_DOWNLOAD_LINK = "ERROR_GENERATING_DOWNLOAD_LINK";
+    String ERROR_DOWNLOAD_LINK_UNAVAILABLE = "ERROR_DOWNLOAD_LINK_UNAVAILABLE";
+    String ERROR_SAVING_STORAGE_DETAILS = "ERROR_SAVING_STORAGE_DETAILS";
   }
 }

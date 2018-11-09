@@ -64,6 +64,7 @@ public enum ActorOperations {
   INSERT_COURSE_BATCH_ES("insertCourseBatchToEs"),
   UPDATE_COURSE_BATCH_ES("updateCourseBatchToEs"),
   GET_BULK_OP_STATUS("getBulkOpStatus"),
+  GET_BULK_UPLOAD_STATUS_DOWNLOAD_LINK("getBulkUploadStatusDownloadLink"),
   ORG_CREATION_METRICS("orgCreationMetrics"),
   ORG_CONSUMPTION_METRICS("orgConsumptionMetrics"),
   ORG_CREATION_METRICS_DATA("orgCreationMetricsData"),
@@ -145,7 +146,8 @@ public enum ActorOperations {
   UPDATE_LEARNER_STATE("updateLearnerState"),
   GET_SYSTEM_SETTING("getSystemSetting"),
   GET_ALL_SYSTEM_SETTINGS("getAllSystemSettings"),
-  SET_SYSTEM_SETTING("setSystemSetting");
+  SET_SYSTEM_SETTING("setSystemSetting"),
+  COURSE_BATCH_NOTIFICATION("courseBatchNotification");
   private String value;
 
   /**

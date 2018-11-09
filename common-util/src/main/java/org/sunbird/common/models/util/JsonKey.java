@@ -16,6 +16,10 @@ public final class JsonKey {
   public static final String ACCESSTOKEN = "accessToken";
   public static final String ACCOUNT_KEY = "sunbird_account_key";
   public static final String ACCOUNT_NAME = "sunbird_account_name";
+  public static final String DOWNLOAD_LINK_EXPIRY_TIMEOUT = "download_link_expiry_timeout";
+  public static final String SIGNED_URL = "signedUrl";
+  public static final String BULK_UPLOAD_STATUS = "Upload Status";
+  public static final String BULK_UPLOAD_ERROR = "Upload Error";
   public static final String ACTION_GROUP = "action_group";
   public static final String ACTION_GROUPS = "actionGroups";
   public static final String ACTION_NAME = "actionName";
@@ -705,10 +709,34 @@ public final class JsonKey {
   public static final String SUNBIRD_USER_PROFILE_FIELD_DEFAULT_VISIBILITY =
       "sunbird_user_profile_field_default_visibility";
   public static final String DEFAULT_PROFILE_FIELD_VISIBILITY = "defaultProfileFieldVisibility";
+  public static final String SUNBIRD_COURSE_BATCH_NOTIFICATIONS_ACTIVE =
+      "sunbird_course_batch_notification_active";
+  public static final String BATCH_START_DATE = "batchStartDate";
+  public static final String BATCH_END_DATE = "batchEndDate";
+  public static final String BATCH_NAME = "batchName";
+  public static final String BATCH_MENTOR_ENROL = "batchMentorEnrol";
+  public static final String BATCH_LEARNER_ENROL = "batchLearnerEnrol";
+  public static final String COURSE_INVITATION = "Course Invitation";
+  public static final String BATCH_LEARNER_UNENROL = "batchLearnerUnenrol";
+  public static final String BATCH_MENTOR_UNENROL = "batchMentorUnenrol";
+  public static final String UNENROLL_FROM_COURSE_BATCH = "Unenrolled from Course";
+  public static final String OPEN_BATCH_LEARNER_UNENROL = "openBatchLearnerUnenrol";
+  public static final String MENTOR = "mentor";
+  public static final String OLD = "old";
+  public static final String NEW = "new";
+  public static final String COURSE_BATCH = "courseBatch";
+  public static final String ADDED_MENTORS = "addedMentors";
+  public static final String REMOVED_MENTORS = "removedMentors";
+  public static final String ADDED_PARTICIPANTS = "addedParticipants";
+  public static final String REMOVED_PARTICIPANTS = "removedParticipants";
+
   public static final String SUNBIRD_API_REQUEST_LOWER_CASE_FIELDS =
       "sunbird_api_request_lower_case_fields";
+  public static final String ATTRIBUTE = "attribute";
+  public static final String ERRORS = "errors";
   public static final String ROLE_LIST = "roleList";
   public static final String SUNBIRD_USER_PROFILE_READ_EXCLUDED_FIELDS = "read.excludedFields";
+  public static final String VERSION_3 = "v3";
 
   private JsonKey() {}
 }
