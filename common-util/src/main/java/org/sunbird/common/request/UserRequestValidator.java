@@ -44,21 +44,14 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   private void validateUserName(Request userRequest) {
-    if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.USERNAME))) {
-      throw new ProjectCommonException(
-          ResponseCode.userNameRequired.getErrorCode(),
-          ResponseCode.userNameRequired.getErrorMessage(),
-          ERROR_CODE);
-    }
+    validateParam(
+        (String) userRequest.getRequest().get(JsonKey.USERNAME),
+        ResponseCode.mandatoryParamsMissing,
+        JsonKey.USERNAME);
   }
 
   public void validateCreateUserV3Request(Request userRequest) {
     validateCreateUserRequest(userRequest);
-    validateParam(
-        (String) userRequest.getRequest().get(JsonKey.PASSWORD),
-        ResponseCode.mandatoryParamsMissing,
-        JsonKey.PASSWORD);
-    fieldsNotAllowed(Arrays.asList(JsonKey.ORGANISATION_ID), userRequest);
   }
 
   public void validateCreateUserV1Request(Request userRequest) {
