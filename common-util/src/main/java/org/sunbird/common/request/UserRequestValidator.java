@@ -29,12 +29,6 @@ public class UserRequestValidator extends BaseRequestValidator {
             JsonKey.EXTERNAL_ID_TYPE,
             JsonKey.ID_TYPE),
         userRequest);
-    if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.USERNAME))) {
-      throw new ProjectCommonException(
-          ResponseCode.userNameRequired.getErrorCode(),
-          ResponseCode.userNameRequired.getErrorMessage(),
-          ERROR_CODE);
-    }
     createUserBasicValidation(userRequest);
     phoneValidation(userRequest);
     addressValidation(userRequest);
