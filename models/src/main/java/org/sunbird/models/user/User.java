@@ -59,7 +59,7 @@ public class User implements Serializable {
   private List<Map<String, String>> externalIds;
   private String userType;
   private String signupType;
-  private String framework;
+  private Map<String, List<String>> framework;
 
   public String getUserType() {
     return userType;
@@ -382,11 +382,11 @@ public class User implements Serializable {
     this.externalIds = externalIds;
   }
 
-  public String getFramework() {
+  public Map<String, List<String>> getFramework() {
     return framework;
   }
 
-  public void setFramework(String framework) {
+  public void setFramework(Map<String, List<String>> framework) {
     this.framework = framework;
   }
 }
