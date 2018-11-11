@@ -540,9 +540,9 @@ public enum ResponseCode {
   errorMandatoryParamsEmpty(
       ResponseMessage.Key.ERROR_MANDATORY_PARAMETER_EMPTY,
       ResponseMessage.Message.ERROR_MANDATORY_PARAMETER_EMPTY),
-  errorNoFrameworkFoundForUserChannel(
-      ResponseMessage.Key.ERROR_NO_FRAMEWORK_FOUND_FOR_USER_CHANNEL,
-      ResponseMessage.Message.ERROR_NO_FRAMEWORK_FOUND_FOR_USER_CHANNEL),
+  errorNoFrameworkFound(
+      ResponseMessage.Key.ERROR_NO_FRAMEWORK_FOUND,
+      ResponseMessage.Message.ERROR_NO_FRAMEWORK_FOUND),
   unupdatableField(
       ResponseMessage.Key.UPDATE_NOT_ALLOWED, ResponseMessage.Message.UPDATE_NOT_ALLOWED),
   mandatoryHeadersMissing(

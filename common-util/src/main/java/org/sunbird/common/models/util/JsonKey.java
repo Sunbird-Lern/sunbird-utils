@@ -118,7 +118,6 @@ public final class JsonKey {
   public static final String CONTENT_ID = "contentId";
   public static final String CONTENT_IDS = "contentIds";
   public static final String CONTENT_LIST = "contentList";
-  public static final String CONTENT_STORE_API_KEY = "content_store_api_key";
   public static final String CONTENT_NAME = "contentName";
   public static final String CONTENT_PROGRESS = "progress";
   public static final String CONTENT_TYPE = "contentType";
@@ -712,7 +711,6 @@ public final class JsonKey {
   public static final String PRIVATE_FIELDS = "privateFields";
   public static final String SUNBIRD_USER_PROFILE_FIELD_DEFAULT_VISIBILITY =
       "sunbird_user_profile_field_default_visibility";
-  public static final String SUNBIRD_STORE_API_BASE_URL = "sunbird_store_api_base_url";
   public static final String DEFAULT_PROFILE_FIELD_VISIBILITY = "defaultProfileFieldVisibility";
   public static final String SUNBIRD_COURSE_BATCH_NOTIFICATIONS_ACTIVE =
       "sunbird_course_batch_notification_active";
@@ -743,8 +741,6 @@ public final class JsonKey {
   public static final String SUNBIRD_USER_PROFILE_READ_EXCLUDED_FIELDS = "read.excludedFields";
   public static final String VERSION_3 = "v3";
   public static final String COMPLETED_ON = "completedOn";
-
-  public static final String MEDIUM = "medium";
 
   private JsonKey() {}
 }

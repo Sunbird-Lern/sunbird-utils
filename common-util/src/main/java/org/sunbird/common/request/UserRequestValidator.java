@@ -869,30 +869,25 @@ public class UserRequestValidator extends BaseRequestValidator {
 
   @SuppressWarnings("unchecked")
   public void validateFrameworkRequestDetails(
-      Map<String, Object> userMap, Map<String, List<Map<String, String>>> frameworkCachedValues) {
-    System.out.println("The value of cache " + frameworkCachedValues);
-    System.out.println("The value of map" + userMap);
+      Map<String, Object> userMap, Map<String, List<Map<String, String>>> frameworkMap) {
     Map<String, List<String>> frameworkRequest =
         (Map<String, List<String>>) userMap.get(JsonKey.FRAMEWORK);
     for (Map.Entry<String, List<String>> entry : frameworkRequest.entrySet()) {
       {
         if (!entry.getValue().isEmpty()) {
-          List<Map<String, String>> cachedFrameworkList = frameworkCachedValues.get(entry.getKey());
-          for (String userFieldValues : entry.getValue()) {
-            boolean found = false;
-            for (int i = 0; i < cachedFrameworkList.size(); i++) {
-              if (cachedFrameworkList.get(i).get(JsonKey.NAME).equalsIgnoreCase(userFieldValues)) {
-                found = true;
-                break;
-              }
-            }
-            if (!found)
-              throw new ProjectCommonException(
-                  ResponseCode.invalidParameterValue.getErrorCode(),
-                  ResponseCode.invalidParameterValue.getErrorMessage(),
-                  ResponseCode.CLIENT_ERROR.getResponseCode(),
-                  userFieldValues,
-                  StringFormatter.joinByDot(JsonKey.FRAMEWORK, entry.getKey()));
+          List<String> allowedFieldValues =
+              (List<String>)
+                  frameworkMap
+                      .get(entry.getKey())
+                      .stream()
+                      .map(fieldMap -> fieldMap.get(JsonKey.NAME));
+          List<String> userFrameworkFieldValue = (List<String>) entry.getValue();
+          if (!allowedFieldValues.contains(userFrameworkFieldValue)) {
+            throw new ProjectCommonException(
+                ResponseCode.invalidParameter.getErrorCode(),
+                ResponseCode.invalidParameter.getErrorMessage(),
+                ResponseCode.CLIENT_ERROR.getResponseCode(),
+                StringFormatter.joinByDot(JsonKey.FRAMEWORK, entry.getKey()));
           }
         }
       }
