@@ -6,7 +6,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
@@ -100,5 +99,4 @@ public class HttpUtilTest extends BaseHttpTest {
       ProjectLogger.log(e.getMessage());
     }
   }
-
 }

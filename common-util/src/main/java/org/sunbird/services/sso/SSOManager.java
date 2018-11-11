@@ -129,4 +129,6 @@ public interface SSOManager {
   boolean doPasswordUpdate(String userId, String password);
 
   String setEmailVerifiedTrue(String userId);
+
+  void setRequiredAction(String userId, String requiredAction);
 }

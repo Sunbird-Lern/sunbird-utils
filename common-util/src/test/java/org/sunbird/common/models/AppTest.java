@@ -1,10 +1,7 @@
 package org.sunbird.common.models;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -13,7 +10,6 @@ import org.sunbird.common.models.util.BaseHttpTest;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
-import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 
 public class AppTest extends BaseHttpTest {
@@ -32,7 +28,7 @@ public class AppTest extends BaseHttpTest {
     }
     headers.put("authorization", "Bearer " + header);
   }
-  
+
   @Test
   public void testSendPostRequestSuccess() throws Exception {
     String ekStepBaseUrl = System.getenv(JsonKey.EKSTEP_BASE_URL);
@@ -80,5 +76,4 @@ public class AppTest extends BaseHttpTest {
     }
     Assert.assertNotNull(response);
   }
-
 }
