@@ -873,29 +873,27 @@ public class UserRequestValidator extends BaseRequestValidator {
     Map<String, List<String>> fwRequest =
         (Map<String, List<String>>) userMap.get(JsonKey.FRAMEWORK);
     for (Map.Entry<String, List<String>> fwRequestFieldEntry : fwRequest.entrySet()) {
-        if (!fwRequestFieldEntry.getValue().isEmpty()) {
-          List<String> allowedFieldValues =
-              (List<String>)
-                  frameworkMap
-                      .get(fwRequestFieldEntry.getKey())
-                      .stream()
-                      .map(fieldMap -> fieldMap.get(JsonKey.NAME));
+      if (!fwRequestFieldEntry.getValue().isEmpty()) {
+        List<String> allowedFieldValues =
+            (List<String>)
+                frameworkMap
+                    .get(fwRequestFieldEntry.getKey())
+                    .stream()
+                    .map(fieldMap -> fieldMap.get(JsonKey.NAME));
 
-          List<String> fwRequestFieldList = (List<String>) fwRequestFieldEntry.getValue();
+        List<String> fwRequestFieldList = (List<String>) fwRequestFieldEntry.getValue();
 
-          for (String fwRequestField : fwRequestFieldList) {
-            if (!allowedFieldValues.contains(fwRequestField)) {
-              throw new ProjectCommonException(
+        for (String fwRequestField : fwRequestFieldList) {
+          if (!allowedFieldValues.contains(fwRequestField)) {
+            throw new ProjectCommonException(
                 ResponseCode.invalidParameter.getErrorCode(),
                 ResponseCode.invalidParameter.getErrorMessage(),
                 ResponseCode.CLIENT_ERROR.getResponseCode(),
                 fwRequestField,
                 StringFormatter.joinByDot(JsonKey.FRAMEWORK, fwRequestFieldEntry.getKey()));
-            }
           }
         }
       }
     }
   }
-
 }
