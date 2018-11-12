@@ -829,19 +829,6 @@ public class ProjectUtil {
   }
 
   /**
-   * This method will create ProjectCommonException of type resource not found exception and throws
-   * it.
-   *
-   * @return ProjectCommonException
-   */
-  public static ProjectCommonException createResourceNotFoundException() {
-    return new ProjectCommonException(
-        ResponseCode.resourceNotFound.getErrorCode(),
-        ResponseCode.resourceNotFound.getErrorMessage(),
-        ResponseCode.RESOURCE_NOT_FOUND.getResponseCode());
-  }
-
-  /**
    * Method to verify url is valid or not.
    *
    * @param url String
