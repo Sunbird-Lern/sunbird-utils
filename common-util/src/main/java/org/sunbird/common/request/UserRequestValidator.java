@@ -832,7 +832,7 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   @SuppressWarnings("unchecked")
-  public void validateFrameworkRequestData(
+  public void validateMandatoryFrameworkFields(
       Map<String, Object> userMap,
       List<String> frameworkFields,
       List<String> frameworkMandatoryFields) {
@@ -868,7 +868,7 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   @SuppressWarnings("unchecked")
-  public void validateFrameworkRequestDetails(
+  public void validateFrameworkCategoryValues(
       Map<String, Object> userMap, Map<String, List<Map<String, String>>> frameworkMap) {
     Map<String, List<String>> frameworkRequest =
         (Map<String, List<String>>) userMap.get(JsonKey.FRAMEWORK);
