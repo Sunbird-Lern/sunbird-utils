@@ -45,10 +45,10 @@ public class ContentStoreUtil {
       resultMap = mapper.readValue(response, Map.class);
       if (!((String) resultMap.get(JsonKey.RESPONSE_CODE)).equalsIgnoreCase(JsonKey.OK)) {
         ProjectLogger.log("ContentStoreUtil : GetReadDetails Read Error Obtained");
+        return null;
       }
     } catch (Exception e) {
       ProjectLogger.log("Error found during content search parse==" + e.getMessage(), e);
-      return null;
     }
     return resultMap;
   }
