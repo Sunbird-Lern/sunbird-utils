@@ -24,7 +24,7 @@ public class ContentStoreUtil {
     return getReadDetails(channel, JsonKey.SUNBIRD_CHANNEL_READ_API);
   }
 
-  public static Map<String, Object> readFramework(String frameworkId, String readPath) {
+  public static Map<String, Object> readFramework(String frameworkId) {
     return getReadDetails(frameworkId, JsonKey.SUNBIRD_FRAMEWORK_READ_API);
   }
 
