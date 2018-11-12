@@ -93,6 +93,7 @@ public final class JsonKey {
   public static final String BULK_USER_UPLOAD = "bulkUserUpload";
   public static final String CASSANDRA_IN_EMBEDDED_MODE = "cassandraInEmbeddedMode";
   public static final String CASSANDRA_SERVICE = "Cassandra service";
+  public static final String CATEGORIES = "categories";
   public static final String CHANNEL = "channel";
   public static final String CHANNEL_REG_STATUS = "channelRegStatus";
   public static final String CHANNEL_REG_STATUS_ID = "003";
@@ -544,6 +545,8 @@ public final class JsonKey {
   public static final String SUNBIRD_SSO_URL = "sunbird_sso_url";
   public static final String SUNBIRD_SSO_USERNAME = "sunbird_sso_username";
   public static final String SUNBIRD_WEB_URL = "sunird_web_url";
+  public static final String SUNBIRD_CHANNEL_READ_API = "sunbird_channel_read_api";
+  public static final String SUNBIRD_FRAMEWORK_READ_API = "sunbird_framework_read_api";
   public static final String SYSTEM = "system";
   public static final String SYSTEM_SETTINGS_DB = "system_settings";
   public static final String TAG = "tag";
@@ -557,6 +560,7 @@ public final class JsonKey {
   public static final String TENANT_PREFERENCE = "tenantPreference";
   public static final String TENANT_PREFERENCE_DB = "tenantPreferenceDb";
   public static final String TERM_AND_CONDITION_STATUS = "tcStatus";
+  public static final String TERMS = "terms";
   public static final String THEME = "theme";
   public static final String THUMBNAIL = "thumbnail";
   public static final String TIME_TAKEN = "timeTaken";
@@ -675,6 +679,8 @@ public final class JsonKey {
   public static final String USR_EXT_IDNT_TABLE = "usr_external_identity";
   public static final String END_TIME_IN_HOUR_MINUTE_SECOND = " 23:59:59";
   public static final String REGISTRY_ID = "registryId";
+  public static final String RESPONSE_CODE = "responseCode";
+  public static final String OK = "ok";
   public static final String SUNBIRD_APP_NAME = "sunbird_app_name";
   public static final String SUNBIRD_DEFAULT_COUNTRY_CODE = "sunbird_default_country_code";
   public static final String ONBOARDING_MAIL_SUBJECT = "onboarding_mail_subject";

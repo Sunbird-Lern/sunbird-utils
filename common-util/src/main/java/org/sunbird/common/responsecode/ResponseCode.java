@@ -540,6 +540,9 @@ public enum ResponseCode {
   errorMandatoryParamsEmpty(
       ResponseMessage.Key.ERROR_MANDATORY_PARAMETER_EMPTY,
       ResponseMessage.Message.ERROR_MANDATORY_PARAMETER_EMPTY),
+  errorNoFrameworkFound(
+      ResponseMessage.Key.ERROR_NO_FRAMEWORK_FOUND,
+      ResponseMessage.Message.ERROR_NO_FRAMEWORK_FOUND),
   unupdatableField(
       ResponseMessage.Key.UPDATE_NOT_ALLOWED, ResponseMessage.Message.UPDATE_NOT_ALLOWED),
   mandatoryHeadersMissing(
@@ -672,7 +675,8 @@ public enum ResponseCode {
       ResponseMessage.Key.ERROR_NO_ROOT_ORG_ASSOCIATED,
       ResponseMessage.Message.ERROR_NO_ROOT_ORG_ASSOCIATED),
   errorInactiveCustodianOrg(
-      ResponseMessage.Key.ERROR_INACTIVE_CUSTODIAN_ORG, ResponseMessage.Message.ERROR_INACTIVE_CUSTODIAN_ORG),
+      ResponseMessage.Key.ERROR_INACTIVE_CUSTODIAN_ORG,
+      ResponseMessage.Message.ERROR_INACTIVE_CUSTODIAN_ORG),
   errorUnsupportedCloudStorage(
       ResponseMessage.Key.ERROR_UNSUPPORTED_CLOUD_STORAGE,
       ResponseMessage.Message.ERROR_UNSUPPORTED_CLOUD_STORAGE),
