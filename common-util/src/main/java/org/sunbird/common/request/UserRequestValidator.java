@@ -870,27 +870,32 @@ public class UserRequestValidator extends BaseRequestValidator {
   @SuppressWarnings("unchecked")
   public void validateFrameworkCategoryValues(
       Map<String, Object> userMap, Map<String, List<Map<String, String>>> frameworkMap) {
-    Map<String, List<String>> frameworkRequest =
+    Map<String, List<String>> fwRequest =
         (Map<String, List<String>>) userMap.get(JsonKey.FRAMEWORK);
-    for (Map.Entry<String, List<String>> entry : frameworkRequest.entrySet()) {
-      {
-        if (!entry.getValue().isEmpty()) {
+    for (Map.Entry<String, List<String>> fwRequestFieldEntry : fwRequest.entrySet()) {
+        if (!fwRequestFieldEntry.getValue().isEmpty()) {
           List<String> allowedFieldValues =
               (List<String>)
                   frameworkMap
                       .get(entry.getKey())
                       .stream()
                       .map(fieldMap -> fieldMap.get(JsonKey.NAME));
-          List<String> userFrameworkFieldValue = (List<String>) entry.getValue();
-          if (!allowedFieldValues.contains(userFrameworkFieldValue)) {
-            throw new ProjectCommonException(
+
+          List<String> fwRequestFieldList = (List<String>) fwRequestFieldEntry.getValue();
+
+          for (String fwRequestField, : fwRequestFieldList) {
+            if (!allowedFieldValues.contains(fwRequestField)) {
+              throw new ProjectCommonException(
                 ResponseCode.invalidParameter.getErrorCode(),
                 ResponseCode.invalidParameter.getErrorMessage(),
                 ResponseCode.CLIENT_ERROR.getResponseCode(),
+                fwRequestField,
                 StringFormatter.joinByDot(JsonKey.FRAMEWORK, entry.getKey()));
+            }
           }
         }
       }
     }
   }
+
 }
