@@ -877,20 +877,20 @@ public class UserRequestValidator extends BaseRequestValidator {
           List<String> allowedFieldValues =
               (List<String>)
                   frameworkMap
-                      .get(entry.getKey())
+                      .get(fwRequestFieldEntry.getKey())
                       .stream()
                       .map(fieldMap -> fieldMap.get(JsonKey.NAME));
 
           List<String> fwRequestFieldList = (List<String>) fwRequestFieldEntry.getValue();
 
-          for (String fwRequestField, : fwRequestFieldList) {
+          for (String fwRequestField : fwRequestFieldList) {
             if (!allowedFieldValues.contains(fwRequestField)) {
               throw new ProjectCommonException(
                 ResponseCode.invalidParameter.getErrorCode(),
                 ResponseCode.invalidParameter.getErrorMessage(),
                 ResponseCode.CLIENT_ERROR.getResponseCode(),
                 fwRequestField,
-                StringFormatter.joinByDot(JsonKey.FRAMEWORK, entry.getKey()));
+                StringFormatter.joinByDot(JsonKey.FRAMEWORK, fwRequestFieldEntry.getKey()));
             }
           }
         }
