@@ -97,12 +97,6 @@ public class ProjectCommonException extends RuntimeException {
         ResponseCode.CLIENT_ERROR.getResponseCode());
   }
 
-  /**
-   * This method will create ProjectCommonException of type resource not found exception and throws
-   * it.
-   *
-   * @return ProjectCommonException
-   */
   public static ProjectCommonException throwResourceNotFoundException() {
     return new ProjectCommonException(
         ResponseCode.resourceNotFound.getErrorCode(),
