@@ -876,20 +876,19 @@ public class UserRequestValidator extends BaseRequestValidator {
     for (Map.Entry<String, List<String>> fwRequestFieldEntry : fwRequest.entrySet()) {
       if (!fwRequestFieldEntry.getValue().isEmpty()) {
         List<String> allowedFieldValues =
-            (List<String>)
-                frameworkMap
-                    .get(fwRequestFieldEntry.getKey())
-                    .stream()
-                    .map(fieldMap -> fieldMap.get(JsonKey.NAME))
-                    .collect(Collectors.toList());
+            frameworkMap
+                .get(fwRequestFieldEntry.getKey())
+                .stream()
+                .map(fieldMap -> fieldMap.get(JsonKey.NAME))
+                .collect(Collectors.toList());
 
         List<String> fwRequestFieldList = (List<String>) fwRequestFieldEntry.getValue();
 
         for (String fwRequestField : fwRequestFieldList) {
           if (!allowedFieldValues.contains(fwRequestField)) {
             throw new ProjectCommonException(
-                ResponseCode.invalidParameter.getErrorCode(),
-                ResponseCode.invalidParameter.getErrorMessage(),
+                ResponseCode.invalidParameterValue.getErrorCode(),
+                ResponseCode.invalidParameterValue.getErrorMessage(),
                 ResponseCode.CLIENT_ERROR.getResponseCode(),
                 fwRequestField,
                 StringFormatter.joinByDot(JsonKey.FRAMEWORK, fwRequestFieldEntry.getKey()));
