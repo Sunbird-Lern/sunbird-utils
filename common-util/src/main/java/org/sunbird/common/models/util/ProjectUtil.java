@@ -828,8 +828,6 @@ public class ProjectUtil {
         ResponseCode.CLIENT_ERROR.getResponseCode());
   }
 
-
-
   /**
    * Method to verify url is valid or not.
    *

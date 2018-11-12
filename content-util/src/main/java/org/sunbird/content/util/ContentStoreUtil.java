@@ -26,7 +26,8 @@ public class ContentStoreUtil {
   }
 
   public static Map<String, Object> readFramework(String frameworkId) {
-    ProjectLogger.log("ContentStoreUtil:readFramework: frameworkId = " + frameworkId, LoggerEnum.INFO.name());
+    ProjectLogger.log(
+        "ContentStoreUtil:readFramework: frameworkId = " + frameworkId, LoggerEnum.INFO.name());
     return handleReadRequest(frameworkId, JsonKey.SUNBIRD_FRAMEWORK_READ_API);
   }
 
@@ -48,11 +49,16 @@ public class ContentStoreUtil {
 
       resultMap = mapper.readValue(response, Map.class);
       if (!((String) resultMap.get(JsonKey.RESPONSE_CODE)).equalsIgnoreCase(JsonKey.OK)) {
-        ProjectLogger.log("ContentStoreUtil:handleReadRequest: Response code is not ok.", LoggerEnum.ERROR.name());
+        ProjectLogger.log(
+            "ContentStoreUtil:handleReadRequest: Response code is not ok.",
+            LoggerEnum.ERROR.name());
         return null;
       }
     } catch (Exception e) {
-      ProjectLogger.log("ContentStoreUtil:handleReadRequest: Exception occurred with error message = " + e.getMessage(), e);
+      ProjectLogger.log(
+          "ContentStoreUtil:handleReadRequest: Exception occurred with error message = "
+              + e.getMessage(),
+          e);
     }
     return resultMap;
   }
