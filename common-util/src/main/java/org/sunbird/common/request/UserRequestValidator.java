@@ -865,6 +865,17 @@ public class UserRequestValidator extends BaseRequestValidator {
           }
         }
       }
+      List<String> frameworkRequestFieldList =
+          frameworkRequest.keySet().stream().collect(Collectors.toList());
+      for (String frameworkRequestField : frameworkRequestFieldList) {
+        if (!frameworkFields.contains(frameworkRequestField)) {
+          throw new ProjectCommonException(
+              ResponseCode.errorUnsupportedFrameworkField.getErrorCode(),
+              ResponseCode.errorUnsupportedFrameworkField.getErrorMessage(),
+              ERROR_CODE,
+              frameworkRequestField);
+        }
+      }
     }
   }
 
