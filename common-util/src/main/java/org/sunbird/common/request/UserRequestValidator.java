@@ -1,6 +1,5 @@
 package org.sunbird.common.request;
 
-import com.typesafe.config.Config;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -833,14 +832,14 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   @SuppressWarnings("unchecked")
-  public void validateFrameworkRequestData(Config userProfileConfig, Map<String, Object> userMap) {
+  public void validateMandatoryFrameworkFields(
+      Map<String, Object> userMap,
+      List<String> frameworkFields,
+      List<String> frameworkMandatoryFields) {
     if (userMap.containsKey(JsonKey.FRAMEWORK)) {
-      Config frameworkDetails = userProfileConfig.getConfig(JsonKey.FRAMEWORK);
-      List<String> frameworkFields = frameworkDetails.getStringList(JsonKey.FIELDS);
-      List<String> mandatoryFields = frameworkDetails.getStringList(JsonKey.MANDATORY_FIELDS);
       Map<String, Object> frameworkRequest = (Map<String, Object>) userMap.get(JsonKey.FRAMEWORK);
       for (String field : frameworkFields) {
-        if (mandatoryFields.contains(field)) {
+        if (frameworkMandatoryFields.contains(field)) {
           if (!frameworkRequest.containsKey(field)) {
             validateParam(null, ResponseCode.mandatoryParamsMissing, field);
           }
@@ -867,4 +866,36 @@ public class UserRequestValidator extends BaseRequestValidator {
       }
     }
   }
+
+  @SuppressWarnings("unchecked")
+  public void validateFrameworkCategoryValues(
+      Map<String, Object> userMap, Map<String, List<Map<String, String>>> frameworkMap) {
+    Map<String, List<String>> fwRequest =
+        (Map<String, List<String>>) userMap.get(JsonKey.FRAMEWORK);
+    for (Map.Entry<String, List<String>> fwRequestFieldEntry : fwRequest.entrySet()) {
+        if (!fwRequestFieldEntry.getValue().isEmpty()) {
+          List<String> allowedFieldValues =
+              (List<String>)
+                  frameworkMap
+                      .get(entry.getKey())
+                      .stream()
+                      .map(fieldMap -> fieldMap.get(JsonKey.NAME));
+
+          List<String> fwRequestFieldList = (List<String>) fwRequestFieldEntry.getValue();
+
+          for (String fwRequestField, : fwRequestFieldList) {
+            if (!allowedFieldValues.contains(fwRequestField)) {
+              throw new ProjectCommonException(
+                ResponseCode.invalidParameter.getErrorCode(),
+                ResponseCode.invalidParameter.getErrorMessage(),
+                ResponseCode.CLIENT_ERROR.getResponseCode(),
+                fwRequestField,
+                StringFormatter.joinByDot(JsonKey.FRAMEWORK, entry.getKey()));
+            }
+          }
+        }
+      }
+    }
+  }
+
 }
