@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.http.HttpHeaders;
+import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
+import org.sunbird.common.responsecode.ResponseCode;
 
 public class ContentStoreUtil {
 
@@ -21,11 +23,24 @@ public class ContentStoreUtil {
   }
 
   public static Map<String, Object> readChannel(String channel) {
-    return getReadDetails(channel, JsonKey.SUNBIRD_CHANNEL_READ_API);
+    Map<String, Object> channelReadMap = getReadDetails(channel, JsonKey.SUNBIRD_CHANNEL_READ_API);
+    if (channelReadMap == null)
+      throw new ProjectCommonException(
+          ResponseCode.errorNoFrameworkFound.getErrorCode(),
+          ResponseCode.errorNoFrameworkFound.getErrorMessage(),
+          ResponseCode.RESOURCE_NOT_FOUND.getResponseCode());
+    else return channelReadMap;
   }
 
   public static Map<String, Object> readFramework(String frameworkId) {
-    return getReadDetails(frameworkId, JsonKey.SUNBIRD_FRAMEWORK_READ_API);
+    Map<String, Object> frameworkReadMap =
+        getReadDetails(frameworkId, JsonKey.SUNBIRD_FRAMEWORK_READ_API);
+    if (frameworkReadMap == null)
+      throw new ProjectCommonException(
+          ResponseCode.errorNoFrameworkFound.getErrorCode(),
+          ResponseCode.errorNoFrameworkFound.getErrorMessage(),
+          ResponseCode.RESOURCE_NOT_FOUND.getResponseCode());
+    else return frameworkReadMap;
   }
 
   @SuppressWarnings("unchecked")

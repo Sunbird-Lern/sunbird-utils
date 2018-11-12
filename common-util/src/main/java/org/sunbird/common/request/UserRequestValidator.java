@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
@@ -876,11 +877,11 @@ public class UserRequestValidator extends BaseRequestValidator {
       {
         if (!entry.getValue().isEmpty()) {
           List<String> allowedFieldValues =
-              (List<String>)
-                  frameworkMap
-                      .get(entry.getKey())
-                      .stream()
-                      .map(fieldMap -> fieldMap.get(JsonKey.NAME));
+              frameworkMap
+                  .get(entry.getKey())
+                  .stream()
+                  .map(fieldMap -> fieldMap.get(JsonKey.NAME))
+                  .collect(Collectors.toList());
           List<String> userFrameworkFieldValue = (List<String>) entry.getValue();
           if (!allowedFieldValues.contains(userFrameworkFieldValue)) {
             throw new ProjectCommonException(
