@@ -37,6 +37,7 @@ public class UserClientImpl implements UserClient {
     Request request = new Request();
     request.setRequest(userMap);
     request.setOperation(operation);
+    request.getContext().put(JsonKey.VERSION, JsonKey.VERSION_3);
     Object obj = interServiceCommunication.getResponse(actorRef, request);
     if (obj instanceof Response) {
       Response response = (Response) obj;
