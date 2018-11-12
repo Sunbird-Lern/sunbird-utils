@@ -32,6 +32,7 @@ import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.responsecode.ResponseCode;
+import org.sunbird.common.util.KeycloakRequiredActionLinkUtil;
 import org.sunbird.services.sso.SSOManager;
 
 /**
@@ -702,7 +703,9 @@ public class KeyCloakServiceImpl implements SSOManager {
 
     UserRepresentation userRepresentation = resource.toRepresentation();
     userRepresentation.setRequiredActions(asList(requiredAction));
-
+    if (KeycloakRequiredActionLinkUtil.VERIFY_EMAIL.equalsIgnoreCase(requiredAction)) {
+      userRepresentation.setEmailVerified(false);
+    }
     resource.update(userRepresentation);
   }
 }
