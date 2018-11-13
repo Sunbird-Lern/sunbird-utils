@@ -375,6 +375,7 @@ public interface ResponseMessage {
     String ERROR_GENERATE_DOWNLOAD_LINK = "Error in generating download link.";
     String ERROR_DOWNLOAD_LINK_UNAVAILABLE = "Download link is unavailable.";
     String ERROR_SAVING_STORAGE_DETAILS = "Error saving storage details for download link.";
+    String ERROR_CSV_NO_DATA_ROWS = "No data rows in CSV.";
   }
 
   interface Key {
@@ -700,5 +701,6 @@ public interface ResponseMessage {
     String ERROR_GENERATE_DOWNLOAD_LINK = "ERROR_GENERATING_DOWNLOAD_LINK";
     String ERROR_DOWNLOAD_LINK_UNAVAILABLE = "ERROR_DOWNLOAD_LINK_UNAVAILABLE";
     String ERROR_SAVING_STORAGE_DETAILS = "ERROR_SAVING_STORAGE_DETAILS";
+    String ERROR_CSV_NO_DATA_ROWS = "ERROR_CSV_NO_DATA_ROWS";
   }
 }
