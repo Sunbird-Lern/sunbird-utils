@@ -64,8 +64,8 @@ public interface ResponseMessage {
     String USERNAME_EMAIL_IN_USE =
         "Username or Email is already in use. Please try with a different Username or Email.";
     String KEY_CLOAK_DEFAULT_ERROR = "server error at sso.";
-    String USER_REG_UNSUCCESSFULL = "User Registration unsuccessfull.";
-    String USER_UPDATE_UNSUCCESSFULL = "User update operation is unsuccessfull.";
+    String USER_REG_UNSUCCESSFUL = "User Registration unsuccessful.";
+    String USER_UPDATE_UNSUCCESSFUL = "User update operation is unsuccessful.";
     String INVALID_CREDENTIAL = "Invalid credential.";
     String USERNAME_MISSING = "Username is mandatory.";
     String USERNAME_IN_USE = "Username already exists.";
@@ -372,6 +372,7 @@ public interface ResponseMessage {
     String ERROR_NO_ROOT_ORG_ASSOCIATED = "Not able to associate with root org";
     String ERROR_INACTIVE_CUSTODIAN_ORG = "Custodian organisation is inactive.";
     String ERROR_UNSUPPORTED_CLOUD_STORAGE = "Unsupported cloud storage type {0}.";
+    String ERROR_UNSUPPORTED_FIELD = "Unsupported field {0}.";
     String ERROR_GENERATE_DOWNLOAD_LINK = "Error in generating download link.";
     String ERROR_DOWNLOAD_LINK_UNAVAILABLE = "Download link is unavailable.";
     String ERROR_SAVING_STORAGE_DETAILS = "Error saving storage details for download link.";
@@ -427,8 +428,8 @@ public interface ResponseMessage {
     String EMAIL_IN_USE = "EMAIL_IN_USE";
     String USERNAME_EMAIL_IN_USE = "USERNAME_EMAIL_IN_USE";
     String KEY_CLOAK_DEFAULT_ERROR = "KEY_CLOAK_DEFAULT_ERROR";
-    String USER_REG_UNSUCCESSFULL = "USER_REG_UNSUCCESSFULL";
-    String USER_UPDATE_UNSUCCESSFULL = "USER_UPDATE_UNSUCCESSFULL";
+    String USER_REG_UNSUCCESSFUL = "USER_REG_UNSUCCESSFUL";
+    String USER_UPDATE_UNSUCCESSFUL = "USER_UPDATE_UNSUCCESSFUL";
     String INVALID_CREDENTIAL = "INVALID_CREDENTIAL";
     String USERNAME_MISSING = "USERNAME_MISSING";
     String USERNAME_IN_USE = "USERNAME_IN_USE";
@@ -697,6 +698,7 @@ public interface ResponseMessage {
     String ERROR_NO_ROOT_ORG_ASSOCIATED = "ERROR_NO_ROOT_ORG_ASSOCIATED";
     String ERROR_INACTIVE_CUSTODIAN_ORG = "ERROR_INACTIVE_CUSTODIAN_ORG";
     String ERROR_UNSUPPORTED_CLOUD_STORAGE = "ERROR_ UNSUPPORTED_CLOUD_STORAGE";
+    String ERROR_UNSUPPORTED_FIELD = "ERROR_UNSUPPORTED_FIELD";
     String ERROR_GENERATE_DOWNLOAD_LINK = "ERROR_GENERATING_DOWNLOAD_LINK";
     String ERROR_DOWNLOAD_LINK_UNAVAILABLE = "ERROR_DOWNLOAD_LINK_UNAVAILABLE";
     String ERROR_SAVING_STORAGE_DETAILS = "ERROR_SAVING_STORAGE_DETAILS";

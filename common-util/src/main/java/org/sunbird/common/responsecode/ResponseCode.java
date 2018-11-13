@@ -171,10 +171,10 @@ public enum ResponseCode {
   keyCloakDefaultError(
       ResponseMessage.Key.KEY_CLOAK_DEFAULT_ERROR, ResponseMessage.Message.KEY_CLOAK_DEFAULT_ERROR),
   userRegUnSuccessfull(
-      ResponseMessage.Key.USER_REG_UNSUCCESSFULL, ResponseMessage.Message.USER_REG_UNSUCCESSFULL),
+      ResponseMessage.Key.USER_REG_UNSUCCESSFUL, ResponseMessage.Message.USER_REG_UNSUCCESSFUL),
   userUpdationUnSuccessfull(
-      ResponseMessage.Key.USER_UPDATE_UNSUCCESSFULL,
-      ResponseMessage.Message.USER_UPDATE_UNSUCCESSFULL),
+      ResponseMessage.Key.USER_UPDATE_UNSUCCESSFUL,
+      ResponseMessage.Message.USER_UPDATE_UNSUCCESSFUL),
   loginTypeError(ResponseMessage.Key.LOGIN_TYPE_ERROR, ResponseMessage.Message.LOGIN_TYPE_ERROR),
   invalidOrgId(ResponseMessage.Key.INVALID_ORG_ID, ResponseMessage.Key.INVALID_ORG_ID),
   invalidOrgStatus(ResponseMessage.Key.INVALID_ORG_STATUS, ResponseMessage.Key.INVALID_ORG_STATUS),
@@ -680,6 +680,8 @@ public enum ResponseCode {
   errorUnsupportedCloudStorage(
       ResponseMessage.Key.ERROR_UNSUPPORTED_CLOUD_STORAGE,
       ResponseMessage.Message.ERROR_UNSUPPORTED_CLOUD_STORAGE),
+  errorUnsupportedField(
+      ResponseMessage.Key.ERROR_UNSUPPORTED_FIELD, ResponseMessage.Message.ERROR_UNSUPPORTED_FIELD),
   errorGenerateDownloadLink(
       ResponseMessage.Key.ERROR_GENERATE_DOWNLOAD_LINK,
       ResponseMessage.Message.ERROR_GENERATE_DOWNLOAD_LINK),
