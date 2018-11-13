@@ -65,7 +65,7 @@ public interface ResponseMessage {
         "Username or Email is already in use. Please try with a different Username or Email.";
     String KEY_CLOAK_DEFAULT_ERROR = "server error at sso.";
     String USER_REG_UNSUCCESSFULL = "User Registration unsuccessfull.";
-    String USER_UPDATE_UNSUCCESSFULL = "User update operation is unsuccessfull.";
+    String USER_UPDATE_UNSUCCESSFULL = "User update operation is Runsuccessfull.";
     String INVALID_CREDENTIAL = "Invalid credential.";
     String USERNAME_MISSING = "Username is mandatory.";
     String USERNAME_IN_USE = "Username already exists.";
@@ -372,7 +372,7 @@ public interface ResponseMessage {
     String ERROR_NO_ROOT_ORG_ASSOCIATED = "Not able to associate with root org";
     String ERROR_INACTIVE_CUSTODIAN_ORG = "Custodian organisation is inactive.";
     String ERROR_UNSUPPORTED_CLOUD_STORAGE = "Unsupported cloud storage type {0}.";
-    String ERROR_UNSUPPORTED_FIELD = "Unsupported Field {0}.";
+    String ERROR_UNSUPPORTED_FIELD = "Unsupported field {0}.";
     String ERROR_GENERATE_DOWNLOAD_LINK = "Error in generating download link.";
     String ERROR_DOWNLOAD_LINK_UNAVAILABLE = "Download link is unavailable.";
     String ERROR_SAVING_STORAGE_DETAILS = "Error saving storage details for download link.";
