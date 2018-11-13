@@ -65,7 +65,7 @@ public interface ResponseMessage {
         "Username or Email is already in use. Please try with a different Username or Email.";
     String KEY_CLOAK_DEFAULT_ERROR = "server error at sso.";
     String USER_REG_UNSUCCESSFULL = "User Registration unsuccessfull.";
-    String USER_UPDATE_UNSUCCESSFULL = "User update operation is Runsuccessfull.";
+    String USER_UPDATE_UNSUCCESSFULL = "User update operation is successfull.";
     String INVALID_CREDENTIAL = "Invalid credential.";
     String USERNAME_MISSING = "Username is mandatory.";
     String USERNAME_IN_USE = "Username already exists.";
