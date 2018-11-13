@@ -691,6 +691,8 @@ public enum ResponseCode {
   errorSavingStorageDetails(
       ResponseMessage.Key.ERROR_SAVING_STORAGE_DETAILS,
       ResponseMessage.Message.ERROR_SAVING_STORAGE_DETAILS),
+  errorCsvNoDataRows(
+      ResponseMessage.Key.ERROR_CSV_NO_DATA_ROWS, ResponseMessage.Message.ERROR_CSV_NO_DATA_ROWS),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
