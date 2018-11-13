@@ -64,8 +64,8 @@ public interface ResponseMessage {
     String USERNAME_EMAIL_IN_USE =
         "Username or Email is already in use. Please try with a different Username or Email.";
     String KEY_CLOAK_DEFAULT_ERROR = "server error at sso.";
-    String USER_REG_UNSUCCESSFULL = "User Registration unsuccessfull.";
-    String USER_UPDATE_UNSUCCESSFULL = "User update operation is successfull.";
+    String USER_REG_UNSUCCESSFUL = "User Registration unsuccessful.";
+    String USER_UPDATE_UNSUCCESSFUL = "User update operation is unsuccessful.";
     String INVALID_CREDENTIAL = "Invalid credential.";
     String USERNAME_MISSING = "Username is mandatory.";
     String USERNAME_IN_USE = "Username already exists.";
@@ -428,8 +428,8 @@ public interface ResponseMessage {
     String EMAIL_IN_USE = "EMAIL_IN_USE";
     String USERNAME_EMAIL_IN_USE = "USERNAME_EMAIL_IN_USE";
     String KEY_CLOAK_DEFAULT_ERROR = "KEY_CLOAK_DEFAULT_ERROR";
-    String USER_REG_UNSUCCESSFULL = "USER_REG_UNSUCCESSFULL";
-    String USER_UPDATE_UNSUCCESSFULL = "USER_UPDATE_UNSUCCESSFULL";
+    String USER_REG_UNSUCCESSFUL = "USER_REG_UNSUCCESSFUL";
+    String USER_UPDATE_UNSUCCESSFUL = "USER_UPDATE_UNSUCCESSFUL";
     String INVALID_CREDENTIAL = "INVALID_CREDENTIAL";
     String USERNAME_MISSING = "USERNAME_MISSING";
     String USERNAME_IN_USE = "USERNAME_IN_USE";
