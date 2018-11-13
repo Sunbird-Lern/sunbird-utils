@@ -680,9 +680,8 @@ public enum ResponseCode {
   errorUnsupportedCloudStorage(
       ResponseMessage.Key.ERROR_UNSUPPORTED_CLOUD_STORAGE,
       ResponseMessage.Message.ERROR_UNSUPPORTED_CLOUD_STORAGE),
-  errorUnsupportedFrameworkField(
-      ResponseMessage.Key.ERROR_UNSUPPORTED_FRAMEWORK_FIELD,
-      ResponseMessage.Message.ERROR_UNSUPPORTED_FRAMEWORK_FIELD),
+  errorUnsupportedField(
+      ResponseMessage.Key.ERROR_UNSUPPORTED_FIELD, ResponseMessage.Message.ERROR_UNSUPPORTED_FIELD),
   errorGenerateDownloadLink(
       ResponseMessage.Key.ERROR_GENERATE_DOWNLOAD_LINK,
       ResponseMessage.Message.ERROR_GENERATE_DOWNLOAD_LINK),

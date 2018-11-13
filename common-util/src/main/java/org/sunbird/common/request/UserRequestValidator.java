@@ -870,10 +870,10 @@ public class UserRequestValidator extends BaseRequestValidator {
       for (String frameworkRequestField : frameworkRequestFieldList) {
         if (!frameworkFields.contains(frameworkRequestField)) {
           throw new ProjectCommonException(
-              ResponseCode.errorUnsupportedFrameworkField.getErrorCode(),
-              ResponseCode.errorUnsupportedFrameworkField.getErrorMessage(),
+              ResponseCode.errorUnsupportedField.getErrorCode(),
+              ResponseCode.errorUnsupportedField.getErrorMessage(),
               ERROR_CODE,
-              frameworkRequestField);
+              StringFormatter.joinByDot(JsonKey.FRAMEWORK, frameworkRequestField));
         }
       }
     }
