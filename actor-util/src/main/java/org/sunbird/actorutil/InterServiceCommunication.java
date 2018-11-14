@@ -4,9 +4,7 @@ import akka.actor.ActorRef;
 import org.sunbird.common.request.Request;
 import scala.concurrent.Future;
 
-/**
- * Interface for actor to actor communication.
- */
+/** Interface for actor to actor communication. */
 public interface InterServiceCommunication {
 
   /**
@@ -22,5 +20,4 @@ public interface InterServiceCommunication {
    * @return Future for given actor and request operation
    */
   public Future<Object> getFuture(ActorRef actorRef, Request request);
-
 }
