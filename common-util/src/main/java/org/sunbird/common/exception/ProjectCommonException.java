@@ -97,11 +97,26 @@ public class ProjectCommonException extends RuntimeException {
         ResponseCode.CLIENT_ERROR.getResponseCode());
   }
 
+  public static ProjectCommonException throwResourceNotFoundException() {
+    return new ProjectCommonException(
+        ResponseCode.resourceNotFound.getErrorCode(),
+        ResponseCode.resourceNotFound.getErrorMessage(),
+        ResponseCode.RESOURCE_NOT_FOUND.getResponseCode());
+  }
+
   public static void throwServerErrorException(ResponseCode responseCode, String exceptionMessage) {
     throw new ProjectCommonException(
         responseCode.getErrorCode(),
         StringUtils.isBlank(exceptionMessage) ? responseCode.getErrorMessage() : exceptionMessage,
         ResponseCode.SERVER_ERROR.getResponseCode());
+  }
+
+  public static void throwServerErrorException(ResponseCode responseCode) {
+    throwServerErrorException(responseCode, responseCode.getErrorMessage());
+  }
+
+  public static void throwClientErrorException(ResponseCode responseCode) {
+    throwClientErrorException(responseCode, responseCode.getErrorMessage());
   }
 
   public static void throwUnauthorizedErrorException() {

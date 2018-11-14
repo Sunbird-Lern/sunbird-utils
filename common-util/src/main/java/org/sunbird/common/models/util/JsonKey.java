@@ -16,6 +16,10 @@ public final class JsonKey {
   public static final String ACCESSTOKEN = "accessToken";
   public static final String ACCOUNT_KEY = "sunbird_account_key";
   public static final String ACCOUNT_NAME = "sunbird_account_name";
+  public static final String DOWNLOAD_LINK_EXPIRY_TIMEOUT = "download_link_expiry_timeout";
+  public static final String SIGNED_URL = "signedUrl";
+  public static final String BULK_UPLOAD_STATUS = "Upload Status";
+  public static final String BULK_UPLOAD_ERROR = "Upload Error";
   public static final String ACTION_GROUP = "action_group";
   public static final String ACTION_GROUPS = "actionGroups";
   public static final String ACTION_NAME = "actionName";
@@ -89,6 +93,7 @@ public final class JsonKey {
   public static final String BULK_USER_UPLOAD = "bulkUserUpload";
   public static final String CASSANDRA_IN_EMBEDDED_MODE = "cassandraInEmbeddedMode";
   public static final String CASSANDRA_SERVICE = "Cassandra service";
+  public static final String CATEGORIES = "categories";
   public static final String CHANNEL = "channel";
   public static final String CHANNEL_REG_STATUS = "channelRegStatus";
   public static final String CHANNEL_REG_STATUS_ID = "003";
@@ -261,6 +266,7 @@ public final class JsonKey {
   public static final String FIRST_NAME = "firstName";
   public static final String FORM_PARAMS = "formParams";
   public static final String FORMAT = "format";
+  public static final String FRAMEWORK = "framework";
   public static final String FROM_EMAIL = "fromEmail";
   public static final String GENDER = "gender";
   public static final String GEO_LOCATION_DB = "geoLocationDb";
@@ -323,6 +329,8 @@ public final class JsonKey {
   public static final String LOGIN_ID_DELIMETER = "@";
   public static final String LOGIN_TYPE = "type";
   public static final String MAIL_NOTE = "mail_note";
+  public static final String MANDATORY_FIELDS = "mandatoryFields";
+  public static final String MAP = "map";
   public static final String MAPPED_FORM_PARAMS = "mappedFormParams";
   public static final String MASKED_EMAIL = "maskedEmail";
   public static final String MASKED_PHONE = "maskedPhone";
@@ -537,6 +545,8 @@ public final class JsonKey {
   public static final String SUNBIRD_SSO_URL = "sunbird_sso_url";
   public static final String SUNBIRD_SSO_USERNAME = "sunbird_sso_username";
   public static final String SUNBIRD_WEB_URL = "sunird_web_url";
+  public static final String SUNBIRD_CHANNEL_READ_API = "sunbird_channel_read_api";
+  public static final String SUNBIRD_FRAMEWORK_READ_API = "sunbird_framework_read_api";
   public static final String SYSTEM = "system";
   public static final String SYSTEM_SETTINGS_DB = "system_settings";
   public static final String TAG = "tag";
@@ -550,6 +560,7 @@ public final class JsonKey {
   public static final String TENANT_PREFERENCE = "tenantPreference";
   public static final String TENANT_PREFERENCE_DB = "tenantPreferenceDb";
   public static final String TERM_AND_CONDITION_STATUS = "tcStatus";
+  public static final String TERMS = "terms";
   public static final String THEME = "theme";
   public static final String THUMBNAIL = "thumbnail";
   public static final String TIME_TAKEN = "timeTaken";
@@ -668,6 +679,8 @@ public final class JsonKey {
   public static final String USR_EXT_IDNT_TABLE = "usr_external_identity";
   public static final String END_TIME_IN_HOUR_MINUTE_SECOND = " 23:59:59";
   public static final String REGISTRY_ID = "registryId";
+  public static final String RESPONSE_CODE = "responseCode";
+  public static final String OK = "ok";
   public static final String SUNBIRD_APP_NAME = "sunbird_app_name";
   public static final String SUNBIRD_DEFAULT_COUNTRY_CODE = "sunbird_default_country_code";
   public static final String ONBOARDING_MAIL_SUBJECT = "onboarding_mail_subject";
@@ -699,25 +712,24 @@ public final class JsonKey {
   public static final String SUNBIRD_USER_PROFILE_FIELD_DEFAULT_VISIBILITY =
       "sunbird_user_profile_field_default_visibility";
   public static final String DEFAULT_PROFILE_FIELD_VISIBILITY = "defaultProfileFieldVisibility";
+
   public static final String SUNBIRD_COURSE_BATCH_NOTIFICATIONS_ENABLED =
       "sunbird_course_batch_notification_enabled";
-  public static final String BATCH_END_DATE = "batchEndDate";
+
   public static final String BATCH_START_DATE = "batchStartDate";
-  public static final String TEMPLATE_NAME = "templateName";
+  public static final String BATCH_END_DATE = "batchEndDate";
+  public static final String BATCH_NAME = "batchName";
   public static final String BATCH_MENTOR_ENROL = "batchMentorEnrol";
   public static final String BATCH_LEARNER_ENROL = "batchLearnerEnrol";
   public static final String COURSE_INVITATION = "Course Invitation";
   public static final String BATCH_LEARNER_UNENROL = "batchLearnerUnenrol";
   public static final String BATCH_MENTOR_UNENROL = "batchMentorUnenrol";
-  public static final String BATCH_NAME = "batchName";
   public static final String UNENROLL_FROM_COURSE_BATCH = "Unenrolled from Course";
   public static final String OPEN_BATCH_LEARNER_UNENROL = "openBatchLearnerUnenrol";
   public static final String MENTOR = "mentor";
-  public static final String COURSE_MAP = "courseMap";
   public static final String OLD = "old";
   public static final String NEW = "new";
   public static final String COURSE_BATCH = "courseBatch";
-  public static final String USER_TYPE = "userType";
   public static final String ADDED_MENTORS = "addedMentors";
   public static final String REMOVED_MENTORS = "removedMentors";
   public static final String ADDED_PARTICIPANTS = "addedParticipants";
@@ -725,6 +737,12 @@ public final class JsonKey {
 
   public static final String SUNBIRD_API_REQUEST_LOWER_CASE_FIELDS =
       "sunbird_api_request_lower_case_fields";
+  public static final String ATTRIBUTE = "attribute";
+  public static final String ERRORS = "errors";
+  public static final String ROLE_LIST = "roleList";
+  public static final String SUNBIRD_USER_PROFILE_READ_EXCLUDED_FIELDS = "read.excludedFields";
+  public static final String VERSION_3 = "v3";
+  public static final String COMPLETED_ON = "completedOn";
 
   private JsonKey() {}
 }

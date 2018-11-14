@@ -1,0 +1,5 @@
+INSERT INTO sunbird.system_settings(id, field, value) VALUES('userProfileConfig', 'userProfileConfig', '{ "fields": ["firstName", "lastName", "profileSummary", "avatar", "countryCode", "dob", "email", "gender", "grade", "language", "location", "phone", "subject", "userName", "webPages", "jobProfile", "address", "education", "skills", "badgeAssertions"], "publicFields": ["firstName", "lastName", "profileSummary"], "privateFields": ["email", "phone"],"csv":{"supportedColumns":{"NAME":"firstName","MOBILE PHONE":"phone","EMAIL":"email","SCHOOL ID":"orgId","USER_TYPE":"userType","ROLES":"roles","USER ID":"userId"}, "supportedColumnsOrder": ["firstName","phone","email","organisationId","userType", "roles", "userId"],"mandatoryColumns":["firstName","userType","roles"]},"read":{"excludedFields":["userName","avatar","jobProfile","address","education","webPages","skills"]},"framework" : {"fields" : ["board", "gradeLevel", "medium", "subject"] , "mandatoryFields" : ["board", "gradeLevel", "medium"]}}');
+
+ALTER TABLE sunbird.user DROP frameworkdata;
+
+ALTER TABLE sunbird.user ADD framework map<text, frozen<List<text>>>;
