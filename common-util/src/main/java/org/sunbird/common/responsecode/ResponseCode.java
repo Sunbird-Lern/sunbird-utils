@@ -113,9 +113,6 @@ public enum ResponseCode {
   loginTypeRequired(
       ResponseMessage.Key.LOGIN_TYPE_MISSING, ResponseMessage.Message.LOGIN_TYPE_MISSING),
   emailAlreadyExistError(ResponseMessage.Key.EMAIL_IN_USE, ResponseMessage.Message.EMAIL_IN_USE),
-  errorInvalidFieldForSubOrg(
-      ResponseMessage.Key.ERROR_INVALID_FIELD_FOR_SUB_ORG,
-      ResponseMessage.Message.ERROR_INVALID_FIELD_FOR_SUB_ORG),
   invalidCredentials(
       ResponseMessage.Key.INVALID_CREDENTIAL, ResponseMessage.Message.INVALID_CREDENTIAL),
   userNameRequired(ResponseMessage.Key.USERNAME_MISSING, ResponseMessage.Message.USERNAME_MISSING),
