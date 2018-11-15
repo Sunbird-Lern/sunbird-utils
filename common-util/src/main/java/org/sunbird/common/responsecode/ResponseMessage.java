@@ -61,6 +61,7 @@ public interface ResponseMessage {
     String COURSE_DURATION_MISSING = "Course duration is mandatory.";
     String LOGIN_TYPE_MISSING = "Login type is required.";
     String EMAIL_IN_USE = "Email already exists.";
+    String ERROR_INVALID_FIELD_FOR_SUB_ORG = "Invalid Field {0} for subOrg.";
     String USERNAME_EMAIL_IN_USE =
         "Username or Email is already in use. Please try with a different Username or Email.";
     String KEY_CLOAK_DEFAULT_ERROR = "server error at sso.";
@@ -427,6 +428,7 @@ public interface ResponseMessage {
     String COURSE_DURATION_MISSING = "COURSE_DURATION_MISSING";
     String LOGIN_TYPE_MISSING = "LOGIN_TYPE_MISSING";
     String EMAIL_IN_USE = "EMAIL_IN_USE";
+    String ERROR_INVALID_FIELD_FOR_SUB_ORG = "ERROR_INVALID_FIELD_FOR_SUB_ORG";
     String USERNAME_EMAIL_IN_USE = "USERNAME_EMAIL_IN_USE";
     String KEY_CLOAK_DEFAULT_ERROR = "KEY_CLOAK_DEFAULT_ERROR";
     String USER_REG_UNSUCCESSFUL = "USER_REG_UNSUCCESSFUL";
