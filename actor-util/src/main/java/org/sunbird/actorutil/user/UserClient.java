@@ -22,14 +22,9 @@ public interface UserClient {
    */
   void updateUser(ActorRef actorRef, Map<String, Object> userMap);
 
-  /**
-   * Verify phone uniqueness across all users in the system.
-   */
-  void esIsPhoneUnique();
+  /** Verify phone uniqueness across all users in the system. */
+  void esVerifyPhoneUniqueness();
 
-  /**
-   * Verify email uniqueness across all users in the system.
-   */
-  void esIsEmailUnique();
-
+  /** Verify email uniqueness across all users in the system. */
+  void esVerifyEmailUniqueness();
 }

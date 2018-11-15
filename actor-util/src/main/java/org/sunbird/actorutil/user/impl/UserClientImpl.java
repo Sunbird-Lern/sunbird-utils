@@ -36,26 +36,26 @@ public class UserClientImpl implements UserClient {
   }
 
   @Override
-  public void esIsPhoneUnique() {
-    esIsFieldUnique(JsonKey.ENC_PHONE, JsonKey.PHONE);
+  public void esVerifyPhoneUniqueness() {
+    esVerifyFieldUniqueness(JsonKey.ENC_PHONE, JsonKey.PHONE);
   }
 
   @Override
-  public void esIsEmailUnique() {
-    esIsFieldUnique(JsonKey.ENC_EMAIL, JsonKey.EMAIL);
+  public void esVerifyEmailUniqueness() {
+    esVerifyFieldUniqueness(JsonKey.ENC_EMAIL, JsonKey.EMAIL);
   }
 
-  private void esIsFieldUnique(String facetsKey, String objectType) {
+  private void esVerifyFieldUniqueness(String facetsKey, String objectType) {
     SearchDTO searchDto = null;
     searchDto = new SearchDTO();
     searchDto.setLimit(0);
-    
+
     Map<String, String> facets = new HashMap<>();
     facets.put(facetsKey, null);
     List<Map<String, String>> list = new ArrayList<>();
     list.add(facets);
     searchDto.setFacets(list);
-    
+
     Map<String, Object> esResponse =
         ElasticSearchUtil.complexSearch(
             searchDto,
@@ -65,7 +65,7 @@ public class UserClientImpl implements UserClient {
     if (null != esResponse) {
       List<Map<String, Object>> facetsResponse =
           (List<Map<String, Object>>) esResponse.get(JsonKey.FACETS);
-      
+
       if (CollectionUtils.isNotEmpty(facetsResponse)) {
         Map<String, Object> map = facetsResponse.get(0);
         List<Map<String, Object>> valueList = (List<Map<String, Object>>) map.get("values");
@@ -75,7 +75,8 @@ public class UserClientImpl implements UserClient {
           if (count > 1) {
             throw new ProjectCommonException(
                 ResponseCode.errorDuplicateEntries.getErrorCode(),
-                MessageFormat.format(ResponseCode.errorDuplicateEntries.getErrorMessage(), objectType),
+                MessageFormat.format(
+                    ResponseCode.errorDuplicateEntries.getErrorMessage(), objectType),
                 ResponseCode.CLIENT_ERROR.getResponseCode());
           }
         }
@@ -105,5 +106,4 @@ public class UserClientImpl implements UserClient {
 
     return userId;
   }
-
 }
