@@ -692,6 +692,8 @@ public enum ResponseCode {
       ResponseMessage.Message.ERROR_SAVING_STORAGE_DETAILS),
   errorCsvNoDataRows(
       ResponseMessage.Key.ERROR_CSV_NO_DATA_ROWS, ResponseMessage.Message.ERROR_CSV_NO_DATA_ROWS),
+  errorInactiveOrg(
+      ResponseMessage.Key.ERROR_INACTIVE_ORG, ResponseMessage.Message.ERROR_INACTIVE_ORG),
   errorDuplicateEntries(
       ResponseMessage.Key.ERROR_DUPLICATE_ENTRIES, ResponseMessage.Message.ERROR_DUPLICATE_ENTRIES),
   OK(200),

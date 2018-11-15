@@ -377,6 +377,7 @@ public interface ResponseMessage {
     String ERROR_DOWNLOAD_LINK_UNAVAILABLE = "Download link is unavailable.";
     String ERROR_SAVING_STORAGE_DETAILS = "Error saving storage details for download link.";
     String ERROR_CSV_NO_DATA_ROWS = "No data rows in CSV.";
+    String ERROR_INACTIVE_ORG = "Organisation corresponding to given {0} ({1}) is inactive.";
   }
 
   interface Key {
@@ -703,6 +704,7 @@ public interface ResponseMessage {
     String ERROR_DOWNLOAD_LINK_UNAVAILABLE = "ERROR_DOWNLOAD_LINK_UNAVAILABLE";
     String ERROR_SAVING_STORAGE_DETAILS = "ERROR_SAVING_STORAGE_DETAILS";
     String ERROR_CSV_NO_DATA_ROWS = "ERROR_CSV_NO_DATA_ROWS";
+    String ERROR_INACTIVE_ORG = "ERROR_INACTIVE_ORG";
     String ERROR_DUPLICATE_ENTRIES = "ERROR_DUPLICATE_ENTRIES";
   }
 }

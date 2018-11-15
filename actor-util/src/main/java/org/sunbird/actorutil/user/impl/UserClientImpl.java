@@ -13,7 +13,11 @@ import org.sunbird.actorutil.user.UserClient;
 import org.sunbird.common.ElasticSearchUtil;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
-import org.sunbird.common.models.util.*;
+import org.sunbird.common.models.util.ActorOperations;
+import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.LoggerEnum;
+import org.sunbird.common.models.util.ProjectLogger;
+import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.dto.SearchDTO;
@@ -91,6 +95,9 @@ public class UserClientImpl implements UserClient {
     request.setRequest(userMap);
     request.setOperation(operation);
     request.getContext().put(JsonKey.VERSION, JsonKey.VERSION_3);
+    request.getContext().put(JsonKey.CALLER_ID, JsonKey.BULK_USER_UPLOAD);
+    request.getContext().put(JsonKey.ROOT_ORG_ID, userMap.get(JsonKey.ROOT_ORG_ID));
+    userMap.remove(JsonKey.ROOT_ORG_ID);
     Object obj = interServiceCommunication.getResponse(actorRef, request);
     if (obj instanceof Response) {
       Response response = (Response) obj;
