@@ -21,4 +21,10 @@ public interface UserClient {
    * @param userMap User details
    */
   void updateUser(ActorRef actorRef, Map<String, Object> userMap);
+
+  /** Verify phone uniqueness across all users in the system. */
+  void esVerifyPhoneUniqueness();
+
+  /** Verify email uniqueness across all users in the system. */
+  void esVerifyEmailUniqueness();
 }
