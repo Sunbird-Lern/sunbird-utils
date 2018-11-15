@@ -40,16 +40,16 @@ public class UserClientImpl implements UserClient {
   }
 
   @Override
-  public void esIsPhoneUnique() {
-    esIsFieldUnique(JsonKey.ENC_PHONE, JsonKey.PHONE);
+  public void esVerifyPhoneUniqueness() {
+    esVerifyFieldUniqueness(JsonKey.ENC_PHONE, JsonKey.PHONE);
   }
 
   @Override
-  public void esIsEmailUnique(boolean existingValue, boolean requestedValue) {
-    esIsFieldUnique(JsonKey.ENC_EMAIL, JsonKey.EMAIL);
+  public void esVerifyEmailUniqueness() {
+    esVerifyFieldUniqueness(JsonKey.ENC_EMAIL, JsonKey.EMAIL);
   }
 
-  private void esIsFieldUnique(String facetsKey, String objectType) {
+  private void esVerifyFieldUniqueness(String facetsKey, String objectType) {
     SearchDTO searchDto = null;
     searchDto = new SearchDTO();
     searchDto.setLimit(0);
