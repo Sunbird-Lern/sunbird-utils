@@ -81,9 +81,9 @@ public enum ResponseCode {
   channelUniquenessInvalid(
       ResponseMessage.Key.CHANNEL_SHOULD_BE_UNIQUE,
       ResponseMessage.Message.CHANNEL_SHOULD_BE_UNIQUE),
-  externalIdUniquenessInvalid(
-	      ResponseMessage.Key.EXTERNAL_ID_SHOULD_BE_UNIQUE,
-	      ResponseMessage.Message.EXTERNAL_ID_SHOULD_BE_UNIQUE),
+  errorDuplicateEntry(
+	      ResponseMessage.Key.ERROR_DUPLICATE_ENTRY,
+	      ResponseMessage.Message.ERROR_DUPLICATE_ENTRY),
   unableToConnect(
       ResponseMessage.Key.UNABLE_TO_CONNECT_TO_EKSTEP,
       ResponseMessage.Message.UNABLE_TO_CONNECT_TO_EKSTEP),
