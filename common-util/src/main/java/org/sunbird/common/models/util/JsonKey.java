@@ -18,8 +18,8 @@ public final class JsonKey {
   public static final String ACCOUNT_NAME = "sunbird_account_name";
   public static final String DOWNLOAD_LINK_EXPIRY_TIMEOUT = "download_link_expiry_timeout";
   public static final String SIGNED_URL = "signedUrl";
-  public static final String BULK_UPLOAD_STATUS = "Upload Status";
-  public static final String BULK_UPLOAD_ERROR = "Upload Error";
+  public static final String BULK_UPLOAD_STATUS = "Status";
+  public static final String BULK_UPLOAD_ERROR = "Remarks";
   public static final String ACTION_GROUP = "action_group";
   public static final String ACTION_GROUPS = "actionGroups";
   public static final String ACTION_NAME = "actionName";
@@ -318,6 +318,7 @@ public final class JsonKey {
   public static final String LIST = "List";
   public static final String LOC_ID = "locationId";
   public static final String LOCATION = "location";
+  public static final String LOCATION_NAME = "locationName";
   public static final String LOCATION_ID = "locationId";
   public static final String LOCATION_IDS = "locationIds";
   public static final String LOCATIONS = "locations";

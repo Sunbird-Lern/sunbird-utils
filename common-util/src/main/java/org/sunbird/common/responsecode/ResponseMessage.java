@@ -48,6 +48,7 @@ public interface ResponseMessage {
     String ORGANISATION_NAME_MISSING = "organization name is mandatory.";
     String CHANNEL_SHOULD_BE_UNIQUE =
         "Channel value already used by another organization. Provide different value for channel";
+    String ERROR_DUPLICATE_ENTRY = "Value {0} for {1} is already in use.";
     String INVALID_ORG_DATA =
         "Given Organization Data doesn't exist in our records. Please provide a valid one";
     String INVALID_USR_DATA =
@@ -415,6 +416,7 @@ public interface ResponseMessage {
     String REQUIRED_DATA_ORG_MISSING = "REQUIRED_DATA_MISSING";
     String ORGANISATION_NAME_MISSING = "ORGANIZATION_NAME_MISSING";
     String CHANNEL_SHOULD_BE_UNIQUE = "CHANNEL_SHOULD_BE_UNIQUE";
+    String ERROR_DUPLICATE_ENTRY = "ERROR_DUPLICATE_ENTRY";
     String INVALID_ORG_DATA = "INVALID_ORGANIZATION_DATA";
     String INVALID_USR_DATA = "INVALID_USER_DATA";
     String USR_DATA_VALIDATION_ERROR = "USER_DATA_VALIDATION_ERROR";
