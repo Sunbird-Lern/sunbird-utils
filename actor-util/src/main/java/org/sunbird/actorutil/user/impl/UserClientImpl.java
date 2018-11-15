@@ -41,7 +41,7 @@ public class UserClientImpl implements UserClient {
   }
 
   @Override
-  public void esIsEmailUnique(boolean existingValue, boolean requestedValue) {
+  public void esIsEmailUnique() {
     esIsFieldUnique(JsonKey.ENC_EMAIL, JsonKey.EMAIL);
   }
 
@@ -75,7 +75,7 @@ public class UserClientImpl implements UserClient {
           if (count > 1) {
             throw new ProjectCommonException(
                 ResponseCode.errorDuplicateEntries.getErrorCode(),
-                MessageFormat.formatResponseCode.errorDuplicateEntries.getErrorMessage(), objectType),
+                MessageFormat.format(ResponseCode.errorDuplicateEntries.getErrorMessage(), objectType),
                 ResponseCode.CLIENT_ERROR.getResponseCode());
           }
         }
