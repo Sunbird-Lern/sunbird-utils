@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.collections.CollectionUtils;
 import org.sunbird.actorutil.InterServiceCommunication;
 import org.sunbird.actorutil.InterServiceCommunicationFactory;
 import org.sunbird.actorutil.user.UserClient;
@@ -35,59 +36,47 @@ public class UserClientImpl implements UserClient {
   }
 
   @Override
-  public void esIsPhoneUnique(boolean existingValue, boolean requestedValue) {
-    esIsFieldUnique(
-        existingValue,
-        requestedValue,
-        JsonKey.ENC_PHONE,
-        ResponseCode.errorDuplicateEntries,
-        JsonKey.PHONE);
+  public void esIsPhoneUnique() {
+    esIsFieldUnique(JsonKey.ENC_PHONE, JsonKey.PHONE);
   }
 
   @Override
   public void esIsEmailUnique(boolean existingValue, boolean requestedValue) {
-    esIsFieldUnique(
-        existingValue,
-        requestedValue,
-        JsonKey.ENC_EMAIL,
-        ResponseCode.errorDuplicateEntries,
-        JsonKey.EMAIL);
+    esIsFieldUnique(JsonKey.ENC_EMAIL, JsonKey.EMAIL);
   }
 
-  private void esIsFieldUnique(
-      Boolean existingValue,
-      Boolean requestedValue,
-      String facetsKey,
-      ResponseCode responseCode,
-      String objectType) {
+  private void esIsFieldUnique(String facetsKey, String objectType) {
     SearchDTO searchDto = null;
-    if ((!existingValue) && requestedValue) {
-      searchDto = new SearchDTO();
-      searchDto.setLimit(0);
-      Map<String, String> facets = new HashMap<>();
-      facets.put(facetsKey, null);
-      List<Map<String, String>> list = new ArrayList<>();
-      list.add(facets);
-      searchDto.setFacets(list);
-      Map<String, Object> esResponse =
-          ElasticSearchUtil.complexSearch(
-              searchDto,
-              ProjectUtil.EsIndex.sunbird.getIndexName(),
-              ProjectUtil.EsType.user.getTypeName());
-      if (null != esResponse) {
-        List<Map<String, Object>> facetsRes =
-            (List<Map<String, Object>>) esResponse.get(JsonKey.FACETS);
-        if (null != facetsRes && !facetsRes.isEmpty()) {
-          Map<String, Object> map = facetsRes.get(0);
-          List<Map<String, Object>> values = (List<Map<String, Object>>) map.get("values");
-          for (Map<String, Object> result : values) {
-            long count = (long) result.get(JsonKey.COUNT);
-            if (count > 1) {
-              throw new ProjectCommonException(
-                  responseCode.getErrorCode(),
-                  MessageFormat.format(responseCode.getErrorMessage(), objectType),
-                  ResponseCode.CLIENT_ERROR.getResponseCode());
-            }
+    searchDto = new SearchDTO();
+    searchDto.setLimit(0);
+    
+    Map<String, String> facets = new HashMap<>();
+    facets.put(facetsKey, null);
+    List<Map<String, String>> list = new ArrayList<>();
+    list.add(facets);
+    searchDto.setFacets(list);
+    
+    Map<String, Object> esResponse =
+        ElasticSearchUtil.complexSearch(
+            searchDto,
+            ProjectUtil.EsIndex.sunbird.getIndexName(),
+            ProjectUtil.EsType.user.getTypeName());
+
+    if (null != esResponse) {
+      List<Map<String, Object>> facetsResponse =
+          (List<Map<String, Object>>) esResponse.get(JsonKey.FACETS);
+      
+      if (CollectionUtils.isNotEmpty(facetsResponse)) {
+        Map<String, Object> map = facetsResponse.get(0);
+        List<Map<String, Object>> valueList = (List<Map<String, Object>>) map.get("values");
+
+        for (Map<String, Object> value : valueList) {
+          long count = (long) value.get(JsonKey.COUNT);
+          if (count > 1) {
+            throw new ProjectCommonException(
+                ResponseCode.errorDuplicateEntries.getErrorCode(),
+                MessageFormat.formatResponseCode.errorDuplicateEntries.getErrorMessage(), objectType),
+                ResponseCode.CLIENT_ERROR.getResponseCode());
           }
         }
       }
@@ -116,4 +105,5 @@ public class UserClientImpl implements UserClient {
 
     return userId;
   }
+
 }
