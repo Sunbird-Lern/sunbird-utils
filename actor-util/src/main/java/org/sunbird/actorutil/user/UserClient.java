@@ -23,18 +23,13 @@ public interface UserClient {
   void updateUser(ActorRef actorRef, Map<String, Object> userMap);
 
   /**
-   * Check phone uniqueness.
-   *
-   * @param existingValue existing db value
-   * @param requestedValue requested value
+   * Verify phone uniqueness across all users in the system.
    */
-  void esIsPhoneUnique(boolean existingValue, boolean requestedValue);
+  void esIsPhoneUnique();
 
   /**
-   * Check email uniqueness.
-   *
-   * @param existingValue existing db value
-   * @param requestedValue requested value
+   * Verify email uniqueness across all users in the system.
    */
-  void esIsEmailUnique(boolean existingValue, boolean requestedValue);
+  void esIsEmailUnique();
+
 }
