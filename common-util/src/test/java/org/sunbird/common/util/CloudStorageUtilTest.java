@@ -17,7 +17,6 @@ import org.sunbird.cloud.storage.BaseStorageService;
 import org.sunbird.cloud.storage.factory.StorageServiceFactory;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.util.CloudStorageUtil.CloudStorageType;
-
 import scala.Option;
 
 @RunWith(PowerMockRunner.class)
@@ -81,5 +80,4 @@ public class CloudStorageUtilTest {
     String signedUrl = CloudStorageUtil.getSignedUrl(CloudStorageType.AZURE, "container", "key");
     assertTrue(SIGNED_URL.equals(signedUrl));
   }
-
 }

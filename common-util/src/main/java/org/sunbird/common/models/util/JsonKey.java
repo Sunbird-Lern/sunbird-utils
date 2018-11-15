@@ -712,8 +712,10 @@ public final class JsonKey {
   public static final String SUNBIRD_USER_PROFILE_FIELD_DEFAULT_VISIBILITY =
       "sunbird_user_profile_field_default_visibility";
   public static final String DEFAULT_PROFILE_FIELD_VISIBILITY = "defaultProfileFieldVisibility";
-  public static final String SUNBIRD_COURSE_BATCH_NOTIFICATIONS_ACTIVE =
-      "sunbird_course_batch_notification_active";
+
+  public static final String SUNBIRD_COURSE_BATCH_NOTIFICATIONS_ENABLED =
+      "sunbird_course_batch_notification_enabled";
+
   public static final String BATCH_START_DATE = "batchStartDate";
   public static final String BATCH_END_DATE = "batchEndDate";
   public static final String BATCH_NAME = "batchName";

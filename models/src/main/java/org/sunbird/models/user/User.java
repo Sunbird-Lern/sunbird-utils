@@ -35,6 +35,7 @@ public class User implements Serializable {
   private String lastName;
   private String location;
   private String phone;
+  private Boolean phoneVerified;
   private String profileSummary;
   private Map<String, String> profileVisibility;
   private String provider;
@@ -388,5 +389,13 @@ public class User implements Serializable {
 
   public void setFramework(Map<String, List<String>> framework) {
     this.framework = framework;
+  }
+
+  public Boolean getPhoneVerified() {
+    return phoneVerified;
+  }
+
+  public void setPhoneVerified(Boolean phoneVerified) {
+    this.phoneVerified = phoneVerified;
   }
 }

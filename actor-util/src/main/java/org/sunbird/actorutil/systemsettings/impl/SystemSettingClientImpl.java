@@ -88,7 +88,7 @@ public class SystemSettingClientImpl implements SystemSettingClient {
     Request request = new Request();
     Map<String, Object> map = new HashMap<>();
     map.put(param, value);
-    request.setRequest(map);
+    request.setContext(map);
     request.setOperation(ActorOperations.GET_SYSTEM_SETTING.getValue());
     Object obj = interServiceCommunication.getResponse(actorRef, request);
 
