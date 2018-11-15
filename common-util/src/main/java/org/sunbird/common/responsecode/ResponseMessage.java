@@ -238,8 +238,7 @@ public interface ResponseMessage {
     String INVALID_NOTIFICATION_TYPE_SUPPORT = "Only notification type FCM is supported.";
     String INVALID_PHONE_NUMBER = "Please send Phone and country code seprately.";
     String INVALID_COUNTRY_CODE = "Please provide a valid country code.";
-    String DUPLICATE_PHONE_DATA = "System contains duplicate entry for {0}.";
-    String DUPLICATE_EMAIL_DATA = "System contains duplicate entry for {0}.";
+    String ERROR_DUPLICATE_ENTRIES = "System contains duplicate entry for {0}.";
     String LOCATION_ID_REQUIRED = "Please provide Location Id.";
     String NOT_SUPPORTED = "Not Supported.";
     String USERNAME_USERID_MISSING = "Please provide either userName or userId.";
@@ -603,8 +602,6 @@ public interface ResponseMessage {
     String INVALID_NOTIFICATION_TYPE_SUPPORT = "INVALID_NOTIFICATION_TYPE_SUPPORT";
     String INVALID_PHONE_NUMBER = "INVALID_PHONE_NUMBER";
     String INVALID_COUNTRY_CODE = "INVALID_COUNTRY_CODE";
-    String DUPLICATE_PHONE_DATA = "DUPLICATE_PHONE_DATA";
-    String DUPLICATE_EMAIL_DATA = "DUPLICATE_EMAIL_DATA";
     String LOCATION_ID_REQUIRED = "LOCATION_ID_REQUIRED";
     String NOT_SUPPORTED = "NOT_SUPPORTED";
     String USERNAME_USERID_MISSING = "USERNAME_USERID_MISSING";
@@ -706,5 +703,6 @@ public interface ResponseMessage {
     String ERROR_SAVING_STORAGE_DETAILS = "ERROR_SAVING_STORAGE_DETAILS";
     String ERROR_CSV_NO_DATA_ROWS = "ERROR_CSV_NO_DATA_ROWS";
     String ERROR_INACTIVE_ORG = "ERROR_INACTIVE_ORG";
+    String ERROR_DUPLICATE_ENTRIES = "ERROR_DUPLICATE_ENTRIES";
   }
 }
