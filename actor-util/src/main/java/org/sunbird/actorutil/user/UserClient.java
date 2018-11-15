@@ -21,4 +21,8 @@ public interface UserClient {
    * @param userMap User details
    */
   void updateUser(ActorRef actorRef, Map<String, Object> userMap);
+
+  void esIsPhoneUnique(boolean existingValue, boolean requestedValue);
+
+  void esIsEmailUnique(boolean existingValue, boolean requestedValue);
 }
