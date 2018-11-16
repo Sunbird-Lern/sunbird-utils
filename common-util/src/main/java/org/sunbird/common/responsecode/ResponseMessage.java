@@ -378,6 +378,7 @@ public interface ResponseMessage {
     String ERROR_SAVING_STORAGE_DETAILS = "Error saving storage details for download link.";
     String ERROR_CSV_NO_DATA_ROWS = "No data rows in CSV.";
     String ERROR_INACTIVE_ORG = "Organisation corresponding to given {0} ({1}) is inactive.";
+    String ERROR_CONFLICTING_PROPERTIES_VALUE = "Conflicting values for {0} ({1}) and {2} ({3}).";
   }
 
   interface Key {
@@ -706,5 +707,6 @@ public interface ResponseMessage {
     String ERROR_CSV_NO_DATA_ROWS = "ERROR_CSV_NO_DATA_ROWS";
     String ERROR_INACTIVE_ORG = "ERROR_INACTIVE_ORG";
     String ERROR_DUPLICATE_ENTRIES = "ERROR_DUPLICATE_ENTRIES";
+    String ERROR_CONFLICTING_PROPERTIES_VALUE = "ERROR_CONFLICTING_PROPERTIES_VALUE";
   }
 }

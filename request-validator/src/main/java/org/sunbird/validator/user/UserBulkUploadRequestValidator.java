@@ -1,5 +1,6 @@
 package org.sunbird.validator.user;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -7,7 +8,7 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
-import org.sunbird.common.models.util.ProjectUtil;
+import org.sunbird.common.models.util.StringFormatter;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.models.user.UserType;
 
@@ -28,23 +29,23 @@ public class UserBulkUploadRequestValidator {
     if (userTypes.contains(userType.trim().toUpperCase())) {
       userMap.put(JsonKey.USER_TYPE, userType.trim().toUpperCase());
     } else {
-      throw new ProjectCommonException(
-          ResponseCode.invalidValue.getErrorCode(),
-          ProjectUtil.formatMessage(
-              ResponseCode.invalidValue.getErrorMessage(), JsonKey.USER_TYPE, userType, userTypes),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
+      ProjectCommonException.throwClientErrorException(
+          ResponseCode.invalidValue,
+          MessageFormat.format(
+              ResponseCode.invalidValue.getErrorMessage(), JsonKey.USER_TYPE, userType, userTypes));
     }
   }
 
   public static void validateOrganisationId(Map<String, Object> userMap) {
-    String userType = (String) userMap.get("userType");
+    String userType = (String) userMap.get(JsonKey.USER_TYPE);
     if (UserType.TEACHER.name().equalsIgnoreCase(userType.trim().toUpperCase())
-        && StringUtils.isBlank((String) userMap.get(JsonKey.ORG_ID))) {
-      throw new ProjectCommonException(
-          ResponseCode.mandatoryParamsMissing.getErrorCode(),
-          ProjectUtil.formatMessage(
-              ResponseCode.mandatoryParamsMissing.getErrorMessage(), JsonKey.ORGANISATION_ID),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
+        && (StringUtils.isBlank((String) userMap.get(JsonKey.ORG_ID))
+            && StringUtils.isBlank((String) userMap.get(JsonKey.EXTERNAL_ID)))) {
+      ProjectCommonException.throwClientErrorException(
+          ResponseCode.mandatoryParamsMissing,
+          MessageFormat.format(
+              ResponseCode.mandatoryParamsMissing.getErrorMessage(),
+              (StringFormatter.joinByOr(JsonKey.ORGANISATION_ID, JsonKey.EXTERNAL_ID))));
     }
   }
 }
