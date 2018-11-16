@@ -379,6 +379,8 @@ public interface ResponseMessage {
     String ERROR_CSV_NO_DATA_ROWS = "No data rows in CSV.";
     String ERROR_INACTIVE_ORG = "Organisation corresponding to given {0} ({1}) is inactive.";
     String ERROR_CONFLICTING_VALUES = "Conflicting values for {0} ({1}) and {2} ({3}).";
+    String ERROR_CONFLICTING_ROOT_ORG_ID =
+        "Root organisation ID of API user is conflicting with that of specified organisation ID.";
   }
 
   interface Key {
@@ -708,5 +710,6 @@ public interface ResponseMessage {
     String ERROR_INACTIVE_ORG = "ERROR_INACTIVE_ORG";
     String ERROR_DUPLICATE_ENTRIES = "ERROR_DUPLICATE_ENTRIES";
     String ERROR_CONFLICTING_VALUES = "ERROR_CONFLICTING_VALUES";
+    String ERROR_CONFLICTING_ROOT_ORG_ID = "ERROR_CONFLICTING_ROOT_ORG_ID";
   }
 }
