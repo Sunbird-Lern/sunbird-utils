@@ -696,8 +696,8 @@ public enum ResponseCode {
   errorDuplicateEntries(
       ResponseMessage.Key.ERROR_DUPLICATE_ENTRIES, ResponseMessage.Message.ERROR_DUPLICATE_ENTRIES),
   errorConflictingValues(
-      ResponseMessage.Key.ERROR_CONFLICTING_PROPERTIES_VALUE,
-      ResponseMessage.Message.ERROR_CONFLICTING_PROPERTIES_VALUE),
+      ResponseMessage.Key.ERROR_CONFLICTING_VALUES,
+      ResponseMessage.Message.ERROR_CONFLICTING_VALUES),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
