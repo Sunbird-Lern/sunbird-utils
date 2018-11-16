@@ -698,6 +698,9 @@ public enum ResponseCode {
   errorConflictingValues(
       ResponseMessage.Key.ERROR_CONFLICTING_VALUES,
       ResponseMessage.Message.ERROR_CONFLICTING_VALUES),
+  errorConflictingRootOrgId(
+      ResponseMessage.Key.ERROR_CONFLICTING_ROOT_ORG_ID,
+      ResponseMessage.Message.ERROR_CONFLICTING_ROOT_ORG_ID),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
