@@ -40,12 +40,12 @@ public class UserBulkUploadRequestValidator {
     String userType = (String) userMap.get(JsonKey.USER_TYPE);
     if (UserType.TEACHER.name().equalsIgnoreCase(userType.trim().toUpperCase())
         && (StringUtils.isBlank((String) userMap.get(JsonKey.ORG_ID))
-            && StringUtils.isBlank((String) userMap.get(JsonKey.EXTERNAL_ID)))) {
+            && StringUtils.isBlank((String) userMap.get(JsonKey.ORG_EXTERNAL_ID)))) {
       ProjectCommonException.throwClientErrorException(
           ResponseCode.mandatoryParamsMissing,
           MessageFormat.format(
               ResponseCode.mandatoryParamsMissing.getErrorMessage(),
-              (StringFormatter.joinByOr(JsonKey.ORGANISATION_ID, JsonKey.EXTERNAL_ID))));
+              (StringFormatter.joinByOr(JsonKey.ORGANISATION_ID, JsonKey.ORG_EXTERNAL_ID))));
     }
   }
 }
