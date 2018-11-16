@@ -2,6 +2,7 @@ package org.sunbird.actorutil.org.impl;
 
 import akka.actor.ActorRef;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,8 +140,8 @@ public class OrganisationClientImpl implements OrganisationClient {
 
   @SuppressWarnings("unchecked")
   @Override
-  public Organisation esSearchOrgByFilter(Map<String, Object> filter) {
-    Map<String, Object> organization = null;
+  public List<Organisation> esSearchOrgByFilter(Map<String, Object> filter) {
+    List<Organisation> orgList = new ArrayList<>();
     SearchDTO searchDto = new SearchDTO();
     searchDto.getAdditionalProperties().put(JsonKey.FILTERS, filter);
     Map<String, Object> result =
@@ -150,8 +151,10 @@ public class OrganisationClientImpl implements OrganisationClient {
             ProjectUtil.EsType.organisation.getTypeName());
     List<Map<String, Object>> orgMapList = (List<Map<String, Object>>) result.get(JsonKey.CONTENT);
     if (CollectionUtils.isNotEmpty(orgMapList)) {
-      organization = orgMapList.get(0);
-      return objectMapper.convertValue(organization, Organisation.class);
+      for (Map<String, Object> orgMap : orgMapList) {
+        orgList.add(objectMapper.convertValue(orgMap, Organisation.class));
+      }
+      return orgList;
     } else {
       return null;
     }
