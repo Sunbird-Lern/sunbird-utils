@@ -42,9 +42,9 @@ public interface OrganisationClient {
   Organisation esGetOrgByExternalId(String externalId, String provider);
 
   /**
-   * Get details of organisation for given ID and provider.
+   * Get details of organisation for given ID.
    *
-   * @param id Identifier
+   * @param id Organisation ID
    * @return Organisation details
    */
   Organisation esGetOrgById(String id);
