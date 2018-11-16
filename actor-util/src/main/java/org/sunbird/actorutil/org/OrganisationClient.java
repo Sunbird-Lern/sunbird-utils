@@ -51,7 +51,7 @@ public interface OrganisationClient {
   Organisation esGetOrgById(String id);
 
   /**
-   * Get details of organisation for given external ID and provider.
+   * Get details of organisation for given filter.
    *
    * @param filter Filter criteria to search
    * @return List of organisation
