@@ -82,8 +82,7 @@ public enum ResponseCode {
       ResponseMessage.Key.CHANNEL_SHOULD_BE_UNIQUE,
       ResponseMessage.Message.CHANNEL_SHOULD_BE_UNIQUE),
   errorDuplicateEntry(
-	      ResponseMessage.Key.ERROR_DUPLICATE_ENTRY,
-	      ResponseMessage.Message.ERROR_DUPLICATE_ENTRY),
+      ResponseMessage.Key.ERROR_DUPLICATE_ENTRY, ResponseMessage.Message.ERROR_DUPLICATE_ENTRY),
   unableToConnect(
       ResponseMessage.Key.UNABLE_TO_CONNECT_TO_EKSTEP,
       ResponseMessage.Message.UNABLE_TO_CONNECT_TO_EKSTEP),
@@ -696,6 +695,9 @@ public enum ResponseCode {
       ResponseMessage.Key.ERROR_INACTIVE_ORG, ResponseMessage.Message.ERROR_INACTIVE_ORG),
   errorDuplicateEntries(
       ResponseMessage.Key.ERROR_DUPLICATE_ENTRIES, ResponseMessage.Message.ERROR_DUPLICATE_ENTRIES),
+  errorConflictingValues(
+      ResponseMessage.Key.ERROR_CONFLICTING_VALUES,
+      ResponseMessage.Message.ERROR_CONFLICTING_VALUES),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

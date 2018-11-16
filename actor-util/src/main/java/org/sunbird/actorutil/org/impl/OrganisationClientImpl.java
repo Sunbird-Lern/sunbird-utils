@@ -2,16 +2,23 @@ package org.sunbird.actorutil.org.impl;
 
 import akka.actor.ActorRef;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.sunbird.actorutil.InterServiceCommunication;
 import org.sunbird.actorutil.InterServiceCommunicationFactory;
 import org.sunbird.actorutil.org.OrganisationClient;
 import org.sunbird.common.ElasticSearchUtil;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
-import org.sunbird.common.models.util.*;
+import org.sunbird.common.models.util.ActorOperations;
+import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.LoggerEnum;
+import org.sunbird.common.models.util.ProjectLogger;
+import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.dto.SearchDTO;
@@ -21,6 +28,7 @@ public class OrganisationClientImpl implements OrganisationClient {
 
   private static InterServiceCommunication interServiceCommunication =
       InterServiceCommunicationFactory.getInstance();
+  ObjectMapper objectMapper = new ObjectMapper();
 
   @Override
   public String createOrg(ActorRef actorRef, Map<String, Object> orgMap) {
@@ -96,7 +104,6 @@ public class OrganisationClientImpl implements OrganisationClient {
   public Organisation esGetOrgByExternalId(String externalId, String provider) {
     Organisation organisation = null;
     Map<String, Object> map = null;
-    ObjectMapper objectMapper = new ObjectMapper();
     SearchDTO searchDto = new SearchDTO();
     Map<String, Object> filter = new HashMap<>();
     filter.put(JsonKey.EXTERNAL_ID, externalId);
@@ -114,5 +121,42 @@ public class OrganisationClientImpl implements OrganisationClient {
       organisation = objectMapper.convertValue(map, Organisation.class);
     }
     return organisation;
+  }
+
+  @Override
+  public Organisation esGetOrgById(String id) {
+    Map<String, Object> map = null;
+    map =
+        ElasticSearchUtil.getDataByIdentifier(
+            ProjectUtil.EsIndex.sunbird.getIndexName(),
+            ProjectUtil.EsType.organisation.getTypeName(),
+            id);
+    if (MapUtils.isEmpty(map)) {
+      return null;
+    } else {
+      return objectMapper.convertValue(map, Organisation.class);
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public List<Organisation> esSearchOrgByFilter(Map<String, Object> filter) {
+    List<Organisation> orgList = new ArrayList<>();
+    SearchDTO searchDto = new SearchDTO();
+    searchDto.getAdditionalProperties().put(JsonKey.FILTERS, filter);
+    Map<String, Object> result =
+        ElasticSearchUtil.complexSearch(
+            searchDto,
+            ProjectUtil.EsIndex.sunbird.getIndexName(),
+            ProjectUtil.EsType.organisation.getTypeName());
+    List<Map<String, Object>> orgMapList = (List<Map<String, Object>>) result.get(JsonKey.CONTENT);
+    if (CollectionUtils.isNotEmpty(orgMapList)) {
+      for (Map<String, Object> orgMap : orgMapList) {
+        orgList.add(objectMapper.convertValue(orgMap, Organisation.class));
+      }
+      return orgList;
+    } else {
+      return null;
+    }
   }
 }
