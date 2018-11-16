@@ -45,16 +45,17 @@ public interface OrganisationClient {
   /**
    * Get details of organisation for given ID.
    *
-   * @param id Organisation ID
+   * @param orgId Organisation ID
    * @return Organisation details
    */
-  Organisation esGetOrgById(String id);
+  Organisation esGetOrgById(String orgId);
 
   /**
-   * Get details of organisation for given filter.
+   * Search organisations using specified filter.
    *
-   * @param filter Filter criteria to search
-   * @return List of organisation
+   * @param filter Filter criteria for organisation search
+   * @return List of organisations
    */
   List<Organisation> esSearchOrgByFilter(Map<String, Object> filter);
+
 }
