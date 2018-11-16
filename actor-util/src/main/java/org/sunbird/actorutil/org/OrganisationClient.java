@@ -40,4 +40,20 @@ public interface OrganisationClient {
    * @return Organisation details
    */
   Organisation esGetOrgByExternalId(String externalId, String provider);
+
+  /**
+   * Get details of organisation for given ID and provider.
+   *
+   * @param id Identifier
+   * @return Organisation details
+   */
+  Organisation esGetOrgById(String id);
+
+  /**
+   * Get details of organisation for given external ID and provider.
+   *
+   * @param filter Filter criteria to search
+   * @return Organisation details
+   */
+  Organisation esSearchOrgByFilter(Map<String, Object> filter);
 }
