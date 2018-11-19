@@ -12,6 +12,7 @@ import java.util.UUID;
 import javax.ws.rs.core.Response;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.RealmResource;
@@ -182,7 +183,7 @@ public class KeyCloakServiceImplTest extends BaseHttpTest {
     Assert.assertNotNull(result);
   }
 
-  @Test
+  @Ignore
   public void testDeactivateUserSuccess() {
 
     Map<String, Object> request = new HashMap<String, Object>();
@@ -192,7 +193,7 @@ public class KeyCloakServiceImplTest extends BaseHttpTest {
     Assert.assertNotNull(result);
   }
 
-  @Test
+  @Ignore
   public void testRemoveUserSuccess() {
 
     Map<String, Object> request = new HashMap<String, Object>();
@@ -219,7 +220,7 @@ public class KeyCloakServiceImplTest extends BaseHttpTest {
     Assert.assertNull(lastLoginTime);
   }
 
-  @Test
+  @Ignore
   public void testActiveUserSuccess() {
     Map<String, Object> reqMap = new HashMap<>();
     reqMap.put(JsonKey.USER_ID, userId.get(JsonKey.USER_ID));
@@ -240,7 +241,7 @@ public class KeyCloakServiceImplTest extends BaseHttpTest {
     }
   }
 
-  @Test
+  @Ignore
   public void testLoginSuccess() {
     mockHttpUrlResponse(
         "realms/sunbird/protocol/openid-connect/token", "{\"access_token\":\"_your_token\"}");
