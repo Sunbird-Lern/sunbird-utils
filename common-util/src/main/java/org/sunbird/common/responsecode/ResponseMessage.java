@@ -381,6 +381,7 @@ public interface ResponseMessage {
     String ERROR_CONFLICTING_VALUES = "Conflicting values for {0} ({1}) and {2} ({3}).";
     String ERROR_CONFLICTING_ROOT_ORG_ID =
         "Root organisation ID of API user is conflicting with that of specified organisation ID.";
+    String ERROR_UPDATE_NOT_ALLOWED = "Update of {0} is not allowed.";
   }
 
   interface Key {
@@ -711,5 +712,6 @@ public interface ResponseMessage {
     String ERROR_DUPLICATE_ENTRIES = "ERROR_DUPLICATE_ENTRIES";
     String ERROR_CONFLICTING_VALUES = "ERROR_CONFLICTING_VALUES";
     String ERROR_CONFLICTING_ROOT_ORG_ID = "ERROR_CONFLICTING_ROOT_ORG_ID";
+    String ERROR_UPDATE_NOT_ALLOWED = "ERROR_UPDATE_NOT_ALLOWED";
   }
 }
