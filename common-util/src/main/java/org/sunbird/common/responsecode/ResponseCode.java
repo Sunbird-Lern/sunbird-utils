@@ -701,9 +701,9 @@ public enum ResponseCode {
   errorConflictingRootOrgId(
       ResponseMessage.Key.ERROR_CONFLICTING_ROOT_ORG_ID,
       ResponseMessage.Message.ERROR_CONFLICTING_ROOT_ORG_ID),
-  errorUpdateNotAllowed(
-      ResponseMessage.Key.ERROR_UPDATE_NOT_ALLOWED,
-      ResponseMessage.Message.ERROR_UPDATE_NOT_ALLOWED),
+  errorUpdateSettingNotAllowed(
+      ResponseMessage.Key.ERROR_UPDATE_SETTING_NOT_ALLOWED,
+      ResponseMessage.Message.ERROR_UPDATE_SETTING_NOT_ALLOWED),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
