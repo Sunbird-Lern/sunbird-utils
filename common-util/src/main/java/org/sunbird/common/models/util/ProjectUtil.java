@@ -529,6 +529,10 @@ public class ProjectUtil {
   public static VelocityContext getContext(Map<String, Object> map) {
     propertiesCache = PropertiesCache.getInstance();
     VelocityContext context = new VelocityContext();
+    if (StringUtils.isBlank((String) map.get(JsonKey.INSTALLATION_ACCOUNT_NAME))) {
+      String accountName = propertiesCache.getProperty(JsonKey.SUNBIRD_INSTALLATION_DISPLAY_NAME);
+      context.put(JsonKey.INSTALLATION_ACCOUNT_NAME, accountName);
+    }
     if (StringUtils.isNotBlank((String) map.get(JsonKey.ACTION_URL))) {
       context.put(JsonKey.ACTION_URL, getValue(map, JsonKey.ACTION_URL));
     }
