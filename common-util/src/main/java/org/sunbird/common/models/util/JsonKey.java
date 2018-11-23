@@ -735,7 +735,7 @@ public final class JsonKey {
   public static final String REMOVED_MENTORS = "removedMentors";
   public static final String ADDED_PARTICIPANTS = "addedParticipants";
   public static final String REMOVED_PARTICIPANTS = "removedParticipants";
-
+  public static final String URL_QUERY_STRING = "urlQueryString";
   public static final String SUNBIRD_API_REQUEST_LOWER_CASE_FIELDS =
       "sunbird_api_request_lower_case_fields";
   public static final String ATTRIBUTE = "attribute";
