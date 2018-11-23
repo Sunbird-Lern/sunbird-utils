@@ -747,6 +747,7 @@ public final class JsonKey {
   public static final String CALLER_ID = "callerId";
   public static final String USER_TYPE = "userType";
   public static final String SELF_SIGN_UP = "SELF_SIGN_UP";
+  public static final String TEXTBOOK = "textbook";
 
   private JsonKey() {}
 }
