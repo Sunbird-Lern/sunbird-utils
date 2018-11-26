@@ -41,7 +41,7 @@ import org.sunbird.common.models.util.KeyCloakConnectionProvider;
 })
 public class KeyCloakRsaKeyFetcherTest {
 
-  public static final String FAIL_TEST = "fail-check";
+  public static final String FALSE_REALM = "false-realm";
   private static final HttpClientBuilder httpClientBuilder =
       PowerMockito.mock(HttpClientBuilder.class);
   private static CloseableHttpClient client = null;
@@ -89,7 +89,7 @@ public class KeyCloakRsaKeyFetcherTest {
 
     PublicKey key =
         new KeyCloakRsaKeyFetcher()
-            .getPublicKeyFromKeyCloak(KeyCloakConnectionProvider.SSO_URL, FAIL_TEST);
+            .getPublicKeyFromKeyCloak(KeyCloakConnectionProvider.SSO_URL, FALSE_REALM);
 
     Assert.assertEquals(key, null);
   }
