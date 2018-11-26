@@ -727,6 +727,7 @@ public final class JsonKey {
   public static final String BATCH_MENTOR_UNENROL = "batchMentorUnenrol";
   public static final String UNENROLL_FROM_COURSE_BATCH = "Unenrolled from Course";
   public static final String OPEN_BATCH_LEARNER_UNENROL = "openBatchLearnerUnenrol";
+
   public static final String MENTOR = "mentor";
   public static final String OLD = "old";
   public static final String NEW = "new";
@@ -748,6 +749,12 @@ public final class JsonKey {
   public static final String USER_TYPE = "userType";
   public static final String SELF_SIGN_UP = "SELF_SIGN_UP";
   public static final String TEXTBOOK = "textbook";
+
+  public static final String COURSE_BATCH_URL = "courseBatchUrl";
+  public static final String SUNBIRD_COURSE_BATCH_NOTIFICATION_SIGNATURE =
+      "sunbird_course_batch_notification_signature";
+  public static final String SIGNATURE = "signature";
+  public static final String OPEN_BATCH_LEARNER_ENROL = "openBatchLearnerEnrol";
 
   private JsonKey() {}
 }

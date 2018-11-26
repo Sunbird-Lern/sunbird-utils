@@ -560,13 +560,19 @@ public class ProjectUtil {
     if (StringUtils.isNotBlank((String) map.get(JsonKey.END_DATE))) {
       context.put(JsonKey.BATCH_END_DATE, map.remove(JsonKey.END_DATE));
     }
-    if (StringUtils.isNotBlank((String) map.get(JsonKey.NAME))) {
-      context.put(JsonKey.BATCH_NAME, map.remove(JsonKey.NAME));
+    if (StringUtils.isNotBlank((String) map.get(JsonKey.BATCH_NAME))) {
+      context.put(JsonKey.BATCH_NAME, map.remove(JsonKey.BATCH_NAME));
     }
     if (StringUtils.isNotBlank((String) map.get(JsonKey.FIRST_NAME))) {
       context.put(JsonKey.NAME, map.remove(JsonKey.FIRST_NAME));
     } else {
       context.put(JsonKey.NAME, "");
+    }
+    if (StringUtils.isNotBlank((String) map.get(JsonKey.SIGNATURE))) {
+      context.put(JsonKey.SIGNATURE, map.remove(JsonKey.SIGNATURE));
+    }
+    if (StringUtils.isNotBlank((String) map.get(JsonKey.COURSE_BATCH_URL))) {
+      context.put(JsonKey.COURSE_BATCH_URL, map.remove(JsonKey.COURSE_BATCH_URL));
     }
     context.put(JsonKey.ALLOWED_LOGIN, propertiesCache.getProperty(JsonKey.SUNBIRD_ALLOWED_LOGIN));
 
