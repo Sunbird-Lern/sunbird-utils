@@ -9,10 +9,7 @@ public enum BulkUploadActorOperation {
   ORG_BULK_UPLOAD_BACKGROUND_JOB("orgBulkUploadBackground"),
 
   USER_BULK_UPLOAD("userBulkUpload"),
-  USER_BULK_UPLOAD_BACKGROUND_JOB("userBulkUploadBackground"),
-
-  TEXTBOOK_TOC_UPLOAD("textbookTocUpload"),
-  TEXTBOOK_TOC_DOWNLOAD("textbookTocDownload");
+  USER_BULK_UPLOAD_BACKGROUND_JOB("userBulkUploadBackground");
 
   private String value;
 
