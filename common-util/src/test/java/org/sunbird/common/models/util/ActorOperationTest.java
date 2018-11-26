@@ -41,7 +41,7 @@ public class ActorOperationTest {
     Assert.assertEquals("createUser", ActorOperations.CREATE_USER.getValue());
     Assert.assertEquals("updateUser", ActorOperations.UPDATE_USER.getValue());
     Assert.assertEquals("userAuth", ActorOperations.USER_AUTH.getValue());
-    Assert.assertEquals("getUserProfile", ActorOperations.GET_PROFILE.getValue());
+    Assert.assertEquals("getUserProfile", ActorOperations.GET_USER_PROFILE.getValue());
     Assert.assertEquals("createOrg", ActorOperations.CREATE_ORG.getValue());
     Assert.assertEquals("updateOrg", ActorOperations.UPDATE_ORG.getValue());
     Assert.assertEquals("updateOrgStatus", ActorOperations.UPDATE_ORG_STATUS.getValue());

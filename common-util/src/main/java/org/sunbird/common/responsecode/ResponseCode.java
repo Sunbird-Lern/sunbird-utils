@@ -81,6 +81,8 @@ public enum ResponseCode {
   channelUniquenessInvalid(
       ResponseMessage.Key.CHANNEL_SHOULD_BE_UNIQUE,
       ResponseMessage.Message.CHANNEL_SHOULD_BE_UNIQUE),
+  errorDuplicateEntry(
+      ResponseMessage.Key.ERROR_DUPLICATE_ENTRY, ResponseMessage.Message.ERROR_DUPLICATE_ENTRY),
   unableToConnect(
       ResponseMessage.Key.UNABLE_TO_CONNECT_TO_EKSTEP,
       ResponseMessage.Message.UNABLE_TO_CONNECT_TO_EKSTEP),
@@ -171,10 +173,10 @@ public enum ResponseCode {
   keyCloakDefaultError(
       ResponseMessage.Key.KEY_CLOAK_DEFAULT_ERROR, ResponseMessage.Message.KEY_CLOAK_DEFAULT_ERROR),
   userRegUnSuccessfull(
-      ResponseMessage.Key.USER_REG_UNSUCCESSFULL, ResponseMessage.Message.USER_REG_UNSUCCESSFULL),
+      ResponseMessage.Key.USER_REG_UNSUCCESSFUL, ResponseMessage.Message.USER_REG_UNSUCCESSFUL),
   userUpdationUnSuccessfull(
-      ResponseMessage.Key.USER_UPDATE_UNSUCCESSFULL,
-      ResponseMessage.Message.USER_UPDATE_UNSUCCESSFULL),
+      ResponseMessage.Key.USER_UPDATE_UNSUCCESSFUL,
+      ResponseMessage.Message.USER_UPDATE_UNSUCCESSFUL),
   loginTypeError(ResponseMessage.Key.LOGIN_TYPE_ERROR, ResponseMessage.Message.LOGIN_TYPE_ERROR),
   invalidOrgId(ResponseMessage.Key.INVALID_ORG_ID, ResponseMessage.Key.INVALID_ORG_ID),
   invalidOrgStatus(ResponseMessage.Key.INVALID_ORG_STATUS, ResponseMessage.Key.INVALID_ORG_STATUS),
@@ -420,10 +422,6 @@ public enum ResponseCode {
       ResponseMessage.Key.INVALID_PHONE_NUMBER, ResponseMessage.Message.INVALID_PHONE_NUMBER),
   invalidCountryCode(
       ResponseMessage.Key.INVALID_COUNTRY_CODE, ResponseMessage.Message.INVALID_COUNTRY_CODE),
-  duplicatePhoneData(
-      ResponseMessage.Key.DUPLICATE_PHONE_DATA, ResponseMessage.Message.DUPLICATE_PHONE_DATA),
-  duplicateEmailData(
-      ResponseMessage.Key.DUPLICATE_EMAIL_DATA, ResponseMessage.Message.DUPLICATE_EMAIL_DATA),
   locationIdRequired(
       ResponseMessage.Key.LOCATION_ID_REQUIRED, ResponseMessage.Message.LOCATION_ID_REQUIRED),
   functionalityMissing(ResponseMessage.Key.NOT_SUPPORTED, ResponseMessage.Message.NOT_SUPPORTED),
@@ -537,6 +535,12 @@ public enum ResponseCode {
   mandatoryParamsMissing(
       ResponseMessage.Key.MANDATORY_PARAMETER_MISSING,
       ResponseMessage.Message.MANDATORY_PARAMETER_MISSING),
+  errorMandatoryParamsEmpty(
+      ResponseMessage.Key.ERROR_MANDATORY_PARAMETER_EMPTY,
+      ResponseMessage.Message.ERROR_MANDATORY_PARAMETER_EMPTY),
+  errorNoFrameworkFound(
+      ResponseMessage.Key.ERROR_NO_FRAMEWORK_FOUND,
+      ResponseMessage.Message.ERROR_NO_FRAMEWORK_FOUND),
   unupdatableField(
       ResponseMessage.Key.UPDATE_NOT_ALLOWED, ResponseMessage.Message.UPDATE_NOT_ALLOWED),
   mandatoryHeadersMissing(
@@ -668,6 +672,38 @@ public enum ResponseCode {
   errorNoRootOrgAssociated(
       ResponseMessage.Key.ERROR_NO_ROOT_ORG_ASSOCIATED,
       ResponseMessage.Message.ERROR_NO_ROOT_ORG_ASSOCIATED),
+  errorInactiveCustodianOrg(
+      ResponseMessage.Key.ERROR_INACTIVE_CUSTODIAN_ORG,
+      ResponseMessage.Message.ERROR_INACTIVE_CUSTODIAN_ORG),
+  errorUnsupportedCloudStorage(
+      ResponseMessage.Key.ERROR_UNSUPPORTED_CLOUD_STORAGE,
+      ResponseMessage.Message.ERROR_UNSUPPORTED_CLOUD_STORAGE),
+  errorUnsupportedField(
+      ResponseMessage.Key.ERROR_UNSUPPORTED_FIELD, ResponseMessage.Message.ERROR_UNSUPPORTED_FIELD),
+  errorGenerateDownloadLink(
+      ResponseMessage.Key.ERROR_GENERATE_DOWNLOAD_LINK,
+      ResponseMessage.Message.ERROR_GENERATE_DOWNLOAD_LINK),
+  errorUnavailableDownloadLink(
+      ResponseMessage.Key.ERROR_DOWNLOAD_LINK_UNAVAILABLE,
+      ResponseMessage.Message.ERROR_DOWNLOAD_LINK_UNAVAILABLE),
+  errorSavingStorageDetails(
+      ResponseMessage.Key.ERROR_SAVING_STORAGE_DETAILS,
+      ResponseMessage.Message.ERROR_SAVING_STORAGE_DETAILS),
+  errorCsvNoDataRows(
+      ResponseMessage.Key.ERROR_CSV_NO_DATA_ROWS, ResponseMessage.Message.ERROR_CSV_NO_DATA_ROWS),
+  errorInactiveOrg(
+      ResponseMessage.Key.ERROR_INACTIVE_ORG, ResponseMessage.Message.ERROR_INACTIVE_ORG),
+  errorDuplicateEntries(
+      ResponseMessage.Key.ERROR_DUPLICATE_ENTRIES, ResponseMessage.Message.ERROR_DUPLICATE_ENTRIES),
+  errorConflictingValues(
+      ResponseMessage.Key.ERROR_CONFLICTING_VALUES,
+      ResponseMessage.Message.ERROR_CONFLICTING_VALUES),
+  errorConflictingRootOrgId(
+      ResponseMessage.Key.ERROR_CONFLICTING_ROOT_ORG_ID,
+      ResponseMessage.Message.ERROR_CONFLICTING_ROOT_ORG_ID),
+  errorUpdateSettingNotAllowed(
+      ResponseMessage.Key.ERROR_UPDATE_SETTING_NOT_ALLOWED,
+      ResponseMessage.Message.ERROR_UPDATE_SETTING_NOT_ALLOWED),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

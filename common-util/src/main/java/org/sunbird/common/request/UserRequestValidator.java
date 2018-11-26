@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
@@ -28,12 +29,6 @@ public class UserRequestValidator extends BaseRequestValidator {
             JsonKey.EXTERNAL_ID_TYPE,
             JsonKey.ID_TYPE),
         userRequest);
-    if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.USERNAME))) {
-      throw new ProjectCommonException(
-          ResponseCode.userNameRequired.getErrorCode(),
-          ResponseCode.userNameRequired.getErrorMessage(),
-          ERROR_CODE);
-    }
     createUserBasicValidation(userRequest);
     phoneValidation(userRequest);
     addressValidation(userRequest);
@@ -42,12 +37,24 @@ public class UserRequestValidator extends BaseRequestValidator {
     validateWebPages(userRequest);
   }
 
-  public void validateCreateUserV1Request(Request userRequest) {
+  private void validateUserName(Request userRequest) {
+    validateParam(
+        (String) userRequest.getRequest().get(JsonKey.USERNAME),
+        ResponseCode.mandatoryParamsMissing,
+        JsonKey.USERNAME);
+  }
+
+  public void validateCreateUserV3Request(Request userRequest) {
     validateCreateUserRequest(userRequest);
-    fieldsNotAllowed(Arrays.asList(JsonKey.ORGANISATION_ID), userRequest);
+  }
+
+  public void validateCreateUserV1Request(Request userRequest) {
+    validateUserName(userRequest);
+    validateCreateUserV3Request(userRequest);
   }
 
   public void validateCreateUserV2Request(Request userRequest) {
+    validateUserName(userRequest);
     validateParam(
         (String) userRequest.getRequest().get(JsonKey.CHANNEL),
         ResponseCode.mandatoryParamsMissing,
@@ -143,7 +150,10 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   private void createUserBasicProfileFieldsValidation(Request userRequest) {
-	validateParam((String) userRequest.getRequest().get(JsonKey.FIRST_NAME), ResponseCode.mandatoryParamsMissing,JsonKey.FIRST_NAME);
+    validateParam(
+        (String) userRequest.getRequest().get(JsonKey.FIRST_NAME),
+        ResponseCode.mandatoryParamsMissing,
+        JsonKey.FIRST_NAME);
     if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.EMAIL))
         && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PHONE))) {
       throw new ProjectCommonException(
@@ -265,7 +275,7 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   private void validateJob(Request userRequest) {
-   
+
     Map<String, Object> reqMap = null;
     List<Map<String, Object>> reqList =
         (List<Map<String, Object>>) userRequest.get(JsonKey.JOB_PROFILE);
@@ -275,50 +285,50 @@ public class UserRequestValidator extends BaseRequestValidator {
       validateJobOrgNameAndAddress(reqMap);
     }
   }
-  
+
   private void validateJoinEndDate(Map reqMap) {
-	  if (null != reqMap.get(JsonKey.JOINING_DATE)) {
-	        boolean bool =
-	            ProjectUtil.isDateValidFormat(
-	                ProjectUtil.YEAR_MONTH_DATE_FORMAT, (String) reqMap.get(JsonKey.JOINING_DATE));
-	        if (!bool) {
-	          throw new ProjectCommonException(
-	              ResponseCode.dateFormatError.getErrorCode(),
-	              ResponseCode.dateFormatError.getErrorMessage(),
-	              ERROR_CODE);
-	        }
-	      }
-	      if (null != reqMap.get(JsonKey.END_DATE)) {
-	        boolean bool =
-	            ProjectUtil.isDateValidFormat(
-	                ProjectUtil.YEAR_MONTH_DATE_FORMAT, (String) reqMap.get(JsonKey.END_DATE));
-	        if (!bool) {
-	          throw new ProjectCommonException(
-	              ResponseCode.dateFormatError.getErrorCode(),
-	              ResponseCode.dateFormatError.getErrorMessage(),
-	              ERROR_CODE);
-	        }
-	      }
+    if (null != reqMap.get(JsonKey.JOINING_DATE)) {
+      boolean bool =
+          ProjectUtil.isDateValidFormat(
+              ProjectUtil.YEAR_MONTH_DATE_FORMAT, (String) reqMap.get(JsonKey.JOINING_DATE));
+      if (!bool) {
+        throw new ProjectCommonException(
+            ResponseCode.dateFormatError.getErrorCode(),
+            ResponseCode.dateFormatError.getErrorMessage(),
+            ERROR_CODE);
+      }
+    }
+    if (null != reqMap.get(JsonKey.END_DATE)) {
+      boolean bool =
+          ProjectUtil.isDateValidFormat(
+              ProjectUtil.YEAR_MONTH_DATE_FORMAT, (String) reqMap.get(JsonKey.END_DATE));
+      if (!bool) {
+        throw new ProjectCommonException(
+            ResponseCode.dateFormatError.getErrorCode(),
+            ResponseCode.dateFormatError.getErrorMessage(),
+            ERROR_CODE);
+      }
+    }
   }
-  
+
   private void validateJobOrgNameAndAddress(Map reqMap) {
-	  Map<String, Object> addrReqMap = null;
-	  if (StringUtils.isBlank((String) reqMap.get(JsonKey.JOB_NAME))) {
-	        throw new ProjectCommonException(
-	            ResponseCode.jobNameError.getErrorCode(),
-	            ResponseCode.jobNameError.getErrorMessage(),
-	            ERROR_CODE);
-	      }
-	      if (StringUtils.isBlank((String) reqMap.get(JsonKey.ORG_NAME))) {
-	        throw new ProjectCommonException(
-	            ResponseCode.organisationNameError.getErrorCode(),
-	            ResponseCode.organisationNameError.getErrorMessage(),
-	            ERROR_CODE);
-	      }
-	      if (reqMap.containsKey(JsonKey.ADDRESS) && null != reqMap.get(JsonKey.ADDRESS)) {
-	        addrReqMap = (Map<String, Object>) reqMap.get(JsonKey.ADDRESS);
-	        new AddressRequestValidator().validateAddress(addrReqMap, JsonKey.JOB_PROFILE);
-	      }
+    Map<String, Object> addrReqMap = null;
+    if (StringUtils.isBlank((String) reqMap.get(JsonKey.JOB_NAME))) {
+      throw new ProjectCommonException(
+          ResponseCode.jobNameError.getErrorCode(),
+          ResponseCode.jobNameError.getErrorMessage(),
+          ERROR_CODE);
+    }
+    if (StringUtils.isBlank((String) reqMap.get(JsonKey.ORG_NAME))) {
+      throw new ProjectCommonException(
+          ResponseCode.organisationNameError.getErrorCode(),
+          ResponseCode.organisationNameError.getErrorMessage(),
+          ERROR_CODE);
+    }
+    if (reqMap.containsKey(JsonKey.ADDRESS) && null != reqMap.get(JsonKey.ADDRESS)) {
+      addrReqMap = (Map<String, Object>) reqMap.get(JsonKey.ADDRESS);
+      new AddressRequestValidator().validateAddress(addrReqMap, JsonKey.JOB_PROFILE);
+    }
   }
 
   @SuppressWarnings("unchecked")
@@ -357,7 +367,6 @@ public class UserRequestValidator extends BaseRequestValidator {
    *
    * @param userRequest Request
    */
-  @SuppressWarnings({"rawtypes"})
   public void validateUpdateUserRequest(Request userRequest) {
     externalIdsValidation(userRequest, JsonKey.UPDATE);
     phoneValidation(userRequest);
@@ -372,8 +381,8 @@ public class UserRequestValidator extends BaseRequestValidator {
           ResponseCode.invalidRootOrganisationId.getErrorMessage(),
           ERROR_CODE);
     }
-
     validateExtIdTypeAndProvider(userRequest);
+    validateFrameworkDetails(userRequest);
   }
 
   private void validateAddressField(Request userRequest) {
@@ -808,6 +817,95 @@ public class UserRequestValidator extends BaseRequestValidator {
         }
       }
       checkedList.add(externalId);
+    }
+  }
+
+  private void validateFrameworkDetails(Request request) {
+    if (request.getRequest().containsKey(JsonKey.FRAMEWORK)
+        && (!(request.getRequest().get(JsonKey.FRAMEWORK) instanceof Map))) {
+      throw new ProjectCommonException(
+          ResponseCode.dataTypeError.getErrorCode(),
+          ResponseCode.dataTypeError.getErrorMessage(),
+          ERROR_CODE,
+          JsonKey.FRAMEWORK,
+          JsonKey.MAP);
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  public void validateMandatoryFrameworkFields(
+      Map<String, Object> userMap,
+      List<String> frameworkFields,
+      List<String> frameworkMandatoryFields) {
+    if (userMap.containsKey(JsonKey.FRAMEWORK)) {
+      Map<String, Object> frameworkRequest = (Map<String, Object>) userMap.get(JsonKey.FRAMEWORK);
+      for (String field : frameworkFields) {
+        if (frameworkMandatoryFields.contains(field)) {
+          if (!frameworkRequest.containsKey(field)) {
+            validateParam(null, ResponseCode.mandatoryParamsMissing, field);
+          }
+          validateListParamWithPrefix(frameworkRequest, JsonKey.FRAMEWORK, field);
+          List<String> fieldValue = (List) frameworkRequest.get(field);
+          if (fieldValue.isEmpty()) {
+            throw new ProjectCommonException(
+                ResponseCode.errorMandatoryParamsEmpty.getErrorCode(),
+                ResponseCode.errorMandatoryParamsEmpty.getErrorMessage(),
+                ERROR_CODE,
+                StringFormatter.joinByDot(JsonKey.FRAMEWORK, field));
+          }
+        } else {
+          if (frameworkRequest.containsKey(field)
+              && !(frameworkRequest.get(field) instanceof List)) {
+            throw new ProjectCommonException(
+                ResponseCode.dataTypeError.getErrorCode(),
+                ResponseCode.dataTypeError.getErrorMessage(),
+                ERROR_CODE,
+                field,
+                JsonKey.LIST);
+          }
+        }
+      }
+      List<String> frameworkRequestFieldList =
+          frameworkRequest.keySet().stream().collect(Collectors.toList());
+      for (String frameworkRequestField : frameworkRequestFieldList) {
+        if (!frameworkFields.contains(frameworkRequestField)) {
+          throw new ProjectCommonException(
+              ResponseCode.errorUnsupportedField.getErrorCode(),
+              ResponseCode.errorUnsupportedField.getErrorMessage(),
+              ERROR_CODE,
+              StringFormatter.joinByDot(JsonKey.FRAMEWORK, frameworkRequestField));
+        }
+      }
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  public void validateFrameworkCategoryValues(
+      Map<String, Object> userMap, Map<String, List<Map<String, String>>> frameworkMap) {
+    Map<String, List<String>> fwRequest =
+        (Map<String, List<String>>) userMap.get(JsonKey.FRAMEWORK);
+    for (Map.Entry<String, List<String>> fwRequestFieldEntry : fwRequest.entrySet()) {
+      if (!fwRequestFieldEntry.getValue().isEmpty()) {
+        List<String> allowedFieldValues =
+            frameworkMap
+                .get(fwRequestFieldEntry.getKey())
+                .stream()
+                .map(fieldMap -> fieldMap.get(JsonKey.NAME))
+                .collect(Collectors.toList());
+
+        List<String> fwRequestFieldList = (List<String>) fwRequestFieldEntry.getValue();
+
+        for (String fwRequestField : fwRequestFieldList) {
+          if (!allowedFieldValues.contains(fwRequestField)) {
+            throw new ProjectCommonException(
+                ResponseCode.invalidParameterValue.getErrorCode(),
+                ResponseCode.invalidParameterValue.getErrorMessage(),
+                ResponseCode.CLIENT_ERROR.getResponseCode(),
+                fwRequestField,
+                StringFormatter.joinByDot(JsonKey.FRAMEWORK, fwRequestFieldEntry.getKey()));
+          }
+        }
+      }
     }
   }
 }

@@ -1,6 +1,7 @@
 package org.sunbird.actorutil.org;
 
 import akka.actor.ActorRef;
+import java.util.List;
 import java.util.Map;
 import org.sunbird.models.organisation.Organisation;
 
@@ -31,4 +32,30 @@ public interface OrganisationClient {
    * @return Organisation details
    */
   Organisation getOrgById(ActorRef actorRef, String orgId);
+
+  /**
+   * Get details of organisation for given external ID and provider.
+   *
+   * @param externalId External ID
+   * @param provider provider
+   * @return Organisation details
+   */
+  Organisation esGetOrgByExternalId(String externalId, String provider);
+
+  /**
+   * Get details of organisation for given ID.
+   *
+   * @param orgId Organisation ID
+   * @return Organisation details
+   */
+  Organisation esGetOrgById(String orgId);
+
+  /**
+   * Search organisations using specified filter.
+   *
+   * @param filter Filter criteria for organisation search
+   * @return List of organisations
+   */
+  List<Organisation> esSearchOrgByFilter(Map<String, Object> filter);
+
 }

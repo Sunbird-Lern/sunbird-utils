@@ -387,11 +387,6 @@ public class ProjectUtil {
     }
   }
 
-  /**
-   * This enum will hold all the Section data type name.
-   *
-   * @author Amit Kumar
-   */
   public enum SectionDataType {
     course("course"),
     content("content");
@@ -406,11 +401,6 @@ public class ProjectUtil {
     }
   }
 
-  /**
-   * This enum will hold all the Address type name.
-   *
-   * @author Amit Kumar
-   */
   public enum AddressType {
     permanent("permanent"),
     current("current"),
@@ -560,6 +550,30 @@ public class ProjectUtil {
     context.put(JsonKey.ACTION_NAME, getValue(map, JsonKey.ACTION_NAME));
     context.put(JsonKey.USERNAME, getValue(map, JsonKey.USERNAME));
     context.put(JsonKey.TEMPORARY_PASSWORD, getValue(map, JsonKey.TEMPORARY_PASSWORD));
+
+    if (StringUtils.isNotBlank((String) map.get(JsonKey.COURSE_NAME))) {
+      context.put(JsonKey.COURSE_NAME, map.remove(JsonKey.COURSE_NAME));
+    }
+    if (StringUtils.isNotBlank((String) map.get(JsonKey.START_DATE))) {
+      context.put(JsonKey.BATCH_START_DATE, map.remove(JsonKey.START_DATE));
+    }
+    if (StringUtils.isNotBlank((String) map.get(JsonKey.END_DATE))) {
+      context.put(JsonKey.BATCH_END_DATE, map.remove(JsonKey.END_DATE));
+    }
+    if (StringUtils.isNotBlank((String) map.get(JsonKey.BATCH_NAME))) {
+      context.put(JsonKey.BATCH_NAME, map.remove(JsonKey.BATCH_NAME));
+    }
+    if (StringUtils.isNotBlank((String) map.get(JsonKey.FIRST_NAME))) {
+      context.put(JsonKey.NAME, map.remove(JsonKey.FIRST_NAME));
+    } else {
+      context.put(JsonKey.NAME, "");
+    }
+    if (StringUtils.isNotBlank((String) map.get(JsonKey.SIGNATURE))) {
+      context.put(JsonKey.SIGNATURE, map.remove(JsonKey.SIGNATURE));
+    }
+    if (StringUtils.isNotBlank((String) map.get(JsonKey.COURSE_BATCH_URL))) {
+      context.put(JsonKey.COURSE_BATCH_URL, map.remove(JsonKey.COURSE_BATCH_URL));
+    }
     context.put(JsonKey.ALLOWED_LOGIN, propertiesCache.getProperty(JsonKey.SUNBIRD_ALLOWED_LOGIN));
 
     for (Map.Entry<String, Object> entry : map.entrySet()) {
@@ -818,19 +832,6 @@ public class ProjectUtil {
         ResponseCode.invalidUsrData.getErrorCode(),
         ResponseCode.invalidUsrData.getErrorMessage(),
         ResponseCode.CLIENT_ERROR.getResponseCode());
-  }
-
-  /**
-   * This method will create ProjectCommonException of type resource not found exception and throws
-   * it.
-   *
-   * @return ProjectCommonException
-   */
-  public static ProjectCommonException createResourceNotFoundException() {
-    return new ProjectCommonException(
-        ResponseCode.resourceNotFound.getErrorCode(),
-        ResponseCode.resourceNotFound.getErrorMessage(),
-        ResponseCode.RESOURCE_NOT_FOUND.getResponseCode());
   }
 
   /**
