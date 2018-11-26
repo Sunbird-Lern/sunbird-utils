@@ -1,7 +1,8 @@
 package org.sunbird.common.models.util;
 
 /**
- * This enum holds all common constant for Textbook Toc API
+ * This enum holds actor operations for Textbook TOC API.
+ *
  * @author gauraw
  */
 public enum TextbookActorOperation {
@@ -18,4 +19,5 @@ public enum TextbookActorOperation {
     public String getValue() {
         return this.value;
     }
+
 }
