@@ -57,10 +57,13 @@ public class TextbookToc {
         switch (level) {
             case 1:
                 this.firstLevelUnit = data;
+                break;
             case 2:
                 this.secondLevelUnit = data;
+                break;
             case 3:
                 this.thirdLevelUnit = data;
+                break;
         }
     }
 
