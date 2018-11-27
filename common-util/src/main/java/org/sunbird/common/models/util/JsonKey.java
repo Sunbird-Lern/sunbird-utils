@@ -545,7 +545,7 @@ public final class JsonKey {
   public static final String SUNBIRD_SSO_RELAM = "sunbird_sso_realm";
   public static final String SUNBIRD_SSO_URL = "sunbird_sso_url";
   public static final String SUNBIRD_SSO_USERNAME = "sunbird_sso_username";
-  public static final String SUNBIRD_WEB_URL = "sunird_web_url";
+  public static final String SUNBIRD_WEB_URL = "sunbird_web_url";
   public static final String SUNBIRD_CHANNEL_READ_API = "sunbird_channel_read_api";
   public static final String SUNBIRD_FRAMEWORK_READ_API = "sunbird_framework_read_api";
   public static final String SYSTEM = "system";
