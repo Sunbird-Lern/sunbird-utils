@@ -19,7 +19,7 @@ public class TextbookToc {
     private String grade;
     private String subject;
 
-    private String leafNodeDesc;
+    private String description;
     private String qrCodeReq;
     private String purpose;
     private List<String> keywords;
@@ -88,12 +88,12 @@ public class TextbookToc {
         this.subject = subject;
     }
 
-    public String getLeafNodeDesc() {
-        return leafNodeDesc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setLeafNodeDesc(String leafNodeDesc) {
-        this.leafNodeDesc = leafNodeDesc;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getQrCodeReq() {
@@ -119,5 +119,5 @@ public class TextbookToc {
     public void setKeywords(List<String> keywords) {
         this.keywords = keywords;
     }
-    
+
 }
