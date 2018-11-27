@@ -53,6 +53,17 @@ public class TextbookToc {
         this.keywords = keywords;
     }
 
+    public void setUnit(int level, String data) {
+        switch (level) {
+            case 1:
+                this.firstLevelUnit = data;
+            case 2:
+                this.secondLevelUnit = data;
+            case 3:
+                this.thirdLevelUnit = data;
+        }
+    }
+
     public String getTextbookId() {
         return textbookId;
     }
