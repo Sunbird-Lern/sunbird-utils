@@ -24,6 +24,35 @@ public class TextbookToc {
     private String purpose;
     private List<String> keywords;
 
+    public TextbookToc() {
+    }
+
+    public TextbookToc(String textbookId, String textbookName, String firstLevelUnit, String secondLevelUnit, String thirdLevelUnit, String medium, String grade, String subject) {
+        this.textbookId = textbookId;
+        this.textbookName = textbookName;
+        this.firstLevelUnit = firstLevelUnit;
+        this.secondLevelUnit = secondLevelUnit;
+        this.thirdLevelUnit = thirdLevelUnit;
+        this.medium = medium;
+        this.grade = grade;
+        this.subject = subject;
+    }
+
+    public TextbookToc(String textbookId, String textbookName, String firstLevelUnit, String secondLevelUnit, String thirdLevelUnit, String medium, String grade, String subject, String description, String qrCodeReq, String purpose, List<String> keywords) {
+        this.textbookId = textbookId;
+        this.textbookName = textbookName;
+        this.firstLevelUnit = firstLevelUnit;
+        this.secondLevelUnit = secondLevelUnit;
+        this.thirdLevelUnit = thirdLevelUnit;
+        this.medium = medium;
+        this.grade = grade;
+        this.subject = subject;
+        this.description = description;
+        this.qrCodeReq = qrCodeReq;
+        this.purpose = purpose;
+        this.keywords = keywords;
+    }
+
     public String getTextbookId() {
         return textbookId;
     }
