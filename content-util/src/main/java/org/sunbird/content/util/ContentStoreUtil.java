@@ -60,6 +60,12 @@ public class ContentStoreUtil {
     return handleReadRequest(contentId, JsonKey.SUNBIRD_CONTENT_GET_HIERARCHY_API, requestParams);
   }
 
+  public static Map<String, Object> readContent(String contentId) {
+    ProjectLogger.log(
+            "ContentStoreUtil::readContent: contentId = " + contentId, LoggerEnum.INFO.name());
+    return handleReadRequest(contentId, JsonKey.SUNBIRD_CONTENT_READ_API);
+  }
+
   @SuppressWarnings("unchecked")
   private static Map<String, Object> handleReadRequest(String id, String urlPath) {
     Map<String, String> headers = getHeaders();
