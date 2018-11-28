@@ -752,6 +752,9 @@ public final class JsonKey {
   public static final String SELF_SIGN_UP = "SELF_SIGN_UP";
   public static final String TEXTBOOK = "textbook";
   public static final String TEXTBOOK_ID = "textbookId";
+  public static final String TEXTBOOK_TOC_ALLOWED_MIMETYPE = "application/vnd.ekstep.content-collection";
+  public static final String TEXTBOOK_TOC_ALLOWED_CONTNET_TYPES = "textbook_toc_allowed_content_types";
+  public static final String MIME_TYPE = "mimeType";
 
   public static final String COURSE_BATCH_URL = "courseBatchUrl";
   public static final String SUNBIRD_COURSE_BATCH_NOTIFICATION_SIGNATURE =
