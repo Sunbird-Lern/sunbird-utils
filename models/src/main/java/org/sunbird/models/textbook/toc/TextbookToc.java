@@ -1,6 +1,7 @@
 package org.sunbird.models.textbook.toc;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Model Class for Textbook Toc
@@ -163,4 +164,26 @@ public class TextbookToc {
         this.keywords = keywords;
     }
 
+    public String toCSVtring() {
+        StringBuilder sb = new StringBuilder();
+        Optional.ofNullable(medium).
+                map(sb::append);
+        sb.append(",");
+        Optional.ofNullable(grade).
+                ifPresent(sb::append);
+        sb.append(",");
+        Optional.ofNullable(subject).
+                ifPresent(sb::append);
+        sb.append(",");
+        Optional.ofNullable(firstLevelUnit).
+                ifPresent(sb::append);
+        sb.append(",");
+        Optional.ofNullable(secondLevelUnit).
+                ifPresent(sb::append);
+        sb.append(",");
+        Optional.ofNullable(thirdLevelUnit).
+                ifPresent(sb::append);
+        sb.append(",").append(",").append(",").append(",");
+        return sb.toString();
+    }
 }
