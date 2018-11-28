@@ -8,6 +8,7 @@ package org.sunbird.common.models.util;
 public enum TextbookActorOperation {
 
     TEXTBOOK_TOC_UPLOAD("textbookTocUpload"),
+    TEXTBOOK_TOC_UPDATE("textbookTocUpdate"),
     TEXTBOOK_TOC_DOWNLOAD("textbookTocDownload");
 
     private String value;
