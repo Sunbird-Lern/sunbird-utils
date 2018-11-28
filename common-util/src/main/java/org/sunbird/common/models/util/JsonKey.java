@@ -750,6 +750,7 @@ public final class JsonKey {
   public static final String USER_TYPE = "userType";
   public static final String SELF_SIGN_UP = "SELF_SIGN_UP";
   public static final String TEXTBOOK = "textbook";
+  public static final String TEXTBOOK_ID = "textbookId";
 
   public static final String COURSE_BATCH_URL = "courseBatchUrl";
   public static final String SUNBIRD_COURSE_BATCH_NOTIFICATION_SIGNATURE =
