@@ -15,6 +15,7 @@ public class TextbookToc {
     private String firstLevelUnit;
     private String secondLevelUnit;
     private String thirdLevelUnit;
+    private String fourthLevelUnit;
 
     private String medium;
     private String grade;
@@ -28,23 +29,25 @@ public class TextbookToc {
     public TextbookToc() {
     }
 
-    public TextbookToc(String textbookId, String textbookName, String firstLevelUnit, String secondLevelUnit, String thirdLevelUnit, String medium, String grade, String subject) {
+    public TextbookToc(String textbookId, String textbookName, String firstLevelUnit, String secondLevelUnit, String thirdLevelUnit, String fourthLevelUnit, String medium, String grade, String subject) {
         this.textbookId = textbookId;
         this.textbookName = textbookName;
         this.firstLevelUnit = firstLevelUnit;
         this.secondLevelUnit = secondLevelUnit;
         this.thirdLevelUnit = thirdLevelUnit;
+        this.fourthLevelUnit = fourthLevelUnit;
         this.medium = medium;
         this.grade = grade;
         this.subject = subject;
     }
 
-    public TextbookToc(String textbookId, String textbookName, String firstLevelUnit, String secondLevelUnit, String thirdLevelUnit, String medium, String grade, String subject, String description, String qrCodeReq, String purpose, List<String> keywords) {
+    public TextbookToc(String textbookId, String textbookName, String firstLevelUnit, String secondLevelUnit, String thirdLevelUnit, String fourthLevelUnit, String medium, String grade, String subject, String description, String qrCodeReq, String purpose, List<String> keywords) {
         this.textbookId = textbookId;
         this.textbookName = textbookName;
         this.firstLevelUnit = firstLevelUnit;
         this.secondLevelUnit = secondLevelUnit;
         this.thirdLevelUnit = thirdLevelUnit;
+        this.fourthLevelUnit = fourthLevelUnit;
         this.medium = medium;
         this.grade = grade;
         this.subject = subject;
@@ -64,6 +67,9 @@ public class TextbookToc {
                 break;
             case 3:
                 this.thirdLevelUnit = data;
+                break;
+            case 4:
+                this.fourthLevelUnit = data;
                 break;
         }
     }
@@ -107,6 +113,10 @@ public class TextbookToc {
     public void setThirdLevelUnit(String thirdLevelUnit) {
         this.thirdLevelUnit = thirdLevelUnit;
     }
+
+    public String getFourthLevelUnit() { return fourthLevelUnit; }
+
+    public void setFourthLevelUnit(String fourthLevelUnit) { this.fourthLevelUnit = fourthLevelUnit; }
 
     public String getMedium() {
         return medium;
@@ -164,7 +174,7 @@ public class TextbookToc {
         this.keywords = keywords;
     }
 
-    public String toCSVtring() {
+    public String toCSVString() {
         StringBuilder sb = new StringBuilder();
         Optional.ofNullable(medium).
                 map(sb::append);
@@ -175,6 +185,9 @@ public class TextbookToc {
         Optional.ofNullable(subject).
                 ifPresent(sb::append);
         sb.append(",");
+        Optional.ofNullable(textbookName).
+                ifPresent(sb::append);
+        sb.append(",");
         Optional.ofNullable(firstLevelUnit).
                 ifPresent(sb::append);
         sb.append(",");
@@ -183,7 +196,10 @@ public class TextbookToc {
         sb.append(",");
         Optional.ofNullable(thirdLevelUnit).
                 ifPresent(sb::append);
-        sb.append(",").append(",").append(",").append(",");
+        sb.append(",");
+        Optional.ofNullable(fourthLevelUnit).
+                ifPresent(sb::append);
+        sb.append(",").append(",").append(",");
         return sb.toString();
     }
 }
