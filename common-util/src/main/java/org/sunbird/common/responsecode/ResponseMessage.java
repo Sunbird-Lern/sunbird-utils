@@ -382,6 +382,7 @@ public interface ResponseMessage {
     String ERROR_CONFLICTING_ROOT_ORG_ID =
         "Root organisation ID of API user is conflicting with that of specified organisation ID.";
     String ERROR_UPDATE_SETTING_NOT_ALLOWED = "Update of system setting {0} is not allowed.";
+    String ERROR_CREATING_FILE = "Eroor Reading File";
   }
 
   interface Key {
@@ -713,5 +714,6 @@ public interface ResponseMessage {
     String ERROR_CONFLICTING_VALUES = "ERROR_CONFLICTING_VALUES";
     String ERROR_CONFLICTING_ROOT_ORG_ID = "ERROR_CONFLICTING_ROOT_ORG_ID";
     String ERROR_UPDATE_SETTING_NOT_ALLOWED = "ERROR_UPDATE_SETTING_NOT_ALLOWED";
+    String ERROR_CREATING_FILE = "ERROR_CREATING_FILE";
   }
 }

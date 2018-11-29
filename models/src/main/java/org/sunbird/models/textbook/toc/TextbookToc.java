@@ -1,5 +1,7 @@
 package org.sunbird.models.textbook.toc;
 
+import org.sunbird.common.models.util.JsonKey;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +18,7 @@ public class TextbookToc {
     private String secondLevelUnit;
     private String thirdLevelUnit;
     private String fourthLevelUnit;
+    private String identifier;
 
     private String medium;
     private String grade;
@@ -27,6 +30,11 @@ public class TextbookToc {
     private List<String> keywords;
 
     public TextbookToc() {
+    }
+
+    public TextbookToc(String textbookId, String textbookName) {
+        this.textbookId = textbookId;
+        this.textbookName = textbookName;
     }
 
     public TextbookToc(String textbookId, String textbookName, String firstLevelUnit, String secondLevelUnit, String thirdLevelUnit, String fourthLevelUnit, String medium, String grade, String subject) {
@@ -118,6 +126,10 @@ public class TextbookToc {
 
     public void setFourthLevelUnit(String fourthLevelUnit) { this.fourthLevelUnit = fourthLevelUnit; }
 
+    public String getIdentifier() { return identifier; }
+
+    public void setIdentifier(String identifier) { this.identifier = identifier; }
+
     public String getMedium() {
         return medium;
     }
@@ -178,28 +190,33 @@ public class TextbookToc {
         StringBuilder sb = new StringBuilder();
         Optional.ofNullable(medium).
                 map(sb::append);
-        sb.append(",");
+        sb.append(JsonKey.CSV_SEPERATOR);
         Optional.ofNullable(grade).
                 ifPresent(sb::append);
-        sb.append(",");
+        sb.append(JsonKey.CSV_SEPERATOR);
         Optional.ofNullable(subject).
                 ifPresent(sb::append);
-        sb.append(",");
+        sb.append(JsonKey.CSV_SEPERATOR);
         Optional.ofNullable(textbookName).
                 ifPresent(sb::append);
-        sb.append(",");
+        sb.append(JsonKey.CSV_SEPERATOR);
         Optional.ofNullable(firstLevelUnit).
                 ifPresent(sb::append);
-        sb.append(",");
+        sb.append(JsonKey.CSV_SEPERATOR);
         Optional.ofNullable(secondLevelUnit).
                 ifPresent(sb::append);
-        sb.append(",");
+        sb.append(JsonKey.CSV_SEPERATOR);
         Optional.ofNullable(thirdLevelUnit).
                 ifPresent(sb::append);
-        sb.append(",");
+        sb.append(JsonKey.CSV_SEPERATOR);
         Optional.ofNullable(fourthLevelUnit).
                 ifPresent(sb::append);
-        sb.append(",").append(",").append(",");
+        sb.append(JsonKey.CSV_SEPERATOR);
+        Optional.ofNullable(identifier).
+                ifPresent(sb::append);
+        sb.append(JsonKey.CSV_SEPERATOR).
+                append(JsonKey.CSV_SEPERATOR).
+                append(JsonKey.CSV_SEPERATOR);
         return sb.toString();
     }
 }

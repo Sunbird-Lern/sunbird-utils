@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.JsonKey;
 
 /** @author Manzarul */
-public enum ResponseCode {
+public enum   ResponseCode {
   unAuthorized(ResponseMessage.Key.UNAUTHORIZED_USER, ResponseMessage.Message.UNAUTHORIZED_USER),
   invalidUserCredentials(
       ResponseMessage.Key.INVALID_USER_CREDENTIALS,
@@ -704,6 +704,9 @@ public enum ResponseCode {
   errorUpdateSettingNotAllowed(
       ResponseMessage.Key.ERROR_UPDATE_SETTING_NOT_ALLOWED,
       ResponseMessage.Message.ERROR_UPDATE_SETTING_NOT_ALLOWED),
+  errorCreatingFile(
+    ResponseMessage.Key.ERROR_CREATING_FILE,
+    ResponseMessage.Message.ERROR_CREATING_FILE),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

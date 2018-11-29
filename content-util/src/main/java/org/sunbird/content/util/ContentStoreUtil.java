@@ -33,8 +33,8 @@ public class ContentStoreUtil {
           sb.append("&");
         }
         sb.append(param.getKey()).
-                append("=").
-                append(param.getValue());
+           append("=").
+           append(param.getValue());
       }
       return sb.toString();
     } else {

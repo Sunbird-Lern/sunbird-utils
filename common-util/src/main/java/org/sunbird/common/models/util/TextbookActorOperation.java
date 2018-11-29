@@ -9,7 +9,7 @@ public enum TextbookActorOperation {
 
     TEXTBOOK_TOC_UPLOAD("textbookTocUpload"),
     TEXTBOOK_TOC_UPDATE("textbookTocUpdate"),
-    TEXTBOOK_TOC_DOWNLOAD("textbookTocDownload");
+    TEXTBOOK_TOC_URL("textbookTocUrl");
 
     private String value;
 

@@ -758,6 +758,20 @@ public final class JsonKey {
       "sunbird_course_batch_notification_signature";
   public static final String SIGNATURE = "signature";
   public static final String OPEN_BATCH_LEARNER_ENROL = "openBatchLearnerEnrol";
+  public static final String CONTENT_PROPERTY_MEDIUM = "medium";
+  public static final String CONTENT_PROPERTY_GRADE_LEVEL = "gradeLevel";
+  public static final String CONTENT_PROPERTY_SUBJECT = "subject";
+  public static final String CONTENT_PROPERTY_NAME = "name";
+  public static final String CONTENT_PROPERTY_VISIBILITY = "visibility";
+  public static final String CONTENT_PROPERTY_VISIBILITY_PARENT = "Parent";
+  public static final String CONTENT_PROPERTY_MIME_TYPE = "mimeType";
+  public static final String CONTENT_MIME_TYPE_COLLECTION =
+          "application/vnd.ekstep.content-collection";
+  public static final String VERSION_KEY = "versionKey";
+  public static final String CSV_SEPERATOR = ",";
+  public static final String CONTENT_CLOUD_STORAGE_TYPE = "sunbird_content_cloud_storage_type";
+  public static final String CONTENT_AZURE_STORAGE_CONTAINER = "sunbird_content_azure_storage_container";
+  public static final String CLOUD_FOLDER_CONTENT = "sunbird_cloud.content.folder";
 
   private JsonKey() {}
 }
