@@ -384,6 +384,8 @@ public interface ResponseMessage {
     String ERROR_UPDATE_SETTING_NOT_ALLOWED = "Update of system setting {0} is not allowed.";
     String ERROR_CREATING_FILE = "Eroor Reading File";
     String ERROR_PROCESSING_REQUEST = "Something went wrong while Processing Request";
+    String ERROR_INVALID_TEXTBOOK = "Invalid Textbook. Please Provide Valid Textbook Identifier.";
+    String ERROR_INVALID_TEXTBOOK_UPLOAD_NOT_ALLOWED = "TOC Upload Not Allowed for Textbook Having Children.";
   }
 
   interface Key {
@@ -717,5 +719,7 @@ public interface ResponseMessage {
     String ERROR_UPDATE_SETTING_NOT_ALLOWED = "ERROR_UPDATE_SETTING_NOT_ALLOWED";
     String ERROR_CREATING_FILE = "ERROR_CREATING_FILE";
     String ERROR_PROCESSING_REQUEST = "ERROR_PROCESSING_REQUEST";
+    String ERROR_INVALID_TEXTBOOK = "ERROR_INVALID_TEXTBOOK";
+    String ERROR_INVALID_TEXTBOOK_UPLOAD_NOT_ALLOWED = "ERROR_INVALID_TEXTBOOK_UPLOAD_NOT_ALLOWED";
   }
 }
