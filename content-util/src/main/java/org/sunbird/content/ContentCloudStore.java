@@ -24,7 +24,7 @@ public class ContentCloudStore {
     }
 
     public static String getUri(CloudStorageType storageType, String prefix, boolean isDirectory) {
-        prefix = File.separator + FOLDER + prefix;
+        prefix = FOLDER + prefix;
         try {
             return CloudStorageUtil.getUri(storageType, container(storageType), prefix, isDirectory);
         } catch (Exception e) {
@@ -34,7 +34,7 @@ public class ContentCloudStore {
 
     public static String upload(String objectKey, File file) {
         CloudStorageType storageType = storageType();
-        objectKey = File.separator + JsonKey.CONTENT + File.separator + objectKey + File.separator;
+        objectKey = FOLDER + objectKey + File.separator;
         if (file.isFile()) {
             objectKey += file.getName();
             return CloudStorageUtil.upload(storageType, container(storageType), objectKey, file.getAbsolutePath());
@@ -44,7 +44,7 @@ public class ContentCloudStore {
     }
 
     public static String upload(CloudStorageType storageType, String objectKey, File file) {
-        objectKey = File.separator + FOLDER + File.separator + objectKey + File.separator;
+        objectKey = FOLDER + objectKey + File.separator;
         if (file.isFile()) {
             objectKey += file.getName();
             return CloudStorageUtil.upload(storageType, container(storageType), objectKey, file.getAbsolutePath());

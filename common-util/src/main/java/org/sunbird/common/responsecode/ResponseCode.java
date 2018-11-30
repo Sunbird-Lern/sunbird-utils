@@ -707,6 +707,9 @@ public enum   ResponseCode {
   errorCreatingFile(
     ResponseMessage.Key.ERROR_CREATING_FILE,
     ResponseMessage.Message.ERROR_CREATING_FILE),
+  errorProcessingRequest(
+          ResponseMessage.Key.ERROR_PROCESSING_REQUEST,
+          ResponseMessage.Message.ERROR_PROCESSING_REQUEST),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

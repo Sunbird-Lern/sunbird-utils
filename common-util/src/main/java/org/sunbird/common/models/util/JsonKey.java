@@ -769,7 +769,11 @@ public final class JsonKey {
   public static final String CSV_SEPERATOR = ",";
   public static final String CONTENT_CLOUD_STORAGE_TYPE = "sunbird_content_cloud_storage_type";
   public static final String CONTENT_AZURE_STORAGE_CONTAINER = "sunbird_content_azure_storage_container";
-  public static final String CLOUD_FOLDER_CONTENT = "sunbird_cloud.content.folder";
+  public static final String CLOUD_FOLDER_CONTENT = "sunbird_cloud_content_folder";
+  public static final String TO_URL = "toUrl";
+  public static final String TTL = "ttl";
+  public static final String TEXTBOOK_TOC_CSV_TTL="sunbird_texbook_toc_csv_ttl";
+  public static final String FILE_TYPE_CSV = "csv";
 
   //Texbook TOC
   public static final String TEXTBOOK = "textbook";
