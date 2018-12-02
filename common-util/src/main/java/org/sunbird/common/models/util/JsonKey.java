@@ -549,7 +549,7 @@ public final class JsonKey {
   public static final String SUNBIRD_CHANNEL_READ_API = "sunbird_channel_read_api";
   public static final String SUNBIRD_FRAMEWORK_READ_API = "sunbird_framework_read_api";
   public static final String SUNBIRD_CONTENT_GET_HIERARCHY_API = "sunbird_get_hierarchy_api";
-  public static final String SUNBIRD_CONTENT_READ_API = "sunbird_content_read_api";
+  public static final String SUNBIRD_CONTENT_READ_API = "sunbird_content_read";
   public static final String SYSTEM = "system";
   public static final String SYSTEM_SETTINGS_DB = "system_settings";
   public static final String TAG = "tag";
@@ -787,6 +787,7 @@ public final class JsonKey {
   public static final String TEXTBOOK_TOC_ALLOWED_CONTNET_TYPES = "textbook_toc_allowed_content_types";
   public static final String TEXTBOOK_TOC_MAX_CSV_ROWS = "textbook_toc_max_csv_rows";
   public static final String TEXTBOOK_TOC_INPUT_MAPPING = "textbook_toc_input_mapping";
-  
+  public static final String NODES_MODIFIED="nodesModified";
+
   private JsonKey() {}
 }
