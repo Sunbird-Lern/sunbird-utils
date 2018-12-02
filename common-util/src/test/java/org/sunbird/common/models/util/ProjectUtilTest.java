@@ -199,7 +199,7 @@ public class ProjectUtilTest extends BaseHttpTest {
   @Test
   public void testIsDateValidFormatSuccess() {
     boolean bool =
-        ProjectUtil.isDateValidFormat("yyyy-MM-dd HH:mm:ss:SSSZ", "2017-12-18 10:47:30:707+0530");
+        ProjectUtil.isDateValidFormat("yyyy-MM-dd", "2017-12-18");
     assertTrue(bool);
   }
 
