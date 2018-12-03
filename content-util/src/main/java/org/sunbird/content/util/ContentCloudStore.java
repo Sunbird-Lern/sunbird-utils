@@ -1,4 +1,4 @@
-package org.sunbird.content;
+package org.sunbird.content.util;
 
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectUtil;
@@ -14,7 +14,7 @@ public class ContentCloudStore {
     public static String FOLDER = ProjectUtil.getConfigValue(JsonKey.CLOUD_FOLDER_CONTENT);
 
     public static String getUri(String prefix, boolean isDirectory) {
-        prefix = File.separator + FOLDER + prefix;
+        prefix = FOLDER + prefix;
         try {
             CloudStorageType storageType = storageType();
             return CloudStorageUtil.getUri(storageType(), container(storageType), prefix, isDirectory);

@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.http.HttpHeaders;
-import org.apache.logging.log4j.core.Logger;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
@@ -56,7 +55,8 @@ public class ContentStoreUtil {
   public static Map<String, Object> readHierarchy(String contentId) {
     ProjectLogger.log(
         "ContentStoreUtil::readHierarchy: contentId = " + contentId, LoggerEnum.INFO.name());
-    Map<String, String> requestParams = new HashMap<String, String>() {{ put("mode", "edit"); }};
+    Map<String, String> requestParams = new HashMap<String, String>();
+    requestParams.put("mode", "edit");
     return handleReadRequest(contentId, JsonKey.SUNBIRD_CONTENT_GET_HIERARCHY_API, requestParams);
   }
 

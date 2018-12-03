@@ -394,7 +394,8 @@ public interface ResponseMessage {
     String EXCEEDS_MAX_CHILDREN = "Number of first level units is more than allowed.";
     String TEXTBOOK_CHILDREN_EXISTS = "Textbook is already having children.";
     String TEXTBOOK_UPDATE_FAILURE = "Textbook could not be updated.";
-
+    String TEXTBOOK_CHILDREN_NOT_EXISTS = "No Children Exists for given TextBook.";
+    String TEXTBOOK_NOT_FOUND = "Textbook not found.";
   }
 
   interface Key {
@@ -738,5 +739,7 @@ public interface ResponseMessage {
     String EXCEEDS_MAX_CHILDREN = "EXCEEDS_MAX_CHILDREN";
     String TEXTBOOK_CHILDREN_EXISTS = "TEXTBOOK_CHILDREN_EXISTS";
     String TEXTBOOK_UPDATE_FAILURE = "TEXTBOOK_UPDATE_FAILURE";
+    String TEXTBOOK_CHILDREN_NOT_EXISTS = "TEXTBOOK_CHILDREN_NOT_EXISTS";
+    String TEXTBOOK_NOT_FOUND = "TEXTBOOK_NOT_FOUND";
   }
 }

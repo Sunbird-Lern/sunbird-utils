@@ -788,6 +788,6 @@ public final class JsonKey {
   public static final String TEXTBOOK_TOC_MAX_CSV_ROWS = "textbook_toc_max_csv_rows";
   public static final String TEXTBOOK_TOC_INPUT_MAPPING = "textbook_toc_input_mapping";
   public static final String NODES_MODIFIED="nodesModified";
-
+  public static final String TEXT_TOC_FILE_SUPPRESS_COLUMN_NAMES= "textbook_toc_file_suppress_column_names";
   private JsonKey() {}
 }
