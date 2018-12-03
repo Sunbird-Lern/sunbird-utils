@@ -1,6 +1,7 @@
 package org.sunbird.common.request.orgvalidator;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.Map;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -21,7 +22,7 @@ public class OrgRequestValidator extends BaseOrgRequestValidator {
         (String) orgRequest.getRequest().get(JsonKey.ORG_NAME),
         ResponseCode.mandatoryParamsMissing,
         JsonKey.ORG_NAME);
-
+    checkForFieldsNotAllowed(orgRequest.getRequest(), Arrays.asList(JsonKey.LOCATION_IDS));
     validateRootOrgChannel(orgRequest);
 
     Map<String, Object> address =
