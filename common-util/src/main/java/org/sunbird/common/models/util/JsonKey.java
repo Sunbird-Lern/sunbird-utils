@@ -548,6 +548,8 @@ public final class JsonKey {
   public static final String SUNBIRD_WEB_URL = "sunbird_web_url";
   public static final String SUNBIRD_CHANNEL_READ_API = "sunbird_channel_read_api";
   public static final String SUNBIRD_FRAMEWORK_READ_API = "sunbird_framework_read_api";
+  public static final String SUNBIRD_CONTENT_GET_HIERARCHY_API = "sunbird_get_hierarchy_api";
+  public static final String SUNBIRD_CONTENT_READ_API = "sunbird_content_read";
   public static final String SYSTEM = "system";
   public static final String SYSTEM_SETTINGS_DB = "system_settings";
   public static final String TAG = "tag";
@@ -748,7 +750,6 @@ public final class JsonKey {
   public static final String CALLER_ID = "callerId";
   public static final String USER_TYPE = "userType";
   public static final String SELF_SIGN_UP = "SELF_SIGN_UP";
-  public static final String TEXTBOOK = "textbook";
 
   public static final String COURSE_BATCH_URL = "courseBatchUrl";
   public static final String SUNBIRD_COURSE_BATCH_NOTIFICATION_SIGNATURE =
@@ -756,6 +757,43 @@ public final class JsonKey {
   public static final String SIGNATURE = "signature";
   public static final String OPEN_BATCH_LEARNER_ENROL = "openBatchLearnerEnrol";
   public static final String BULK_ORG_UPLOAD = "bulkOrgUpload";
+  public static final String CONTENT_PROPERTY_MEDIUM = "medium";
+  public static final String CONTENT_PROPERTY_GRADE_LEVEL = "gradeLevel";
+  public static final String CONTENT_PROPERTY_SUBJECT = "subject";
+  public static final String CONTENT_PROPERTY_NAME = "name";
+  public static final String CONTENT_PROPERTY_VISIBILITY = "visibility";
+  public static final String CONTENT_PROPERTY_VISIBILITY_PARENT = "Parent";
+  public static final String CONTENT_PROPERTY_MIME_TYPE = "mimeType";
+  public static final String CONTENT_MIME_TYPE_COLLECTION =
+      "application/vnd.ekstep.content-collection";
+  public static final String VERSION_KEY = "versionKey";
+  public static final String CSV_SEPERATOR = ",";
+  public static final String CONTENT_CLOUD_STORAGE_TYPE = "sunbird_content_cloud_storage_type";
+  public static final String CONTENT_AZURE_STORAGE_CONTAINER =
+      "sunbird_content_azure_storage_container";
+  public static final String CLOUD_FOLDER_CONTENT = "sunbird_cloud_content_folder";
+  public static final String TO_URL = "toUrl";
+  public static final String TTL = "ttl";
+  public static final String TEXTBOOK_TOC_CSV_TTL = "sunbird_texbook_toc_csv_ttl";
+  public static final String FILE_TYPE_CSV = "csv";
+
+  // Texbook TOC
+  public static final String TEXTBOOK = "textbook";
+  public static final String TEXTBOOK_ID = "textbookId";
+  public static final String MODE = "mode";
+  public static final String MIME_TYPE = "mimeType";
+  public static final String METADATA = "metadata";
+  public static final String HIERARCHY = "hierarchy";
+  public static final String FILE_DATA = "fileData";
+  public static final String TEXTBOOK_TOC_ALLOWED_MIMETYPE =
+      "application/vnd.ekstep.content-collection";
+  public static final String TEXTBOOK_TOC_ALLOWED_CONTNET_TYPES =
+      "textbook_toc_allowed_content_types";
+  public static final String TEXTBOOK_TOC_MAX_CSV_ROWS = "textbook_toc_max_csv_rows";
+  public static final String TEXTBOOK_TOC_INPUT_MAPPING = "textbook_toc_input_mapping";
+  public static final String NODES_MODIFIED = "nodesModified";
+  public static final String TEXT_TOC_FILE_SUPPRESS_COLUMN_NAMES =
+      "textbook_toc_file_suppress_column_names";
 
   private JsonKey() {}
 }

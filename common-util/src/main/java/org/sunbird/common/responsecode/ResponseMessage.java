@@ -382,6 +382,21 @@ public interface ResponseMessage {
     String ERROR_CONFLICTING_ROOT_ORG_ID =
         "Root organisation ID of API user is conflicting with that of specified organisation ID.";
     String ERROR_UPDATE_SETTING_NOT_ALLOWED = "Update of system setting {0} is not allowed.";
+    String ERROR_CREATING_FILE = "Eroor Reading File";
+    String ERROR_PROCESSING_REQUEST = "Something went wrong while Processing Request";
+    String INVALID_TEXTBOOK = "Invalid Textbook. Please Provide Valid Textbook Identifier.";
+    String CSV_ROWS_EXCEEDS = "Number of rows in csv file is more than ";
+    String INVALID_TEXTBOOK_NAME =
+        "Textbook Name given in the file doesn’t match current Textbook name. Please check and upload again.";
+    String DUPLICATE_ROWS = "Duplicate rows found in csv.";
+    String REQUIRED_HEADER_MISSING = "Required set of header missing: ";
+    String REQUIRED_FIELD_MISSING = "Data in mandatory fields is missing. Mandatory fields are: ";
+    String BLANK_CSV_DATA = "Did not find any TOC data. Please check and upload again.";
+    String EXCEEDS_MAX_CHILDREN = "Number of first level units is more than allowed.";
+    String TEXTBOOK_CHILDREN_EXISTS = "Textbook is already having children.";
+    String TEXTBOOK_UPDATE_FAILURE = "Textbook could not be updated.";
+    String TEXTBOOK_CHILDREN_NOT_EXISTS = "No Children Exists for given TextBook.";
+    String TEXTBOOK_NOT_FOUND = "Textbook not found.";
   }
 
   interface Key {
@@ -713,5 +728,19 @@ public interface ResponseMessage {
     String ERROR_CONFLICTING_VALUES = "ERROR_CONFLICTING_VALUES";
     String ERROR_CONFLICTING_ROOT_ORG_ID = "ERROR_CONFLICTING_ROOT_ORG_ID";
     String ERROR_UPDATE_SETTING_NOT_ALLOWED = "ERROR_UPDATE_SETTING_NOT_ALLOWED";
+    String ERROR_CREATING_FILE = "ERROR_CREATING_FILE";
+    String ERROR_PROCESSING_REQUEST = "ERROR_PROCESSING_REQUEST";
+    String INVALID_TEXTBOOK = "INVALID_TEXTBOOK";
+    String CSV_ROWS_EXCEEDS = "CSV_ROWS_EXCEEDS";
+    String INVALID_TEXTBOOK_NAME = "INVALID_TEXTBOOK_NAME";
+    String DUPLICATE_ROWS = "DUPLICATE_ROWS";
+    String REQUIRED_HEADER_MISSING = "REQUIRED_HEADER_MISSING";
+    String REQUIRED_FIELD_MISSING = "REQUIRED_FIELD_MISSING";
+    String BLANK_CSV_DATA = "BLANK_CSV_DATA";
+    String EXCEEDS_MAX_CHILDREN = "EXCEEDS_MAX_CHILDREN";
+    String TEXTBOOK_CHILDREN_EXISTS = "TEXTBOOK_CHILDREN_EXISTS";
+    String TEXTBOOK_UPDATE_FAILURE = "TEXTBOOK_UPDATE_FAILURE";
+    String TEXTBOOK_CHILDREN_NOT_EXISTS = "TEXTBOOK_CHILDREN_NOT_EXISTS";
+    String TEXTBOOK_NOT_FOUND = "TEXTBOOK_NOT_FOUND";
   }
 }

@@ -704,6 +704,34 @@ public enum ResponseCode {
   errorUpdateSettingNotAllowed(
       ResponseMessage.Key.ERROR_UPDATE_SETTING_NOT_ALLOWED,
       ResponseMessage.Message.ERROR_UPDATE_SETTING_NOT_ALLOWED),
+  errorCreatingFile(
+      ResponseMessage.Key.ERROR_CREATING_FILE, ResponseMessage.Message.ERROR_CREATING_FILE),
+  errorProcessingRequest(
+      ResponseMessage.Key.ERROR_PROCESSING_REQUEST,
+      ResponseMessage.Message.ERROR_PROCESSING_REQUEST),
+  invalidTextbook(ResponseMessage.Key.INVALID_TEXTBOOK, ResponseMessage.Message.INVALID_TEXTBOOK),
+  csvRowsExceeds(ResponseMessage.Key.CSV_ROWS_EXCEEDS, ResponseMessage.Message.CSV_ROWS_EXCEEDS),
+  invalidTextbookName(
+      ResponseMessage.Key.INVALID_TEXTBOOK_NAME, ResponseMessage.Message.INVALID_TEXTBOOK_NAME),
+  duplicateRows(ResponseMessage.Key.DUPLICATE_ROWS, ResponseMessage.Message.DUPLICATE_ROWS),
+  requiredHeaderMissing(
+      ResponseMessage.Key.REQUIRED_HEADER_MISSING, ResponseMessage.Message.REQUIRED_HEADER_MISSING),
+  requiredFieldMissing(
+      ResponseMessage.Key.REQUIRED_FIELD_MISSING, ResponseMessage.Message.REQUIRED_FIELD_MISSING),
+  blankCsvData(ResponseMessage.Key.BLANK_CSV_DATA, ResponseMessage.Message.BLANK_CSV_DATA),
+  exceedMaxChildren(
+      ResponseMessage.Key.EXCEEDS_MAX_CHILDREN, ResponseMessage.Message.EXCEEDS_MAX_CHILDREN),
+  textbookChildrenExist(
+      ResponseMessage.Key.TEXTBOOK_CHILDREN_EXISTS,
+      ResponseMessage.Message.TEXTBOOK_CHILDREN_EXISTS),
+  textbookUpdateFailure(
+      ResponseMessage.Key.TEXTBOOK_UPDATE_FAILURE, ResponseMessage.Message.TEXTBOOK_UPDATE_FAILURE),
+  invalidTextBook(ResponseMessage.Key.INVALID_TEXTBOOK, ResponseMessage.Message.INVALID_TEXTBOOK),
+  noChildrenExists(
+      ResponseMessage.Key.TEXTBOOK_CHILDREN_NOT_EXISTS,
+      ResponseMessage.Message.TEXTBOOK_CHILDREN_NOT_EXISTS),
+  textBookNotFound(
+      ResponseMessage.Key.TEXTBOOK_NOT_FOUND, ResponseMessage.Message.TEXTBOOK_NOT_FOUND),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

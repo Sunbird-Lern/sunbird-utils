@@ -6,18 +6,16 @@ package org.sunbird.common.models.util;
  * @author gauraw
  */
 public enum TextbookActorOperation {
+  TEXTBOOK_TOC_UPLOAD("textbookTocUpload"),
+  TEXTBOOK_TOC_URL("textbookTocUrl");
 
-    TEXTBOOK_TOC_UPLOAD("textbookTocUpload"),
-    TEXTBOOK_TOC_DOWNLOAD("textbookTocDownload");
+  private String value;
 
-    private String value;
+  TextbookActorOperation(String value) {
+    this.value = value;
+  }
 
-    TextbookActorOperation(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return this.value;
-    }
-
+  public String getValue() {
+    return this.value;
+  }
 }
