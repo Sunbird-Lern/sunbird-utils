@@ -23,8 +23,7 @@ public class UserBulkUploadRequestValidator {
 
   public static void validateUserType(Map<String, Object> userMap) {
     List<String> userTypes =
-        Stream.of(UserType.values()).map(UserType::name).collect(Collectors.toList());
-    userTypes.remove(JsonKey.SELF_SIGN_UP);
+        Stream.of(UserType.values()).map(UserType::getTypeName).collect(Collectors.toList());
     String userType = (String) userMap.get(JsonKey.USER_TYPE);
     if (userTypes.contains(userType.trim().toUpperCase())) {
       userMap.put(JsonKey.USER_TYPE, userType.trim().toUpperCase());
