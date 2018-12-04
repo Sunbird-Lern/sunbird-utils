@@ -755,6 +755,7 @@ public final class JsonKey {
       "sunbird_course_batch_notification_signature";
   public static final String SIGNATURE = "signature";
   public static final String OPEN_BATCH_LEARNER_ENROL = "openBatchLearnerEnrol";
+  public static final String BULK_ORG_UPLOAD = "bulkOrgUpload";
 
   private JsonKey() {}
 }
