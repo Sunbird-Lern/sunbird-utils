@@ -746,6 +746,9 @@ public enum   ResponseCode {
   textBookNotFound(
           ResponseMessage.Key.TEXTBOOK_NOT_FOUND,
           ResponseMessage.Message.TEXTBOOK_NOT_FOUND),
+  errorProcessingFile(
+          ResponseMessage.Key.ERROR_PROCESSING_FILE,
+          ResponseMessage.Message.ERROR_PROCESSING_FILE),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
