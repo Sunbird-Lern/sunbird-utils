@@ -740,9 +740,6 @@ public enum   ResponseCode {
   textbookUpdateFailure(
           ResponseMessage.Key.TEXTBOOK_UPDATE_FAILURE,
           ResponseMessage.Message.TEXTBOOK_UPDATE_FAILURE),
-  invalidTextBook(
-          ResponseMessage.Key.INVALID_TEXTBOOK,
-          ResponseMessage.Message.INVALID_TEXTBOOK),
   noChildrenExists(
           ResponseMessage.Key.TEXTBOOK_CHILDREN_NOT_EXISTS,
           ResponseMessage.Message.TEXTBOOK_CHILDREN_NOT_EXISTS),
