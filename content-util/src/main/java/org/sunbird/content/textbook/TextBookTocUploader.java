@@ -105,8 +105,11 @@ public class TextBookTocUploader {
 
     public TextBookTocUploader(FileType fileType) {
         this.fileType = null == fileType ? CSV.getFileType() : fileType;
-        if (suppressEmptyColumns)
-            isColumnPresent = new boolean[levels+metadataSize];
+        if (suppressEmptyColumns) {
+            isColumnPresent = new boolean[levels + metadataSize];
+            for (int i=0; i<metadataSize; i++)
+                isColumnPresent[metadataStartPos + i] = true;
+        }
     }
 
     public String execute(Map<String, Object> content,
