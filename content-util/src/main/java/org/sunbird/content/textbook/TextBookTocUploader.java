@@ -1,29 +1,32 @@
 package org.sunbird.content.textbook;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jclouds.json.Json;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
-import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.content.util.ContentCloudStore;
 import org.sunbird.content.util.TextBookTocUtil;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.IntStream;
 
+import static org.apache.commons.csv.CSVFormat.DEFAULT;
+import static org.sunbird.common.responsecode.ResponseCode.SERVER_ERROR;
+import static org.sunbird.common.responsecode.ResponseCode.errorProcessingRequest;
 import static org.sunbird.content.textbook.FileType.Type.CSV;
 
 public class TextBookTocUploader {
@@ -54,7 +57,8 @@ public class TextBookTocUploader {
     private static int metadataStartPos;
     private static int hierarchyStartPos;
 
-    private String columnNamesRow;
+    private static String[] keyNames;
+    private static String[] columnNames;
 
     static {
         int currPos = 0;
@@ -64,29 +68,36 @@ public class TextBookTocUploader {
             if ("hierarchy".equals(e.getKey()))
                 hierarchyStartPos = currPos;
             currPos = ((Map<String, Object>)e.getValue()).size();
+            keyNames = keyNames();
             columnNames = columnNames();
         }
-
     }
-
-    private static String[] columnNames;
 
     private boolean[] isColumnPresent;
 
-    private StringBuilder sb = new StringBuilder();
-
     private FileType fileType;
 
-    List<String[]> rows = new ArrayList<>();
+    List<Object[]> rows = new ArrayList<>();
 
-    private String[] row;
+    private Object[] row;
+
+    private static String[] keyNames() {
+        int i = 0;
+        String[] columnNames = new String[levels + metadataSize];
+        for (Entry<String, Object> e : inputMapping.entrySet()) {
+            for(String s: ((Map<String, String>) e.getValue()).keySet()) {
+                columnNames[i++] = s;
+            }
+        }
+        return columnNames;
+    }
 
     private static String[] columnNames() {
         int i = 0;
         String[] columnNames = new String[levels + metadataSize];
         for (Entry<String, Object> e : inputMapping.entrySet()) {
-            for(String s: ((Map<String, Object>) e.getValue()).keySet()) {
-                columnNames[i++] = s;
+            for(Entry entry: ((Map<String, String>) e.getValue()).entrySet()) {
+                columnNames[i++] = (String) entry.getValue();
             }
         }
         return columnNames;
@@ -94,13 +105,9 @@ public class TextBookTocUploader {
 
     public TextBookTocUploader(FileType fileType) {
         this.fileType = null == fileType ? CSV.getFileType() : fileType;
-        if (suppressEmptyColumns) {
+        if (suppressEmptyColumns)
             isColumnPresent = new boolean[levels+metadataSize];
-        } else {
-            columnNamesRow = String.join(this.fileType.getSeperator(), columnNames) + "\n";
-        }
     }
-
 
     public String execute(Map<String, Object> content,
                              String textbookId, String versionKey) {
@@ -116,10 +123,7 @@ public class TextBookTocUploader {
                     textbookId + "_" + versionKey + fileType.getExtension());
             FileUtils.deleteQuietly(file);
             FileUtils.touch(file);
-            String s = getWritableString(content);
-            PrintWriter writer = new PrintWriter(file);
-            writer.write(s);
-            writer.close();
+            populateDataIntoFile(content, file);
             ProjectLogger.
                     log("Uploading " + fileType.getType() + " to Cloud Storage for TextBookToC | Id: " +
                             textbookId + ", Version Key: " + versionKey, LoggerEnum.INFO);
@@ -129,9 +133,9 @@ public class TextBookTocUploader {
                     log("Error creating "+ fileType.getType() + " File at File Path | " +
                             file.getAbsolutePath(), LoggerEnum.ERROR);
             throw new ProjectCommonException(
-                    ResponseCode.errorProcessingRequest.getErrorCode(),
-                    ResponseCode.errorProcessingRequest.getErrorMessage(),
-                    ResponseCode.SERVER_ERROR.getResponseCode());
+                    errorProcessingRequest.getErrorCode(),
+                    errorProcessingRequest.getErrorMessage(),
+                    SERVER_ERROR.getResponseCode());
         } finally {
             ProjectLogger.
                     log("Deleting " + fileType.getType() + " for TextBookToC | Id: " + textbookId + ", " +
@@ -149,26 +153,73 @@ public class TextBookTocUploader {
         }
     }
 
-    private String getWritableString(Map<String, Object> content) {
-        if (suppressEmptyColumns) {
-            processHierarchySuppressColumns(content);
-            return processRowsAndGetString();
-        } else {
-            processHierarchy(content);
-            return columnNames + sb.toString();
+    private void populateDataIntoFile(Map<String, Object> content, File file) {
+        FileWriter out;
+        try {
+            if (suppressEmptyColumns) {
+                processHierarchySuppressColumns(content);
+                String[] columns = IntStream.range(0, keyNames.length).
+                        mapToObj(i -> {
+                            if (isColumnPresent[i] == true)
+                                return columnNames[i];
+                            else
+                                return null;
+                        }).
+                        filter(Objects::nonNull).
+                        toArray(String[]::new);
+                out = new FileWriter(file);
+                CSVPrinter printer = new CSVPrinter(out,
+                        DEFAULT.withHeader(columns));
+                for (Object[] row : rows) {
+                    Object[] tempRow = IntStream.range(0, keyNames.length).
+                            mapToObj(i -> {
+                                if (isColumnPresent[i] == true)
+                                    return row[i];
+                                return null;
+                            }).
+                            filter(Objects::nonNull).
+                            toArray(Object[]::new);
+                    printer.printRecord(tempRow);
+                }
+                printer.close();
+                out.close();
+            } else {
+                processHierarchy(content);
+                out = new FileWriter(file);
+                CSVPrinter printer = new CSVPrinter(out, DEFAULT.withHeader(columnNames));
+                for (Object[] row : rows)
+                    printer.printRecord(row);
+                printer.close();
+                out.close();
+            }
+        } catch (IOException e) {
+            throw new ProjectCommonException(
+                    errorProcessingRequest.getErrorCode(),
+                    errorProcessingRequest.getErrorMessage(),
+                    SERVER_ERROR.getResponseCode());
         }
+
     }
 
-    public String[] initializeRow() {
-        return row = new String[levels + metadataSize];
+    public void initializeRow() {
+        row = new Object[levels + metadataSize];
     }
 
     private void updateRowWithData(Map<String, Object> content, String key, int offset, int pos) {
-        row[offset + pos] = null == content || null == content.get(key) ? null : (String) content.get(key);
+        row[offset + pos] = null == content || null == content.get(key) ? "" : getValue(content.get(key));
+    }
+
+    private Object getValue(Object o) {
+        if (o instanceof List) {
+            List l = (List) o;
+            return String.join(",", l);
+        } else {
+            return o;
+        }
     }
 
     private void processHierarchy(Map<String, Object> contentHierarchy) {
-        row = initializeRow();
+        initializeRow();
         int level = 0;
         updateRowWithData(contentHierarchy, JsonKey.NAME, hierarchyStartPos, level);
         processHierarchyRecursive (contentHierarchy, level);
@@ -176,7 +227,7 @@ public class TextBookTocUploader {
 
     private void processHierarchyRecursive(Map<String, Object> contentHierarchy, int level) {
         List<Map<String, Object>> children =
-                (List<Map<String, Object>>) contentHierarchy.get("children");
+                (List<Map<String, Object>>) contentHierarchy.get(JsonKey.CHILDREN);
         if(null != children && !children.isEmpty()) {
             if (levels == level) return;
             for (Map<String, Object> child : children) {
@@ -201,18 +252,11 @@ public class TextBookTocUploader {
     }
 
     private void appendRow() {
-        Arrays.stream(row).forEach(e -> {
-            if (StringUtils.isBlank(e))
-                sb.append(fileType.getSeperator());
-            else
-                sb.append(e).append(fileType.getSeperator());
-        });
-        sb.deleteCharAt(sb.lastIndexOf(fileType.getSeperator()));
-        sb.append("\n");
+        rows.add(Arrays.copyOf(row, row.length));
     }
 
     private void processHierarchySuppressColumns(Map<String, Object> contentHierarchy) {
-        row = initializeRow();
+        initializeRow();
         int level = 0;
         updateRowWithDataSuppressColumns(contentHierarchy, JsonKey.NAME, hierarchyStartPos, level);
         processHierarchyRecursiveSuppressColumns(contentHierarchy, level);
@@ -220,7 +264,7 @@ public class TextBookTocUploader {
 
     private void processHierarchyRecursiveSuppressColumns(Map<String, Object> contentHierarchy, int level) {
         List<Map<String, Object>> children =
-                (List<Map<String, Object>>) contentHierarchy.get("children");
+                (List<Map<String, Object>>) contentHierarchy.get(JsonKey.CHILDREN);
         if(null != children && !children.isEmpty()) {
             if (levels == level) return;
             for (Map<String, Object> child : children) {
@@ -229,7 +273,7 @@ public class TextBookTocUploader {
                         StringUtils.equals(JsonKey.CONTENT_MIME_TYPE_COLLECTION,
                                 (String) contentHierarchy.get(JsonKey.CONTENT_PROPERTY_MIME_TYPE))) {
                     updateMetadataSuppressColumns(child, ++level);
-                    appendRowSuppressedColumns();
+                    appendRow();
                     processHierarchyRecursiveSuppressColumns(child, level);
                     updateMetadataSuppressColumns(null, level--);
                 }
@@ -238,8 +282,8 @@ public class TextBookTocUploader {
     }
 
     private void updateRowWithDataSuppressColumns(Map<String, Object> content, String key, int offset, int pos) {
-        row[offset + pos] = (null == content || null == content.get(key)) ? null : (String) content.get(key);
-        if (null != row[offset + pos]) {
+        row[offset + pos] = (null == content || null == content.get(key)) ? "" : getValue(content.get(key));
+        if ("" != row[offset + pos].toString()) {
             if (!isColumnPresent[offset + pos])
                 isColumnPresent[offset + pos] =
                         !isColumnPresent[offset + pos];
@@ -252,32 +296,6 @@ public class TextBookTocUploader {
         int i = 0;
         for (String e : metadataProperties)
             updateRowWithDataSuppressColumns(content, e, metadataStartPos, i++);
-    }
-
-    private void appendRowSuppressedColumns() {
-        String[] tempRow = Arrays.copyOf(row, row.length);
-        rows.add(tempRow);
-    }
-
-    private String processRowsAndGetString() {
-        for (int i = 0; i < columnNames.length; i++) {
-            if (isColumnPresent[i]) {
-                sb.append(columnNames[i]).
-                        append(fileType.getSeperator());
-            }
-        }
-        sb.deleteCharAt(sb.lastIndexOf(fileType.getSeperator()));
-        sb.append("\n");
-        rows.forEach(row -> {
-            for (int i=0;i<row.length;i++) {
-                if (!StringUtils.isBlank(row[i]))
-                    sb.append(row[i]);
-                if (isColumnPresent[i] && i != row.length - 1)
-                    sb.append(fileType.getSeperator());
-            }
-        });
-        sb.append("\n");
-        return sb.toString();
     }
 
 }
