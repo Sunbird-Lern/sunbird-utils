@@ -792,6 +792,7 @@ public final class JsonKey {
   public static final String NODES_MODIFIED = "nodesModified";
   public static final String TEXT_TOC_FILE_SUPPRESS_COLUMN_NAMES =
       "textbook_toc_file_suppress_column_names";
+  public static final String TEXTBOOK_TOC_MANDATORY_FIELDS = "textbook_toc_mandatory_fields";
 
   private JsonKey() {}
 }
