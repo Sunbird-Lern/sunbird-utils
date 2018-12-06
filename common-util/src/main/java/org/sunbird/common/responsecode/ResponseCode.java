@@ -749,6 +749,9 @@ public enum   ResponseCode {
   errorProcessingFile(
           ResponseMessage.Key.ERROR_PROCESSING_FILE,
           ResponseMessage.Message.ERROR_PROCESSING_FILE),
+  fileNotFound(
+          ResponseMessage.Key.ERR_FILE_NOT_FOUND,
+          ResponseMessage.Message.ERR_FILE_NOT_FOUND),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

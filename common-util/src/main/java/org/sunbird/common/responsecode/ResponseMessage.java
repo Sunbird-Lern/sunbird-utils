@@ -397,6 +397,7 @@ public interface ResponseMessage {
     String TEXTBOOK_CHILDREN_NOT_EXISTS = "No Children Exists for given TextBook.";
     String TEXTBOOK_NOT_FOUND = "Textbook not found.";
     String ERROR_PROCESSING_FILE = "Something Went Wrong While Reading File. Please Check The File.";
+    String ERR_FILE_NOT_FOUND = "File not found. Please select valid file and upload.";
   }
 
   interface Key {
@@ -743,5 +744,6 @@ public interface ResponseMessage {
     String TEXTBOOK_CHILDREN_NOT_EXISTS = "TEXTBOOK_CHILDREN_NOT_EXISTS";
     String TEXTBOOK_NOT_FOUND = "TEXTBOOK_NOT_FOUND";
     String ERROR_PROCESSING_FILE = "ERROR_PROCESSING_FILE";
+    String ERR_FILE_NOT_FOUND = "ERR_FILE_NOT_FOUND";
   }
 }
