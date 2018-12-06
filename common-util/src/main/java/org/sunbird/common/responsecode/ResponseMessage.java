@@ -398,6 +398,7 @@ public interface ResponseMessage {
     String TEXTBOOK_NOT_FOUND = "Textbook not found.";
     String ERROR_PROCESSING_FILE = "Something Went Wrong While Reading File. Please Check The File.";
     String ERR_FILE_NOT_FOUND = "File not found. Please select valid file and upload.";
+    String ERROR_TB_UPDATE = "Error while updating the textbook";
   }
 
   interface Key {
@@ -745,5 +746,6 @@ public interface ResponseMessage {
     String TEXTBOOK_NOT_FOUND = "TEXTBOOK_NOT_FOUND";
     String ERROR_PROCESSING_FILE = "ERROR_PROCESSING_FILE";
     String ERR_FILE_NOT_FOUND = "ERR_FILE_NOT_FOUND";
+    String ERROR_TB_UPDATE = "ERROR_TB_UPDATE";
   }
 }

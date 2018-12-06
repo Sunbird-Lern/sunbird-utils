@@ -752,6 +752,9 @@ public enum   ResponseCode {
   fileNotFound(
           ResponseMessage.Key.ERR_FILE_NOT_FOUND,
           ResponseMessage.Message.ERR_FILE_NOT_FOUND),
+  errorTbUpdate(
+          ResponseMessage.Key.ERROR_TB_UPDATE,
+          ResponseMessage.Message.ERROR_TB_UPDATE),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
