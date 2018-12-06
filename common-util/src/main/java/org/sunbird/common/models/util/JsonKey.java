@@ -794,6 +794,12 @@ public final class JsonKey {
       "textbook_toc_file_suppress_column_names";
   public static final String TEXTBOOK_TOC_MANDATORY_FIELDS = "textbook_toc_mandatory_fields";
   public static final String DOWNLOAD = "download";
+  public static final String COLLECTION_MIME_TYPE = "application/vnd.ekstep.content-collection";
+  public static final String TB_ROOT = "root";
+  public static final String TB_IS_NEW = "isNew";
+  public static final String KEYWORDS = "keywords";
+  public static final String UNIT = "Unit";
+  public static final String UPDATE_HIERARCHY_API = "sunbird_update_hierarchy_api";
 
   private JsonKey() {}
 }
