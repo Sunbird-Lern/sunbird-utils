@@ -387,7 +387,7 @@ public interface ResponseMessage {
     String INVALID_TEXTBOOK = "Invalid Textbook. Please Provide Valid Textbook Identifier.";
     String CSV_ROWS_EXCEEDS = "Number of rows in csv file is more than ";
     String INVALID_TEXTBOOK_NAME = "Textbook Name given in the file doesn’t match current Textbook name. Please check and upload again.";
-    String DUPLICATE_ROWS = "Duplicate rows found in csv.";
+    String DUPLICATE_ROWS = "Duplicate Textbook node found. Please check and upload again. Row number ";
     String REQUIRED_HEADER_MISSING = "Required set of header missing: ";
     String REQUIRED_FIELD_MISSING = "Data in mandatory fields is missing. Mandatory fields are: ";
     String BLANK_CSV_DATA = "Did not find any TOC data. Please check and upload again.";
