@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.stream.IntStream;
 
 import static org.apache.commons.csv.CSVFormat.DEFAULT;
+import static org.sunbird.common.models.util.JsonKey.IDENTIFIER;
 import static org.sunbird.common.responsecode.ResponseCode.SERVER_ERROR;
 import static org.sunbird.common.responsecode.ResponseCode.errorProcessingRequest;
 import static org.sunbird.content.textbook.FileType.Type.CSV;
@@ -41,7 +42,7 @@ public class TextBookTocUploader {
                                                                 map(e -> (Map<String, Object>) e);
 
     private static Optional<Map<String, Object>> hierarchy  = Optional.ofNullable(inputMapping.get("hierarchy")).
-                                                                map(e -> (Map<String, Object>) e);
+                                                                    map(e -> (Map<String, Object>) e);
 
     private static boolean suppressEmptyColumns = Optional.ofNullable(
                                                     ProjectUtil.getConfigValue(
@@ -122,9 +123,9 @@ public class TextBookTocUploader {
                 log("Creating CSV for TextBookToC | Id: " + textbookId + "Version Key: " + versionKey);
         File file = null;
         try {
-            file = new File(File.separator + "data" + textBookTocFolder + File.separator +
-                    textbookId + "_" + versionKey + fileType.getExtension());
+            file = new File(textbookId + "_" + versionKey + fileType.getExtension());
             FileUtils.deleteQuietly(file);
+            ProjectLogger.log("Creating file for CSV at Location: " + file.getAbsolutePath(), LoggerEnum.INFO);
             FileUtils.touch(file);
             populateDataIntoFile(content, file);
             ProjectLogger.
@@ -160,7 +161,11 @@ public class TextBookTocUploader {
         FileWriter out;
         try {
             if (suppressEmptyColumns) {
+                ProjectLogger.
+                        log("Processing Hierarchy for TextBook | Id: " + content.get(IDENTIFIER),
+                                LoggerEnum.DEBUG);
                 processHierarchySuppressColumns(content);
+
                 String[] columns = IntStream.range(0, keyNames.length).
                         mapToObj(i -> {
                             if (isColumnPresent[i] == true)
@@ -170,9 +175,18 @@ public class TextBookTocUploader {
                         }).
                         filter(Objects::nonNull).
                         toArray(String[]::new);
+
                 out = new FileWriter(file);
+
+                ProjectLogger.
+                        log("Writing Headers to Output Stream for Textbook | Id " + content.get(IDENTIFIER),
+                            LoggerEnum.DEBUG);
                 CSVPrinter printer = new CSVPrinter(out,
                         DEFAULT.withHeader(columns));
+
+                ProjectLogger.
+                        log("Writing Data to Output Stream for Textbook | Id " + content.get(IDENTIFIER),
+                                LoggerEnum.DEBUG);
                 for (Object[] row : rows) {
                     Object[] tempRow = IntStream.range(0, keyNames.length).
                             mapToObj(i -> {
@@ -184,14 +198,34 @@ public class TextBookTocUploader {
                             toArray(Object[]::new);
                     printer.printRecord(tempRow);
                 }
+
+                ProjectLogger.
+                        log("Flushing Data to File | Location:" + file.getAbsolutePath() + " | for TextBook  | Id: " +
+                                content.get(IDENTIFIER), LoggerEnum.INFO);
                 printer.close();
                 out.close();
             } else {
+                ProjectLogger.
+                        log("Processing Hierarchy for TextBook | Id: " + content.get(IDENTIFIER),
+                                LoggerEnum.DEBUG);
                 processHierarchy(content);
+
                 out = new FileWriter(file);
+
+                ProjectLogger.
+                        log("Writing Headers to Output Stream for Textbook | Id " + content.get(IDENTIFIER),
+                                LoggerEnum.DEBUG);
                 CSVPrinter printer = new CSVPrinter(out, DEFAULT.withHeader(columnNames));
+
+                ProjectLogger.
+                        log("Writing Data to Output Stream for Textbook | Id " + content.get(IDENTIFIER),
+                                LoggerEnum.DEBUG);
                 for (Object[] row : rows)
                     printer.printRecord(row);
+
+                ProjectLogger.
+                        log("Flushing Data to File | Location:" + file.getAbsolutePath() + " | for TextBook  | Id: " +
+                                content.get(IDENTIFIER), LoggerEnum.INFO);
                 printer.close();
                 out.close();
             }
