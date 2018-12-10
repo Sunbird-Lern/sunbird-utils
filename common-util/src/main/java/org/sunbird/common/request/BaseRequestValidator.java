@@ -12,6 +12,7 @@ import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
+import org.sunbird.common.models.util.StringFormatter;
 import org.sunbird.common.responsecode.ResponseCode;
 
 /**
@@ -228,22 +229,40 @@ public class BaseRequestValidator {
    * Helper method which throws an exception if each field is not of type List.
    *
    * @param requestMap Request information
+   * @param fieldPrefix Field prefix
    * @param fields List of fields
    */
-  public void validateListParam(Map<String, Object> requestMap, String... fields) {
+  public void validateListParamWithPrefix(
+      Map<String, Object> requestMap, String fieldPrefix, String... fields) {
     Arrays.stream(fields)
         .forEach(
             field -> {
               if (requestMap.containsKey(field)
                   && null != requestMap.get(field)
                   && !(requestMap.get(field) instanceof List)) {
+
+                String fieldWithPrefix =
+                    fieldPrefix != null ? StringFormatter.joinByDot(fieldPrefix, field) : field;
+
                 throw new ProjectCommonException(
                     ResponseCode.dataTypeError.getErrorCode(),
                     ProjectUtil.formatMessage(
-                        ResponseCode.dataTypeError.getErrorMessage(), field, JsonKey.LIST),
+                        ResponseCode.dataTypeError.getErrorMessage(),
+                        fieldWithPrefix,
+                        JsonKey.LIST),
                     ResponseCode.CLIENT_ERROR.getResponseCode());
               }
             });
+  }
+
+  /**
+   * Helper method which throws an exception if each field is not of type List.
+   *
+   * @param requestMap Request information
+   * @param fields List of fields
+   */
+  public void validateListParam(Map<String, Object> requestMap, String... fields) {
+    validateListParamWithPrefix(requestMap, null, fields);
   }
 
   /**
@@ -295,6 +314,24 @@ public class BaseRequestValidator {
           ResponseCode.CLIENT_ERROR.getResponseCode(),
           (String) request.getRequest().get(JsonKey.USER_ID),
           JsonKey.USER_ID);
+    }
+  }
+
+  public void validateSearchRequest(Request request) {
+    if (null == request.getRequest().get(JsonKey.FILTERS)) {
+      throw new ProjectCommonException(
+          ResponseCode.mandatoryParamsMissing.getErrorCode(),
+          MessageFormat.format(
+              ResponseCode.mandatoryParamsMissing.getErrorMessage(), JsonKey.FILTERS),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    if (request.getRequest().containsKey(JsonKey.FILTERS)
+        && (!(request.getRequest().get(JsonKey.FILTERS) instanceof Map))) {
+      throw new ProjectCommonException(
+          ResponseCode.dataTypeError.getErrorCode(),
+          MessageFormat.format(
+              ResponseCode.dataTypeError.getErrorMessage(), JsonKey.FILTERS, "Map"),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
     }
   }
 }

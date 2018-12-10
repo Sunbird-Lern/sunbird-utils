@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.JsonKey;
 
 /** @author Manzarul */
-public enum ResponseCode {
+public enum   ResponseCode {
   unAuthorized(ResponseMessage.Key.UNAUTHORIZED_USER, ResponseMessage.Message.UNAUTHORIZED_USER),
   invalidUserCredentials(
       ResponseMessage.Key.INVALID_USER_CREDENTIALS,
@@ -81,6 +81,8 @@ public enum ResponseCode {
   channelUniquenessInvalid(
       ResponseMessage.Key.CHANNEL_SHOULD_BE_UNIQUE,
       ResponseMessage.Message.CHANNEL_SHOULD_BE_UNIQUE),
+  errorDuplicateEntry(
+      ResponseMessage.Key.ERROR_DUPLICATE_ENTRY, ResponseMessage.Message.ERROR_DUPLICATE_ENTRY),
   unableToConnect(
       ResponseMessage.Key.UNABLE_TO_CONNECT_TO_EKSTEP,
       ResponseMessage.Message.UNABLE_TO_CONNECT_TO_EKSTEP),
@@ -171,10 +173,10 @@ public enum ResponseCode {
   keyCloakDefaultError(
       ResponseMessage.Key.KEY_CLOAK_DEFAULT_ERROR, ResponseMessage.Message.KEY_CLOAK_DEFAULT_ERROR),
   userRegUnSuccessfull(
-      ResponseMessage.Key.USER_REG_UNSUCCESSFULL, ResponseMessage.Message.USER_REG_UNSUCCESSFULL),
+      ResponseMessage.Key.USER_REG_UNSUCCESSFUL, ResponseMessage.Message.USER_REG_UNSUCCESSFUL),
   userUpdationUnSuccessfull(
-      ResponseMessage.Key.USER_UPDATE_UNSUCCESSFULL,
-      ResponseMessage.Message.USER_UPDATE_UNSUCCESSFULL),
+      ResponseMessage.Key.USER_UPDATE_UNSUCCESSFUL,
+      ResponseMessage.Message.USER_UPDATE_UNSUCCESSFUL),
   loginTypeError(ResponseMessage.Key.LOGIN_TYPE_ERROR, ResponseMessage.Message.LOGIN_TYPE_ERROR),
   invalidOrgId(ResponseMessage.Key.INVALID_ORG_ID, ResponseMessage.Key.INVALID_ORG_ID),
   invalidOrgStatus(ResponseMessage.Key.INVALID_ORG_STATUS, ResponseMessage.Key.INVALID_ORG_STATUS),
@@ -223,6 +225,8 @@ public enum ResponseCode {
       ResponseMessage.Key.NAME_OF_ORGANISATION_ERROR,
       ResponseMessage.Message.NAME_OF_ORGANISATION_ERROR),
   rolesRequired(ResponseMessage.Key.ROLES_MISSING, ResponseMessage.Message.ROLES_MISSING),
+  emptyRolesProvided(
+      ResponseMessage.Key.EMPTY_ROLES_PROVIDED, ResponseMessage.Message.EMPTY_ROLES_PROVIDED),
   invalidDateFormat(
       ResponseMessage.Key.INVALID_DATE_FORMAT, ResponseMessage.Message.INVALID_DATE_FORMAT),
   sourceAndExternalIdAlreadyExist(
@@ -261,6 +265,8 @@ public enum ResponseCode {
       ResponseMessage.Key.USER_ACCOUNT_BLOCKED, ResponseMessage.Message.USER_ACCOUNT_BLOCKED),
   userAlreadyActive(
       ResponseMessage.Key.USER_ALREADY_ACTIVE, ResponseMessage.Message.USER_ALREADY_ACTIVE),
+  userAlreadyInactive(
+      ResponseMessage.Key.USER_ALREADY_INACTIVE, ResponseMessage.Message.USER_ALREADY_INACTIVE),
   enrolmentTypeRequired(
       ResponseMessage.Key.ENROLMENT_TYPE_REQUIRED, ResponseMessage.Message.ENROLMENT_TYPE_REQUIRED),
   enrolmentIncorrectValue(
@@ -416,10 +422,6 @@ public enum ResponseCode {
       ResponseMessage.Key.INVALID_PHONE_NUMBER, ResponseMessage.Message.INVALID_PHONE_NUMBER),
   invalidCountryCode(
       ResponseMessage.Key.INVALID_COUNTRY_CODE, ResponseMessage.Message.INVALID_COUNTRY_CODE),
-  duplicatePhoneData(
-      ResponseMessage.Key.DUPLICATE_PHONE_DATA, ResponseMessage.Message.DUPLICATE_PHONE_DATA),
-  duplicateEmailData(
-      ResponseMessage.Key.DUPLICATE_EMAIL_DATA, ResponseMessage.Message.DUPLICATE_EMAIL_DATA),
   locationIdRequired(
       ResponseMessage.Key.LOCATION_ID_REQUIRED, ResponseMessage.Message.LOCATION_ID_REQUIRED),
   functionalityMissing(ResponseMessage.Key.NOT_SUPPORTED, ResponseMessage.Message.NOT_SUPPORTED),
@@ -533,6 +535,12 @@ public enum ResponseCode {
   mandatoryParamsMissing(
       ResponseMessage.Key.MANDATORY_PARAMETER_MISSING,
       ResponseMessage.Message.MANDATORY_PARAMETER_MISSING),
+  errorMandatoryParamsEmpty(
+      ResponseMessage.Key.ERROR_MANDATORY_PARAMETER_EMPTY,
+      ResponseMessage.Message.ERROR_MANDATORY_PARAMETER_EMPTY),
+  errorNoFrameworkFound(
+      ResponseMessage.Key.ERROR_NO_FRAMEWORK_FOUND,
+      ResponseMessage.Message.ERROR_NO_FRAMEWORK_FOUND),
   unupdatableField(
       ResponseMessage.Key.UPDATE_NOT_ALLOWED, ResponseMessage.Message.UPDATE_NOT_ALLOWED),
   mandatoryHeadersMissing(
@@ -661,6 +669,92 @@ public enum ResponseCode {
   errorSystemSettingNotFound(
       ResponseMessage.Key.ERROR_SYSTEM_SETTING_NOT_FOUND,
       ResponseMessage.Message.ERROR_SYSTEM_SETTING_NOT_FOUND),
+  errorNoRootOrgAssociated(
+      ResponseMessage.Key.ERROR_NO_ROOT_ORG_ASSOCIATED,
+      ResponseMessage.Message.ERROR_NO_ROOT_ORG_ASSOCIATED),
+  errorInactiveCustodianOrg(
+      ResponseMessage.Key.ERROR_INACTIVE_CUSTODIAN_ORG,
+      ResponseMessage.Message.ERROR_INACTIVE_CUSTODIAN_ORG),
+  errorUnsupportedCloudStorage(
+      ResponseMessage.Key.ERROR_UNSUPPORTED_CLOUD_STORAGE,
+      ResponseMessage.Message.ERROR_UNSUPPORTED_CLOUD_STORAGE),
+  errorUnsupportedField(
+      ResponseMessage.Key.ERROR_UNSUPPORTED_FIELD, ResponseMessage.Message.ERROR_UNSUPPORTED_FIELD),
+  errorGenerateDownloadLink(
+      ResponseMessage.Key.ERROR_GENERATE_DOWNLOAD_LINK,
+      ResponseMessage.Message.ERROR_GENERATE_DOWNLOAD_LINK),
+  errorUnavailableDownloadLink(
+      ResponseMessage.Key.ERROR_DOWNLOAD_LINK_UNAVAILABLE,
+      ResponseMessage.Message.ERROR_DOWNLOAD_LINK_UNAVAILABLE),
+  errorSavingStorageDetails(
+      ResponseMessage.Key.ERROR_SAVING_STORAGE_DETAILS,
+      ResponseMessage.Message.ERROR_SAVING_STORAGE_DETAILS),
+  errorCsvNoDataRows(
+      ResponseMessage.Key.ERROR_CSV_NO_DATA_ROWS, ResponseMessage.Message.ERROR_CSV_NO_DATA_ROWS),
+  errorInactiveOrg(
+      ResponseMessage.Key.ERROR_INACTIVE_ORG, ResponseMessage.Message.ERROR_INACTIVE_ORG),
+  errorDuplicateEntries(
+      ResponseMessage.Key.ERROR_DUPLICATE_ENTRIES, ResponseMessage.Message.ERROR_DUPLICATE_ENTRIES),
+  errorConflictingValues(
+      ResponseMessage.Key.ERROR_CONFLICTING_VALUES,
+      ResponseMessage.Message.ERROR_CONFLICTING_VALUES),
+  errorConflictingRootOrgId(
+      ResponseMessage.Key.ERROR_CONFLICTING_ROOT_ORG_ID,
+      ResponseMessage.Message.ERROR_CONFLICTING_ROOT_ORG_ID),
+  errorUpdateSettingNotAllowed(
+      ResponseMessage.Key.ERROR_UPDATE_SETTING_NOT_ALLOWED,
+      ResponseMessage.Message.ERROR_UPDATE_SETTING_NOT_ALLOWED),
+  errorCreatingFile(
+    ResponseMessage.Key.ERROR_CREATING_FILE,
+    ResponseMessage.Message.ERROR_CREATING_FILE),
+  errorProcessingRequest(
+          ResponseMessage.Key.ERROR_PROCESSING_REQUEST,
+          ResponseMessage.Message.ERROR_PROCESSING_REQUEST),
+  invalidTextbook(
+          ResponseMessage.Key.INVALID_TEXTBOOK,
+          ResponseMessage.Message.INVALID_TEXTBOOK),
+  csvRowsExceeds(
+          ResponseMessage.Key.CSV_ROWS_EXCEEDS,
+          ResponseMessage.Message.CSV_ROWS_EXCEEDS),
+  invalidTextbookName(
+          ResponseMessage.Key.INVALID_TEXTBOOK_NAME,
+          ResponseMessage.Message.INVALID_TEXTBOOK_NAME),
+  duplicateRows(
+          ResponseMessage.Key.DUPLICATE_ROWS,
+          ResponseMessage.Message.DUPLICATE_ROWS),
+  requiredHeaderMissing(
+          ResponseMessage.Key.REQUIRED_HEADER_MISSING,
+          ResponseMessage.Message.REQUIRED_HEADER_MISSING),
+  requiredFieldMissing(
+          ResponseMessage.Key.REQUIRED_FIELD_MISSING,
+          ResponseMessage.Message.REQUIRED_FIELD_MISSING),
+  blankCsvData(
+          ResponseMessage.Key.BLANK_CSV_DATA,
+          ResponseMessage.Message.BLANK_CSV_DATA),
+  exceedMaxChildren(
+          ResponseMessage.Key.EXCEEDS_MAX_CHILDREN,
+          ResponseMessage.Message.EXCEEDS_MAX_CHILDREN),
+  textbookChildrenExist(
+          ResponseMessage.Key.TEXTBOOK_CHILDREN_EXISTS,
+          ResponseMessage.Message.TEXTBOOK_CHILDREN_EXISTS),
+  textbookUpdateFailure(
+          ResponseMessage.Key.TEXTBOOK_UPDATE_FAILURE,
+          ResponseMessage.Message.TEXTBOOK_UPDATE_FAILURE),
+  noChildrenExists(
+          ResponseMessage.Key.TEXTBOOK_CHILDREN_NOT_EXISTS,
+          ResponseMessage.Message.TEXTBOOK_CHILDREN_NOT_EXISTS),
+  textBookNotFound(
+          ResponseMessage.Key.TEXTBOOK_NOT_FOUND,
+          ResponseMessage.Message.TEXTBOOK_NOT_FOUND),
+  errorProcessingFile(
+          ResponseMessage.Key.ERROR_PROCESSING_FILE,
+          ResponseMessage.Message.ERROR_PROCESSING_FILE),
+  fileNotFound(
+          ResponseMessage.Key.ERR_FILE_NOT_FOUND,
+          ResponseMessage.Message.ERR_FILE_NOT_FOUND),
+  errorTbUpdate(
+          ResponseMessage.Key.ERROR_TB_UPDATE,
+          ResponseMessage.Message.ERROR_TB_UPDATE),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

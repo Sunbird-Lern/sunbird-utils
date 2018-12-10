@@ -1,16 +1,24 @@
 package org.sunbird.common.request;
 
-import java.math.BigInteger;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
-import org.sunbird.common.models.util.*;
+import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.ProjectLogger;
+import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.ProjectUtil.ProgressStatus;
 import org.sunbird.common.models.util.ProjectUtil.Source;
+import org.sunbird.common.models.util.PropertiesCache;
+import org.sunbird.common.models.util.StringFormatter;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.common.responsecode.ResponseMessage;
 
@@ -23,39 +31,6 @@ public final class RequestValidator {
   private static final int ERROR_CODE = ResponseCode.CLIENT_ERROR.getResponseCode();
 
   private RequestValidator() {}
-
-  public static void validateUnenrollCourse(Request courseRequestDto) {
-    if (courseRequestDto.getRequest().get(JsonKey.COURSE_ID) == null) {
-      throw new ProjectCommonException(
-          ResponseCode.courseIdRequiredError.getErrorCode(),
-          ResponseCode.courseIdRequiredError.getErrorMessage(),
-          ERROR_CODE);
-    }
-
-    if (courseRequestDto.getRequest().get(JsonKey.BATCH_ID) == null) {
-      throw new ProjectCommonException(
-          ResponseCode.courseBatchIdRequired.getErrorCode(),
-          ResponseCode.courseBatchIdRequired.getErrorMessage(),
-          ERROR_CODE);
-    }
-
-    if (courseRequestDto.getRequest().get(JsonKey.USER_ID) == null) {
-      throw new ProjectCommonException(
-          ResponseCode.userIdRequired.getErrorCode(),
-          ResponseCode.userIdRequired.getErrorMessage(),
-          ERROR_CODE);
-    }
-
-    if (!courseRequestDto
-        .getRequest()
-        .get(JsonKey.USER_ID)
-        .equals(courseRequestDto.getContext().get(JsonKey.REQUESTED_BY))) {
-      throw new ProjectCommonException(
-          ResponseCode.invalidParameterValue.getErrorCode(),
-          ResponseCode.invalidParameterValue.getErrorMessage(),
-          ERROR_CODE);
-    }
-  }
 
   /**
    * This method will do content state request data validation. if all mandatory data is coming then
@@ -119,75 +94,6 @@ public final class RequestValidator {
               ERROR_CODE);
         }
       }
-    }
-  }
-
-  public static void validateCreateOrg(Request request) {
-    if (StringUtils.isBlank((String) request.getRequest().get(JsonKey.ORG_NAME))) {
-      throw new ProjectCommonException(
-          ResponseCode.organisationNameRequired.getErrorCode(),
-          ResponseCode.organisationNameRequired.getErrorMessage(),
-          ERROR_CODE);
-    }
-    if ((null != request.getRequest().get(JsonKey.IS_ROOT_ORG)
-            && (Boolean) request.getRequest().get(JsonKey.IS_ROOT_ORG))
-        && StringUtils.isEmpty((String) request.getRequest().get(JsonKey.CHANNEL))) {
-      throw new ProjectCommonException(
-          ResponseCode.channelIdRequiredForRootOrg.getErrorCode(),
-          ResponseCode.channelIdRequiredForRootOrg.getErrorMessage(),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
-    }
-  }
-
-  public static void validateOrg(Request request) {
-    if (StringUtils.isEmpty((String) request.getRequest().get(JsonKey.ORGANISATION_ID))
-        && ((StringUtils.isEmpty((String) request.getRequest().get(JsonKey.PROVIDER)))
-            || (StringUtils.isBlank((String) request.getRequest().get(JsonKey.EXTERNAL_ID))))) {
-      throw new ProjectCommonException(
-          ResponseCode.sourceAndExternalIdValidationError.getErrorCode(),
-          ResponseCode.sourceAndExternalIdValidationError.getErrorMessage(),
-          ERROR_CODE);
-    }
-  }
-
-  public static void validateUpdateOrg(Request request) {
-    validateOrg(request);
-    if (request.getRequest().containsKey(JsonKey.ROOT_ORG_ID)
-        && StringUtils.isEmpty((String) request.getRequest().get(JsonKey.ROOT_ORG_ID))) {
-      throw new ProjectCommonException(
-          ResponseCode.invalidRootOrganisationId.getErrorCode(),
-          ResponseCode.invalidRootOrganisationId.getErrorMessage(),
-          ERROR_CODE);
-    }
-    if (request.getRequest().get(JsonKey.STATUS) != null) {
-      throw new ProjectCommonException(
-          ResponseCode.invalidRequestData.getErrorCode(),
-          ResponseCode.invalidRequestData.getErrorMessage(),
-          ERROR_CODE);
-    }
-    if ((null != request.getRequest().get(JsonKey.IS_ROOT_ORG)
-            && (Boolean) request.getRequest().get(JsonKey.IS_ROOT_ORG))
-        && StringUtils.isEmpty((String) request.getRequest().get(JsonKey.CHANNEL))) {
-      throw new ProjectCommonException(
-          ResponseCode.channelIdRequiredForRootOrg.getErrorCode(),
-          ResponseCode.channelIdRequiredForRootOrg.getErrorMessage(),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
-    }
-  }
-
-  public static void validateUpdateOrgStatus(Request request) {
-    validateOrg(request);
-    if (!request.getRequest().containsKey(JsonKey.STATUS)) {
-      throw new ProjectCommonException(
-          ResponseCode.invalidRequestData.getErrorCode(),
-          ResponseCode.invalidRequestData.getErrorMessage(),
-          ERROR_CODE);
-    }
-    if (!(request.getRequest().get(JsonKey.STATUS) instanceof BigInteger)) {
-      throw new ProjectCommonException(
-          ResponseCode.invalidRequestData.getErrorCode(),
-          ResponseCode.invalidRequestData.getErrorMessage(),
-          ERROR_CODE);
     }
   }
 
@@ -420,49 +326,6 @@ public final class RequestValidator {
           ResponseCode.pageIdRequired.getErrorCode(),
           ResponseCode.pageIdRequired.getErrorMessage(),
           ERROR_CODE);
-    }
-  }
-
-  /**
-   * This method will validate user org requested data.
-   *
-   * @param userRequest Request
-   */
-  public static void validateUserOrg(Request userRequest) {
-    validateOrg(userRequest);
-    if ((StringUtils.isEmpty((String) userRequest.getRequest().get(JsonKey.USERNAME))
-            || StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PROVIDER)))
-        && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.USER_ID))) {
-      throw new ProjectCommonException(
-          ResponseCode.usrValidationError.getErrorCode(),
-          ResponseCode.usrValidationError.getErrorMessage(),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
-    }
-  }
-
-  /**
-   * This method will validate user org requested data.
-   *
-   * @param userRequest Request
-   */
-  @SuppressWarnings("rawtypes")
-  public static void validateAddMember(Request userRequest) {
-    validateOrg(userRequest);
-    if (userRequest.getRequest().containsKey(JsonKey.ROLES)
-        && (!(userRequest.getRequest().get(JsonKey.ROLES) instanceof List)
-            || ((List) userRequest.getRequest().get(JsonKey.ROLES)).isEmpty())) {
-      throw new ProjectCommonException(
-          ResponseCode.roleRequired.getErrorCode(),
-          ResponseCode.roleRequired.getErrorMessage(),
-          ERROR_CODE);
-    }
-    if ((StringUtils.isEmpty((String) userRequest.getRequest().get(JsonKey.USERNAME))
-            || StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PROVIDER)))
-        && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.USER_ID))) {
-      throw new ProjectCommonException(
-          ResponseCode.usrValidationError.getErrorCode(),
-          ResponseCode.usrValidationError.getErrorMessage(),
-          ResponseCode.CLIENT_ERROR.getResponseCode());
     }
   }
 

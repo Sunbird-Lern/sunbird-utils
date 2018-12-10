@@ -34,8 +34,8 @@ public class User implements Serializable {
   private String lastLoginTime;
   private String lastName;
   private String location;
-  private String password;
   private String phone;
+  private Boolean phoneVerified;
   private String profileSummary;
   private Map<String, String> profileVisibility;
   private String provider;
@@ -51,13 +51,24 @@ public class User implements Serializable {
   private String updatedDate;
   private String userId;
   private String userName;
-  private List<Map<String, Object>> webPages;
+  private List<Map<String, String>> webPages;
   private String externalId;
   private String channel;
   private String loginId;
   private String registryId;
   private String organisationId;
   private List<Map<String, String>> externalIds;
+  private String userType;
+  private String signupType;
+  private Map<String, List<String>> framework;
+
+  public String getUserType() {
+    return userType;
+  }
+
+  public void setUserType(String userType) {
+    this.userType = userType;
+  }
 
   public String getOrganisationId() {
     return organisationId;
@@ -220,14 +231,6 @@ public class User implements Serializable {
     this.location = location;
   }
 
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
   public String getPhone() {
     return phone;
   }
@@ -356,11 +359,11 @@ public class User implements Serializable {
     this.userName = userName;
   }
 
-  public List<Map<String, Object>> getWebPages() {
+  public List<Map<String, String>> getWebPages() {
     return webPages;
   }
 
-  public void setWebPages(List<Map<String, Object>> webPages) {
+  public void setWebPages(List<Map<String, String>> webPages) {
     this.webPages = webPages;
   }
 
@@ -378,5 +381,21 @@ public class User implements Serializable {
 
   public void setExternalIds(List<Map<String, String>> externalIds) {
     this.externalIds = externalIds;
+  }
+
+  public Map<String, List<String>> getFramework() {
+    return framework;
+  }
+
+  public void setFramework(Map<String, List<String>> framework) {
+    this.framework = framework;
+  }
+
+  public Boolean getPhoneVerified() {
+    return phoneVerified;
+  }
+
+  public void setPhoneVerified(Boolean phoneVerified) {
+    this.phoneVerified = phoneVerified;
   }
 }
