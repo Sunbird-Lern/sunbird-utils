@@ -740,15 +740,21 @@ public enum   ResponseCode {
   textbookUpdateFailure(
           ResponseMessage.Key.TEXTBOOK_UPDATE_FAILURE,
           ResponseMessage.Message.TEXTBOOK_UPDATE_FAILURE),
-  invalidTextBook(
-          ResponseMessage.Key.INVALID_TEXTBOOK,
-          ResponseMessage.Message.INVALID_TEXTBOOK),
   noChildrenExists(
           ResponseMessage.Key.TEXTBOOK_CHILDREN_NOT_EXISTS,
           ResponseMessage.Message.TEXTBOOK_CHILDREN_NOT_EXISTS),
   textBookNotFound(
           ResponseMessage.Key.TEXTBOOK_NOT_FOUND,
           ResponseMessage.Message.TEXTBOOK_NOT_FOUND),
+  errorProcessingFile(
+          ResponseMessage.Key.ERROR_PROCESSING_FILE,
+          ResponseMessage.Message.ERROR_PROCESSING_FILE),
+  fileNotFound(
+          ResponseMessage.Key.ERR_FILE_NOT_FOUND,
+          ResponseMessage.Message.ERR_FILE_NOT_FOUND),
+  errorTbUpdate(
+          ResponseMessage.Key.ERROR_TB_UPDATE,
+          ResponseMessage.Message.ERROR_TB_UPDATE),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

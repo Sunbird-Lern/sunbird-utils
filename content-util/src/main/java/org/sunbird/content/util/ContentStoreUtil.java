@@ -52,20 +52,6 @@ public class ContentStoreUtil {
     return handleReadRequest(frameworkId, JsonKey.SUNBIRD_FRAMEWORK_READ_API);
   }
 
-  public static Map<String, Object> readHierarchy(String contentId) {
-    ProjectLogger.log(
-        "ContentStoreUtil::readHierarchy: contentId = " + contentId, LoggerEnum.INFO.name());
-    Map<String, String> requestParams = new HashMap<String, String>();
-    requestParams.put("mode", "edit");
-    return handleReadRequest(contentId, JsonKey.SUNBIRD_CONTENT_GET_HIERARCHY_API, requestParams);
-  }
-
-  public static Map<String, Object> readContent(String contentId) {
-    ProjectLogger.log(
-            "ContentStoreUtil::readContent: contentId = " + contentId, LoggerEnum.INFO.name());
-    return handleReadRequest(contentId, JsonKey.SUNBIRD_CONTENT_READ_API);
-  }
-
   @SuppressWarnings("unchecked")
   private static Map<String, Object> handleReadRequest(String id, String urlPath) {
     Map<String, String> headers = getHeaders();
@@ -112,6 +98,9 @@ public class ContentStoreUtil {
                       + "/"
                       + id
                       + requestParams(requestParams);
+
+      ProjectLogger.log("Sending GET Request | Request URL: " + requestUrl, LoggerEnum.INFO);
+
       String response = HttpUtil.sendGetRequest(requestUrl, headers);
 
       resultMap = mapper.readValue(response, Map.class);
