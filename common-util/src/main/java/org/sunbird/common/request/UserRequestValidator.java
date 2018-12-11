@@ -6,12 +6,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.StringFormatter;
 import org.sunbird.common.responsecode.ResponseCode;
+import org.sunbird.models.user.SignupType;
 
 public class UserRequestValidator extends BaseRequestValidator {
 
@@ -44,12 +46,14 @@ public class UserRequestValidator extends BaseRequestValidator {
     if ((StringUtils.isBlank(verificationCode) && StringUtils.isBlank(verificationSource))
         || (StringUtils.isNotBlank(verificationCode)
             && StringUtils.isNotBlank(verificationSource))) {
-      if (StringUtils.isNotBlank(verificationSource)
-          && JsonKey.GOOGLE.equalsIgnoreCase(verificationSource)) {
-        validateParam(
-            (String) userRequest.getRequest().get(JsonKey.EMAIL),
-            ResponseCode.mandatoryParamsMissing,
-            JsonKey.EMAIL);
+      if (StringUtils.isNotBlank(verificationSource)) {
+        validateSignupType(verificationSource);
+        if (SignupType.GOOGLE.getTypeName().equalsIgnoreCase(verificationSource)) {
+          validateParam(
+              (String) userRequest.getRequest().get(JsonKey.EMAIL),
+              ResponseCode.mandatoryParamsMissing,
+              JsonKey.EMAIL);
+        }
       }
     } else {
       if (StringUtils.isBlank(verificationCode)) {
@@ -67,6 +71,20 @@ public class UserRequestValidator extends BaseRequestValidator {
                 JsonKey.VERIFICATION_SOURCE,
                 JsonKey.VERIFICATION_CODE));
       }
+    }
+  }
+
+  private static void validateSignupType(String signupType) {
+    List<String> signupTypes =
+        Stream.of(SignupType.values()).map(SignupType::getTypeName).collect(Collectors.toList());
+    if (!signupTypes.contains(signupType.trim().toUpperCase())) {
+      ProjectCommonException.throwClientErrorException(
+          ResponseCode.invalidValue,
+          MessageFormat.format(
+              ResponseCode.invalidValue.getErrorMessage(),
+              JsonKey.VERIFICATION_SOURCE,
+              signupType,
+              signupTypes));
     }
   }
 
