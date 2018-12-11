@@ -386,7 +386,8 @@ public interface ResponseMessage {
     String ERROR_PROCESSING_REQUEST = "Something went wrong while Processing Request";
     String INVALID_TEXTBOOK = "Invalid Textbook. Please Provide Valid Textbook Identifier.";
     String CSV_ROWS_EXCEEDS = "Number of rows in csv file is more than ";
-    String INVALID_TEXTBOOK_NAME = "Textbook Name given in the file doesn’t match current Textbook name. Please check and upload again.";
+    String INVALID_TEXTBOOK_NAME =
+        "Textbook Name given in the file doesn’t match current Textbook name. Please check and upload again.";
     String DUPLICATE_ROWS = "Duplicate rows found in csv.";
     String REQUIRED_HEADER_MISSING = "Required set of header missing: ";
     String REQUIRED_FIELD_MISSING = "Data in mandatory fields is missing. Mandatory fields are: ";
@@ -396,9 +397,11 @@ public interface ResponseMessage {
     String TEXTBOOK_UPDATE_FAILURE = "Textbook could not be updated.";
     String TEXTBOOK_CHILDREN_NOT_EXISTS = "No Children Exists for given TextBook.";
     String TEXTBOOK_NOT_FOUND = "Textbook not found.";
-    String ERROR_PROCESSING_FILE = "Something Went Wrong While Reading File. Please Check The File.";
+    String ERROR_PROCESSING_FILE =
+        "Something Went Wrong While Reading File. Please Check The File.";
     String ERR_FILE_NOT_FOUND = "File not found. Please select valid file and upload.";
     String ERROR_TB_UPDATE = "Error while updating the textbook";
+    String AUTH_TOKEN_VERIFICATION_FAILED = "{0} auth token verification failed.";
   }
 
   interface Key {
@@ -747,5 +750,6 @@ public interface ResponseMessage {
     String ERROR_PROCESSING_FILE = "ERROR_PROCESSING_FILE";
     String ERR_FILE_NOT_FOUND = "ERR_FILE_NOT_FOUND";
     String ERROR_TB_UPDATE = "ERROR_TB_UPDATE";
+    String AUTH_TOKEN_VERIFICATION_FAILED = "AUTH_TOKEN_VERIFICATION_FAILED";
   }
 }

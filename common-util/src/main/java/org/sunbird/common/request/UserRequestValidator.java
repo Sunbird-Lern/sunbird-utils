@@ -18,6 +18,7 @@ public class UserRequestValidator extends BaseRequestValidator {
   private static final int ERROR_CODE = ResponseCode.CLIENT_ERROR.getResponseCode();
 
   public void validateCreateUserRequest(Request userRequest) {
+    validateVerificationSourceAndCode(userRequest);
     externalIdsValidation(userRequest, JsonKey.CREATE);
     fieldsNotAllowed(
         Arrays.asList(
@@ -37,6 +38,38 @@ public class UserRequestValidator extends BaseRequestValidator {
     validateWebPages(userRequest);
   }
 
+  private void validateVerificationSourceAndCode(Request userRequest) {
+    String verificationCode = (String) userRequest.getRequest().get(JsonKey.VERIFICATION_CODE);
+    String verificationSource = (String) userRequest.getRequest().get(JsonKey.VERIFICATION_SOURCE);
+    if ((StringUtils.isBlank(verificationCode) && StringUtils.isBlank(verificationSource))
+        || (StringUtils.isNotBlank(verificationCode)
+            && StringUtils.isNotBlank(verificationSource))) {
+      if (StringUtils.isNotBlank(verificationSource)
+          && JsonKey.GOOGLE.equalsIgnoreCase(verificationSource)) {
+        validateParam(
+            (String) userRequest.getRequest().get(JsonKey.EMAIL),
+            ResponseCode.mandatoryParamsMissing,
+            JsonKey.USERNAME);
+      }
+    } else {
+      if (StringUtils.isBlank(verificationCode)) {
+        ProjectCommonException.throwClientErrorException(
+            ResponseCode.dependentParameterMissing,
+            ProjectUtil.formatMessage(
+                ResponseCode.dependentParameterMissing.getErrorMessage(),
+                JsonKey.VERIFICATION_CODE,
+                JsonKey.VERIFICATION_SOURCE));
+      } else {
+        ProjectCommonException.throwClientErrorException(
+            ResponseCode.dependentParameterMissing,
+            ProjectUtil.formatMessage(
+                ResponseCode.dependentParameterMissing.getErrorMessage(),
+                JsonKey.VERIFICATION_SOURCE,
+                JsonKey.VERIFICATION_CODE));
+      }
+    }
+  }
+
   private void validateUserName(Request userRequest) {
     validateParam(
         (String) userRequest.getRequest().get(JsonKey.USERNAME),
@@ -54,7 +87,6 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   public void validateCreateUserV2Request(Request userRequest) {
-    validateUserName(userRequest);
     validateParam(
         (String) userRequest.getRequest().get(JsonKey.CHANNEL),
         ResponseCode.mandatoryParamsMissing,
@@ -893,7 +925,7 @@ public class UserRequestValidator extends BaseRequestValidator {
                 .map(fieldMap -> fieldMap.get(JsonKey.NAME))
                 .collect(Collectors.toList());
 
-        List<String> fwRequestFieldList = (List<String>) fwRequestFieldEntry.getValue();
+        List<String> fwRequestFieldList = fwRequestFieldEntry.getValue();
 
         for (String fwRequestField : fwRequestFieldList) {
           if (!allowedFieldValues.contains(fwRequestField)) {
