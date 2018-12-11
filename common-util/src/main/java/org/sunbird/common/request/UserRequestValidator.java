@@ -13,7 +13,6 @@ import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.StringFormatter;
 import org.sunbird.common.responsecode.ResponseCode;
-import org.sunbird.models.user.SignupType;
 
 public class UserRequestValidator extends BaseRequestValidator {
 

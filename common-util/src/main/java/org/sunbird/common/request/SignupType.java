@@ -1,4 +1,4 @@
-package org.sunbird.models.user;
+package org.sunbird.common.request;
 
 public enum SignupType {
   GOOGLE("GOOGLE");
