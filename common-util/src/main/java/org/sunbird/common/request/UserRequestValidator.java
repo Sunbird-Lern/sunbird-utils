@@ -49,7 +49,7 @@ public class UserRequestValidator extends BaseRequestValidator {
         validateParam(
             (String) userRequest.getRequest().get(JsonKey.EMAIL),
             ResponseCode.mandatoryParamsMissing,
-            JsonKey.USERNAME);
+            JsonKey.EMAIL);
       }
     } else {
       if (StringUtils.isBlank(verificationCode)) {
