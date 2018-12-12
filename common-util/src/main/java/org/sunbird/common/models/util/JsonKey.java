@@ -390,6 +390,7 @@ public final class JsonKey {
   public static final String ORGANISATIONS = "organisations";
   public static final String OrgConsumption = "orgConsumption";
   public static final String OrgCreation = "orgCreation";
+  public static final String OTP = "otp";
   public static final String PAGE = "page";
   public static final String PAGE_ID = "pageId";
   public static final String PAGE_MGMT_DB = "page_mgmt_db";
