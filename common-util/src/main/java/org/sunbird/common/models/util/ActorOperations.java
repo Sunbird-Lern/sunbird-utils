@@ -148,7 +148,7 @@ public enum ActorOperations {
   GET_ALL_SYSTEM_SETTINGS("getAllSystemSettings"),
   SET_SYSTEM_SETTING("setSystemSetting"),
   COURSE_BATCH_NOTIFICATION("courseBatchNotification"),
-  ACCEPT_TAC("acceptTAC");
+  USER_TNC_ACCEPT("userTnCAccept");
   private String value;
 
   /**
