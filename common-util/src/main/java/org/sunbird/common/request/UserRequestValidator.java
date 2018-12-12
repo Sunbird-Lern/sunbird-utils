@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
@@ -19,7 +18,6 @@ public class UserRequestValidator extends BaseRequestValidator {
   private static final int ERROR_CODE = ResponseCode.CLIENT_ERROR.getResponseCode();
 
   public void validateCreateUserRequest(Request userRequest) {
-    validateVerificationSourceAndCode(userRequest);
     externalIdsValidation(userRequest, JsonKey.CREATE);
     fieldsNotAllowed(
         Arrays.asList(
@@ -39,54 +37,6 @@ public class UserRequestValidator extends BaseRequestValidator {
     validateWebPages(userRequest);
   }
 
-  private void validateVerificationSourceAndCode(Request userRequest) {
-    String verificationCode = (String) userRequest.getRequest().get(JsonKey.VERIFICATION_CODE);
-    String verificationSource = (String) userRequest.getRequest().get(JsonKey.VERIFICATION_SOURCE);
-    if ((StringUtils.isBlank(verificationCode) && StringUtils.isBlank(verificationSource))
-        || (StringUtils.isNotBlank(verificationCode)
-            && StringUtils.isNotBlank(verificationSource))) {
-      if (StringUtils.isNotBlank(verificationSource)) {
-        validateSignupType(verificationSource);
-        if (SignupType.GOOGLE.getTypeName().equalsIgnoreCase(verificationSource)) {
-          validateParam(
-              (String) userRequest.getRequest().get(JsonKey.EMAIL),
-              ResponseCode.mandatoryParamsMissing,
-              JsonKey.EMAIL);
-        }
-      }
-    } else {
-      if (StringUtils.isBlank(verificationCode)) {
-        ProjectCommonException.throwClientErrorException(
-            ResponseCode.dependentParameterMissing,
-            ProjectUtil.formatMessage(
-                ResponseCode.dependentParameterMissing.getErrorMessage(),
-                JsonKey.VERIFICATION_CODE,
-                JsonKey.VERIFICATION_SOURCE));
-      } else {
-        ProjectCommonException.throwClientErrorException(
-            ResponseCode.dependentParameterMissing,
-            ProjectUtil.formatMessage(
-                ResponseCode.dependentParameterMissing.getErrorMessage(),
-                JsonKey.VERIFICATION_SOURCE,
-                JsonKey.VERIFICATION_CODE));
-      }
-    }
-  }
-
-  private static void validateSignupType(String signupType) {
-    List<String> signupTypes =
-        Stream.of(SignupType.values()).map(SignupType::getTypeName).collect(Collectors.toList());
-    if (!signupTypes.contains(signupType.trim().toUpperCase())) {
-      ProjectCommonException.throwClientErrorException(
-          ResponseCode.invalidValue,
-          MessageFormat.format(
-              ResponseCode.invalidValue.getErrorMessage(),
-              JsonKey.VERIFICATION_SOURCE,
-              signupType,
-              signupTypes));
-    }
-  }
-
   private void validateUserName(Request userRequest) {
     validateParam(
         (String) userRequest.getRequest().get(JsonKey.USERNAME),
@@ -104,10 +54,6 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   public void validateCreateUserV2Request(Request userRequest) {
-    validateParam(
-        (String) userRequest.getRequest().get(JsonKey.CHANNEL),
-        ResponseCode.mandatoryParamsMissing,
-        JsonKey.CHANNEL);
     validateCreateUserRequest(userRequest);
   }
 

@@ -800,10 +800,6 @@ public final class JsonKey {
   public static final String KEYWORDS = "keywords";
   public static final String UNIT = "Unit";
   public static final String UPDATE_HIERARCHY_API = "sunbird_update_hierarchy_api";
-  public static final String VERIFICATION_CODE = "verificationCode";
-  public static final String VERIFICATION_SOURCE = "verificationSource";
-  public static final String GOOGLE = "google";
-  public static final String GOOGLE_VERIFY_AUTH_TOKEN_URL = "sunbird_google_verify_auth_token_url";
 
   private JsonKey() {}
 }
