@@ -551,7 +551,6 @@ public final class JsonKey {
   public static final String SUNBIRD_CONTENT_GET_HIERARCHY_API = "sunbird_get_hierarchy_api";
   public static final String SUNBIRD_CONTENT_READ_API = "sunbird_content_read_api";
   public static final String SUNBIRD_USERNAME_NUM_DIGITS = "sunbird_username_num_digits";
-  public static final String SUNBIRD_USERNAME_EXPECTED_COUNT = "sunbird_username_expected_count";
   public static final String SYSTEM = "system";
   public static final String SYSTEM_SETTINGS_DB = "system_settings";
   public static final String TAG = "tag";
