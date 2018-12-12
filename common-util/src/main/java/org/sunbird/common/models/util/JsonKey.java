@@ -550,6 +550,7 @@ public final class JsonKey {
   public static final String SUNBIRD_FRAMEWORK_READ_API = "sunbird_framework_read_api";
   public static final String SUNBIRD_CONTENT_GET_HIERARCHY_API = "sunbird_get_hierarchy_api";
   public static final String SUNBIRD_CONTENT_READ_API = "sunbird_content_read_api";
+  public static final String SUNBIRD_USERNAME_NUM_DIGITS = "sunbird_username_num_digits";
   public static final String SYSTEM = "system";
   public static final String SYSTEM_SETTINGS_DB = "system_settings";
   public static final String TAG = "tag";
@@ -800,6 +801,8 @@ public final class JsonKey {
   public static final String KEYWORDS = "keywords";
   public static final String UNIT = "Unit";
   public static final String UPDATE_HIERARCHY_API = "sunbird_update_hierarchy_api";
+  public static final String TNC_ACCEPTED_ON = "tncAcceptedOn";
+  public static final String TNC_ACCEPTED_VERSION = "tncAcceptedVersion";
 
   private JsonKey() {}
 }
