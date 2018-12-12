@@ -2,11 +2,9 @@ package org.sunbird.models.user;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -411,6 +409,7 @@ public class User implements Serializable {
   }
 
   public String getTncAcceptedVersion() {
+
     return tncAcceptedVersion;
   }
 
