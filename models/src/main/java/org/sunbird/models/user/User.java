@@ -59,7 +59,6 @@ public class User implements Serializable {
   private String organisationId;
   private List<Map<String, String>> externalIds;
   private String userType;
-  private String signupType;
   private Map<String, List<String>> framework;
 
   public String getUserType() {
