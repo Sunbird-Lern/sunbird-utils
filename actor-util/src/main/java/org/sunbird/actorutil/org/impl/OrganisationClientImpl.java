@@ -48,7 +48,7 @@ public class OrganisationClientImpl implements OrganisationClient {
     Request request = new Request();
     request.setRequest(orgMap);
     request.setOperation(operation);
-
+    request.getContext().put(JsonKey.CALLER_ID, JsonKey.BULK_ORG_UPLOAD);
     Object obj = interServiceCommunication.getResponse(actorRef, request);
 
     if (obj instanceof Response) {

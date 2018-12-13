@@ -1,7 +1,9 @@
 package org.sunbird.models.user;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
@@ -60,7 +62,6 @@ public class User implements Serializable {
   private String userType;
   private Timestamp tncAcceptedOn;
   private String tncAcceptedVersion;
-  private String signupType;
   private Map<String, List<String>> framework;
 
   public String getUserType() {
