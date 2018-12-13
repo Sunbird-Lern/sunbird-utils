@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -59,6 +60,8 @@ public class User implements Serializable {
   private String organisationId;
   private List<Map<String, String>> externalIds;
   private String userType;
+  private Timestamp tncAcceptedOn;
+  private String tncAcceptedVersion;
   private Map<String, List<String>> framework;
 
   public String getUserType() {
@@ -396,5 +399,22 @@ public class User implements Serializable {
 
   public void setPhoneVerified(Boolean phoneVerified) {
     this.phoneVerified = phoneVerified;
+  }
+
+  public Timestamp getTncAcceptedOn() {
+    return tncAcceptedOn;
+  }
+
+  public void setTncAcceptedOn(Timestamp tncAcceptedOn) {
+    this.tncAcceptedOn = tncAcceptedOn;
+  }
+
+  public String getTncAcceptedVersion() {
+
+    return tncAcceptedVersion;
+  }
+
+  public void setTncAcceptedVersion(String tncAcceptedVersion) {
+    this.tncAcceptedVersion = tncAcceptedVersion;
   }
 }

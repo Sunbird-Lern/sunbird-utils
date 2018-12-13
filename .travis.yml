@@ -3,7 +3,8 @@ jdk: openjdk8
 install: echo "Over-riding default script for travis-ci"
 script:
   - jdk_switcher use openjdk8
-  - mvn clean install
+  - mvn clean package
+  - bash <(curl -s https://codecov.io/bash)
 cache:
   directories:
   - "$HOME/.m2"
