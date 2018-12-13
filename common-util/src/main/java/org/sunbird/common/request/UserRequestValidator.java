@@ -829,6 +829,18 @@ public class UserRequestValidator extends BaseRequestValidator {
           ERROR_CODE,
           JsonKey.FRAMEWORK,
           JsonKey.MAP);
+    } else {
+      Map<String, Object> framework =
+          (Map<String, Object>) request.getRequest().get(JsonKey.FRAMEWORK);
+      String frameworkId = (String) framework.get(JsonKey.ID);
+      if (frameworkId == null || StringUtils.isEmpty(frameworkId)) {
+        throw new ProjectCommonException(
+            ResponseCode.dataTypeError.getErrorCode(),
+            ResponseCode.dataTypeError.getErrorMessage(),
+            ERROR_CODE,
+            JsonKey.FRAMEWORK,
+            JsonKey.ID);
+      }
     }
   }
 
