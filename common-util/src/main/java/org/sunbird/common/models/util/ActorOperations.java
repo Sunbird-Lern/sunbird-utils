@@ -46,7 +46,7 @@ public enum ActorOperations {
   REMOVE_MEMBER_ORGANISATION("removeMemberOrganisation"),
   COMPOSITE_SEARCH("compositeSearch"),
   GET_USER_DETAILS_BY_LOGINID("getUserDetailsByLoginId"),
-  GET_USER_DETAILS_BY_FIELD("getUserDetailsByField"),
+  GET_USER_BY_KEY("getUserByKey"),
   UPDATE_ORG_INFO_ELASTIC("updateOrgInfoToElastic"),
   INSERT_ORG_INFO_ELASTIC("insertOrgInfoToElastic"),
   DOWNLOAD_ORGS("downlaodOrg"),
