@@ -838,8 +838,7 @@ public class UserRequestValidator extends BaseRequestValidator {
             ResponseCode.mandatoryParamsMissing.getErrorCode(),
             ResponseCode.mandatoryParamsMissing.getErrorMessage(),
             ERROR_CODE,
-            JsonKey.FRAMEWORK,
-            JsonKey.ID);
+            StringFormatter.joinByDot(JsonKey.FRAMEWORK, JsonKey.ID));
       }
     }
   }

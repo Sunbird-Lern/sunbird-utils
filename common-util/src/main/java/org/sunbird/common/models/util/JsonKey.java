@@ -804,6 +804,7 @@ public final class JsonKey {
   public static final String UPDATE_HIERARCHY_API = "sunbird_update_hierarchy_api";
   public static final String TNC_ACCEPTED_ON = "tncAcceptedOn";
   public static final String TNC_ACCEPTED_VERSION = "tncAcceptedVersion";
+  public static final String FRAMEWORKS = "frameworks";
 
   private JsonKey() {}
 }
