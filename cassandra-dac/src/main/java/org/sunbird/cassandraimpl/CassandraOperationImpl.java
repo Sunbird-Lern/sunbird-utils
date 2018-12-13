@@ -221,7 +221,7 @@ public class CassandraOperationImpl implements CassandraOperation {
     try {
       Builder selectBuilder;
       if (CollectionUtils.isNotEmpty(fields)) {
-        selectBuilder = QueryBuilder.select((String[]) fields.toArray());
+        selectBuilder = QueryBuilder.select(fields.toArray(new String[fields.size()]));
       } else {
         selectBuilder = QueryBuilder.select().all();
       }
