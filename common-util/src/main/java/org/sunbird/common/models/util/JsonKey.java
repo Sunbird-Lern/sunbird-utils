@@ -810,6 +810,10 @@ public final class JsonKey {
   public static final String BULK_ORG_UPLOAD = "bulkOrgUpload";
   public static final String FRAMEWORKS = "frameworks";
   public static final String OTP_DB = "otp";
+  public static final String LATEST_VERSION = "latestVersion";
+  public static final String TNC_CONFIG = "tncConfig";
+  public static final String TNC = "tnc";
+  public static final String ACCEPT = "accept";
   public static final String SUNBIRD_OTP_EXPIRATION = "sunbird_otp_expiration";
   public static final String SUNBIRD_OTP_SIZE = "sunbird_otp_size";
 
