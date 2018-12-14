@@ -866,12 +866,14 @@ public class UserRequestValidator extends BaseRequestValidator {
         } else {
           if (frameworkRequest.containsKey(field)
               && !(frameworkRequest.get(field) instanceof List)) {
-            throw new ProjectCommonException(
-                ResponseCode.dataTypeError.getErrorCode(),
-                ResponseCode.dataTypeError.getErrorMessage(),
-                ERROR_CODE,
-                field,
-                JsonKey.LIST);
+            if (field.equals(JsonKey.ID) && !(frameworkRequest.get(field) instanceof String)) {
+              throw new ProjectCommonException(
+                  ResponseCode.dataTypeError.getErrorCode(),
+                  ResponseCode.dataTypeError.getErrorMessage(),
+                  ERROR_CODE,
+                  field,
+                  JsonKey.LIST);
+            }
           }
         }
       }
