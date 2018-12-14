@@ -809,7 +809,13 @@ public final class JsonKey {
   public static final String TNC_LATEST_VERSION = "tncLatestVersion";
   public static final String BULK_ORG_UPLOAD = "bulkOrgUpload";
   public static final String FRAMEWORKS = "frameworks";
-    public static final String TB_MESSAGES = "messages";
+  public static final String TB_MESSAGES = "messages";
+
+  public static final String LATEST_VERSION = "latestVersion";
+  public static final String TNC_CONFIG = "tncConfig";
+  public static final String TNC = "tnc";
+  public static final String ACCEPT = "accept";
+
 
   private JsonKey() {}
 }
