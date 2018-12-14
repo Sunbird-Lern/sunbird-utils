@@ -152,7 +152,7 @@ public enum ActorOperations {
   USER_TNC_ACCEPT("userTnCAccept"),
   GENERATE_OTP("generateOTP"),
   VERIFY_OTP("verifyOTP"),
-  PROCESS_OTP_MAIL_AND_SMS("processOTPMailAndSMS");
+  SEND_OTP("sendOTP");
 
   private String value;
 

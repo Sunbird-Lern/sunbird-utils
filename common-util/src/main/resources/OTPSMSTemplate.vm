@@ -1,1 +1,1 @@
-$otp is your SECRET One Time Password (OTP) for $reason. Do not share it with anyone.
+One time password to verify your email ID/phone number is $otp. This is valid for only $otpExpiryInMinutes minutes.
