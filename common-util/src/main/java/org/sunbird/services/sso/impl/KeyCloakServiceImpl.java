@@ -493,14 +493,7 @@ public class KeyCloakServiceImpl implements SSOManager {
   private UserRepresentation createUserReqObj(Map<String, Object> request) {
     CredentialRepresentation credential = new CredentialRepresentation();
     UserRepresentation user = new UserRepresentation();
-    if (isNotNull(request.get(JsonKey.CHANNEL))) {
-      user.setUsername(
-          (String) request.get(JsonKey.USERNAME)
-              + JsonKey.LOGIN_ID_DELIMETER
-              + (String) request.get(JsonKey.CHANNEL));
-    } else {
-      user.setUsername((String) request.get(JsonKey.USERNAME));
-    }
+    user.setUsername((String) request.get(JsonKey.USERNAME));
     if (isNotNull(request.get(JsonKey.FIRST_NAME))) {
       user.setFirstName((String) request.get(JsonKey.FIRST_NAME));
     }
