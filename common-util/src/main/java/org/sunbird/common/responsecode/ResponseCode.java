@@ -735,7 +735,6 @@ public enum ResponseCode {
       ResponseMessage.Key.ERROR_PROCESSING_FILE, ResponseMessage.Message.ERROR_PROCESSING_FILE),
   fileNotFound(ResponseMessage.Key.ERR_FILE_NOT_FOUND, ResponseMessage.Message.ERR_FILE_NOT_FOUND),
   errorTbUpdate(ResponseMessage.Key.ERROR_TB_UPDATE, ResponseMessage.Message.ERROR_TB_UPDATE),
-  invalidOTPType(ResponseMessage.Key.INVALID_OTP_TYPE, ResponseMessage.Message.INVALID_OTP_TYPE),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

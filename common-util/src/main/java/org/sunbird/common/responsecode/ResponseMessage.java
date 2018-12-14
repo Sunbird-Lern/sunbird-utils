@@ -402,7 +402,6 @@ public interface ResponseMessage {
         "Something Went Wrong While Reading File. Please Check The File.";
     String ERR_FILE_NOT_FOUND = "File not found. Please select valid file and upload.";
     String ERROR_TB_UPDATE = "Error while updating the textbook";
-    String INVALID_OTP_TYPE = "Inavlid type for OTP generation";
   }
 
   interface Key {
@@ -751,6 +750,5 @@ public interface ResponseMessage {
     String ERROR_PROCESSING_FILE = "ERROR_PROCESSING_FILE";
     String ERR_FILE_NOT_FOUND = "ERR_FILE_NOT_FOUND";
     String ERROR_TB_UPDATE = "ERROR_TB_UPDATE";
-    String INVALID_OTP_TYPE = "INVALID_OTP_TYPE";
   }
 }
