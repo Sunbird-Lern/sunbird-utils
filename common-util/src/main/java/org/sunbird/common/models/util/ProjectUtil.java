@@ -802,6 +802,27 @@ public class ProjectUtil {
     return "";
   }
 
+  public static String getOTPSMSBody(Map<String, String> smsTemplate) {
+    try {
+      Properties props = new Properties();
+      props.put("resource.loader", "class");
+      props.put(
+          "class.resource.loader.class",
+          "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+
+      VelocityEngine ve = new VelocityEngine();
+      ve.init(props);
+      Template t = ve.getTemplate("/OTPSMSTemplate.vm");
+      VelocityContext context = new VelocityContext(smsTemplate);
+      StringWriter writer = new StringWriter();
+      t.merge(context, writer);
+      return writer.toString();
+    } catch (Exception ex) {
+      ProjectLogger.log("Exception occurred while formating and sending OTP SMS " + ex);
+    }
+    return "";
+  }
+
   public static boolean isDateValidFormat(String format, String value) {
     Date date = null;
     try {

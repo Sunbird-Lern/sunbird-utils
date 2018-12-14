@@ -150,7 +150,8 @@ public enum ActorOperations {
   COURSE_BATCH_NOTIFICATION("courseBatchNotification"),
   USER_TNC_ACCEPT("userTnCAccept"),
   GENERATE_OTP("generateOTP"),
-  VERIFY_OTP("verifyOTP");
+  VERIFY_OTP("verifyOTP"),
+  PROCESS_OTP_MAIL_AND_SMS("processOTPMailAndSMS");
 
   private String value;
 
