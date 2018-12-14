@@ -791,7 +791,7 @@ public class CassandraOperationImpl implements CassandraOperation {
     ProjectLogger.log("Query = " + insert.getQueryString(), LoggerEnum.INFO.name());
     ResultSet results = connectionManager.getSession(keyspaceName).execute(insert);
     Response response = CassandraUtil.createResponse(results);
-    logQueryElapseTime("getRecordsByPrimaryKeys", startTime);
+    logQueryElapseTime("insertRecordWithTTL", startTime);
     return response;
   }
 }
