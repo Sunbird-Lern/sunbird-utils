@@ -2,19 +2,30 @@ package org.sunbird.content.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpHeaders;
 import org.sunbird.common.exception.ProjectCommonException;
-import org.sunbird.common.models.util.HttpUtil;
-import org.sunbird.common.models.util.JsonKey;
-import org.sunbird.common.models.util.LoggerEnum;
-import org.sunbird.common.models.util.ProjectLogger;
-import org.sunbird.common.models.util.ProjectUtil;
-import org.sunbird.common.responsecode.ResponseCode;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import static java.util.Objects.isNull;
+import static org.apache.http.HttpHeaders.AUTHORIZATION;
+import static org.sunbird.common.models.util.HttpUtil.sendGetRequest;
+import static org.sunbird.common.models.util.JsonKey.BEARER;
+import static org.sunbird.common.models.util.JsonKey.EKSTEP_BASE_URL;
+import static org.sunbird.common.models.util.JsonKey.OK;
+import static org.sunbird.common.models.util.JsonKey.RESPONSE_CODE;
+import static org.sunbird.common.models.util.JsonKey.SUNBIRD_AUTHORIZATION;
+import static org.sunbird.common.models.util.JsonKey.SUNBIRD_CONTENT_GET_HIERARCHY_API;
+import static org.sunbird.common.models.util.JsonKey.SUNBIRD_CONTENT_READ_API;
+import static org.sunbird.common.models.util.LoggerEnum.ERROR;
+import static org.sunbird.common.models.util.LoggerEnum.INFO;
+import static org.sunbird.common.models.util.ProjectLogger.log;
+import static org.sunbird.common.models.util.ProjectUtil.getConfigValue;
+import static org.sunbird.common.responsecode.ResponseCode.SERVER_ERROR;
+import static org.sunbird.common.responsecode.ResponseCode.errorProcessingRequest;
 
 public class TextBookTocUtil {
 
@@ -23,8 +34,8 @@ public class TextBookTocUtil {
     private static Map<String, String> getHeaders() {
         Map<String, String> headers = new HashMap<>();
         headers.put(
-                HttpHeaders.AUTHORIZATION,
-                JsonKey.BEARER + ProjectUtil.getConfigValue(JsonKey.SUNBIRD_AUTHORIZATION));
+                AUTHORIZATION,
+                BEARER + getConfigValue(SUNBIRD_AUTHORIZATION));
         return headers;
     }
 
@@ -48,17 +59,15 @@ public class TextBookTocUtil {
     }
 
     public static Map<String, Object> readHierarchy(String contentId) {
-        ProjectLogger.log(
-                "ContentStoreUtil::readHierarchy: contentId = " + contentId, LoggerEnum.INFO.name());
+        log("ContentStoreUtil::readHierarchy: contentId = " + contentId, INFO);
         Map<String, String> requestParams = new HashMap<>();
         requestParams.put("mode", "edit");
-        return handleReadRequest(contentId, JsonKey.SUNBIRD_CONTENT_GET_HIERARCHY_API, requestParams);
+        return handleReadRequest(contentId, SUNBIRD_CONTENT_GET_HIERARCHY_API, requestParams);
     }
 
     public static Map<String, Object> readContent(String contentId) {
-        ProjectLogger.log(
-                "ContentStoreUtil::readContent: contentId = " + contentId, LoggerEnum.INFO.name());
-        return handleReadRequest(contentId, JsonKey.SUNBIRD_CONTENT_READ_API, null);
+        log("ContentStoreUtil::readContent: contentId = " + contentId, INFO);
+        return handleReadRequest(contentId, SUNBIRD_CONTENT_READ_API, null);
     }
 
     private static Map<String, Object> handleReadRequest(String id, String urlPath, Map<String, String> requestParams) {
@@ -66,54 +75,63 @@ public class TextBookTocUtil {
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> resultMap = new HashMap<>();
 
-        ProjectLogger.log("ContentStoreUtil:handleReadRequest: id = " + id, LoggerEnum.INFO.name());
+        log("ContentStoreUtil:handleReadRequest: id = " + id, INFO);
 
         try {
             String requestUrl =
-                    ProjectUtil.getConfigValue(JsonKey.EKSTEP_BASE_URL)
-                            + ProjectUtil.getConfigValue(urlPath)
+                    getConfigValue(EKSTEP_BASE_URL)
+                            + getConfigValue(urlPath)
                             + "/"
                             + id
                             + requestParams(requestParams);
 
-            ProjectLogger.log("Sending GET Request | Request URL: " + requestUrl, LoggerEnum.INFO);
+            log("Sending GET Request | Request URL: " + requestUrl, INFO);
 
-            String response = HttpUtil.sendGetRequest(requestUrl, headers);
+            String response = sendGetRequest(requestUrl, headers);
 
             resultMap = mapper.readValue(response, Map.class);
-            if (!((String) resultMap.get(JsonKey.RESPONSE_CODE)).equalsIgnoreCase(JsonKey.OK)) {
-                ProjectLogger.log(
-                        "ContentStoreUtil:handleReadRequest: Response code is not ok.",
-                        LoggerEnum.ERROR.name());
+            if (!((String) resultMap.get(RESPONSE_CODE)).equalsIgnoreCase(OK)) {
+                log("ContentStoreUtil:handleReadRequest: Response code is not ok.", ERROR);
                 return null;
             }
         } catch (Exception e) {
-            ProjectLogger.log(
-                    "ContentStoreUtil:handleReadRequest: Exception occurred with error message = "
-                            + e.getMessage(),
-                    e);
+            log("ContentStoreUtil:handleReadRequest: Exception occurred with error message = "
+                    + e.getMessage(), e);
         }
         return resultMap;
     }
 
     public static <T> T getObjectFrom(String s, Class<T> clazz) {
         if (StringUtils.isBlank(s)) {
-            ProjectLogger.
-                    log("Invalid String cannot be converted to Map.");
+            log("Invalid String cannot be converted to Map.");
             throw new ProjectCommonException(
-                    ResponseCode.errorProcessingRequest.getErrorCode(),
-                    ResponseCode.errorProcessingRequest.getErrorMessage(),
-                    ResponseCode.SERVER_ERROR.getResponseCode());
+                    errorProcessingRequest.getErrorCode(),
+                    errorProcessingRequest.getErrorMessage(),
+                    SERVER_ERROR.getResponseCode());
         }
 
         try {
-            return mapper.readValue(ProjectUtil.getConfigValue(JsonKey.TEXTBOOK_TOC_INPUT_MAPPING), clazz);
+            return mapper.readValue(s, clazz);
         } catch (IOException e) {
-            ProjectLogger.log("Error Mapping File input Mapping Properties.");
+            log("Error Mapping File input Mapping Properties.", ERROR);
             throw new ProjectCommonException(
-                    ResponseCode.errorProcessingRequest.getErrorCode(),
-                    ResponseCode.errorProcessingRequest.getErrorMessage(),
-                    ResponseCode.SERVER_ERROR.getResponseCode());
+                    errorProcessingRequest.getErrorCode(),
+                    errorProcessingRequest.getErrorMessage(),
+                    SERVER_ERROR.getResponseCode());
         }
     }
+
+    public static Object stringify(Object o) {
+        if (isNull(o)) return "";
+        if (o instanceof List) {
+            List l = (List) o;
+            if (!l.isEmpty() && l.get(0) instanceof String) {
+                return String.join(",", l);
+            }
+            return o;
+        } else {
+            return o;
+        }
+    }
+
 }
