@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
@@ -738,6 +739,7 @@ public class UserRequestValidator extends BaseRequestValidator {
     }
   }
 
+  @SuppressWarnings("unchecked")
   private void validateFrameworkDetails(Request request) {
     if (request.getRequest().containsKey(JsonKey.FRAMEWORK)
         && (!(request.getRequest().get(JsonKey.FRAMEWORK) instanceof Map))) {
@@ -750,13 +752,15 @@ public class UserRequestValidator extends BaseRequestValidator {
     } else {
       Map<String, Object> framework =
           (Map<String, Object>) request.getRequest().get(JsonKey.FRAMEWORK);
-      String frameworkId = (String) framework.get(JsonKey.ID);
-      if (StringUtils.isBlank(frameworkId)) {
-        throw new ProjectCommonException(
-            ResponseCode.mandatoryParamsMissing.getErrorCode(),
-            ResponseCode.mandatoryParamsMissing.getErrorMessage(),
-            ERROR_CODE,
-            StringFormatter.joinByDot(JsonKey.FRAMEWORK, JsonKey.ID));
+      if (!MapUtils.isEmpty(framework)) {
+        String frameworkId = (String) framework.get(JsonKey.ID);
+        if (StringUtils.isBlank(frameworkId)) {
+          throw new ProjectCommonException(
+              ResponseCode.mandatoryParamsMissing.getErrorCode(),
+              ResponseCode.mandatoryParamsMissing.getErrorMessage(),
+              ERROR_CODE,
+              StringFormatter.joinByDot(JsonKey.FRAMEWORK, JsonKey.ID));
+        }
       }
     }
   }
