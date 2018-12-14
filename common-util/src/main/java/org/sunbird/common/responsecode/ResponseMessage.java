@@ -58,6 +58,7 @@ public interface ResponseMessage {
     String INVALID_PARENT_ORGANIZATION_ID = "Parent organization id is invalid";
     String CYCLIC_VALIDATION_FAILURE = "The relation cannot be created as it is cyclic";
     String CHANNEL_MISSING = "Channel is mandatory for root organization";
+    String SUBORG_CHANNEL_MISSING = "Channel value is mandatory";
     String ENROLLMENT_START_DATE_MISSING = "Enrollment start date is mandatory.";
     String COURSE_DURATION_MISSING = "Course duration is mandatory.";
     String LOGIN_TYPE_MISSING = "Login type is required.";
@@ -446,6 +447,7 @@ public interface ResponseMessage {
     String INVALID_PARENT_ORGANIZATION_ID = "INVALID_PARENT_ORGANIZATION_ID";
     String CYCLIC_VALIDATION_FAILURE = "CYCLIC_VALIDATION_FAILURE";
     String CHANNEL_MISSING = "CHANNEL_MISSING";
+    String SUBORG_CHANNEL_MISSING = "SUBORG_CHANNEL_MISSING";
     String ENROLLMENT_START_DATE_MISSING = "ENROLLMENT_START_DATE_MISSING";
     String COURSE_DURATION_MISSING = "COURSE_DURATION_MISSING";
     String LOGIN_TYPE_MISSING = "LOGIN_TYPE_MISSING";
