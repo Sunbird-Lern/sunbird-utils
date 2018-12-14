@@ -788,10 +788,10 @@ public class CassandraOperationImpl implements CassandraOperation {
               insert.value(x.getKey(), x.getValue());
             });
     insert.using(QueryBuilder.ttl(ttl));
-    ProjectLogger.log("Query = " + insert.getQueryString(), LoggerEnum.INFO.name());
+    ProjectLogger.log("CassandraOperationImpl:insertRecordWithTTL: query = " + insert.getQueryString(), LoggerEnum.INFO.name());
     ResultSet results = connectionManager.getSession(keyspaceName).execute(insert);
     Response response = CassandraUtil.createResponse(results);
-    logQueryElapseTime("getRecordsByPrimaryKeys", startTime);
+    logQueryElapseTime("insertRecordWithTTL", startTime);
     return response;
   }
 }

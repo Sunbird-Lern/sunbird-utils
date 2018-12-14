@@ -300,13 +300,13 @@ public interface CassandraOperation {
       String keyspaceName, String tableName, List<String> primaryKeys, String primaryKeyColumnName);
 
   /**
-   * Insert record with ttl(time to leave)
+   * Insert record with TTL expiration
    *
-   * @param keyspaceName
-   * @param tableName
-   * @param request Map<String,Object>(i.e map of column name and their value)
-   * @param ttl time after which records will be expired (in seconds, max allowed till 20 years!!)
-   * @return Response Response
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param request Map consisting of column name and value
+   * @param ttl Time to live after which inserted record will be auto deleted
+   * @return Response indicating status of operation
    */
   public Response insertRecordWithTTL(
       String keyspaceName, String tableName, Map<String, Object> request, int ttl);
