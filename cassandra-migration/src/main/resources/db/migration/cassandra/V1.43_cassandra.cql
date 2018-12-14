@@ -1,3 +1,3 @@
 ALTER TABLE sunbird.user ADD (tncacceptedon timestamp, tncacceptedversion text);
 ALTER TABLE sunbird.user DROP (tcstatus, tcupdateddate);
-INSERT INTO sunbird.system_settings(id, field, value) VALUES('tncConfig', 'tncConfig', '{"latestVersion":"v1","v1":{"url":""}}');
+CREATE TABLE IF NOT EXISTS sunbird.otp(type TEXT, key TEXT, otp TEXT, createdon timestamp,PRIMARY KEY (type, key));

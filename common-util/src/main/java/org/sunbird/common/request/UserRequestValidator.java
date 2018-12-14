@@ -54,11 +54,6 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   public void validateCreateUserV2Request(Request userRequest) {
-    validateUserName(userRequest);
-    validateParam(
-        (String) userRequest.getRequest().get(JsonKey.CHANNEL),
-        ResponseCode.mandatoryParamsMissing,
-        JsonKey.CHANNEL);
     validateCreateUserRequest(userRequest);
   }
 
@@ -906,7 +901,7 @@ public class UserRequestValidator extends BaseRequestValidator {
                 .map(fieldMap -> fieldMap.get(JsonKey.NAME))
                 .collect(Collectors.toList());
 
-        List<String> fwRequestFieldList = (List<String>) fwRequestFieldEntry.getValue();
+        List<String> fwRequestFieldList = fwRequestFieldEntry.getValue();
 
         for (String fwRequestField : fwRequestFieldList) {
           if (!allowedFieldValues.contains(fwRequestField)) {
