@@ -789,14 +789,6 @@ public class UserRequestValidator extends BaseRequestValidator {
         } else {
           if (frameworkRequest.containsKey(field)
               && !(frameworkRequest.get(field) instanceof List)) {
-            if (field.equals(JsonKey.ID) && !(frameworkRequest.get(field) instanceof String)) {
-              throw new ProjectCommonException(
-                  ResponseCode.dataTypeError.getErrorCode(),
-                  ResponseCode.dataTypeError.getErrorMessage(),
-                  ERROR_CODE,
-                  field,
-                  JsonKey.STRING);
-            }
             throw new ProjectCommonException(
                 ResponseCode.dataTypeError.getErrorCode(),
                 ResponseCode.dataTypeError.getErrorMessage(),
