@@ -829,7 +829,7 @@ public class UserRequestValidator extends BaseRequestValidator {
     } else {
       Map<String, Object> framework =
           (Map<String, Object>) request.getRequest().get(JsonKey.FRAMEWORK);
-      if (MapUtils.isEmpty(framework)) {
+      if (!MapUtils.isEmpty(framework)) {
         String frameworkId = (String) framework.get(JsonKey.ID);
         if (StringUtils.isBlank(frameworkId)) {
           throw new ProjectCommonException(
