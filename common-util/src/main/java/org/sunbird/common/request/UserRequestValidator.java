@@ -815,6 +815,7 @@ public class UserRequestValidator extends BaseRequestValidator {
     }
   }
 
+  @SuppressWarnings("unchecked")
   private void validateFrameworkDetails(Request request) {
     if (request.getRequest().containsKey(JsonKey.FRAMEWORK)
         && (!(request.getRequest().get(JsonKey.FRAMEWORK) instanceof Map))) {
@@ -827,7 +828,7 @@ public class UserRequestValidator extends BaseRequestValidator {
     } else {
       Map<String, Object> framework =
           (Map<String, Object>) request.getRequest().get(JsonKey.FRAMEWORK);
-      if (!framework.isEmpty()) {
+      if (framework != null && !framework.isEmpty()) {
         String frameworkId = (String) framework.get(JsonKey.ID);
         if (StringUtils.isBlank(frameworkId)) {
           throw new ProjectCommonException(
