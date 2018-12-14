@@ -832,13 +832,15 @@ public class UserRequestValidator extends BaseRequestValidator {
     } else {
       Map<String, Object> framework =
           (Map<String, Object>) request.getRequest().get(JsonKey.FRAMEWORK);
-      String frameworkId = (String) framework.get(JsonKey.ID);
-      if (StringUtils.isBlank(frameworkId)) {
-        throw new ProjectCommonException(
-            ResponseCode.mandatoryParamsMissing.getErrorCode(),
-            ResponseCode.mandatoryParamsMissing.getErrorMessage(),
-            ERROR_CODE,
-            StringFormatter.joinByDot(JsonKey.FRAMEWORK, JsonKey.ID));
+      if (!framework.isEmpty()) {
+        String frameworkId = (String) framework.get(JsonKey.ID);
+        if (StringUtils.isBlank(frameworkId)) {
+          throw new ProjectCommonException(
+              ResponseCode.mandatoryParamsMissing.getErrorCode(),
+              ResponseCode.mandatoryParamsMissing.getErrorMessage(),
+              ERROR_CODE,
+              StringFormatter.joinByDot(JsonKey.FRAMEWORK, JsonKey.ID));
+        }
       }
     }
   }
