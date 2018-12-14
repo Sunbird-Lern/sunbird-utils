@@ -795,8 +795,14 @@ public class UserRequestValidator extends BaseRequestValidator {
                   ResponseCode.dataTypeError.getErrorMessage(),
                   ERROR_CODE,
                   field,
-                  JsonKey.LIST);
+                  JsonKey.STRING);
             }
+            throw new ProjectCommonException(
+                ResponseCode.dataTypeError.getErrorCode(),
+                ResponseCode.dataTypeError.getErrorMessage(),
+                ERROR_CODE,
+                field,
+                JsonKey.LIST);
           }
         }
       }

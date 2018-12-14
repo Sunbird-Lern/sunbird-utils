@@ -813,6 +813,7 @@ public final class JsonKey {
   public static final String TNC_CONFIG = "tncConfig";
   public static final String TNC = "tnc";
   public static final String ACCEPT = "accept";
+  public static final String STRING = "String";
 
   private JsonKey() {}
 }
