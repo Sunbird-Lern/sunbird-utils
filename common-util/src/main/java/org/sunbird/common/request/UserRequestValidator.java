@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
@@ -753,13 +754,24 @@ public class UserRequestValidator extends BaseRequestValidator {
       Map<String, Object> framework =
           (Map<String, Object>) request.getRequest().get(JsonKey.FRAMEWORK);
       if (!MapUtils.isEmpty(framework)) {
-        String frameworkId = (String) framework.get(JsonKey.ID);
-        if (StringUtils.isBlank(frameworkId)) {
-          throw new ProjectCommonException(
-              ResponseCode.mandatoryParamsMissing.getErrorCode(),
-              ResponseCode.mandatoryParamsMissing.getErrorMessage(),
-              ERROR_CODE,
-              StringFormatter.joinByDot(JsonKey.FRAMEWORK, JsonKey.ID));
+        if (framework.get(JsonKey.ID) instanceof List) {
+          List<String> frameworkId = (List<String>) framework.get(JsonKey.ID);
+          if (frameworkId.size() > 1 || CollectionUtils.isEmpty(frameworkId)) {
+            throw new ProjectCommonException(
+                ResponseCode.dataSizeError.getErrorCode(),
+                ResponseCode.dataSizeError.getErrorMessage(),
+                ERROR_CODE,
+                StringFormatter.joinByDot(JsonKey.FRAMEWORK, JsonKey.ID));
+          }
+        } else if (framework.get(JsonKey.ID) instanceof String) {
+          String frameworkId = (String) framework.get(JsonKey.ID);
+          if (StringUtils.isBlank(frameworkId)) {
+            throw new ProjectCommonException(
+                ResponseCode.mandatoryParamsMissing.getErrorCode(),
+                ResponseCode.mandatoryParamsMissing.getErrorMessage(),
+                ERROR_CODE,
+                StringFormatter.joinByDot(JsonKey.FRAMEWORK, JsonKey.ID));
+          }
         }
       }
     }
