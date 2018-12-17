@@ -107,6 +107,10 @@ public enum ResponseCode {
   usrValidationError(
       ResponseMessage.Key.USR_DATA_VALIDATION_ERROR,
       ResponseMessage.Message.USR_DATA_VALIDATION_ERROR),
+  errorOtpNotFound(
+      ResponseMessage.Key.ERROR_OTP_NOT_FOUND, ResponseMessage.Message.ERROR_OTP_NOT_FOUND),
+  errorOtpMismatch(
+      ResponseMessage.Key.ERROR_OTP_MISMATCH, ResponseMessage.Message.ERROR_OTP_MISMATCH),
   enrollmentStartDateRequiredError(
       ResponseMessage.Key.ENROLLMENT_START_DATE_MISSING,
       ResponseMessage.Message.ENROLLMENT_START_DATE_MISSING),
