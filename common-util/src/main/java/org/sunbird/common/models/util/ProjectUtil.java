@@ -818,7 +818,7 @@ public class ProjectUtil {
       t.merge(context, writer);
       return writer.toString();
     } catch (Exception ex) {
-      ProjectLogger.log("Exception occurred while formating and sending OTP SMS " + ex);
+      ProjectLogger.log("getOTPSMSBody: Exception occurred with error message = " + ex.getMessage(), ex);
     }
     return "";
   }
