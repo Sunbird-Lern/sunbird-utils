@@ -756,16 +756,16 @@ public class UserRequestValidator extends BaseRequestValidator {
       if (!MapUtils.isEmpty(framework)) {
         if (framework.get(JsonKey.ID) instanceof List) {
           List<String> frameworkId = (List<String>) framework.get(JsonKey.ID);
-          if (frameworkId.size() > 1) {
-            throw new ProjectCommonException(
-                ResponseCode.invalidParameterValue.getErrorCode(),
-                ResponseCode.invalidParameterValue.getErrorMessage(),
-                ERROR_CODE,
-                StringFormatter.joinByDot(JsonKey.FRAMEWORK, JsonKey.ID));
-          } else if (CollectionUtils.isEmpty(frameworkId)) {
+          if (CollectionUtils.isEmpty(frameworkId)) {
             throw new ProjectCommonException(
                 ResponseCode.mandatoryParamsMissing.getErrorCode(),
                 ResponseCode.mandatoryParamsMissing.getErrorMessage(),
+                ERROR_CODE,
+                StringFormatter.joinByDot(JsonKey.FRAMEWORK, JsonKey.ID));
+          } else if (frameworkId.size() > 1) {
+            throw new ProjectCommonException(
+                ResponseCode.invalidParameterValue.getErrorCode(),
+                ResponseCode.invalidParameterValue.getErrorMessage(),
                 ERROR_CODE,
                 StringFormatter.joinByDot(JsonKey.FRAMEWORK, JsonKey.ID));
           }
