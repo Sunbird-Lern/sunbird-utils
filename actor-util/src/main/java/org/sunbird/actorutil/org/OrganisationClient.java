@@ -58,4 +58,13 @@ public interface OrganisationClient {
    */
   List<Organisation> esSearchOrgByFilter(Map<String, Object> filter);
 
+  /**
+   * Search organisations name by org ids.
+   *
+   * @param orgIds List of orgIds
+   * @param outputColumns List of output columns
+   * @return List of organisations having output columns
+   */
+  List<Organisation> esFetchOrgDetailsWithSpecificColumnsByOrgIds(
+      List<String> orgIds, List<String> outputColumns);
 }

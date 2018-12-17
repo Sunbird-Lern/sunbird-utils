@@ -107,6 +107,7 @@ public enum ResponseCode {
   usrValidationError(
       ResponseMessage.Key.USR_DATA_VALIDATION_ERROR,
       ResponseMessage.Message.USR_DATA_VALIDATION_ERROR),
+  errorInvalidOTP(ResponseMessage.Key.ERROR_INVALID_OTP, ResponseMessage.Message.ERROR_INVALID_OTP),
   enrollmentStartDateRequiredError(
       ResponseMessage.Key.ENROLLMENT_START_DATE_MISSING,
       ResponseMessage.Message.ENROLLMENT_START_DATE_MISSING),
@@ -736,6 +737,7 @@ public enum ResponseCode {
   fileNotFound(ResponseMessage.Key.ERR_FILE_NOT_FOUND, ResponseMessage.Message.ERR_FILE_NOT_FOUND),
   errorTbUpdate(ResponseMessage.Key.ERROR_TB_UPDATE, ResponseMessage.Message.ERROR_TB_UPDATE),
   invalidDataSize(ResponseMessage.Key.INVALID_DATA_SIZE, ResponseMessage.Message.INVALID_DATA_SIZE),
+
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

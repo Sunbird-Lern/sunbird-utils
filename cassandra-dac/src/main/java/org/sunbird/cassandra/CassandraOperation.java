@@ -298,4 +298,16 @@ public interface CassandraOperation {
    */
   Response getRecordsByPrimaryKeys(
       String keyspaceName, String tableName, List<String> primaryKeys, String primaryKeyColumnName);
+
+  /**
+   * Insert record with TTL expiration
+   *
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param request Map consisting of column name and value
+   * @param ttl Time to live after which inserted record will be auto deleted
+   * @return Response indicating status of operation
+   */
+  public Response insertRecordWithTTL(
+      String keyspaceName, String tableName, Map<String, Object> request, int ttl);
 }

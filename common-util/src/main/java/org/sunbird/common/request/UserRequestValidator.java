@@ -606,7 +606,7 @@ public class UserRequestValidator extends BaseRequestValidator {
       ProjectCommonException.throwClientErrorException(ResponseCode.passwordRequired);
     }
     if (userRequest.getRequest().get(JsonKey.NEW_PASSWORD) == null) {
-      ProjectCommonException.throwClientErrorException(ResponseCode.newPasswordEmpty);
+      ProjectCommonException.throwClientErrorException(ResponseCode.newPasswordRequired);
     }
     if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.NEW_PASSWORD))) {
       ProjectCommonException.throwClientErrorException(ResponseCode.newPasswordEmpty);
