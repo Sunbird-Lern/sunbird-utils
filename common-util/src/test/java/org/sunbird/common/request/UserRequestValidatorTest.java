@@ -606,6 +606,7 @@ public class UserRequestValidatorTest {
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.PHONE, "9321234123");
     requestObj.put(JsonKey.EMAIL, "test123@test.com");
+    requestObj.put(JsonKey.EMAIL_VERIFIED, true);
     requestObj.put(JsonKey.USERNAME, "test123");
     requestObj.put(JsonKey.FIRST_NAME, "test123");
     requestObj.put(JsonKey.LANGUAGE, "");
@@ -625,6 +626,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.PHONE, "9321234123");
     requestObj.put(JsonKey.PHONE_VERIFIED, true);
     requestObj.put(JsonKey.EMAIL, "test123@test.com");
+    requestObj.put(JsonKey.EMAIL_VERIFIED, true);
     requestObj.put(JsonKey.USERNAME, "test123");
     requestObj.put(JsonKey.FIRST_NAME, "test123");
     requestObj.put(JsonKey.ADDRESS, "");
@@ -644,6 +646,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.PHONE, "9321234123");
     requestObj.put(JsonKey.PHONE_VERIFIED, true);
     requestObj.put(JsonKey.EMAIL, "test123@test.com");
+    requestObj.put(JsonKey.EMAIL_VERIFIED, true);
     requestObj.put(JsonKey.USERNAME, "test123");
     requestObj.put(JsonKey.FIRST_NAME, "test123");
     requestObj.put(JsonKey.EDUCATION, "");
@@ -663,6 +666,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.PHONE, "9321234123");
     requestObj.put(JsonKey.PHONE_VERIFIED, true);
     requestObj.put(JsonKey.EMAIL, "test123@test.com");
+    requestObj.put(JsonKey.EMAIL_VERIFIED, true);
     requestObj.put(JsonKey.USERNAME, "test123");
     requestObj.put(JsonKey.FIRST_NAME, "test123");
     List<Map<String, Object>> addressList = new ArrayList<>();
@@ -689,6 +693,7 @@ public class UserRequestValidatorTest {
     requestObj.put(JsonKey.PHONE, "9321234123");
     requestObj.put(JsonKey.PHONE_VERIFIED, true);
     requestObj.put(JsonKey.EMAIL, "test123@test.com");
+    requestObj.put(JsonKey.EMAIL_VERIFIED, true);
     requestObj.put(JsonKey.USERNAME, "test123");
     requestObj.put(JsonKey.FIRST_NAME, "test123");
     request.setRequest(requestObj);
@@ -963,6 +968,7 @@ public class UserRequestValidatorTest {
   public void testValidateCreateUserFailureWithInvalidPhoneFormat() {
     Request request = new Request();
     request.getRequest().put(JsonKey.EMAIL, "asd@asd.com");
+    request.getRequest().put(JsonKey.EMAIL_VERIFIED, true);
     request.getRequest().put(JsonKey.PHONE, "9874561230");
     request.getRequest().put(JsonKey.COUNTRY_CODE, "+001");
     request.getRequest().put(JsonKey.USERNAME, "98745");
