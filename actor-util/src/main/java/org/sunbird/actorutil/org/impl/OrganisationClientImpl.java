@@ -168,7 +168,17 @@ public class OrganisationClientImpl implements OrganisationClient {
   }
 
   @Override
-  public List<Organisation> esSearchOrgBySearchDto(SearchDTO searchDto) {
-    return searchOrganisation(searchDto);
+  public List<Organisation> esFetchOrgDetailsWithSpecificColumnsByOrgIds(
+      List<String> orgIds, List<String> outputColumns) {
+    SearchDTO searchDTO = new SearchDTO();
+
+    searchDTO.setFields(outputColumns);
+
+    Map<String, Object> filters = new HashMap<>();
+    filters.put(JsonKey.ID, orgIds);
+
+    searchDTO.getAdditionalProperties().put(JsonKey.FILTERS, filters);
+
+    return searchOrganisation(searchDTO);
   }
 }

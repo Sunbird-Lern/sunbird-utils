@@ -3,7 +3,6 @@ package org.sunbird.actorutil.org;
 import akka.actor.ActorRef;
 import java.util.List;
 import java.util.Map;
-import org.sunbird.dto.SearchDTO;
 import org.sunbird.models.organisation.Organisation;
 
 public interface OrganisationClient {
@@ -60,10 +59,12 @@ public interface OrganisationClient {
   List<Organisation> esSearchOrgByFilter(Map<String, Object> filter);
 
   /**
-   * Search organisations using specified searchDto.
+   * Search organisations name by org ids.
    *
-   * @param searchDto SearchDTO search criteria for organisation search
-   * @return List of organisations
+   * @param orgIds List of orgIds
+   * @param outputColumns List of output columns
+   * @return List of organisations having output columns
    */
-  List<Organisation> esSearchOrgBySearchDto(SearchDTO searchDto);
+  List<Organisation> esFetchOrgDetailsWithSpecificColumnsByOrgIds(
+      List<String> orgIds, List<String> outputColumns);
 }
