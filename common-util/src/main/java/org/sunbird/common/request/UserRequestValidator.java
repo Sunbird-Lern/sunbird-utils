@@ -767,7 +767,7 @@ public class UserRequestValidator extends BaseRequestValidator {
                 ResponseCode.invalidDataSize.getErrorCode(),
                 ResponseCode.invalidDataSize.getErrorMessage(),
                 ERROR_CODE,
-                new String("1"),
+                String.valueOf("1"),
                 String.valueOf(frameworkId.size()),
                 StringFormatter.joinByDot(JsonKey.FRAMEWORK, JsonKey.ID));
           }
