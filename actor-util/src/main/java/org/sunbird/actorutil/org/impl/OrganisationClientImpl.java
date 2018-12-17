@@ -3,6 +3,7 @@ package org.sunbird.actorutil.org.impl;
 import akka.actor.ActorRef;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,12 +140,16 @@ public class OrganisationClientImpl implements OrganisationClient {
     }
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public List<Organisation> esSearchOrgByFilter(Map<String, Object> filter) {
-    List<Organisation> orgList = new ArrayList<>();
     SearchDTO searchDto = new SearchDTO();
     searchDto.getAdditionalProperties().put(JsonKey.FILTERS, filter);
+    return searchOrganisation(searchDto);
+  }
+
+  @SuppressWarnings("unchecked")
+  private List<Organisation> searchOrganisation(SearchDTO searchDto) {
+    List<Organisation> orgList = new ArrayList<>();
     Map<String, Object> result =
         ElasticSearchUtil.complexSearch(
             searchDto,
@@ -158,7 +163,12 @@ public class OrganisationClientImpl implements OrganisationClient {
       }
       return orgList;
     } else {
-      return null;
+      return Collections.emptyList();
     }
+  }
+
+  @Override
+  public List<Organisation> esSearchOrgBySearchDto(SearchDTO searchDto) {
+    return searchOrganisation(searchDto);
   }
 }
