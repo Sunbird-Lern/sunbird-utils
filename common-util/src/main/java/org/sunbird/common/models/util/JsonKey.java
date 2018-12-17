@@ -814,6 +814,9 @@ public final class JsonKey {
   public static final String TNC = "tnc";
   public static final String ACCEPT = "accept";
   public static final String ROOT_ORG_NAME = "rootOrgName";
+  public static final String SUNBIRD_OTP_EXPIRATION = "sunbird_otp_expiration";
+  public static final String SUNBIRD_OTP_LENGTH = "sunbird_otp_length";
+  public static final String OTP_EXPIRATION_IN_MINUTES = "otpExpiryInMinutes";
 
   private JsonKey() {}
 }
