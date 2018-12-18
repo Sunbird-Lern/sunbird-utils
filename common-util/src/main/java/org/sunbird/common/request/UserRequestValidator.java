@@ -758,7 +758,7 @@ public class UserRequestValidator extends BaseRequestValidator {
           List<String> frameworkId = (List<String>) framework.get(JsonKey.ID);
           if (CollectionUtils.isEmpty(frameworkId)) {
             ProjectCommonException.throwClientErrorException(
-              ResponseCode.mandatoryParamsMissing,
+                ResponseCode.mandatoryParamsMissing,
                 StringFormatter.joinByDot(JsonKey.FRAMEWORK, JsonKey.ID));
           } else if (frameworkId.size() > 1) {
             throw new ProjectCommonException(
@@ -773,7 +773,7 @@ public class UserRequestValidator extends BaseRequestValidator {
           String frameworkId = (String) framework.get(JsonKey.ID);
           if (StringUtils.isBlank(frameworkId)) {
             ProjectCommonException.throwClientErrorException(
-              ResponseCode.mandatoryParamsMissing,
+                ResponseCode.mandatoryParamsMissing,
                 StringFormatter.joinByDot(JsonKey.FRAMEWORK, JsonKey.ID));
           }
         }
