@@ -736,7 +736,7 @@ public enum ResponseCode {
       ResponseMessage.Key.ERROR_PROCESSING_FILE, ResponseMessage.Message.ERROR_PROCESSING_FILE),
   fileNotFound(ResponseMessage.Key.ERR_FILE_NOT_FOUND, ResponseMessage.Message.ERR_FILE_NOT_FOUND),
   errorTbUpdate(ResponseMessage.Key.ERROR_TB_UPDATE, ResponseMessage.Message.ERROR_TB_UPDATE),
-  invalidDataSize(ResponseMessage.Key.INVALID_DATA_SIZE, ResponseMessage.Message.INVALID_DATA_SIZE),
+  errorInvalidParemeterSize(ResponseMessage.Key.ERROR_INVALID_PARAMETER_SIZE, ResponseMessage.Message.ERROR_INVALID_PARAMETER_SIZE),
 
   OK(200),
   CLIENT_ERROR(400),
