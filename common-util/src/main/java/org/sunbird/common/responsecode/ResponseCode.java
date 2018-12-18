@@ -98,10 +98,6 @@ public enum ResponseCode {
   invalidParentId(
       ResponseMessage.Key.INVALID_PARENT_ORGANIZATION_ID,
       ResponseMessage.Message.INVALID_PARENT_ORGANIZATION_ID),
-  channelIdRequiredForRootOrg(
-      ResponseMessage.Key.CHANNEL_MISSING, ResponseMessage.Message.CHANNEL_MISSING),
-  channelIdRequiredForSubOrg(
-      ResponseMessage.Key.SUBORG_CHANNEL_MISSING, ResponseMessage.Message.SUBORG_CHANNEL_MISSING),
   cyclicValidationError(
       ResponseMessage.Key.CYCLIC_VALIDATION_FAILURE,
       ResponseMessage.Message.CYCLIC_VALIDATION_FAILURE),

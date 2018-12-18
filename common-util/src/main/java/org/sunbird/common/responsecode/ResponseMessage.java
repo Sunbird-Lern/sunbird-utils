@@ -57,8 +57,6 @@ public interface ResponseMessage {
     String INVALID_ROOT_ORGANIZATION = "Root organization id is invalid";
     String INVALID_PARENT_ORGANIZATION_ID = "Parent organization id is invalid";
     String CYCLIC_VALIDATION_FAILURE = "The relation cannot be created as it is cyclic";
-    String CHANNEL_MISSING = "Channel is mandatory for root organization";
-    String SUBORG_CHANNEL_MISSING = "Channel value is mandatory";
     String ENROLLMENT_START_DATE_MISSING = "Enrollment start date is mandatory.";
     String COURSE_DURATION_MISSING = "Course duration is mandatory.";
     String LOGIN_TYPE_MISSING = "Login type is required.";
@@ -404,7 +402,8 @@ public interface ResponseMessage {
         "Something Went Wrong While Reading File. Please Check The File.";
     String ERR_FILE_NOT_FOUND = "File not found. Please select valid file and upload.";
     String ERROR_TB_UPDATE = "Error while updating the textbook";
-    String ERROR_INVALID_PARAMETER_SIZE = "Parameter {0} is of invalid size (expected: {1}, actual: {2}).";
+    String ERROR_INVALID_PARAMETER_SIZE =
+        "Parameter {0} is of invalid size (expected: {1}, actual: {2}).";
   }
 
   interface Key {
@@ -451,8 +450,6 @@ public interface ResponseMessage {
     String INVALID_ROOT_ORGANIZATION = "INVALID ROOT ORGANIZATION";
     String INVALID_PARENT_ORGANIZATION_ID = "INVALID_PARENT_ORGANIZATION_ID";
     String CYCLIC_VALIDATION_FAILURE = "CYCLIC_VALIDATION_FAILURE";
-    String CHANNEL_MISSING = "CHANNEL_MISSING";
-    String SUBORG_CHANNEL_MISSING = "SUBORG_CHANNEL_MISSING";
     String ENROLLMENT_START_DATE_MISSING = "ENROLLMENT_START_DATE_MISSING";
     String COURSE_DURATION_MISSING = "COURSE_DURATION_MISSING";
     String LOGIN_TYPE_MISSING = "LOGIN_TYPE_MISSING";
