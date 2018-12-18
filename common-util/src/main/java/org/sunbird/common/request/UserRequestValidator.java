@@ -762,8 +762,8 @@ public class UserRequestValidator extends BaseRequestValidator {
                 StringFormatter.joinByDot(JsonKey.FRAMEWORK, JsonKey.ID));
           } else if (frameworkId.size() > 1) {
             throw new ProjectCommonException(
-                ResponseCode.errorInvalidParemeterSize.getErrorCode(),
-                ResponseCode.errorInvalidParemeterSize.getErrorMessage(),
+                ResponseCode.errorInvalidParameterSize.getErrorCode(),
+                ResponseCode.errorInvalidParameterSize.getErrorMessage(),
                 ERROR_CODE,
                 StringFormatter.joinByDot(JsonKey.FRAMEWORK, JsonKey.ID),
                 "1",
