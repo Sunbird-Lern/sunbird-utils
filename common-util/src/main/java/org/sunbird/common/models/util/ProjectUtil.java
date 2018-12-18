@@ -67,7 +67,6 @@ public class ProjectUtil {
         JsonKey.COMPLETENESS,
         JsonKey.MISSING_FIELDS,
         JsonKey.PROFILE_VISIBILITY,
-        JsonKey.USERNAME,
         JsonKey.LOGIN_ID,
         JsonKey.USER_ID
       };

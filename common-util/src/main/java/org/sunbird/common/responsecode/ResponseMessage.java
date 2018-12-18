@@ -62,6 +62,7 @@ public interface ResponseMessage {
     String ENROLLMENT_START_DATE_MISSING = "Enrollment start date is mandatory.";
     String COURSE_DURATION_MISSING = "Course duration is mandatory.";
     String LOGIN_TYPE_MISSING = "Login type is required.";
+    String ERROR_INVALID_OTP = "Invalid OTP.";
     String EMAIL_IN_USE = "Email already exists.";
     String USERNAME_EMAIL_IN_USE =
         "Username or Email is already in use. Please try with a different Username or Email.";
@@ -387,8 +388,10 @@ public interface ResponseMessage {
     String ERROR_PROCESSING_REQUEST = "Something went wrong while Processing Request";
     String INVALID_TEXTBOOK = "Invalid Textbook. Please Provide Valid Textbook Identifier.";
     String CSV_ROWS_EXCEEDS = "Number of rows in csv file is more than ";
-    String INVALID_TEXTBOOK_NAME = "Textbook Name given in the file doesn’t match current Textbook name. Please check and upload again.";
-    String DUPLICATE_ROWS = "Duplicate Textbook node found. Please check and upload again. Row number ";
+    String INVALID_TEXTBOOK_NAME =
+        "Textbook Name given in the file doesn’t match current Textbook name. Please check and upload again.";
+    String DUPLICATE_ROWS =
+        "Duplicate Textbook node found. Please check and upload again. Row number ";
     String REQUIRED_HEADER_MISSING = "Required set of header missing: ";
     String REQUIRED_FIELD_MISSING = "Data in mandatory fields is missing. Mandatory fields are: ";
     String BLANK_CSV_DATA = "Did not find any TOC data. Please check and upload again.";
@@ -397,9 +400,11 @@ public interface ResponseMessage {
     String TEXTBOOK_UPDATE_FAILURE = "Textbook could not be updated.";
     String TEXTBOOK_CHILDREN_NOT_EXISTS = "No Children Exists for given TextBook.";
     String TEXTBOOK_NOT_FOUND = "Textbook not found.";
-    String ERROR_PROCESSING_FILE = "Something Went Wrong While Reading File. Please Check The File.";
+    String ERROR_PROCESSING_FILE =
+        "Something Went Wrong While Reading File. Please Check The File.";
     String ERR_FILE_NOT_FOUND = "File not found. Please select valid file and upload.";
     String ERROR_TB_UPDATE = "Error while updating the textbook";
+    String ERROR_INVALID_PARAMETER_SIZE = "Parameter {0} is of invalid size (expected: {1}, actual: {2}).";
   }
 
   interface Key {
@@ -738,6 +743,7 @@ public interface ResponseMessage {
     String CSV_ROWS_EXCEEDS = "CSV_ROWS_EXCEEDS";
     String INVALID_TEXTBOOK_NAME = "INVALID_TEXTBOOK_NAME";
     String DUPLICATE_ROWS = "DUPLICATE_ROWS";
+    String ERROR_INVALID_OTP = "ERROR_INVALID_OTP";
     String REQUIRED_HEADER_MISSING = "REQUIRED_HEADER_MISSING";
     String REQUIRED_FIELD_MISSING = "REQUIRED_FIELD_MISSING";
     String BLANK_CSV_DATA = "BLANK_CSV_DATA";
@@ -749,5 +755,6 @@ public interface ResponseMessage {
     String ERROR_PROCESSING_FILE = "ERROR_PROCESSING_FILE";
     String ERR_FILE_NOT_FOUND = "ERR_FILE_NOT_FOUND";
     String ERROR_TB_UPDATE = "ERROR_TB_UPDATE";
+    String ERROR_INVALID_PARAMETER_SIZE = "ERROR_INVALID_PARAMETER_SIZE";
   }
 }
