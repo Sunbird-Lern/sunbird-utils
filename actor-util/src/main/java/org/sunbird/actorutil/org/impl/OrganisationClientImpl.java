@@ -168,8 +168,7 @@ public class OrganisationClientImpl implements OrganisationClient {
   }
 
   @Override
-  public List<Organisation> esFetchOrgDetailsWithSpecificColumnsByOrgIds(
-      List<String> orgIds, List<String> outputColumns) {
+  public List<Organisation> esSearchOrgByIds(List<String> orgIds, List<String> outputColumns) {
     SearchDTO searchDTO = new SearchDTO();
 
     searchDTO.setFields(outputColumns);
