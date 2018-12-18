@@ -1,17 +1,20 @@
 package org.sunbird.content.util;
 
-import org.sunbird.common.models.util.JsonKey;
-import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.util.CloudStorageUtil;
 import org.sunbird.common.util.CloudStorageUtil.CloudStorageType;
 
 import java.io.File;
 
+import static java.io.File.separator;
+import static org.sunbird.common.models.util.JsonKey.CLOUD_FOLDER_CONTENT;
+import static org.sunbird.common.models.util.JsonKey.CONTENT_AZURE_STORAGE_CONTAINER;
+import static org.sunbird.common.models.util.JsonKey.CONTENT_CLOUD_STORAGE_TYPE;
+import static org.sunbird.common.models.util.ProjectUtil.getConfigValue;
 import static org.sunbird.common.util.CloudStorageUtil.CloudStorageType.AZURE;
 
 public class ContentCloudStore {
 
-    public static String FOLDER = ProjectUtil.getConfigValue(JsonKey.CLOUD_FOLDER_CONTENT);
+    public static String FOLDER = getConfigValue(CLOUD_FOLDER_CONTENT);
 
     public static String getUri(String prefix, boolean isDirectory) {
         prefix = FOLDER + prefix;
@@ -34,7 +37,7 @@ public class ContentCloudStore {
 
     public static String upload(String objectKey, File file) {
         CloudStorageType storageType = storageType();
-        objectKey = FOLDER + objectKey + File.separator;
+        objectKey = FOLDER + objectKey + separator;
         if (file.isFile()) {
             objectKey += file.getName();
             return CloudStorageUtil.upload(storageType, container(storageType), objectKey, file.getAbsolutePath());
@@ -44,7 +47,7 @@ public class ContentCloudStore {
     }
 
     public static String upload(CloudStorageType storageType, String objectKey, File file) {
-        objectKey = FOLDER + objectKey + File.separator;
+        objectKey = FOLDER + objectKey + separator;
         if (file.isFile()) {
             objectKey += file.getName();
             return CloudStorageUtil.upload(storageType, container(storageType), objectKey, file.getAbsolutePath());
@@ -55,7 +58,7 @@ public class ContentCloudStore {
 
     private static CloudStorageType storageType() {
         CloudStorageType storageType = null;
-        switch (ProjectUtil.getConfigValue(JsonKey.CONTENT_CLOUD_STORAGE_TYPE)) {
+        switch (getConfigValue(CONTENT_CLOUD_STORAGE_TYPE)) {
             case "azure": storageType = AZURE;
                           break;
             default:      break;
@@ -66,7 +69,7 @@ public class ContentCloudStore {
     private static String container(CloudStorageType type) {
         String container = null;
         switch (type) {
-            case AZURE: container = ProjectUtil.getConfigValue(JsonKey.CONTENT_AZURE_STORAGE_CONTAINER);
+            case AZURE: container = getConfigValue(CONTENT_AZURE_STORAGE_CONTAINER);
                         break;
             default   : break;
         }
