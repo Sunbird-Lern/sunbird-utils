@@ -403,7 +403,7 @@ public interface ResponseMessage {
         "Something Went Wrong While Reading File. Please Check The File.";
     String ERR_FILE_NOT_FOUND = "File not found. Please select valid file and upload.";
     String ERROR_TB_UPDATE = "Error while updating the textbook";
-    String INVALID_DATA_SIZE = "Invalid Data size . Expected size {0} but found {1} for field {3}";
+    String ERROR_INVALID_PARAMETER_SIZE = "Parameter {0} is of invalid size (expected: {1}, actual: {2}).";
   }
 
   interface Key {
@@ -753,6 +753,6 @@ public interface ResponseMessage {
     String ERROR_PROCESSING_FILE = "ERROR_PROCESSING_FILE";
     String ERR_FILE_NOT_FOUND = "ERR_FILE_NOT_FOUND";
     String ERROR_TB_UPDATE = "ERROR_TB_UPDATE";
-    String INVALID_DATA_SIZE = "INVALID_DATA_SIZE";
+    String ERROR_INVALID_PARAMETER_SIZE = "ERROR_INVALID_PARAMETER_SIZE";
   }
 }
