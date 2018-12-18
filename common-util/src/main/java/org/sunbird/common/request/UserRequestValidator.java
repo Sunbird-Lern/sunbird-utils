@@ -757,27 +757,23 @@ public class UserRequestValidator extends BaseRequestValidator {
         if (framework.get(JsonKey.ID) instanceof List) {
           List<String> frameworkId = (List<String>) framework.get(JsonKey.ID);
           if (CollectionUtils.isEmpty(frameworkId)) {
-            throw new ProjectCommonException(
-                ResponseCode.mandatoryParamsMissing.getErrorCode(),
-                ResponseCode.mandatoryParamsMissing.getErrorMessage(),
-                ERROR_CODE,
+            ProjectCommonException.throwClientErrorException(
+              ResponseCode.mandatoryParamsMissing,
                 StringFormatter.joinByDot(JsonKey.FRAMEWORK, JsonKey.ID));
           } else if (frameworkId.size() > 1) {
             throw new ProjectCommonException(
                 ResponseCode.invalidDataSize.getErrorCode(),
                 ResponseCode.invalidDataSize.getErrorMessage(),
                 ERROR_CODE,
-                String.valueOf("1"),
-                String.valueOf(frameworkId.size()),
-                StringFormatter.joinByDot(JsonKey.FRAMEWORK, JsonKey.ID));
+                StringFormatter.joinByDot(JsonKey.FRAMEWORK, JsonKey.ID),
+                "1",
+                String.valueOf(frameworkId.size()));
           }
         } else if (framework.get(JsonKey.ID) instanceof String) {
           String frameworkId = (String) framework.get(JsonKey.ID);
           if (StringUtils.isBlank(frameworkId)) {
-            throw new ProjectCommonException(
-                ResponseCode.mandatoryParamsMissing.getErrorCode(),
-                ResponseCode.mandatoryParamsMissing.getErrorMessage(),
-                ERROR_CODE,
+            ProjectCommonException.throwClientErrorException(
+              ResponseCode.mandatoryParamsMissing,
                 StringFormatter.joinByDot(JsonKey.FRAMEWORK, JsonKey.ID));
           }
         }
