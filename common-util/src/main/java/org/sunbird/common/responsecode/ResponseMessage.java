@@ -405,7 +405,7 @@ public interface ResponseMessage {
     String ERROR_TB_UPDATE = "Error while updating the textbook";
     String ERROR_INVALID_PARAMETER_SIZE =
         "Parameter {0} is of invalid size (expected: {1}, actual: {2}).";
-    String INVALID_PAGE_SECTION = "Page section associated with this page is invalid.";
+    String INVALID_PAGE_SECTION = "Page section associated with the page is invalid.";
   }
 
   interface Key {
