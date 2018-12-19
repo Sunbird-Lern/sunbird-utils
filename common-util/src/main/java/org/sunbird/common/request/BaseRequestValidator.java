@@ -346,7 +346,7 @@ public class BaseRequestValidator {
   }
 
   public void validatePhone(String phone) {
-    if (!ProjectUtil.validatePhoneNumber(phone)) {
+    if (!ProjectUtil.validatePhone(phone, null)) {
       throw new ProjectCommonException(
           ResponseCode.phoneNoFormatError.getErrorCode(),
           ResponseCode.phoneNoFormatError.getErrorMessage(),
