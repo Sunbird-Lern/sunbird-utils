@@ -737,7 +737,8 @@ public enum ResponseCode {
   errorInvalidParameterSize(
       ResponseMessage.Key.ERROR_INVALID_PARAMETER_SIZE,
       ResponseMessage.Message.ERROR_INVALID_PARAMETER_SIZE),
-
+  errorInvalidPageSection(
+      ResponseMessage.Key.INVALID_PAGE_SECTION, ResponseMessage.Message.INVALID_PAGE_SECTION),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
