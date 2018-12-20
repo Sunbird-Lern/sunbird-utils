@@ -312,33 +312,40 @@ public interface CassandraOperation {
       String keyspaceName, String tableName, Map<String, Object> request, int ttl);
 
   /**
-   * Utility method to fetch records with alias and ttl info
+   * Fetch records with specified columns that match given partition / primary key. Multiple records would be fetched in case partition key is specified.
    *
-   * @param keyspaceName
-   * @param tableName
-   * @param primaryKeys key as column and value as value to be applied in where clause
-   * @param propertiesWithAlias map of key as column and column as alias. <i> if alias is null it's
-   *     not applied </i>
-   * @param ttlPropertiesWithAlias map of ttl column as key and alias as value <i> if alias is null
-   *     it's not applied </i>
-   * @return
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param primaryKey Column and value map for partition / primary key
+   * @param properties List of columns to be returned in each record
+   * @param ttlPropertiesWithAlias Map containing TTL column as key and alias as value.
+   * @return Response consisting of fetched records
    */
   Response getRecordsByIdsWithSpecifiedColumnsAndTTL(
       String keyspaceName,
       String tableName,
       Map<String, Object> primaryKeys,
-      Map<String, String> propertiesWithAlias,
+      List<String> properties,
       Map<String, String> ttlPropertiesWithAlias);
 
   /**
-   * Makes a batch insert with different ttl values.
+   * Method to perform batch insert operation.
    *
-   * @param keyspaceName
-   * @param tableName
-   * @param records entries to be inserted
-   * @param ttls corresponding ttl needs to be provided on each entry. <i>Any ttl will be ignored
-   *     for values null, 0 or negative numbers</i>
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param records List of records in the batch insert operation
+   * @return Response indicating status of operation
+   */
+  /**
+   * Perform batch insert with different TTL values
+   *
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param records List of records in the batch insert operation
+   * @param ttls TTL (in seconds) for each record to be inserted. TTL is ignored if value is not a positive number.
+   * @return Response indicating status of operation
    */
   Response batchInsertWithTTL(
       String keyspaceName, String tableName, List<Map<String, Object>> records, List<Integer> ttls);
+
 }
