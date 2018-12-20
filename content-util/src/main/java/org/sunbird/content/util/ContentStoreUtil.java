@@ -1,15 +1,14 @@
 package org.sunbird.content.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.http.HttpHeaders;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class ContentStoreUtil {
 
@@ -63,5 +62,4 @@ public class ContentStoreUtil {
     }
     return resultMap;
   }
-
 }

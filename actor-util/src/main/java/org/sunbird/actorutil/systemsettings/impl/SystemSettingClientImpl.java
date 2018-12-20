@@ -23,11 +23,11 @@ public class SystemSettingClientImpl implements SystemSettingClient {
 
   private static InterServiceCommunication interServiceCommunication =
       InterServiceCommunicationFactory.getInstance();
-  private static SystemSettingClientImpl systemSettingClient = null;
+  private static SystemSettingClient systemSettingClient = null;
   private static Map<String, SystemSetting> systemSettingsMap =
       new ConcurrentHashMap<String, SystemSetting>();
 
-  public static SystemSettingClientImpl getInstance() {
+  public static SystemSettingClient getInstance() {
     if (null == systemSettingClient) {
       systemSettingClient = new SystemSettingClientImpl();
     }

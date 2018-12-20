@@ -98,8 +98,6 @@ public enum ResponseCode {
   invalidParentId(
       ResponseMessage.Key.INVALID_PARENT_ORGANIZATION_ID,
       ResponseMessage.Message.INVALID_PARENT_ORGANIZATION_ID),
-  channelIdRequiredForRootOrg(
-      ResponseMessage.Key.CHANNEL_MISSING, ResponseMessage.Message.CHANNEL_MISSING),
   cyclicValidationError(
       ResponseMessage.Key.CYCLIC_VALIDATION_FAILURE,
       ResponseMessage.Message.CYCLIC_VALIDATION_FAILURE),
@@ -739,10 +737,12 @@ public enum ResponseCode {
   errorInvalidParameterSize(
       ResponseMessage.Key.ERROR_INVALID_PARAMETER_SIZE,
       ResponseMessage.Message.ERROR_INVALID_PARAMETER_SIZE),
+  errorInvalidPageSection(
+      ResponseMessage.Key.INVALID_PAGE_SECTION, ResponseMessage.Message.INVALID_PAGE_SECTION),
   rateLimitExceeded(
-      ResponseMessage.Key.ERROR_RATE_LIMIT_EXCEEDED,
-      ResponseMessage.Message.ERROR_RATE_LIMIT_EXCEEDED),
-
+	      ResponseMessage.Key.ERROR_RATE_LIMIT_EXCEEDED,
+	      ResponseMessage.Message.ERROR_RATE_LIMIT_EXCEEDED),
+  
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

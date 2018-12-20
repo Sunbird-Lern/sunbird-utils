@@ -370,6 +370,7 @@ public final class JsonKey {
   public static final String ORDER = "order";
   public static final String ORG_CODE = "orgCode";
   public static final String ORG_CODE_HEADER = "X-Org-code";
+  public static final String ORG_EXT_ID_DB = "org_external_identity";
   public static final String ORG_DB = "org_db";
   public static final String ORG_ID = "orgId";
   public static final String ORG_ID_ONE = "orgIdOne";
@@ -747,7 +748,6 @@ public final class JsonKey {
   public static final String ERRORS = "errors";
   public static final String ROLE_LIST = "roleList";
   public static final String SUNBIRD_USER_PROFILE_READ_EXCLUDED_FIELDS = "read.excludedFields";
-  public static final String VERSION_3 = "v3";
   public static final String COMPLETED_ON = "completedOn";
   public static final String CALLER_ID = "callerId";
   public static final String USER_TYPE = "userType";

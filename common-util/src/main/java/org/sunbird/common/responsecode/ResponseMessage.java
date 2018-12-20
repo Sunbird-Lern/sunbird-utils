@@ -57,7 +57,6 @@ public interface ResponseMessage {
     String INVALID_ROOT_ORGANIZATION = "Root organization id is invalid";
     String INVALID_PARENT_ORGANIZATION_ID = "Parent organization id is invalid";
     String CYCLIC_VALIDATION_FAILURE = "The relation cannot be created as it is cyclic";
-    String CHANNEL_MISSING = "Channel is mandatory for root organization";
     String ENROLLMENT_START_DATE_MISSING = "Enrollment start date is mandatory.";
     String COURSE_DURATION_MISSING = "Course duration is mandatory.";
     String LOGIN_TYPE_MISSING = "Login type is required.";
@@ -405,6 +404,7 @@ public interface ResponseMessage {
     String ERROR_TB_UPDATE = "Error while updating the textbook";
     String ERROR_INVALID_PARAMETER_SIZE =
         "Parameter {0} is of invalid size (expected: {1}, actual: {2}).";
+    String INVALID_PAGE_SECTION = "Page section associated with the page is invalid.";
     String ERROR_RATE_LIMIT_EXCEEDED = "your limit per {0} has exceeded. Please try later";
   }
 
@@ -452,7 +452,6 @@ public interface ResponseMessage {
     String INVALID_ROOT_ORGANIZATION = "INVALID ROOT ORGANIZATION";
     String INVALID_PARENT_ORGANIZATION_ID = "INVALID_PARENT_ORGANIZATION_ID";
     String CYCLIC_VALIDATION_FAILURE = "CYCLIC_VALIDATION_FAILURE";
-    String CHANNEL_MISSING = "CHANNEL_MISSING";
     String ENROLLMENT_START_DATE_MISSING = "ENROLLMENT_START_DATE_MISSING";
     String COURSE_DURATION_MISSING = "COURSE_DURATION_MISSING";
     String LOGIN_TYPE_MISSING = "LOGIN_TYPE_MISSING";
@@ -756,6 +755,7 @@ public interface ResponseMessage {
     String ERR_FILE_NOT_FOUND = "ERR_FILE_NOT_FOUND";
     String ERROR_TB_UPDATE = "ERROR_TB_UPDATE";
     String ERROR_INVALID_PARAMETER_SIZE = "ERROR_INVALID_PARAMETER_SIZE";
+    String INVALID_PAGE_SECTION = "INVALID_PAGE_SECTION";
     String ERROR_RATE_LIMIT_EXCEEDED = "ERROR_RATE_LIMIT_EXCEEDED";
   }
 }
