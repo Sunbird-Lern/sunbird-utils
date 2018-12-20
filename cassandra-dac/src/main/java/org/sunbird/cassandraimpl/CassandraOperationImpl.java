@@ -804,7 +804,7 @@ public class CassandraOperationImpl implements CassandraOperation {
       String keyspaceName,
       String tableName,
       Map<String, Object> primaryKeys,
-      Map<String, String> propertiesWithAlias,
+      List<String> properties,
       Map<String, String> ttlPropertiesWithAlias) {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
@@ -816,21 +816,12 @@ public class CassandraOperationImpl implements CassandraOperation {
 
       Selection selection = QueryBuilder.select();
 
-      if (MapUtils.isNotEmpty(propertiesWithAlias)) {
-        propertiesWithAlias
-            .entrySet()
+      if (CollectionUtils.isNotEmpty(properties)) {
+        properties
             .stream()
-            .peek(
-                p ->
-                    ProjectLogger.log(
-                        "key=" + p.getKey() + " value=" + p.getValue(), LoggerEnum.INFO))
             .forEach(
                 property -> {
-                  if (StringUtils.isBlank(property.getValue())) {
-                    selection.column(property.getKey());
-                  } else {
-                    selection.column(property.getKey()).as(property.getValue());
-                  }
+                  selection.column(property);
                 });
       }
 
@@ -838,17 +829,16 @@ public class CassandraOperationImpl implements CassandraOperation {
         ttlPropertiesWithAlias
             .entrySet()
             .stream()
-            .peek(
-                p ->
-                    ProjectLogger.log(
-                        "key=" + p.getKey() + " value=" + p.getValue(), LoggerEnum.INFO))
             .forEach(
                 property -> {
                   if (StringUtils.isBlank(property.getValue())) {
-                    selection.ttl(property.getKey());
-                  } else {
-                    selection.ttl(property.getKey()).as(property.getValue());
+                    ProjectLogger.log(
+                        "CassandraOperationImpl:getRecordsByIdsWithSpecifiedColumnsAndTTL no alias for ttl key ="
+                            + property.getKey(),
+                        LoggerEnum.ERROR);
+                    ProjectCommonException.throwServerErrorException(ResponseCode.SERVER_ERROR);
                   }
+                  selection.ttl(property.getKey()).as(property.getValue());
                 });
       }
       Select select = selection.from(keyspaceName, tableName);
@@ -883,22 +873,22 @@ public class CassandraOperationImpl implements CassandraOperation {
     ProjectLogger.log(
         "Cassandra Service batchInsertWithTTL method started at ==" + startTime, LoggerEnum.INFO);
     if (CollectionUtils.isEmpty(records) || CollectionUtils.isEmpty(ttls)) {
-      throw new ProjectCommonException(
-          ResponseCode.SERVER_ERROR.getErrorCode(),
-          "record list or ttl list is empty",
-          ResponseCode.SERVER_ERROR.getResponseCode());
+      ProjectLogger.log(
+          "CassandraOperationImpl:batchInsertWithTTL records or ttl list is invalid",
+          LoggerEnum.ERROR);
+      ProjectCommonException.throwServerErrorException(ResponseCode.SERVER_ERROR);
     }
     if (ttls.size() != records.size()) {
-      throw new ProjectCommonException(
-          ResponseCode.SERVER_ERROR.getErrorCode(),
-          "Mismatch in records and corresponsing ttls",
-          ResponseCode.SERVER_ERROR.getResponseCode());
+      ProjectLogger.log(
+          "CassandraOperationImpl:batchInsertWithTTL records and ttl list size mismatch",
+          LoggerEnum.ERROR);
+      ProjectCommonException.throwServerErrorException(ResponseCode.SERVER_ERROR);
     }
     Session session = connectionManager.getSession(keyspaceName);
     Response response = new Response();
     BatchStatement batchStatement = new BatchStatement();
     ResultSet resultSet = null;
-    Iterator<Integer> ttliterator = ttls.iterator();
+    Iterator<Integer> ttlIterator = ttls.iterator();
     try {
       for (Map<String, Object> map : records) {
         Insert insert = QueryBuilder.insertInto(keyspaceName, tableName);
@@ -908,8 +898,8 @@ public class CassandraOperationImpl implements CassandraOperation {
                 x -> {
                   insert.value(x.getKey(), x.getValue());
                 });
-        if (ttliterator.hasNext()) {
-          Integer ttlVal = ttliterator.next();
+        if (ttlIterator.hasNext()) {
+          Integer ttlVal = ttlIterator.next();
           if (ttlVal != null & ttlVal > 0) {
             insert.using(QueryBuilder.ttl(ttlVal));
           }

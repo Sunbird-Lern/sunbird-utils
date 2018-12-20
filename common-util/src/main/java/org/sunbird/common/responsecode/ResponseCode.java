@@ -739,10 +739,10 @@ public enum ResponseCode {
       ResponseMessage.Message.ERROR_INVALID_PARAMETER_SIZE),
   errorInvalidPageSection(
       ResponseMessage.Key.INVALID_PAGE_SECTION, ResponseMessage.Message.INVALID_PAGE_SECTION),
-  rateLimitExceeded(
-	      ResponseMessage.Key.ERROR_RATE_LIMIT_EXCEEDED,
-	      ResponseMessage.Message.ERROR_RATE_LIMIT_EXCEEDED),
-  
+  errorRateLimitExceeded(
+      ResponseMessage.Key.ERROR_RATE_LIMIT_EXCEEDED,
+      ResponseMessage.Message.ERROR_RATE_LIMIT_EXCEEDED),
+
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

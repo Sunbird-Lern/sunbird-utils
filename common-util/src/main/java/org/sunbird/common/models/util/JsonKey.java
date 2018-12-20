@@ -820,6 +820,7 @@ public final class JsonKey {
   public static final String SUNBIRD_RATE_LIMIT_ENABLED = "sunbird_rate_limit_enabled";
   public static final String RATE_LIMIT = "rate_limit";
   public static final String RATE_LIMIT_UNIT = "unit";
+  public static final String RATE = "rate";
 
   private JsonKey() {}
 }
