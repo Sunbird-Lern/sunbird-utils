@@ -5,4 +5,4 @@ CREATE TABLE IF NOT EXISTS sunbird.org_external_identity(provider text, external
 CREATE KEYSPACE IF NOT EXISTS lock_db WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '1'};
 CREATE TABLE IF NOT EXISTS lock_db.lock(resourceId text, createdBy text, createdOn timestamp, creatorInfo text, deviceId text, expiresAt timestamp, resourceInfo text, resourceType text, PRIMARY KEY(resourceId));
 TRUNCATE TABLE lock_db.lock;
-ALTER TABLE lock_db.lock ADD lockId uuid;
+ALTER TABLE lock_db.lock ADD "lockId" uuid;
