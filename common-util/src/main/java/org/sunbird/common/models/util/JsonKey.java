@@ -817,6 +817,10 @@ public final class JsonKey {
   public static final String SUNBIRD_OTP_EXPIRATION = "sunbird_otp_expiration";
   public static final String SUNBIRD_OTP_LENGTH = "sunbird_otp_length";
   public static final String OTP_EXPIRATION_IN_MINUTES = "otpExpiryInMinutes";
+  public static final String SUNBIRD_RATE_LIMIT_ENABLED = "sunbird_rate_limit_enabled";
+  public static final String RATE_LIMIT = "rate_limit";
+  public static final String RATE_LIMIT_UNIT = "unit";
+  public static final String RATE = "rate";
 
   private JsonKey() {}
 }

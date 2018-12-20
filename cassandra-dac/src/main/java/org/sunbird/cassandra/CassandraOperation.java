@@ -310,4 +310,34 @@ public interface CassandraOperation {
    */
   public Response insertRecordWithTTL(
       String keyspaceName, String tableName, Map<String, Object> request, int ttl);
+
+  /**
+   * Fetch records with specified columns that match given partition / primary key. Multiple records would be fetched in case partition key is specified.
+   *
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param primaryKey Column and value map for partition / primary key
+   * @param properties List of columns to be returned in each record
+   * @param ttlPropertiesWithAlias Map containing TTL column as key and alias as value.
+   * @return Response consisting of fetched records
+   */
+  Response getRecordsByIdsWithSpecifiedColumnsAndTTL(
+      String keyspaceName,
+      String tableName,
+      Map<String, Object> primaryKeys,
+      List<String> properties,
+      Map<String, String> ttlPropertiesWithAlias);
+
+  /**
+   * Perform batch insert with different TTL values
+   *
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param records List of records in the batch insert operation
+   * @param ttls TTL (in seconds) for each record to be inserted. TTL is ignored if value is not a positive number.
+   * @return Response indicating status of operation
+   */
+  Response batchInsertWithTTL(
+      String keyspaceName, String tableName, List<Map<String, Object>> records, List<Integer> ttls);
+
 }

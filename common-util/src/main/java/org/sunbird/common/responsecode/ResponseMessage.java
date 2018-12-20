@@ -407,6 +407,8 @@ public interface ResponseMessage {
     String ERROR_INVALID_PARAMETER_SIZE =
         "Parameter {0} is of invalid size (expected: {1}, actual: {2}).";
     String INVALID_PAGE_SECTION = "Page section associated with the page is invalid.";
+    String ERROR_RATE_LIMIT_EXCEEDED =
+        "Your per {0} rate limit has exceeded. You can retry after some time.";
   }
 
   interface Key {
@@ -757,5 +759,6 @@ public interface ResponseMessage {
     String ERROR_TB_UPDATE = "ERROR_TB_UPDATE";
     String ERROR_INVALID_PARAMETER_SIZE = "ERROR_INVALID_PARAMETER_SIZE";
     String INVALID_PAGE_SECTION = "INVALID_PAGE_SECTION";
+    String ERROR_RATE_LIMIT_EXCEEDED = "ERROR_RATE_LIMIT_EXCEEDED";
   }
 }

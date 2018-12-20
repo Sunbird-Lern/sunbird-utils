@@ -739,13 +739,18 @@ public enum ResponseCode {
       ResponseMessage.Message.ERROR_INVALID_PARAMETER_SIZE),
   errorInvalidPageSection(
       ResponseMessage.Key.INVALID_PAGE_SECTION, ResponseMessage.Message.INVALID_PAGE_SECTION),
+  errorRateLimitExceeded(
+      ResponseMessage.Key.ERROR_RATE_LIMIT_EXCEEDED,
+      ResponseMessage.Message.ERROR_RATE_LIMIT_EXCEEDED),
+
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
   RESOURCE_NOT_FOUND(404),
   UNAUTHORIZED(401),
   FORBIDDEN(403),
-  REDIRECTION_REQUIRED(302);
+  REDIRECTION_REQUIRED(302),
+  TOO_MANY_REQUESTS(429);
   private int responseCode;
   /** error code contains String value */
   private String errorCode;
