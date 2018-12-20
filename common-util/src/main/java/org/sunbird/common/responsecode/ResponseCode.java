@@ -749,7 +749,8 @@ public enum ResponseCode {
   RESOURCE_NOT_FOUND(404),
   UNAUTHORIZED(401),
   FORBIDDEN(403),
-  REDIRECTION_REQUIRED(302);
+  REDIRECTION_REQUIRED(302),
+  TOO_MANY_REQUESTS(429);
   private int responseCode;
   /** error code contains String value */
   private String errorCode;
