@@ -759,7 +759,9 @@ public class UserRequestValidator extends BaseRequestValidator {
           if (CollectionUtils.isEmpty(frameworkId)) {
             ProjectCommonException.throwClientErrorException(
                 ResponseCode.mandatoryParamsMissing,
-                StringFormatter.joinByDot(JsonKey.FRAMEWORK, JsonKey.ID));
+                MessageFormat.format(
+                    ResponseCode.mandatoryParamsMissing.getErrorMessage(),
+                    StringFormatter.joinByDot(JsonKey.FRAMEWORK, JsonKey.ID)));
           } else if (frameworkId.size() > 1) {
             throw new ProjectCommonException(
                 ResponseCode.errorInvalidParameterSize.getErrorCode(),
@@ -774,7 +776,9 @@ public class UserRequestValidator extends BaseRequestValidator {
           if (StringUtils.isBlank(frameworkId)) {
             ProjectCommonException.throwClientErrorException(
                 ResponseCode.mandatoryParamsMissing,
-                StringFormatter.joinByDot(JsonKey.FRAMEWORK, JsonKey.ID));
+                MessageFormat.format(
+                    ResponseCode.mandatoryParamsMissing.getErrorMessage(),
+                    StringFormatter.joinByDot(JsonKey.FRAMEWORK, JsonKey.ID)));
           }
         }
       }
