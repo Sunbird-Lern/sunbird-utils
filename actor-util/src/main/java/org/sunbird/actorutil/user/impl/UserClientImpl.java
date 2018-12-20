@@ -94,7 +94,7 @@ public class UserClientImpl implements UserClient {
     Request request = new Request();
     request.setRequest(userMap);
     request.setOperation(operation);
-    request.getContext().put(JsonKey.VERSION, JsonKey.VERSION_3);
+    request.getContext().put(JsonKey.VERSION, JsonKey.VERSION_2);
     request.getContext().put(JsonKey.CALLER_ID, JsonKey.BULK_USER_UPLOAD);
     request.getContext().put(JsonKey.ROOT_ORG_ID, userMap.get(JsonKey.ROOT_ORG_ID));
     userMap.remove(JsonKey.ROOT_ORG_ID);
