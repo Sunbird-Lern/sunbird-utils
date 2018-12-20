@@ -391,8 +391,10 @@ public interface ResponseMessage {
     String DUPLICATE_ROWS =
         "Duplicate Textbook node found. Please check and upload again. Row number ";
     String REQUIRED_HEADER_MISSING = "Required set of header missing: ";
-    String REQUIRED_FIELD_MISSING = "Data in mandatory fields is missing. Mandatory fields are: ";
-    String BLANK_CSV_DATA = "Did not find any TOC data. Please check and upload again.";
+    String REQUIRED_FIELD_MISSING =
+        "Required columns missing. Please check and upload again. Mandatory fields are: ";
+    String BLANK_CSV_DATA =
+        "Did not find any Table of Contents data. Please check and upload again.";
     String EXCEEDS_MAX_CHILDREN = "Number of first level units is more than allowed.";
     String TEXTBOOK_CHILDREN_EXISTS = "Textbook is already having children.";
     String TEXTBOOK_UPDATE_FAILURE = "Textbook could not be updated.";
