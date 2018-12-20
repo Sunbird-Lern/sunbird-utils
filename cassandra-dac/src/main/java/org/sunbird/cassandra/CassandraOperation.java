@@ -329,14 +329,6 @@ public interface CassandraOperation {
       Map<String, String> ttlPropertiesWithAlias);
 
   /**
-   * Method to perform batch insert operation.
-   *
-   * @param keyspaceName Keyspace name
-   * @param tableName Table name
-   * @param records List of records in the batch insert operation
-   * @return Response indicating status of operation
-   */
-  /**
    * Perform batch insert with different TTL values
    *
    * @param keyspaceName Keyspace name
