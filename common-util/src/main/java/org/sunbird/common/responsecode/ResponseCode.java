@@ -739,6 +739,9 @@ public enum ResponseCode {
   errorInvalidParameterSize(
       ResponseMessage.Key.ERROR_INVALID_PARAMETER_SIZE,
       ResponseMessage.Message.ERROR_INVALID_PARAMETER_SIZE),
+  rateLimitExceeded(
+      ResponseMessage.Key.ERROR_RATE_LIMIT_EXCEEDED,
+      ResponseMessage.Message.ERROR_RATE_LIMIT_EXCEEDED),
 
   OK(200),
   CLIENT_ERROR(400),

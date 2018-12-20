@@ -403,7 +403,9 @@ public interface ResponseMessage {
         "Something Went Wrong While Reading File. Please Check The File.";
     String ERR_FILE_NOT_FOUND = "File not found. Please select valid file and upload.";
     String ERROR_TB_UPDATE = "Error while updating the textbook";
-    String ERROR_INVALID_PARAMETER_SIZE = "Parameter {0} is of invalid size (expected: {1}, actual: {2}).";
+    String ERROR_INVALID_PARAMETER_SIZE =
+        "Parameter {0} is of invalid size (expected: {1}, actual: {2}).";
+    String ERROR_RATE_LIMIT_EXCEEDED = "your limit per {0} has exceeded. Please try later";
   }
 
   interface Key {
@@ -754,5 +756,6 @@ public interface ResponseMessage {
     String ERR_FILE_NOT_FOUND = "ERR_FILE_NOT_FOUND";
     String ERROR_TB_UPDATE = "ERROR_TB_UPDATE";
     String ERROR_INVALID_PARAMETER_SIZE = "ERROR_INVALID_PARAMETER_SIZE";
+    String ERROR_RATE_LIMIT_EXCEEDED = "ERROR_RATE_LIMIT_EXCEEDED";
   }
 }

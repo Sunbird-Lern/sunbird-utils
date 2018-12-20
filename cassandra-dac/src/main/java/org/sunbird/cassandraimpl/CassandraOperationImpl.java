@@ -15,6 +15,7 @@ import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
 import com.datastax.driver.core.querybuilder.Select.Builder;
+import com.datastax.driver.core.querybuilder.Select.Selection;
 import com.datastax.driver.core.querybuilder.Select.Where;
 import com.datastax.driver.core.querybuilder.Update;
 import com.datastax.driver.core.querybuilder.Update.Assignments;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.cassandra.CassandraOperation;
 import org.sunbird.common.CassandraUtil;
@@ -794,6 +796,139 @@ public class CassandraOperationImpl implements CassandraOperation {
     ResultSet results = connectionManager.getSession(keyspaceName).execute(insert);
     Response response = CassandraUtil.createResponse(results);
     logQueryElapseTime("insertRecordWithTTL", startTime);
+    return response;
+  }
+
+  @Override
+  public Response getRecordsByIdsWithSpecifiedColumnsAndTTL(
+      String keyspaceName,
+      String tableName,
+      Map<String, Object> primaryKeys,
+      Map<String, String> propertiesWithAlias,
+      Map<String, String> ttlPropertiesWithAlias) {
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log(
+        "CassandraOperationImpl: getRecordsByIdsWithSpecifiedColumnsAndTTL call started at "
+            + startTime,
+        LoggerEnum.INFO);
+    Response response = new Response();
+    try {
+
+      Selection selection = QueryBuilder.select();
+
+      if (MapUtils.isNotEmpty(propertiesWithAlias)) {
+        propertiesWithAlias
+            .entrySet()
+            .stream()
+            .peek(
+                p ->
+                    ProjectLogger.log(
+                        "key=" + p.getKey() + " value=" + p.getValue(), LoggerEnum.INFO))
+            .forEach(
+                property -> {
+                  if (StringUtils.isBlank(property.getValue())) {
+                    selection.column(property.getKey());
+                  } else {
+                    selection.column(property.getKey()).as(property.getValue());
+                  }
+                });
+      }
+
+      if (MapUtils.isNotEmpty(ttlPropertiesWithAlias)) {
+        ttlPropertiesWithAlias
+            .entrySet()
+            .stream()
+            .peek(
+                p ->
+                    ProjectLogger.log(
+                        "key=" + p.getKey() + " value=" + p.getValue(), LoggerEnum.INFO))
+            .forEach(
+                property -> {
+                  if (StringUtils.isBlank(property.getValue())) {
+                    selection.ttl(property.getKey());
+                  } else {
+                    selection.ttl(property.getKey()).as(property.getValue());
+                  }
+                });
+      }
+      Select select = selection.from(keyspaceName, tableName);
+      primaryKeys
+          .entrySet()
+          .stream()
+          .forEach(
+              primaryKey -> {
+                select.where().and(QueryBuilder.eq(primaryKey.getKey(), primaryKey.getValue()));
+              });
+      ProjectLogger.log("Query =" + select.getQueryString(), LoggerEnum.INFO);
+      ResultSet results = connectionManager.getSession(keyspaceName).execute(select);
+      response = CassandraUtil.createResponse(results);
+    } catch (Exception e) {
+      ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName + " : " + e.getMessage(), e);
+      throw new ProjectCommonException(
+          ResponseCode.SERVER_ERROR.getErrorCode(),
+          ResponseCode.SERVER_ERROR.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    logQueryElapseTime("getRecordsByIdsWithSpecifiedColumnsAndTTL", startTime);
+    return response;
+  }
+
+  @Override
+  public Response batchInsertWithTTL(
+      String keyspaceName,
+      String tableName,
+      List<Map<String, Object>> records,
+      List<Integer> ttls) {
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log(
+        "Cassandra Service batchInsertWithTTL method started at ==" + startTime, LoggerEnum.INFO);
+    if (CollectionUtils.isEmpty(records) || CollectionUtils.isEmpty(ttls)) {
+      throw new ProjectCommonException(
+          ResponseCode.SERVER_ERROR.getErrorCode(),
+          "record list or ttl list is empty",
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    if (ttls.size() != records.size()) {
+      throw new ProjectCommonException(
+          ResponseCode.SERVER_ERROR.getErrorCode(),
+          "Mismatch in records and corresponsing ttls",
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    Session session = connectionManager.getSession(keyspaceName);
+    Response response = new Response();
+    BatchStatement batchStatement = new BatchStatement();
+    ResultSet resultSet = null;
+    Iterator<Integer> ttliterator = ttls.iterator();
+    try {
+      for (Map<String, Object> map : records) {
+        Insert insert = QueryBuilder.insertInto(keyspaceName, tableName);
+        map.entrySet()
+            .stream()
+            .forEach(
+                x -> {
+                  insert.value(x.getKey(), x.getValue());
+                });
+        if (ttliterator.hasNext()) {
+          Integer ttlVal = ttliterator.next();
+          if (ttlVal != null & ttlVal > 0) {
+            insert.using(QueryBuilder.ttl(ttlVal));
+          }
+        }
+        batchStatement.add(insert);
+      }
+      resultSet = session.execute(batchStatement);
+      response.put(Constants.RESPONSE, Constants.SUCCESS);
+    } catch (QueryExecutionException
+        | QueryValidationException
+        | NoHostAvailableException
+        | IllegalStateException e) {
+      ProjectLogger.log("Cassandra Batch Insert Failed." + e.getMessage(), e);
+      throw new ProjectCommonException(
+          ResponseCode.SERVER_ERROR.getErrorCode(),
+          ResponseCode.SERVER_ERROR.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    logQueryElapseTime("batchInsertWithTTL", startTime);
     return response;
   }
 }

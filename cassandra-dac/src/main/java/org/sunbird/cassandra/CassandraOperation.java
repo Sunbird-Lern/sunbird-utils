@@ -310,4 +310,35 @@ public interface CassandraOperation {
    */
   public Response insertRecordWithTTL(
       String keyspaceName, String tableName, Map<String, Object> request, int ttl);
+
+  /**
+   * Utility method to fetch records with alias and ttl info
+   *
+   * @param keyspaceName
+   * @param tableName
+   * @param primaryKeys key as column and value as value to be applied in where clause
+   * @param propertiesWithAlias map of key as column and column as alias. <i> if alias is null it's
+   *     not applied </i>
+   * @param ttlPropertiesWithAlias map of ttl column as key and alias as value <i> if alias is null
+   *     it's not applied </i>
+   * @return
+   */
+  Response getRecordsByIdsWithSpecifiedColumnsAndTTL(
+      String keyspaceName,
+      String tableName,
+      Map<String, Object> primaryKeys,
+      Map<String, String> propertiesWithAlias,
+      Map<String, String> ttlPropertiesWithAlias);
+
+  /**
+   * Makes a batch insert with different ttl values.
+   *
+   * @param keyspaceName
+   * @param tableName
+   * @param records entries to be inserted
+   * @param ttls corresponding ttl needs to be provided on each entry. <i>Any ttl will be ignored
+   *     for values null, 0 or negative numbers</i>
+   */
+  Response batchInsertWithTTL(
+      String keyspaceName, String tableName, List<Map<String, Object>> records, List<Integer> ttls);
 }
