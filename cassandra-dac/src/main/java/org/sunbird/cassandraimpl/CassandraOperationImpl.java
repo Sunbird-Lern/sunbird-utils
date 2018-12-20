@@ -808,7 +808,7 @@ public class CassandraOperationImpl implements CassandraOperation {
       Map<String, String> ttlPropertiesWithAlias) {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
-        "CassandraOperationImpl: getRecordsByIdsWithSpecifiedColumnsAndTTL call started at "
+        "CassandraOperationImpl:getRecordsByIdsWithSpecifiedColumnsAndTTL: call started at "
             + startTime,
         LoggerEnum.INFO);
     Response response = new Response();
@@ -833,7 +833,7 @@ public class CassandraOperationImpl implements CassandraOperation {
                 property -> {
                   if (StringUtils.isBlank(property.getValue())) {
                     ProjectLogger.log(
-                        "CassandraOperationImpl:getRecordsByIdsWithSpecifiedColumnsAndTTL no alias for ttl key ="
+                        "CassandraOperationImpl:getRecordsByIdsWithSpecifiedColumnsAndTTL: Alias not provided for ttl key = "
                             + property.getKey(),
                         LoggerEnum.ERROR);
                     ProjectCommonException.throwServerErrorException(ResponseCode.SERVER_ERROR);
@@ -871,16 +871,18 @@ public class CassandraOperationImpl implements CassandraOperation {
       List<Integer> ttls) {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
-        "Cassandra Service batchInsertWithTTL method started at ==" + startTime, LoggerEnum.INFO);
+        "CassandraOperationImpl:batchInsertWithTTL: call started at "
+            + startTime,
+        LoggerEnum.INFO);
     if (CollectionUtils.isEmpty(records) || CollectionUtils.isEmpty(ttls)) {
       ProjectLogger.log(
-          "CassandraOperationImpl:batchInsertWithTTL records or ttl list is invalid",
+          "CassandraOperationImpl:batchInsertWithTTL: records or ttls is empty",
           LoggerEnum.ERROR);
       ProjectCommonException.throwServerErrorException(ResponseCode.SERVER_ERROR);
     }
     if (ttls.size() != records.size()) {
       ProjectLogger.log(
-          "CassandraOperationImpl:batchInsertWithTTL records and ttl list size mismatch",
+          "CassandraOperationImpl:batchInsertWithTTL: Mismatch of records and ttls list size",
           LoggerEnum.ERROR);
       ProjectCommonException.throwServerErrorException(ResponseCode.SERVER_ERROR);
     }
@@ -912,7 +914,7 @@ public class CassandraOperationImpl implements CassandraOperation {
         | QueryValidationException
         | NoHostAvailableException
         | IllegalStateException e) {
-      ProjectLogger.log("Cassandra Batch Insert Failed." + e.getMessage(), e);
+      ProjectLogger.log("CassandraOperationImpl:batchInsertWithTTL: Exception occurred with error message = " + e.getMessage(), e);
       throw new ProjectCommonException(
           ResponseCode.SERVER_ERROR.getErrorCode(),
           ResponseCode.SERVER_ERROR.getErrorMessage(),
@@ -921,4 +923,5 @@ public class CassandraOperationImpl implements CassandraOperation {
     logQueryElapseTime("batchInsertWithTTL", startTime);
     return response;
   }
+
 }
