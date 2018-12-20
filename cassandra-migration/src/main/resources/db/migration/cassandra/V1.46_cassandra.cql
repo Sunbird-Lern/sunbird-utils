@@ -2,7 +2,7 @@ INSERT INTO sunbird.system_settings(id, field, value) VALUES('userProfileConfig'
 
 CREATE TABLE IF NOT EXISTS sunbird.org_external_identity(provider text, externalId text, orgId text, PRIMARY KEY(provider, externalId));
 
-DROP KEYSPACE lock_db;
+DROP KEYSPACE IF EXISTS lock_db;
 
 CREATE KEYSPACE IF NOT EXISTS lock_db WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '1'};
 CREATE TABLE IF NOT EXISTS lock_db.lock ("resourceId" text, "resourceType" text,  "createdBy" text, "createdOn" timestamp, "creatorInfo" text, "deviceId" text, "expiresAt" timestamp, "lockId" uuid, "resourceInfo" text, PRIMARY KEY ("resourceId", "resourceType"))
