@@ -1,21 +1,5 @@
 package org.sunbird.content.textbook;
 
-import org.apache.commons.csv.CSVPrinter;
-import org.apache.commons.lang3.StringUtils;
-import org.sunbird.common.exception.ProjectCommonException;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.IntStream;
-
 import static java.io.File.separator;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.csv.CSVFormat.DEFAULT;
@@ -37,240 +21,270 @@ import static org.sunbird.content.textbook.TextBookTocFileConfig.*;
 import static org.sunbird.content.util.ContentCloudStore.upload;
 import static org.sunbird.content.util.TextBookTocUtil.stringify;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.IntStream;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.lang3.StringUtils;
+import org.sunbird.common.exception.ProjectCommonException;
+
 public class TextBookTocUploader {
 
-    public static final String TEXTBOOK_TOC_FOLDER = separator + "textbook" + separator + "toc";
+  public static final String TEXTBOOK_TOC_FOLDER = separator + "textbook" + separator + "toc";
 
-    private Set<String> viewableColumns;
+  private Set<String> viewableColumns;
 
-    private String textBookTocFileName;
-    private FileType fileType;
+  private String textBookTocFileName;
+  private FileType fileType;
 
-    private Map<String, Object> row;
+  private Map<String, Object> row;
 
-    private List<Map<String, Object>> rows = new ArrayList<>();
+  private List<Map<String, Object>> rows = new ArrayList<>();
 
-    public TextBookTocUploader(String textBookTocFileName, FileType fileType) {
-        this.textBookTocFileName = textBookTocFileName;
-        this.fileType = null == fileType ? CSV.getFileType() : fileType;
-        if (SUPPRESS_EMPTY_COLUMNS) {
-            viewableColumns = new HashSet<>();
-            viewableColumns.addAll(COMPULSORY_COLUMNS_KEYS);
-        }
+  public TextBookTocUploader(String textBookTocFileName, FileType fileType) {
+    this.textBookTocFileName = textBookTocFileName;
+    this.fileType = null == fileType ? CSV.getFileType() : fileType;
+    if (SUPPRESS_EMPTY_COLUMNS) {
+      viewableColumns = new HashSet<>();
+      viewableColumns.addAll(COMPULSORY_COLUMNS_KEYS);
     }
+  }
 
-    public String execute(Map<String, Object> content, String textbookId, String versionKey) {
+  public String execute(Map<String, Object> content, String textbookId, String versionKey) {
 
-        if (!HIERARCHY.filter(h -> 0 != h.size()).isPresent())
-            return "";
+    if (!HIERARCHY.filter(h -> 0 != h.size()).isPresent()) return "";
 
-        log("Creating CSV for TextBookToC | Id: " + textbookId + "Version Key: " + versionKey);
-        File file = null;
-        try {
-            file = new File(this.textBookTocFileName + fileType.getExtension());
-            deleteQuietly(file);
-            log("Creating file for CSV at Location: " + file.getAbsolutePath());
-            touch(file);
-            populateDataIntoFile(content, file);
-            log("Uploading " + fileType.getType() + " to Cloud Storage for TextBookToC | Id: " + textbookId +
-                    ", Version Key: " + versionKey);
-            return upload(TEXTBOOK_TOC_FOLDER, file);
-        } catch (IOException e) {
-            log("Error creating "+ fileType.getType() + " File at File Path | " + file.getAbsolutePath(),
-                    ERROR.name());
-            throw new ProjectCommonException(
-                    errorProcessingRequest.getErrorCode(),
-                    errorProcessingRequest.getErrorMessage(),
-                    SERVER_ERROR.getResponseCode());
-        } finally {
-            log("Deleting " + fileType.getType() + " for TextBookToC | Id: " + textbookId + ", " +
-                    "Version Key: " + versionKey);
-            try {
-                if (null != file && file.exists())
-                    file.delete();
-            } catch (SecurityException e) {
-                log("Error! While deleting the local csv file: " + file.getAbsolutePath(), ERROR.name());
-            } catch (Exception e) {
-                log("Error! Something Went wrong while deleting csv file: " + file.getAbsolutePath(),
-                        ERROR.name());
-            }
-        }
+    log("Creating CSV for TextBookToC | Id: " + textbookId + "Version Key: " + versionKey);
+    File file = null;
+    try {
+      file = new File(this.textBookTocFileName + fileType.getExtension());
+      deleteQuietly(file);
+      log("Creating file for CSV at Location: " + file.getAbsolutePath());
+      touch(file);
+      populateDataIntoFile(content, file);
+      log(
+          "Uploading "
+              + fileType.getType()
+              + " to Cloud Storage for TextBookToC | Id: "
+              + textbookId
+              + ", Version Key: "
+              + versionKey);
+      return upload(TEXTBOOK_TOC_FOLDER, file);
+    } catch (IOException e) {
+      log(
+          "Error creating " + fileType.getType() + " File at File Path | " + file.getAbsolutePath(),
+          ERROR.name());
+      throw new ProjectCommonException(
+          errorProcessingRequest.getErrorCode(),
+          errorProcessingRequest.getErrorMessage(),
+          SERVER_ERROR.getResponseCode());
+    } finally {
+      log(
+          "Deleting "
+              + fileType.getType()
+              + " for TextBookToC | Id: "
+              + textbookId
+              + ", "
+              + "Version Key: "
+              + versionKey);
+      try {
+        if (null != file && file.exists()) file.delete();
+      } catch (SecurityException e) {
+        log("Error! While deleting the local csv file: " + file.getAbsolutePath(), ERROR.name());
+      } catch (Exception e) {
+        log(
+            "Error! Something Went wrong while deleting csv file: " + file.getAbsolutePath(),
+            ERROR.name());
+      }
     }
+  }
 
-    private void populateDataIntoFile(Map<String, Object> content, File file) {
-        FileWriter out = null;
-        CSVPrinter printer = null;
-        try {
-            if (SUPPRESS_EMPTY_COLUMNS) {
-                log("Processing Hierarchy for TextBook | Id: " + content.get(IDENTIFIER));
-                processHierarchySuppressColumns(content);
+  private void populateDataIntoFile(Map<String, Object> content, File file) {
+    FileWriter out = null;
+    CSVPrinter printer = null;
+    try {
+      if (SUPPRESS_EMPTY_COLUMNS) {
+        log("Processing Hierarchy for TextBook | Id: " + content.get(IDENTIFIER));
+        processHierarchySuppressColumns(content);
 
-                String[] columns = IntStream.range(0, KEY_NAMES.size()).
-                        mapToObj(i -> {
-                            if (viewableColumns.contains(KEY_NAMES.get(i)))
-                                return COLUMN_NAMES.get(i);
-                            else
-                                return null;
-                        }).
-                        filter(Objects::nonNull).
-                        toArray(String[]::new);
+        String[] columns =
+            IntStream.range(0, KEY_NAMES.size())
+                .mapToObj(
+                    i -> {
+                      if (viewableColumns.contains(KEY_NAMES.get(i))) return COLUMN_NAMES.get(i);
+                      else return null;
+                    })
+                .filter(Objects::nonNull)
+                .toArray(String[]::new);
 
-                out = new FileWriter(file);
+        out = new FileWriter(file);
 
-                log("Writing Headers to Output Stream for Textbook | Id " + content.get(IDENTIFIER));
-                printer = new CSVPrinter(out, DEFAULT.withHeader(columns));
+        log("Writing Headers to Output Stream for Textbook | Id " + content.get(IDENTIFIER));
+        printer = new CSVPrinter(out, DEFAULT.withHeader(columns));
 
-                log("Writing Data to Output Stream for Textbook | Id " + content.get(IDENTIFIER));
-                for (Map<String, Object> row : rows) {
-                    Object[] tempRow =
-                            IntStream.range(0, KEY_NAMES.size()).
-                                mapToObj(i -> {
-                                    if (viewableColumns.contains(KEY_NAMES.get(i))) {
-                                        Object o = row.get(KEY_NAMES.get(i));
-                                        return null == o ? "" : o;
-                                    }
-                                    return null;
-                                }).
-                                filter(Objects::nonNull).
-                                toArray(Object[]::new);
-                    printer.printRecord(tempRow);
-                }
-
-                log("Flushing Data to File | Location:" + file.getAbsolutePath() + " | for TextBook  | Id: " +
-                                content.get(IDENTIFIER));
-            } else {
-                log("Processing Hierarchy for TextBook | Id: " + content.get(IDENTIFIER));
-                processHierarchy(content);
-
-                out = new FileWriter(file);
-
-                log("Writing Headers to Output Stream for Textbook | Id " + content.get(IDENTIFIER));
-                printer = new CSVPrinter(out, DEFAULT.withHeader(COLUMN_NAMES_ARRAY));
-
-                log("Writing Data to Output Stream for Textbook | Id " + content.get(IDENTIFIER));
-                for (Map<String, Object> row : rows) {
-                    Object[] tempRow = IntStream.range(0, KEY_NAMES.size()).
-                            mapToObj(i -> row.get(KEY_NAMES.get(i))).
-                            toArray(Object[]::new);
-                    printer.printRecord(tempRow);
-                }
-
-            }
-        } catch (IOException e) {
-            throw new ProjectCommonException(
-                    errorProcessingRequest.getErrorCode(),
-                    errorProcessingRequest.getErrorMessage(),
-                    SERVER_ERROR.getResponseCode());
-        } finally {
-            log("Flushing Data to File | Location:" + file.getAbsolutePath() + " | for TextBook  | Id: " +
-                            content.get(IDENTIFIER));
-            try {
-                if (nonNull(printer)) {
-                    printer.close();
-                }
-                if (nonNull(out)) {
-                    out.close();
-                }
-            } catch (IOException e) {
-                throw new ProjectCommonException(
-                        errorProcessingRequest.getErrorCode(),
-                        errorProcessingRequest.getErrorMessage(),
-                        SERVER_ERROR.getResponseCode());
-            }
+        log("Writing Data to Output Stream for Textbook | Id " + content.get(IDENTIFIER));
+        for (Map<String, Object> row : rows) {
+          Object[] tempRow =
+              IntStream.range(0, KEY_NAMES.size())
+                  .mapToObj(
+                      i -> {
+                        if (viewableColumns.contains(KEY_NAMES.get(i))) {
+                          Object o = row.get(KEY_NAMES.get(i));
+                          return null == o ? "" : o;
+                        }
+                        return null;
+                      })
+                  .filter(Objects::nonNull)
+                  .toArray(Object[]::new);
+          printer.printRecord(tempRow);
         }
 
-    }
+        log(
+            "Flushing Data to File | Location:"
+                + file.getAbsolutePath()
+                + " | for TextBook  | Id: "
+                + content.get(IDENTIFIER));
+      } else {
+        log("Processing Hierarchy for TextBook | Id: " + content.get(IDENTIFIER));
+        processHierarchy(content);
 
-    public void initializeRow() {
-        row = new HashMap<>();
-    }
+        out = new FileWriter(file);
 
-    private String updateRowWithData(Map<String, Object> content, String key, int hierarchyLevel) {
-        String k = (-1 == hierarchyLevel) ? key : HIERARCHY_KEYS.get(hierarchyLevel);
-        if (null == content || null == content.get(key)) {
-            row.remove(k);
-        } else {
-            row.put(k, stringify(content.get(key)));
+        log("Writing Headers to Output Stream for Textbook | Id " + content.get(IDENTIFIER));
+        printer = new CSVPrinter(out, DEFAULT.withHeader(COLUMN_NAMES_ARRAY));
+
+        log("Writing Data to Output Stream for Textbook | Id " + content.get(IDENTIFIER));
+        for (Map<String, Object> row : rows) {
+          Object[] tempRow =
+              IntStream.range(0, KEY_NAMES.size())
+                  .mapToObj(i -> row.get(KEY_NAMES.get(i)))
+                  .toArray(Object[]::new);
+          printer.printRecord(tempRow);
         }
-        return k;
-    }
-
-    private void processHierarchy(Map<String, Object> contentHierarchy) {
-        initializeRow();
-        int level = 0;
-        updateRowWithData (contentHierarchy, HIERARCHY_PROPERTY, level);
-        processHierarchyRecursive (contentHierarchy, level);
-    }
-
-    private void processHierarchyRecursive(Map<String, Object> contentHierarchy, int level) {
-        List<Map<String, Object>> children =
-                (List<Map<String, Object>>) contentHierarchy.get(CHILDREN);
-        if(null != children && !children.isEmpty()) {
-            if (LEVELS == level) return;
-            for (Map<String, Object> child : children) {
-                if (equalsIgnoreCase(CONTENT_PROPERTY_VISIBILITY_PARENT,
-                        (String) child.get(CONTENT_PROPERTY_VISIBILITY)) &&
-                        StringUtils.equals(CONTENT_MIME_TYPE_COLLECTION,
-                        (String) contentHierarchy.get(CONTENT_PROPERTY_MIME_TYPE))) {
-                    updateMetadata (child, ++level);
-                    appendRow();
-                    processHierarchyRecursive (child, level);
-                    updateMetadata (null, level--);
-                }
-            }
+      }
+    } catch (IOException e) {
+      throw new ProjectCommonException(
+          errorProcessingRequest.getErrorCode(),
+          errorProcessingRequest.getErrorMessage(),
+          SERVER_ERROR.getResponseCode());
+    } finally {
+      log(
+          "Flushing Data to File | Location:"
+              + file.getAbsolutePath()
+              + " | for TextBook  | Id: "
+              + content.get(IDENTIFIER));
+      try {
+        if (nonNull(printer)) {
+          printer.close();
         }
-    }
-
-    private void updateMetadata(Map<String, Object> content, int level) {
-        updateRowWithData (content, HIERARCHY_PROPERTY, level);
-        for (String e : ROW_METADATA)
-            updateRowWithData (content, e, -1);
-    }
-
-    private void appendRow() {
-        Map<String, Object> tempRow = new HashMap<>();
-        tempRow.putAll(row);
-        rows.add(tempRow);
-    }
-
-    private void processHierarchySuppressColumns(Map<String, Object> contentHierarchy) {
-        initializeRow();
-        int level = 0;
-        updateRowWithDataSuppressColumns (contentHierarchy, HIERARCHY_PROPERTY, level);
-        processHierarchyRecursiveSuppressColumns (contentHierarchy, level);
-    }
-
-    private void processHierarchyRecursiveSuppressColumns(Map<String, Object> contentHierarchy, int level) {
-        List<Map<String, Object>> children =
-                (List<Map<String, Object>>) contentHierarchy.get(CHILDREN);
-        if(null != children && !children.isEmpty()) {
-            if (LEVELS == level) return;
-            for (Map<String, Object> child : children) {
-                if (equalsIgnoreCase(CONTENT_PROPERTY_VISIBILITY_PARENT,
-                        (String) child.get(CONTENT_PROPERTY_VISIBILITY)) &&
-                        StringUtils.equals(CONTENT_MIME_TYPE_COLLECTION,
-                                (String) contentHierarchy.get(CONTENT_PROPERTY_MIME_TYPE))) {
-                    updateMetadataSuppressColumns (child, ++level);
-                    appendRow();
-                    processHierarchyRecursiveSuppressColumns (child, level);
-                    updateMetadataSuppressColumns (null, level--);
-                }
-            }
+        if (nonNull(out)) {
+          out.close();
         }
+      } catch (IOException e) {
+        throw new ProjectCommonException(
+            errorProcessingRequest.getErrorCode(),
+            errorProcessingRequest.getErrorMessage(),
+            SERVER_ERROR.getResponseCode());
+      }
     }
+  }
 
-    private void updateRowWithDataSuppressColumns(Map<String, Object> content, String key, int hierarchyLevel) {
-        String k = updateRowWithData(content, key, hierarchyLevel);
-        if (row.containsKey(k)) {
-            viewableColumns.add(k);
+  public void initializeRow() {
+    row = new HashMap<>();
+  }
+
+  private String updateRowWithData(Map<String, Object> content, String key, int hierarchyLevel) {
+    String k = (-1 == hierarchyLevel) ? key : HIERARCHY_KEYS.get(hierarchyLevel);
+    if (null == content || null == content.get(key)) {
+      row.remove(k);
+    } else {
+      row.put(k, stringify(content.get(key)));
+    }
+    return k;
+  }
+
+  private void processHierarchy(Map<String, Object> contentHierarchy) {
+    initializeRow();
+    int level = 0;
+    updateRowWithData(contentHierarchy, HIERARCHY_PROPERTY, level);
+    processHierarchyRecursive(contentHierarchy, level);
+  }
+
+  private void processHierarchyRecursive(Map<String, Object> contentHierarchy, int level) {
+    List<Map<String, Object>> children = (List<Map<String, Object>>) contentHierarchy.get(CHILDREN);
+    if (null != children && !children.isEmpty()) {
+      if (LEVELS == level) return;
+      for (Map<String, Object> child : children) {
+        if (equalsIgnoreCase(
+                CONTENT_PROPERTY_VISIBILITY_PARENT, (String) child.get(CONTENT_PROPERTY_VISIBILITY))
+            && StringUtils.equals(
+                CONTENT_MIME_TYPE_COLLECTION,
+                (String) contentHierarchy.get(CONTENT_PROPERTY_MIME_TYPE))) {
+          updateMetadata(child, ++level);
+          appendRow();
+          processHierarchyRecursive(child, level);
+          updateMetadata(null, level--);
         }
+      }
     }
+  }
 
-    private void updateMetadataSuppressColumns(Map<String, Object> content, int level) {
-        updateRowWithDataSuppressColumns(content, HIERARCHY_PROPERTY, level);
-        for (String e : ROW_METADATA)
-            updateRowWithDataSuppressColumns(content, e, -1);
+  private void updateMetadata(Map<String, Object> content, int level) {
+    updateRowWithData(content, HIERARCHY_PROPERTY, level);
+    for (String e : ROW_METADATA) updateRowWithData(content, e, -1);
+  }
+
+  private void appendRow() {
+    Map<String, Object> tempRow = new HashMap<>();
+    tempRow.putAll(row);
+    rows.add(tempRow);
+  }
+
+  private void processHierarchySuppressColumns(Map<String, Object> contentHierarchy) {
+    initializeRow();
+    int level = 0;
+    updateRowWithDataSuppressColumns(contentHierarchy, HIERARCHY_PROPERTY, level);
+    processHierarchyRecursiveSuppressColumns(contentHierarchy, level);
+  }
+
+  private void processHierarchyRecursiveSuppressColumns(
+      Map<String, Object> contentHierarchy, int level) {
+    List<Map<String, Object>> children = (List<Map<String, Object>>) contentHierarchy.get(CHILDREN);
+    if (null != children && !children.isEmpty()) {
+      if (LEVELS == level) return;
+      for (Map<String, Object> child : children) {
+        if (equalsIgnoreCase(
+                CONTENT_PROPERTY_VISIBILITY_PARENT, (String) child.get(CONTENT_PROPERTY_VISIBILITY))
+            && StringUtils.equals(
+                CONTENT_MIME_TYPE_COLLECTION,
+                (String) contentHierarchy.get(CONTENT_PROPERTY_MIME_TYPE))) {
+          updateMetadataSuppressColumns(child, ++level);
+          appendRow();
+          processHierarchyRecursiveSuppressColumns(child, level);
+          updateMetadataSuppressColumns(null, level--);
+        }
+      }
     }
+  }
 
+  private void updateRowWithDataSuppressColumns(
+      Map<String, Object> content, String key, int hierarchyLevel) {
+    String k = updateRowWithData(content, key, hierarchyLevel);
+    if (row.containsKey(k)) {
+      viewableColumns.add(k);
+    }
+  }
+
+  private void updateMetadataSuppressColumns(Map<String, Object> content, int level) {
+    updateRowWithDataSuppressColumns(content, HIERARCHY_PROPERTY, level);
+    for (String e : ROW_METADATA) updateRowWithDataSuppressColumns(content, e, -1);
+  }
 }
-

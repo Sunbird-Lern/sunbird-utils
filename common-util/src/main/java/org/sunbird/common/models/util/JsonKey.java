@@ -370,6 +370,7 @@ public final class JsonKey {
   public static final String ORDER = "order";
   public static final String ORG_CODE = "orgCode";
   public static final String ORG_CODE_HEADER = "X-Org-code";
+  public static final String ORG_EXT_ID_DB = "org_external_identity";
   public static final String ORG_DB = "org_db";
   public static final String ORG_ID = "orgId";
   public static final String ORG_ID_ONE = "orgIdOne";
