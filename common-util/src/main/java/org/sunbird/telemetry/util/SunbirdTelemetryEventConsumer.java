@@ -39,9 +39,11 @@ public class SunbirdTelemetryEventConsumer {
     ProjectLogger.log("SunbirdTelemetryEventConsumer:consume called.", LoggerEnum.INFO.name());
     if (request != null) {
       try {
+    	Map telemetryReq =  getTelemetryRequest(request);
+    	ProjectLogger.log("SunbirdTelemetryEventConsumer:consume telemetry request:" + telemetryReq, LoggerEnum.INFO.name());
         String response =
             HttpUtil.sendPostRequest(
-                getTelemetryUrl(), new Gson().toJson(getTelemetryRequest(request)), getHeaders());
+                getTelemetryUrl(), new Gson().toJson(telemetryReq), getHeaders());
         ProjectLogger.log(
             "SunbirdTelemetryEventConsumer:consume: Request process status = " + response,
             LoggerEnum.INFO.name());
