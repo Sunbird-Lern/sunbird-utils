@@ -1,12 +1,24 @@
 package org.sunbird.content.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
+import org.sunbird.common.exception.ProjectCommonException;
+import org.sunbird.common.models.response.Response;
+import org.sunbird.common.responsecode.ResponseCode;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import static java.util.Objects.isNull;
 import static org.apache.http.HttpHeaders.AUTHORIZATION;
+import static org.sunbird.common.exception.ProjectCommonException.throwServerErrorException;
 import static org.sunbird.common.models.util.HttpUtil.sendGetRequest;
 import static org.sunbird.common.models.util.JsonKey.BEARER;
 import static org.sunbird.common.models.util.JsonKey.EKSTEP_BASE_URL;
-import static org.sunbird.common.models.util.JsonKey.OK;
-import static org.sunbird.common.models.util.JsonKey.RESPONSE_CODE;
 import static org.sunbird.common.models.util.JsonKey.SUNBIRD_AUTHORIZATION;
 import static org.sunbird.common.models.util.JsonKey.SUNBIRD_CONTENT_GET_HIERARCHY_API;
 import static org.sunbird.common.models.util.JsonKey.SUNBIRD_CONTENT_READ_API;
@@ -16,15 +28,6 @@ import static org.sunbird.common.models.util.ProjectLogger.log;
 import static org.sunbird.common.models.util.ProjectUtil.getConfigValue;
 import static org.sunbird.common.responsecode.ResponseCode.SERVER_ERROR;
 import static org.sunbird.common.responsecode.ResponseCode.errorProcessingRequest;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import org.apache.commons.lang3.StringUtils;
-import org.sunbird.common.exception.ProjectCommonException;
 
 public class TextBookTocUtil {
 
@@ -53,26 +56,24 @@ public class TextBookTocUtil {
     }
   }
 
-  public static Map<String, Object> readHierarchy(String contentId) {
-    log("ContentStoreUtil::readHierarchy: contentId = " + contentId, INFO);
+  public static Response readHierarchy(String contentId) {
+    log("TextBookTocUtil::readHierarchy: contentId = " + contentId, INFO.name());
     Map<String, String> requestParams = new HashMap<>();
     requestParams.put("mode", "edit");
     return handleReadRequest(contentId, SUNBIRD_CONTENT_GET_HIERARCHY_API, requestParams);
   }
 
-  public static Map<String, Object> readContent(String contentId) {
-    log("ContentStoreUtil::readContent: contentId = " + contentId, INFO);
+  public static Response readContent(String contentId) {
+    log("TextBookTocUtil::readContent: contentId = " + contentId, INFO.name());
     return handleReadRequest(contentId, SUNBIRD_CONTENT_READ_API, null);
   }
 
-  private static Map<String, Object> handleReadRequest(
-      String id, String urlPath, Map<String, String> requestParams) {
+  private static Response handleReadRequest(String id, String urlPath, Map<String, String> requestParams) {
     Map<String, String> headers = getHeaders();
     ObjectMapper mapper = new ObjectMapper();
-    Map<String, Object> resultMap = new HashMap<>();
 
-    log("ContentStoreUtil:handleReadRequest: id = " + id, INFO);
-
+    log("TextBookTocUtil:handleReadRequest: id = " + id, INFO.name());
+    Response response = null;
     try {
       String requestUrl =
           getConfigValue(EKSTEP_BASE_URL)
@@ -81,27 +82,34 @@ public class TextBookTocUtil {
               + id
               + requestParams(requestParams);
 
-      log("Sending GET Request | Request URL: " + requestUrl, INFO);
+      log("TextBookTocUtil:handleReadRequest: Sending GET Request | TextBook Id: " + id + ", Request URL: "
+              + requestUrl, INFO.name());
 
-      String response = sendGetRequest(requestUrl, headers);
-
-      resultMap = mapper.readValue(response, Map.class);
-      if (!((String) resultMap.get(RESPONSE_CODE)).equalsIgnoreCase(OK)) {
-        log("ContentStoreUtil:handleReadRequest: Response code is not ok.", ERROR);
-        return null;
+      String httpResponse = sendGetRequest(requestUrl, headers);
+      if (StringUtils.isBlank(httpResponse)) {
+        log("TextBookTocUtil:handleReadRequest: Received Empty Response | TextBook Id: " + id + ", Request URL: "
+                + requestUrl, ERROR.name());
+        throwServerErrorException(ResponseCode.SERVER_ERROR, errorProcessingRequest.getErrorMessage());
       }
-    } catch (Exception e) {
-      log(
-          "ContentStoreUtil:handleReadRequest: Exception occurred with error message = "
-              + e.getMessage(),
-          e);
+      response = mapper.readValue(httpResponse, Response.class);
+      if (!ResponseCode.OK.equals(response.getResponseCode())) {
+        log("TextBookTocUtil:handleReadRequest: Response code is not ok | TextBook Id: " + id + "| Request URL: "
+                + requestUrl, ERROR.name());
+        throw new ProjectCommonException(
+                response.getParams().getErr(),
+                response.getParams().getErrmsg(),
+                response.getResponseCode().getResponseCode());
+      }
+    } catch (IOException e) {
+      log("TextBookTocUtil:handleReadRequest: Exception occurred with error message = " + e.getMessage(), e);
+      throwServerErrorException(ResponseCode.SERVER_ERROR);
     }
-    return resultMap;
+    return response;
   }
 
   public static <T> T getObjectFrom(String s, Class<T> clazz) {
     if (StringUtils.isBlank(s)) {
-      log("Invalid String cannot be converted to Map.");
+      log("Invalid String cannot be converted to Map.", ERROR.name());
       throw new ProjectCommonException(
           errorProcessingRequest.getErrorCode(),
           errorProcessingRequest.getErrorMessage(),
@@ -111,11 +119,23 @@ public class TextBookTocUtil {
     try {
       return mapper.readValue(s, clazz);
     } catch (IOException e) {
-      log("Error Mapping File input Mapping Properties.", ERROR);
+      log("Error Mapping File input Mapping Properties.", ERROR.name());
       throw new ProjectCommonException(
           errorProcessingRequest.getErrorCode(),
           errorProcessingRequest.getErrorMessage(),
           SERVER_ERROR.getResponseCode());
+    }
+  }
+
+  public static <T> String serialize(T o) {
+    try {
+      return mapper.writeValueAsString(o);
+    } catch (JsonProcessingException e) {
+      log("Error Serializing Object To String", ERROR.name());
+      throw new ProjectCommonException(
+              errorProcessingRequest.getErrorCode(),
+              errorProcessingRequest.getErrorMessage(),
+              SERVER_ERROR.getResponseCode());
     }
   }
 
