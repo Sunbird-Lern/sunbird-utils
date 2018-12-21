@@ -126,9 +126,13 @@ public class TextBookTocUtil {
       if (!l.isEmpty() && l.get(0) instanceof String) {
         return String.join(",", l);
       }
-      return o;
-    } else {
-      return o;
     }
+    if (o instanceof String[]) {
+      String[] l = (String[]) o;
+      if (l.length > 0) {
+        return String.join(",", l);
+      }
+    }
+    return o;
   }
 }

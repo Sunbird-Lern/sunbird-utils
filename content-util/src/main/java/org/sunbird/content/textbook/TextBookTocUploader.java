@@ -221,7 +221,7 @@ public class TextBookTocUploader {
   private void processHierarchyRecursive(Map<String, Object> contentHierarchy, int level) {
     List<Map<String, Object>> children = (List<Map<String, Object>>) contentHierarchy.get(CHILDREN);
     if (null != children && !children.isEmpty()) {
-      if (LEVELS == level) return;
+      if (LEVELS - 1 == level) return;
       for (Map<String, Object> child : children) {
         if (equalsIgnoreCase(
                 CONTENT_PROPERTY_VISIBILITY_PARENT, (String) child.get(CONTENT_PROPERTY_VISIBILITY))
@@ -259,7 +259,7 @@ public class TextBookTocUploader {
       Map<String, Object> contentHierarchy, int level) {
     List<Map<String, Object>> children = (List<Map<String, Object>>) contentHierarchy.get(CHILDREN);
     if (null != children && !children.isEmpty()) {
-      if (LEVELS == level) return;
+      if (LEVELS - 1 == level) return;
       for (Map<String, Object> child : children) {
         if (equalsIgnoreCase(
                 CONTENT_PROPERTY_VISIBILITY_PARENT, (String) child.get(CONTENT_PROPERTY_VISIBILITY))
@@ -276,7 +276,7 @@ public class TextBookTocUploader {
   }
 
   private void updateRowWithDataSuppressColumns(
-      Map<String, Object> content, String key, int hierarchyLevel) {
+    Map<String, Object> content, String key, int hierarchyLevel) {
     String k = updateRowWithData(content, key, hierarchyLevel);
     if (row.containsKey(k)) {
       viewableColumns.add(k);
