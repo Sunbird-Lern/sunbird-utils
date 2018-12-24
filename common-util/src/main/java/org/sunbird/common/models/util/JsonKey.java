@@ -821,6 +821,7 @@ public final class JsonKey {
   public static final String RATE_LIMIT = "rate_limit";
   public static final String RATE_LIMIT_UNIT = "unit";
   public static final String RATE = "rate";
+  public static final String INSTALLATION_NAME = "installationName";
 
   private JsonKey() {}
 }
