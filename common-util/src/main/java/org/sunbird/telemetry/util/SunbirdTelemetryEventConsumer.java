@@ -40,7 +40,7 @@ public class SunbirdTelemetryEventConsumer {
     if (request != null) {
       try {
     	String telemetryReq =  new Gson().toJson(getTelemetryRequest(request));
-    	ProjectLogger.log("SunbirdTelemetryEventConsumer:consume telemetry request:" + telemetryReq, LoggerEnum.INFO.name());
+    	ProjectLogger.log("SunbirdTelemetryEventConsumer:consume telemetry request:" + telemetryReq, LoggerEnum.DEBUG.name());
         String response =
             HttpUtil.sendPostRequest(
                 getTelemetryUrl(),telemetryReq , getHeaders());
