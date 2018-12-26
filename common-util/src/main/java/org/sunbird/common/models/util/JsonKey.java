@@ -785,6 +785,7 @@ public final class JsonKey {
   public static final String METADATA = "metadata";
   public static final String HIERARCHY = "hierarchy";
   public static final String FILE_DATA = "fileData";
+  public static final String FRAMEWORK_METADATA = "frameworkCategories";
   public static final String TEXTBOOK_TOC_ALLOWED_MIMETYPE =
       "application/vnd.ekstep.content-collection";
   public static final String TEXTBOOK_TOC_ALLOWED_CONTNET_TYPES =
