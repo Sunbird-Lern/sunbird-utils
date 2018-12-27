@@ -785,6 +785,7 @@ public final class JsonKey {
   public static final String METADATA = "metadata";
   public static final String HIERARCHY = "hierarchy";
   public static final String FILE_DATA = "fileData";
+  public static final String FRAMEWORK_METADATA = "frameworkCategories";
   public static final String TEXTBOOK_TOC_ALLOWED_MIMETYPE =
       "application/vnd.ekstep.content-collection";
   public static final String TEXTBOOK_TOC_ALLOWED_CONTNET_TYPES =
@@ -802,6 +803,7 @@ public final class JsonKey {
   public static final String KEYWORDS = "keywords";
   public static final String UNIT = "Unit";
   public static final String UPDATE_HIERARCHY_API = "sunbird_update_hierarchy_api";
+  public static final String TB_MESSAGES = "messages";
   public static final String TNC_ACCEPTED_ON = "tncAcceptedOn";
   public static final String TNC_ACCEPTED_VERSION = "tncAcceptedVersion";
   public static final String TNC_LATEST_VERSION_URL = "tncLatestVersionUrl";
