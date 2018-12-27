@@ -5,21 +5,21 @@ import static java.util.Arrays.asList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileType {
+public class FileExtension {
 
   private String type;
   private List<String> seperators;
 
-  public FileType(String type, List<String> seperators) {
-    this.type = type;
+  public FileExtension(String extension, List<String> seperators) {
+    this.type = extension;
     this.seperators = seperators;
   }
 
-  public String getType() {
+  public String getExtension() {
     return type;
   }
 
-  public String getExtension() {
+  public String getDotExtension() {
     return "." + type;
   }
 
@@ -31,19 +31,19 @@ public class FileType {
     return seperators.get(i);
   }
 
-  public enum Type {
+  public enum Extension {
     CSV("csv", new String[] {","});
 
-    private String type;
+    private String extension;
     private String[] seperators;
 
-    Type(String type, String[] seperators) {
-      this.type = type;
+    Extension(String extension, String[] seperators) {
+      this.extension = extension;
       this.seperators = seperators;
     }
 
-    public String getExtension() {
-      return "." + type;
+    public String getDotExtension() {
+      return "." + extension;
     }
 
     public String getSeperator() {
@@ -54,8 +54,7 @@ public class FileType {
       return seperators[i];
     }
 
-    public FileType getFileType() {
-      return new FileType(type, new ArrayList<>(asList(seperators)));
-    }
+    public FileExtension getFileExtension() { return new FileExtension(extension, new ArrayList<>(asList(seperators))); }
   }
+
 }

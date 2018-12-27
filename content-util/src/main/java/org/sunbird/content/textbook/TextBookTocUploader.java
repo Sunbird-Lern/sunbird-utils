@@ -1,25 +1,8 @@
 package org.sunbird.content.textbook;
 
-import static java.io.File.separator;
-import static java.util.Objects.nonNull;
-import static org.apache.commons.csv.CSVFormat.DEFAULT;
-import static org.apache.commons.io.FileUtils.deleteQuietly;
-import static org.apache.commons.io.FileUtils.touch;
-import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
-import static org.sunbird.common.models.util.JsonKey.CHILDREN;
-import static org.sunbird.common.models.util.JsonKey.CONTENT_MIME_TYPE_COLLECTION;
-import static org.sunbird.common.models.util.JsonKey.CONTENT_PROPERTY_MIME_TYPE;
-import static org.sunbird.common.models.util.JsonKey.CONTENT_PROPERTY_VISIBILITY;
-import static org.sunbird.common.models.util.JsonKey.CONTENT_PROPERTY_VISIBILITY_PARENT;
-import static org.sunbird.common.models.util.JsonKey.IDENTIFIER;
-import static org.sunbird.common.models.util.LoggerEnum.ERROR;
-import static org.sunbird.common.models.util.ProjectLogger.log;
-import static org.sunbird.common.responsecode.ResponseCode.SERVER_ERROR;
-import static org.sunbird.common.responsecode.ResponseCode.errorProcessingRequest;
-import static org.sunbird.content.textbook.FileType.Type.CSV;
-import static org.sunbird.content.textbook.TextBookTocFileConfig.*;
-import static org.sunbird.content.util.ContentCloudStore.upload;
-import static org.sunbird.content.util.TextBookTocUtil.stringify;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.lang3.StringUtils;
+import org.sunbird.common.exception.ProjectCommonException;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -32,9 +15,29 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.IntStream;
-import org.apache.commons.csv.CSVPrinter;
-import org.apache.commons.lang3.StringUtils;
-import org.sunbird.common.exception.ProjectCommonException;
+
+import static java.io.File.separator;
+import static java.util.Objects.nonNull;
+import static org.apache.commons.csv.CSVFormat.DEFAULT;
+import static org.apache.commons.io.FileUtils.deleteQuietly;
+import static org.apache.commons.io.FileUtils.touch;
+import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
+import static org.sunbird.common.models.util.JsonKey.CHILDREN;
+import static org.sunbird.common.models.util.JsonKey.CONTENT_MIME_TYPE_COLLECTION;
+import static org.sunbird.common.models.util.JsonKey.CONTENT_PROPERTY_MIME_TYPE;
+import static org.sunbird.common.models.util.JsonKey.CONTENT_PROPERTY_VISIBILITY;
+import static org.sunbird.common.models.util.JsonKey.CONTENT_PROPERTY_VISIBILITY_PARENT;
+import static org.sunbird.common.models.util.JsonKey.IDENTIFIER;
+import static org.sunbird.common.models.util.JsonKey.VERSION_KEY;
+import static org.sunbird.common.models.util.LoggerEnum.ERROR;
+import static org.sunbird.common.models.util.LoggerEnum.INFO;
+import static org.sunbird.common.models.util.ProjectLogger.log;
+import static org.sunbird.common.responsecode.ResponseCode.SERVER_ERROR;
+import static org.sunbird.common.responsecode.ResponseCode.errorProcessingRequest;
+import static org.sunbird.content.textbook.FileExtension.Extension.CSV;
+import static org.sunbird.content.textbook.TextBookTocFileConfig.*;
+import static org.sunbird.content.util.ContentCloudStore.upload;
+import static org.sunbird.content.util.TextBookTocUtil.stringify;
 
 public class TextBookTocUploader {
 
@@ -43,15 +46,15 @@ public class TextBookTocUploader {
   private Set<String> viewableColumns;
 
   private String textBookTocFileName;
-  private FileType fileType;
+  private FileExtension fileExtension;
 
   private Map<String, Object> row;
 
   private List<Map<String, Object>> rows = new ArrayList<>();
 
-  public TextBookTocUploader(String textBookTocFileName, FileType fileType) {
+  public TextBookTocUploader(String textBookTocFileName, FileExtension fileExtension) {
     this.textBookTocFileName = textBookTocFileName;
-    this.fileType = null == fileType ? CSV.getFileType() : fileType;
+    this.fileExtension = null == fileExtension ? CSV.getFileExtension() : fileExtension;
     if (SUPPRESS_EMPTY_COLUMNS) {
       viewableColumns = new HashSet<>();
       viewableColumns.addAll(COMPULSORY_COLUMNS_KEYS);
@@ -62,25 +65,25 @@ public class TextBookTocUploader {
 
     if (!HIERARCHY.filter(h -> 0 != h.size()).isPresent()) return "";
 
-    log("Creating CSV for TextBookToC | Id: " + textbookId + "Version Key: " + versionKey);
+    log("Creating CSV for TextBookToC | Id: " + textbookId + "Version Key: " + versionKey, INFO.name());
     File file = null;
     try {
-      file = new File(this.textBookTocFileName + fileType.getExtension());
+      file = new File(this.textBookTocFileName + fileExtension.getDotExtension());
       deleteQuietly(file);
-      log("Creating file for CSV at Location: " + file.getAbsolutePath());
+      log("Creating file for CSV at Location: " + file.getAbsolutePath(), INFO.name());
       touch(file);
       populateDataIntoFile(content, file);
       log(
           "Uploading "
-              + fileType.getType()
+              + fileExtension.getExtension()
               + " to Cloud Storage for TextBookToC | Id: "
               + textbookId
               + ", Version Key: "
-              + versionKey);
+              + versionKey, INFO.name());
       return upload(TEXTBOOK_TOC_FOLDER, file);
     } catch (IOException e) {
       log(
-          "Error creating " + fileType.getType() + " File at File Path | " + file.getAbsolutePath(),
+          "Error creating " + fileExtension.getExtension() + " File at File Path | " + file.getAbsolutePath(),
           ERROR.name());
       throw new ProjectCommonException(
           errorProcessingRequest.getErrorCode(),
@@ -89,7 +92,7 @@ public class TextBookTocUploader {
     } finally {
       log(
           "Deleting "
-              + fileType.getType()
+              + fileExtension.getExtension()
               + " for TextBookToC | Id: "
               + textbookId
               + ", "
@@ -100,8 +103,7 @@ public class TextBookTocUploader {
       } catch (SecurityException e) {
         log("Error! While deleting the local csv file: " + file.getAbsolutePath(), ERROR.name());
       } catch (Exception e) {
-        log(
-            "Error! Something Went wrong while deleting csv file: " + file.getAbsolutePath(),
+        log("Error! Something Went wrong while deleting csv file: " + file.getAbsolutePath(),
             ERROR.name());
       }
     }
@@ -112,7 +114,7 @@ public class TextBookTocUploader {
     CSVPrinter printer = null;
     try {
       if (SUPPRESS_EMPTY_COLUMNS) {
-        log("Processing Hierarchy for TextBook | Id: " + content.get(IDENTIFIER));
+        log("Processing Hierarchy for TextBook | Id: " + content.get(IDENTIFIER), INFO.name());
         processHierarchySuppressColumns(content);
 
         String[] columns =
@@ -127,10 +129,10 @@ public class TextBookTocUploader {
 
         out = new FileWriter(file);
 
-        log("Writing Headers to Output Stream for Textbook | Id " + content.get(IDENTIFIER));
+        log("Writing Headers to Output Stream for Textbook | Id " + content.get(IDENTIFIER), INFO.name());
         printer = new CSVPrinter(out, DEFAULT.withHeader(columns));
 
-        log("Writing Data to Output Stream for Textbook | Id " + content.get(IDENTIFIER));
+        log("Writing Data to Output Stream for Textbook | Id " + content.get(IDENTIFIER), INFO.name());
         for (Map<String, Object> row : rows) {
           Object[] tempRow =
               IntStream.range(0, KEY_NAMES.size())
@@ -153,15 +155,15 @@ public class TextBookTocUploader {
                 + " | for TextBook  | Id: "
                 + content.get(IDENTIFIER));
       } else {
-        log("Processing Hierarchy for TextBook | Id: " + content.get(IDENTIFIER));
+        log("Processing Hierarchy for TextBook | Id: " + content.get(IDENTIFIER), INFO.name());
         processHierarchy(content);
 
         out = new FileWriter(file);
 
-        log("Writing Headers to Output Stream for Textbook | Id " + content.get(IDENTIFIER));
+        log("Writing Headers to Output Stream for Textbook | Id " + content.get(IDENTIFIER), INFO.name());
         printer = new CSVPrinter(out, DEFAULT.withHeader(COLUMN_NAMES_ARRAY));
 
-        log("Writing Data to Output Stream for Textbook | Id " + content.get(IDENTIFIER));
+        log("Writing Data to Output Stream for Textbook | Id " + content.get(IDENTIFIER), INFO.name());
         for (Map<String, Object> row : rows) {
           Object[] tempRow =
               IntStream.range(0, KEY_NAMES.size())
@@ -171,6 +173,8 @@ public class TextBookTocUploader {
         }
       }
     } catch (IOException e) {
+      log("Error writing data to file | TextBook Id:" + content.get(IDENTIFIER) + "Version Key: " +
+              content.get(VERSION_KEY), ERROR.name());
       throw new ProjectCommonException(
           errorProcessingRequest.getErrorCode(),
           errorProcessingRequest.getErrorMessage(),
@@ -180,7 +184,7 @@ public class TextBookTocUploader {
           "Flushing Data to File | Location:"
               + file.getAbsolutePath()
               + " | for TextBook  | Id: "
-              + content.get(IDENTIFIER));
+              + content.get(IDENTIFIER), INFO.name());
       try {
         if (nonNull(printer)) {
           printer.close();
@@ -189,6 +193,8 @@ public class TextBookTocUploader {
           out.close();
         }
       } catch (IOException e) {
+        log("Error writing data to file | TextBook Id:" + content.get(IDENTIFIER) + "Version Key: " +
+                content.get(VERSION_KEY), ERROR.name());
         throw new ProjectCommonException(
             errorProcessingRequest.getErrorCode(),
             errorProcessingRequest.getErrorMessage(),
@@ -256,7 +262,7 @@ public class TextBookTocUploader {
   }
 
   private void processHierarchyRecursiveSuppressColumns(
-      Map<String, Object> contentHierarchy, int level) {
+    Map<String, Object> contentHierarchy, int level) {
     List<Map<String, Object>> children = (List<Map<String, Object>>) contentHierarchy.get(CHILDREN);
     if (null != children && !children.isEmpty()) {
       if (LEVELS - 1 == level) return;
