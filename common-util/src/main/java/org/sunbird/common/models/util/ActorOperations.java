@@ -151,6 +151,8 @@ public enum ActorOperations {
   COURSE_BATCH_NOTIFICATION("courseBatchNotification"),
   USER_TNC_ACCEPT("userTnCAccept"),
   GENERATE_OTP("generateOTP"),
+  BACKGROUND_ENCRYPTION("backgroundEncryption"),
+  BACKGROUND_DECRYPTION("backgroundDecryption"),
   VERIFY_OTP("verifyOTP"),
   SEND_OTP("sendOTP");
 
