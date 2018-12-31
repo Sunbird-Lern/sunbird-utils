@@ -48,10 +48,11 @@ public class CloudStorageUtil {
         container,
         filePath,
         objectKey,
-        Some.apply(false),
-        Some.apply(false),
-        Some.empty(),
-        Some.apply(STORAGE_SERVICE_API_RETRY_COUNT));
+        Option.apply(false),
+        Option.apply(false),
+        Option.empty(),
+        Option.apply(STORAGE_SERVICE_API_RETRY_COUNT),
+        1);
   }
 
   public static String getSignedUrl(
@@ -78,9 +79,8 @@ public class CloudStorageUtil {
   }
 
   public static String getUri(
-          CloudStorageType storageType, String container, String prefix, boolean isDirectory) {
+      CloudStorageType storageType, String container, String prefix, boolean isDirectory) {
     IStorageService storageService = getStorageService(storageType);
-      return storageService.getUri(container, prefix, Option.apply(isDirectory));
+    return storageService.getUri(container, prefix, Option.apply(isDirectory));
   }
-
 }

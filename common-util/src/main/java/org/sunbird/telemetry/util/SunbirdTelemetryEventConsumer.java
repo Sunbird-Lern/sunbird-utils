@@ -39,11 +39,11 @@ public class SunbirdTelemetryEventConsumer {
     ProjectLogger.log("SunbirdTelemetryEventConsumer:consume called.", LoggerEnum.INFO.name());
     if (request != null) {
       try {
-    	String telemetryReq =  new Gson().toJson(getTelemetryRequest(request));
-    	ProjectLogger.log("SunbirdTelemetryEventConsumer:consume telemetry request:" + telemetryReq, LoggerEnum.DEBUG.name());
-        String response =
-            HttpUtil.sendPostRequest(
-                getTelemetryUrl(),telemetryReq , getHeaders());
+        String telemetryReq = new Gson().toJson(getTelemetryRequest(request));
+        ProjectLogger.log(
+            "SunbirdTelemetryEventConsumer:consume telemetry request:" + telemetryReq,
+            LoggerEnum.DEBUG.name());
+        String response = HttpUtil.sendPostRequest(getTelemetryUrl(), telemetryReq, getHeaders());
         ProjectLogger.log(
             "SunbirdTelemetryEventConsumer:consume: Request process status = " + response,
             LoggerEnum.INFO.name());
@@ -90,7 +90,7 @@ public class SunbirdTelemetryEventConsumer {
    * @return Telemetry request structure.
    */
   @SuppressWarnings({"unchecked", "rawtypes"})
-  public Map<String, Object> getTelemetryRequest(Request request) {
+  public TelemetryV3Request getTelemetryRequest(Request request) {
     TelemetryV3Request telemetryV3Request = new TelemetryV3Request();
     if (request.getRequest().get(JsonKey.ETS) != null
         && request.getRequest().get(JsonKey.ETS) instanceof BigInteger) {
@@ -106,8 +106,6 @@ public class SunbirdTelemetryEventConsumer {
           "SunbirdTelemetryEventConsumer:getTelemetryRequest: Events count = " + events.size(),
           LoggerEnum.INFO.name());
     }
-    Map<String, Object> map = new HashMap<>();
-    map.put(JsonKey.REQUEST, telemetryV3Request);
-    return map;
+    return telemetryV3Request;
   }
 }

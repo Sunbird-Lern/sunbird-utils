@@ -15,7 +15,6 @@
     <module>actor-util</module>
     <module>request-validator</module>
     <module>actor-core</module>
-    <module>common-service</module>
     <module>kafka-client</module>
     <module>extensions</module>
     <module>content-util</module>
