@@ -370,6 +370,7 @@ public final class JsonKey {
   public static final String ORDER = "order";
   public static final String ORG_CODE = "orgCode";
   public static final String ORG_CODE_HEADER = "X-Org-code";
+  public static final String ORG_EXT_ID_DB = "org_external_identity";
   public static final String ORG_DB = "org_db";
   public static final String ORG_ID = "orgId";
   public static final String ORG_ID_ONE = "orgIdOne";
@@ -390,6 +391,7 @@ public final class JsonKey {
   public static final String ORGANISATIONS = "organisations";
   public static final String OrgConsumption = "orgConsumption";
   public static final String OrgCreation = "orgCreation";
+  public static final String OTP = "otp";
   public static final String PAGE = "page";
   public static final String PAGE_ID = "pageId";
   public static final String PAGE_MGMT_DB = "page_mgmt_db";
@@ -550,6 +552,7 @@ public final class JsonKey {
   public static final String SUNBIRD_FRAMEWORK_READ_API = "sunbird_framework_read_api";
   public static final String SUNBIRD_CONTENT_GET_HIERARCHY_API = "sunbird_get_hierarchy_api";
   public static final String SUNBIRD_CONTENT_READ_API = "sunbird_content_read_api";
+  public static final String SUNBIRD_USERNAME_NUM_DIGITS = "sunbird_username_num_digits";
   public static final String SYSTEM = "system";
   public static final String SYSTEM_SETTINGS_DB = "system_settings";
   public static final String TAG = "tag";
@@ -745,7 +748,6 @@ public final class JsonKey {
   public static final String ERRORS = "errors";
   public static final String ROLE_LIST = "roleList";
   public static final String SUNBIRD_USER_PROFILE_READ_EXCLUDED_FIELDS = "read.excludedFields";
-  public static final String VERSION_3 = "v3";
   public static final String COMPLETED_ON = "completedOn";
   public static final String CALLER_ID = "callerId";
   public static final String USER_TYPE = "userType";
@@ -783,6 +785,7 @@ public final class JsonKey {
   public static final String METADATA = "metadata";
   public static final String HIERARCHY = "hierarchy";
   public static final String FILE_DATA = "fileData";
+  public static final String FRAMEWORK_METADATA = "frameworkCategories";
   public static final String TEXTBOOK_TOC_ALLOWED_MIMETYPE =
       "application/vnd.ekstep.content-collection";
   public static final String TEXTBOOK_TOC_ALLOWED_CONTNET_TYPES =
@@ -800,6 +803,27 @@ public final class JsonKey {
   public static final String KEYWORDS = "keywords";
   public static final String UNIT = "Unit";
   public static final String UPDATE_HIERARCHY_API = "sunbird_update_hierarchy_api";
+  public static final String TB_MESSAGES = "messages";
+  public static final String TNC_ACCEPTED_ON = "tncAcceptedOn";
+  public static final String TNC_ACCEPTED_VERSION = "tncAcceptedVersion";
+  public static final String TNC_LATEST_VERSION_URL = "tncLatestVersionUrl";
+  public static final String PROMPT_TNC = "promptTnC";
+  public static final String TNC_LATEST_VERSION = "tncLatestVersion";
+  public static final String BULK_ORG_UPLOAD = "bulkOrgUpload";
+  public static final String FRAMEWORKS = "frameworks";
+  public static final String LATEST_VERSION = "latestVersion";
+  public static final String TNC_CONFIG = "tncConfig";
+  public static final String TNC = "tnc";
+  public static final String ACCEPT = "accept";
+  public static final String ROOT_ORG_NAME = "rootOrgName";
+  public static final String SUNBIRD_OTP_EXPIRATION = "sunbird_otp_expiration";
+  public static final String SUNBIRD_OTP_LENGTH = "sunbird_otp_length";
+  public static final String OTP_EXPIRATION_IN_MINUTES = "otpExpiryInMinutes";
+  public static final String SUNBIRD_RATE_LIMIT_ENABLED = "sunbird_rate_limit_enabled";
+  public static final String RATE_LIMIT = "rate_limit";
+  public static final String RATE_LIMIT_UNIT = "unit";
+  public static final String RATE = "rate";
+  public static final String INSTALLATION_NAME = "installationName";
 
   private JsonKey() {}
 }

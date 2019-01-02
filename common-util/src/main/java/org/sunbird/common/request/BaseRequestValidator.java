@@ -8,6 +8,7 @@ import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
+import org.sunbird.common.models.util.EmailValidator;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
@@ -331,6 +332,24 @@ public class BaseRequestValidator {
           ResponseCode.dataTypeError.getErrorCode(),
           MessageFormat.format(
               ResponseCode.dataTypeError.getErrorMessage(), JsonKey.FILTERS, "Map"),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+  }
+
+  public void validateEmail(String email) {
+    if (!EmailValidator.isEmailValid(email)) {
+      throw new ProjectCommonException(
+          ResponseCode.emailFormatError.getErrorCode(),
+          ResponseCode.emailFormatError.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+  }
+
+  public void validatePhone(String phone) {
+    if (!ProjectUtil.validatePhone(phone, null)) {
+      throw new ProjectCommonException(
+          ResponseCode.phoneNoFormatError.getErrorCode(),
+          ResponseCode.phoneNoFormatError.getErrorMessage(),
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
   }

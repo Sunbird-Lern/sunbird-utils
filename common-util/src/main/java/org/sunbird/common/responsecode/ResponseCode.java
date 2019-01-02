@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.JsonKey;
 
 /** @author Manzarul */
-public enum   ResponseCode {
+public enum ResponseCode {
   unAuthorized(ResponseMessage.Key.UNAUTHORIZED_USER, ResponseMessage.Message.UNAUTHORIZED_USER),
   invalidUserCredentials(
       ResponseMessage.Key.INVALID_USER_CREDENTIALS,
@@ -98,8 +98,6 @@ public enum   ResponseCode {
   invalidParentId(
       ResponseMessage.Key.INVALID_PARENT_ORGANIZATION_ID,
       ResponseMessage.Message.INVALID_PARENT_ORGANIZATION_ID),
-  channelIdRequiredForRootOrg(
-      ResponseMessage.Key.CHANNEL_MISSING, ResponseMessage.Message.CHANNEL_MISSING),
   cyclicValidationError(
       ResponseMessage.Key.CYCLIC_VALIDATION_FAILURE,
       ResponseMessage.Message.CYCLIC_VALIDATION_FAILURE),
@@ -107,6 +105,7 @@ public enum   ResponseCode {
   usrValidationError(
       ResponseMessage.Key.USR_DATA_VALIDATION_ERROR,
       ResponseMessage.Message.USR_DATA_VALIDATION_ERROR),
+  errorInvalidOTP(ResponseMessage.Key.ERROR_INVALID_OTP, ResponseMessage.Message.ERROR_INVALID_OTP),
   enrollmentStartDateRequiredError(
       ResponseMessage.Key.ENROLLMENT_START_DATE_MISSING,
       ResponseMessage.Message.ENROLLMENT_START_DATE_MISSING),
@@ -705,63 +704,53 @@ public enum   ResponseCode {
       ResponseMessage.Key.ERROR_UPDATE_SETTING_NOT_ALLOWED,
       ResponseMessage.Message.ERROR_UPDATE_SETTING_NOT_ALLOWED),
   errorCreatingFile(
-    ResponseMessage.Key.ERROR_CREATING_FILE,
-    ResponseMessage.Message.ERROR_CREATING_FILE),
+      ResponseMessage.Key.ERROR_CREATING_FILE, ResponseMessage.Message.ERROR_CREATING_FILE),
   errorProcessingRequest(
-          ResponseMessage.Key.ERROR_PROCESSING_REQUEST,
-          ResponseMessage.Message.ERROR_PROCESSING_REQUEST),
-  invalidTextbook(
-          ResponseMessage.Key.INVALID_TEXTBOOK,
-          ResponseMessage.Message.INVALID_TEXTBOOK),
-  csvRowsExceeds(
-          ResponseMessage.Key.CSV_ROWS_EXCEEDS,
-          ResponseMessage.Message.CSV_ROWS_EXCEEDS),
+      ResponseMessage.Key.ERROR_PROCESSING_REQUEST,
+      ResponseMessage.Message.ERROR_PROCESSING_REQUEST),
+  invalidTextbook(ResponseMessage.Key.INVALID_TEXTBOOK, ResponseMessage.Message.INVALID_TEXTBOOK),
+  csvRowsExceeds(ResponseMessage.Key.CSV_ROWS_EXCEEDS, ResponseMessage.Message.CSV_ROWS_EXCEEDS),
   invalidTextbookName(
-          ResponseMessage.Key.INVALID_TEXTBOOK_NAME,
-          ResponseMessage.Message.INVALID_TEXTBOOK_NAME),
-  duplicateRows(
-          ResponseMessage.Key.DUPLICATE_ROWS,
-          ResponseMessage.Message.DUPLICATE_ROWS),
+      ResponseMessage.Key.INVALID_TEXTBOOK_NAME, ResponseMessage.Message.INVALID_TEXTBOOK_NAME),
+  duplicateRows(ResponseMessage.Key.DUPLICATE_ROWS, ResponseMessage.Message.DUPLICATE_ROWS),
   requiredHeaderMissing(
-          ResponseMessage.Key.REQUIRED_HEADER_MISSING,
-          ResponseMessage.Message.REQUIRED_HEADER_MISSING),
+      ResponseMessage.Key.REQUIRED_HEADER_MISSING, ResponseMessage.Message.REQUIRED_HEADER_MISSING),
   requiredFieldMissing(
-          ResponseMessage.Key.REQUIRED_FIELD_MISSING,
-          ResponseMessage.Message.REQUIRED_FIELD_MISSING),
-  blankCsvData(
-          ResponseMessage.Key.BLANK_CSV_DATA,
-          ResponseMessage.Message.BLANK_CSV_DATA),
+      ResponseMessage.Key.REQUIRED_FIELD_MISSING, ResponseMessage.Message.REQUIRED_FIELD_MISSING),
+  blankCsvData(ResponseMessage.Key.BLANK_CSV_DATA, ResponseMessage.Message.BLANK_CSV_DATA),
   exceedMaxChildren(
-          ResponseMessage.Key.EXCEEDS_MAX_CHILDREN,
-          ResponseMessage.Message.EXCEEDS_MAX_CHILDREN),
+      ResponseMessage.Key.EXCEEDS_MAX_CHILDREN, ResponseMessage.Message.EXCEEDS_MAX_CHILDREN),
   textbookChildrenExist(
-          ResponseMessage.Key.TEXTBOOK_CHILDREN_EXISTS,
-          ResponseMessage.Message.TEXTBOOK_CHILDREN_EXISTS),
+      ResponseMessage.Key.TEXTBOOK_CHILDREN_EXISTS,
+      ResponseMessage.Message.TEXTBOOK_CHILDREN_EXISTS),
   textbookUpdateFailure(
-          ResponseMessage.Key.TEXTBOOK_UPDATE_FAILURE,
-          ResponseMessage.Message.TEXTBOOK_UPDATE_FAILURE),
+      ResponseMessage.Key.TEXTBOOK_UPDATE_FAILURE, ResponseMessage.Message.TEXTBOOK_UPDATE_FAILURE),
   noChildrenExists(
-          ResponseMessage.Key.TEXTBOOK_CHILDREN_NOT_EXISTS,
-          ResponseMessage.Message.TEXTBOOK_CHILDREN_NOT_EXISTS),
+      ResponseMessage.Key.TEXTBOOK_CHILDREN_NOT_EXISTS,
+      ResponseMessage.Message.TEXTBOOK_CHILDREN_NOT_EXISTS),
   textBookNotFound(
-          ResponseMessage.Key.TEXTBOOK_NOT_FOUND,
-          ResponseMessage.Message.TEXTBOOK_NOT_FOUND),
+      ResponseMessage.Key.TEXTBOOK_NOT_FOUND, ResponseMessage.Message.TEXTBOOK_NOT_FOUND),
   errorProcessingFile(
-          ResponseMessage.Key.ERROR_PROCESSING_FILE,
-          ResponseMessage.Message.ERROR_PROCESSING_FILE),
-  fileNotFound(
-          ResponseMessage.Key.ERR_FILE_NOT_FOUND,
-          ResponseMessage.Message.ERR_FILE_NOT_FOUND),
-  errorTbUpdate(
-          ResponseMessage.Key.ERROR_TB_UPDATE,
-          ResponseMessage.Message.ERROR_TB_UPDATE),
+      ResponseMessage.Key.ERROR_PROCESSING_FILE, ResponseMessage.Message.ERROR_PROCESSING_FILE),
+  fileNotFound(ResponseMessage.Key.ERR_FILE_NOT_FOUND, ResponseMessage.Message.ERR_FILE_NOT_FOUND),
+  errorTbUpdate(ResponseMessage.Key.ERROR_TB_UPDATE, ResponseMessage.Message.ERROR_TB_UPDATE),
+  errorInvalidParameterSize(
+      ResponseMessage.Key.ERROR_INVALID_PARAMETER_SIZE,
+      ResponseMessage.Message.ERROR_INVALID_PARAMETER_SIZE),
+  errorInvalidPageSection(
+      ResponseMessage.Key.INVALID_PAGE_SECTION, ResponseMessage.Message.INVALID_PAGE_SECTION),
+  errorRateLimitExceeded(
+      ResponseMessage.Key.ERROR_RATE_LIMIT_EXCEEDED,
+      ResponseMessage.Message.ERROR_RATE_LIMIT_EXCEEDED),
+
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
   RESOURCE_NOT_FOUND(404),
   UNAUTHORIZED(401),
   FORBIDDEN(403),
-  REDIRECTION_REQUIRED(302);
+  REDIRECTION_REQUIRED(302),
+  TOO_MANY_REQUESTS(429);
   private int responseCode;
   /** error code contains String value */
   private String errorCode;

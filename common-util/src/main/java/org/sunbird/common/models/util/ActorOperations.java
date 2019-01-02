@@ -46,6 +46,7 @@ public enum ActorOperations {
   REMOVE_MEMBER_ORGANISATION("removeMemberOrganisation"),
   COMPOSITE_SEARCH("compositeSearch"),
   GET_USER_DETAILS_BY_LOGINID("getUserDetailsByLoginId"),
+  GET_USER_BY_KEY("getUserByKey"),
   UPDATE_ORG_INFO_ELASTIC("updateOrgInfoToElastic"),
   INSERT_ORG_INFO_ELASTIC("insertOrgInfoToElastic"),
   DOWNLOAD_ORGS("downlaodOrg"),
@@ -147,7 +148,12 @@ public enum ActorOperations {
   GET_SYSTEM_SETTING("getSystemSetting"),
   GET_ALL_SYSTEM_SETTINGS("getAllSystemSettings"),
   SET_SYSTEM_SETTING("setSystemSetting"),
-  COURSE_BATCH_NOTIFICATION("courseBatchNotification");
+  COURSE_BATCH_NOTIFICATION("courseBatchNotification"),
+  USER_TNC_ACCEPT("userTnCAccept"),
+  GENERATE_OTP("generateOTP"),
+  VERIFY_OTP("verifyOTP"),
+  SEND_OTP("sendOTP");
+
   private String value;
 
   /**
