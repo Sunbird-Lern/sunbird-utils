@@ -38,7 +38,6 @@ import org.sunbird.common.models.util.datasecurity.DecryptionService;
 import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ServiceFactory;
 import org.sunbird.learner.actors.role.dao.impl.RoleDaoImpl;
-import org.sunbird.models.user.User;
 import org.sunbird.user.dao.UserOrgDao;
 import org.sunbird.user.dao.impl.UserOrgDaoImpl;
 
@@ -68,7 +67,7 @@ public abstract class BaseActorTest {
   private static UserOrgDao userOrgDao;
   private static ActorSelection actorSelection;
   private static ActorRef actorRef;
-  protected static User user;
+  //  protected static User user = mock(User.class);
 
   @BeforeClass
   public static void beforeClass() {
@@ -83,7 +82,6 @@ public abstract class BaseActorTest {
     PowerMockito.mockStatic(BaseMWService.class);
     PowerMockito.mockStatic(InterServiceCommunicationFactory.class);
     when(InterServiceCommunicationFactory.getInstance()).thenReturn(interServiceCommunication);
-
     response = Mockito.mock(Response.class);
     when(interServiceCommunication.getResponse(Mockito.anyObject(), Mockito.anyObject()))
         .thenReturn(response);
@@ -112,6 +110,10 @@ public abstract class BaseActorTest {
     when(cassandraOperation.getAllRecords(Mockito.anyString(), Mockito.anyString()))
         .thenReturn(getCassandraResponse());
 
+    //    when(cassandraOperation.getRecordById(Mockito.anyString(), Mockito.anyString(),
+    // Mockito.anyString()))
+    //            .thenReturn(getIdCassandraResponse());
+
     when(cassandraOperation.updateRecord(
             Mockito.anyString(), Mockito.anyString(), Mockito.anyMap()))
         .thenReturn(getSuccessResponse());
@@ -122,12 +124,11 @@ public abstract class BaseActorTest {
             Mockito.anyVararg()))
         .thenReturn(createResponseGet());
 
-    //        PowerMockito.mockStatic(UserServiceImpl.class);
-    //        UserService userService = mock(UserService.class);
-    //        when(UserServiceImpl.getInstance()).thenReturn(userService);
+    //    PowerMockito.mockStatic(UserServiceImpl.class);
+    //    UserService userService = mock(UserService.class);
+    //    when(UserServiceImpl.getInstance()).thenReturn(userService);
 
-    //        user = mock(User.class);
-    //        when(userService.getUserById(Mockito.anyString())).thenReturn(user);
+    //    when(userService.getUserById(Mockito.anyString())).thenReturn(user);
 
     Keycloak keycloak = mock(Keycloak.class);
     PowerMockito.mockStatic(KeyCloakConnectionProvider.class);
@@ -145,6 +146,25 @@ public abstract class BaseActorTest {
     UserRepresentation userRepresentation = mock(UserRepresentation.class);
     when(userResource.toRepresentation()).thenReturn(userRepresentation);
   }
+
+  protected Response getIdCassandraResponse(boolean isDeleted) {
+
+    Response response = new Response();
+    List<Map<String, Object>> resMapList = new ArrayList<>();
+    Map<String, Object> map = getMapResponse(isDeleted);
+    resMapList.add(map);
+    response.put(JsonKey.RESPONSE, resMapList);
+    return response;
+  }
+
+  protected void getCassandraResponseForId(boolean isDeleted) {
+
+    when(cassandraOperation.getRecordById(
+            Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+        .thenReturn(getIdCassandraResponse(isDeleted));
+  }
+
+  protected abstract Map<String, Object> getMapResponse(boolean isDeleted);
 
   protected void resetAllMocks() {
     Mockito.reset(cassandraOperation);
