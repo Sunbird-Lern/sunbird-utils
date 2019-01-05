@@ -820,8 +820,9 @@ public final class JsonKey {
   public static final String SUNBIRD_OTP_LENGTH = "sunbird_otp_length";
   public static final String OTP_EXPIRATION_IN_MINUTES = "otpExpiryInMinutes";
   public static final String SUNBIRD_RATE_LIMIT_ENABLED = "sunbird_rate_limit_enabled";
-  public static final String SUNBIRD_ALLOWED_USERIDS_SIZE_FOR_ENCRYPTION_DECRYPTION =
-      "sunbird_allowed_userids_size_for_encryption_decryption";
+  public static final String SUNBIRD_USER_MAX_ENCRYPTION_LIMIT =
+      "sunbird_user_max_encryption_limit";
+  public static final String SUNBIRD_USER_MAX_PHONE_LENGTH = "sunbird_user_max_phone_length";
   public static final String RATE_LIMIT = "rate_limit";
   public static final String RATE_LIMIT_UNIT = "unit";
   public static final String RATE = "rate";
