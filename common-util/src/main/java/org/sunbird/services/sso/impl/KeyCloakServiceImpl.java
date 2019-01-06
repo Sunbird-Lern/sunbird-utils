@@ -701,4 +701,12 @@ public class KeyCloakServiceImpl implements SSOManager {
     }
     resource.update(userRepresentation);
   }
+
+  @Override
+  public String getUsernameById(String userId) {
+    UserResource resource =
+        keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
+    UserRepresentation ur = resource.toRepresentation();
+    return ur.getUsername();
+  }
 }

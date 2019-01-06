@@ -131,4 +131,6 @@ public interface SSOManager {
   String setEmailVerifiedTrue(String userId);
 
   void setRequiredAction(String userId, String requiredAction);
+
+  String getUsernameById(String userId);
 }
