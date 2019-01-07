@@ -704,9 +704,15 @@ public class KeyCloakServiceImpl implements SSOManager {
 
   @Override
   public String getUsernameById(String userId) {
+ try {
     UserResource resource =
         keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId);
     UserRepresentation ur = resource.toRepresentation();
     return ur.getUsername();
+     } catch (Exception e) {
+      ProjectLogger.log("KeyCloakServiceImpl getUsernameById user not found for userId "+ userId +" " +e.getMessage(), e);
+    }
+     ProjectLogger.log("KeyCloakServiceImpl getUsernameById user not found for userId "+ userId, LoggerEnum.INFO.name());
+    return ""; 
   }
 }
