@@ -3,6 +3,7 @@ package org.sunbird.common.models.util;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
+import java.text.MessageFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
@@ -76,5 +77,24 @@ public class PhoneValidator {
           "PhoneValidator:validatePhone: Exception occurred while validating phone number = ", e);
     }
     return false;
+  }
+
+  public static boolean validatePhoneNumber(String phoneNumber) {
+    try {
+      if (phoneNumber.length()
+          > Integer.valueOf(ProjectUtil.getConfigValue(JsonKey.SUNBIRD_USER_MAX_PHONE_LENGTH)))
+        return false;
+    } catch (NumberFormatException e) {
+      ProjectCommonException.throwServerErrorException(
+          ResponseCode.errorInvalidConfigParamValue,
+          MessageFormat.format(
+              ResponseCode.errorInvalidConfigParamValue.getErrorMessage(),
+              JsonKey.SUNBIRD_USER_MAX_PHONE_LENGTH,
+              ProjectUtil.getConfigValue(JsonKey.SUNBIRD_USER_MAX_PHONE_LENGTH)));
+    }
+    String phonePattern = "([+]?(91)?[-]?[0-9]{10})$";
+    Pattern pattern = Pattern.compile(phonePattern);
+    Matcher matcher = pattern.matcher(phoneNumber);
+    return matcher.matches();
   }
 }
