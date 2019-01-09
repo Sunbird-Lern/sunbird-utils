@@ -56,9 +56,9 @@ public class BaseRequestValidator {
    * Helper method which throws an exception if the given parameter list size exceeds the expected
    * size
    *
-   * @param paramName parmaName for the error log.
-   * @param key for the .
-   * @param listValue Request list value
+   * @param paramName Configuration parameter name
+   * @param key Request parameter name
+   * @param listValue Request parameter value
    */
   public void validateListParamSize(String paramName, String key, List<Object> listValue) {
     int maximumSizeAllowed = 0;
