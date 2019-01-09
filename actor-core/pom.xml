@@ -106,14 +106,14 @@
 		</dependency>
 		<dependency>
 			<groupId>org.sunbird</groupId>
-			<artifactId>user</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<artifactId>actor-util</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.sunbird</groupId>
-			<artifactId>actor-util</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<artifactId>cassandra-dac</artifactId>
+			<version>1.0-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
