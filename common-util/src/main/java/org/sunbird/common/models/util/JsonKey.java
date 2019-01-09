@@ -828,6 +828,7 @@ public final class JsonKey {
   public static final String RATE = "rate";
   public static final String INSTALLATION_NAME = "installationName";
   public static final String LOCATION_CODES = "locationCodes";
+  public static final String BATCH_DETAILS = "batchDetails";
 
   private JsonKey() {}
 }
