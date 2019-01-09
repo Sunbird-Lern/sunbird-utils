@@ -77,4 +77,11 @@ public class PhoneValidator {
     }
     return false;
   }
+
+  public static boolean validatePhoneNumber(String phoneNumber) {
+    String phonePattern = "([+]?(91)?[-]?[0-9]{10}$)";
+    Pattern pattern = Pattern.compile(phonePattern);
+    Matcher matcher = pattern.matcher(phoneNumber);
+    return matcher.matches();
+  }
 }
