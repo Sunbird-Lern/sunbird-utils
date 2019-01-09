@@ -52,6 +52,35 @@ public class BaseRequestValidator {
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
   }
+  /**
+   * Helper method which throws an exception if the given parameter list size exceeds the expected
+   * size
+   *
+   * @param paramName Configuration parameter name
+   * @param key Request parameter name
+   * @param listValue Request parameter value
+   */
+  public void validateListParamSize(String paramName, String key, List<Object> listValue) {
+    int maximumSizeAllowed = 0;
+    try {
+      maximumSizeAllowed = Integer.valueOf(ProjectUtil.getConfigValue(paramName).trim());
+    } catch (NumberFormatException e) {
+      ProjectCommonException.throwServerErrorException(
+          ResponseCode.errorInvalidConfigParamValue,
+          MessageFormat.format(
+              ResponseCode.errorInvalidConfigParamValue.getErrorMessage(),
+              ProjectUtil.getConfigValue(key).trim(),
+              key));
+    }
+    if (listValue.size() > maximumSizeAllowed) {
+      ProjectCommonException.throwClientErrorException(
+          ResponseCode.errorMaxSizeExceeded,
+          MessageFormat.format(
+              ResponseCode.errorMaxSizeExceeded.getErrorMessage(),
+              key,
+              String.valueOf(maximumSizeAllowed)));
+    }
+  }
 
   /**
    * This method will create the ProjectCommonException by reading ResponseCode and errorCode.

@@ -31,6 +31,11 @@ public enum ResponseCode {
   contentIdRequired(
       ResponseMessage.Key.CONTENT_ID_MISSING_ERROR,
       ResponseMessage.Message.CONTENT_ID_MISSING_ERROR),
+  errorInvalidConfigParamValue(
+      ResponseMessage.Key.ERROR_INVALID_CONFIG_PARAM_VALUE,
+      ResponseMessage.Message.ERROR_INVALID_CONFIG_PARAM_VALUE),
+  errorMaxSizeExceeded(
+      ResponseMessage.Key.ERROR_MAX_SIZE_EXCEEDED, ResponseMessage.Message.ERROR_MAX_SIZE_EXCEEDED),
   apiKeyRequired(
       ResponseMessage.Key.API_KEY_MISSING_ERROR, ResponseMessage.Message.API_KEY_MISSING_ERROR),
   invalidApiKey(

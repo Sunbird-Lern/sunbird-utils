@@ -40,6 +40,8 @@ public interface ResponseMessage {
     String FIRST_NAME_MISSING = "First name is mandatory.";
     String LANGUAGE_MISSING = "Language is mandatory.";
     String PASSWORD_MISSING = "Password is mandatory.";
+    String ERROR_INVALID_CONFIG_PARAM_VALUE = "Invalid value {0} for config parameter {1}.";
+    String ERROR_MAX_SIZE_EXCEEDED = "Size of {0} exceeds max limit {1}";
     String PASSWORD_MIN_LENGHT = "Password should have at least 8 character.";
     String PASSWORD_MAX_LENGHT = "Password should not be more than 12 character.";
     String ORGANISATION_ID_MISSING = "Organization id is mandatory.";
@@ -760,5 +762,7 @@ public interface ResponseMessage {
     String ERROR_INVALID_PARAMETER_SIZE = "ERROR_INVALID_PARAMETER_SIZE";
     String INVALID_PAGE_SECTION = "INVALID_PAGE_SECTION";
     String ERROR_RATE_LIMIT_EXCEEDED = "ERROR_RATE_LIMIT_EXCEEDED";
+    String ERROR_INVALID_CONFIG_PARAM_VALUE = "ERROR_INVALID_CONFIG_PARAM_VALUE";
+    String ERROR_MAX_SIZE_EXCEEDED = "ERROR_MAX_SIZE_EXCEEDED";
   }
 }
