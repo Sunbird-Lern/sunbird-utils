@@ -50,4 +50,12 @@ public interface LocationClient {
    * @param location Location details.
    */
   void updateLocation(ActorRef actorRef, UpsertLocationRequest location);
+
+  /**
+   * @desc This method will fetch location details by id.
+   * @param actorRef Actor reference.
+   * @param codes Location ids.
+   * @return Location details.
+   */
+  List<String> getLocationIds(ActorRef actorRef, List<String> codes);
 }

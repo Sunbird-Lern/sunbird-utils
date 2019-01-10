@@ -37,6 +37,20 @@ public class UserRequestValidator extends BaseRequestValidator {
     educationValidation(userRequest);
     jobProfileValidation(userRequest);
     validateWebPages(userRequest);
+    validateLocationCode(userRequest);
+  }
+
+  private void validateLocationCode(Request userRequest) {
+    if (userRequest.getRequest().containsKey(JsonKey.LOCATION_CODES)) {
+      if (!(userRequest.getRequest().get(JsonKey.LOCATION_CODES) instanceof List)) {
+
+        throw new ProjectCommonException(
+            ResponseCode.dataTypeError.getErrorCode(),
+            ProjectUtil.formatMessage(
+                ResponseCode.dataTypeError.getErrorMessage(), JsonKey.LOCATION_CODES, JsonKey.LIST),
+            ERROR_CODE);
+      }
+    }
   }
 
   private void validateUserName(Request userRequest) {
@@ -346,6 +360,7 @@ public class UserRequestValidator extends BaseRequestValidator {
         && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.ROOT_ORG_ID))) {
       ProjectCommonException.throwClientErrorException(ResponseCode.invalidRootOrganisationId);
     }
+    validateLocationCode(userRequest);
     validateExtIdTypeAndProvider(userRequest);
     validateFrameworkDetails(userRequest);
   }
