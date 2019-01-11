@@ -836,8 +836,8 @@ public final class JsonKey {
   public static final String QR_CODE_REQUIRED = "QR Code Required?";
   public static final String QR_CODE = "QR Code";
   public static final String RESERVED_DIAL_CODES = "reservedDialcodes";
-  public static final String GET_FRAMEWORK_DETAILS_BY_ID_API_URL =
-      "get_framework_details_by_id_api_url";
+  public static final String FRAMEWORK_READ_API_URL =
+      "framework_read_api_url";
 
   private JsonKey() {}
 }
