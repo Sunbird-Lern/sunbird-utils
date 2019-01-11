@@ -63,6 +63,15 @@ public class User implements Serializable {
   private Timestamp tncAcceptedOn;
   private String tncAcceptedVersion;
   private Map<String, List<String>> framework;
+  private List<String> locationIds;
+
+  public List<String> getLocationIds() {
+    return locationIds;
+  }
+
+  public void setLocationIds(List<String> locationIds) {
+    this.locationIds = locationIds;
+  }
 
   public String getUserType() {
     return userType;

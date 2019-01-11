@@ -112,6 +112,28 @@ public class LocationClientImpl implements LocationClient {
     checkLocationResponseForException(obj);
   }
 
+  @Override
+  public List<String> getRelatedLocationIds(ActorRef actorRef, List<String> codes) {
+    Map<String, Object> requestMap = new HashMap<>();
+    requestMap.put(JsonKey.LOCATION_CODES, codes);
+    
+    Request request = new Request();
+    request.setOperation(LocationActorOperation.GET_RELATED_LOCATION_IDS.getValue());
+    request.getRequest().putAll(requestMap);
+
+    ProjectLogger.log("LocationClientImpl: getRelatedLocationIds called", LoggerEnum.INFO);
+    Object obj = interServiceCommunication.getResponse(actorRef, request);
+    checkLocationResponseForException(obj);
+
+    if (obj instanceof Response) {
+      Response responseObj = (Response) obj;
+      List<String> responseList = (List<String>) responseObj.getResult().get(JsonKey.RESPONSE);
+      return responseList;
+    }
+
+    return new ArrayList<>();
+  }
+
   private void checkLocationResponseForException(Object obj) {
     if (obj instanceof ProjectCommonException) {
       throw (ProjectCommonException) obj;
