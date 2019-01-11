@@ -43,12 +43,11 @@ public class UserRequestValidator extends BaseRequestValidator {
   private void validateLocationCodes(Request userRequest) {
     Object locationCodes = userRequest.getRequest().get(JsonKey.LOCATION_CODES);
     if ((locationCodes != null) && !(locationCodes instanceof List)) {
-        throw new ProjectCommonException(
-            ResponseCode.dataTypeError.getErrorCode(),
-            ProjectUtil.formatMessage(
-                ResponseCode.dataTypeError.getErrorMessage(), JsonKey.LOCATION_CODES, JsonKey.LIST),
-            ERROR_CODE);
-      }
+      throw new ProjectCommonException(
+          ResponseCode.dataTypeError.getErrorCode(),
+          ProjectUtil.formatMessage(
+              ResponseCode.dataTypeError.getErrorMessage(), JsonKey.LOCATION_CODES, JsonKey.LIST),
+          ERROR_CODE);
     }
   }
 
