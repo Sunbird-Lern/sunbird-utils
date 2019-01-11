@@ -829,6 +829,15 @@ public final class JsonKey {
   public static final String INSTALLATION_NAME = "installationName";
   public static final String LOCATION_CODES = "locationCodes";
   public static final String BATCH_DETAILS = "batchDetails";
+  public static final String DIAL_CODES = "dialcodes";
+  public static final String DIAL_CODE_REQUIRED = "dialcodeRequired";
+  public static final String NO = "No";
+  public static final String YES = "Yes";
+  public static final String QR_CODE_REQUIRED = "QR Code Required?";
+  public static final String QR_CODE = "QR Code";
+  public static final String RESERVED_DIAL_CODES = "reservedDialcodes";
+  public static final String GET_FRAMEWORK_DETAILS_BY_ID_API_URL =
+      "get_framework_details_by_id_api_url";
 
   private JsonKey() {}
 }
