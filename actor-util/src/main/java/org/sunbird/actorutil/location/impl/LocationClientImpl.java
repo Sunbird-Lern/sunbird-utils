@@ -116,7 +116,7 @@ public class LocationClientImpl implements LocationClient {
   public List<String> getRelatedLocationIds(ActorRef actorRef, List<String> codes) {
     Map<String, Object> requestMap = new HashMap<>();
     requestMap.put(JsonKey.LOCATION_CODES, codes);
-    
+
     Request request = new Request();
     request.setOperation(LocationActorOperation.GET_RELATED_LOCATION_IDS.getValue());
     request.getRequest().putAll(requestMap);

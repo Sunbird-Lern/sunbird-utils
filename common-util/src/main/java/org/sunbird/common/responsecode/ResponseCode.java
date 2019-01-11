@@ -747,6 +747,11 @@ public enum ResponseCode {
   errorRateLimitExceeded(
       ResponseMessage.Key.ERROR_RATE_LIMIT_EXCEEDED,
       ResponseMessage.Message.ERROR_RATE_LIMIT_EXCEEDED),
+  errorDialCodeNotReservedForTextBook(
+      ResponseMessage.Key.ERROR_DIAL_CODE_NOT_RESERVED,
+      ResponseMessage.Message.ERROR_DIAL_CODE_NOT_RESERVED),
+  errorInvalidTopic(
+      ResponseMessage.Key.ERROR_INVALID_TOPIC, ResponseMessage.Message.ERROR_INVALID_TOPIC),
 
   OK(200),
   CLIENT_ERROR(400),

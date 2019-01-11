@@ -52,11 +52,11 @@ public interface LocationClient {
   void updateLocation(ActorRef actorRef, UpsertLocationRequest location);
 
   /**
-   * @desc For given location codes, fetch location IDs (including, if any, those of its parent or ancestor(s) locations).
+   * @desc For given location codes, fetch location IDs (including, if any, those of its parent or
+   *     ancestor(s) locations).
    * @param actorRef Actor reference.
    * @param codes List of location codes.
    * @return List of related location IDs
    */
   List<String> getRelatedLocationIds(ActorRef actorRef, List<String> codes);
-
 }
