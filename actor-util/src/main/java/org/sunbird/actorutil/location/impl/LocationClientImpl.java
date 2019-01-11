@@ -113,14 +113,18 @@ public class LocationClientImpl implements LocationClient {
   }
 
   @Override
-  public List<String> getLocationIds(ActorRef actorRef, List<String> codes) {
+  public List<String> getRelatedLocationIds(ActorRef actorRef, List<String> codes) {
     Map<String, Object> requestMap = new HashMap<>();
     requestMap.put(JsonKey.LOCATION_CODES, codes);
+    
     Request request = new Request();
-    request.setOperation(LocationActorOperation.GET_LOCATION_IDS.getValue());
+    request.setOperation(LocationActorOperation.GET_RELATED_LOCATION_IDS.getValue());
     request.getRequest().putAll(requestMap);
-    ProjectLogger.log("LocationClientImpl : getLocationIds ", LoggerEnum.INFO);
+
+    ProjectLogger.log("LocationClientImpl: getRelatedLocationIds called", LoggerEnum.INFO);
     Object obj = interServiceCommunication.getResponse(actorRef, request);
+    checkLocationResponseForException(obj);
+
     if (obj instanceof Response) {
       Response responseObj = (Response) obj;
       List<String> responseList = (List<String>) responseObj.getResult().get(JsonKey.RESPONSE);
