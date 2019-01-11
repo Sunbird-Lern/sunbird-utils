@@ -829,6 +829,7 @@ public final class JsonKey {
   public static final String INSTALLATION_NAME = "installationName";
   public static final String LOCATION_CODES = "locationCodes";
   public static final String BATCH_DETAILS = "batchDetails";
+  public static final String USER_LOCATIONS = "userLocations";
   public static final String DIAL_CODES = "dialcodes";
   public static final String DIAL_CODE_REQUIRED = "dialcodeRequired";
   public static final String NO = "No";
