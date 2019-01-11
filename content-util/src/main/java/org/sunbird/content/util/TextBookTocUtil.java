@@ -47,7 +47,7 @@ public class TextBookTocUtil {
     Map<String, String> requestParams = new HashMap<>();
     requestParams.put("categories", "topic");
     return handleReadRequest(
-        frameworkId, JsonKey.GET_FRAMEWORK_DETAILS_BY_ID_API_URL, requestParams);
+        frameworkId, JsonKey.FRAMEWORK_READ_API_URL, requestParams);
   }
 
   private static String requestParams(Map<String, String> params) {
