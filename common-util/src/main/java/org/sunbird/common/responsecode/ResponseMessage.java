@@ -411,7 +411,7 @@ public interface ResponseMessage {
     String INVALID_PAGE_SECTION = "Page section associated with the page is invalid.";
     String ERROR_RATE_LIMIT_EXCEEDED =
         "Your per {0} rate limit has exceeded. You can retry after some time.";
-    String ERROR_DIAL_CODE_NOT_RESERVED = "Dial code: {0} not reserved for Textbook id: {1}.";
+    String ERROR_DIAL_CODE_NOT_RESERVED = "Dial code {0} not reserved for Textbook ID {1}.";
     String ERROR_INVALID_TOPIC =
         "Topic <{0}> not found in the framework. Please check and correct.";
   }
