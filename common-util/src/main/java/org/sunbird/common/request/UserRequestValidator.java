@@ -37,10 +37,10 @@ public class UserRequestValidator extends BaseRequestValidator {
     educationValidation(userRequest);
     jobProfileValidation(userRequest);
     validateWebPages(userRequest);
-    validateLocationCode(userRequest);
+    validateLocationCodes(userRequest);
   }
 
-  private void validateLocationCode(Request userRequest) {
+  private void validateLocationCodes(Request userRequest) {
     Object locationCodes = userRequest.getRequest().get(JsonKey.LOCATION_CODES);
     if ((locationCodes != null) && !(locationCodes instanceof List)) {
         throw new ProjectCommonException(
@@ -359,7 +359,7 @@ public class UserRequestValidator extends BaseRequestValidator {
         && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.ROOT_ORG_ID))) {
       ProjectCommonException.throwClientErrorException(ResponseCode.invalidRootOrganisationId);
     }
-    validateLocationCode(userRequest);
+    validateLocationCodes(userRequest);
     validateExtIdTypeAndProvider(userRequest);
     validateFrameworkDetails(userRequest);
   }
