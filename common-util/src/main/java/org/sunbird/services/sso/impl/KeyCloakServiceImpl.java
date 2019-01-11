@@ -711,14 +711,14 @@ public class KeyCloakServiceImpl implements SSOManager {
       return ur.getUsername();
     } catch (Exception e) {
       ProjectLogger.log(
-          "KeyCloakServiceImpl getUsernameById user not found for userId "
+          "KeyCloakServiceImpl:getUsernameById: User not found for userId = "
               + userId
-              + " "
+              + " error message = "
               + e.getMessage(),
           e);
     }
     ProjectLogger.log(
-        "KeyCloakServiceImpl getUsernameById user not found for userId " + userId,
+        "KeyCloakServiceImpl:getUsernameById: User not found for userId = " + userId,
         LoggerEnum.INFO.name());
     return "";
   }
