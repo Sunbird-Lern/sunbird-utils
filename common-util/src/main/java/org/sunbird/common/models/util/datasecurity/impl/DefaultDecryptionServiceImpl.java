@@ -1,4 +1,3 @@
-/** */
 package org.sunbird.common.models.util.datasecurity.impl;
 
 import java.nio.charset.StandardCharsets;
@@ -10,15 +9,14 @@ import java.util.Map.Entry;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.lang3.StringUtils;
+import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
-import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.models.util.datasecurity.DecryptionService;
 import org.sunbird.common.responsecode.ResponseCode;
 
-/** @author Manzarul */
 public class DefaultDecryptionServiceImpl implements DecryptionService {
   private static String sunbird_encryption = "";
 
@@ -81,12 +79,19 @@ public class DefaultDecryptionServiceImpl implements DecryptionService {
     return decryptData(data, false);
   }
 
-  /**
-   * this method is used to decrypt password.
-   *
-   * @param value encrypted password.
-   * @return decrypted password.
-   */
+  @Override
+  public String decryptData(String data, boolean throwExceptionOnFailure) {
+    if (JsonKey.ON.equalsIgnoreCase(sunbirdEncryption)) {
+      if (StringUtils.isBlank(data)) {
+        return data;
+      } else {
+        return decrypt(data, throwExceptionOnFailure);
+      }
+    } else {
+      return data;
+    }
+  }
+
   public static String decrypt(String value, boolean throwExceptionOnFailure) {
     try {
       String dValue = null;
@@ -100,9 +105,9 @@ public class DefaultDecryptionServiceImpl implements DecryptionService {
       }
       return dValue;
     } catch (Exception ex) {
-      ProjectLogger.log("Exception Occurred while decrypting value", LoggerEnum.ERROR.name());
+      ProjectLogger.log("DefaultDecryptionServiceImpl:decrypt: Exception occurred with error message = " + ex.getMessage(), LoggerEnum.ERROR.name());
       if (throwExceptionOnFailure) {
-        throw ProjectUtil.createClientException(ResponseCode.userDataEncryptionError);
+        ProjectCommonException.throwClientErrorException(ResponseCode.userDataEncryptionError);
       }
     }
     return value;
@@ -112,16 +117,4 @@ public class DefaultDecryptionServiceImpl implements DecryptionService {
     return new SecretKeySpec(keyValue, ALGORITHM);
   }
 
-  @Override
-  public String decryptData(String data, boolean throwExceptionOnFailure) {
-    if (JsonKey.ON.equalsIgnoreCase(sunbirdEncryption)) {
-      if (StringUtils.isBlank(data)) {
-        return data;
-      } else {
-        return decrypt(data, throwExceptionOnFailure);
-      }
-    } else {
-      return data;
-    }
-  }
 }
