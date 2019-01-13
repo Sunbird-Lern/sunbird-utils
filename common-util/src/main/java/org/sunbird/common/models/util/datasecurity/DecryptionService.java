@@ -1,4 +1,3 @@
-/** */
 package org.sunbird.common.models.util.datasecurity;
 
 import java.util.List;
@@ -39,20 +38,20 @@ public interface DecryptionService {
   List<Map<String, Object>> decryptData(List<Map<String, Object>> data);
 
   /**
-   * This method will take String as an input and decrypt the String and return back.
+   * Decrypt given data.
    *
-   * @param data String
-   * @return String
-   * @throws Exception
+   * @param data Input data
+   * @return Decrypted data
    */
   String decryptData(String data);
 
   /**
-   * This method will take String as an input and decrypt the String and return back.
+   * Decrypt given data.
    *
-   * @param data String
-   * @return String
-   * @throws Exception
+   * @param data Input data
+   * @return Decrypted data
+   * @throws ProjectCommonException in case of an error during decryption.
    */
   String decryptData(String data, boolean throwExceptionOnFailure);
+
 }
