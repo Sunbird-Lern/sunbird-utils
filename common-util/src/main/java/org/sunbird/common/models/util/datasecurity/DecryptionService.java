@@ -46,4 +46,13 @@ public interface DecryptionService {
    * @throws Exception
    */
   String decryptData(String data);
+
+  /**
+   * This method will take String as an input and decrypt the String and return back.
+   *
+   * @param data String
+   * @return String
+   * @throws Exception
+   */
+  String decryptData(String data, boolean throwExceptionOnFailure);
 }
