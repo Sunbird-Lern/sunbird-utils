@@ -79,6 +79,9 @@ public class PhoneValidator {
   }
 
   public static boolean validatePhoneNumber(String phoneNumber) {
+    if (StringUtils.isBlank(phoneNumber)) {
+      return false;
+    }
     String phonePattern = "([+]?(91)?[-]?[0-9]{10}$)";
     Pattern pattern = Pattern.compile(phonePattern);
     Matcher matcher = pattern.matcher(phoneNumber);
