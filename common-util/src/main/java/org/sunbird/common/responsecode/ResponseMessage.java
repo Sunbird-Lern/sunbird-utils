@@ -414,7 +414,7 @@ public interface ResponseMessage {
     String ERROR_DIAL_CODE_NOT_RESERVED = "Dial code {0} is not reserved for Textbook ID {1}.";
     String ERROR_INVALID_TOPIC =
         "Topic <{0}> not found in the framework. Please check and correct.";
-    String ERROR_DUPLICATE_ENTRY_FOR_DIAL_CODE =
+    String ERROR_DIAL_CODE_DUPLICATE_ENTRY =
         "Dial code {0} is associated with multiple identifier {1}.";
     String ERROR_DIAL_CODE_ALREADY_ASSOCIATED =
         "Dial code already associated with identifier {0} for given textbook.";
@@ -773,7 +773,7 @@ public interface ResponseMessage {
     String ERROR_MAX_SIZE_EXCEEDED = "ERROR_MAX_SIZE_EXCEEDED";
     String ERROR_DIAL_CODE_NOT_RESERVED = "ERROR_DIAL_CODE_NOT_RESERVED";
     String ERROR_INVALID_TOPIC = "ERROR_INVALID_TOPIC";
-    String ERROR_DUPLICATE_ENTRY_FOR_DIAL_CODE = "ERROR_DUPLICATE_ENTRY_FOR_DIAL_CODE";
+    String ERROR_DIAL_CODE_DUPLICATE_ENTRY = "ERROR_DIAL_CODE_DUPLICATE_ENTRY";
     String ERROR_DIAL_CODE_ALREADY_ASSOCIATED = "ERROR_DIAL_CODE_ALREADY_ASSOCIATED";
   }
 }
