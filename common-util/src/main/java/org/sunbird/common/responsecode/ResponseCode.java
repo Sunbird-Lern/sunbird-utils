@@ -752,6 +752,12 @@ public enum ResponseCode {
       ResponseMessage.Message.ERROR_DIAL_CODE_NOT_RESERVED),
   errorInvalidTopic(
       ResponseMessage.Key.ERROR_INVALID_TOPIC, ResponseMessage.Message.ERROR_INVALID_TOPIC),
+  errorDuplicateEntryForDialCode(
+      ResponseMessage.Key.ERROR_DUPLICATE_ENTRY_FOR_DIAL_CODE,
+      ResponseMessage.Message.ERROR_DUPLICATE_ENTRY_FOR_DIAL_CODE),
+  errorDialCodeAlreadyAssociated(
+      ResponseMessage.Key.ERROR_DIAL_CODE_ALREADY_ASSOCIATED,
+      ResponseMessage.Message.ERROR_DIAL_CODE_ALREADY_ASSOCIATED),
 
   OK(200),
   CLIENT_ERROR(400),
