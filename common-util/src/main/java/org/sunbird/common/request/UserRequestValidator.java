@@ -1,10 +1,7 @@
 package org.sunbird.common.request;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
@@ -49,6 +46,8 @@ public class UserRequestValidator extends BaseRequestValidator {
               ResponseCode.dataTypeError.getErrorMessage(), JsonKey.LOCATION_CODES, JsonKey.LIST),
           ERROR_CODE);
     }
+    List<String> set = new ArrayList(new HashSet<>((List<String>) locationCodes));
+    userRequest.getRequest().put(JsonKey.LOCATION_CODES, set);
   }
 
   private void validateUserName(Request userRequest) {
