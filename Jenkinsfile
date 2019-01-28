@@ -49,7 +49,7 @@ node('build-slave') {
         stage('Archive artifacts'){
             sh """
                         mkdir cassandra_artifacts
-                        cp cassandra-migration/target/cassandra-migration-0.0.1-SNAPSHOT-jar-with-dependencies.jar cassandra_artifacts
+                        cp cassandra-migration/target/cassandra-migration-*-jar-with-dependencies.jar cassandra_artifacts
                         zip -j cassandra_artifacts.zip:${artifact_version} cassandra_artifacts/*
                     """
             archiveArtifacts artifacts: "cassandra_artifacts.zip:${artifact_version}", fingerprint: true, onlyIfSuccessful: true
