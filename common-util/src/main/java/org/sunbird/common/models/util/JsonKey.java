@@ -839,6 +839,7 @@ public final class JsonKey {
   public static final String RESERVED_DIAL_CODES = "reservedDialcodes";
   public static final String FRAMEWORK_READ_API_URL = "framework_read_api_url";
   public static final String DIAL_CODE_IDENTIFIER_MAP = "dialCodeIdentifierMap";
+  public static final String LINK_DIAL_CODE_API = "sunbird_link_dial_code_api";
 
   private JsonKey() {}
 }
