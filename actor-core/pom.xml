@@ -106,15 +106,25 @@
 		</dependency>
 		<dependency>
 			<groupId>org.sunbird</groupId>
-			<artifactId>actor-util</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<artifactId>user</artifactId>
+			<version>1.0-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.sunbird</groupId>
-			<artifactId>cassandra-dac</artifactId>
+			<artifactId>actor-util</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.sunbird</groupId>
+			<artifactId>elasticsearch-util</artifactId>
 			<version>1.0-SNAPSHOT</version>
-			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.sunbird</groupId>
+			<artifactId>user</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 

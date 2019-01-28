@@ -62,20 +62,6 @@ public abstract class BaseActorTest {
   public void before() {
 
     PowerMockito.mockStatic(ElasticSearchUtil.class);
-
-    when(cassandraOperation.updateRecord(
-            Mockito.anyString(), Mockito.anyString(), Mockito.anyMap()))
-        .thenReturn(getSuccessResponse());
-
-    when(ElasticSearchUtil.complexSearch(
-            Mockito.any(SearchDTO.class),
-            Mockito.eq(ProjectUtil.EsIndex.sunbird.getIndexName()),
-            Mockito.anyVararg()))
-        .thenReturn(createResponseGet());
-
-    when(cassandraOperation.getAllRecords(Mockito.anyString(), Mockito.anyString()))
-        .thenReturn(getAllRecordResponse());
-
     Keycloak keycloak = mock(Keycloak.class);
     PowerMockito.mockStatic(KeyCloakConnectionProvider.class);
     when(KeyCloakConnectionProvider.getConnection()).thenReturn(keycloak);
@@ -90,9 +76,22 @@ public abstract class BaseActorTest {
 
     UserRepresentation userRepresentation = mock(UserRepresentation.class);
     when(userResource.toRepresentation()).thenReturn(userRepresentation);
+    updateRecord();
+    getAllRecords();
   }
 
-  protected void createEsGetResponse(boolean isSuccess, String userId) {
+  // ElasticSearch
+
+  protected void complexSearch() {
+
+    when(ElasticSearchUtil.complexSearch(
+            Mockito.any(SearchDTO.class),
+            Mockito.eq(ProjectUtil.EsIndex.sunbird.getIndexName()),
+            Mockito.anyVararg()))
+        .thenReturn(esComplexSearchResponse());
+  }
+
+  protected void getDataByIdentifier(boolean isSuccess, String userId) {
 
     when(ElasticSearchUtil.getDataByIdentifier(
             ProjectUtil.EsIndex.sunbird.getIndexName(),
@@ -101,11 +100,36 @@ public abstract class BaseActorTest {
         .thenReturn(esGetResponse(isSuccess));
   }
 
-  private Map<String, Object> esGetResponse(boolean isSuccess) {
-
-    HashMap<String, Object> response = new HashMap<>();
-    if (isSuccess) response.put(JsonKey.CONTENT, "Any-content");
+  private Response getSuccessResponse() {
+    Response response = new Response();
+    response.put(JsonKey.RESPONSE, JsonKey.SUCCESS);
     return response;
+  }
+
+  // Cassandra
+
+  protected void getRecordById(Response response) {
+
+    when(cassandraOperation.getRecordById(
+            Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+        .thenReturn(response);
+  }
+
+  protected void updateRecord() {
+
+    when(cassandraOperation.updateRecord(
+            Mockito.anyString(), Mockito.anyString(), Mockito.anyMap()))
+        .thenReturn(getSuccessResponse());
+  }
+
+  protected void getAllRecords() {
+
+    when(cassandraOperation.getAllRecords(Mockito.anyString(), Mockito.anyString()))
+        .thenReturn(getAllRecordResponse());
+  }
+
+  private Map<String, Object> esComplexSearchResponse() {
+    return null;
   }
 
   private Response getAllRecordResponse() {
@@ -118,50 +142,10 @@ public abstract class BaseActorTest {
     return response;
   }
 
-  protected void getCassandraResponseForId(boolean isDeleted) {
-
-    when(cassandraOperation.getRecordById(
-            Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
-        .thenReturn(getIdCassandraResponse(isDeleted));
-  }
-
-  protected Response getIdCassandraResponse(boolean isDeleted) {
-
-    Response response = new Response();
-    List<Map<String, Object>> resMapList = new ArrayList<>();
-    Map<String, Object> map = getMapResponse(isDeleted);
-    resMapList.add(map);
-    response.put(JsonKey.RESPONSE, resMapList);
-    return response;
-  }
-
-  protected abstract Map<String, Object> getMapResponse(boolean isDeleted);
-
-  protected void resetAllMocks() {
-    Mockito.reset(cassandraOperation);
-    Mockito.reset(interServiceCommunication);
-    when(ElasticSearchUtil.complexSearch(
-            Mockito.any(SearchDTO.class),
-            Mockito.eq(ProjectUtil.EsIndex.sunbird.getIndexName()),
-            Mockito.anyVararg()))
-        .thenReturn(getFailureResponse());
-  }
-
-  private Map<String, Object> getFailureResponse() {
+  private Map<String, Object> esGetResponse(boolean isSuccess) {
 
     HashMap<String, Object> response = new HashMap<>();
-    List<Map<String, Object>> content = new ArrayList<>();
-    response.put(JsonKey.CONTENT, content);
-    return response;
-  }
-
-  protected abstract Map<String, Object> getOrganisationsMap();
-
-  protected abstract Map<String, Object> createResponseGet();
-
-  private Response getSuccessResponse() {
-    Response response = new Response();
-    response.put(JsonKey.RESPONSE, JsonKey.SUCCESS);
+    if (isSuccess) response.put(JsonKey.CONTENT, "Any-content");
     return response;
   }
 }
