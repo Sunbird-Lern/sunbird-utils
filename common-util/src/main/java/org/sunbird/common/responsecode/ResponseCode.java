@@ -758,6 +758,8 @@ public enum ResponseCode {
   errorDialCodeAlreadyAssociated(
       ResponseMessage.Key.ERROR_DIAL_CODE_ALREADY_ASSOCIATED,
       ResponseMessage.Message.ERROR_DIAL_CODE_ALREADY_ASSOCIATED),
+  errorDialCodeLinkingFail(
+      ResponseMessage.Key.DIAL_CODE_LINKING_FAIL, ResponseMessage.Message.DIAL_CODE_LINKING_FAIL),
 
   OK(200),
   CLIENT_ERROR(400),
