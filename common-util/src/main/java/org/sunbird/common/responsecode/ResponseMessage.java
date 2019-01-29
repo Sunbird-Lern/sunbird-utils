@@ -411,6 +411,14 @@ public interface ResponseMessage {
     String INVALID_PAGE_SECTION = "Page section associated with the page is invalid.";
     String ERROR_RATE_LIMIT_EXCEEDED =
         "Your per {0} rate limit has exceeded. You can retry after some time.";
+    String ERROR_DIAL_CODE_NOT_RESERVED = "Dial code {0} is not reserved for Textbook ID {1}.";
+    String ERROR_INVALID_TOPIC =
+        "Topic <{0}> not found in the framework. Please check and correct.";
+    String ERROR_DIAL_CODE_DUPLICATE_ENTRY =
+        "Dial code {0} is associated with multiple identifier {1}.";
+    String ERROR_DIAL_CODE_ALREADY_ASSOCIATED =
+        "Dial code already associated with identifier {0} for given textbook.";
+    String DIAL_CODE_LINKING_FAILED = "Dial code linking failed.";
   }
 
   interface Key {
@@ -764,5 +772,10 @@ public interface ResponseMessage {
     String ERROR_RATE_LIMIT_EXCEEDED = "ERROR_RATE_LIMIT_EXCEEDED";
     String ERROR_INVALID_CONFIG_PARAM_VALUE = "ERROR_INVALID_CONFIG_PARAM_VALUE";
     String ERROR_MAX_SIZE_EXCEEDED = "ERROR_MAX_SIZE_EXCEEDED";
+    String ERROR_DIAL_CODE_NOT_RESERVED = "ERROR_DIAL_CODE_NOT_RESERVED";
+    String ERROR_INVALID_TOPIC = "ERROR_INVALID_TOPIC";
+    String ERROR_DIAL_CODE_DUPLICATE_ENTRY = "ERROR_DIAL_CODE_DUPLICATE_ENTRY";
+    String ERROR_DIAL_CODE_ALREADY_ASSOCIATED = "ERROR_DIAL_CODE_ALREADY_ASSOCIATED";
+    String DIAL_CODE_LINKING_FAILED = "DIAL_CODE_LINKING_FAILED";
   }
 }

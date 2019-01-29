@@ -1,10 +1,7 @@
 package org.sunbird.common.request;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
@@ -37,6 +34,22 @@ public class UserRequestValidator extends BaseRequestValidator {
     educationValidation(userRequest);
     jobProfileValidation(userRequest);
     validateWebPages(userRequest);
+    validateLocationCodes(userRequest);
+  }
+
+  private void validateLocationCodes(Request userRequest) {
+    Object locationCodes = userRequest.getRequest().get(JsonKey.LOCATION_CODES);
+    if ((locationCodes != null) && !(locationCodes instanceof List)) {
+      throw new ProjectCommonException(
+          ResponseCode.dataTypeError.getErrorCode(),
+          ProjectUtil.formatMessage(
+              ResponseCode.dataTypeError.getErrorMessage(), JsonKey.LOCATION_CODES, JsonKey.LIST),
+          ERROR_CODE);
+    }
+    if (locationCodes != null) {
+      List<String> set = new ArrayList(new HashSet<>((List<String>) locationCodes));
+      userRequest.getRequest().put(JsonKey.LOCATION_CODES, set);
+    }
   }
 
   private void validateUserName(Request userRequest) {
@@ -346,6 +359,7 @@ public class UserRequestValidator extends BaseRequestValidator {
         && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.ROOT_ORG_ID))) {
       ProjectCommonException.throwClientErrorException(ResponseCode.invalidRootOrganisationId);
     }
+    validateLocationCodes(userRequest);
     validateExtIdTypeAndProvider(userRequest);
     validateFrameworkDetails(userRequest);
   }

@@ -28,6 +28,7 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
+import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.responsecode.ResponseCode;
 
 public class TextBookTocUtil {
@@ -39,6 +40,13 @@ public class TextBookTocUtil {
     headers.put(AUTHORIZATION, BEARER + getConfigValue(SUNBIRD_AUTHORIZATION));
     headers.put("Content-Type", "application/json");
     return headers;
+  }
+
+  public static Response getRelatedFrameworkById(String frameworkId) {
+    log("TextBookTocUtil::getRelatedFrameworkById: frameworkId = " + frameworkId, INFO.name());
+    Map<String, String> requestParams = new HashMap<>();
+    requestParams.put("categories", "topic");
+    return handleReadRequest(frameworkId, JsonKey.FRAMEWORK_READ_API_URL, requestParams);
   }
 
   private static String requestParams(Map<String, String> params) {
