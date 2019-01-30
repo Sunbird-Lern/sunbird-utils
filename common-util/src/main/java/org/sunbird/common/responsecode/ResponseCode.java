@@ -761,6 +761,8 @@ public enum ResponseCode {
   errorDialCodeLinkingFail(
       ResponseMessage.Key.DIAL_CODE_LINKING_FAILED,
       ResponseMessage.Message.DIAL_CODE_LINKING_FAILED),
+  errorDialCodeLinkingClientError(
+      ResponseMessage.Key.ERROR_TEXTBOOK_UPDATE, ResponseMessage.Message.ERROR_TEXTBOOK_UPDATE),
 
   OK(200),
   CLIENT_ERROR(400),
