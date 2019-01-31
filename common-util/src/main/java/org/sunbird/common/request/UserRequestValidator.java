@@ -46,7 +46,7 @@ public class UserRequestValidator extends BaseRequestValidator {
               ResponseCode.dataTypeError.getErrorMessage(), JsonKey.LOCATION_CODES, JsonKey.LIST),
           ERROR_CODE);
     }
-    if(locationCodes != null) {
+    if (locationCodes != null) {
       List<String> set = new ArrayList(new HashSet<>((List<String>) locationCodes));
       userRequest.getRequest().put(JsonKey.LOCATION_CODES, set);
     }

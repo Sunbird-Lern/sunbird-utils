@@ -105,7 +105,10 @@ public class DefaultDecryptionServiceImpl implements DecryptionService {
       }
       return dValue;
     } catch (Exception ex) {
-      ProjectLogger.log("DefaultDecryptionServiceImpl:decrypt: Exception occurred with error message = " + ex.getMessage(), LoggerEnum.ERROR.name());
+      ProjectLogger.log(
+          "DefaultDecryptionServiceImpl:decrypt: Exception occurred with error message = "
+              + ex.getMessage(),
+          LoggerEnum.ERROR.name());
       if (throwExceptionOnFailure) {
         ProjectCommonException.throwClientErrorException(ResponseCode.userDataEncryptionError);
       }
@@ -116,5 +119,4 @@ public class DefaultDecryptionServiceImpl implements DecryptionService {
   private static Key generateKey() {
     return new SecretKeySpec(keyValue, ALGORITHM);
   }
-
 }
