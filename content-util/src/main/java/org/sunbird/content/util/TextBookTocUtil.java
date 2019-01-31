@@ -46,8 +46,7 @@ public class TextBookTocUtil {
     log("TextBookTocUtil::getRelatedFrameworkById: frameworkId = " + frameworkId, INFO.name());
     Map<String, String> requestParams = new HashMap<>();
     requestParams.put("categories", "topic");
-    return handleReadRequest(
-        frameworkId, JsonKey.FRAMEWORK_READ_API_URL, requestParams);
+    return handleReadRequest(frameworkId, JsonKey.FRAMEWORK_READ_API_URL, requestParams);
   }
 
   private static String requestParams(Map<String, String> params) {

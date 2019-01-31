@@ -53,5 +53,4 @@ public interface DecryptionService {
    * @throws ProjectCommonException in case of an error during decryption.
    */
   String decryptData(String data, boolean throwExceptionOnFailure);
-
 }
