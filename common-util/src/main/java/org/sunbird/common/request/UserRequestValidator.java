@@ -880,16 +880,15 @@ public class UserRequestValidator extends BaseRequestValidator {
 
   private void validateUserType(Request userRequest) {
     String userType = (String) userRequest.getRequest().get(JsonKey.USER_TYPE);
-    if (StringUtils.isNotBlank(userType)
-        && (!userType.equalsIgnoreCase(JsonKey.OTHER))
-        && (!userType.equalsIgnoreCase(JsonKey.TEACHER))) {
-
-      throw new ProjectCommonException(
-          ResponseCode.unSupportedUserType.getErrorCode(),
-          ResponseCode.unSupportedUserType.getErrorMessage(),
-          ResponseCode.CLIENT_ERROR.getResponseCode(),
-          userType,
-          StringFormatter.joinByComma(JsonKey.OTHER, JsonKey.TEACHER));
+    if ((!JsonKey.OTHER.equalsIgnoreCase(userType))
+        && (!JsonKey.TEACHER.equalsIgnoreCase(userType))) {
+      ProjectCommonException.throwClientErrorException(
+          ResponseCode.unSupportedUserType,
+          MessageFormat.format(
+              ResponseCode.unSupportedUserType.getErrorMessage(),
+              new String[] {
+                userType, StringFormatter.joinByComma(JsonKey.OTHER, JsonKey.TEACHER)
+              }));
     }
   }
 }
