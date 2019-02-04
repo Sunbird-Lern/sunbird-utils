@@ -29,6 +29,7 @@ public class UserRequestValidator extends BaseRequestValidator {
             JsonKey.ID_TYPE),
         userRequest);
     createUserBasicValidation(userRequest);
+    validateUserType(userRequest);
     phoneValidation(userRequest);
     addressValidation(userRequest);
     educationValidation(userRequest);
@@ -355,6 +356,7 @@ public class UserRequestValidator extends BaseRequestValidator {
     validateAddressField(userRequest);
     validateJobProfileField(userRequest);
     validateEducationField(userRequest);
+    validateUserType(userRequest);
     if (userRequest.getRequest().containsKey(JsonKey.ROOT_ORG_ID)
         && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.ROOT_ORG_ID))) {
       ProjectCommonException.throwClientErrorException(ResponseCode.invalidRootOrganisationId);
@@ -872,6 +874,21 @@ public class UserRequestValidator extends BaseRequestValidator {
                 StringFormatter.joinByDot(JsonKey.FRAMEWORK, fwRequestFieldEntry.getKey()));
           }
         }
+      }
+    }
+  }
+
+  private void validateUserType(Request userRequest) {
+    String userType = (String) userRequest.getRequest().get(JsonKey.USER_TYPE);
+    if (StringUtils.isNotBlank(userType)) {
+      if ((!userType.equalsIgnoreCase(JsonKey.OTHER))
+          && (!userType.equalsIgnoreCase(JsonKey.TEACHER))) {
+        throw new ProjectCommonException(
+            ResponseCode.unSupportedUserType.getErrorCode(),
+            ResponseCode.unSupportedUserType.getErrorMessage(),
+            ResponseCode.CLIENT_ERROR.getResponseCode(),
+            userType,
+            StringFormatter.joinByComma(JsonKey.OTHER, JsonKey.TEACHER));
       }
     }
   }

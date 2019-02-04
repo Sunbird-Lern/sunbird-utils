@@ -763,6 +763,11 @@ public enum ResponseCode {
       ResponseMessage.Message.DIAL_CODE_LINKING_FAILED),
   errorDialCodeLinkingClientError(
       ResponseMessage.Key.ERROR_TEXTBOOK_UPDATE, ResponseMessage.Message.ERROR_TEXTBOOK_UPDATE),
+  unSupportedUserType(
+      ResponseMessage.Key.UNSUPPORTED_USER_TYPE, ResponseMessage.Message.UNSUPPORTED_USER_TYPE),
+  errorTeacherCannotBelongsToCustodianOrg(
+      ResponseMessage.Key.TEACHER_CANNOT_BELONGS_TO_CUSTODIAN_ORG,
+      ResponseMessage.Message.TEACHER_CANNOT_BELONGS_TO_CUSTODIAN_ORG),
 
   OK(200),
   CLIENT_ERROR(400),
