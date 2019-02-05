@@ -885,7 +885,7 @@ public class UserRequestValidator extends BaseRequestValidator {
       ProjectCommonException.throwClientErrorException(
           ResponseCode.unSupportedUserType,
           MessageFormat.format(
-              ResponseCode.unSupportedUserType.getErrorMessage(),
+              ResponseCode.unsupportedUserType.getErrorMessage(),
               new String[] {
                 userType, StringFormatter.joinByComma(JsonKey.OTHER, JsonKey.TEACHER)
               }));
