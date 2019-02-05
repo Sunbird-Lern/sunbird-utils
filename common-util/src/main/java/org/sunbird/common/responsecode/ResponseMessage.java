@@ -420,6 +420,9 @@ public interface ResponseMessage {
         "Dial code already associated with identifier {0} for given textbook.";
     String DIAL_CODE_LINKING_FAILED = "Dial code linking failed.";
     String ERROR_TEXTBOOK_UPDATE = "{0}";
+    String UNSUPPORTED_USER_TYPE = "Unsupported userType {0}, valid values are : [{1}]";
+    String TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG =
+        "UserType Teacher Cannot belong to Custodian Organization";
   }
 
   interface Key {
@@ -779,5 +782,7 @@ public interface ResponseMessage {
     String ERROR_DIAL_CODE_ALREADY_ASSOCIATED = "ERROR_DIAL_CODE_ALREADY_ASSOCIATED";
     String DIAL_CODE_LINKING_FAILED = "DIAL_CODE_LINKING_FAILED";
     String ERROR_TEXTBOOK_UPDATE = "ERROR_TEXTBOOK_UPDATE";
+    String UNSUPPORTED_USER_TYPE = "UNSUPPORTED_USER_TYPE";
+    String TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG = "TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG";
   }
 }

@@ -840,6 +840,8 @@ public final class JsonKey {
   public static final String FRAMEWORK_READ_API_URL = "framework_read_api_url";
   public static final String DIAL_CODE_IDENTIFIER_MAP = "dialCodeIdentifierMap";
   public static final String LINK_DIAL_CODE_API = "sunbird_link_dial_code_api";
+  public static final String OTHER = "OTHER";
+  public static final String TEACHER = "TEACHER";
 
   private JsonKey() {}
 }
