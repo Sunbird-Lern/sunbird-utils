@@ -883,7 +883,7 @@ public class UserRequestValidator extends BaseRequestValidator {
     if ((!JsonKey.OTHER.equalsIgnoreCase(userType))
         && (!JsonKey.TEACHER.equalsIgnoreCase(userType))) {
       ProjectCommonException.throwClientErrorException(
-          ResponseCode.unSupportedUserType,
+          ResponseCode.unsupportedUserType,
           MessageFormat.format(
               ResponseCode.unsupportedUserType.getErrorMessage(),
               new String[] {
