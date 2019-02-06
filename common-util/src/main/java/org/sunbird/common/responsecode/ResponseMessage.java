@@ -422,6 +422,9 @@ public interface ResponseMessage {
     String ERROR_TEXTBOOK_UPDATE = "{0}";
     String ERROR_INVALID_LINKED_CONTENT_URL = "Linked Content {0} is not valid at row {1}.";
     String ERROR_DUPLICATE_LINKED_CONTENT = "Duplicate content {0} at row {1}.";
+    String UNSUPPORTED_USER_TYPE = "Unsupported userType {0}, valid values are : [{1}]";
+    String TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG =
+        "UserType Teacher Cannot belong to Custodian Organization";
   }
 
   interface Key {
@@ -783,5 +786,7 @@ public interface ResponseMessage {
     String ERROR_TEXTBOOK_UPDATE = "ERROR_TEXTBOOK_UPDATE";
     String ERROR_INVALID_LINKED_CONTENT_URL = "INVALID_LINKED_CONTENT_URL";
     String ERROR_DUPLICATE_LINKED_CONTENT = "DUPLICATE_LINKED_CONTENT";
+    String UNSUPPORTED_USER_TYPE = "UNSUPPORTED_USER_TYPE";
+    String TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG = "TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG";
   }
 }

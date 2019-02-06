@@ -845,5 +845,11 @@ public final class JsonKey {
   public static final String SUNBIRD_LINKED_CONTENT_BASE_URL = "sunbird_linked_content_base_url";
   public static final String LINKED_CONTENT_COLUMN_KEY = "Linked Content";
 
+  public static final String BATCHES = "batches";
+  public static final String ENROLLED_ON = "enrolledOn";
+  public static final String LAST_ACCESSED_ON = "lastAccessedOn";
+  public static final String OTHER = "OTHER";
+  public static final String TEACHER = "TEACHER";
+
   private JsonKey() {}
 }

@@ -1200,4 +1200,35 @@ public class ElasticSearchUtil {
     }
     return search;
   }
+
+  /**
+   * @param ids List of ids of document
+   * @param fields List of fields which needs to captured
+   * @param typeToSearch type of ES
+   * @return Map<String,Map<String,Objec>> It will return a map with id as key and the data from ES
+   *     as value
+   */
+  public static Map<String, Map<String, Object>> getEsResultByListOfIds(
+      List<String> ids, List<String> fields, ProjectUtil.EsType typeToSearch) {
+
+    Map<String, Object> filters = new HashMap<>();
+    filters.put(JsonKey.ID, ids);
+
+    SearchDTO searchDTO = new SearchDTO();
+    searchDTO.getAdditionalProperties().put(JsonKey.FILTERS, filters);
+    searchDTO.setFields(fields);
+
+    Map<String, Object> result =
+        complexSearch(
+            searchDTO, ProjectUtil.EsIndex.sunbird.getIndexName(), typeToSearch.getTypeName());
+    List<Map<String, Object>> esContent = (List<Map<String, Object>>) result.get(JsonKey.CONTENT);
+    return esContent
+        .stream()
+        .collect(
+            Collectors.toMap(
+                obj -> {
+                  return (String) obj.get("id");
+                },
+                val -> val));
+  }
 }
