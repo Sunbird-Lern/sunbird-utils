@@ -6,6 +6,7 @@ public class BadgingJsonKey {
   public static final String ASSERTION_SLUG = "assertionSlug";
   public static final String BADGE_CRITERIA = "criteria";
   public static final String BADGE_ID = "badgeId";
+  public static final String BADGE_IDs = "badgeIds";
   public static final String BADGE_ID_URL = "badgeIdUrl";
   public static final String BADGE_LIST = "badgeList";
   public static final String BADGE_SLUG = "badgeSlug";
@@ -63,6 +64,7 @@ public class BadgingJsonKey {
   public static final String BADGE_CLASS_ID = "badgeId";
   public static final String USER_BADGE_ASSERTION_DB = "user_badge_assertion";
   public static final String BADGE_ASSERTIONS = "badgeAssertions";
+  public static final String BADGE_ASSOCIATIONS = "badgeAssociations";
   public static final String BADGE = "badge";
   // this email will be set while sunbird installation and used to send the email
   // in case of assertion , if user email is absent.
