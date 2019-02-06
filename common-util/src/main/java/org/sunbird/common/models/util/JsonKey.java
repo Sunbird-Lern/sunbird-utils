@@ -843,6 +843,8 @@ public final class JsonKey {
   public static final String BATCHES = "batches";
   public static final String ENROLLED_ON = "enrolledOn";
   public static final String LAST_ACCESSED_ON = "lastAccessedOn";
-
+  public static final String OTHER = "OTHER";
+  public static final String TEACHER = "TEACHER";
+  
   private JsonKey() {}
 }
