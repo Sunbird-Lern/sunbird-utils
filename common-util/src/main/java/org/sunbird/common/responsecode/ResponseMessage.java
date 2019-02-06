@@ -420,6 +420,8 @@ public interface ResponseMessage {
         "Dial code already associated with identifier {0} for given textbook.";
     String DIAL_CODE_LINKING_FAILED = "Dial code linking failed.";
     String ERROR_TEXTBOOK_UPDATE = "{0}";
+    String ERROR_INVALID_LINKED_CONTENT_URL = "Linked Content {0} is not valid at row {1}.";
+    String ERROR_DUPLICATE_LINKED_CONTENT = "Duplicate content {0} at row {1}.";
   }
 
   interface Key {
@@ -779,5 +781,7 @@ public interface ResponseMessage {
     String ERROR_DIAL_CODE_ALREADY_ASSOCIATED = "ERROR_DIAL_CODE_ALREADY_ASSOCIATED";
     String DIAL_CODE_LINKING_FAILED = "DIAL_CODE_LINKING_FAILED";
     String ERROR_TEXTBOOK_UPDATE = "ERROR_TEXTBOOK_UPDATE";
+    String ERROR_INVALID_LINKED_CONTENT_URL = "INVALID_LINKED_CONTENT_URL";
+    String ERROR_DUPLICATE_LINKED_CONTENT = "DUPLICATE_LINKED_CONTENT";
   }
 }

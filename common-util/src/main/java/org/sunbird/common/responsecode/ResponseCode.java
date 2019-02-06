@@ -763,6 +763,12 @@ public enum ResponseCode {
       ResponseMessage.Message.DIAL_CODE_LINKING_FAILED),
   errorDialCodeLinkingClientError(
       ResponseMessage.Key.ERROR_TEXTBOOK_UPDATE, ResponseMessage.Message.ERROR_TEXTBOOK_UPDATE),
+  errorInvalidLinkedContentUrl(
+      ResponseMessage.Key.ERROR_INVALID_LINKED_CONTENT_URL,
+      ResponseMessage.Message.ERROR_INVALID_LINKED_CONTENT_URL),
+  errorDuplicateLinkedContentUrl(
+      ResponseMessage.Key.ERROR_DUPLICATE_LINKED_CONTENT,
+      ResponseMessage.Message.ERROR_DUPLICATE_LINKED_CONTENT),
 
   OK(200),
   CLIENT_ERROR(400),
