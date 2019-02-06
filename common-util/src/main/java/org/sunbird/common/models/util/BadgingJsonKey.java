@@ -63,6 +63,7 @@ public class BadgingJsonKey {
   public static final String VALID_BADGE_ROLES = "sunbird_valid_badge_roles";
   public static final String BADGE_CLASS_ID = "badgeId";
   public static final String USER_BADGE_ASSERTION_DB = "user_badge_assertion";
+  public static final String CONTENT_BADGE_ASSOCIATION_DB = "content_badge_association";
   public static final String BADGE_ASSERTIONS = "badgeAssertions";
   public static final String BADGE_ASSOCIATIONS = "badgeAssociations";
   public static final String BADGE = "badge";
