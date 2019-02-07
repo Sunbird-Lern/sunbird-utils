@@ -57,6 +57,8 @@ public class BadgingJsonKey {
   public static final String REVOKED = "revoked";
   public static final String CREATED_TS = "createdTS";
   public static final String BADGE_CLASS_NANE = "badgeClassName";
+  public static final String NAME = "name";
+  public static final String IMAGE = "image";
   public static final String BADGE_CLASS_IMAGE = "badgeClassImage";
   public static final String BADGE_ASSERTION = "badgeAssertion";
   public static final String SLUG = "slug";

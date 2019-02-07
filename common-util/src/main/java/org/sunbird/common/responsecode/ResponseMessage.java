@@ -105,8 +105,7 @@ public interface ResponseMessage {
     String DB_UPDATE_FAIL = "Db update operation failed.";
     String DATA_ALREADY_EXIST = "data already exist.";
     String INVALID_DATA = "Incorrect data.";
-    String ERROR_BADGE_ASSOCIATION_NOT_FOUND =
-        "Badge association not found for few/all requested badges";
+    String ERROR_BADGE_ASSOCIATION_NOT_FOUND = "Badge association not found for badgeIds {0}";
     String INVALID_COURSE_ID = "Course doesnot exist. Please provide a valid course identifier";
     String PHONE_NO_REQUIRED_ERROR = "Phone number is required.";
     String ORG_ID_MISSING = "Organization Id required.";
