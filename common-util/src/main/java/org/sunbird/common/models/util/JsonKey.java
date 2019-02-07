@@ -850,6 +850,9 @@ public final class JsonKey {
   public static final String LAST_ACCESSED_ON = "lastAccessedOn";
   public static final String OTHER = "OTHER";
   public static final String TEACHER = "TEACHER";
+  public static final String USER_EXTERNAL_ID = "userExternalId";
+  public static final String USER_ID_TYPE = "userIdType";
+  public static final String USER_PROVIDER = "userProvider";
 
   private JsonKey() {}
 }
