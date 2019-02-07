@@ -3,6 +3,7 @@ package org.sunbird.actor.core;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
+import akka.actor.ActorRef;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,12 +22,17 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.core.classloader.annotations.SuppressStaticInitializationFor;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.sunbird.actor.router.RequestRouter;
+import org.sunbird.actorutil.InterServiceCommunication;
+import org.sunbird.actorutil.InterServiceCommunicationFactory;
+import org.sunbird.actorutil.impl.InterServiceCommunicationImpl;
+import org.sunbird.actorutil.systemsettings.impl.SystemSettingClientImpl;
 import org.sunbird.cassandraimpl.CassandraOperationImpl;
 import org.sunbird.common.ElasticSearchUtil;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.KeyCloakConnectionProvider;
 import org.sunbird.common.models.util.ProjectUtil;
+import org.sunbird.common.request.Request;
 import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ServiceFactory;
 import org.sunbird.learner.util.Util;
@@ -37,6 +43,8 @@ import org.sunbird.learner.util.Util;
   ServiceFactory.class,
   RequestRouter.class,
   KeyCloakConnectionProvider.class,
+  InterServiceCommunicationFactory.class,
+  SystemSettingClientImpl.class,
   Util.class
 })
 @SuppressStaticInitializationFor({"util.AuthenticationHelper", "util.Global"})
@@ -44,6 +52,8 @@ import org.sunbird.learner.util.Util;
 public abstract class BaseActorTest {
 
   private static CassandraOperationImpl cassandraOperation = mock(CassandraOperationImpl.class);
+  static InterServiceCommunication interServiceCommunication =
+      mock(InterServiceCommunicationImpl.class);
 
   @Before
   public void before() {
@@ -65,8 +75,36 @@ public abstract class BaseActorTest {
 
     UserRepresentation userRepresentation = mock(UserRepresentation.class);
     when(userResource.toRepresentation()).thenReturn(userRepresentation);
+
+    ActorRef actorRef = mock(ActorRef.class);
+    PowerMockito.mockStatic(RequestRouter.class);
+    when(RequestRouter.getActor(Mockito.anyString())).thenReturn(actorRef);
+
+    PowerMockito.mockStatic(InterServiceCommunicationFactory.class);
+
+    when(InterServiceCommunicationFactory.getInstance())
+        .thenReturn(interServiceCommunication)
+        .thenReturn(interServiceCommunication);
+
+    PowerMockito.mockStatic(SystemSettingClientImpl.class);
+    SystemSettingClientImpl systemSettingClient = mock(SystemSettingClientImpl.class);
+    when(SystemSettingClientImpl.getInstance()).thenReturn(systemSettingClient);
+    when(systemSettingClient.getSystemSettingByFieldAndKey(
+            Mockito.any(ActorRef.class),
+            Mockito.anyString(),
+            Mockito.anyString(),
+            Mockito.anyObject()))
+        .thenReturn(new HashMap<>());
+
     cassandraMock();
     elasticSearchMock();
+  }
+
+  protected void interServiceCommunication() {
+    when(interServiceCommunication.getResponse(
+            Mockito.any(ActorRef.class), Mockito.any(Request.class)))
+        .thenReturn(getFirstEsInterServiceCommunicationResponse())
+        .thenReturn(getSecondEsInterServiceCommunicationResponse());
   }
 
   private void elasticSearchMock() {
@@ -79,10 +117,8 @@ public abstract class BaseActorTest {
 
     when(ElasticSearchUtil.getDataByIdentifier(
             Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
-        .thenReturn(getAbstractMethod());
+        .thenReturn(getEsDataByIdentifierResponse());
   }
-
-  protected abstract Map<String, Object> getAbstractMethod();
 
   private void cassandraMock() {
 
@@ -106,10 +142,6 @@ public abstract class BaseActorTest {
         .thenReturn(getCassandraRecordByIdForBulkUploadResponse());
   }
 
-  protected abstract Response getCassandraRecordByIdForBulkUploadResponse();
-
-  public abstract Response getRecordByIdResponse();
-
   private static Response getSuccessResponse() {
     Response response = new Response();
     response.put(JsonKey.RESPONSE, JsonKey.SUCCESS);
@@ -125,4 +157,14 @@ public abstract class BaseActorTest {
     response.put(JsonKey.RESPONSE, resMapList);
     return response;
   }
+
+  protected abstract Map<String, Object> getEsDataByIdentifierResponse();
+
+  protected abstract Response getCassandraRecordByIdForBulkUploadResponse();
+
+  protected abstract Response getRecordByIdResponse();
+
+  protected abstract Response getFirstEsInterServiceCommunicationResponse();
+
+  protected abstract Response getSecondEsInterServiceCommunicationResponse();
 }
