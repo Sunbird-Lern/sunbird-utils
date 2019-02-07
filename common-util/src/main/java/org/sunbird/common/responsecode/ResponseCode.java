@@ -34,6 +34,9 @@ public enum ResponseCode {
   errorInvalidConfigParamValue(
       ResponseMessage.Key.ERROR_INVALID_CONFIG_PARAM_VALUE,
       ResponseMessage.Message.ERROR_INVALID_CONFIG_PARAM_VALUE),
+  errorBadgeAssociationNotFound(
+      ResponseMessage.Key.ERROR_BADGE_ASSOCIATION_NOT_FOUND,
+      ResponseMessage.Message.ERROR_BADGE_ASSOCIATION_NOT_FOUND),
   errorMaxSizeExceeded(
       ResponseMessage.Key.ERROR_MAX_SIZE_EXCEEDED, ResponseMessage.Message.ERROR_MAX_SIZE_EXCEEDED),
   apiKeyRequired(
