@@ -769,8 +769,7 @@ public enum ResponseCode {
   errorDuplicateLinkedContentUrl(
       ResponseMessage.Key.ERROR_DUPLICATE_LINKED_CONTENT,
       ResponseMessage.Message.ERROR_DUPLICATE_LINKED_CONTENT),
-  unsupportedUserType(
-      ResponseMessage.Key.UNSUPPORTED_USER_TYPE, ResponseMessage.Message.UNSUPPORTED_USER_TYPE),
+
   errorTeacherCannotBelongToCustodianOrg(
       ResponseMessage.Key.TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG,
       ResponseMessage.Message.TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG),
