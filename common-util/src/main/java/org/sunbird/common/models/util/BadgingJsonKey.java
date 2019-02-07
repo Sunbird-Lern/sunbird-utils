@@ -27,6 +27,7 @@ public class BadgingJsonKey {
   public static final String ISSUER_URL = "issuerUrl";
   public static final String ISSUERS = "issuers";
   public static final String ASSERTION_ID = "assertionId";
+  public static final String ASSOCIATION_ID = "associationId";
   public static final String JSON_CRITERIA = "json.criteria";
   public static final String JSON_DESCRIPTION = "json.description";
   public static final String JSON_EMAIL = "json.email";
