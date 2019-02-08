@@ -34,6 +34,9 @@ public enum ResponseCode {
   errorInvalidConfigParamValue(
       ResponseMessage.Key.ERROR_INVALID_CONFIG_PARAM_VALUE,
       ResponseMessage.Message.ERROR_INVALID_CONFIG_PARAM_VALUE),
+  errorBadgeAssociationNotFound(
+      ResponseMessage.Key.ERROR_BADGE_ASSOCIATION_NOT_FOUND,
+      ResponseMessage.Message.ERROR_BADGE_ASSOCIATION_NOT_FOUND),
   errorMaxSizeExceeded(
       ResponseMessage.Key.ERROR_MAX_SIZE_EXCEEDED, ResponseMessage.Message.ERROR_MAX_SIZE_EXCEEDED),
   apiKeyRequired(
@@ -763,6 +766,16 @@ public enum ResponseCode {
       ResponseMessage.Message.DIAL_CODE_LINKING_FAILED),
   errorDialCodeLinkingClientError(
       ResponseMessage.Key.ERROR_TEXTBOOK_UPDATE, ResponseMessage.Message.ERROR_TEXTBOOK_UPDATE),
+  errorInvalidLinkedContentUrl(
+      ResponseMessage.Key.ERROR_INVALID_LINKED_CONTENT_URL,
+      ResponseMessage.Message.ERROR_INVALID_LINKED_CONTENT_URL),
+  errorDuplicateLinkedContentUrl(
+      ResponseMessage.Key.ERROR_DUPLICATE_LINKED_CONTENT,
+      ResponseMessage.Message.ERROR_DUPLICATE_LINKED_CONTENT),
+
+  errorTeacherCannotBelongToCustodianOrg(
+      ResponseMessage.Key.TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG,
+      ResponseMessage.Message.TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG),
 
   OK(200),
   CLIENT_ERROR(400),

@@ -71,6 +71,7 @@ public enum ActorOperations {
   ORG_CREATION_METRICS_DATA("orgCreationMetricsData"),
   ORG_CONSUMPTION_METRICS_DATA("orgConsumptionMetricsData"),
   COURSE_PROGRESS_METRICS("courseProgressMetrics"),
+  COURSE_PROGRESS_METRICS_V2("courseProgressMetricsV2"),
   COURSE_CREATION_METRICS("courseConsumptionMetrics"),
   USER_CREATION_METRICS("userCreationMetrics"),
   USER_CONSUMPTION_METRICS("userConsumptionMetrics"),

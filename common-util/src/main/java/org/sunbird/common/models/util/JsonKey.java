@@ -840,6 +840,19 @@ public final class JsonKey {
   public static final String FRAMEWORK_READ_API_URL = "framework_read_api_url";
   public static final String DIAL_CODE_IDENTIFIER_MAP = "dialCodeIdentifierMap";
   public static final String LINK_DIAL_CODE_API = "sunbird_link_dial_code_api";
+  public static final String LINKED_CONTENT = "linkedContent";
+  public static final String MAX_ALLOWED_CONTENT_SIZE = "max_allowed_content_size";
+  public static final String SUNBIRD_LINKED_CONTENT_BASE_URL = "sunbird_linked_content_base_url";
+  public static final String LINKED_CONTENT_COLUMN_KEY = "Linked Content";
+
+  public static final String BATCHES = "batches";
+  public static final String ENROLLED_ON = "enrolledOn";
+  public static final String LAST_ACCESSED_ON = "lastAccessedOn";
+  public static final String OTHER = "OTHER";
+  public static final String TEACHER = "TEACHER";
+  public static final String USER_EXTERNAL_ID = "userExternalId";
+  public static final String USER_ID_TYPE = "userIdType";
+  public static final String USER_PROVIDER = "userProvider";
   public static final Object USER_NAME_HEADER = "User Name";
   public static final Object ORG_NAME_HEADER = "Org Name";
   public static final Object SCHOOL_NAME_HEADER = "School Name";

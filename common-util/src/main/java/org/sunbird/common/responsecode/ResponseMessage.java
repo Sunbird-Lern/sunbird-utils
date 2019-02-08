@@ -105,6 +105,7 @@ public interface ResponseMessage {
     String DB_UPDATE_FAIL = "Db update operation failed.";
     String DATA_ALREADY_EXIST = "data already exist.";
     String INVALID_DATA = "Incorrect data.";
+    String ERROR_BADGE_ASSOCIATION_NOT_FOUND = "Badge association not found for badgeIds {0}";
     String INVALID_COURSE_ID = "Course doesnot exist. Please provide a valid course identifier";
     String PHONE_NO_REQUIRED_ERROR = "Phone number is required.";
     String ORG_ID_MISSING = "Organization Id required.";
@@ -420,6 +421,11 @@ public interface ResponseMessage {
         "Dial code already associated with identifier {0} for given textbook.";
     String DIAL_CODE_LINKING_FAILED = "Dial code linking failed.";
     String ERROR_TEXTBOOK_UPDATE = "{0}";
+
+    String ERROR_INVALID_LINKED_CONTENT_URL = "Linked Content {0} is not valid at row {1}.";
+    String ERROR_DUPLICATE_LINKED_CONTENT = "Duplicate content {0} at row {1}.";
+    String TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG =
+        "User type teacher is not supported for custodian organisation users";
   }
 
   interface Key {
@@ -510,6 +516,7 @@ public interface ResponseMessage {
     String DB_UPDATE_FAIL = "DB_UPDATE_FAIL";
     String DATA_ALREADY_EXIST = "DATA_ALREADY_EXIST";
     String INVALID_DATA = "INVALID_DATA";
+    String ERROR_BADGE_ASSOCIATION_NOT_FOUND = "ERROR_BADGE_ASSOCIATION_NOT_FOUND";
     String INVALID_COURSE_ID = "INVALID_COURSE_ID";
     String PHONE_NO_REQUIRED_ERROR = "PHONE_NO_REQUIRED_ERROR";
     String ORG_ID_MISSING = "ORG_ID_MISSING";
@@ -779,5 +786,8 @@ public interface ResponseMessage {
     String ERROR_DIAL_CODE_ALREADY_ASSOCIATED = "ERROR_DIAL_CODE_ALREADY_ASSOCIATED";
     String DIAL_CODE_LINKING_FAILED = "DIAL_CODE_LINKING_FAILED";
     String ERROR_TEXTBOOK_UPDATE = "ERROR_TEXTBOOK_UPDATE";
+    String ERROR_INVALID_LINKED_CONTENT_URL = "INVALID_LINKED_CONTENT_URL";
+    String ERROR_DUPLICATE_LINKED_CONTENT = "DUPLICATE_LINKED_CONTENT";
+    String TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG = "TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG";
   }
 }

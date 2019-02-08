@@ -6,6 +6,7 @@ public class BadgingJsonKey {
   public static final String ASSERTION_SLUG = "assertionSlug";
   public static final String BADGE_CRITERIA = "criteria";
   public static final String BADGE_ID = "badgeId";
+  public static final String BADGE_IDs = "badgeIds";
   public static final String BADGE_ID_URL = "badgeIdUrl";
   public static final String BADGE_LIST = "badgeList";
   public static final String BADGE_SLUG = "badgeSlug";
@@ -26,6 +27,7 @@ public class BadgingJsonKey {
   public static final String ISSUER_URL = "issuerUrl";
   public static final String ISSUERS = "issuers";
   public static final String ASSERTION_ID = "assertionId";
+  public static final String ASSOCIATION_ID = "associationId";
   public static final String JSON_CRITERIA = "json.criteria";
   public static final String JSON_DESCRIPTION = "json.description";
   public static final String JSON_EMAIL = "json.email";
@@ -55,6 +57,8 @@ public class BadgingJsonKey {
   public static final String REVOKED = "revoked";
   public static final String CREATED_TS = "createdTS";
   public static final String BADGE_CLASS_NANE = "badgeClassName";
+  public static final String NAME = "name";
+  public static final String IMAGE = "image";
   public static final String BADGE_CLASS_IMAGE = "badgeClassImage";
   public static final String BADGE_ASSERTION = "badgeAssertion";
   public static final String SLUG = "slug";
@@ -62,7 +66,9 @@ public class BadgingJsonKey {
   public static final String VALID_BADGE_ROLES = "sunbird_valid_badge_roles";
   public static final String BADGE_CLASS_ID = "badgeId";
   public static final String USER_BADGE_ASSERTION_DB = "user_badge_assertion";
+  public static final String CONTENT_BADGE_ASSOCIATION_DB = "content_badge_association";
   public static final String BADGE_ASSERTIONS = "badgeAssertions";
+  public static final String BADGE_ASSOCIATIONS = "badgeAssociations";
   public static final String BADGE = "badge";
   // this email will be set while sunbird installation and used to send the email
   // in case of assertion , if user email is absent.
