@@ -850,6 +850,8 @@ public final class JsonKey {
   public static final String LAST_ACCESSED_ON = "lastAccessedOn";
   public static final String OTHER = "OTHER";
   public static final String TEACHER = "TEACHER";
+  public static final String TEXTBOOK_TOC_LINKED_CONTENT_SETTINGS =
+      "textbook_toc_linked_content_settings";
 
   private JsonKey() {}
 }
