@@ -43,7 +43,7 @@ public class OrgMemberRequestValidator extends BaseOrgRequestValidator {
           " Please provide organizationId or ExternalId,Provider ");
     }
     validateParam(
-        (String) request.getRequest().get(JsonKey.USER_PROVIDER),
+        (String) request.getRequest().get(JsonKey.PROVIDER),
         ResponseCode.mandatoryParamsMissing,
         JsonKey.PROVIDER);
   }
