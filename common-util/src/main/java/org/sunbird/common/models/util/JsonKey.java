@@ -850,11 +850,13 @@ public final class JsonKey {
   public static final String LAST_ACCESSED_ON = "lastAccessedOn";
   public static final String OTHER = "OTHER";
   public static final String TEACHER = "TEACHER";
-  public static final String TEXTBOOK_TOC_LINKED_CONTENT_SETTINGS =
-      "textbook_toc_linked_content_settings";
+  public static final String SUNBIRD_TOC_LINKED_CONTENT_COLUMN_NAME =
+      "sunbird_toc_linked_content_column_name";
   public static final String USER_EXTERNAL_ID = "userExternalId";
   public static final String USER_ID_TYPE = "userIdType";
   public static final String USER_PROVIDER = "userProvider";
+  public static final String SUNBIRD_TOC_MAX_FIRST_LEVEL_UNITS =
+      "sunbird_toc_max_first_level_units";
 
   private JsonKey() {}
 }
