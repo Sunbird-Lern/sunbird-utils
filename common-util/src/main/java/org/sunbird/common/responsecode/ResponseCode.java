@@ -34,6 +34,9 @@ public enum ResponseCode {
   errorInvalidConfigParamValue(
       ResponseMessage.Key.ERROR_INVALID_CONFIG_PARAM_VALUE,
       ResponseMessage.Message.ERROR_INVALID_CONFIG_PARAM_VALUE),
+  errorBadgeAssociationNotFound(
+      ResponseMessage.Key.ERROR_BADGE_ASSOCIATION_NOT_FOUND,
+      ResponseMessage.Message.ERROR_BADGE_ASSOCIATION_NOT_FOUND),
   errorMaxSizeExceeded(
       ResponseMessage.Key.ERROR_MAX_SIZE_EXCEEDED, ResponseMessage.Message.ERROR_MAX_SIZE_EXCEEDED),
   apiKeyRequired(
@@ -769,8 +772,7 @@ public enum ResponseCode {
   errorDuplicateLinkedContentUrl(
       ResponseMessage.Key.ERROR_DUPLICATE_LINKED_CONTENT,
       ResponseMessage.Message.ERROR_DUPLICATE_LINKED_CONTENT),
-  unsupportedUserType(
-      ResponseMessage.Key.UNSUPPORTED_USER_TYPE, ResponseMessage.Message.UNSUPPORTED_USER_TYPE),
+
   errorTeacherCannotBelongToCustodianOrg(
       ResponseMessage.Key.TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG,
       ResponseMessage.Message.TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG),

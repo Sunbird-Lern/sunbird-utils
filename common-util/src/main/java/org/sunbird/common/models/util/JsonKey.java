@@ -852,6 +852,9 @@ public final class JsonKey {
   public static final String TEACHER = "TEACHER";
   public static final String TEXTBOOK_TOC_LINKED_CONTENT_SETTINGS =
       "textbook_toc_linked_content_settings";
+  public static final String USER_EXTERNAL_ID = "userExternalId";
+  public static final String USER_ID_TYPE = "userIdType";
+  public static final String USER_PROVIDER = "userProvider";
 
   private JsonKey() {}
 }
