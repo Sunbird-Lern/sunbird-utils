@@ -1,0 +1,1 @@
+insert into sunbird.role_group (id,name) values ('REPORT_ADMIN','Report Admin');
