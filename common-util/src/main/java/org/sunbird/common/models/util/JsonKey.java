@@ -854,6 +854,12 @@ public final class JsonKey {
   public static final String USER_ID_TYPE = "userIdType";
   public static final String USER_PROVIDER = "userProvider";
   public static final String SORTBY = "sortBy";
+  public static final String SORT_ORDER = "sortOrder";
+  public static final String NUMERIC = "NUMERIC";
+  public static final String DEFAULT_LIMIT = "200";
+  public static final String DEFAULT_OFFSER = "0";
+  public static final String ASC = "asc";
+  public static final String DESC = "desc";
 
   private JsonKey() {}
 }
