@@ -1,1 +1,1 @@
-insert into sunbird.role_group (id,name) values ('REPORT_ADMIN','Report Admin');
+insert into sunbird.role (id,name,rolegroupid,status) values ('REPORT_ADMIN’,’Report Admin’,['COURSE_MENTOR'],1);
