@@ -118,7 +118,7 @@ public interface ResponseMessage {
     String INVALID_PERIOD = "Time Period is invalid";
     String USER_NOT_FOUND = "user not found.";
     String ID_REQUIRED_ERROR = "For deleting a record, Id is required.";
-    String DATA_TYPE_ERROR = "{0} data type should be of {1}.";
+    String DATA_TYPE_ERROR = "Data type of {0} should be {1}.";
     String ADDRESS_ERROR = "In {0}, {1} is mandatory.";
     String ADDRESS_TYPE_ERROR = "Please provide correct address Type.";
     String NAME_OF_INSTITUTION_ERROR = "Please provide name of Institution.";

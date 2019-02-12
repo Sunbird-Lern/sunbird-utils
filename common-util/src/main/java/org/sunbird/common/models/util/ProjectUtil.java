@@ -364,7 +364,7 @@ public class ProjectUtil {
   public enum EsType {
     course("batch"),
     content("content"),
-    badge("badge"),
+    badgeassociations("badgeassociations"),
     user("user"),
     organisation("org"),
     usercourses("usercourses"),
