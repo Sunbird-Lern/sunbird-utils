@@ -862,6 +862,11 @@ public final class JsonKey {
       "sunbird_toc_linked_content_column_name";
   public static final String SUNBIRD_TOC_MAX_FIRST_LEVEL_UNITS =
       "sunbird_toc_max_first_level_units";
+  public static final Object USER_NAME_HEADER = "User Name";
+  public static final Object ORG_NAME_HEADER = "Org Name";
+  public static final Object SCHOOL_NAME_HEADER = "School Name";
+  public static final Object COURSE_ENROLL_DATE_HEADER = "Enrollment Date";
+  public static final Object PROGRESS_HEADER = "Progress";
 
   private JsonKey() {}
 }
