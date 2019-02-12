@@ -862,6 +862,8 @@ public final class JsonKey {
       "sunbird_toc_linked_content_column_name";
   public static final String SUNBIRD_TOC_MAX_FIRST_LEVEL_UNITS =
       "sunbird_toc_max_first_level_units";
+  public static final String TEXTBOOK_TOC_OUTPUT_MAPPING = "textbook_toc_output_mapping";
+  public static final String TEXTBOOK_UNIT = "TextBookUnit";
 
   private JsonKey() {}
 }

@@ -2,7 +2,6 @@ package org.sunbird.content.textbook;
 
 import static java.util.Optional.ofNullable;
 import static org.sunbird.common.models.util.JsonKey.NAME;
-import static org.sunbird.common.models.util.JsonKey.TEXTBOOK_TOC_INPUT_MAPPING;
 import static org.sunbird.common.models.util.JsonKey.TEXT_TOC_FILE_SUPPRESS_COLUMN_NAMES;
 import static org.sunbird.common.models.util.ProjectUtil.getConfigValue;
 import static org.sunbird.content.util.TextBookTocUtil.getObjectFrom;
@@ -15,11 +14,12 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
+import org.sunbird.common.models.util.JsonKey;
 
 public class TextBookTocFileConfig {
 
   private static Map<String, Object> inputMapping =
-      getObjectFrom(getConfigValue(TEXTBOOK_TOC_INPUT_MAPPING), Map.class);
+      getObjectFrom(getConfigValue(JsonKey.TEXTBOOK_TOC_OUTPUT_MAPPING), Map.class);
 
   protected static Optional<Map<String, Object>> METADATA =
       ofNullable(inputMapping.get("metadata")).map(e -> (Map<String, Object>) e);
