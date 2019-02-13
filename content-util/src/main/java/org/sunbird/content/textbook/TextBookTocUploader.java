@@ -310,6 +310,14 @@ public class TextBookTocUploader {
       List<Map<String, Object>> children =
           (List<Map<String, Object>>)
               ((Map<String, Object>) childrenMap.get(identifier)).get(JsonKey.CHILDREN);
+      int childWithContentTypeAsTextbook = 0;
+      for (Map<String, Object> child : children) {
+        if (JsonKey.TEXTBOOK.equalsIgnoreCase((String) child.get(JsonKey.CONTENT_TYPE))
+            || JsonKey.TEXTBOOK_UNIT.equalsIgnoreCase((String) child.get(JsonKey.CONTENT_TYPE))) {
+          childWithContentTypeAsTextbook++;
+        }
+      }
+      final int size = childWithContentTypeAsTextbook;
       children.forEach(
           s -> {
             if (!(JsonKey.TEXTBOOK.equalsIgnoreCase((String) s.get(JsonKey.CONTENT_TYPE))
@@ -320,7 +328,7 @@ public class TextBookTocUploader {
               String key =
                   MessageFormat.format(
                       ProjectUtil.getConfigValue(JsonKey.SUNBIRD_TOC_LINKED_CONTENT_COLUMN_NAME),
-                      (((int) s.get(JsonKey.INDEX))));
+                      (((int) s.get(JsonKey.INDEX)) - size));
               if (ROW_METADATA.contains(key)) {
                 row.put(key, url);
               }
