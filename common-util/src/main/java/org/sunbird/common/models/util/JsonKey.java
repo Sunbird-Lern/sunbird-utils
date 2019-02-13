@@ -869,6 +869,9 @@ public final class JsonKey {
   public static final Object SCHOOL_NAME_HEADER = "School Name";
   public static final Object COURSE_ENROLL_DATE_HEADER = "Enrollment Date";
   public static final Object PROGRESS_HEADER = "Progress";
+  public static final Object DATE_TIME_HEADER = "Date time stamp";
+  public static final Object PHONE_HEADER = "Mobile Number";
+  public static final Object EMAIL_HEADER = "Email Id";
 
   private JsonKey() {}
 }
