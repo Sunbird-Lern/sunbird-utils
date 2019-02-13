@@ -48,6 +48,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.IntStream;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
@@ -328,6 +329,7 @@ public class TextBookTocUploader {
     }
   }
 
+  @SuppressWarnings("unchecked")
   private List<Map<String, Object>> getParentChildHierarchy(
       String parentId, List<Map<String, Object>> children) {
     List<Map<String, Object>> hierarchyList = new ArrayList<>();
@@ -343,7 +345,7 @@ public class TextBookTocUploader {
       contentIds.put(JsonKey.INDEX, child.get(JsonKey.INDEX));
       contentIds.put(JsonKey.CONTENT_TYPE, child.get(JsonKey.CONTENT_TYPE));
       contentIdList.add(contentIds);
-      if (null != child.get(JsonKey.CHILDREN)) {
+      if (CollectionUtils.isNotEmpty((List<Map<String, Object>>) child.get(JsonKey.CHILDREN))) {
         hierarchyList.addAll(
             getParentChildHierarchy(
                 (String) child.get(JsonKey.IDENTIFIER),
