@@ -399,6 +399,6 @@ public class TextBookTocUploader {
     for (String e : ROW_METADATA) {
       updateRowWithDataSuppressColumns(content, e, -1);
     }
-    updateRowWithLinkedContent(content);
+    updateRowWithLinkedContent();
   }
 }
