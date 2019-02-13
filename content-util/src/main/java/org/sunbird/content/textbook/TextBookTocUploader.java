@@ -319,7 +319,7 @@ public class TextBookTocUploader {
               String key =
                   MessageFormat.format(
                       ProjectUtil.getConfigValue(JsonKey.SUNBIRD_TOC_LINKED_CONTENT_COLUMN_NAME),
-                      (((int) s.get(JsonKey.INDEX)) - 1));
+                      (((int) s.get(JsonKey.INDEX))));
               if (ROW_METADATA.contains(key)) {
                 row.put(key, url);
               }
