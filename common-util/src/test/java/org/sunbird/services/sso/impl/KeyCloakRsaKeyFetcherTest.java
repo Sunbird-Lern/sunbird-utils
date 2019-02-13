@@ -2,9 +2,8 @@ package org.sunbird.services.sso.impl;
 
 import static org.powermock.api.mockito.PowerMockito.when;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import java.security.PublicKey;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -36,8 +35,6 @@ import org.sunbird.common.models.util.KeyCloakConnectionProvider;
   HttpResponse.class,
   HttpEntity.class,
   EntityUtils.class,
-  JsonObject.class,
-  JsonParser.class
 })
 public class KeyCloakRsaKeyFetcherTest {
 
@@ -47,7 +44,6 @@ public class KeyCloakRsaKeyFetcherTest {
   private static CloseableHttpClient client = null;
   private static CloseableHttpResponse response;
   private static HttpEntity httpEntity;
-  private final JsonParser jsonParser = PowerMockito.mock(JsonParser.class);
 
   @Before
   public void setUp() throws Exception {
@@ -58,7 +54,7 @@ public class KeyCloakRsaKeyFetcherTest {
     when(httpClientBuilder.build()).thenReturn(client);
     httpEntity = PowerMockito.mock(HttpEntity.class);
     PowerMockito.mockStatic(EntityUtils.class);
-    PowerMockito.whenNew(JsonParser.class).withNoArguments().thenReturn(jsonParser);
+    StringUtils.isEmpty("");
   }
 
   @Test

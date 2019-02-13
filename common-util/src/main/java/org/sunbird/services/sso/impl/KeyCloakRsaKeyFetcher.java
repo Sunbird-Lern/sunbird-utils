@@ -1,8 +1,7 @@
 package org.sunbird.services.sso.impl;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.KeyFactory;
@@ -109,18 +108,18 @@ public class KeyCloakRsaKeyFetcher {
    * @param response Public key JSON response string
    */
   private Map<String, String> getValuesFromJson(String response) {
-    JsonParser parser = new JsonParser();
+    ObjectMapper mapper = new ObjectMapper();
     Map<String, String> values = new HashMap<>();
-    JsonObject json = (JsonObject) parser.parse(response);
     try {
-      Object key = json.get("keys");
-      if (key != null) {
-        JsonArray value = (JsonArray) parser.parse(key.toString());
-        JsonObject v = (JsonObject) value.get(0);
-        values.put("modulusBase64", v.get("n").getAsString().toString());
-        values.put("exponentBase64", v.get("e").getAsString().toString());
+      JsonNode res = mapper.readTree(response);
+      JsonNode keys = res.get("keys");
+      if (keys != null) {
+
+        JsonNode value = keys.get(0);
+        values.put("modulusBase64", value.get("n").asText());
+        values.put("exponentBase64", value.get("e").asText());
       }
-    } catch (NullPointerException e) {
+    } catch (Exception e) {
       ProjectLogger.log(
           "KeyCloakRsaKeyFetcher:getValuesFromJson: Exception occurred with message = "
               + e.getMessage(),
