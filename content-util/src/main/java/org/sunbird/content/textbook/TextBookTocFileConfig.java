@@ -18,14 +18,14 @@ import org.sunbird.common.models.util.JsonKey;
 
 public class TextBookTocFileConfig {
 
-  private static Map<String, Object> inputMapping =
+  private static Map<String, Object> outputMapping =
       getObjectFrom(getConfigValue(JsonKey.TEXTBOOK_TOC_OUTPUT_MAPPING), Map.class);
 
   protected static Optional<Map<String, Object>> METADATA =
-      ofNullable(inputMapping.get("metadata")).map(e -> (Map<String, Object>) e);
+      ofNullable(outputMapping.get("metadata")).map(e -> (Map<String, Object>) e);
 
   protected static Optional<Map<String, Object>> HIERARCHY =
-      ofNullable(inputMapping.get("hierarchy")).map(e -> (Map<String, Object>) e);
+      ofNullable(outputMapping.get("hierarchy")).map(e -> (Map<String, Object>) e);
 
   protected static boolean SUPPRESS_EMPTY_COLUMNS =
       ofNullable(getConfigValue(TEXT_TOC_FILE_SUPPRESS_COLUMN_NAMES))
@@ -48,7 +48,7 @@ public class TextBookTocFileConfig {
 
   static {
     int currPos = 0;
-    for (Entry e : inputMapping.entrySet()) {
+    for (Entry e : outputMapping.entrySet()) {
       if (e.getValue() instanceof String) {
         currPos += 1;
       }
@@ -71,7 +71,7 @@ public class TextBookTocFileConfig {
 
   private static List keyNames() {
     List<String> keys = new ArrayList<>();
-    for (Entry<String, Object> e : inputMapping.entrySet()) {
+    for (Entry<String, Object> e : outputMapping.entrySet()) {
       if (e.getValue() instanceof String) {
         keys.add(e.getKey());
       }
@@ -86,7 +86,7 @@ public class TextBookTocFileConfig {
 
   private static List columnNames() {
     List<String> columns = new ArrayList<>();
-    for (Entry<String, Object> e : inputMapping.entrySet()) {
+    for (Entry<String, Object> e : outputMapping.entrySet()) {
       if (e.getValue() instanceof String) {
         columns.add((String) e.getValue());
       }
@@ -101,7 +101,7 @@ public class TextBookTocFileConfig {
 
   private static List compulsoryColumnsKeys() {
     List<String> keys = new ArrayList<>();
-    for (Entry<String, Object> e : inputMapping.entrySet()) {
+    for (Entry<String, Object> e : outputMapping.entrySet()) {
       if (StringUtils.equalsIgnoreCase("hierarchy", e.getKey())) {
         continue;
       }
@@ -119,7 +119,7 @@ public class TextBookTocFileConfig {
 
   private static List rowMetadata() {
     Set<String> props = new HashSet<>();
-    for (Entry<String, Object> e : inputMapping.entrySet()) {
+    for (Entry<String, Object> e : outputMapping.entrySet()) {
       if (StringUtils.equalsIgnoreCase("hierarchy", e.getKey())) {
         continue;
       }
