@@ -1,12 +1,12 @@
 package org.sunbird.telemetry.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ws.rs.core.MediaType;
 import org.apache.http.HttpHeaders;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
