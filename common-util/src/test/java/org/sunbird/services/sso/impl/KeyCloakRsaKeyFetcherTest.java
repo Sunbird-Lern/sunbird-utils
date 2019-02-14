@@ -3,7 +3,6 @@ package org.sunbird.services.sso.impl;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 import java.security.PublicKey;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -54,7 +53,6 @@ public class KeyCloakRsaKeyFetcherTest {
     when(httpClientBuilder.build()).thenReturn(client);
     httpEntity = PowerMockito.mock(HttpEntity.class);
     PowerMockito.mockStatic(EntityUtils.class);
-    StringUtils.isEmpty("");
   }
 
   @Test
