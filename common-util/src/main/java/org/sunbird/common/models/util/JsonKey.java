@@ -663,6 +663,7 @@ public final class JsonKey {
   public static final String NON_PRIMARY_KEY = "NonPK";
   public static final String PARENT_ID = "parentId";
   public static final String CREATED_ON = "createdOn";
+  public static final String UPDATED_ON = "updatedOn";
   public static final String LAST_UPDATED_ON = "lastUpdatedOn";
   public static final String LAST_UPDATED_BY = "lastUpdatedBy";
   public static final String SUNBIRD_DEFAULT_CHANNEL = "sunbird_default_channel";
@@ -862,11 +863,16 @@ public final class JsonKey {
       "sunbird_toc_linked_content_column_name";
   public static final String SUNBIRD_TOC_MAX_FIRST_LEVEL_UNITS =
       "sunbird_toc_max_first_level_units";
+  public static final String TEXTBOOK_TOC_OUTPUT_MAPPING = "textbook_toc_output_mapping";
+  public static final String TEXTBOOK_UNIT = "TextBookUnit";
   public static final Object USER_NAME_HEADER = "User Name";
   public static final Object ORG_NAME_HEADER = "Org Name";
   public static final Object SCHOOL_NAME_HEADER = "School Name";
   public static final Object COURSE_ENROLL_DATE_HEADER = "Enrollment Date";
   public static final Object PROGRESS_HEADER = "Progress";
+  public static final Object DATE_TIME_HEADER = "Date time stamp";
+  public static final Object PHONE_HEADER = "Mobile Number";
+  public static final Object EMAIL_HEADER = "Email Id";
 
   private JsonKey() {}
 }
