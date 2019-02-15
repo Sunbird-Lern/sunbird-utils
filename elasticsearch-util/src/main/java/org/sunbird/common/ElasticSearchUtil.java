@@ -950,11 +950,14 @@ public class ElasticSearchUtil {
     QueryBuilder queryBuilder = null;
     for (Map.Entry<String, Object> it : rangeOperation.entrySet()) {
       if (it.getKey().equalsIgnoreCase(STARTS_WITH)) {
-        if (isNotNull(boost)) {
-          queryBuilder =
-              QueryBuilders.prefixQuery(key + RAW_APPEND, (String) it.getValue()).boost(boost);
+        String startsWithVal = (String) it.getValue();
+        if (StringUtils.isNotBlank(startsWithVal)) {
+          startsWithVal = startsWithVal.toLowerCase();
         }
-        queryBuilder = QueryBuilders.prefixQuery(key + RAW_APPEND, (String) it.getValue());
+        if (isNotNull(boost)) {
+          queryBuilder = QueryBuilders.prefixQuery(key + RAW_APPEND, startsWithVal).boost(boost);
+        }
+        queryBuilder = QueryBuilders.prefixQuery(key + RAW_APPEND, startsWithVal);
       } else if (it.getKey().equalsIgnoreCase(ENDS_WITH)) {
         String endsWithRegex = "~" + it.getValue();
         if (isNotNull(boost)) {
