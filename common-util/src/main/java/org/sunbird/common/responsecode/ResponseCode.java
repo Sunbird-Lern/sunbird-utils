@@ -248,6 +248,9 @@ public enum ResponseCode {
   userAlreadyCompletedCourse(
       ResponseMessage.Key.USER_ALREADY_COMPLETED_COURSE,
       ResponseMessage.Message.USER_ALREADY_COMPLETED_COURSE),
+  errorBadgesAlreadyAssociated(
+      ResponseMessage.Key.ERROR_BADGES_ALREADY_ASSOCIATED,
+      ResponseMessage.Message.ERROR_BADGES_ALREADY_ASSOCIATED),
   pageAlreadyExist(
       ResponseMessage.Key.PAGE_ALREADY_EXIST, ResponseMessage.Message.PAGE_ALREADY_EXIST),
   contentTypeRequiredError(

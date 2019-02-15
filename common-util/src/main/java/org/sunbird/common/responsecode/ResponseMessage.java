@@ -37,6 +37,8 @@ public interface ResponseMessage {
     String EMAIL_MISSING = "Email is mandatory.";
     String EMAIL_FORMAT = "Email is invalid.";
     String URL_FORMAT_ERROR = "URL is invalid.";
+    String ERROR_BADGES_ALREADY_ASSOCIATED =
+        "Requested badges are already associated with the content.";
     String FIRST_NAME_MISSING = "First name is mandatory.";
     String LANGUAGE_MISSING = "Language is mandatory.";
     String PASSWORD_MISSING = "Password is mandatory.";
@@ -455,6 +457,7 @@ public interface ResponseMessage {
     String EMAIL_MISSING = "EMAIL_ID_REQUIRED_ERROR";
     String EMAIL_FORMAT = "EMAIL_FORMAT_ERROR";
     String URL_FORMAT_ERROR = "URL_FORMAT_ERROR";
+    String ERROR_BADGES_ALREADY_ASSOCIATED = "ERROR_BADGES_ALREADY_ASSOCIATED";
     String FIRST_NAME_MISSING = "FIRST_NAME_REQUIRED_ERROR";
     String LANGUAGE_MISSING = "LANGUAGE_REQUIRED_ERROR";
     String PASSWORD_MISSING = "PASSWORD_REQUIRED_ERROR";
