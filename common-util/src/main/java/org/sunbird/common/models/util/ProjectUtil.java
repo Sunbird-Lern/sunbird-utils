@@ -43,6 +43,7 @@ public class ProjectUtil {
   private static AtomicInteger atomicInteger = new AtomicInteger();
 
   public static final long BACKGROUND_ACTOR_WAIT_TIME = 30;
+  public static final String ELASTIC_DATE_FORMAT ="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
   public static final String YEAR_MONTH_DATE_FORMAT = "yyyy-MM-dd";
   private static Map<String, String> templateMap = new HashMap<>();
   private static final int randomPasswordLength = 9;
