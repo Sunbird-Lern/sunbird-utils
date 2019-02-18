@@ -411,20 +411,22 @@ public interface ResponseMessage {
     String INVALID_PAGE_SECTION = "Page section associated with the page is invalid.";
     String ERROR_RATE_LIMIT_EXCEEDED =
         "Your per {0} rate limit has exceeded. You can retry after some time.";
-    String ERROR_DIAL_CODE_NOT_RESERVED = "Dial code {0} is not reserved for Textbook ID {1}.";
+    String ERROR_DIAL_CODE_NOT_RESERVED = "The given QR code {0} is not reserved for Textbook.";
     String ERROR_INVALID_TOPIC =
         "Topic <{0}> not found in the framework. Please check and correct.";
     String ERROR_DIAL_CODE_DUPLICATE_ENTRY =
-        "Dial code {0} is associated with multiple identifier {1}.";
+        "QR code {0} is associated with more than one section {1}.";
     String ERROR_DIAL_CODE_ALREADY_ASSOCIATED =
-        "Dial code already associated with identifier {0} for given textbook.";
-    String DIAL_CODE_LINKING_FAILED = "Dial code linking failed.";
+        "QR code {0} is already associated with a section {1} in the textbook";
+    String DIAL_CODE_LINKING_FAILED = "QR code linking failed.";
     String ERROR_TEXTBOOK_UPDATE = "{0}";
 
     String ERROR_INVALID_LINKED_CONTENT_URL = "Linked Content {0} is not valid at row {1}.";
     String ERROR_DUPLICATE_LINKED_CONTENT = "Duplicate content {0} at row {1}.";
     String TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG =
         "User type teacher is not supported for custodian organisation users";
+    String ERROR_DUPLICATE_QR_CODE_ENTRY =
+        "CSV file contains more than one entry for {0}. Correct the duplicate entry and try again";
   }
 
   interface Key {
@@ -787,5 +789,6 @@ public interface ResponseMessage {
     String ERROR_INVALID_LINKED_CONTENT_URL = "INVALID_LINKED_CONTENT_URL";
     String ERROR_DUPLICATE_LINKED_CONTENT = "DUPLICATE_LINKED_CONTENT";
     String TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG = "TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG";
+    String ERROR_DUPLICATE_QR_CODE_ENTRY = "ERROR_DUPLICATE_QR_CODE_ENTRY";
   }
 }
