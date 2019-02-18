@@ -776,6 +776,9 @@ public enum ResponseCode {
   errorTeacherCannotBelongToCustodianOrg(
       ResponseMessage.Key.TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG,
       ResponseMessage.Message.TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG),
+  errorDduplicateDialCodeEntry(
+      ResponseMessage.Key.ERROR_DUPLICATE_QR_CODE_ENTRY,
+      ResponseMessage.Message.ERROR_DUPLICATE_QR_CODE_ENTRY),
 
   OK(200),
   CLIENT_ERROR(400),

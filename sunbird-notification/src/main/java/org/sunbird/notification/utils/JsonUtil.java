@@ -1,6 +1,6 @@
 package org.sunbird.notification.utils;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jboss.logging.Logger;
 
 /** @author Manzarul */
@@ -14,10 +14,9 @@ public class JsonUtil {
    * @param object Object
    * @return String
    */
-  public static String toJson(Object object) {
-    Gson gsonObj = new Gson();
-
-    return gsonObj.toJson(object);
+  public static String toJson(Object object) throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    return mapper.writeValueAsString(object);
   }
 
   /**
@@ -29,6 +28,7 @@ public class JsonUtil {
    */
   public static boolean isStringNullOREmpty(String value) {
     if (value == null || "".equals(value.trim())) {
+
       logger.debug("String is either null or empty.");
       return true;
     }
