@@ -874,7 +874,6 @@ public final class JsonKey {
   public static final String DATE_TIME_HEADER = "Date time stamp";
   public static final String PHONE_HEADER = "Mobile Number";
   public static final String EMAIL_HEADER = "Email Id";
-  public static final String USER_TYPES = "userTypes";
 
   private JsonKey() {}
 }
