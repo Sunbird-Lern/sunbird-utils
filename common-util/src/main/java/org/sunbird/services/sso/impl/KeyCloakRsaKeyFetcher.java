@@ -24,6 +24,8 @@ import org.sunbird.common.models.util.PropertiesCache;
 
 /** Class to fetch SSO public key from Keycloak server using 'certs' HTTP API call. */
 public class KeyCloakRsaKeyFetcher {
+  private static final String MODULUS = "modulusBase64";
+  private static final String EXPONENT = "exponentBase64";
 
   /**
    * This method will accept keycloak base URL and realm name. Based on provided values it will
@@ -42,9 +44,8 @@ public class KeyCloakRsaKeyFetcher {
       if (publicKeyString != null) {
         valueMap = getValuesFromJson(publicKeyString);
         if (valueMap != null) {
-          BigInteger modulus = new BigInteger(1, urlDecoder.decode(valueMap.get("modulusBase64")));
-          BigInteger publicExponent =
-              new BigInteger(1, urlDecoder.decode(valueMap.get("exponentBase64")));
+          BigInteger modulus = new BigInteger(1, urlDecoder.decode(valueMap.get(MODULUS)));
+          BigInteger publicExponent = new BigInteger(1, urlDecoder.decode(valueMap.get(EXPONENT)));
           PublicKey key = keyFactory.generatePublic(new RSAPublicKeySpec(modulus, publicExponent));
           saveToCache(key);
           return key;
@@ -116,8 +117,8 @@ public class KeyCloakRsaKeyFetcher {
       if (keys != null) {
 
         JsonNode value = keys.get(0);
-        values.put("modulusBase64", value.get("n").asText());
-        values.put("exponentBase64", value.get("e").asText());
+        values.put(MODULUS, value.get("n").asText());
+        values.put(EXPONENT, value.get("e").asText());
       }
     } catch (Exception e) {
       ProjectLogger.log(

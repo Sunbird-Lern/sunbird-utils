@@ -62,7 +62,7 @@ public class SunbirdTelemetryEventConsumer {
       } catch (Exception e) {
         ProjectLogger.log(
             "SunbirdTelemetryEventConsumer:consume: Failure converting to String  ",
-            LoggerEnum.INFO.name());
+            e.getMessage());
       }
     }
   }
