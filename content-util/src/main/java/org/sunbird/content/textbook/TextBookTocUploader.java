@@ -32,7 +32,6 @@ import static org.sunbird.content.textbook.TextBookTocFileConfig.SUPPRESS_EMPTY_
 import static org.sunbird.content.util.ContentCloudStore.upload;
 import static org.sunbird.content.util.TextBookTocUtil.stringify;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -54,13 +53,10 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
-import org.sunbird.common.models.util.LoggerEnum;
-import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 
 public class TextBookTocUploader {
   public static final String TEXTBOOK_TOC_FOLDER = separator + "textbook" + separator + "toc";
-  protected ObjectMapper mapper = new ObjectMapper();
   private Set<String> viewableColumns;
 
   private String textBookTocFileName;
@@ -295,48 +291,51 @@ public class TextBookTocUploader {
   @SuppressWarnings("unchecked")
   private void updateRowWithLinkedContent() {
     String identifier = (String) row.get(JsonKey.IDENTIFIER);
-    Optional<Map<String, Object>> contentMap =
-        parentChildHierarchyMapList
-            .stream()
-            .filter(
-                s -> {
-                  for (Entry<String, Object> entry : s.entrySet()) {
-                    if (identifier.equalsIgnoreCase(entry.getKey())) {
-                      return true;
+    if (StringUtils.isNotBlank(identifier)) {
+      Optional<Map<String, Object>> contentMap =
+          parentChildHierarchyMapList
+              .stream()
+              .filter(
+                  s -> {
+                    for (Entry<String, Object> entry : s.entrySet()) {
+                      if (identifier.equalsIgnoreCase(entry.getKey())) {
+                        return true;
+                      }
                     }
-                  }
-                  return false;
-                })
-            .findFirst();
-    if (contentMap.isPresent()) {
-      Map<String, Object> childrenMap = contentMap.get();
-      List<Map<String, Object>> children =
-          (List<Map<String, Object>>)
-              ((Map<String, Object>) childrenMap.get(identifier)).get(JsonKey.CHILDREN);
-      int childWithContentTypeAsTextbook = 0;
-      for (Map<String, Object> child : children) {
-        if (JsonKey.TEXTBOOK.equalsIgnoreCase((String) child.get(JsonKey.CONTENT_TYPE))
-            || JsonKey.TEXTBOOK_UNIT.equalsIgnoreCase((String) child.get(JsonKey.CONTENT_TYPE))) {
-          childWithContentTypeAsTextbook++;
+                    return false;
+                  })
+              .findFirst();
+      if (contentMap.isPresent()) {
+        Map<String, Object> childrenMap = contentMap.get();
+        List<Map<String, Object>> children =
+            (List<Map<String, Object>>)
+                ((Map<String, Object>) childrenMap.get(identifier)).get(JsonKey.CHILDREN);
+        int childWithContentTypeAsTextbook = 0;
+        for (Map<String, Object> child : children) {
+          if (JsonKey.TEXTBOOK.equalsIgnoreCase((String) child.get(JsonKey.CONTENT_TYPE))
+              || JsonKey.TEXTBOOK_UNIT.equalsIgnoreCase((String) child.get(JsonKey.CONTENT_TYPE))) {
+            childWithContentTypeAsTextbook++;
+          }
         }
-      }
-      final int size = childWithContentTypeAsTextbook;
-      children.forEach(
-          s -> {
-            if (!(JsonKey.TEXTBOOK.equalsIgnoreCase((String) s.get(JsonKey.CONTENT_TYPE))
-                || JsonKey.TEXTBOOK_UNIT.equalsIgnoreCase((String) s.get(JsonKey.CONTENT_TYPE)))) {
-              String url =
-                  ProjectUtil.getConfigValue(JsonKey.SUNBIRD_LINKED_CONTENT_BASE_URL)
-                      + (String) s.get(JsonKey.IDENTIFIER);
-              String key =
-                  MessageFormat.format(
-                      ProjectUtil.getConfigValue(JsonKey.SUNBIRD_TOC_LINKED_CONTENT_COLUMN_NAME),
-                      (((int) s.get(JsonKey.INDEX)) - size));
-              if (ROW_METADATA.contains(key)) {
-                row.put(key, url);
+        final int size = childWithContentTypeAsTextbook;
+        children.forEach(
+            s -> {
+              if (!(JsonKey.TEXTBOOK.equalsIgnoreCase((String) s.get(JsonKey.CONTENT_TYPE))
+                  || JsonKey.TEXTBOOK_UNIT.equalsIgnoreCase(
+                      (String) s.get(JsonKey.CONTENT_TYPE)))) {
+                String url =
+                    ProjectUtil.getConfigValue(JsonKey.SUNBIRD_LINKED_CONTENT_BASE_URL)
+                        + (String) s.get(JsonKey.IDENTIFIER);
+                String key =
+                    MessageFormat.format(
+                        ProjectUtil.getConfigValue(JsonKey.SUNBIRD_TOC_LINKED_CONTENT_COLUMN_NAME),
+                        (((int) s.get(JsonKey.INDEX)) - size));
+                if (ROW_METADATA.contains(key)) {
+                  row.put(key, url);
+                }
               }
-            }
-          });
+            });
+      }
     }
   }
 
@@ -362,14 +361,6 @@ public class TextBookTocUploader {
                 (String) child.get(JsonKey.IDENTIFIER),
                 (List<Map<String, Object>>) child.get(JsonKey.CHILDREN)));
       }
-    }
-    try {
-      ProjectLogger.log(
-          "TextBookTocUploader:getParentChildHierarchy : ParentChildHierarchy structure : "
-              + mapper.writeValueAsString(hierarchyList),
-          LoggerEnum.INFO.name());
-    } catch (Exception e) {
-      ProjectLogger.log("TextBookTocUploader:getParentChildHierarchy", e);
     }
     return hierarchyList;
   }
