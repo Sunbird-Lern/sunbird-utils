@@ -357,6 +357,9 @@ public class UserRequestValidator extends BaseRequestValidator {
     validateJobProfileField(userRequest);
     validateEducationField(userRequest);
     validateUserType(userRequest);
+    if ((boolean) userRequest.getContext().get(JsonKey.PRIVATE)) {
+      validateUserOrgField(userRequest.getRequest());
+    }
     if (userRequest.getRequest().containsKey(JsonKey.ROOT_ORG_ID)
         && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.ROOT_ORG_ID))) {
       ProjectCommonException.throwClientErrorException(ResponseCode.invalidRootOrganisationId);
@@ -364,6 +367,35 @@ public class UserRequestValidator extends BaseRequestValidator {
     validateLocationCodes(userRequest);
     validateExtIdTypeAndProvider(userRequest);
     validateFrameworkDetails(userRequest);
+  }
+
+  private void validateUserOrgField(Map<String, Object> request) {
+    if (request.get(JsonKey.USER_ORG) instanceof List) {
+      List<Object> list = (List<Object>) request.get(JsonKey.USER_ORG);
+      if (((List) request.get(JsonKey.USER_ORG)).isEmpty()) {
+        throwInvalidUserOrgData();
+      }
+      for (Object map : list) {
+        if (!(map instanceof Map)) {
+          throwInvalidUserOrgData();
+        }
+      }
+
+    } else if (request.get(JsonKey.USER_ORG) != null) {
+      ProjectCommonException.throwClientErrorException(
+          ResponseCode.dataTypeError,
+          MessageFormat.format(
+              ResponseCode.dataTypeError.getErrorMessage(), JsonKey.USER_ORG, JsonKey.LIST));
+    }
+  }
+
+  private void throwInvalidUserOrgData() {
+    ProjectCommonException.throwClientErrorException(
+        ResponseCode.dataTypeError,
+        MessageFormat.format(
+            ResponseCode.dataTypeError.getErrorMessage(),
+            JsonKey.USER_ORG,
+            String.join(".", JsonKey.LIST, JsonKey.MAP)));
   }
 
   private void validateAddressField(Request userRequest) {
