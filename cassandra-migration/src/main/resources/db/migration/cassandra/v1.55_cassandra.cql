@@ -1,0 +1,1 @@
+ALTER TABLE sunbird.page_section ADD (datasource text, extraInfo map<text,text>);
