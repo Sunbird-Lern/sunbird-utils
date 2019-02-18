@@ -32,7 +32,6 @@ import static org.sunbird.content.textbook.TextBookTocFileConfig.SUPPRESS_EMPTY_
 import static org.sunbird.content.util.ContentCloudStore.upload;
 import static org.sunbird.content.util.TextBookTocUtil.stringify;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -54,13 +53,10 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
-import org.sunbird.common.models.util.LoggerEnum;
-import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 
 public class TextBookTocUploader {
   public static final String TEXTBOOK_TOC_FOLDER = separator + "textbook" + separator + "toc";
-  protected ObjectMapper mapper = new ObjectMapper();
   private Set<String> viewableColumns;
 
   private String textBookTocFileName;
@@ -365,14 +361,6 @@ public class TextBookTocUploader {
                 (String) child.get(JsonKey.IDENTIFIER),
                 (List<Map<String, Object>>) child.get(JsonKey.CHILDREN)));
       }
-    }
-    try {
-      ProjectLogger.log(
-          "TextBookTocUploader:getParentChildHierarchy : ParentChildHierarchy structure : "
-              + mapper.writeValueAsString(hierarchyList),
-          LoggerEnum.INFO.name());
-    } catch (Exception e) {
-      ProjectLogger.log("TextBookTocUploader:getParentChildHierarchy", e);
     }
     return hierarchyList;
   }
