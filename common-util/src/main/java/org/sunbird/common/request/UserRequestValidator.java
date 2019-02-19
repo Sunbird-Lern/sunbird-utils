@@ -5,6 +5,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
@@ -357,9 +358,8 @@ public class UserRequestValidator extends BaseRequestValidator {
     validateJobProfileField(userRequest);
     validateEducationField(userRequest);
     validateUserType(userRequest);
-    if ((boolean) userRequest.getContext().get(JsonKey.PRIVATE)) {
-      validateUserOrgField(userRequest.getRequest());
-    }
+    validateUserOrgField(userRequest);
+
     if (userRequest.getRequest().containsKey(JsonKey.ROOT_ORG_ID)
         && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.ROOT_ORG_ID))) {
       ProjectCommonException.throwClientErrorException(ResponseCode.invalidRootOrganisationId);
@@ -369,17 +369,60 @@ public class UserRequestValidator extends BaseRequestValidator {
     validateFrameworkDetails(userRequest);
   }
 
-  private void validateUserOrgField(Map<String, Object> request) {
-    if (request.get(JsonKey.ORGANISATIONS) instanceof List) {
-      List<Object> list = (List<Object>) request.get(JsonKey.ORGANISATIONS);
-      for (Object map : list) {
-        if (!(map instanceof Map)) {
+  private void validateUserOrgField(Request userRequest) {
+    Map<String, Object> request = userRequest.getRequest();
+    if (StringUtils.isBlank((String) request.get(JsonKey.USER_ID))) {
+      ProjectCommonException.throwClientErrorException(
+          ResponseCode.mandatoryParamsMissing,
+          ProjectUtil.formatMessage(
+              ResponseCode.mandatoryParamsMissing.getErrorMessage(), JsonKey.USER_ID));
+    }
+    if (BooleanUtils.isTrue((Boolean) userRequest.getContext().get(JsonKey.PRIVATE))) {
+      if (request.containsKey(JsonKey.ORGANISATIONS)) {
+        if (!(request.get(JsonKey.ORGANISATIONS) instanceof List)) {
           throwInvalidUserOrgData();
+        } else {
+          List<Object> list = (List<Object>) request.get(JsonKey.ORGANISATIONS);
+          for (Object map : list) {
+            if (!(map instanceof Map)) {
+              throwInvalidUserOrgData();
+            } else {
+              validateRole((Map<String, Object>) map);
+            }
+          }
         }
       }
+    } else {
+      if (request.containsKey(JsonKey.ORGANISATIONS)) {
+        ProjectCommonException.throwClientErrorException(
+            ResponseCode.errorUnsupportedField,
+            ProjectUtil.formatMessage(
+                ResponseCode.errorUnsupportedField.getErrorMessage(), JsonKey.ORGANISATIONS));
+      }
+    }
+  }
 
-    } else if (request.get(JsonKey.ORGANISATIONS) != null) {
-      throwInvalidUserOrgData();
+  private void validateRole(Map<String, Object> map) {
+    String organisationId = (String) map.get(JsonKey.ORGANISATION_ID);
+    if (StringUtils.isBlank(organisationId)) {
+      ProjectCommonException.throwClientErrorException(
+          ResponseCode.mandatoryParamsMissing,
+          ProjectUtil.formatMessage(
+              ResponseCode.mandatoryParamsMissing.getErrorMessage(), JsonKey.ORGANISATION_ID));
+    }
+    if (map.get(JsonKey.ROLES) == null) {
+      validateParam(null, ResponseCode.mandatoryParamsMissing, JsonKey.ROLES);
+    }
+    if (map.containsKey(JsonKey.ROLES)) {
+      if (!(map.get(JsonKey.ROLES) instanceof List)) {
+        ProjectCommonException.throwClientErrorException(
+            ResponseCode.dataTypeError,
+            MessageFormat.format(
+                ResponseCode.dataTypeError.getErrorMessage(), JsonKey.ROLES, JsonKey.LIST));
+      } else if (CollectionUtils.isEmpty((List) map.get(JsonKey.ROLES))) {
+        ProjectCommonException.throwClientErrorException(
+            ResponseCode.emptyRolesProvided, ResponseCode.emptyRolesProvided.getErrorMessage());
+      }
     }
   }
 
