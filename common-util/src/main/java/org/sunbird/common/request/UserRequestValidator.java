@@ -370,22 +370,16 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   private void validateUserOrgField(Map<String, Object> request) {
-    if (request.get(JsonKey.USER_ORG) instanceof List) {
-      List<Object> list = (List<Object>) request.get(JsonKey.USER_ORG);
-      if (((List) request.get(JsonKey.USER_ORG)).isEmpty()) {
-        throwInvalidUserOrgData();
-      }
+    if (request.get(JsonKey.ORGANISATIONS) instanceof List) {
+      List<Object> list = (List<Object>) request.get(JsonKey.ORGANISATIONS);
       for (Object map : list) {
         if (!(map instanceof Map)) {
           throwInvalidUserOrgData();
         }
       }
 
-    } else if (request.get(JsonKey.USER_ORG) != null) {
-      ProjectCommonException.throwClientErrorException(
-          ResponseCode.dataTypeError,
-          MessageFormat.format(
-              ResponseCode.dataTypeError.getErrorMessage(), JsonKey.USER_ORG, JsonKey.LIST));
+    } else if (request.get(JsonKey.ORGANISATIONS) != null) {
+      throwInvalidUserOrgData();
     }
   }
 
@@ -394,7 +388,7 @@ public class UserRequestValidator extends BaseRequestValidator {
         ResponseCode.dataTypeError,
         MessageFormat.format(
             ResponseCode.dataTypeError.getErrorMessage(),
-            JsonKey.USER_ORG,
+            JsonKey.ORGANISATIONS,
             String.join(".", JsonKey.LIST, JsonKey.MAP)));
   }
 
