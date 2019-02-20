@@ -435,7 +435,7 @@ public class UserRequestValidator extends BaseRequestValidator {
         MessageFormat.format(
             ResponseCode.dataTypeError.getErrorMessage(),
             JsonKey.ORGANISATIONS,
-            String.join(".", JsonKey.LIST, JsonKey.MAP)));
+            String.join(" ", JsonKey.LIST, " Of ", JsonKey.MAP)));
   }
 
   private void validateAddressField(Request userRequest) {
