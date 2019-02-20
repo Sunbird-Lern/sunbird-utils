@@ -1,6 +1,6 @@
 package org.sunbird.telemetry.util;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
@@ -38,24 +38,32 @@ public class SunbirdTelemetryEventConsumer {
   public void consume(Request request) {
     ProjectLogger.log("SunbirdTelemetryEventConsumer:consume called.", LoggerEnum.INFO.name());
     if (request != null) {
+      ObjectMapper mapper = new ObjectMapper();
       try {
-        String telemetryReq = new Gson().toJson(getTelemetryRequest(request));
+        String telemetryReq = mapper.writeValueAsString(getTelemetryRequest(request));
         ProjectLogger.log(
             "SunbirdTelemetryEventConsumer:consume telemetry request:" + telemetryReq,
             LoggerEnum.DEBUG.name());
-        String response = HttpUtil.sendPostRequest(getTelemetryUrl(), telemetryReq, getHeaders());
-        ProjectLogger.log(
-            "SunbirdTelemetryEventConsumer:consume: Request process status = " + response,
-            LoggerEnum.INFO.name());
+        try {
+          String response = HttpUtil.sendPostRequest(getTelemetryUrl(), telemetryReq, getHeaders());
+          ProjectLogger.log(
+              "SunbirdTelemetryEventConsumer:consume: Request process status = " + response,
+              LoggerEnum.INFO.name());
+        } catch (Exception e) {
+          ProjectLogger.log(
+              "SunbirdTelemetryEventConsumer:consume: Generic exception occurred in sending telemetry request = "
+                  + e.getMessage(),
+              e);
+          ProjectLogger.log(
+              "SunbirdTelemetryEventConsumer:consume: Failure request = "
+                  + mapper.writeValueAsString(getTelemetryRequest(request)),
+              LoggerEnum.INFO.name());
+        }
       } catch (Exception e) {
         ProjectLogger.log(
-            "SunbirdTelemetryEventConsumer:consume: Generic exception occurred in sending telemetry request = "
+            "SunbirdTelemetryEventConsumer:consume: Failure converting to String  "
                 + e.getMessage(),
             e);
-        ProjectLogger.log(
-            "SunbirdTelemetryEventConsumer:consume: Failure request = "
-                + new Gson().toJson(getTelemetryRequest(request)),
-            LoggerEnum.INFO.name());
       }
     }
   }
