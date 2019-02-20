@@ -415,9 +415,6 @@ public class UserRequestValidator extends BaseRequestValidator {
           ProjectUtil.formatMessage(
               ResponseCode.mandatoryParamsMissing.getErrorMessage(), JsonKey.ORGANISATION_ID));
     }
-    if (map.get(JsonKey.ROLES) == null) {
-      validateParam(null, ResponseCode.mandatoryParamsMissing, JsonKey.ROLES);
-    }
     if (map.containsKey(JsonKey.ROLES)) {
       if (!(map.get(JsonKey.ROLES) instanceof List)) {
         ProjectCommonException.throwClientErrorException(
