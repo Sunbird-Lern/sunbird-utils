@@ -218,10 +218,6 @@
 			<version>1.2.1</version>
 			<exclusions>
 				<exclusion>
-					<groupId>com.google.code.gson</groupId>
-					<artifactId>gson</artifactId>
-				</exclusion>
-				<exclusion>
                                         <groupId>com.sun.jersey</groupId>
                                         <artifactId>jersey-core</artifactId>
 				</exclusion>
