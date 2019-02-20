@@ -371,14 +371,16 @@ public class UserRequestValidator extends BaseRequestValidator {
 
   private void validateUserOrgField(Request userRequest) {
     Map<String, Object> request = userRequest.getRequest();
-    if (StringUtils.isBlank((String) request.get(JsonKey.USER_ID))) {
+    boolean isPrivate =
+        BooleanUtils.isTrue((Boolean) userRequest.getContext().get(JsonKey.PRIVATE));
+    if (isPrivate
+        && StringUtils.isBlank((String) request.get(JsonKey.USER_ID))
+        && request.containsKey(JsonKey.ORGANISATIONS)) {
       ProjectCommonException.throwClientErrorException(
           ResponseCode.mandatoryParamsMissing,
           ProjectUtil.formatMessage(
               ResponseCode.mandatoryParamsMissing.getErrorMessage(), JsonKey.USER_ID));
     }
-    boolean isPrivate =
-        BooleanUtils.isTrue((Boolean) userRequest.getContext().get(JsonKey.PRIVATE));
 
     if (!isPrivate && request.containsKey(JsonKey.ORGANISATIONS)) {
       ProjectCommonException.throwClientErrorException(
