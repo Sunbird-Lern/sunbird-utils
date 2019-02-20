@@ -377,32 +377,35 @@ public class UserRequestValidator extends BaseRequestValidator {
           ProjectUtil.formatMessage(
               ResponseCode.mandatoryParamsMissing.getErrorMessage(), JsonKey.USER_ID));
     }
-    if (BooleanUtils.isTrue((Boolean) userRequest.getContext().get(JsonKey.PRIVATE))) {
-      if (request.containsKey(JsonKey.ORGANISATIONS)) {
-        if (!(request.get(JsonKey.ORGANISATIONS) instanceof List)) {
+    boolean isPrivate =
+        BooleanUtils.isTrue((Boolean) userRequest.getContext().get(JsonKey.PRIVATE));
+
+    if (!isPrivate && request.containsKey(JsonKey.ORGANISATIONS)) {
+      ProjectCommonException.throwClientErrorException(
+          ResponseCode.errorUnsupportedField,
+          ProjectUtil.formatMessage(
+              ResponseCode.errorUnsupportedField.getErrorMessage(), JsonKey.ORGANISATIONS));
+    }
+
+    if (isPrivate
+        && request.containsKey(JsonKey.ORGANISATIONS)
+        && !(request.get(JsonKey.ORGANISATIONS) instanceof List)) {
+      throwInvalidUserOrgData();
+    }
+
+    if (isPrivate && request.containsKey(JsonKey.ORGANISATIONS)) {
+      List<Object> list = (List<Object>) request.get(JsonKey.ORGANISATIONS);
+      for (Object map : list) {
+        if (!(map instanceof Map)) {
           throwInvalidUserOrgData();
         } else {
-          List<Object> list = (List<Object>) request.get(JsonKey.ORGANISATIONS);
-          for (Object map : list) {
-            if (!(map instanceof Map)) {
-              throwInvalidUserOrgData();
-            } else {
-              validateRole((Map<String, Object>) map);
-            }
-          }
+          validRolesDataType((Map<String, Object>) map);
         }
-      }
-    } else {
-      if (request.containsKey(JsonKey.ORGANISATIONS)) {
-        ProjectCommonException.throwClientErrorException(
-            ResponseCode.errorUnsupportedField,
-            ProjectUtil.formatMessage(
-                ResponseCode.errorUnsupportedField.getErrorMessage(), JsonKey.ORGANISATIONS));
       }
     }
   }
 
-  private void validateRole(Map<String, Object> map) {
+  private void validRolesDataType(Map<String, Object> map) {
     String organisationId = (String) map.get(JsonKey.ORGANISATION_ID);
     if (StringUtils.isBlank(organisationId)) {
       ProjectCommonException.throwClientErrorException(
