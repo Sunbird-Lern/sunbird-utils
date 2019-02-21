@@ -427,7 +427,7 @@ public interface ResponseMessage {
     String TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG =
         "User type teacher is not supported for custodian organisation users";
     String ERROR_DUPLICATE_QR_CODE_ENTRY =
-        "CSV file contains more than one entry for {0}. Correct the duplicate entry and try again";
+        "CSV file contains more than one entry for {0}. Correct the duplicate entry and try again.";
     String ERROR_INVALID_TEXTBOOK_UNIT_ID = "Invalid textbook unit id {0} for texbook.";
   }
 
