@@ -216,6 +216,9 @@ public enum ResponseCode {
   userNotFound(ResponseMessage.Key.USER_NOT_FOUND, ResponseMessage.Message.USER_NOT_FOUND),
   idRequired(ResponseMessage.Key.ID_REQUIRED_ERROR, ResponseMessage.Message.ID_REQUIRED_ERROR),
   dataTypeError(ResponseMessage.Key.DATA_TYPE_ERROR, ResponseMessage.Message.DATA_TYPE_ERROR),
+  errorAttributeConflict(
+      ResponseMessage.Key.ERROR_ATTRIBUTE_CONFLICT,
+      ResponseMessage.Message.ERROR_ATTRIBUTE_CONFLICT),
   addressError(ResponseMessage.Key.ADDRESS_ERROR, ResponseMessage.Message.ADDRESS_ERROR),
   addressTypeError(
       ResponseMessage.Key.ADDRESS_TYPE_ERROR, ResponseMessage.Message.ADDRESS_TYPE_ERROR),
@@ -248,9 +251,6 @@ public enum ResponseCode {
   userAlreadyCompletedCourse(
       ResponseMessage.Key.USER_ALREADY_COMPLETED_COURSE,
       ResponseMessage.Message.USER_ALREADY_COMPLETED_COURSE),
-  errorBadgesAlreadyAssociated(
-      ResponseMessage.Key.ERROR_BADGES_ALREADY_ASSOCIATED,
-      ResponseMessage.Message.ERROR_BADGES_ALREADY_ASSOCIATED),
   pageAlreadyExist(
       ResponseMessage.Key.PAGE_ALREADY_EXIST, ResponseMessage.Message.PAGE_ALREADY_EXIST),
   contentTypeRequiredError(

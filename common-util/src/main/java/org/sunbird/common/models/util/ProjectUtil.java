@@ -338,6 +338,24 @@ public class ProjectUtil {
   }
 
   /**
+   * Enum to hold the current enrollment status of user
+   *
+   * @author Sudhir
+   */
+  public enum IsEnrolledStatus {
+    enrolled(true),
+    notEnrolled(false);
+    private boolean isEnrolled;
+
+    private IsEnrolledStatus(boolean name) {
+      this.isEnrolled = name;
+    }
+
+    public boolean getValue() {
+      return isEnrolled;
+    }
+  }
+  /**
    * Enum to hold the index name for Elastic search.
    *
    * @author Manzarul

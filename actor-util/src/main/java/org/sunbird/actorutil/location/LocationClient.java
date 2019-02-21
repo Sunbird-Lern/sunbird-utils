@@ -20,6 +20,7 @@ public interface LocationClient {
    */
   List<Location> getLocationsByCodes(ActorRef actorRef, List<String> codeList);
 
+  public List<Location> getLocationByIds(ActorRef actorRef, List<String> idsList);
   /**
    * @desc This method will fetch location details by id.
    * @param actorRef Actor reference.

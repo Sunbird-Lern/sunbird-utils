@@ -37,6 +37,13 @@ public class LocationClientImpl implements LocationClient {
   }
 
   @Override
+  public List<Location> getLocationByIds(ActorRef actorRef, List<String> idsList) {
+    String param = GeoLocationJsonKey.ID;
+    Object value = idsList;
+    return getSearchResponse(actorRef, param, value);
+  }
+
+  @Override
   public Location getLocationById(ActorRef actorRef, String id) {
     String param = JsonKey.ID;
     Object value = id;

@@ -1,7 +1,8 @@
 package org.sunbird.common.request.orgvalidator;
 
 import java.math.BigInteger;
-import java.util.Arrays;
+import java.text.MessageFormat;
+import java.util.List;
 import java.util.Map;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -22,7 +23,7 @@ public class OrgRequestValidator extends BaseOrgRequestValidator {
         (String) orgRequest.getRequest().get(JsonKey.ORG_NAME),
         ResponseCode.mandatoryParamsMissing,
         JsonKey.ORG_NAME);
-    checkForFieldsNotAllowed(orgRequest.getRequest(), Arrays.asList(JsonKey.LOCATION_IDS));
+    // checkForFieldsNotAllowed(orgRequest.getRequest(), Arrays.asList(JsonKey.LOCATION_IDS));
     validateRootOrgChannel(orgRequest);
 
     Map<String, Object> address =
@@ -30,6 +31,7 @@ public class OrgRequestValidator extends BaseOrgRequestValidator {
     if (MapUtils.isNotEmpty(address)) {
       new AddressRequestValidator().validateAddress(address, JsonKey.ORGANISATION);
     }
+    validateOrgLocationAndCode(orgRequest);
   }
 
   public void validateUpdateOrgRequest(Request request) {
@@ -50,7 +52,7 @@ public class OrgRequestValidator extends BaseOrgRequestValidator {
     }
 
     validateRootOrgChannel(request);
-
+    validateOrgLocationAndCode(request);
     Map<String, Object> address = (Map<String, Object>) request.getRequest().get(JsonKey.ADDRESS);
     if (MapUtils.isNotEmpty(address)) {
       new AddressRequestValidator().validateAddress(address, JsonKey.ORGANISATION);
@@ -72,6 +74,31 @@ public class OrgRequestValidator extends BaseOrgRequestValidator {
           ResponseCode.invalidRequestData.getErrorCode(),
           ResponseCode.invalidRequestData.getErrorMessage(),
           ERROR_CODE);
+    }
+  }
+
+  private void validateOrgLocationAndCode(Request orgRequest) {
+    Object locationIds = orgRequest.getRequest().get(JsonKey.LOCATION_ID);
+    Object locationCodes = orgRequest.getRequest().get(JsonKey.LOCATION_CODE);
+    if (locationIds != null && !(locationIds instanceof List)) {
+      ProjectCommonException.throwClientErrorException(
+          ResponseCode.dataTypeError,
+          MessageFormat.format(
+              ResponseCode.dataTypeError.getErrorMessage(), JsonKey.LOCATION_IDS, JsonKey.LIST));
+    }
+    if (locationCodes != null && !(locationCodes instanceof List)) {
+      ProjectCommonException.throwClientErrorException(
+          ResponseCode.dataTypeError,
+          MessageFormat.format(
+              ResponseCode.dataTypeError.getErrorMessage(), JsonKey.LOCATION_CODE, JsonKey.LIST));
+    }
+    if (locationIds != null && locationCodes != null) {
+      ProjectCommonException.throwClientErrorException(
+          ResponseCode.errorAttributeConflict,
+          MessageFormat.format(
+              ResponseCode.errorAttributeConflict.getErrorMessage(),
+              JsonKey.LOCATION_CODE,
+              JsonKey.LOCATION_IDS));
     }
   }
 }
