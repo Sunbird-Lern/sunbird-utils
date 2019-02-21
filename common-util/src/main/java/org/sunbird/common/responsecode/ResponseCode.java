@@ -779,7 +779,9 @@ public enum ResponseCode {
   errorDduplicateDialCodeEntry(
       ResponseMessage.Key.ERROR_DUPLICATE_QR_CODE_ENTRY,
       ResponseMessage.Message.ERROR_DUPLICATE_QR_CODE_ENTRY),
-
+  errorInvalidTextbookUnitId(
+      ResponseMessage.Key.ERROR_INVALID_TEXTBOOK_UNIT_ID,
+      ResponseMessage.Message.ERROR_INVALID_TEXTBOOK_UNIT_ID),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

@@ -875,6 +875,11 @@ public final class JsonKey {
   public static final String DATE_TIME_HEADER = "Date time stamp";
   public static final String PHONE_HEADER = "Mobile Number";
   public static final String EMAIL_HEADER = "Email Id";
+  public static final String COURSE_PROGRESS_MAIL_TEMPLATE = "courseProgressMailTemplate";
+  public static final String COURSE_STAT_MAIL_TIMEZONE = "course_stat_mail_timezone";
+  public static final String COURSE_STAT_MAIL_DATE_TIME_PATTERN =
+      "course_stat_mail_date_time_pattern";
+  public static final String DATA_SOURCE = "dataSource";
 
   private JsonKey() {}
 }
