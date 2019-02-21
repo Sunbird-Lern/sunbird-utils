@@ -64,22 +64,53 @@ public class LocationRequestValidator extends BaseLocationRequestValidator {
             locationList.stream().map(Location::getCode).collect(Collectors.toList());
         List<String> invalidCodeList =
             codes.stream().filter(s -> !resCodeList.contains(s)).collect(Collectors.toList());
-        throwInvalidParameterValueException(invalidCodeList);
+        throwInvalidParameterValueException(invalidCodeList, JsonKey.LOCATION_CODE);
       } else {
         locationIds = getValidatedLocationSet(actorRef, locationList);
       }
     } else {
-      throwInvalidParameterValueException(codeList);
+      throwInvalidParameterValueException(codeList, JsonKey.LOCATION_CODE);
     }
     locationIdList.addAll(locationIds);
     return locationIdList;
   }
 
-  private void throwInvalidParameterValueException(List<String> codeList) {
+  /**
+   * This method will validate the list of location ids whether its valid or not. If valid will
+   * return the hierarchy List.
+   *
+   * @param actorRef Actor reference.
+   * @param codeList List of location ids.
+   * @return List of locationIds.
+   */
+  public List<String> getHierarchyLocationIds(ActorRef actorRef, List<String> locationIdsList) {
+    Set<String> locationIds = null;
+    List<String> codes = new ArrayList<>(locationIdsList);
+    List<Location> locationList = locationClient.getLocationByIds(actorRef, locationIdsList);
+    List<String> locationIdList = new ArrayList<>();
+    if (CollectionUtils.isNotEmpty(locationList)) {
+      if (locationList.size() != codes.size()) {
+        List<String> resCodeList =
+            locationList.stream().map(Location::getId).collect(Collectors.toList());
+        List<String> invalidIdsList =
+            codes.stream().filter(s -> !resCodeList.contains(s)).collect(Collectors.toList());
+        throwInvalidParameterValueException(invalidIdsList, JsonKey.LOCATION_IDS);
+      } else {
+        locationIds = getValidatedLocationSet(actorRef, locationList);
+      }
+    } else {
+      throwInvalidParameterValueException(locationIdsList, JsonKey.LOCATION_IDS);
+    }
+
+    locationIdList.addAll(locationIds);
+    return locationIdList;
+  }
+
+  private void throwInvalidParameterValueException(List<String> invalidList, String attributeName) {
     throw new ProjectCommonException(
         ResponseCode.invalidParameterValue.getErrorCode(),
         ProjectUtil.formatMessage(
-            ResponseCode.invalidParameterValue.getErrorMessage(), codeList, JsonKey.LOCATION_CODE),
+            ResponseCode.invalidParameterValue.getErrorMessage(), invalidList, attributeName),
         ResponseCode.CLIENT_ERROR.getResponseCode());
   }
 

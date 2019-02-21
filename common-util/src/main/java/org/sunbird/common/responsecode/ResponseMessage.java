@@ -119,6 +119,7 @@ public interface ResponseMessage {
     String USER_NOT_FOUND = "user not found.";
     String ID_REQUIRED_ERROR = "For deleting a record, Id is required.";
     String DATA_TYPE_ERROR = "Data type of {0} should be {1}.";
+    String ERROR_ATTRIBUTE_CONFLICT = "Either pass attribute {0} or {1} but not both.";
     String ADDRESS_ERROR = "In {0}, {1} is mandatory.";
     String ADDRESS_TYPE_ERROR = "Please provide correct address Type.";
     String NAME_OF_INSTITUTION_ERROR = "Please provide name of Institution.";
@@ -532,6 +533,7 @@ public interface ResponseMessage {
     String USER_NOT_FOUND = "USER_NOT_FOUND";
     String ID_REQUIRED_ERROR = "ID_REQUIRED_ERROR";
     String DATA_TYPE_ERROR = "DATA_TYPE_ERROR";
+    String ERROR_ATTRIBUTE_CONFLICT = "ERROR_ATTRIBUTE_CONFLICT";
     String ADDRESS_ERROR = "ADDRESS_ERROR";
     String ADDRESS_TYPE_ERROR = "ADDRESS_TYPE_ERROR";
     String NAME_OF_INSTITUTION_ERROR = "NAME_OF_INSTITUTION_ERROR";

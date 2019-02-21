@@ -31,16 +31,17 @@ public class LocationClientImpl implements LocationClient {
 
   @Override
   public List<Location> getLocationsByCodes(ActorRef actorRef, List<String> codeList) {
-    String param = GeoLocationJsonKey.CODE;
-    Object value = codeList;
-    return getSearchResponse(actorRef, param, value);
+    return getSearchResponse(actorRef, GeoLocationJsonKey.CODE, codeList);
+  }
+
+  @Override
+  public List<Location> getLocationByIds(ActorRef actorRef, List<String> idsList) {
+    return getSearchResponse(actorRef, GeoLocationJsonKey.ID, idsList);
   }
 
   @Override
   public Location getLocationById(ActorRef actorRef, String id) {
-    String param = JsonKey.ID;
-    Object value = id;
-    List<Location> locationList = getSearchResponse(actorRef, param, value);
+    List<Location> locationList = getSearchResponse(actorRef, JsonKey.ID, id);
     if (CollectionUtils.isNotEmpty(locationList)) {
       return locationList.get(0);
     } else {
