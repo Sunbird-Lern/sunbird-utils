@@ -878,6 +878,7 @@ public final class JsonKey {
   public static final String COURSE_STAT_MAIL_TIMEZONE = "course_stat_mail_timezone";
   public static final String COURSE_STAT_MAIL_DATE_TIME_PATTERN =
       "course_stat_mail_date_time_pattern";
+  public static final String DATA_SOURCE = "dataSource";
 
   private JsonKey() {}
 }
