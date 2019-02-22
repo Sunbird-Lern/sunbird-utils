@@ -85,7 +85,7 @@ public class ElasticSearchUtil {
   private static final String GTE = ">=";
   private static final String GT = ">";
   private static final String ASC_ORDER = "ASC";
-  private static final String STARTS_WITH = "startsWith";
+  public static final String STARTS_WITH = "startsWith";
   private static final String ENDS_WITH = "endsWith";
   private static final List<String> upsertResults =
       new ArrayList<>(Arrays.asList("CREATED", "UPDATED", "NOOP"));
