@@ -216,6 +216,9 @@ public enum ResponseCode {
   userNotFound(ResponseMessage.Key.USER_NOT_FOUND, ResponseMessage.Message.USER_NOT_FOUND),
   idRequired(ResponseMessage.Key.ID_REQUIRED_ERROR, ResponseMessage.Message.ID_REQUIRED_ERROR),
   dataTypeError(ResponseMessage.Key.DATA_TYPE_ERROR, ResponseMessage.Message.DATA_TYPE_ERROR),
+  errorAttributeConflict(
+      ResponseMessage.Key.ERROR_ATTRIBUTE_CONFLICT,
+      ResponseMessage.Message.ERROR_ATTRIBUTE_CONFLICT),
   addressError(ResponseMessage.Key.ADDRESS_ERROR, ResponseMessage.Message.ADDRESS_ERROR),
   addressTypeError(
       ResponseMessage.Key.ADDRESS_TYPE_ERROR, ResponseMessage.Message.ADDRESS_TYPE_ERROR),
