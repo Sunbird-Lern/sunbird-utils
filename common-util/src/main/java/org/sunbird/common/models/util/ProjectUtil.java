@@ -363,7 +363,7 @@ public class ProjectUtil {
    * @author Manzarul
    */
   public enum EsType {
-    course("batch"),
+    course("coursebatch"),
     content("content"),
     badgeassociations("badgeassociations"),
     user("user"),
