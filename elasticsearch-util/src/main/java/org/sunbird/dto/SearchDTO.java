@@ -19,7 +19,7 @@ public class SearchDTO {
   private List<Map<String, String>> facets = new ArrayList<>();
   private List<String> fields;
   private List<String> excludedFields;
-  private Map<String, String> sortBy = new HashMap<>();
+  private Map<String, Object> sortBy = new HashMap<>();
   private String operation;
   private String query;
   private Integer limit = 250;
@@ -30,6 +30,7 @@ public class SearchDTO {
   private Map<String, Integer> softConstraints = new HashMap<>();
   private List<Map<String, Object>> groupQuery = new ArrayList<>();
   private List<String> mode = new ArrayList<>();
+  private boolean isNestedSearch = false;
 
   public List<Map<String, Object>> getGroupQuery() {
     return groupQuery;
@@ -85,11 +86,11 @@ public class SearchDTO {
     this.facets = facets;
   }
 
-  public Map<String, String> getSortBy() {
+  public Map<String, Object> getSortBy() {
     return sortBy;
   }
 
-  public void setSortBy(Map<String, String> sortBy) {
+  public void setSortBy(Map<String, Object> sortBy) {
     this.sortBy = sortBy;
   }
 
@@ -163,5 +164,13 @@ public class SearchDTO {
 
   public void setExcludedFields(List<String> excludedFields) {
     this.excludedFields = excludedFields;
+  }
+
+  public boolean isNestedSearch() {
+    return isNestedSearch;
+  }
+
+  public void setNestedSearch(boolean nestedSearch) {
+    isNestedSearch = nestedSearch;
   }
 }
