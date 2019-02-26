@@ -599,7 +599,7 @@ public class ElasticSearchUtil {
               entry.getKey() + RAW_APPEND, getSortOrder((String) entry.getValue()));
         } else {
           Map<String, Object> map = (Map<String, Object>) entry.getValue();
-          Map<String, String> dataMap = (Map) map.get("term");
+          Map<String, String> dataMap = (Map) map.get(JsonKey.TERM);
           for (Map.Entry<String, String> dateMapEntry : dataMap.entrySet()) {
             FieldSortBuilder mySort =
                 SortBuilders.fieldSort(entry.getKey() + RAW_APPEND)
@@ -611,10 +611,6 @@ public class ElasticSearchUtil {
           }
         }
       }
-      //      FieldSortBuilder fieldSortBuilder = new FieldSortBuilder("" + RAW_APPEND);
-      //      QueryBuilder queryBuilder = new
-      //      fieldSortBuilder.setNestedFilter()
-      //      searchRequestBuilder.addSort())
     }
 
     // apply the fields filter

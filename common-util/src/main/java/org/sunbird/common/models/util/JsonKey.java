@@ -858,6 +858,7 @@ public final class JsonKey {
   public static final String SORT_ORDER = "sortOrder";
   public static final String NUMERIC = "NUMERIC";
   public static final String ASC = "asc";
+  public static final String TERM = "term";
   public static final String DESC = "desc";
   public static final String SUNBIRD_TOC_LINKED_CONTENT_COLUMN_NAME =
       "sunbird_toc_linked_content_column_name";
