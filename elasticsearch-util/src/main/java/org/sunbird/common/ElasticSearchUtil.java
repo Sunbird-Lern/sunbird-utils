@@ -40,14 +40,7 @@ import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.ExistsQueryBuilder;
-import org.elasticsearch.index.query.MatchQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.RangeQueryBuilder;
-import org.elasticsearch.index.query.TermQueryBuilder;
-import org.elasticsearch.index.query.TermsQueryBuilder;
+import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -56,7 +49,7 @@ import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.sort.SortOrder;
+import org.elasticsearch.search.sort.*;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.HttpUtil;
@@ -600,8 +593,23 @@ public class ElasticSearchUtil {
     }
     // apply the sorting
     if (searchDTO.getSortBy() != null && searchDTO.getSortBy().size() > 0) {
-      for (Map.Entry<String, String> entry : searchDTO.getSortBy().entrySet()) {
-        searchRequestBuilder.addSort(entry.getKey() + RAW_APPEND, getSortOrder(entry.getValue()));
+      for (Map.Entry<String, Object> entry : searchDTO.getSortBy().entrySet()) {
+        if (!entry.getKey().contains(".")) {
+          searchRequestBuilder.addSort(
+              entry.getKey() + RAW_APPEND, getSortOrder((String) entry.getValue()));
+        } else {
+          Map<String, Object> map = (Map<String, Object>) entry.getValue();
+          Map<String, String> dataMap = (Map) map.get(JsonKey.TERM);
+          for (Map.Entry<String, String> dateMapEntry : dataMap.entrySet()) {
+            FieldSortBuilder mySort =
+                SortBuilders.fieldSort(entry.getKey() + RAW_APPEND)
+                    .setNestedFilter(
+                        new TermQueryBuilder(dateMapEntry.getKey(), dateMapEntry.getValue()))
+                    .sortMode(SortMode.MIN)
+                    .order(getSortOrder((String) map.get(JsonKey.ORDER)));
+            searchRequestBuilder.addSort(mySort);
+          }
+        }
       }
     }
 

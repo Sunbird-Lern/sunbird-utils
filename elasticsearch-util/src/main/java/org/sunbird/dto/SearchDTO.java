@@ -19,7 +19,7 @@ public class SearchDTO {
   private List<Map<String, String>> facets = new ArrayList<>();
   private List<String> fields;
   private List<String> excludedFields;
-  private Map<String, String> sortBy = new HashMap<>();
+  private Map<String, Object> sortBy = new HashMap<>();
   private String operation;
   private String query;
   private Integer limit = 250;
@@ -85,11 +85,11 @@ public class SearchDTO {
     this.facets = facets;
   }
 
-  public Map<String, String> getSortBy() {
+  public Map<String, Object> getSortBy() {
     return sortBy;
   }
 
-  public void setSortBy(Map<String, String> sortBy) {
+  public void setSortBy(Map<String, Object> sortBy) {
     this.sortBy = sortBy;
   }
 
