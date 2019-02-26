@@ -593,20 +593,18 @@ public class ElasticSearchUtil {
     }
     // apply the sorting
     if (searchDTO.getSortBy() != null && searchDTO.getSortBy().size() > 0) {
-      if (!searchDTO.isNestedSearch()) {
-        for (Map.Entry<String, Object> entry : searchDTO.getSortBy().entrySet()) {
+      for (Map.Entry<String, Object> entry : searchDTO.getSortBy().entrySet()) {
+        if (!entry.getKey().contains(".")) {
           searchRequestBuilder.addSort(
               entry.getKey() + RAW_APPEND, getSortOrder((String) entry.getValue()));
-        }
-      } else {
-        for (Map.Entry<String, Object> entry : searchDTO.getSortBy().entrySet()) {
+        } else {
           Map<String, Object> map = (Map<String, Object>) entry.getValue();
-          Map<String, String> dataMap =
-              (Map<String, String>) ((Map) map.get("nested_filter")).get("term");
-          for (Map.Entry<String, String> entry1 : dataMap.entrySet()) {
+          Map<String, String> dataMap = (Map) map.get("term");
+          for (Map.Entry<String, String> dateMapEntry : dataMap.entrySet()) {
             FieldSortBuilder mySort =
                 SortBuilders.fieldSort(entry.getKey() + RAW_APPEND)
-                    .setNestedFilter(new TermQueryBuilder(entry1.getKey(), entry1.getValue()))
+                    .setNestedFilter(
+                        new TermQueryBuilder(dateMapEntry.getKey(), dateMapEntry.getValue()))
                     .sortMode(SortMode.MIN)
                     .order(getSortOrder((String) map.get(JsonKey.ORDER)));
             searchRequestBuilder.addSort(mySort);

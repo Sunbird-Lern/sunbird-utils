@@ -30,7 +30,6 @@ public class SearchDTO {
   private Map<String, Integer> softConstraints = new HashMap<>();
   private List<Map<String, Object>> groupQuery = new ArrayList<>();
   private List<String> mode = new ArrayList<>();
-  private boolean isNestedSearch = false;
 
   public List<Map<String, Object>> getGroupQuery() {
     return groupQuery;
@@ -164,13 +163,5 @@ public class SearchDTO {
 
   public void setExcludedFields(List<String> excludedFields) {
     this.excludedFields = excludedFields;
-  }
-
-  public boolean isNestedSearch() {
-    return isNestedSearch;
-  }
-
-  public void setNestedSearch(boolean nestedSearch) {
-    isNestedSearch = nestedSearch;
   }
 }
