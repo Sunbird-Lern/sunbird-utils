@@ -90,7 +90,8 @@ public class RequestRouter extends BaseRouter {
             + " start time "
             + startTime,
         LoggerEnum.PERF_LOG);
-    Timeout timeout = new Timeout(Duration.create(WAIT_TIME_VALUE, TimeUnit.SECONDS));
+    int timeoutValue = message.getTimeout() == null ? WAIT_TIME_VALUE : message.getTimeout();
+    Timeout timeout = new Timeout(Duration.create(timeoutValue, TimeUnit.SECONDS));
     Future<Object> future = Patterns.ask(router, message, timeout);
     ActorRef parent = sender();
     future.onComplete(

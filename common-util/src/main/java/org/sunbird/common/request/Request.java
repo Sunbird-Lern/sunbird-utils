@@ -2,18 +2,23 @@ package org.sunbird.common.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
+import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectUtil;
+import org.sunbird.common.responsecode.ResponseCode;
 
 /** @author Manzarul */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Request implements Serializable {
 
   private static final long serialVersionUID = -2362783406031347676L;
+  private static final Integer MIN_TIMEOUT = 0;
+  private static final Integer MAX_TIMEOUT = 30;
 
   protected Map<String, Object> context;
   private String id;
@@ -27,6 +32,8 @@ public class Request implements Serializable {
   private String operation;
   private String requestId;
   private int env;
+
+  private Integer timeout; // in seconds
 
   public Request() {
     this.params = new RequestParams();
@@ -185,5 +192,18 @@ public class Request implements Serializable {
   /** @param env the env to set */
   public void setEnv(int env) {
     this.env = env;
+  }
+
+  public Integer getTimeout() {
+    return timeout;
+  }
+
+  public void setTimeout(Integer timeout) {
+    if (timeout < MIN_TIMEOUT && timeout > MAX_TIMEOUT) {
+      ProjectCommonException.throwServerErrorException(
+          ResponseCode.invalidRequestTimeout,
+          MessageFormat.format(ResponseCode.invalidRequestTimeout.getErrorMessage(), timeout));
+    }
+    this.timeout = timeout;
   }
 }
