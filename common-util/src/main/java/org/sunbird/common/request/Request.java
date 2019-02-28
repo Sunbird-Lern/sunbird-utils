@@ -19,6 +19,7 @@ public class Request implements Serializable {
   private static final long serialVersionUID = -2362783406031347676L;
   private static final Integer MIN_TIMEOUT = 0;
   private static final Integer MAX_TIMEOUT = 30;
+  private static final int WAIT_TIME_VALUE = 9;
 
   protected Map<String, Object> context;
   private String id;
@@ -195,7 +196,7 @@ public class Request implements Serializable {
   }
 
   public Integer getTimeout() {
-    return timeout;
+    return timeout == null ? WAIT_TIME_VALUE : timeout;
   }
 
   public void setTimeout(Integer timeout) {

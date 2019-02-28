@@ -29,7 +29,6 @@ public class RequestRouter extends BaseRouter {
 
   private static String mode;
   private static String name;
-  private static final int WAIT_TIME_VALUE = 9;
   public static Map<String, ActorRef> routingMap = new HashMap<>();
 
   public RequestRouter() {
@@ -90,8 +89,7 @@ public class RequestRouter extends BaseRouter {
             + " start time "
             + startTime,
         LoggerEnum.PERF_LOG);
-    int timeoutValue = message.getTimeout() == null ? WAIT_TIME_VALUE : message.getTimeout();
-    Timeout timeout = new Timeout(Duration.create(timeoutValue, TimeUnit.SECONDS));
+    Timeout timeout = new Timeout(Duration.create(message.getTimeout(), TimeUnit.SECONDS));
     Future<Object> future = Patterns.ask(router, message, timeout);
     ActorRef parent = sender();
     future.onComplete(
