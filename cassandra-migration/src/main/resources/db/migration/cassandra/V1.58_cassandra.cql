@@ -1,0 +1,7 @@
+INSERT INTO sunbird.page_section(id,datasource, display,name,searchquery,sectiondatatype,status) VALUES('0127029874436259843','batch','{"name":{"en":"Upcoming Courses"}}','Upcoming Course','{"request":{"query":"","filters":{"status":"0"},"limit":10,"sort_by":{"createdDate":"desc"}}}','coursebatch',1);
+
+INSERT INTO sunbird.page_section(id,datasource, display,name,searchquery,sectiondatatype,status) VALUES('0127029877022638081','batch','{"name":{"en":"Expired Courses"}}','Expired Course','{"request":{"query":"","filters":{"status":"2"},"limit":10,"sort_by":{"createdDate":"desc"}}}','coursebatch',1);
+
+INSERT INTO sunbird.page_section(id,datasource, display,name,searchquery,sectiondatatype,status) VALUES('0127029938411765763','batch','{"name":{"en":"Ongoing Courses"}}','Ongoing Course','{"request":{"query":"","filters":{"status":"1"},"limit":10,"sort_by":{"createdDate":"desc"}}}','coursebatch',1);
+
+INSERT INTO sunbird.page_management(id,appmap,name,portalmap) VALUES('0127029903393832964','[{"id":"0127029938411765763","index":1,"group":1},{"id":"0127029874436259843","index":1,"group":2},{"id":"0127029877022638081","index":1,"group":3}]','User Courses','[{"id":"0127029938411765763","index":1,"group":1},{"id":"0127029874436259843","index":1,"group":2},{"id":"0127029877022638081","index":1,"group":3}]');
