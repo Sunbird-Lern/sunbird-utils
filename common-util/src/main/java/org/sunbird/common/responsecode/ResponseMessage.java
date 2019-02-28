@@ -413,8 +413,7 @@ public interface ResponseMessage {
     String ERROR_RATE_LIMIT_EXCEEDED =
         "Your per {0} rate limit has exceeded. You can retry after some time.";
     String ERROR_INVALID_DIAL_CODE = "The given QR code {0} is not valid.";
-    String ERROR_INVALID_TOPIC =
-        "Topic <{0}> not found in the framework. Please check and correct.";
+    String ERROR_INVALID_TOPIC = "Topic {0} not found in the framework. Please check and correct.";
     String ERROR_DIAL_CODE_DUPLICATE_ENTRY =
         "QR code {0} is associated with more than one section {1}.";
     String ERROR_DIAL_CODE_ALREADY_ASSOCIATED =
