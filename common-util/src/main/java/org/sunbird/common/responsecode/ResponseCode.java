@@ -781,6 +781,8 @@ public enum ResponseCode {
   errorInvalidTextbookUnitId(
       ResponseMessage.Key.ERROR_INVALID_TEXTBOOK_UNIT_ID,
       ResponseMessage.Message.ERROR_INVALID_TEXTBOOK_UNIT_ID),
+  invalidRequestTimeout(
+      ResponseMessage.Key.INVALID_REQUEST_TIMEOUT, ResponseMessage.Message.INVALID_REQUEST_TIMEOUT),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
