@@ -267,7 +267,7 @@ public class ProjectUtilTest extends BaseHttpTest {
   @Test
   public void testEsTypeSuccess() {
     assertEquals("content", ProjectUtil.EsType.content.getTypeName());
-    assertEquals("batch", ProjectUtil.EsType.course.getTypeName());
+    assertEquals("coursebatch", ProjectUtil.EsType.course.getTypeName());
     assertEquals("user", ProjectUtil.EsType.user.getTypeName());
     assertEquals("org", ProjectUtil.EsType.organisation.getTypeName());
     assertEquals("usercourses", ProjectUtil.EsType.usercourses.getTypeName());
