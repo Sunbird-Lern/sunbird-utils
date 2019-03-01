@@ -880,6 +880,7 @@ public final class JsonKey {
   public static final String COURSE_STAT_MAIL_DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
   public static final String DATA_SOURCE = "dataSource";
   public static final String SUNBIRD_DIALCODE_SEARCH_API = "sunbird_dialcode_search_api";
+  public static final String FROM_BEGINING = "fromBegining";
 
   private JsonKey() {}
 }
