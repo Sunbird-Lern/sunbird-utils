@@ -568,7 +568,7 @@ public class ElasticSearchUtilTest {
     assertTrue(endTime > START_TIME);
   }
 
-  @Test
+  // @Test
   public void testCreatedIndexAndTypesSuccess() {
     Config config = ConfigUtil.getConfig(ElasticSearchUtil.ES_CONFIG_FILE);
     List<Object> list = (List) config.getAnyRefList("elasticsearch.indices");
