@@ -589,7 +589,17 @@ public class ElasticSearchUtil {
 
     // apply simple query string
     if (!StringUtils.isBlank(searchDTO.getQuery())) {
-      query.must(QueryBuilders.simpleQueryStringQuery(searchDTO.getQuery()).field("all_fields"));
+      SimpleQueryStringBuilder sqsb = QueryBuilders.simpleQueryStringQuery(searchDTO.getQuery());
+      if (CollectionUtils.isEmpty(searchDTO.getQueryFields())) {
+        query.must(sqsb.field("all_fields"));
+      } else {
+        Map<String, Float> searchFields =
+            searchDTO
+                .getQueryFields()
+                .stream()
+                .collect(Collectors.<String, String, Float>toMap(s -> s, v -> 1.0f));
+        query.must(sqsb.fields(searchFields));
+      }
     }
     // apply the sorting
     if (searchDTO.getSortBy() != null && searchDTO.getSortBy().size() > 0) {
@@ -1153,6 +1163,9 @@ public class ElasticSearchUtil {
     SearchDTO search = new SearchDTO();
     if (searchQueryMap.containsKey(JsonKey.QUERY)) {
       search.setQuery((String) searchQueryMap.get(JsonKey.QUERY));
+    }
+    if (searchQueryMap.containsKey(JsonKey.QUERY_FIELDS)) {
+      search.setQueryFields((List<String>) searchQueryMap.get(JsonKey.QUERY_FIELDS));
     }
     if (searchQueryMap.containsKey(JsonKey.FACETS)) {
       search.setFacets((List<Map<String, String>>) searchQueryMap.get(JsonKey.FACETS));
