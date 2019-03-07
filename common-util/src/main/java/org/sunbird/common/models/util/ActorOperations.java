@@ -71,6 +71,7 @@ public enum ActorOperations {
   ORG_CREATION_METRICS_DATA("orgCreationMetricsData"),
   ORG_CONSUMPTION_METRICS_DATA("orgConsumptionMetricsData"),
   COURSE_PROGRESS_METRICS("courseProgressMetrics"),
+  COURSE_PROGRESS_METRICS_V2("courseProgressMetricsV2"),
   COURSE_CREATION_METRICS("courseConsumptionMetrics"),
   USER_CREATION_METRICS("userCreationMetrics"),
   USER_CONSUMPTION_METRICS("userConsumptionMetrics"),
@@ -151,8 +152,11 @@ public enum ActorOperations {
   COURSE_BATCH_NOTIFICATION("courseBatchNotification"),
   USER_TNC_ACCEPT("userTnCAccept"),
   GENERATE_OTP("generateOTP"),
+  BACKGROUND_ENCRYPTION("backgroundEncryption"),
+  BACKGROUND_DECRYPTION("backgroundDecryption"),
   VERIFY_OTP("verifyOTP"),
-  SEND_OTP("sendOTP");
+  SEND_OTP("sendOTP"),
+  GET_USER_TYPES("getUserTypes");
 
   private String value;
 

@@ -170,6 +170,9 @@ public class Msg91SmsProvider implements ISmsProvider {
     } catch (IOException e) {
       logger.error(e);
       return false;
+    } catch (Exception e) {
+      logger.info("Msg91SmsProvider - Error in coverting providerDetails to string!");
+      return false;
     } finally {
       closeHttpResource(httpClient);
     }
@@ -404,6 +407,9 @@ public class Msg91SmsProvider implements ISmsProvider {
 
     } catch (IOException e) {
       logger.error(e);
+      return false;
+    } catch (Exception e) {
+      logger.error("Msg91SmsProvider : send : error in converting providerDetails to String");
       return false;
     } finally {
       closeHttpResource(httpClient);

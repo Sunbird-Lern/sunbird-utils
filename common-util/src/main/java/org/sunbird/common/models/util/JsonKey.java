@@ -663,6 +663,7 @@ public final class JsonKey {
   public static final String NON_PRIMARY_KEY = "NonPK";
   public static final String PARENT_ID = "parentId";
   public static final String CREATED_ON = "createdOn";
+  public static final String UPDATED_ON = "updatedOn";
   public static final String LAST_UPDATED_ON = "lastUpdatedOn";
   public static final String LAST_UPDATED_BY = "lastUpdatedBy";
   public static final String SUNBIRD_DEFAULT_CHANNEL = "sunbird_default_channel";
@@ -820,10 +821,66 @@ public final class JsonKey {
   public static final String SUNBIRD_OTP_LENGTH = "sunbird_otp_length";
   public static final String OTP_EXPIRATION_IN_MINUTES = "otpExpiryInMinutes";
   public static final String SUNBIRD_RATE_LIMIT_ENABLED = "sunbird_rate_limit_enabled";
+  public static final String SUNBIRD_USER_MAX_ENCRYPTION_LIMIT =
+      "sunbird_user_max_encryption_limit";
+  public static final String SUNBIRD_USER_MAX_PHONE_LENGTH = "sunbird_user_max_phone_length";
   public static final String RATE_LIMIT = "rate_limit";
   public static final String RATE_LIMIT_UNIT = "unit";
   public static final String RATE = "rate";
   public static final String INSTALLATION_NAME = "installationName";
+  public static final String LOCATION_CODES = "locationCodes";
+  public static final String BATCH_DETAILS = "batchDetails";
+  public static final String USER_LOCATIONS = "userLocations";
+  public static final String DIAL_CODES = "dialcodes";
+  public static final String DIAL_CODE_REQUIRED = "dialcodeRequired";
+  public static final String NO = "No";
+  public static final String YES = "Yes";
+  public static final String QR_CODE_REQUIRED = "QR Code Required?";
+  public static final String QR_CODE = "QR Code";
+  public static final String RESERVED_DIAL_CODES = "reservedDialcodes";
+  public static final String FRAMEWORK_READ_API_URL = "framework_read_api_url";
+  public static final String DIAL_CODE_IDENTIFIER_MAP = "dialCodeIdentifierMap";
+  public static final String LINK_DIAL_CODE_API = "sunbird_link_dial_code_api";
+  public static final String LINKED_CONTENT = "linkedContent";
+  public static final String MAX_ALLOWED_CONTENT_SIZE = "max_allowed_content_size";
+  public static final String SUNBIRD_LINKED_CONTENT_BASE_URL = "sunbird_linked_content_base_url";
+  public static final String LINKED_CONTENT_COLUMN_KEY = "Linked Content";
+
+  public static final String BATCHES = "batches";
+  public static final String ENROLLED_ON = "enrolledOn";
+  public static final String LAST_ACCESSED_ON = "lastAccessedOn";
+  public static final String OTHER = "OTHER";
+  public static final String TEACHER = "TEACHER";
+  public static final String USER_EXTERNAL_ID = "userExternalId";
+  public static final String USER_ID_TYPE = "userIdType";
+  public static final String USER_PROVIDER = "userProvider";
+  public static final String SORTBY = "sortBy";
+  public static final String SORT_ORDER = "sortOrder";
+  public static final String NUMERIC = "NUMERIC";
+  public static final String ASC = "asc";
+  public static final String TERM = "term";
+  public static final String DESC = "desc";
+  public static final String SUNBIRD_TOC_LINKED_CONTENT_COLUMN_NAME =
+      "sunbird_toc_linked_content_column_name";
+  public static final String SUNBIRD_TOC_MAX_FIRST_LEVEL_UNITS =
+      "sunbird_toc_max_first_level_units";
+  public static final String TEXTBOOK_TOC_OUTPUT_MAPPING = "textbook_toc_output_mapping";
+  public static final String TEXTBOOK_UNIT = "TextBookUnit";
+  public static final String USER_NAME_HEADER = "User Name";
+  public static final String ORG_NAME_HEADER = "Org Name";
+  public static final String SCHOOL_NAME_HEADER = "School Name";
+  public static final String COURSE_ENROLL_DATE_HEADER = "Enrollment Date";
+  public static final String PROGRESS_HEADER = "Progress";
+  public static final String SUNBIRD_CONTENT_SEARCH_URL = "sunbird_content_search_url";
+  public static final String DATE_TIME_HEADER = "Date time stamp";
+  public static final String PHONE_HEADER = "Mobile Number";
+  public static final String EMAIL_HEADER = "Email Id";
+  public static final String COURSE_PROGRESS_MAIL_TEMPLATE = "courseProgressMailTemplate";
+  public static final String SUNBIRD_TIMEZONE = "sunbird_time_zone";
+  public static final String COURSE_STAT_MAIL_DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+  public static final String DATA_SOURCE = "dataSource";
+  public static final String SUNBIRD_DIALCODE_SEARCH_API = "sunbird_dialcode_search_api";
+  public static final String FROM_BEGINING = "fromBegining";
 
   private JsonKey() {}
 }

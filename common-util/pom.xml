@@ -52,27 +52,17 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.0</version>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.json/json -->
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20090211</version>
-		</dependency>
-
 		<!-- Adding for Key cloak SSO server. -->
 		<dependency>
 			<groupId>org.keycloak</groupId>
 			<artifactId>keycloak-admin-client</artifactId>
 			<version>3.2.0.Final</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>jaxrs-api</artifactId>
 			<version>3.0.11.Final</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-client</artifactId>
@@ -84,7 +74,6 @@
 			<artifactId>azure-storage</artifactId>
 			<version>5.4.0</version>
 		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/org.apache.velocity/velocity-tools -->
 		<dependency>
 			<groupId>org.apache.velocity</groupId>
@@ -131,12 +120,6 @@
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
 			<version>3.15</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.2.4</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -235,10 +218,6 @@
 			<version>1.2.1</version>
 			<exclusions>
 				<exclusion>
-					<groupId>com.google.code.gson</groupId>
-					<artifactId>gson</artifactId>
-				</exclusion>
-				<exclusion>
                                         <groupId>com.sun.jersey</groupId>
                                         <artifactId>jersey-core</artifactId>
 				</exclusion>
@@ -246,8 +225,17 @@
                                         <groupId>com.sun.jersey</groupId>
                                         <artifactId>jersey-server</artifactId>
 				</exclusion>
+				<exclusion>
+							            <groupId>com.fasterxml.jackson.module</groupId>
+							            <artifactId>jackson-module-scala_2.11</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
+		<dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-scala_2.11</artifactId>
+            <version>2.9.5</version>
+        </dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-common</artifactId>

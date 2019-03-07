@@ -37,22 +37,26 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.IntStream;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
+import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.ProjectUtil;
 
 public class TextBookTocUploader {
-
   public static final String TEXTBOOK_TOC_FOLDER = separator + "textbook" + separator + "toc";
-
   private Set<String> viewableColumns;
 
   private String textBookTocFileName;
@@ -61,6 +65,7 @@ public class TextBookTocUploader {
   private Map<String, Object> row;
 
   private List<Map<String, Object>> rows = new ArrayList<>();
+  private List<Map<String, Object>> parentChildHierarchyMapList = new ArrayList<>();
 
   public TextBookTocUploader(String textBookTocFileName, FileExtension fileExtension) {
     this.textBookTocFileName = textBookTocFileName;
@@ -74,7 +79,9 @@ public class TextBookTocUploader {
   public String execute(Map<String, Object> content, String textbookId, String versionKey) {
 
     if (!HIERARCHY.filter(h -> 0 != h.size()).isPresent()) return "";
-
+    parentChildHierarchyMapList =
+        getParentChildHierarchy(
+            textbookId, (List<Map<String, Object>>) content.get(JsonKey.CHILDREN));
     log(
         "Creating CSV for TextBookToC | Id: " + textbookId + "Version Key: " + versionKey,
         INFO.name());
@@ -143,7 +150,6 @@ public class TextBookTocUploader {
                     })
                 .filter(Objects::nonNull)
                 .toArray(String[]::new);
-
         out = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
 
         log(
@@ -194,6 +200,7 @@ public class TextBookTocUploader {
               IntStream.range(0, KEY_NAMES.size())
                   .mapToObj(i -> row.get(KEY_NAMES.get(i)))
                   .toArray(Object[]::new);
+
           printer.printRecord(tempRow);
         }
       }
@@ -229,10 +236,6 @@ public class TextBookTocUploader {
                 + "Version Key: "
                 + content.get(VERSION_KEY),
             ERROR.name());
-        throw new ProjectCommonException(
-            errorProcessingRequest.getErrorCode(),
-            errorProcessingRequest.getErrorMessage(),
-            SERVER_ERROR.getResponseCode());
       }
     }
   }
@@ -279,7 +282,87 @@ public class TextBookTocUploader {
 
   private void updateMetadata(Map<String, Object> content, int level) {
     updateRowWithData(content, HIERARCHY_PROPERTY, level);
-    for (String e : ROW_METADATA) updateRowWithData(content, e, -1);
+    for (String e : ROW_METADATA) {
+      updateRowWithData(content, e, -1);
+    }
+    updateRowWithLinkedContent();
+  }
+
+  @SuppressWarnings("unchecked")
+  private void updateRowWithLinkedContent() {
+    String identifier = (String) row.get(JsonKey.IDENTIFIER);
+    if (StringUtils.isNotBlank(identifier)) {
+      Optional<Map<String, Object>> contentMap =
+          parentChildHierarchyMapList
+              .stream()
+              .filter(
+                  s -> {
+                    for (Entry<String, Object> entry : s.entrySet()) {
+                      if (identifier.equalsIgnoreCase(entry.getKey())) {
+                        return true;
+                      }
+                    }
+                    return false;
+                  })
+              .findFirst();
+      if (contentMap.isPresent()) {
+        Map<String, Object> childrenMap = contentMap.get();
+        List<Map<String, Object>> children =
+            (List<Map<String, Object>>)
+                ((Map<String, Object>) childrenMap.get(identifier)).get(JsonKey.CHILDREN);
+        int childWithContentTypeAsTextbook = 0;
+        for (Map<String, Object> child : children) {
+          if (JsonKey.TEXTBOOK.equalsIgnoreCase((String) child.get(JsonKey.CONTENT_TYPE))
+              || JsonKey.TEXTBOOK_UNIT.equalsIgnoreCase((String) child.get(JsonKey.CONTENT_TYPE))) {
+            childWithContentTypeAsTextbook++;
+          }
+        }
+        final int size = childWithContentTypeAsTextbook;
+        children.forEach(
+            s -> {
+              if (!(JsonKey.TEXTBOOK.equalsIgnoreCase((String) s.get(JsonKey.CONTENT_TYPE))
+                  || JsonKey.TEXTBOOK_UNIT.equalsIgnoreCase(
+                      (String) s.get(JsonKey.CONTENT_TYPE)))) {
+                String url =
+                    ProjectUtil.getConfigValue(JsonKey.SUNBIRD_LINKED_CONTENT_BASE_URL)
+                        + (String) s.get(JsonKey.IDENTIFIER);
+                String key =
+                    MessageFormat.format(
+                        ProjectUtil.getConfigValue(JsonKey.SUNBIRD_TOC_LINKED_CONTENT_COLUMN_NAME),
+                        (((int) s.get(JsonKey.INDEX)) - size));
+                if (ROW_METADATA.contains(key)) {
+                  row.put(key, url);
+                }
+              }
+            });
+      }
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  private List<Map<String, Object>> getParentChildHierarchy(
+      String parentId, List<Map<String, Object>> children) {
+    List<Map<String, Object>> hierarchyList = new ArrayList<>();
+    Map<String, Object> hierarchy = new HashMap<>();
+    Map<String, Object> node = new HashMap<>();
+    List<Map<String, Object>> contentIdList = new ArrayList<>();
+    node.put(JsonKey.CHILDREN, contentIdList);
+    hierarchy.put(parentId, node);
+    hierarchyList.add(hierarchy);
+    for (Map<String, Object> child : children) {
+      Map<String, Object> contentIds = new HashMap<>();
+      contentIds.put(JsonKey.IDENTIFIER, child.get(JsonKey.IDENTIFIER));
+      contentIds.put(JsonKey.INDEX, child.get(JsonKey.INDEX));
+      contentIds.put(JsonKey.CONTENT_TYPE, child.get(JsonKey.CONTENT_TYPE));
+      contentIdList.add(contentIds);
+      if (CollectionUtils.isNotEmpty((List<Map<String, Object>>) child.get(JsonKey.CHILDREN))) {
+        hierarchyList.addAll(
+            getParentChildHierarchy(
+                (String) child.get(JsonKey.IDENTIFIER),
+                (List<Map<String, Object>>) child.get(JsonKey.CHILDREN)));
+      }
+    }
+    return hierarchyList;
   }
 
   private void appendRow() {
@@ -325,6 +408,9 @@ public class TextBookTocUploader {
 
   private void updateMetadataSuppressColumns(Map<String, Object> content, int level) {
     updateRowWithDataSuppressColumns(content, HIERARCHY_PROPERTY, level);
-    for (String e : ROW_METADATA) updateRowWithDataSuppressColumns(content, e, -1);
+    for (String e : ROW_METADATA) {
+      updateRowWithDataSuppressColumns(content, e, -1);
+    }
+    updateRowWithLinkedContent();
   }
 }

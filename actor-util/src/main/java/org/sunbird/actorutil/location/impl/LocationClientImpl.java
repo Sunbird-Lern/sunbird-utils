@@ -31,16 +31,17 @@ public class LocationClientImpl implements LocationClient {
 
   @Override
   public List<Location> getLocationsByCodes(ActorRef actorRef, List<String> codeList) {
-    String param = GeoLocationJsonKey.CODE;
-    Object value = codeList;
-    return getSearchResponse(actorRef, param, value);
+    return getSearchResponse(actorRef, GeoLocationJsonKey.CODE, codeList);
+  }
+
+  @Override
+  public List<Location> getLocationByIds(ActorRef actorRef, List<String> idsList) {
+    return getSearchResponse(actorRef, GeoLocationJsonKey.ID, idsList);
   }
 
   @Override
   public Location getLocationById(ActorRef actorRef, String id) {
-    String param = JsonKey.ID;
-    Object value = id;
-    List<Location> locationList = getSearchResponse(actorRef, param, value);
+    List<Location> locationList = getSearchResponse(actorRef, JsonKey.ID, id);
     if (CollectionUtils.isNotEmpty(locationList)) {
       return locationList.get(0);
     } else {
@@ -110,6 +111,28 @@ public class LocationClientImpl implements LocationClient {
     ProjectLogger.log("LocationClientImpl : callUpdateLocation ", LoggerEnum.INFO);
     Object obj = interServiceCommunication.getResponse(actorRef, request);
     checkLocationResponseForException(obj);
+  }
+
+  @Override
+  public List<String> getRelatedLocationIds(ActorRef actorRef, List<String> codes) {
+    Map<String, Object> requestMap = new HashMap<>();
+    requestMap.put(JsonKey.LOCATION_CODES, codes);
+
+    Request request = new Request();
+    request.setOperation(LocationActorOperation.GET_RELATED_LOCATION_IDS.getValue());
+    request.getRequest().putAll(requestMap);
+
+    ProjectLogger.log("LocationClientImpl: getRelatedLocationIds called", LoggerEnum.INFO);
+    Object obj = interServiceCommunication.getResponse(actorRef, request);
+    checkLocationResponseForException(obj);
+
+    if (obj instanceof Response) {
+      Response responseObj = (Response) obj;
+      List<String> responseList = (List<String>) responseObj.getResult().get(JsonKey.RESPONSE);
+      return responseList;
+    }
+
+    return new ArrayList<>();
   }
 
   private void checkLocationResponseForException(Object obj) {

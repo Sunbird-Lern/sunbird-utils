@@ -1,7 +1,7 @@
 package org.sunbird.common.request.orgvalidator;
 
 import java.math.BigInteger;
-import java.util.Arrays;
+import java.text.MessageFormat;
 import java.util.Map;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -22,7 +22,6 @@ public class OrgRequestValidator extends BaseOrgRequestValidator {
         (String) orgRequest.getRequest().get(JsonKey.ORG_NAME),
         ResponseCode.mandatoryParamsMissing,
         JsonKey.ORG_NAME);
-    checkForFieldsNotAllowed(orgRequest.getRequest(), Arrays.asList(JsonKey.LOCATION_IDS));
     validateRootOrgChannel(orgRequest);
 
     Map<String, Object> address =
@@ -30,6 +29,7 @@ public class OrgRequestValidator extends BaseOrgRequestValidator {
     if (MapUtils.isNotEmpty(address)) {
       new AddressRequestValidator().validateAddress(address, JsonKey.ORGANISATION);
     }
+    validateLocationIdOrCode(orgRequest);
   }
 
   public void validateUpdateOrgRequest(Request request) {
@@ -50,7 +50,7 @@ public class OrgRequestValidator extends BaseOrgRequestValidator {
     }
 
     validateRootOrgChannel(request);
-
+    validateLocationIdOrCode(request);
     Map<String, Object> address = (Map<String, Object>) request.getRequest().get(JsonKey.ADDRESS);
     if (MapUtils.isNotEmpty(address)) {
       new AddressRequestValidator().validateAddress(address, JsonKey.ORGANISATION);
@@ -72,6 +72,19 @@ public class OrgRequestValidator extends BaseOrgRequestValidator {
           ResponseCode.invalidRequestData.getErrorCode(),
           ResponseCode.invalidRequestData.getErrorMessage(),
           ERROR_CODE);
+    }
+  }
+
+  private void validateLocationIdOrCode(Request orgRequest) {
+    validateListParam(orgRequest.getRequest(), JsonKey.LOCATION_IDS, JsonKey.LOCATION_CODE);
+    if (orgRequest.getRequest().get(JsonKey.LOCATION_IDS) != null
+        && orgRequest.getRequest().get(JsonKey.LOCATION_CODE) != null) {
+      ProjectCommonException.throwClientErrorException(
+          ResponseCode.errorAttributeConflict,
+          MessageFormat.format(
+              ResponseCode.errorAttributeConflict.getErrorMessage(),
+              JsonKey.LOCATION_CODE,
+              JsonKey.LOCATION_IDS));
     }
   }
 }

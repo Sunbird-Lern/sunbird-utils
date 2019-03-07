@@ -31,6 +31,11 @@ public enum ResponseCode {
   contentIdRequired(
       ResponseMessage.Key.CONTENT_ID_MISSING_ERROR,
       ResponseMessage.Message.CONTENT_ID_MISSING_ERROR),
+  errorInvalidConfigParamValue(
+      ResponseMessage.Key.ERROR_INVALID_CONFIG_PARAM_VALUE,
+      ResponseMessage.Message.ERROR_INVALID_CONFIG_PARAM_VALUE),
+  errorMaxSizeExceeded(
+      ResponseMessage.Key.ERROR_MAX_SIZE_EXCEEDED, ResponseMessage.Message.ERROR_MAX_SIZE_EXCEEDED),
   apiKeyRequired(
       ResponseMessage.Key.API_KEY_MISSING_ERROR, ResponseMessage.Message.API_KEY_MISSING_ERROR),
   invalidApiKey(
@@ -211,6 +216,9 @@ public enum ResponseCode {
   userNotFound(ResponseMessage.Key.USER_NOT_FOUND, ResponseMessage.Message.USER_NOT_FOUND),
   idRequired(ResponseMessage.Key.ID_REQUIRED_ERROR, ResponseMessage.Message.ID_REQUIRED_ERROR),
   dataTypeError(ResponseMessage.Key.DATA_TYPE_ERROR, ResponseMessage.Message.DATA_TYPE_ERROR),
+  errorAttributeConflict(
+      ResponseMessage.Key.ERROR_ATTRIBUTE_CONFLICT,
+      ResponseMessage.Message.ERROR_ATTRIBUTE_CONFLICT),
   addressError(ResponseMessage.Key.ADDRESS_ERROR, ResponseMessage.Message.ADDRESS_ERROR),
   addressTypeError(
       ResponseMessage.Key.ADDRESS_TYPE_ERROR, ResponseMessage.Message.ADDRESS_TYPE_ERROR),
@@ -742,7 +750,39 @@ public enum ResponseCode {
   errorRateLimitExceeded(
       ResponseMessage.Key.ERROR_RATE_LIMIT_EXCEEDED,
       ResponseMessage.Message.ERROR_RATE_LIMIT_EXCEEDED),
+  errorInvalidDialCode(
+      ResponseMessage.Key.ERROR_INVALID_DIAL_CODE, ResponseMessage.Message.ERROR_INVALID_DIAL_CODE),
+  errorInvalidTopic(
+      ResponseMessage.Key.ERROR_INVALID_TOPIC, ResponseMessage.Message.ERROR_INVALID_TOPIC),
+  errorDialCodeDuplicateEntry(
+      ResponseMessage.Key.ERROR_DIAL_CODE_DUPLICATE_ENTRY,
+      ResponseMessage.Message.ERROR_DIAL_CODE_DUPLICATE_ENTRY),
+  errorDialCodeAlreadyAssociated(
+      ResponseMessage.Key.ERROR_DIAL_CODE_ALREADY_ASSOCIATED,
+      ResponseMessage.Message.ERROR_DIAL_CODE_ALREADY_ASSOCIATED),
+  errorDialCodeLinkingFail(
+      ResponseMessage.Key.DIAL_CODE_LINKING_FAILED,
+      ResponseMessage.Message.DIAL_CODE_LINKING_FAILED),
+  errorDialCodeLinkingClientError(
+      ResponseMessage.Key.ERROR_TEXTBOOK_UPDATE, ResponseMessage.Message.ERROR_TEXTBOOK_UPDATE),
+  errorInvalidLinkedContentUrl(
+      ResponseMessage.Key.ERROR_INVALID_LINKED_CONTENT_URL,
+      ResponseMessage.Message.ERROR_INVALID_LINKED_CONTENT_URL),
+  errorDuplicateLinkedContentUrl(
+      ResponseMessage.Key.ERROR_DUPLICATE_LINKED_CONTENT,
+      ResponseMessage.Message.ERROR_DUPLICATE_LINKED_CONTENT),
 
+  errorTeacherCannotBelongToCustodianOrg(
+      ResponseMessage.Key.TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG,
+      ResponseMessage.Message.TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG),
+  errorDduplicateDialCodeEntry(
+      ResponseMessage.Key.ERROR_DUPLICATE_QR_CODE_ENTRY,
+      ResponseMessage.Message.ERROR_DUPLICATE_QR_CODE_ENTRY),
+  errorInvalidTextbookUnitId(
+      ResponseMessage.Key.ERROR_INVALID_TEXTBOOK_UNIT_ID,
+      ResponseMessage.Message.ERROR_INVALID_TEXTBOOK_UNIT_ID),
+  invalidRequestTimeout(
+      ResponseMessage.Key.INVALID_REQUEST_TIMEOUT, ResponseMessage.Message.INVALID_REQUEST_TIMEOUT),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

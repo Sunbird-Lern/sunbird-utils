@@ -14,7 +14,9 @@ public enum BadgingActorOperations {
   GET_BADGE_ASSERTION_LIST("getBadgeAssertionList"),
   REVOKE_BADGE("revokeBadge"),
   GET_BADGE_ISSUER("getBadgeIssuer"),
-  GET_ALL_ISSUER("getAllIssuer");
+  GET_ALL_ISSUER("getAllIssuer"),
+  CREATE_BADGE_ASSOCIATION("createBadgeAssociation"),
+  REMOVE_BADGE_ASSOCIATION("removeBadgeAssociation");
 
   private String value;
 

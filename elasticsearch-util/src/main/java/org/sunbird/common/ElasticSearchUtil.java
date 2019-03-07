@@ -56,6 +56,9 @@ import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortMode;
 import org.elasticsearch.search.sort.SortOrder;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
@@ -85,7 +88,7 @@ public class ElasticSearchUtil {
   private static final String GTE = ">=";
   private static final String GT = ">";
   private static final String ASC_ORDER = "ASC";
-  private static final String STARTS_WITH = "startsWith";
+  public static final String STARTS_WITH = "startsWith";
   private static final String ENDS_WITH = "endsWith";
   private static final List<String> upsertResults =
       new ArrayList<>(Arrays.asList("CREATED", "UPDATED", "NOOP"));
@@ -99,7 +102,8 @@ public class ElasticSearchUtil {
   private ElasticSearchUtil() {}
 
   static {
-    verifyAndCreateIndicesAndTypes();
+    // disabling this because by default it will create mapping with dynamic type.
+    // verifyAndCreateIndicesAndTypes();
   }
 
   /**
@@ -600,8 +604,23 @@ public class ElasticSearchUtil {
     }
     // apply the sorting
     if (searchDTO.getSortBy() != null && searchDTO.getSortBy().size() > 0) {
-      for (Map.Entry<String, String> entry : searchDTO.getSortBy().entrySet()) {
-        searchRequestBuilder.addSort(entry.getKey() + RAW_APPEND, getSortOrder(entry.getValue()));
+      for (Map.Entry<String, Object> entry : searchDTO.getSortBy().entrySet()) {
+        if (!entry.getKey().contains(".")) {
+          searchRequestBuilder.addSort(
+              entry.getKey() + RAW_APPEND, getSortOrder((String) entry.getValue()));
+        } else {
+          Map<String, Object> map = (Map<String, Object>) entry.getValue();
+          Map<String, String> dataMap = (Map) map.get(JsonKey.TERM);
+          for (Map.Entry<String, String> dateMapEntry : dataMap.entrySet()) {
+            FieldSortBuilder mySort =
+                SortBuilders.fieldSort(entry.getKey() + RAW_APPEND)
+                    .setNestedFilter(
+                        new TermQueryBuilder(dateMapEntry.getKey(), dateMapEntry.getValue()))
+                    .sortMode(SortMode.MIN)
+                    .order(getSortOrder((String) map.get(JsonKey.ORDER)));
+            searchRequestBuilder.addSort(mySort);
+          }
+        }
       }
     }
 
@@ -950,11 +969,14 @@ public class ElasticSearchUtil {
     QueryBuilder queryBuilder = null;
     for (Map.Entry<String, Object> it : rangeOperation.entrySet()) {
       if (it.getKey().equalsIgnoreCase(STARTS_WITH)) {
-        if (isNotNull(boost)) {
-          queryBuilder =
-              QueryBuilders.prefixQuery(key + RAW_APPEND, (String) it.getValue()).boost(boost);
+        String startsWithVal = (String) it.getValue();
+        if (StringUtils.isNotBlank(startsWithVal)) {
+          startsWithVal = startsWithVal.toLowerCase();
         }
-        queryBuilder = QueryBuilders.prefixQuery(key + RAW_APPEND, (String) it.getValue());
+        if (isNotNull(boost)) {
+          queryBuilder = QueryBuilders.prefixQuery(key + RAW_APPEND, startsWithVal).boost(boost);
+        }
+        queryBuilder = QueryBuilders.prefixQuery(key + RAW_APPEND, startsWithVal);
       } else if (it.getKey().equalsIgnoreCase(ENDS_WITH)) {
         String endsWithRegex = "~" + it.getValue();
         if (isNotNull(boost)) {
@@ -1199,5 +1221,36 @@ public class ElasticSearchUtil {
       search.setSoftConstraints(constraintsMap);
     }
     return search;
+  }
+
+  /**
+   * @param ids List of ids of document
+   * @param fields List of fields which needs to captured
+   * @param typeToSearch type of ES
+   * @return Map<String,Map<String,Objec>> It will return a map with id as key and the data from ES
+   *     as value
+   */
+  public static Map<String, Map<String, Object>> getEsResultByListOfIds(
+      List<String> ids, List<String> fields, ProjectUtil.EsType typeToSearch) {
+
+    Map<String, Object> filters = new HashMap<>();
+    filters.put(JsonKey.ID, ids);
+
+    SearchDTO searchDTO = new SearchDTO();
+    searchDTO.getAdditionalProperties().put(JsonKey.FILTERS, filters);
+    searchDTO.setFields(fields);
+
+    Map<String, Object> result =
+        complexSearch(
+            searchDTO, ProjectUtil.EsIndex.sunbird.getIndexName(), typeToSearch.getTypeName());
+    List<Map<String, Object>> esContent = (List<Map<String, Object>>) result.get(JsonKey.CONTENT);
+    return esContent
+        .stream()
+        .collect(
+            Collectors.toMap(
+                obj -> {
+                  return (String) obj.get("id");
+                },
+                val -> val));
   }
 }

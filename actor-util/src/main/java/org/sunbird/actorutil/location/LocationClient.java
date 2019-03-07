@@ -6,7 +6,7 @@ import org.sunbird.models.location.Location;
 import org.sunbird.models.location.apirequest.UpsertLocationRequest;
 
 /**
- * This class will provide utility methods for Location service
+ * This interface defines methods supported by Location service.
  *
  * @author Amit Kumar
  */
@@ -20,6 +20,7 @@ public interface LocationClient {
    */
   List<Location> getLocationsByCodes(ActorRef actorRef, List<String> codeList);
 
+  public List<Location> getLocationByIds(ActorRef actorRef, List<String> idsList);
   /**
    * @desc This method will fetch location details by id.
    * @param actorRef Actor reference.
@@ -50,4 +51,13 @@ public interface LocationClient {
    * @param location Location details.
    */
   void updateLocation(ActorRef actorRef, UpsertLocationRequest location);
+
+  /**
+   * @desc For given location codes, fetch location IDs (including, if any, those of its parent or
+   *     ancestor(s) locations).
+   * @param actorRef Actor reference.
+   * @param codes List of location codes.
+   * @return List of related location IDs
+   */
+  List<String> getRelatedLocationIds(ActorRef actorRef, List<String> codes);
 }

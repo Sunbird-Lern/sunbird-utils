@@ -40,6 +40,8 @@ public interface ResponseMessage {
     String FIRST_NAME_MISSING = "First name is mandatory.";
     String LANGUAGE_MISSING = "Language is mandatory.";
     String PASSWORD_MISSING = "Password is mandatory.";
+    String ERROR_INVALID_CONFIG_PARAM_VALUE = "Invalid value {0} for config parameter {1}.";
+    String ERROR_MAX_SIZE_EXCEEDED = "Size of {0} exceeds max limit {1}";
     String PASSWORD_MIN_LENGHT = "Password should have at least 8 character.";
     String PASSWORD_MAX_LENGHT = "Password should not be more than 12 character.";
     String ORGANISATION_ID_MISSING = "Organization id is mandatory.";
@@ -116,7 +118,8 @@ public interface ResponseMessage {
     String INVALID_PERIOD = "Time Period is invalid";
     String USER_NOT_FOUND = "user not found.";
     String ID_REQUIRED_ERROR = "For deleting a record, Id is required.";
-    String DATA_TYPE_ERROR = "{0} data type should be of {1}.";
+    String DATA_TYPE_ERROR = "Data type of {0} should be {1}.";
+    String ERROR_ATTRIBUTE_CONFLICT = "Either pass attribute {0} or {1} but not both.";
     String ADDRESS_ERROR = "In {0}, {1} is mandatory.";
     String ADDRESS_TYPE_ERROR = "Please provide correct address Type.";
     String NAME_OF_INSTITUTION_ERROR = "Please provide name of Institution.";
@@ -409,6 +412,23 @@ public interface ResponseMessage {
     String INVALID_PAGE_SECTION = "Page section associated with the page is invalid.";
     String ERROR_RATE_LIMIT_EXCEEDED =
         "Your per {0} rate limit has exceeded. You can retry after some time.";
+    String ERROR_INVALID_DIAL_CODE = "The given QR code {0} is not valid.";
+    String ERROR_INVALID_TOPIC = "Topic {0} not found in the framework. Please check and correct.";
+    String ERROR_DIAL_CODE_DUPLICATE_ENTRY =
+        "QR code {0} is associated with more than one section {1}.";
+    String ERROR_DIAL_CODE_ALREADY_ASSOCIATED =
+        "QR code {0} is already associated with a section {1} in the textbook";
+    String DIAL_CODE_LINKING_FAILED = "QR code linking failed.";
+    String ERROR_TEXTBOOK_UPDATE = "{0}";
+
+    String ERROR_INVALID_LINKED_CONTENT_URL = "Linked Content {0} is not valid at row {1}.";
+    String ERROR_DUPLICATE_LINKED_CONTENT = "Duplicate content {0} at row {1}.";
+    String TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG =
+        "User type teacher is not supported for custodian organisation users";
+    String ERROR_DUPLICATE_QR_CODE_ENTRY =
+        "CSV file contains more than one entry for {0}. Correct the duplicate entry and try again.";
+    String ERROR_INVALID_TEXTBOOK_UNIT_ID = "Invalid textbook unit id {0} for texbook.";
+    String INVALID_REQUEST_TIMEOUT = "Invalid request timeout value {0}.";
   }
 
   interface Key {
@@ -513,6 +533,7 @@ public interface ResponseMessage {
     String USER_NOT_FOUND = "USER_NOT_FOUND";
     String ID_REQUIRED_ERROR = "ID_REQUIRED_ERROR";
     String DATA_TYPE_ERROR = "DATA_TYPE_ERROR";
+    String ERROR_ATTRIBUTE_CONFLICT = "ERROR_ATTRIBUTE_CONFLICT";
     String ADDRESS_ERROR = "ADDRESS_ERROR";
     String ADDRESS_TYPE_ERROR = "ADDRESS_TYPE_ERROR";
     String NAME_OF_INSTITUTION_ERROR = "NAME_OF_INSTITUTION_ERROR";
@@ -760,5 +781,19 @@ public interface ResponseMessage {
     String ERROR_INVALID_PARAMETER_SIZE = "ERROR_INVALID_PARAMETER_SIZE";
     String INVALID_PAGE_SECTION = "INVALID_PAGE_SECTION";
     String ERROR_RATE_LIMIT_EXCEEDED = "ERROR_RATE_LIMIT_EXCEEDED";
+    String ERROR_INVALID_CONFIG_PARAM_VALUE = "ERROR_INVALID_CONFIG_PARAM_VALUE";
+    String ERROR_MAX_SIZE_EXCEEDED = "ERROR_MAX_SIZE_EXCEEDED";
+    String ERROR_INVALID_DIAL_CODE = "ERROR_INVALID_DIAL_CODE";
+    String ERROR_INVALID_TOPIC = "ERROR_INVALID_TOPIC";
+    String ERROR_DIAL_CODE_DUPLICATE_ENTRY = "ERROR_DIAL_CODE_DUPLICATE_ENTRY";
+    String ERROR_DIAL_CODE_ALREADY_ASSOCIATED = "ERROR_DIAL_CODE_ALREADY_ASSOCIATED";
+    String DIAL_CODE_LINKING_FAILED = "DIAL_CODE_LINKING_FAILED";
+    String ERROR_TEXTBOOK_UPDATE = "ERROR_TEXTBOOK_UPDATE";
+    String ERROR_INVALID_LINKED_CONTENT_URL = "INVALID_LINKED_CONTENT_URL";
+    String ERROR_DUPLICATE_LINKED_CONTENT = "DUPLICATE_LINKED_CONTENT";
+    String TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG = "TEACHER_CANNOT_BELONG_TO_CUSTODIAN_ORG";
+    String ERROR_DUPLICATE_QR_CODE_ENTRY = "ERROR_DUPLICATE_QR_CODE_ENTRY";
+    String ERROR_INVALID_TEXTBOOK_UNIT_ID = "ERROR_INVALID_TEXTBOOK_UNIT_ID";
+    String INVALID_REQUEST_TIMEOUT = "INVALID_REQUEST_TIMEOUT";
   }
 }

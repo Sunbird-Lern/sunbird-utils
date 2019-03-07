@@ -198,8 +198,7 @@ public class ProjectUtilTest extends BaseHttpTest {
 
   @Test
   public void testIsDateValidFormatSuccess() {
-    boolean bool =
-        ProjectUtil.isDateValidFormat("yyyy-MM-dd", "2017-12-18");
+    boolean bool = ProjectUtil.isDateValidFormat("yyyy-MM-dd", "2017-12-18");
     assertTrue(bool);
   }
 
@@ -268,7 +267,7 @@ public class ProjectUtilTest extends BaseHttpTest {
   @Test
   public void testEsTypeSuccess() {
     assertEquals("content", ProjectUtil.EsType.content.getTypeName());
-    assertEquals("course", ProjectUtil.EsType.course.getTypeName());
+    assertEquals("coursebatch", ProjectUtil.EsType.course.getTypeName());
     assertEquals("user", ProjectUtil.EsType.user.getTypeName());
     assertEquals("org", ProjectUtil.EsType.organisation.getTypeName());
     assertEquals("usercourses", ProjectUtil.EsType.usercourses.getTypeName());
