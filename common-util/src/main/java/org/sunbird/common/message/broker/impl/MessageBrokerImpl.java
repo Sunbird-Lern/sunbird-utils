@@ -3,7 +3,7 @@ package org.sunbird.common.message.broker.impl;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import org.sunbird.common.message.broker.inf.MessageBroker;
-import org.sunbird.models.event.message.EventMessage;
+import org.sunbird.common.message.broker.model.EventMessage;
 
 public class MessageBrokerImpl implements MessageBroker {
 

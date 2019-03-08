@@ -1,6 +1,6 @@
 package org.sunbird.common.message.broker.inf;
 
-import org.sunbird.models.event.message.EventMessage;
+import org.sunbird.common.message.broker.model.EventMessage;
 
 public interface MessageBroker {
 
