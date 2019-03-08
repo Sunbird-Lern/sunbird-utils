@@ -3,10 +3,10 @@ package org.sunbird.common.message.broker.factory;
 import org.sunbird.common.message.broker.impl.MessageBrokerImpl;
 import org.sunbird.common.message.broker.inf.MessageBroker;
 
-public class ServiceFactory {
+public class MessageBrokerFactory {
   private static MessageBroker broker = null;
 
-  public ServiceFactory() {
+  public MessageBrokerFactory() {
     // TODO Auto-generated constructor stub
   }
 

@@ -4,7 +4,7 @@ import org.sunbird.common.message.broker.model.EventMessage;
 
 public interface MessageBroker {
 
-  public void send(EventMessage eventMessage);
+  public void send(String topic, EventMessage eventMessage);
 
-  public EventMessage recieve();
+  public EventMessage recieve(String topic);
 }

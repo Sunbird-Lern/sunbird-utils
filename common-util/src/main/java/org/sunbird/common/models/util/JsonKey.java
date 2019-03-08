@@ -882,6 +882,7 @@ public final class JsonKey {
   public static final String SUNBIRD_DIALCODE_SEARCH_API = "sunbird_dialcode_search_api";
   public static final String FROM_BEGINING = "fromBegining";
   public static final String EVENT = "event";
+  public static final String TRANSACTIONAL = "transactional";
 
   private JsonKey() {}
 }

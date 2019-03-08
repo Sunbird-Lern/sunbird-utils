@@ -7,6 +7,24 @@ public class EventMessage {
   private String opertaionType;
   private String eventType;
   private Map<String, Object> message;
+  private String operationOn;
+
+  public EventMessage(
+      String opertaionType, String eventType, Map<String, Object> message, String operationOn) {
+    super();
+    this.opertaionType = opertaionType;
+    this.eventType = eventType;
+    this.message = message;
+    this.operationOn = operationOn;
+  }
+
+  public String getOperationOn() {
+    return operationOn;
+  }
+
+  public void setOperationOn(String operationOn) {
+    this.operationOn = operationOn;
+  }
 
   public String getOpertaionType() {
     return opertaionType;
