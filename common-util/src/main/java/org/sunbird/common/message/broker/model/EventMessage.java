@@ -4,15 +4,15 @@ import java.util.Map;
 
 public class EventMessage {
 
-  private String opertaionType;
+  private String operationType;
   private String eventType;
   private Map<String, Object> message;
   private String operationOn;
 
   public EventMessage(
-      String opertaionType, String eventType, Map<String, Object> message, String operationOn) {
+      String operationType, String eventType, Map<String, Object> message, String operationOn) {
     super();
-    this.opertaionType = opertaionType;
+    this.operationType = operationType;
     this.eventType = eventType;
     this.message = message;
     this.operationOn = operationOn;
@@ -27,11 +27,11 @@ public class EventMessage {
   }
 
   public String getOpertaionType() {
-    return opertaionType;
+    return operationType;
   }
 
   public void setOpertaionType(String opertaionType) {
-    this.opertaionType = opertaionType;
+    this.operationType = opertaionType;
   }
 
   public String getEventType() {

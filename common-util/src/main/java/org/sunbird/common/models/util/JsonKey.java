@@ -883,6 +883,8 @@ public final class JsonKey {
   public static final String FROM_BEGINING = "fromBegining";
   public static final String EVENT = "event";
   public static final String TRANSACTIONAL = "transactional";
+  public static final String DATABASE_OPERATION = "databaseOperation";
+  public static final String INFORMATIONAL = "informational";
 
   private JsonKey() {}
 }

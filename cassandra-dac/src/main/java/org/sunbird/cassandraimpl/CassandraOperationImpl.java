@@ -20,6 +20,7 @@ import com.datastax.driver.core.querybuilder.Select.Where;
 import com.datastax.driver.core.querybuilder.Update;
 import com.datastax.driver.core.querybuilder.Update.Assignments;
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,7 @@ import org.sunbird.cassandra.CassandraOperation;
 import org.sunbird.common.CassandraUtil;
 import org.sunbird.common.Constants;
 import org.sunbird.common.exception.ProjectCommonException;
+import org.sunbird.common.message.event.sender.GenrateAndSendEventUtil;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
@@ -72,6 +74,8 @@ public class CassandraOperationImpl implements CassandraOperation {
       }
       connectionManager.getSession(keyspaceName).execute(boundStatement.bind(array));
       response.put(Constants.RESPONSE, Constants.SUCCESS);
+      GenrateAndSendEventUtil.generateAndSendEvent(
+          JsonKey.INSERT, tableName, request, JsonKey.DATABASE_OPERATION);
     } catch (Exception e) {
       if (e.getMessage().contains(JsonKey.UNKNOWN_IDENTIFIER)
           || e.getMessage().contains(JsonKey.UNDEFINED_IDENTIFIER)) {
@@ -118,6 +122,8 @@ public class CassandraOperationImpl implements CassandraOperation {
       BoundStatement boundStatement = statement.bind(array);
       connectionManager.getSession(keyspaceName).execute(boundStatement);
       response.put(Constants.RESPONSE, Constants.SUCCESS);
+      GenrateAndSendEventUtil.generateAndSendEvent(
+          JsonKey.UPDATE, tableName, request, JsonKey.DATABASE_OPERATION);
     } catch (Exception e) {
       if (e.getMessage().contains(JsonKey.UNKNOWN_IDENTIFIER)) {
         ProjectLogger.log(Constants.EXCEPTION_MSG_UPDATE + tableName + " : " + e.getMessage(), e);
@@ -149,6 +155,10 @@ public class CassandraOperationImpl implements CassandraOperation {
               .where(QueryBuilder.eq(Constants.IDENTIFIER, identifier));
       connectionManager.getSession(keyspaceName).execute(delete);
       response.put(Constants.RESPONSE, Constants.SUCCESS);
+      Map<String, Object> request = new HashMap<>();
+      request.put(JsonKey.IDENTIFIER, identifier);
+      GenrateAndSendEventUtil.generateAndSendEvent(
+          JsonKey.DELETE, tableName, request, JsonKey.DATABASE_OPERATION);
     } catch (Exception e) {
       ProjectLogger.log(Constants.EXCEPTION_MSG_DELETE + tableName + " : " + e.getMessage(), e);
       throw new ProjectCommonException(
@@ -360,6 +370,8 @@ public class CassandraOperationImpl implements CassandraOperation {
       }
       connectionManager.getSession(keyspaceName).execute(boundStatement.bind(array));
       response.put(Constants.RESPONSE, Constants.SUCCESS);
+      GenrateAndSendEventUtil.generateAndSendEvent(
+          JsonKey.UPDATE, tableName, request, JsonKey.DATABASE_OPERATION);
 
     } catch (Exception e) {
       if (e.getMessage().contains(JsonKey.UNKNOWN_IDENTIFIER)) {
@@ -411,6 +423,8 @@ public class CassandraOperationImpl implements CassandraOperation {
               });
       Statement updateQuery = where;
       session.execute(updateQuery);
+      GenrateAndSendEventUtil.generateAndSendEvent(
+          JsonKey.UPDATE, tableName, request, JsonKey.DATABASE_OPERATION);
     } catch (Exception e) {
       ProjectLogger.log(Constants.EXCEPTION_MSG_UPDATE + tableName + " : " + e.getMessage(), e);
       if (e.getMessage().contains(JsonKey.UNKNOWN_IDENTIFIER)) {
@@ -623,6 +637,10 @@ public class CassandraOperationImpl implements CassandraOperation {
                 deleteWhere.and(clause);
               });
       connectionManager.getSession(keyspaceName).execute(delete);
+      Map<String, Object> requestData = new HashMap<>();
+      requestData.putAll(compositeKeyMap);
+      GenrateAndSendEventUtil.generateAndSendEvent(
+          JsonKey.DELETE, tableName, requestData, JsonKey.DATABASE_OPERATION);
     } catch (Exception e) {
       ProjectLogger.log(
           "CassandraOperationImpl: deleteRecord by composite key. "
@@ -651,6 +669,8 @@ public class CassandraOperationImpl implements CassandraOperation {
       Clause clause = QueryBuilder.in(JsonKey.ID, identifierList);
       deleteWhere.and(clause);
       resultSet = connectionManager.getSession(keyspaceName).execute(delete);
+      GenrateAndSendEventUtil.generateAndSendEvent(
+          JsonKey.DELETE, tableName, identifierList, JsonKey.DATABASE_OPERATION);
     } catch (Exception e) {
       ProjectLogger.log(
           "CassandraOperationImpl: deleteRecords by list of primary key. "
@@ -871,13 +891,10 @@ public class CassandraOperationImpl implements CassandraOperation {
       List<Integer> ttls) {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
-        "CassandraOperationImpl:batchInsertWithTTL: call started at "
-            + startTime,
-        LoggerEnum.INFO);
+        "CassandraOperationImpl:batchInsertWithTTL: call started at " + startTime, LoggerEnum.INFO);
     if (CollectionUtils.isEmpty(records) || CollectionUtils.isEmpty(ttls)) {
       ProjectLogger.log(
-          "CassandraOperationImpl:batchInsertWithTTL: records or ttls is empty",
-          LoggerEnum.ERROR);
+          "CassandraOperationImpl:batchInsertWithTTL: records or ttls is empty", LoggerEnum.ERROR);
       ProjectCommonException.throwServerErrorException(ResponseCode.SERVER_ERROR);
     }
     if (ttls.size() != records.size()) {
@@ -914,7 +931,10 @@ public class CassandraOperationImpl implements CassandraOperation {
         | QueryValidationException
         | NoHostAvailableException
         | IllegalStateException e) {
-      ProjectLogger.log("CassandraOperationImpl:batchInsertWithTTL: Exception occurred with error message = " + e.getMessage(), e);
+      ProjectLogger.log(
+          "CassandraOperationImpl:batchInsertWithTTL: Exception occurred with error message = "
+              + e.getMessage(),
+          e);
       throw new ProjectCommonException(
           ResponseCode.SERVER_ERROR.getErrorCode(),
           ResponseCode.SERVER_ERROR.getErrorMessage(),
@@ -923,5 +943,4 @@ public class CassandraOperationImpl implements CassandraOperation {
     logQueryElapseTime("batchInsertWithTTL", startTime);
     return response;
   }
-
 }
