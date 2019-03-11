@@ -6,8 +6,6 @@ import static org.sunbird.common.exception.ProjectCommonException.throwServerErr
 import static org.sunbird.common.models.util.JsonKey.BEARER;
 import static org.sunbird.common.models.util.JsonKey.EKSTEP_BASE_URL;
 import static org.sunbird.common.models.util.JsonKey.SUNBIRD_AUTHORIZATION;
-import static org.sunbird.common.models.util.JsonKey.SUNBIRD_CONTENT_GET_HIERARCHY_API;
-import static org.sunbird.common.models.util.JsonKey.SUNBIRD_CONTENT_READ_API;
 import static org.sunbird.common.models.util.LoggerEnum.ERROR;
 import static org.sunbird.common.models.util.LoggerEnum.INFO;
 import static org.sunbird.common.models.util.ProjectLogger.log;
@@ -66,16 +64,11 @@ public class TextBookTocUtil {
     }
   }
 
-  public static Response readHierarchy(String contentId) {
-    log("TextBookTocUtil::readHierarchy: contentId = " + contentId, INFO.name());
+  public static Response readContent(String contentId, String url) {
+    log("TextBookTocUtil::readContent: contentId = " + contentId, INFO.name());
     Map<String, String> requestParams = new HashMap<>();
     requestParams.put("mode", "edit");
-    return handleReadRequest(contentId, SUNBIRD_CONTENT_GET_HIERARCHY_API, requestParams);
-  }
-
-  public static Response readContent(String contentId) {
-    log("TextBookTocUtil::readContent: contentId = " + contentId, INFO.name());
-    return handleReadRequest(contentId, SUNBIRD_CONTENT_READ_API, null);
+    return handleReadRequest(contentId, url, requestParams);
   }
 
   private static Response handleReadRequest(
