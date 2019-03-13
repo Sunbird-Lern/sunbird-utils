@@ -436,6 +436,7 @@ public final class JsonKey {
   public static final String PUBLIC = "public";
   public static final String PUBLISH_COURSE = "publishCourse";
   public static final String QUERY = "query";
+  public static final String QUERY_FIELDS = "queryFields";
   public static final String RECEIVER_ID = "receiverId";
   public static final String RECIPIENT_COUNT = "recipientCount";
   public static final String RECIPIENT_EMAILS = "recipientEmails";
