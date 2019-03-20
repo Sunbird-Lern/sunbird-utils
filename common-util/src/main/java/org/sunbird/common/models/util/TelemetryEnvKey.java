@@ -14,7 +14,7 @@ public class TelemetryEnvKey {
   public static final String BADGE_ASSERTION = "BadgeAssertion";
   public static final String PAGE = "Page";
   public static final String SYSTEM_SETTINGS = "SystemSettings";
-  public static final String MASTER_KEY = "MASTER_KEY";
-  public static final String OBJECT_STORE = "object-store";
-  public static final String LOCATION = "location";
+  public static final String MASTER_KEY = "MasterKey";
+  public static final String OBJECT_STORE = "ObjectStore";
+  public static final String LOCATION = "Location";
 }
