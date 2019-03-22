@@ -50,6 +50,7 @@ import org.elasticsearch.client.AdminClient;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.IndicesAdminClient;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.Aggregations;
@@ -764,13 +765,13 @@ public class ElasticSearchUtilTest {
     when(searchResponse.getAggregations()).thenReturn(aggregations);
     when(aggregations.get(Mockito.eq("description"))).thenReturn(terms);
     when(aggregations.get(Mockito.eq("createdOn"))).thenReturn(histogram);
-    when(terms.getBuckets()).thenReturn(new ArrayList<Terms.Bucket>());
+    when(terms.getBuckets()).thenReturn(new ArrayList<>());
     when(histogram.getBuckets()).thenReturn(new ArrayList<>());
 
     when(searchHits.getTotalHits()).thenReturn(expectedValue);
 
     when(searchHits.iterator()).thenReturn(lst.iterator());
-    when(hit1.getSource()).thenReturn(new HashMap());
+    when(hit1.getSourceAsMap()).thenReturn(new HashMap());
   }
 
   private static void mockRulesForInsert() {
@@ -862,7 +863,9 @@ public class ElasticSearchUtilTest {
     }
     doReturn(mockCreateIndexReqBldr).when(indicesAdminMock).prepareCreate(Mockito.anyString());
 
-    doReturn(mockCreateIndexReqBldr).when(mockCreateIndexReqBldr).setSettings(Mockito.anyString());
+    doReturn(mockCreateIndexReqBldr)
+        .when(mockCreateIndexReqBldr)
+        .setSettings(Mockito.any(Settings.class));
 
     doReturn(mockCreateIndResp).when(mockCreateIndexReqBldr).get();
     doReturn(true).when(mockCreateIndResp).isAcknowledged();
