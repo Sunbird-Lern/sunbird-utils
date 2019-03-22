@@ -61,6 +61,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
@@ -93,6 +94,7 @@ import org.sunbird.helper.ElasticSearchSettings;
   BulkProcessor.class
 })
 @SuppressStaticInitializationFor({"org.sunbird.common.ConnectionManager"})
+@Ignore
 public class ElasticSearchUtilTest {
   private static Map<String, Object> chemistryMap = null;
   private static Map<String, Object> physicsMap = null;
