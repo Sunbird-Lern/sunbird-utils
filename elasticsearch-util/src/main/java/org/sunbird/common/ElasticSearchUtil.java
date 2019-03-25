@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.typesafe.config.Config;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -679,8 +680,9 @@ public class ElasticSearchUtil {
     SearchResponse response = null;
     try {
       response = searchRequestBuilder.execute().actionGet();
-    }catch (SearchPhaseExecutionException e){
-      ProjectCommonException.throwClientErrorException(ResponseCode.invalidValue,e.getRootCause().getMessage());
+    } catch (SearchPhaseExecutionException e) {
+      ProjectCommonException.throwClientErrorException(
+          ResponseCode.invalidValue, e.getRootCause().getMessage());
     }
 
     List<Map<String, Object>> esSource = new ArrayList<>();
@@ -861,8 +863,16 @@ public class ElasticSearchUtil {
       }
 
     } else if (val instanceof String) {
-      query.must(
-          createTermQuery(key + RAW_APPEND, ((String) val).toLowerCase(), constraintsMap.get(key)));
+      if (!StringUtils.isEmpty((String) val)) {
+        query.must(
+            createTermQuery(
+                key + RAW_APPEND, ((String) val).toLowerCase(), constraintsMap.get(key)));
+      } else {
+        throw new ProjectCommonException(
+            ResponseCode.invalidParameterValue.getErrorCode(),
+            MessageFormat.format(ResponseCode.invalidParameterValue.getErrorMessage(), val, key),
+            ResponseCode.CLIENT_ERROR.getResponseCode());
+      }
     } else {
       query.must(createTermQuery(key + RAW_APPEND, val, constraintsMap.get(key)));
     }

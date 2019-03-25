@@ -94,7 +94,7 @@ import org.sunbird.helper.ElasticSearchSettings;
   BulkProcessor.class
 })
 @SuppressStaticInitializationFor({"org.sunbird.common.ConnectionManager"})
-@Ignore
+
 public class ElasticSearchUtilTest {
   private static Map<String, Object> chemistryMap = null;
   private static Map<String, Object> physicsMap = null;
@@ -320,7 +320,6 @@ public class ElasticSearchUtilTest {
     Map map = ElasticSearchUtil.complexSearch(searchDTO, INDEX_NAME, TYPE_NAME);
     assertEquals(2, map.size());
   }
-
   @Test
   public void testGetByIdentifierFailureWithoutIndex() {
     Map<String, Object> responseMap =
