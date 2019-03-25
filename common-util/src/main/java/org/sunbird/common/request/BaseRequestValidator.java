@@ -363,6 +363,26 @@ public class BaseRequestValidator {
               ResponseCode.dataTypeError.getErrorMessage(), JsonKey.FILTERS, "Map"),
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
+    if (request.getRequest().containsKey(JsonKey.FIELDS)
+            && (!(request.getRequest().get(JsonKey.FIELDS) instanceof List))) {
+      throw new ProjectCommonException(
+              ResponseCode.dataTypeError.getErrorCode(),
+              MessageFormat.format(
+                      ResponseCode.dataTypeError.getErrorMessage(), JsonKey.FIELDS, "List"),
+              ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    if(request.getRequest().containsKey(JsonKey.FIELDS)
+            && (request.getRequest().get(JsonKey.FIELDS) instanceof List)){
+      for(Object obj : (List)request.getRequest().get(JsonKey.FIELDS)){
+        if (!(obj instanceof String)) {
+          throw new ProjectCommonException(
+                  ResponseCode.dataTypeError.getErrorCode(),
+                  MessageFormat.format(
+                          ResponseCode.dataTypeError.getErrorMessage(), JsonKey.FIELDS, "List of String"),
+                  ResponseCode.CLIENT_ERROR.getResponseCode());
+        }
+      }
+    }
   }
 
   public void validateEmail(String email) {
