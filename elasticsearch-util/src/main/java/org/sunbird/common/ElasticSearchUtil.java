@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.typesafe.config.Config;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -863,16 +862,8 @@ public class ElasticSearchUtil {
       }
 
     } else if (val instanceof String) {
-      if (!StringUtils.isEmpty((String) val)) {
-        query.must(
-            createTermQuery(
-                key + RAW_APPEND, ((String) val).toLowerCase(), constraintsMap.get(key)));
-      } else {
-        throw new ProjectCommonException(
-            ResponseCode.invalidParameterValue.getErrorCode(),
-            MessageFormat.format(ResponseCode.invalidParameterValue.getErrorMessage(), val, key),
-            ResponseCode.CLIENT_ERROR.getResponseCode());
-      }
+      query.must(
+          createTermQuery(key + RAW_APPEND, ((String) val).toLowerCase(), constraintsMap.get(key)));
     } else {
       query.must(createTermQuery(key + RAW_APPEND, val, constraintsMap.get(key)));
     }
