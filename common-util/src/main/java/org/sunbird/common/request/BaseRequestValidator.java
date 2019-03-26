@@ -364,6 +364,53 @@ public class BaseRequestValidator {
               ResponseCode.dataTypeError.getErrorMessage(), JsonKey.FILTERS, "Map"),
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
+    if (request.getRequest().containsKey(JsonKey.FILTERS)
+        && ((request.getRequest().get(JsonKey.FILTERS) instanceof Map))) {
+      Map<String, Object> map = (Map<String, Object>) request.getRequest().get(JsonKey.FILTERS);
+
+      map.forEach(
+          (key, val) -> {
+            if (key == null) {
+              throw new ProjectCommonException(
+                  ResponseCode.invalidParameterValue.getErrorCode(),
+                  MessageFormat.format(
+                      ResponseCode.invalidParameterValue.getErrorMessage(), key, JsonKey.FILTERS),
+                  ResponseCode.CLIENT_ERROR.getResponseCode());
+            }
+            if (val instanceof List) {
+              ((List) val)
+                  .forEach(
+                      v -> {
+                        if (v == null) {
+                          throw new ProjectCommonException(
+                              ResponseCode.invalidParameterValue.getErrorCode(),
+                              MessageFormat.format(
+                                  ResponseCode.invalidParameterValue.getErrorMessage(), v, key),
+                              ResponseCode.CLIENT_ERROR.getResponseCode());
+                        }
+                      });
+            } else if (val instanceof Map) {
+              ((Map) val)
+                  .forEach(
+                      (k, v) -> {
+                        if (k == null || v == null) {
+                          throw new ProjectCommonException(
+                              ResponseCode.invalidParameterValue.getErrorCode(),
+                              MessageFormat.format(
+                                  ResponseCode.invalidParameterValue.getErrorMessage(), v, k),
+                              ResponseCode.CLIENT_ERROR.getResponseCode());
+                        }
+                      });
+            } else if (val == null)
+              if (StringUtils.isEmpty((String) val)) {
+                throw new ProjectCommonException(
+                    ResponseCode.invalidParameterValue.getErrorCode(),
+                    MessageFormat.format(
+                        ResponseCode.invalidParameterValue.getErrorMessage(), val, key),
+                    ResponseCode.CLIENT_ERROR.getResponseCode());
+              }
+          });
+    }
     if (request.getRequest().containsKey(JsonKey.FIELDS)
         && (!(request.getRequest().get(JsonKey.FIELDS) instanceof List))) {
       throw new ProjectCommonException(
