@@ -790,7 +790,9 @@ public enum ResponseCode {
   UNAUTHORIZED(401),
   FORBIDDEN(403),
   REDIRECTION_REQUIRED(302),
-  TOO_MANY_REQUESTS(429);
+  TOO_MANY_REQUESTS(429),
+  SERVICE_UNAVAILABLE(503);
+
   private int responseCode;
   /** error code contains String value */
   private String errorCode;

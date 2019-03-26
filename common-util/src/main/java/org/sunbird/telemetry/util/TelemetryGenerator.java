@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.telemetry.dto.Actor;
 import org.sunbird.telemetry.dto.Context;
@@ -118,23 +119,22 @@ public class TelemetryGenerator {
   }
 
   private static List<String> getProps(Map<String, Object> map) {
-    return (List<String>)
-        map.entrySet()
-            .stream()
-            .map(entry -> entry.getKey())
-            .map(
-                key -> {
-                  if (map.get(key) instanceof Map) {
-                    List<String> keys = getProps((Map<String, Object>) map.get(key));
-                    return keys.stream()
-                        .map(childKey -> key + "." + childKey)
-                        .collect(Collectors.toList());
-                  } else {
-                    return Arrays.asList(key);
-                  }
-                })
-            .flatMap(List::stream)
-            .collect(Collectors.toList());
+    return map.entrySet()
+        .stream()
+        .map(entry -> entry.getKey())
+        .map(
+            key -> {
+              if (map.get(key) instanceof Map) {
+                List<String> keys = getProps((Map<String, Object>) map.get(key));
+                return keys.stream()
+                    .map(childKey -> key + "." + childKey)
+                    .collect(Collectors.toList());
+              } else {
+                return Arrays.asList(key);
+              }
+            })
+        .flatMap(List::stream)
+        .collect(Collectors.toList());
   }
 
   private static Context getContext(Map<String, Object> context) {
@@ -161,6 +161,8 @@ public class TelemetryGenerator {
     String event = "";
     try {
       event = mapper.writeValueAsString(telemetry);
+      ProjectLogger.log(
+          "TelemetryGenerator:getTelemetry = Telemetry Event : " + event, LoggerEnum.INFO.name());
     } catch (Exception e) {
       ProjectLogger.log(e.getMessage(), e);
     }
