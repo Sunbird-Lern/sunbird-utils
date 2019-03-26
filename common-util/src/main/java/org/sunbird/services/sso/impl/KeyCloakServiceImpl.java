@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.ws.rs.core.Response;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -98,6 +97,12 @@ public class KeyCloakServiceImpl implements SSOManager {
                 + " "
                 + token.issuedNow().getExpiration(),
             LoggerEnum.INFO.name());
+        String tokenSubject = token.getSubject();
+        if (StringUtils.isNotBlank(tokenSubject)) {
+          // String[] subjectArr = tokenSubject.split(":");
+          int pos = tokenSubject.lastIndexOf(":");
+          return tokenSubject.substring(pos + 1);
+        }
         return token.getSubject();
       } else {
         ProjectLogger.log(
@@ -139,7 +144,11 @@ public class KeyCloakServiceImpl implements SSOManager {
   public void updatePassword(String userId, String password) {
 
     try {
-      String fedUserId = "f:287a7167-d475-4d5a-bdf0-99a9372931a3:" + userId;
+      String fedUserId =
+          "f:"
+              + ProjectUtil.getConfigValue(JsonKey.SUNBIRD_KEYCLOAK_USER_FEDERATION_PROVIDER_ID)
+              + ":"
+              + userId;
       UserResource ur = keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(fedUserId);
       CredentialRepresentation cr = new CredentialRepresentation();
       cr.setValue(password);
