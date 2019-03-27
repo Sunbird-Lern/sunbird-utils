@@ -152,6 +152,7 @@ public class TelemetryGenerator {
 
   private static Producer getProducer(Map<String, Object> context) {
     String id = "";
+
     if (context != null && StringUtils.isNotBlank((String) context.get(JsonKey.APP_ID))) {
       id = (String) context.get(JsonKey.APP_ID);
     } else {
