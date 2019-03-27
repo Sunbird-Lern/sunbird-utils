@@ -8,9 +8,7 @@ import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Base64;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,7 +97,6 @@ public class KeyCloakServiceImpl implements SSOManager {
             LoggerEnum.INFO.name());
         String tokenSubject = token.getSubject();
         if (StringUtils.isNotBlank(tokenSubject)) {
-          // String[] subjectArr = tokenSubject.split(":");
           int pos = tokenSubject.lastIndexOf(":");
           return tokenSubject.substring(pos + 1);
         }
@@ -144,16 +141,17 @@ public class KeyCloakServiceImpl implements SSOManager {
   public void updatePassword(String userId, String password) {
 
     try {
+
       String fedUserId =
-          "f:"
-              + ProjectUtil.getConfigValue(JsonKey.SUNBIRD_KEYCLOAK_USER_FEDERATION_PROVIDER_ID)
-              + ":"
-              + userId;
+          String.join(
+              ":",
+              "f",
+              ProjectUtil.getConfigValue(JsonKey.SUNBIRD_KEYCLOAK_USER_FEDERATION_PROVIDER_ID),
+              userId);
       UserResource ur = keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(fedUserId);
       CredentialRepresentation cr = new CredentialRepresentation();
       cr.setValue(password);
       cr.setType(CredentialRepresentation.PASSWORD);
-      cr.setTemporary(true);
       ur.resetPassword(cr);
     } catch (Exception e) {
       ProjectLogger.log(e.getMessage(), e);
@@ -387,16 +385,20 @@ public class KeyCloakServiceImpl implements SSOManager {
    */
   private void makeUserActiveOrInactive(String userId, boolean status) {
     try {
-      String fedUserId = "f:287a7167-d475-4d5a-bdf0-99a9372931a3:" + userId;
-
-      validateUserId(userId);
+      String fedUserId =
+          String.join(
+              ":",
+              "f",
+              ProjectUtil.getConfigValue(JsonKey.SUNBIRD_KEYCLOAK_USER_FEDERATION_PROVIDER_ID),
+              userId);
+      validateUserId(fedUserId);
       Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
       UserResource resource =
           keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(fedUserId);
-      if (status) {
-        resource.disableCredentialType(Collections.emptyList());
-      } else {
-        resource.disableCredentialType(Arrays.asList(JsonKey.PASSWORD));
+      UserRepresentation ur = resource.toRepresentation();
+      ur.setEnabled(status);
+      if (isNotNull(resource)) {
+        resource.update(ur);
       }
     } catch (Exception e) {
       ProjectLogger.log(e.getMessage(), e);
@@ -415,22 +417,6 @@ public class KeyCloakServiceImpl implements SSOManager {
     if (StringUtils.isBlank(userId)) {
       ProjectUtil.createAndThrowInvalidUserDataException();
     }
-  }
-
-  /**
-   * This method will send email verification link to registered user email
-   *
-   * @param userId keycloak id.
-   */
-  private void verifyEmail(String userId) {
-    try {
-      ProjectLogger.log("Sending mail for Email verification start.");
-      keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(userId).sendVerifyEmail();
-    } catch (Exception ex) {
-      ProjectLogger.log(
-          "Exception occurred while calling sendVerifyEmail method of keycloak :: ", ex);
-    }
-    ProjectLogger.log("Sending mail for Email verification end.");
   }
 
   @Override
@@ -474,66 +460,6 @@ public class KeyCloakServiceImpl implements SSOManager {
     } else {
       return "";
     }
-  }
-
-  /**
-   * This method will create user object from in coming map data. it will read only some predefine
-   * key from the map.
-   *
-   * @param request Map<String, Object>
-   * @return UserRepresentation
-   */
-  private UserRepresentation createUserReqObj(Map<String, Object> request) {
-    CredentialRepresentation credential = new CredentialRepresentation();
-    UserRepresentation user = new UserRepresentation();
-    user.setUsername((String) request.get(JsonKey.USERNAME));
-    if (isNotNull(request.get(JsonKey.FIRST_NAME))) {
-      user.setFirstName((String) request.get(JsonKey.FIRST_NAME));
-    }
-    if (isNotNull(request.get(JsonKey.LAST_NAME))) {
-      user.setLastName((String) request.get(JsonKey.LAST_NAME));
-    }
-    if (isNotNull(request.get(JsonKey.EMAIL))) {
-      user.setEmail((String) request.get(JsonKey.EMAIL));
-    }
-    if (isNotNull(request.get(JsonKey.PASSWORD))) {
-      credential.setValue((String) request.get(JsonKey.PASSWORD));
-      credential.setType(CredentialRepresentation.PASSWORD);
-      credential.setTemporary(true);
-      user.setCredentials(asList(credential));
-    }
-    user.setEmailVerified(false);
-    if (isNotNull(request.get(JsonKey.PHONE))) {
-      Map<String, List<String>> map = user.getAttributes();
-      if (map == null) {
-        map = new HashMap<>();
-      }
-      List<String> list = new ArrayList<>();
-      list.add((String) request.get(JsonKey.PHONE));
-
-      map.put(JsonKey.PHONE, list);
-      List<String> list2 = new ArrayList<>();
-      if (!StringUtils.isBlank((String) request.get(JsonKey.COUNTRY_CODE))) {
-        list2.add((String) request.get(JsonKey.COUNTRY_CODE));
-      } else {
-        list2.add(PropertiesCache.getInstance().getProperty("sunbird_default_country_code"));
-      }
-      map.put(JsonKey.COUNTRY_CODE, list2);
-
-      user.setAttributes(map);
-    }
-
-    Map<String, List<String>> map = user.getAttributes();
-    List<String> list = new ArrayList<>();
-    list.add("false");
-    if (map == null) {
-      map = new HashMap<>();
-    }
-    map.put(JsonKey.EMAIL_VERIFIED_UPDATED, list);
-    user.setAttributes(map);
-
-    user.setEnabled(true);
-    return user;
   }
 
   /**
