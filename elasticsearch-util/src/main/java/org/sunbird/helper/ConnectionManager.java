@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.settings.Settings.Builder;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
@@ -73,7 +73,7 @@ public class ConnectionManager {
     client = new PreBuiltTransportClient(builder.build());
     for (int i = 0; i < host.size(); i++) {
       client.addTransportAddress(
-          new InetSocketTransportAddress(InetAddress.getByName(host.get(i)), ports.get(i)));
+          new TransportAddress(InetAddress.getByName(host.get(i)), ports.get(i)));
       ProjectLogger.log(
           "ES Client is adding hsot and Port  " + host.get(i) + " ," + ports.get(i),
           LoggerEnum.INFO.name());
