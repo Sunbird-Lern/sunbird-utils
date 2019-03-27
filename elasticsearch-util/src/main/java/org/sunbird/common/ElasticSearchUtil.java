@@ -33,6 +33,7 @@ import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchPhaseExecutionException;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -676,7 +677,13 @@ public class ElasticSearchUtil {
     ProjectLogger.log(
         "calling search builder======" + searchRequestBuilder.toString(), LoggerEnum.DEBUG.name());
     SearchResponse response = null;
-    response = searchRequestBuilder.execute().actionGet();
+    try {
+      response = searchRequestBuilder.execute().actionGet();
+    } catch (SearchPhaseExecutionException e) {
+      ProjectCommonException.throwClientErrorException(
+          ResponseCode.invalidValue, e.getRootCause().getMessage());
+    }
+
     List<Map<String, Object>> esSource = new ArrayList<>();
     Map<String, Object> responsemap = new HashMap<>();
     long count = 0;

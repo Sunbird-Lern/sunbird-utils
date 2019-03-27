@@ -22,6 +22,7 @@ import org.sunbird.common.responsecode.ResponseCode;
  * @author B Vinaya Kumar
  */
 public class BaseRequestValidator {
+
   /**
    * Helper method which throws an exception if given parameter value is blank (null or empty).
    *
@@ -363,6 +364,85 @@ public class BaseRequestValidator {
               ResponseCode.dataTypeError.getErrorMessage(), JsonKey.FILTERS, "Map"),
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
+    validateSearchRequestFiltersValues(request);
+    validateSearchRequestFieldsValues(request);
+  }
+
+  private void validateSearchRequestFieldsValues(Request request) {
+    if (request.getRequest().containsKey(JsonKey.FIELDS)
+        && (!(request.getRequest().get(JsonKey.FIELDS) instanceof List))) {
+      throw new ProjectCommonException(
+          ResponseCode.dataTypeError.getErrorCode(),
+          MessageFormat.format(
+              ResponseCode.dataTypeError.getErrorMessage(), JsonKey.FIELDS, "List"),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    if (request.getRequest().containsKey(JsonKey.FIELDS)
+        && (request.getRequest().get(JsonKey.FIELDS) instanceof List)) {
+      for (Object obj : (List) request.getRequest().get(JsonKey.FIELDS)) {
+        if (!(obj instanceof String)) {
+          throw new ProjectCommonException(
+              ResponseCode.dataTypeError.getErrorCode(),
+              MessageFormat.format(
+                  ResponseCode.dataTypeError.getErrorMessage(), JsonKey.FIELDS, "List of String"),
+              ResponseCode.CLIENT_ERROR.getResponseCode());
+        }
+      }
+    }
+  }
+
+  private void validateSearchRequestFiltersValues(Request request) {
+    if (request.getRequest().containsKey(JsonKey.FILTERS)
+        && ((request.getRequest().get(JsonKey.FILTERS) instanceof Map))) {
+      Map<String, Object> map = (Map<String, Object>) request.getRequest().get(JsonKey.FILTERS);
+
+      map.forEach(
+          (key, val) -> {
+            if (key == null) {
+              throw new ProjectCommonException(
+                  ResponseCode.invalidParameterValue.getErrorCode(),
+                  MessageFormat.format(
+                      ResponseCode.invalidParameterValue.getErrorMessage(), key, JsonKey.FILTERS),
+                  ResponseCode.CLIENT_ERROR.getResponseCode());
+            }
+            if (val instanceof List) {
+              validateListValues((List) val, key);
+            } else if (val instanceof Map) {
+              validateMapValues((Map) val);
+            } else if (val == null)
+              if (StringUtils.isEmpty((String) val)) {
+                throw new ProjectCommonException(
+                    ResponseCode.invalidParameterValue.getErrorCode(),
+                    MessageFormat.format(
+                        ResponseCode.invalidParameterValue.getErrorMessage(), val, key),
+                    ResponseCode.CLIENT_ERROR.getResponseCode());
+              }
+          });
+    }
+  }
+
+  private void validateMapValues(Map val) {
+    val.forEach(
+        (k, v) -> {
+          if (k == null || v == null) {
+            throw new ProjectCommonException(
+                ResponseCode.invalidParameterValue.getErrorCode(),
+                MessageFormat.format(ResponseCode.invalidParameterValue.getErrorMessage(), v, k),
+                ResponseCode.CLIENT_ERROR.getResponseCode());
+          }
+        });
+  }
+
+  private void validateListValues(List val, String key) {
+    val.forEach(
+        v -> {
+          if (v == null) {
+            throw new ProjectCommonException(
+                ResponseCode.invalidParameterValue.getErrorCode(),
+                MessageFormat.format(ResponseCode.invalidParameterValue.getErrorMessage(), v, key),
+                ResponseCode.CLIENT_ERROR.getResponseCode());
+          }
+        });
   }
 
   public void validateEmail(String email) {
