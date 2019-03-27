@@ -649,7 +649,6 @@ public final class JsonKey {
   public static final String SUNBIRD_LMS_TELEMETRY = "Sunbird_LMS_Telemetry";
   public static final String SUNBIRD_LMS_AUTHORIZATION = "sunbird_authorization";
   public static final String ETS = "ets";
-  public static final String CHANNEL_ID = "x-channel-id";
   public static final String CONTENT_ENCODING = "Content-Encoding";
   public static final String EK_STEP = "EK-STEP";
   public static final String RESOURCE_NAME = "resourceName";
