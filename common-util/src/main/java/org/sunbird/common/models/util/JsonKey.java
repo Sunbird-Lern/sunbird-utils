@@ -649,7 +649,6 @@ public final class JsonKey {
   public static final String SUNBIRD_LMS_TELEMETRY = "Sunbird_LMS_Telemetry";
   public static final String SUNBIRD_LMS_AUTHORIZATION = "sunbird_authorization";
   public static final String ETS = "ets";
-  public static final String CHANNEL_ID = "x-channel-id";
   public static final String CONTENT_ENCODING = "Content-Encoding";
   public static final String EK_STEP = "EK-STEP";
   public static final String RESOURCE_NAME = "resourceName";
@@ -885,6 +884,7 @@ public final class JsonKey {
   public static final String DATA_SOURCE = "dataSource";
   public static final String SUNBIRD_DIALCODE_SEARCH_API = "sunbird_dialcode_search_api";
   public static final String FROM_BEGINING = "fromBegining";
+  public static final String DEVICE_ID="did";
 
   private JsonKey() {}
 }
