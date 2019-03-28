@@ -439,6 +439,8 @@ public final class JsonKey {
   public static final String QUERY_FIELDS = "queryFields";
   public static final String RECEIVER_ID = "receiverId";
   public static final String RECIPIENT_COUNT = "recipientCount";
+  public static final String MASK_EMAIL = "maskEmail";
+  public static final String MASK_PHONE = "maskPhone";
   public static final String RECIPIENT_EMAILS = "recipientEmails";
   public static final String RECIPIENT_USERIDS = "recipientUserIds";
   public static final String RECOMMEND_TYPE = "recommendType";
