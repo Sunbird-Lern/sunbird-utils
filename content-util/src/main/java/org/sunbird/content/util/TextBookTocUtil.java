@@ -27,6 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.responsecode.ResponseCode;
 
 public class TextBookTocUtil {
@@ -105,6 +106,11 @@ public class TextBookTocUtil {
         throwServerErrorException(
             ResponseCode.SERVER_ERROR, errorProcessingRequest.getErrorMessage());
       }
+      ProjectLogger.log(
+          "Sized :TextBookTocUtil:handleReadRequest: size of response "
+              + httpResponse.getBody().getBytes().length,
+          INFO);
+
       response = mapper.readValue(httpResponse.getBody(), Response.class);
       if (!ResponseCode.OK.equals(response.getResponseCode())) {
         log(
