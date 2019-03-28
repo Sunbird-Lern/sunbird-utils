@@ -152,22 +152,23 @@ public class TelemetryGenerator {
 
   private static Producer getProducer(Map<String, Object> context) {
     String id = "";
-
-    if (context != null && StringUtils.isNotBlank((String) context.get(JsonKey.APP_ID))) {
-      id = (String) context.get(JsonKey.APP_ID);
+    if (context != null && context.size() != 0) {
+      if (StringUtils.isNotBlank((String) context.get(JsonKey.APP_ID))) {
+        id = (String) context.get(JsonKey.APP_ID);
+      } else {
+        id = (String) context.get(JsonKey.PDATA_ID);
+      }
+      String pid = (String) context.get(JsonKey.PDATA_PID);
+      String ver = (String) context.get(JsonKey.PDATA_VERSION);
+      return new Producer(id, pid, ver);
     } else {
-      id = (String) context.get(JsonKey.PDATA_ID);
+      return new Producer("", "", "");
     }
-
-    String pid = (String) context.get(JsonKey.PDATA_PID);
-    String ver = (String) context.get(JsonKey.PDATA_VERSION);
-    return new Producer(id, pid, ver);
   }
 
   private static String getTelemetry(Telemetry telemetry) {
     String event = "";
     try {
-
       event = mapper.writeValueAsString(telemetry);
       ProjectLogger.log(
           "TelemetryGenerator:getTelemetry = Telemetry Event : " + event, LoggerEnum.INFO.name());
