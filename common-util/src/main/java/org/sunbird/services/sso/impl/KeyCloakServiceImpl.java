@@ -148,7 +148,9 @@ public class KeyCloakServiceImpl implements SSOManager {
       cr.setType(CredentialRepresentation.PASSWORD);
       ur.resetPassword(cr);
     } catch (Exception e) {
-      ProjectLogger.log(e.getMessage(), e);
+      ProjectLogger.log(
+          "KeyCloakServiceImpl:updatePassword Exception occurred while updating password in keyclaok.",
+          e);
       ProjectUtil.createAndThrowServerError();
     }
   }
