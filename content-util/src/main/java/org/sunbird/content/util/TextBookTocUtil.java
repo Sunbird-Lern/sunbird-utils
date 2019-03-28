@@ -107,8 +107,13 @@ public class TextBookTocUtil {
             ResponseCode.SERVER_ERROR, errorProcessingRequest.getErrorMessage());
       }
       ProjectLogger.log(
-          "Sized :TextBookTocUtil:handleReadRequest: size of response "
-              + httpResponse.getBody().getBytes().length,
+          "Sized :TextBookTocUtil:handleReadRequest: "
+              + " TextBook Id: "
+              + id
+              + "  | size of response "
+              + httpResponse.getBody().getBytes().length
+              + ", Request URL: "
+              + requestUrl,
           INFO);
 
       response = mapper.readValue(httpResponse.getBody(), Response.class);
