@@ -16,8 +16,7 @@ public interface SSOManager {
   String verifyToken(String token);
 
   /**
-   * This method will update password in single sign-on server
-   * 
+   * Update password in SSO server (keycloak).
    */
   void updatePassword(String userId, String password);
 
