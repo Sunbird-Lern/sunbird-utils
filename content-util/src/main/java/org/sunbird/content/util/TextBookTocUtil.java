@@ -110,10 +110,10 @@ public class TextBookTocUtil {
           "Sized :TextBookTocUtil:handleReadRequest: "
               + " TextBook Id: "
               + id
-              + "  | size of response "
-              + httpResponse.getBody().getBytes().length
-              + ", Request URL: "
-              + requestUrl,
+              + " | Request URL: "
+              + requestUrl
+              + +httpResponse.getBody().getBytes().length
+              + "  | size of response ",
           INFO);
 
       response = mapper.readValue(httpResponse.getBody(), Response.class);
