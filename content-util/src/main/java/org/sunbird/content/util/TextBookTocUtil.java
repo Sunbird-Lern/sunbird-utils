@@ -112,8 +112,8 @@ public class TextBookTocUtil {
               + id
               + " | Request URL: "
               + requestUrl
-              + +httpResponse.getBody().getBytes().length
-              + "  | size of response ",
+              + "  | size of response "
+              + httpResponse.getBody().getBytes().length,
           INFO);
 
       response = mapper.readValue(httpResponse.getBody(), Response.class);
