@@ -886,6 +886,8 @@ public final class JsonKey {
   public static final String DATA_SOURCE = "dataSource";
   public static final String SUNBIRD_DIALCODE_SEARCH_API = "sunbird_dialcode_search_api";
   public static final String FROM_BEGINING = "fromBegining";
+  public static final String SUNBIRD_KEYCLOAK_USER_FEDERATION_PROVIDER_ID =
+      "sunbird_keycloak_user_federation_provider_id";
   public static final String DEVICE_ID = "did";
 
   private JsonKey() {}

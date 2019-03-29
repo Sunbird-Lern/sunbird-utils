@@ -5,6 +5,8 @@ import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mock;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +27,7 @@ import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.BaseHttpTest;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.KeyCloakConnectionProvider;
+import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.services.sso.SSOManager;
 import org.sunbird.services.sso.SSOServiceFactory;
@@ -106,7 +109,6 @@ public class KeyCloakServiceImplTest extends BaseHttpTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
   @Test
   public void testNewInstanceSucccess() {
     Exception exp = null;
@@ -119,21 +121,6 @@ public class KeyCloakServiceImplTest extends BaseHttpTest {
       exp = e;
     }
     Assert.assertNull(exp);
-  }
-
-  @Test
-  public void testUserCreateSuccess() {
-
-    Map<String, Object> request = USER_SUCCESS;
-    userId = keyCloakService.createUser(request);
-    Assert.assertNotNull(userId);
-  }
-
-  @Test(expected = ProjectCommonException.class)
-  public void testUserCreateFailureWithSameEmail() {
-    Map<String, Object> request = USER_SAME_EMAIL;
-    userId = keyCloakService.createUser(request);
-    Assert.assertNotNull(userId);
   }
 
   @Test
@@ -183,23 +170,21 @@ public class KeyCloakServiceImplTest extends BaseHttpTest {
     Assert.assertNotNull(result);
   }
 
-  @Ignore
+  @Test(expected = ProjectCommonException.class)
   public void testDeactivateUserSuccess() {
 
     Map<String, Object> request = new HashMap<String, Object>();
     request.put(JsonKey.USER_ID, "123");
     request.put(JsonKey.FIRST_NAME, userName);
-    String result = keyCloakService.deactivateUser(request);
-    Assert.assertNotNull(result);
+    keyCloakService.deactivateUser(request);
   }
 
-  @Ignore
+  @Test(expected = ProjectCommonException.class)
   public void testRemoveUserSuccess() {
 
     Map<String, Object> request = new HashMap<String, Object>();
     request.put(JsonKey.USER_ID, "123");
-    String result = keyCloakService.removeUser(request);
-    Assert.assertNotNull(result);
+    keyCloakService.removeUser(request);
   }
 
   @Test(expected = ProjectCommonException.class)
@@ -357,5 +342,28 @@ public class KeyCloakServiceImplTest extends BaseHttpTest {
   public void testDoPasswordUpdateSuccess() {
     boolean response = keyCloakService.doPasswordUpdate(userId.get(JsonKey.USER_ID), "password");
     Assert.assertEquals(true, response);
+  }
+
+  @Test
+  public void testGetFederatedUserId()
+      throws ClassNotFoundException, InstantiationException, IllegalAccessException,
+          NoSuchMethodException, SecurityException, IllegalArgumentException,
+          InvocationTargetException {
+    KeyCloakServiceImpl.class.getDeclaredMethods();
+    Method m = KeyCloakServiceImpl.class.getDeclaredMethod("getFederatedUserId", String.class);
+    m.setAccessible(true);
+    SSOManager keyCloakService = SSOServiceFactory.getInstance();
+    String fedUserId = (String) m.invoke(keyCloakService, "userId");
+    Assert.assertEquals(
+        "f:"
+            + ProjectUtil.getConfigValue(JsonKey.SUNBIRD_KEYCLOAK_USER_FEDERATION_PROVIDER_ID)
+            + ":userId",
+        fedUserId);
+  }
+
+  @Test(expected = NullPointerException.class)
+  public void testUpdatePassword() throws Exception {
+    doReturn(null).when(KeyCloakConnectionProvider.class, "getConnection");
+    keyCloakService.updatePassword(userId.get(JsonKey.USER_ID), "password");
   }
 }

@@ -16,12 +16,9 @@ public interface SSOManager {
   String verifyToken(String token);
 
   /**
-   * This method will do user creation inside Single sign on server.
-   *
-   * @param request Map<String,Object>
-   * @return Map<String,String>
+   * Update password in SSO server (keycloak).
    */
-  Map<String, String> createUser(Map<String, Object> request);
+  void updatePassword(String userId, String password);
 
   /**
    * Method to update user account in keycloak on basis of userId.
