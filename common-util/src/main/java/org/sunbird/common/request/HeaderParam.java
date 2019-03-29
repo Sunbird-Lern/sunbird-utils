@@ -18,16 +18,17 @@ public enum HeaderParam {
   USER_NAME,
   PROXY_USER_NAME,
   SCOPE_ID,
-  X_Consumer_ID("X-Consumer-ID"),
-  X_Session_ID("X-Session-ID"),
-  X_Device_ID("X-Device-ID"),
-  X_Authenticated_Userid("X-Authenticated-Userid"),
+  X_Consumer_ID("x-consumer-id"),
+  X_Session_ID("x-session-id"),
+  X_Device_ID("x-device-id"),
+  X_Authenticated_Userid("x-authenticated-userid"),
   ts("ts"),
-  Content_Type("Content-Type"),
+  Content_Type("content-type"),
   X_Authenticated_User_Token("x-authenticated-user-token"),
   X_Authenticated_Client_Token("x-authenticated-client-token"),
   X_Authenticated_Client_Id("x-authenticated-client-id"),
-  X_APP_ID("X-app-id");
+  X_APP_ID("x-app-id"),
+  CHANNEL_ID("x-channel-id");
   /** name of the parameter */
   private String name;
 

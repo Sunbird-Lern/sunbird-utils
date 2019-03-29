@@ -439,6 +439,8 @@ public final class JsonKey {
   public static final String QUERY_FIELDS = "queryFields";
   public static final String RECEIVER_ID = "receiverId";
   public static final String RECIPIENT_COUNT = "recipientCount";
+  public static final String MASK_EMAIL = "maskEmail";
+  public static final String MASK_PHONE = "maskPhone";
   public static final String RECIPIENT_EMAILS = "recipientEmails";
   public static final String RECIPIENT_USERIDS = "recipientUserIds";
   public static final String RECOMMEND_TYPE = "recommendType";
@@ -649,7 +651,6 @@ public final class JsonKey {
   public static final String SUNBIRD_LMS_TELEMETRY = "Sunbird_LMS_Telemetry";
   public static final String SUNBIRD_LMS_AUTHORIZATION = "sunbird_authorization";
   public static final String ETS = "ets";
-  public static final String CHANNEL_ID = "x-channel-id";
   public static final String CONTENT_ENCODING = "Content-Encoding";
   public static final String EK_STEP = "EK-STEP";
   public static final String RESOURCE_NAME = "resourceName";
@@ -887,6 +888,7 @@ public final class JsonKey {
   public static final String FROM_BEGINING = "fromBegining";
   public static final String SUNBIRD_KEYCLOAK_USER_FEDERATION_PROVIDER_ID =
       "sunbird_keycloak_user_federation_provider_id";
+  public static final String DEVICE_ID = "did";
 
   private JsonKey() {}
 }

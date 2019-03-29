@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -91,7 +92,12 @@ public class TextBookTocUploader {
       deleteQuietly(file);
       log("Creating file for CSV at Location: " + file.getAbsolutePath(), INFO.name());
       touch(file);
+      Instant startTime = Instant.now();
       populateDataIntoFile(content, file);
+      log(
+          "Timed:TextBookTocUploader:execute time taken in processing "
+              + (Instant.now().getEpochSecond() - startTime.getEpochSecond()),
+          INFO.name());
       log(
           "Uploading "
               + fileExtension.getExtension()

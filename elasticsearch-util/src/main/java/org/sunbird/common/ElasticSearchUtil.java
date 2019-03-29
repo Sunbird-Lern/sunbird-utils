@@ -33,6 +33,7 @@ import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchPhaseExecutionException;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -40,6 +41,8 @@ import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.io.stream.StreamInput;
+import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.ExistsQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
@@ -301,7 +304,7 @@ public class ElasticSearchUtil {
     if (sr.getHits() == null || sr.getHits().getTotalHits() == 0) {
       return new HashMap<>();
     }
-    sr.getHits().getAt(0).getSource();
+    sr.getHits().getAt(0);
     long stopTime = System.currentTimeMillis();
     long elapsedTime = stopTime - startTime;
     ProjectLogger.log(
@@ -491,7 +494,10 @@ public class ElasticSearchUtil {
     try {
       CreateIndexRequestBuilder createIndexBuilder = client.admin().indices().prepareCreate(index);
       if (!StringUtils.isBlank(settings)) {
-        createIndexResponse = createIndexBuilder.setSettings(settings).get();
+        createIndexResponse =
+            createIndexBuilder
+                .setSettings(Settings.readSettingsFromStream(StreamInput.wrap(settings.getBytes())))
+                .get();
       } else {
         createIndexResponse = createIndexBuilder.get();
       }
@@ -671,7 +677,13 @@ public class ElasticSearchUtil {
     ProjectLogger.log(
         "calling search builder======" + searchRequestBuilder.toString(), LoggerEnum.DEBUG.name());
     SearchResponse response = null;
-    response = searchRequestBuilder.execute().actionGet();
+    try {
+      response = searchRequestBuilder.execute().actionGet();
+    } catch (SearchPhaseExecutionException e) {
+      ProjectCommonException.throwClientErrorException(
+          ResponseCode.invalidValue, e.getRootCause().getMessage());
+    }
+
     List<Map<String, Object>> esSource = new ArrayList<>();
     Map<String, Object> responsemap = new HashMap<>();
     long count = 0;
@@ -680,7 +692,7 @@ public class ElasticSearchUtil {
       count = hits.getTotalHits();
 
       for (SearchHit hit : hits) {
-        esSource.add(hit.getSource());
+        esSource.add(hit.getSourceAsMap());
       }
 
       // fetch aggregations aggregations
