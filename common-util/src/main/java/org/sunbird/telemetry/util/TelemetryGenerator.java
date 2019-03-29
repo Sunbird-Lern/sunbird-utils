@@ -71,7 +71,6 @@ public class TelemetryGenerator {
     ArrayList<Map<String, Object>> list = (ArrayList<Map<String, Object>>) correlatedObjects;
     ArrayList<Map<String, Object>> targetList = new ArrayList<>();
     if (null != list && !list.isEmpty()) {
-
       for (Map<String, Object> m : list) {
         Map<String, Object> map = new HashMap<>();
         map.put(JsonKey.ID, m.get(JsonKey.ID));
@@ -140,8 +139,10 @@ public class TelemetryGenerator {
   private static Context getContext(Map<String, Object> context) {
     String channel = (String) context.get(JsonKey.CHANNEL);
     String env = (String) context.get(JsonKey.ENV);
+    String did = (String) context.get(JsonKey.DEVICE_ID);
     Producer producer = getProducer(context);
     Context eventContext = new Context(channel, env, producer);
+    eventContext.setDid(did);
     if (context.get(JsonKey.ROLLUP) != null
         && !((Map<String, String>) context.get(JsonKey.ROLLUP)).isEmpty()) {
       eventContext.setRollup((Map<String, String>) context.get(JsonKey.ROLLUP));
@@ -150,11 +151,19 @@ public class TelemetryGenerator {
   }
 
   private static Producer getProducer(Map<String, Object> context) {
-
-    String id = (String) context.get(JsonKey.PDATA_ID);
-    String pid = (String) context.get(JsonKey.PDATA_PID);
-    String ver = (String) context.get(JsonKey.PDATA_VERSION);
-    return new Producer(id, pid, ver);
+    String id = "";
+    if (context != null && context.size() != 0) {
+      if (StringUtils.isNotBlank((String) context.get(JsonKey.APP_ID))) {
+        id = (String) context.get(JsonKey.APP_ID);
+      } else {
+        id = (String) context.get(JsonKey.PDATA_ID);
+      }
+      String pid = (String) context.get(JsonKey.PDATA_PID);
+      String ver = (String) context.get(JsonKey.PDATA_VERSION);
+      return new Producer(id, pid, ver);
+    } else {
+      return new Producer("", "", "");
+    }
   }
 
   private static String getTelemetry(Telemetry telemetry) {
