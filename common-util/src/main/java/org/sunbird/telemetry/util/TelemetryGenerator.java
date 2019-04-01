@@ -42,7 +42,7 @@ public class TelemetryGenerator {
     }
     String actorId = (String) context.get(JsonKey.ACTOR_ID);
     String actorType = (String) context.get(JsonKey.ACTOR_TYPE);
-    Actor actor = new Actor(actorId, actorType);
+    Actor actor = new Actor(actorId, StringUtils.capitalize(actorType));
     Target targetObject =
         generateTargetObject((Map<String, Object>) params.get(JsonKey.TARGET_OBJECT));
     Context eventContext = getContext(context);
@@ -84,7 +84,9 @@ public class TelemetryGenerator {
   private static Target generateTargetObject(Map<String, Object> targetObject) {
 
     Target target =
-        new Target((String) targetObject.get(JsonKey.ID), (String) targetObject.get(JsonKey.TYPE));
+        new Target(
+            (String) targetObject.get(JsonKey.ID),
+            StringUtils.capitalize((String) targetObject.get(JsonKey.TYPE)));
     if (targetObject.get(JsonKey.ROLLUP) != null) {
       target.setRollup((Map<String, String>) targetObject.get(JsonKey.ROLLUP));
     }
@@ -141,7 +143,7 @@ public class TelemetryGenerator {
     String env = (String) context.get(JsonKey.ENV);
     String did = (String) context.get(JsonKey.DEVICE_ID);
     Producer producer = getProducer(context);
-    Context eventContext = new Context(channel, env, producer);
+    Context eventContext = new Context(channel, StringUtils.capitalize(env), producer);
     eventContext.setDid(did);
     if (context.get(JsonKey.ROLLUP) != null
         && !((Map<String, String>) context.get(JsonKey.ROLLUP)).isEmpty()) {
@@ -192,7 +194,7 @@ public class TelemetryGenerator {
     }
     String actorId = (String) context.get(JsonKey.ACTOR_ID);
     String actorType = (String) context.get(JsonKey.ACTOR_TYPE);
-    Actor actor = new Actor(actorId, actorType);
+    Actor actor = new Actor(actorId, StringUtils.capitalize(actorType));
 
     Context eventContext = getContext(context);
 
@@ -254,7 +256,7 @@ public class TelemetryGenerator {
     }
     String actorId = (String) context.get(JsonKey.ACTOR_ID);
     String actorType = (String) context.get(JsonKey.ACTOR_TYPE);
-    Actor actor = new Actor(actorId, actorType);
+    Actor actor = new Actor(actorId, StringUtils.capitalize(actorType));
 
     Context eventContext = getContext(context);
 
@@ -318,7 +320,7 @@ public class TelemetryGenerator {
     }
     String actorId = (String) context.get(JsonKey.ACTOR_ID);
     String actorType = (String) context.get(JsonKey.ACTOR_TYPE);
-    Actor actor = new Actor(actorId, actorType);
+    Actor actor = new Actor(actorId, StringUtils.capitalize(actorType));
 
     Context eventContext = getContext(context);
 

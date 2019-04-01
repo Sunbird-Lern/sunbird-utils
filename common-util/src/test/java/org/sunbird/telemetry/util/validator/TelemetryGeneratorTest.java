@@ -36,7 +36,7 @@ public class TelemetryGeneratorTest {
     context.put("channel", "ORG_001");
     context.put("telemetry_pdata_ver", "1.15");
     context.put("REQUEST_ID", "8e27cbf5-e299-43b0-bca7-8347f7e5abcf");
-    context.put("env", "user");
+    context.put("env", "User");
     context.put("did", "postman");
   }
 
@@ -47,7 +47,7 @@ public class TelemetryGeneratorTest {
     Context ctx = (Context) method.invoke(null, context);
     assertEquals("postman", ctx.getDid());
     assertEquals("ORG_001", ctx.getChannel());
-    assertEquals("user", ctx.getEnv());
+    assertEquals("User", ctx.getEnv());
   }
 
   @Test
