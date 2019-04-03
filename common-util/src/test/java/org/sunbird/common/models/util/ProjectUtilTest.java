@@ -442,13 +442,13 @@ public class ProjectUtilTest extends BaseHttpTest {
   }
 
   @Test
-  public void testgetLmsUserIdWithoutFedId() {
+  public void testGetLmsUserIdSuccessWithoutFedUserId() {
     String userid = ProjectUtil.getLmsUserId("1234567890");
     assertEquals("1234567890", userid);
   }
 
   @Test
-  public void testgetLmsUserIdWithFedId() {
+  public void testGetLmsUserIdSuccessWithFedUserId() {
     String userid =
         ProjectUtil.getLmsUserId(
             "f:"
