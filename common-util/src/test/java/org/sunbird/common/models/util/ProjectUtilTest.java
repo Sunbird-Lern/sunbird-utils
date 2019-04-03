@@ -267,7 +267,7 @@ public class ProjectUtilTest extends BaseHttpTest {
   @Test
   public void testEsTypeSuccess() {
     assertEquals("content", ProjectUtil.EsType.content.getTypeName());
-    assertEquals("coursebatch", ProjectUtil.EsType.course.getTypeName());
+    assertEquals("cbatch", ProjectUtil.EsType.course.getTypeName());
     assertEquals("user", ProjectUtil.EsType.user.getTypeName());
     assertEquals("org", ProjectUtil.EsType.organisation.getTypeName());
     assertEquals("usercourses", ProjectUtil.EsType.usercourses.getTypeName());
@@ -439,5 +439,22 @@ public class ProjectUtilTest extends BaseHttpTest {
     }
     String response = HttpUtil.sendGetRequest(ekStepBaseUrl + "/search/health", headers);
     assertNotNull(response);
+  }
+
+  @Test
+  public void testgetLmsUserIdWithoutFedId() {
+    String userid = ProjectUtil.getLmsUserId("1234567890");
+    assertEquals("1234567890", userid);
+  }
+
+  @Test
+  public void testgetLmsUserIdWithFedId() {
+    String userid =
+        ProjectUtil.getLmsUserId(
+            "f:"
+                + ProjectUtil.getConfigValue(JsonKey.SUNBIRD_KEYCLOAK_USER_FEDERATION_PROVIDER_ID)
+                + ":"
+                + "1234567890");
+    assertEquals("1234567890", userid);
   }
 }

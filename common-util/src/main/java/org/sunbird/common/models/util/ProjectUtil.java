@@ -979,9 +979,8 @@ public class ProjectUtil {
   public static String getLmsUserId(String fedUserId) {
     String userId = fedUserId;
     String prefix =
-        "f:" + ProjectUtil.getConfigValue(JsonKey.SUNBIRD_KEYCLOAK_USER_FEDERATION_PROVIDER_ID);
-    if (StringUtils.isNotBlank(fedUserId)
-        && fedUserId.startsWith(prefix)) {
+        "f:" + getConfigValue(JsonKey.SUNBIRD_KEYCLOAK_USER_FEDERATION_PROVIDER_ID) + ":";
+    if (StringUtils.isNotBlank(fedUserId) && fedUserId.startsWith(prefix)) {
       userId = fedUserId.replace(prefix, "");
     }
     return userId;
