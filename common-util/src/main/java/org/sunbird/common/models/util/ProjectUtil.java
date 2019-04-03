@@ -976,7 +976,7 @@ public class ProjectUtil {
         ResponseCode.CLIENT_ERROR.getResponseCode());
   }
 
-  public static String getUserIdFromFederatedUserId(String fedUserId) {
+  public static String getLmsUserId(String fedUserId) {
     String userId = fedUserId;
     String prefix =
         "f:" + ProjectUtil.getConfigValue(JsonKey.SUNBIRD_KEYCLOAK_USER_FEDERATION_PROVIDER_ID);
