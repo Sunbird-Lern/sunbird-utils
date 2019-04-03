@@ -981,7 +981,6 @@ public class ProjectUtil {
     String prefix =
         "f:" + ProjectUtil.getConfigValue(JsonKey.SUNBIRD_KEYCLOAK_USER_FEDERATION_PROVIDER_ID);
     if (StringUtils.isNotBlank(fedUserId)
-        && fedUserId.contains(prefix)
         && fedUserId.startsWith(prefix)) {
       userId = fedUserId.replace(prefix, "");
     }
