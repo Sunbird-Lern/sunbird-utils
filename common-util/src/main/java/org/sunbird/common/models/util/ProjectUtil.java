@@ -975,4 +975,14 @@ public class ProjectUtil {
         responseCode.getErrorMessage(),
         ResponseCode.CLIENT_ERROR.getResponseCode());
   }
+
+  public static String getLmsUserId(String fedUserId) {
+    String userId = fedUserId;
+    String prefix =
+        "f:" + getConfigValue(JsonKey.SUNBIRD_KEYCLOAK_USER_FEDERATION_PROVIDER_ID) + ":";
+    if (StringUtils.isNotBlank(fedUserId) && fedUserId.startsWith(prefix)) {
+      userId = fedUserId.replace(prefix, "");
+    }
+    return userId;
+  }
 }
