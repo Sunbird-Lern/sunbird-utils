@@ -198,10 +198,17 @@ public class ElasticSearchUtil {
       ProjectLogger.log("Identifier value is null or empty ,not able to save data.");
       return "ERROR";
     }
+    Map<String, String> mappedIndexAndType = getMappedIndexAndType(index, type);
     try {
       data.put("identifier", identifier);
       IndexResponse response =
-          ConnectionManager.getClient().prepareIndex(index, type, identifier).setSource(data).get();
+          ConnectionManager.getClient()
+              .prepareIndex(
+                  mappedIndexAndType.get(JsonKey.INDEX),
+                  mappedIndexAndType.get(JsonKey.TYPE),
+                  identifier)
+              .setSource(data)
+              .get();
       ProjectLogger.log(
           "Save value==" + response.getId() + " " + response.status(), LoggerEnum.INFO.name());
       ProjectLogger.log(
@@ -244,14 +251,26 @@ public class ElasticSearchUtil {
             + " for Type "
             + type,
         LoggerEnum.PERF_LOG);
+    Map<String, String> mappedIndexAndType = getMappedIndexAndType(index, type);
     GetResponse response = null;
     if (StringUtils.isBlank(index) || StringUtils.isBlank(identifier)) {
       ProjectLogger.log("Invalid request is coming.");
       return new HashMap<>();
     } else if (StringUtils.isBlank(type)) {
-      response = ConnectionManager.getClient().prepareGet().setIndex(index).setId(identifier).get();
+      response =
+          ConnectionManager.getClient()
+              .prepareGet()
+              .setIndex(mappedIndexAndType.get(JsonKey.INDEX))
+              .setId(identifier)
+              .get();
     } else {
-      response = ConnectionManager.getClient().prepareGet(index, type, identifier).get();
+      response =
+          ConnectionManager.getClient()
+              .prepareGet(
+                  mappedIndexAndType.get(JsonKey.INDEX),
+                  mappedIndexAndType.get(JsonKey.TYPE),
+                  identifier)
+              .get();
     }
     if (response == null || null == response.getSource()) {
       return new HashMap<>();
@@ -289,11 +308,15 @@ public class ElasticSearchUtil {
       Entry<String, Object> entry = itr.next();
       sourceBuilder.query(QueryBuilders.commonTermsQuery(entry.getKey(), entry.getValue()));
     }
+    Map<String, String> mappedIndexAndType = getMappedIndexAndType(index, type);
     SearchResponse sr = null;
     try {
       sr =
           ConnectionManager.getClient()
-              .search(new SearchRequest(index).types(type).source(sourceBuilder))
+              .search(
+                  new SearchRequest(mappedIndexAndType.get(JsonKey.INDEX))
+                      .types(mappedIndexAndType.get(JsonKey.TYPE))
+                      .source(sourceBuilder))
               .get();
     } catch (InterruptedException e) {
       ProjectLogger.log("Error, interrupted while connecting to Elasticsearch", e);
@@ -338,9 +361,16 @@ public class ElasticSearchUtil {
         && !StringUtils.isBlank(type)
         && !StringUtils.isBlank(identifier)
         && data != null) {
+      Map<String, String> mappedIndexAndType = getMappedIndexAndType(index, type);
       try {
         UpdateResponse response =
-            ConnectionManager.getClient().prepareUpdate(index, type, identifier).setDoc(data).get();
+            ConnectionManager.getClient()
+                .prepareUpdate(
+                    mappedIndexAndType.get(JsonKey.INDEX),
+                    mappedIndexAndType.get(JsonKey.TYPE),
+                    identifier)
+                .setDoc(data)
+                .get();
         ProjectLogger.log(
             "updated response==" + response.getResult().name(), LoggerEnum.INFO.name());
         if (response.getResult().name().equals("UPDATED")) {
@@ -396,9 +426,20 @@ public class ElasticSearchUtil {
         && !StringUtils.isBlank(identifier)
         && data != null
         && data.size() > 0) {
-      IndexRequest indexRequest = new IndexRequest(index, type, identifier).source(data);
+      Map<String, String> mappedIndexAndType = getMappedIndexAndType(index, type);
+      IndexRequest indexRequest =
+          new IndexRequest(
+                  mappedIndexAndType.get(JsonKey.INDEX),
+                  mappedIndexAndType.get(JsonKey.TYPE),
+                  identifier)
+              .source(data);
       UpdateRequest updateRequest =
-          new UpdateRequest(index, type, identifier).doc(data).upsert(indexRequest);
+          new UpdateRequest(
+                  mappedIndexAndType.get(JsonKey.INDEX),
+                  mappedIndexAndType.get(JsonKey.TYPE),
+                  identifier)
+              .doc(data)
+              .upsert(indexRequest);
       UpdateResponse response = null;
       try {
         response = ConnectionManager.getClient().update(updateRequest).get();
@@ -451,8 +492,15 @@ public class ElasticSearchUtil {
     if (!StringUtils.isBlank(index)
         && !StringUtils.isBlank(type)
         && !StringUtils.isBlank(identifier)) {
+      Map<String, String> mappedIndexAndType = getMappedIndexAndType(index, type);
       try {
-        deleteResponse = ConnectionManager.getClient().prepareDelete(index, type, identifier).get();
+        deleteResponse =
+            ConnectionManager.getClient()
+                .prepareDelete(
+                    mappedIndexAndType.get(JsonKey.INDEX),
+                    mappedIndexAndType.get(JsonKey.TYPE),
+                    identifier)
+                .get();
         ProjectLogger.log(
             "delete info ==" + deleteResponse.getResult().name() + " " + deleteResponse.getId());
       } catch (Exception e) {
@@ -491,8 +539,10 @@ public class ElasticSearchUtil {
     }
     CreateIndexResponse createIndexResponse = null;
     TransportClient client = ConnectionManager.getClient();
+    Map<String, String> mappedIndexAndType = getMappedIndexAndType(index, type);
     try {
-      CreateIndexRequestBuilder createIndexBuilder = client.admin().indices().prepareCreate(index);
+      CreateIndexRequestBuilder createIndexBuilder =
+          client.admin().indices().prepareCreate(mappedIndexAndType.get(JsonKey.INDEX));
       if (!StringUtils.isBlank(settings)) {
         createIndexResponse =
             createIndexBuilder
@@ -503,13 +553,14 @@ public class ElasticSearchUtil {
       }
       if (createIndexResponse != null && createIndexResponse.isAcknowledged()) {
         response = true;
-        if (!StringUtils.isBlank(mappings) && !StringUtils.isBlank(type)) {
+        if (!StringUtils.isBlank(mappings)
+            && !StringUtils.isBlank(mappedIndexAndType.get(JsonKey.TYPE))) {
           PutMappingResponse mappingResponse =
               client
                   .admin()
                   .indices()
-                  .preparePutMapping(index)
-                  .setType(type)
+                  .preparePutMapping(mappedIndexAndType.get(JsonKey.INDEX))
+                  .setType(mappedIndexAndType.get(JsonKey.TYPE))
                   .setSource(mappings)
                   .get();
           if (mappingResponse.isAcknowledged()) {
@@ -517,9 +568,14 @@ public class ElasticSearchUtil {
           } else {
             response = false;
           }
-        } else if (!StringUtils.isBlank(type)) {
+        } else if (!StringUtils.isBlank(mappedIndexAndType.get(JsonKey.TYPE))) {
           PutMappingResponse mappingResponse =
-              client.admin().indices().preparePutMapping(index).setType(type).get();
+              client
+                  .admin()
+                  .indices()
+                  .preparePutMapping(mappedIndexAndType.get(JsonKey.INDEX))
+                  .setType(mappedIndexAndType.get(JsonKey.TYPE))
+                  .get();
           if (mappingResponse.isAcknowledged()) {
             response = true;
           } else {
@@ -545,13 +601,14 @@ public class ElasticSearchUtil {
    */
   @SuppressWarnings("deprecation")
   public static boolean addOrUpdateMapping(String indexName, String typeName, String mapping) {
+    Map<String, String> mappedIndexAndType = getMappedIndexAndType(indexName, typeName);
     try {
       PutMappingResponse response =
           ConnectionManager.getClient()
               .admin()
               .indices()
-              .preparePutMapping(indexName)
-              .setType(typeName)
+              .preparePutMapping(mappedIndexAndType.get(JsonKey.INDEX))
+              .setType(mappedIndexAndType.get(JsonKey.TYPE))
               .setSource(mapping)
               .get();
       if (response.isAcknowledged()) {
@@ -590,10 +647,22 @@ public class ElasticSearchUtil {
   public static Map<String, Object> complexSearch(
       SearchDTO searchDTO, String index, String... type) {
     long startTime = System.currentTimeMillis();
+    List<Map<String, String>> indicesAndTypesMapping = getMappedIndexesAndTypes(index, type);
+    String[] indices =
+        indicesAndTypesMapping
+            .stream()
+            .map(indexMap -> indexMap.get(JsonKey.INDEX))
+            .toArray(String[]::new);
+    String[] types =
+        indicesAndTypesMapping
+            .stream()
+            .map(indexMap -> indexMap.get(JsonKey.TYPE))
+            .distinct()
+            .toArray(String[]::new);
     ProjectLogger.log(
         "ElasticSearchUtil complexSearch method started at ==" + startTime, LoggerEnum.PERF_LOG);
     SearchRequestBuilder searchRequestBuilder =
-        getSearchBuilder(ConnectionManager.getClient(), index, type);
+        getSearchBuilder(ConnectionManager.getClient(), indices, types);
     // check mode and set constraints
     Map<String, Float> constraintsMap = getConstraints(searchDTO);
 
@@ -675,7 +744,7 @@ public class ElasticSearchUtil {
       addAggregations(searchRequestBuilder, searchDTO.getFacets());
     }
     ProjectLogger.log(
-        "calling search builder======" + searchRequestBuilder.toString(), LoggerEnum.DEBUG.name());
+        "calling search builder======" + searchRequestBuilder.toString(), LoggerEnum.INFO.name());
     SearchResponse response = null;
     try {
       response = searchRequestBuilder.execute().actionGet();
@@ -787,7 +856,7 @@ public class ElasticSearchUtil {
   }
 
   private static SearchRequestBuilder getSearchBuilder(
-      TransportClient client, String index, String... type) {
+      TransportClient client, String[] index, String... type) {
 
     if (type == null || type.length == 0) {
       return client.prepareSearch().setIndices(index);
@@ -1026,6 +1095,7 @@ public class ElasticSearchUtil {
         "ElasticSearchUtil bulkInsertData method started at ==" + startTime + " for Type " + type,
         LoggerEnum.PERF_LOG);
     boolean response = true;
+    Map<String, String> mappedIndexAndType = getMappedIndexAndType(index, type);
     try {
       BulkProcessor bulkProcessor =
           BulkProcessor.builder(
@@ -1063,7 +1133,11 @@ public class ElasticSearchUtil {
       for (Map<String, Object> map : dataList) {
         map.put(JsonKey.IDENTIFIER, map.get(JsonKey.ID));
         IndexRequest request =
-            new IndexRequest(index, type, (String) map.get(JsonKey.IDENTIFIER)).source(map);
+            new IndexRequest(
+                    mappedIndexAndType.get(JsonKey.INDEX),
+                    mappedIndexAndType.get(JsonKey.TYPE),
+                    (String) map.get(JsonKey.IDENTIFIER))
+                .source(map);
         bulkProcessor.add(request);
       }
       // Flush any remaining requests
@@ -1137,7 +1211,15 @@ public class ElasticSearchUtil {
       ProjectLogger.log("ES URL from Properties file");
       baseUrl = PropertiesCache.getInstance().getProperty(JsonKey.ES_URL);
     }
-    String requestURL = baseUrl + "/" + index + "/" + type + "/" + "_search";
+    Map<String, String> mappedIndexAndType = getMappedIndexAndType(index, type);
+    String requestURL =
+        baseUrl
+            + "/"
+            + mappedIndexAndType.get(JsonKey.INDEX)
+            + "/"
+            + mappedIndexAndType.get(JsonKey.TYPE)
+            + "/"
+            + "_search";
     Map<String, String> headers = new HashMap<>();
     headers.put("Content-Type", "application/json");
     Map<String, Object> responseData = new HashMap<>();
@@ -1278,5 +1360,47 @@ public class ElasticSearchUtil {
                   return (String) obj.get("id");
                 },
                 val -> val));
+  }
+
+  private static Map<String, String> getMappedIndexAndType(
+      String sunbirdIndex, String sunbirdType) {
+    String mappedIndexAndType = "mapping." + sunbirdIndex + "." + sunbirdType;
+    Map<String, String> mappedIndexAndTypeResult = new HashMap<>();
+    if (config.hasPath(mappedIndexAndType)) {
+      mappedIndexAndTypeResult = (Map<String, String>) config.getAnyRef(mappedIndexAndType);
+    } else {
+      ProjectCommonException.throwServerErrorException(ResponseCode.SERVER_ERROR);
+    }
+    ProjectLogger.log(
+        "Elasticsearch input index "
+            + sunbirdIndex
+            + " types "
+            + sunbirdType
+            + " output "
+            + mappedIndexAndTypeResult,
+        LoggerEnum.INFO);
+    return mappedIndexAndTypeResult;
+  }
+
+  private static List<Map<String, String>> getMappedIndexesAndTypes(
+      String sunbirdIndex, String... sunbirdTypes) {
+    List<Map<String, String>> mappedIndexesAndTypes = new ArrayList<>();
+    for (String sunbirdType : sunbirdTypes) {
+      String mappedIndexAndType = "mapping." + sunbirdIndex + "." + sunbirdType;
+      if (config.hasPath(mappedIndexAndType)) {
+        mappedIndexesAndTypes.add((Map<String, String>) config.getAnyRef(mappedIndexAndType));
+      } else {
+        ProjectCommonException.throwServerErrorException(ResponseCode.SERVER_ERROR);
+      }
+    }
+    ProjectLogger.log(
+        "Elasticsearch input index "
+            + sunbirdIndex
+            + " types "
+            + sunbirdTypes
+            + " output "
+            + mappedIndexesAndTypes,
+        LoggerEnum.INFO);
+    return mappedIndexesAndTypes;
   }
 }
