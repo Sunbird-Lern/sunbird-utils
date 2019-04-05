@@ -17,4 +17,5 @@ public class TelemetryEnvKey {
   public static final String MASTER_KEY = "MasterKey";
   public static final String OBJECT_STORE = "ObjectStore";
   public static final String LOCATION = "Location";
+  public static final String PAGE_SECTION = "PageSection";
 }
