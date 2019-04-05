@@ -272,14 +272,12 @@ public class ProjectUtilTest extends BaseHttpTest {
     assertEquals("org", ProjectUtil.EsType.organisation.getTypeName());
     assertEquals("usercourses", ProjectUtil.EsType.usercourses.getTypeName());
     assertEquals("usernotes", ProjectUtil.EsType.usernotes.getTypeName());
-    assertEquals("history", ProjectUtil.EsType.history.getTypeName());
     assertEquals("userprofilevisibility", ProjectUtil.EsType.userprofilevisibility.getTypeName());
   }
 
   @Test
   public void testEsIndexSuccess() {
     assertEquals("searchindex", ProjectUtil.EsIndex.sunbird.getIndexName());
-    assertEquals("sunbirddataaudit", ProjectUtil.EsIndex.sunbirdDataAudit.getIndexName());
   }
 
   @Test

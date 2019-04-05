@@ -153,7 +153,5 @@ public class ActorOperationTest {
         "updateUserNotesToElastic", ActorOperations.UPDATE_USER_NOTES_ES.getValue());
     Assert.assertEquals("userCurrentLogin", ActorOperations.USER_CURRENT_LOGIN.getValue());
     Assert.assertEquals("getMediaTypes", ActorOperations.GET_MEDIA_TYPES.getValue());
-    Assert.assertEquals("searchAuditLog", ActorOperations.SEARCH_AUDIT_LOG.getValue());
-    Assert.assertEquals("processAuditLog", ActorOperations.PROCESS_AUDIT_LOG.getValue());
   }
 }
