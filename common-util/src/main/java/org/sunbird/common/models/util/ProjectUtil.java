@@ -344,7 +344,6 @@ public class ProjectUtil {
    */
   public enum EsIndex {
     sunbird("searchindex"),
-    sunbirdDataAudit("sunbirddataaudit"),
     sunbirdPlugin("sunbirdplugin");
     private String indexName;
 
@@ -370,7 +369,6 @@ public class ProjectUtil {
     organisation("org"),
     usercourses("usercourses"),
     usernotes("usernotes"),
-    history("history"),
     userprofilevisibility("userprofilevisibility"),
     telemetry("telemetry"),
     location("location"),
