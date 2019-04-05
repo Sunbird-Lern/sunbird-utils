@@ -22,7 +22,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.admin.indices.exists.types.TypesExistsRequest;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 import org.elasticsearch.action.bulk.BulkItemResponse;
@@ -621,22 +620,6 @@ public class ElasticSearchUtil {
   }
 
   /**
-   * This method will delete the index
-   *
-   * @param index String name of the index which we need to delete.
-   * @return boolean
-   */
-  public static boolean deleteIndex(String index) {
-    boolean response = false;
-    DeleteIndexResponse deleteResponse =
-        ConnectionManager.getClient().admin().indices().prepareDelete(index).get();
-    if (deleteResponse != null && deleteResponse.isAcknowledged()) {
-      response = true;
-    }
-    return response;
-  }
-
-  /**
    * Method to perform the elastic search on the basis of SearchDTO . SearchDTO contains the search
    * criteria like fields, facets, sort by , filters etc. here user can pass single type to search
    * or multiple type or null
@@ -1172,12 +1155,15 @@ public class ElasticSearchUtil {
    */
   public static boolean healthCheck() {
     boolean indexResponse = false;
+    Map<String, String> mappedIndexAndType =
+        getMappedIndexAndType(
+            ProjectUtil.EsIndex.sunbird.getIndexName(), ProjectUtil.EsType.user.getTypeName());
     try {
       indexResponse =
           ConnectionManager.getClient()
               .admin()
               .indices()
-              .exists(Requests.indicesExistsRequest(ProjectUtil.EsIndex.sunbird.getIndexName()))
+              .exists(Requests.indicesExistsRequest(mappedIndexAndType.get(JsonKey.INDEX)))
               .get()
               .isExists();
     } catch (Exception e) {
