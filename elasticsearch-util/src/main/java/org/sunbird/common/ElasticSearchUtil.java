@@ -1364,7 +1364,7 @@ public class ElasticSearchUtil {
             + sunbirdType
             + " output "
             + mappedIndexAndTypeResult,
-        LoggerEnum.INFO);
+        LoggerEnum.DEBUG);
     return mappedIndexAndTypeResult;
   }
 
@@ -1386,7 +1386,7 @@ public class ElasticSearchUtil {
             + sunbirdTypes
             + " output "
             + mappedIndexesAndTypes,
-        LoggerEnum.INFO);
+        LoggerEnum.DEBUG);
     return mappedIndexesAndTypes;
   }
 }
