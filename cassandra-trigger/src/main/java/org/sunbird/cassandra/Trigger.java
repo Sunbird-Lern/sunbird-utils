@@ -1,6 +1,5 @@
 package org.sunbird.cassandra;
 
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -8,10 +7,8 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.cassandra.config.CFMetaData;
 import org.apache.cassandra.config.ColumnDefinition;
 import org.apache.cassandra.db.Clustering;
@@ -19,7 +16,6 @@ import org.apache.cassandra.db.ClusteringPrefix;
 import org.apache.cassandra.db.DecoratedKey;
 import org.apache.cassandra.db.DeletionTime;
 import org.apache.cassandra.db.Mutation;
-import org.apache.cassandra.db.PartitionColumns;
 import org.apache.cassandra.db.marshal.AbstractType;
 import org.apache.cassandra.db.marshal.CompositeType;
 import org.apache.cassandra.db.marshal.ListType;
@@ -33,11 +29,9 @@ import org.apache.cassandra.db.rows.Row.Deletion;
 import org.apache.cassandra.db.rows.Unfiltered;
 import org.apache.cassandra.db.rows.UnfilteredRowIterator;
 import org.apache.cassandra.triggers.ITrigger;
+import org.sunbird.common.audit.AuditUtil;
 
-/**
- * @author iostream04
- *
- */
+/** @author iostream04 */
 public class Trigger implements ITrigger {
 
   private static final String KEYSPACE = "keyspace";
@@ -46,29 +40,29 @@ public class Trigger implements ITrigger {
   private static final String UPDATE_ROW = "UPDATE_ROW";
   private static final String DELETE_ROW = "DELETE_ROW";
   private static final String UPDATE_COUNTER = "UPDATE_COUNTER";
-  private static final String FILE_TO_WRITE = "";
+  private static final String FILE_TO_WRITE = "/home/sudhirgiri/triggerLogs.txt";
 
   @Override
   public Collection<Mutation> augment(Partition update) {
 
-    HashMap<Object, Object> result = processData(update);
+    Map<String, Object> resultMap = processData(update);
+    Map<String, Object> auditMap = AuditUtil.getAuditForTransanctional(resultMap);
     try {
-
+      // Map<String, Object> result  = new ObjectMapper().convertValue(audit, Map.class);
       BufferedWriter out = new BufferedWriter(new FileWriter(FILE_TO_WRITE, true));
-      out.write(result + "\n");
+      out.write(auditMap + "\n");
       out.write("-------" + "\n");
       out.close();
     } catch (IOException e) {
       System.out.println("ExceptionOccured");
     }
-
     return null;
   }
 
-  private HashMap<Object, Object> getPartitionKeyData(ByteBuffer key, CFMetaData update) {
+  private HashMap<String, Object> getPartitionKeyData(ByteBuffer key, CFMetaData update) {
 
     List<ColumnDefinition> partitionKeyList = new ArrayList<ColumnDefinition>();
-    HashMap<Object, Object> partitionKeyValueList = new HashMap<Object, Object>();
+    HashMap<String, Object> partitionKeyValueList = new HashMap<String, Object>();
     Object dataObject = null;
     partitionKeyList = update.partitionKeyColumns();
     if (partitionKeyList.size() == 1) {
@@ -113,13 +107,13 @@ public class Trigger implements ITrigger {
     return clusterKeyValueList;
   }
 
-  public HashMap<Object, Object> processData(Partition partition) {
+  public HashMap<String, Object> processData(Partition partition) {
     String updateType = null;
 
     try {
       final String table = partition.metadata().cfName;
       final String keyspace = partition.metadata().ksName;
-      HashMap<Object, Object> partitionKeyData = new HashMap<Object, Object>();
+      HashMap<String, Object> partitionKeyData = new HashMap<String, Object>();
       Map<String, Object> clusterKeyData = new HashMap<String, Object>();
       DecoratedKey partitionKey = partition.partitionKey();
       partitionKeyData = getPartitionKeyData(partitionKey.getKey(), partition.metadata());
@@ -148,7 +142,7 @@ public class Trigger implements ITrigger {
         Iterable<Cell> cells = row.cells();
 
         final Map<Object, String> updateColumnCollectionInfo = new HashMap<Object, String>();
-        HashMap<Object, Object> dataMap = new HashMap<Object, Object>();
+        HashMap<String, Object> dataMap = new HashMap<String, Object>();
         HashMap<Object, Object> deletedDataMap = new HashMap<Object, Object>();
 
         Deletion deletion = row.deletion();
@@ -210,7 +204,6 @@ public class Trigger implements ITrigger {
                 ByteBuffer byteBuffer = path.get(i);
                 AbstractType<Object> keysType = ((SetType) columnType).getElementsType();
                 cellValue = keysType.compose(byteBuffer);
-
               }
               updateColumnCollectionInfo.put(columnName, columnType.getClass().getName());
               if (cell.isLive(0)) {
@@ -236,7 +229,6 @@ public class Trigger implements ITrigger {
                     arrayList.add(cellValue);
                   }
                 }
-
               }
             } else if (columnType instanceof ListType<?>) {
               updateColumnCollectionInfo.put(columnName, columnType.getClass().getName());
@@ -267,7 +259,6 @@ public class Trigger implements ITrigger {
         dataMap.putAll(partitionKeyData);
         dataMap.putAll(clusterKeyData);
         return dataMap;
-
       }
     } catch (RuntimeException e) {
 
@@ -275,5 +266,4 @@ public class Trigger implements ITrigger {
 
     return null;
   }
-
 }
