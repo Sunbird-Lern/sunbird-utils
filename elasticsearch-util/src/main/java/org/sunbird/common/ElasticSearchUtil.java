@@ -20,10 +20,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
-import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
-import org.elasticsearch.action.admin.indices.exists.types.TypesExistsRequest;
-import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkProcessor;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -40,8 +36,6 @@ import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.io.stream.StreamInput;
-import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.ExistsQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
@@ -75,8 +69,6 @@ import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.common.util.ConfigUtil;
 import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
-import org.sunbird.helper.ElasticSearchMapping;
-import org.sunbird.helper.ElasticSearchSettings;
 
 /**
  * This class will provide all required operation for elastic search.
@@ -103,77 +95,6 @@ public class ElasticSearchUtil {
   private static Config config = ConfigUtil.getConfig(ES_CONFIG_FILE);
 
   private ElasticSearchUtil() {}
-
-  static {
-    // disabling this because by default it will create mapping with dynamic type.
-    // verifyAndCreateIndicesAndTypes();
-  }
-
-  /**
-   * This method will read indices and type values from Elastic Search configuration file. It
-   * verifies if configured indices and types exist in Elastic Search. If any index or type does not
-   * exist then it will be created in Elastic Search.
-   *
-   * @return True, if there is no exception. Otherwise, False is returned.
-   */
-  private static boolean verifyAndCreateIndicesAndTypes() {
-    boolean response = false;
-    if (config != null) {
-      try {
-        List<Object> list = (List) config.getAnyRefList("elasticsearch.indices");
-        if (CollectionUtils.isNotEmpty(list)) {
-          for (Object obj : list) {
-            Map<String, Object> map = (Map) obj;
-            verifyOrCreateIndex((String) map.get(JsonKey.NAME));
-            verifyOrCreateType(
-                (String) map.get(JsonKey.NAME),
-                ((List<String>) map.get(JsonKey.ES_TYPES)).toArray(new String[0]));
-            response = true;
-          }
-        } else {
-          ProjectLogger.log(
-              "ElasticSearchUtil:verifyAndCreateIndicesAndTypes: No index is configured",
-              LoggerEnum.INFO.name());
-        }
-      } catch (Exception e) {
-        ProjectLogger.log(
-            "ElasticSearchUtil:verifyAndCreateIndicesAndTypes: Exception occurred with error message = "
-                + e.getMessage(),
-            e);
-      }
-    } else {
-      ProjectLogger.log(
-          "ElasticSearchUtil:verifyAndCreateIndicesAndTypes: Config is null",
-          LoggerEnum.INFO.name());
-    }
-    return response;
-  }
-
-  private static void verifyOrCreateIndex(String indexName) {
-    try {
-      boolean isExist =
-          ConnectionManager.getClient()
-              .admin()
-              .indices()
-              .exists(Requests.indicesExistsRequest(indexName))
-              .get()
-              .isExists();
-      if (isExist) {
-        indexMap.put(indexName, true);
-      } else {
-        boolean created =
-            createIndex(indexName, null, null, ElasticSearchSettings.createSettingsForIndex());
-        if (created) {
-          indexMap.put(indexName, true);
-        }
-      }
-    } catch (Exception e) {
-      ProjectLogger.log(
-          "ElasticSearchUtil:verifyOrCreateIndex: Exception occurred with error message = "
-              + e.getMessage(),
-          e);
-    }
-  }
 
   /**
    * This method will put a new data entry inside Elastic search. identifier value becomes _id
@@ -522,104 +443,6 @@ public class ElasticSearchUtil {
   }
 
   /**
-   * This method will create index , type ,setting and mapping.
-   *
-   * @param index String index name
-   * @param type String type name
-   * @param mappings String
-   * @param settings String
-   * @return boolean
-   */
-  @SuppressWarnings("deprecation")
-  public static boolean createIndex(String index, String type, String mappings, String settings) {
-    boolean response = false;
-    if (StringUtils.isBlank(index)) {
-      return response;
-    }
-    CreateIndexResponse createIndexResponse = null;
-    TransportClient client = ConnectionManager.getClient();
-    Map<String, String> mappedIndexAndType = getMappedIndexAndType(index, type);
-    try {
-      CreateIndexRequestBuilder createIndexBuilder =
-          client.admin().indices().prepareCreate(mappedIndexAndType.get(JsonKey.INDEX));
-      if (!StringUtils.isBlank(settings)) {
-        createIndexResponse =
-            createIndexBuilder
-                .setSettings(Settings.readSettingsFromStream(StreamInput.wrap(settings.getBytes())))
-                .get();
-      } else {
-        createIndexResponse = createIndexBuilder.get();
-      }
-      if (createIndexResponse != null && createIndexResponse.isAcknowledged()) {
-        response = true;
-        if (!StringUtils.isBlank(mappings)
-            && !StringUtils.isBlank(mappedIndexAndType.get(JsonKey.TYPE))) {
-          PutMappingResponse mappingResponse =
-              client
-                  .admin()
-                  .indices()
-                  .preparePutMapping(mappedIndexAndType.get(JsonKey.INDEX))
-                  .setType(mappedIndexAndType.get(JsonKey.TYPE))
-                  .setSource(mappings)
-                  .get();
-          if (mappingResponse.isAcknowledged()) {
-            response = true;
-          } else {
-            response = false;
-          }
-        } else if (!StringUtils.isBlank(mappedIndexAndType.get(JsonKey.TYPE))) {
-          PutMappingResponse mappingResponse =
-              client
-                  .admin()
-                  .indices()
-                  .preparePutMapping(mappedIndexAndType.get(JsonKey.INDEX))
-                  .setType(mappedIndexAndType.get(JsonKey.TYPE))
-                  .get();
-          if (mappingResponse.isAcknowledged()) {
-            response = true;
-          } else {
-            response = false;
-          }
-        }
-      }
-    } catch (Exception e) {
-      ProjectLogger.log(e.getMessage(), e);
-      response = false;
-    }
-    ProjectLogger.log("Index creation status==" + response, LoggerEnum.INFO.name());
-    return response;
-  }
-
-  /**
-   * This method will update type and mapping under already created index.
-   *
-   * @param indexName String
-   * @param typeName String
-   * @param mapping String
-   * @return boolean
-   */
-  @SuppressWarnings("deprecation")
-  public static boolean addOrUpdateMapping(String indexName, String typeName, String mapping) {
-    Map<String, String> mappedIndexAndType = getMappedIndexAndType(indexName, typeName);
-    try {
-      PutMappingResponse response =
-          ConnectionManager.getClient()
-              .admin()
-              .indices()
-              .preparePutMapping(mappedIndexAndType.get(JsonKey.INDEX))
-              .setType(mappedIndexAndType.get(JsonKey.TYPE))
-              .setSource(mapping)
-              .get();
-      if (response.isAcknowledged()) {
-        return true;
-      }
-    } catch (Exception e) {
-      ProjectLogger.log(e.getMessage(), e);
-    }
-    return false;
-  }
-
-  /**
    * Method to perform the elastic search on the basis of SearchDTO . SearchDTO contains the search
    * criteria like fields, facets, sort by , filters etc. here user can pass single type to search
    * or multiple type or null
@@ -943,47 +766,6 @@ public class ElasticSearchUtil {
   /** Method to return the sorting order on basis of string param . */
   private static SortOrder getSortOrder(String value) {
     return value.equalsIgnoreCase(ASC_ORDER) ? SortOrder.ASC : SortOrder.DESC;
-  }
-
-  /**
-   * Creates types (if not already existing) for given index in Elastic Search.
-   *
-   * @param index Index
-   * @param types Types for given index to verify or create
-   */
-  private static void verifyOrCreateType(String index, String... types) {
-    for (String type : types) {
-      if (!typeMap.containsKey(type)) {
-        TypesExistsRequest typesExistsRequest = new TypesExistsRequest(new String[] {index}, type);
-        try {
-          boolean typeResponse =
-              ConnectionManager.getClient()
-                  .admin()
-                  .indices()
-                  .typesExists(typesExistsRequest)
-                  .get()
-                  .isExists();
-          if (typeResponse) {
-            typeMap.put(type, true);
-          } else {
-            boolean response =
-                addOrUpdateMapping(index, type, ElasticSearchMapping.createMapping());
-            if (response) {
-              typeMap.put(type, true);
-            }
-          }
-        } catch (InterruptedException | ExecutionException e) {
-          ProjectLogger.log(e.getMessage(), e);
-          boolean response = addOrUpdateMapping(index, type, ElasticSearchMapping.createMapping());
-          ProjectLogger.log(
-              "ElasticSearchUtil:verifyOrCreateType: Exception occurred with error message = "
-                  + response);
-          if (response) {
-            typeMap.put(type, true);
-          }
-        }
-      }
-    }
   }
 
   private static MatchQueryBuilder createMatchQuery(String name, Object text, Float boost) {

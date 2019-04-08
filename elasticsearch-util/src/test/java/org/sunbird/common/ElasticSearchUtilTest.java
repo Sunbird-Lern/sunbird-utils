@@ -79,8 +79,6 @@ import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.common.util.ConfigUtil;
 import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
-import org.sunbird.helper.ElasticSearchMapping;
-import org.sunbird.helper.ElasticSearchSettings;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(PowerMockRunner.class)
@@ -122,17 +120,6 @@ public class ElasticSearchUtilTest {
     mockRulesForIndexes();
     mockRulesHttpRequest();
     mockRulesBulkInsert();
-  }
-
-  @Test
-  public void testCreateIndexSuccess() {
-    boolean response =
-        ElasticSearchUtil.createIndex(
-            INDEX_NAME,
-            TYPE_NAME,
-            ElasticSearchMapping.createMapping(),
-            ElasticSearchSettings.createSettingsForIndex());
-    assertTrue(response);
   }
 
   @Test
@@ -417,46 +404,6 @@ public class ElasticSearchUtilTest {
   }
 
   @Test
-  public void testCreateIndexFailureWithEmptyIndexName() {
-    boolean response =
-        ElasticSearchUtil.createIndex(
-            "",
-            TYPE_NAME,
-            ElasticSearchMapping.createMapping(),
-            ElasticSearchSettings.createSettingsForIndex());
-    assertFalse(response);
-  }
-
-  @Test
-  public void testCreateIndexFailureWithEmptyIndexNameAndType() {
-    boolean response =
-        ElasticSearchUtil.createIndex(
-            "",
-            null,
-            ElasticSearchMapping.createMapping(),
-            ElasticSearchSettings.createSettingsForIndex());
-    assertFalse(response);
-  }
-
-  @Test
-  public void testCreateIndexFailureWithEmptyMapping() {
-    mockRulesForIndexes(false);
-    boolean response =
-        ElasticSearchUtil.createIndex(
-            INDEX_NAME, TYPE_NAME, null, ElasticSearchSettings.createSettingsForIndex());
-    assertFalse(response);
-  }
-
-  @Test
-  public void testCreateIndexFailureWithEmptySettings() {
-    mockRulesForIndexes(false);
-    boolean response =
-        ElasticSearchUtil.createIndex(
-            INDEX_NAME, TYPE_NAME, ElasticSearchMapping.createMapping(), null);
-    assertFalse(response);
-  }
-
-  @Test
   public void testSaveDataFailureWithoutIndexName() {
     String responseMap =
         ElasticSearchUtil.createData(
@@ -535,14 +482,6 @@ public class ElasticSearchUtilTest {
       assertTrue(map.size() == 0);
     } catch (Exception e) {
     }
-  }
-
-  @Test
-  public void testAddOrUpdateMappingSuccess() {
-    boolean bool =
-        ElasticSearchUtil.addOrUpdateMapping(
-            INDEX_NAME, TYPE_NAME, ElasticSearchMapping.createMapping());
-    assertTrue(bool);
   }
 
   @Test
