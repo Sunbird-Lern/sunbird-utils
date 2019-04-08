@@ -46,7 +46,7 @@
     },
     "mappings": {
         "_doc": {
-            "dynamic": "false",
+            "dynamic": false,
             "properties": {
                 "all_fields": {
                     "type": "text",
