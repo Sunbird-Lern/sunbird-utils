@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.request.ExecutionContext;
 import org.sunbird.common.request.HeaderParam;
@@ -50,7 +51,7 @@ public final class TelemetryUtil {
 
     Map<String, Object> correlatedObject = new HashMap<>();
     correlatedObject.put(JsonKey.ID, id);
-    correlatedObject.put(JsonKey.TYPE, type);
+    correlatedObject.put(JsonKey.TYPE, StringUtils.capitalize(type));
     correlatedObject.put(JsonKey.RELATION, corelation);
 
     correlationList.add(correlatedObject);

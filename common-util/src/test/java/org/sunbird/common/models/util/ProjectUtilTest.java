@@ -267,19 +267,17 @@ public class ProjectUtilTest extends BaseHttpTest {
   @Test
   public void testEsTypeSuccess() {
     assertEquals("content", ProjectUtil.EsType.content.getTypeName());
-    assertEquals("coursebatch", ProjectUtil.EsType.course.getTypeName());
+    assertEquals("cbatch", ProjectUtil.EsType.course.getTypeName());
     assertEquals("user", ProjectUtil.EsType.user.getTypeName());
     assertEquals("org", ProjectUtil.EsType.organisation.getTypeName());
     assertEquals("usercourses", ProjectUtil.EsType.usercourses.getTypeName());
     assertEquals("usernotes", ProjectUtil.EsType.usernotes.getTypeName());
-    assertEquals("history", ProjectUtil.EsType.history.getTypeName());
     assertEquals("userprofilevisibility", ProjectUtil.EsType.userprofilevisibility.getTypeName());
   }
 
   @Test
   public void testEsIndexSuccess() {
     assertEquals("searchindex", ProjectUtil.EsIndex.sunbird.getIndexName());
-    assertEquals("sunbirddataaudit", ProjectUtil.EsIndex.sunbirdDataAudit.getIndexName());
   }
 
   @Test
@@ -439,5 +437,22 @@ public class ProjectUtilTest extends BaseHttpTest {
     }
     String response = HttpUtil.sendGetRequest(ekStepBaseUrl + "/search/health", headers);
     assertNotNull(response);
+  }
+
+  @Test
+  public void testGetLmsUserIdSuccessWithoutFedUserId() {
+    String userid = ProjectUtil.getLmsUserId("1234567890");
+    assertEquals("1234567890", userid);
+  }
+
+  @Test
+  public void testGetLmsUserIdSuccessWithFedUserId() {
+    String userid =
+        ProjectUtil.getLmsUserId(
+            "f:"
+                + ProjectUtil.getConfigValue(JsonKey.SUNBIRD_KEYCLOAK_USER_FEDERATION_PROVIDER_ID)
+                + ":"
+                + "1234567890");
+    assertEquals("1234567890", userid);
   }
 }
