@@ -74,7 +74,7 @@ public class TelemetryGenerator {
       for (Map<String, Object> m : list) {
         Map<String, Object> map = new HashMap<>();
         map.put(JsonKey.ID, m.get(JsonKey.ID));
-        map.put(JsonKey.TYPE, m.get(JsonKey.TYPE));
+        map.put(JsonKey.TYPE, StringUtils.capitalize((String) m.get(JsonKey.TYPE)));
         targetList.add(map);
       }
     }
@@ -265,7 +265,7 @@ public class TelemetryGenerator {
     if (!StringUtils.isBlank(reqId)) {
       Map<String, Object> map = new HashMap<>();
       map.put(JsonKey.ID, reqId);
-      map.put(JsonKey.TYPE, JsonKey.REQUEST);
+      map.put(JsonKey.TYPE, StringUtils.capitalize(JsonKey.REQUEST));
       eventContext.getCdata().add(map);
     }
 
