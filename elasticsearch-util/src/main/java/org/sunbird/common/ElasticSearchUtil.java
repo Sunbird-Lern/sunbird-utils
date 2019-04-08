@@ -1154,21 +1154,8 @@ public class ElasticSearchUtil {
       String sunbirdIndex, String... sunbirdTypes) {
     List<Map<String, String>> mappedIndexesAndTypes = new ArrayList<>();
     for (String sunbirdType : sunbirdTypes) {
-      String mappedIndexAndType = "mapping." + sunbirdIndex + "." + sunbirdType;
-      if (config.hasPath(mappedIndexAndType)) {
-        mappedIndexesAndTypes.add((Map<String, String>) config.getAnyRef(mappedIndexAndType));
-      } else {
-        ProjectCommonException.throwServerErrorException(ResponseCode.SERVER_ERROR);
-      }
+    	mappedIndexesAndTypes.add(getMappedIndexAndType(sunbirdIndex, sunbirdType));
     }
-    ProjectLogger.log(
-        "Elasticsearch input index "
-            + sunbirdIndex
-            + " types "
-            + sunbirdTypes
-            + " output "
-            + mappedIndexesAndTypes,
-        LoggerEnum.DEBUG);
     return mappedIndexesAndTypes;
   }
 }
