@@ -62,7 +62,7 @@ public class AuditUtil {
     tablePrimaryKeyMap.put("page_section", Arrays.asList("id"));
   }
 
-  public static Map<String, Object> getAuditForTransanctional(Map<String, Object> triggerMap) {
+  public static Map<String, Object> getAuditEvent(Map<String, Object> triggerMap) {
     Map<String, Object> resultMap = getIdentifier(triggerMap);
     resultMap.put("ets", System.currentTimeMillis());
     resultMap.put("table", (String) triggerMap.remove("table"));
