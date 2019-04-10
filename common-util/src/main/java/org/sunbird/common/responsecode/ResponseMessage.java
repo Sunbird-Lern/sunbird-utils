@@ -429,7 +429,7 @@ public interface ResponseMessage {
         "CSV file contains more than one entry for {0}. Correct the duplicate entry and try again.";
     String ERROR_INVALID_TEXTBOOK_UNIT_ID = "Invalid textbook unit id {0} for texbook.";
     String INVALID_REQUEST_TIMEOUT = "Invalid request timeout value {0}.";
-    String USER_PASSWORD_UPDATE_FAIL = "User is created but password couldn't be updated.";
+    String ERROR_USER_UPDATE_PASSWORD = "User is created but password couldn't be updated.";
   }
 
   interface Key {
