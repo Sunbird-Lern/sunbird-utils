@@ -41,7 +41,7 @@ public class Trigger implements ITrigger {
 
   @Override
   public Collection<Mutation> augment(Partition update) {
-    Map<String, Object> resultMap = processData(update);
+    Map<String, Object> resultMap = processEvent(update);
     Map<String, Object> auditEventMap = AuditUtil.getAuditEvent(resultMap);
     BufferedWriter out = null;
     try {
@@ -49,14 +49,14 @@ public class Trigger implements ITrigger {
       out.write(auditEventMap + "\n");
     } catch (IOException e) {
       System.out.println(
-          "Trigger:augment: Exception occurred with error message = " + e.getMessage());
+          "Trigger:augment: IOException occurred with error message = " + e.getMessage());
     } finally {
       if (out != null) {
         try {
           out.close();
         } catch (IOException e) {
           System.out.println(
-              "Trigger:augment: Exception occured while closing the audit file " + e.getMessage());
+              "Trigger:augment: Exception occured with error message = " + e.getMessage());
         }
       }
     }
@@ -67,17 +67,12 @@ public class Trigger implements ITrigger {
     List<ColumnDefinition> partitionKeyColumns = metadata.partitionKeyColumns();
     Map<String, Object> partitionKeyValueMap = new HashMap<>();
 
-    partitionKeyValueMap.put(TABLE, metadata.cfName);
-    partitionKeyValueMap.put(KEYSPACE, metadata.ksName);
-
-    Object pkValue = null;
-
     for (int index = 0; index < partitionKeyColumns.size(); index++) {
       String pkColumnName = partitionKeyColumns.get(index).name.toString();
       AbstractType<?> pkColumnType = partitionKeyColumns.get(index).type;
 
       ByteBuffer valueBuffer = CompositeType.extractComponent(keyValueBuffer, index);
-      pkValue = pkColumnType.compose(valueBuffer);
+      Object pkValue = pkColumnType.compose(valueBuffer);
 
       if (pkValue != null) {
         partitionKeyValueMap.put(pkColumnName, pkValue);
@@ -106,7 +101,7 @@ public class Trigger implements ITrigger {
     return clusterKeyValueMap;
   }
 
-  public Map<String, Object> processData(Partition partition) {
+  public Map<String, Object> processEvent(Partition partition) {
     String updateType = null;
 
     try {
@@ -122,9 +117,13 @@ public class Trigger implements ITrigger {
       // Is delete operation?
       DeletionTime levelDeletion = partition.partitionLevelDeletion();
       if (!levelDeletion.isLive()) {
-        partitionKeyData.put(OPERATION_TYPE, DELETE_ROW);
-        partitionKeyData.putAll(clusterKeyData);
-        return partitionKeyData;
+        Map<String, Object> eventMap = new HashMap<>();
+        eventMap.put(OPERATION_TYPE, DELETE_ROW);
+        eventMap.put(TABLE, partition.metadata().cfName);
+        eventMap.put(KEYSPACE, partition.metadata().ksName);
+        eventMap.putAll(partitionKeyData);
+        eventMap.putAll(clusterKeyData);
+        return eventMap;
       }
 
       ClusteringPrefix clustering = next.clustering();
@@ -135,33 +134,34 @@ public class Trigger implements ITrigger {
 
         Iterable<Cell> cells = row.cells();
 
-        Map<String, Object> dataMap = new HashMap<>();
+        Map<String, Object> eventMap = new HashMap<>();
         Map<Object, String> updateColumnCollectionInfo = new HashMap<Object, String>();
         Map<Object, Object> deletedDataMap = new HashMap<>();
         for (Cell cell : cells) {
           AbstractType<?> columnType = getColumnType(cell);
           if (columnType instanceof MapType<?, ?>) {
-            processMapDataType(dataMap, updateColumnCollectionInfo, cell);
+            processMapDataType(eventMap, updateColumnCollectionInfo, cell);
           } else if (columnType instanceof SetType<?>) {
-            processSetDataType(dataMap, deletedDataMap, cell);
+            processSetDataType(eventMap, deletedDataMap, cell);
           } else if (columnType instanceof ListType<?>) {
-            processListDataType(dataMap, updateColumnCollectionInfo, cell);
+            processListDataType(eventMap, updateColumnCollectionInfo, cell);
           } else {
             String columnName = getColumnName(cell);
             if (cell.isLive(0)) {
-              dataMap.put(columnName, getCellValue(cell));
+              eventMap.put(columnName, getCellValue(cell));
             } else {
-              dataMap.put(columnName, null);
+              eventMap.put(columnName, null);
             }
           }
         }
-        dataMap.put(OPERATION_TYPE, updateType);
-        dataMap.putAll(partitionKeyData);
-        dataMap.putAll(clusterKeyData);
-        return dataMap;
+        eventMap.put(OPERATION_TYPE, updateType);
+        eventMap.putAll(partitionKeyData);
+        eventMap.putAll(clusterKeyData);
+        return eventMap;
       }
     } catch (RuntimeException e) {
-
+      System.out.println(
+          "Trigger:processEvent: RuntimeException occurred with error message = " + e.getMessage());
     }
 
     return null;
