@@ -55,6 +55,7 @@ public class AuditUtil {
     tablePrimaryKeyMap.put("action_group", Arrays.asList("id"));
     tablePrimaryKeyMap.put("org_type", Arrays.asList("id"));
     tablePrimaryKeyMap.put("course_batch", Arrays.asList("id"));
+    tablePrimaryKeyMap.put("user", Arrays.asList("id"));
     tablePrimaryKeyMap.put("user_education", Arrays.asList("id"));
     tablePrimaryKeyMap.put("content_badge_association", Arrays.asList("id"));
     tablePrimaryKeyMap.put("user_badge", Arrays.asList("id"));

@@ -1,5 +1,6 @@
 package org.sunbird.cassandra;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -38,6 +39,7 @@ public class Trigger implements ITrigger {
   private static final String UPDATE_ROW = "UPDATE_ROW";
   private static final String DELETE_ROW = "DELETE_ROW";
   private static final String FILE_TO_WRITE = "/var/log/cassandra/triggerAuditLog.log";
+  private static ObjectMapper mapper = new ObjectMapper();
 
   @Override
   public Collection<Mutation> augment(Partition update) {
@@ -46,7 +48,7 @@ public class Trigger implements ITrigger {
     BufferedWriter out = null;
     try {
       out = new BufferedWriter(new FileWriter(FILE_TO_WRITE, true));
-      out.write(auditEventMap + "\n");
+      out.write(mapper.writeValueAsString(auditEventMap) + "\n");
     } catch (IOException e) {
       System.out.println(
           "Trigger:augment: IOException occurred with error message = " + e.getMessage());
@@ -67,18 +69,30 @@ public class Trigger implements ITrigger {
     List<ColumnDefinition> partitionKeyColumns = metadata.partitionKeyColumns();
     Map<String, Object> partitionKeyValueMap = new HashMap<>();
 
-    for (int index = 0; index < partitionKeyColumns.size(); index++) {
-      String pkColumnName = partitionKeyColumns.get(index).name.toString();
-      AbstractType<?> pkColumnType = partitionKeyColumns.get(index).type;
+    // This is only for handling partition key of size = 1
+    if (partitionKeyColumns.size() == 1) {
 
-      ByteBuffer valueBuffer = CompositeType.extractComponent(keyValueBuffer, index);
-      Object pkValue = pkColumnType.compose(valueBuffer);
+      AbstractType<?> pkColumnType = partitionKeyColumns.get(0).type;
+      Object pkValue = pkColumnType.compose(keyValueBuffer);
 
       if (pkValue != null) {
-        partitionKeyValueMap.put(pkColumnName, pkValue);
+        partitionKeyValueMap.put(partitionKeyColumns.get(0).name.toString(), pkValue);
+      }
+    } else {
+      // This is handling composite partition key. Cassandra have CompositeType class for handling
+      // this
+      for (int index = 0; index < partitionKeyColumns.size(); index++) {
+        String pkColumnName = partitionKeyColumns.get(index).name.toString();
+        AbstractType<?> pkColumnType = partitionKeyColumns.get(index).type;
+
+        ByteBuffer valueBuffer = CompositeType.extractComponent(keyValueBuffer, index);
+        Object pkValue = pkColumnType.compose(valueBuffer);
+
+        if (pkValue != null) {
+          partitionKeyValueMap.put(pkColumnName, pkValue);
+        }
       }
     }
-
     return partitionKeyValueMap;
   }
 
@@ -102,8 +116,6 @@ public class Trigger implements ITrigger {
   }
 
   public Map<String, Object> processEvent(Partition partition) {
-    String updateType = null;
-
     try {
       DecoratedKey partitionKey = partition.partitionKey();
 
@@ -111,8 +123,6 @@ public class Trigger implements ITrigger {
           getPartitionKeyData(partitionKey.getKey(), partition.metadata());
 
       UnfilteredRowIterator unfilteredIterator = partition.unfilteredIterator();
-      Unfiltered next = unfilteredIterator.next();
-      Map<String, Object> clusterKeyData = getClusterKeyData(partition, next);
 
       // Is delete operation?
       DeletionTime levelDeletion = partition.partitionLevelDeletion();
@@ -122,20 +132,19 @@ public class Trigger implements ITrigger {
         eventMap.put(TABLE, partition.metadata().cfName);
         eventMap.put(KEYSPACE, partition.metadata().ksName);
         eventMap.putAll(partitionKeyData);
-        eventMap.putAll(clusterKeyData);
         return eventMap;
       }
-
-      ClusteringPrefix clustering = next.clustering();
-      updateType = UPDATE_ROW;
-
       while (unfilteredIterator.hasNext()) {
+        Unfiltered next = unfilteredIterator.next();
+        Map<String, Object> clusterKeyData = getClusterKeyData(partition, next);
+
+        ClusteringPrefix clustering = next.clustering();
         Row row = partition.getRow((Clustering) clustering);
 
         Iterable<Cell> cells = row.cells();
 
         Map<String, Object> eventMap = new HashMap<>();
-        Map<Object, String> updateColumnCollectionInfo = new HashMap<Object, String>();
+        Map<Object, String> updateColumnCollectionInfo = new HashMap<>();
         Map<Object, Object> deletedDataMap = new HashMap<>();
         for (Cell cell : cells) {
           AbstractType<?> columnType = getColumnType(cell);
@@ -154,7 +163,9 @@ public class Trigger implements ITrigger {
             }
           }
         }
-        eventMap.put(OPERATION_TYPE, updateType);
+        eventMap.put(OPERATION_TYPE, UPDATE_ROW);
+        eventMap.put(TABLE, partition.metadata().cfName);
+        eventMap.put(KEYSPACE, partition.metadata().ksName);
         eventMap.putAll(partitionKeyData);
         eventMap.putAll(clusterKeyData);
         return eventMap;
