@@ -31,7 +31,7 @@ public class CourseBatch implements Serializable {
   private String hashTagId;
   private List<String> mentors;
   private String name;
-  private Map<String, Boolean> participant;
+  private List<String> participant;
   private String startDate;
   private Integer status;
   private String updatedDate;
@@ -172,11 +172,11 @@ public class CourseBatch implements Serializable {
     this.name = name;
   }
 
-  public Map<String, Boolean> getParticipant() {
+  public List<String> getParticipant() {
     return participant;
   }
 
-  public void setParticipant(Map<String, Boolean> participant) {
+  public void setParticipant(List<String> participant) {
     this.participant = participant;
   }
 
