@@ -138,7 +138,7 @@ public class KeyCloakServiceImpl implements SSOManager {
   }
 
   @Override
-  public void updatePassword(String userId, String password) {
+  public boolean updatePassword(String userId, String password) {
     try {
       String fedUserId = getFederatedUserId(userId);
       UserResource ur = keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(fedUserId);
@@ -146,10 +146,12 @@ public class KeyCloakServiceImpl implements SSOManager {
       cr.setType(CredentialRepresentation.PASSWORD);
       cr.setValue(password);
       ur.resetPassword(cr);
+      return true;
     } catch (Exception e) {
-      ProjectLogger.log("KeyCloakServiceImpl:updatePassword: Exception occurred with error message = ", e);
-      ProjectUtil.createAndThrowServerError();
+      ProjectLogger.log(
+          "KeyCloakServiceImpl:updatePassword: Exception occurred with error message = ", e);
     }
+    return false;
   }
 
   @Override
