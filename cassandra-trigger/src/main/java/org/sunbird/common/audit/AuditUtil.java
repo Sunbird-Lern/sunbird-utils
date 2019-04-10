@@ -1,6 +1,7 @@
 package org.sunbird.common.audit;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,19 +67,21 @@ public class AuditUtil {
   public static Map<String, Object> getAuditEvent(Map<String, Object> triggerMap) {
     Map<String, Object> resultMap = getIdentifier(triggerMap);
     resultMap.put("ets", System.currentTimeMillis());
-    resultMap.put("table", (String) triggerMap.remove("table"));
-    resultMap.put("keyspace", (String) triggerMap.remove("keyspace"));
-    resultMap.put("operationType", (String) triggerMap.remove("operationType"));
+    String operationType = (String) triggerMap.remove("operationType");
+    String objectType = (String) triggerMap.remove("objectType");
+    getFormattedEvent(triggerMap, resultMap);
+
+    resultMap.put("operationType", operationType);
     resultMap.put("eventType", "transactional");
-    Map<String, Object> eventMap = new HashMap<>();
-    eventMap.put("event", triggerMap);
-    resultMap.put("properties", eventMap);
+    resultMap.put("userId", "ANONYMOUS");
+    resultMap.put("createdOn", new java.sql.Timestamp(Calendar.getInstance().getTime().getTime()));
+    resultMap.put("objectType", objectType);
     return resultMap;
   }
 
   private static Map<String, Object> getIdentifier(Map<String, Object> triggerMap) {
     Map<String, Object> resultMap = new HashMap<>();
-    String tableName = (String) triggerMap.get("table");
+    String tableName = (String) triggerMap.get("objectType");
     if (tablePrimaryKeyMap.get(tableName) != null) {
       List<String> primaryKeyList = tablePrimaryKeyMap.get(tableName);
       if (primaryKeyList.size() == 1) {
@@ -95,5 +98,18 @@ public class AuditUtil {
       }
     }
     return resultMap;
+  }
+
+  private static void getFormattedEvent(
+      Map<String, Object> triggerMap, Map<String, Object> resultMap) {
+    Map<String, Object> newMap = new HashMap<>();
+    for (Map.Entry<String, Object> set : triggerMap.entrySet()) {
+      Map<String, Object> newValueMap = new HashMap<>();
+      newValueMap.put("nv", set.getValue());
+      newMap.put(set.getKey(), newValueMap);
+    }
+    Map<String, Object> eventMap = new HashMap<>();
+    eventMap.put("properties", newMap);
+    resultMap.put("event", eventMap);
   }
 }
