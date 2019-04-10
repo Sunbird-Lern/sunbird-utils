@@ -28,175 +28,7 @@
             "search_analyzer": "cs_search_analyzer",
             "fielddata": true
         },
-        "countDecrementDate": {
-            "type": "text",
-            "fields": {
-                "raw": {
-                    "type": "text",
-                    "analyzer": "keylower",
-                    "fielddata": true
-                }
-            },
-            "copy_to": [
-                "all_fields"
-            ],
-            "analyzer": "cs_index_analyzer",
-            "search_analyzer": "cs_search_analyzer",
-            "fielddata": true
-        },
-        "countDecrementStatus": {
-            "type": "boolean",
-            "fields": {
-                "raw": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "countIncrementDate": {
-            "type": "text",
-            "fields": {
-                "raw": {
-                    "type": "text",
-                    "analyzer": "keylower",
-                    "fielddata": true
-                }
-            },
-            "copy_to": [
-                "all_fields"
-            ],
-            "analyzer": "cs_index_analyzer",
-            "search_analyzer": "cs_search_analyzer",
-            "fielddata": true
-        },
-        "countIncrementStatus": {
-            "type": "boolean",
-            "fields": {
-                "raw": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "courseCreator": {
-            "type": "text",
-            "fields": {
-                "raw": {
-                    "type": "text",
-                    "analyzer": "keylower",
-                    "fielddata": true
-                }
-            },
-            "copy_to": [
-                "all_fields"
-            ],
-            "analyzer": "cs_index_analyzer",
-            "search_analyzer": "cs_search_analyzer",
-            "fielddata": true
-        },
-        "courseId": {
-            "type": "text",
-            "fields": {
-                "raw": {
-                    "type": "text",
-                    "analyzer": "keylower",
-                    "fielddata": true
-                }
-            },
-            "copy_to": [
-                "all_fields"
-            ],
-            "analyzer": "cs_index_analyzer",
-            "search_analyzer": "cs_search_analyzer",
-            "fielddata": true
-        },
-        "createdBy": {
-            "type": "text",
-            "fields": {
-                "raw": {
-                    "type": "text",
-                    "analyzer": "keylower",
-                    "fielddata": true
-                }
-            },
-            "copy_to": [
-                "all_fields"
-            ],
-            "analyzer": "cs_index_analyzer",
-            "search_analyzer": "cs_search_analyzer",
-            "fielddata": true
-        },
-        "createdDate": {
-            "type": "text",
-            "fields": {
-                "raw": {
-                    "type": "text",
-                    "analyzer": "keylower",
-                    "fielddata": true
-                }
-            },
-            "copy_to": [
-                "all_fields"
-            ],
-            "analyzer": "cs_index_analyzer",
-            "search_analyzer": "cs_search_analyzer",
-            "fielddata": true
-        },
-        "createdFor": {
-            "type": "text",
-            "fields": {
-                "raw": {
-                    "type": "text",
-                    "analyzer": "keylower",
-                    "fielddata": true
-                }
-            },
-            "copy_to": [
-                "all_fields"
-            ],
-            "analyzer": "cs_index_analyzer",
-            "search_analyzer": "cs_search_analyzer",
-            "fielddata": true
-        },
-        "description": {
-            "type": "text",
-            "fields": {
-                "raw": {
-                    "type": "text",
-                    "analyzer": "keylower",
-                    "fielddata": true
-                }
-            },
-            "copy_to": [
-                "all_fields"
-            ],
-            "analyzer": "cs_index_analyzer",
-            "search_analyzer": "cs_search_analyzer",
-            "fielddata": true
-        },
-        "endDate": {
-            "type": "date",
-            "fields": {
-                "raw": {
-                    "type": "date"
-                }
-            }
-        },
-        "enrollmentType": {
-            "type": "text",
-            "fields": {
-                "raw": {
-                    "type": "text",
-                    "analyzer": "keylower",
-                    "fielddata": true
-                }
-            },
-            "copy_to": [
-                "all_fields"
-            ],
-            "analyzer": "cs_index_analyzer",
-            "search_analyzer": "cs_search_analyzer",
-            "fielddata": true
-        },
-        "hashTagId": {
+        "userId": {
             "type": "text",
             "fields": {
                 "raw": {
@@ -228,7 +60,7 @@
             "search_analyzer": "cs_search_analyzer",
             "fielddata": true
         },
-        "identifier": {
+        "courseId": {
             "type": "text",
             "fields": {
                 "raw": {
@@ -244,7 +76,64 @@
             "search_analyzer": "cs_search_analyzer",
             "fielddata": true
         },
-        "mentors": {
+        "lastUpdatedOn": {
+            "type": "text",
+            "fields": {
+                "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                }
+            }
+        },
+        "completedPercent": {
+            "type": "long",
+            "fields": {
+                "raw": {
+                    "type": "long"
+                }
+            }
+        },
+        "districtName": {
+            "type": "text",
+            "fields": {
+                "raw": {
+                    "type": "text",
+                    "analyzer": "keylower",
+                    "fielddata": true
+                }
+            },
+            "copy_to": [
+                "all_fields"
+            ],
+            "analyzer": "cs_index_analyzer",
+            "search_analyzer": "cs_search_analyzer",
+            "fielddata": true
+        },
+        "enrolledOn": {
+            "type": "date",
+            "fields": {
+                "raw": {
+                    "type": "date"
+                }
+            }
+        },
+        "maskedEmail": {
+            "type": "text",
+            "fields": {
+                "raw": {
+                    "type": "text",
+                    "analyzer": "keylower",
+                    "fielddata": true
+                }
+            },
+            "copy_to": [
+                "all_fields"
+            ],
+            "analyzer": "cs_index_analyzer",
+            "search_analyzer": "cs_search_analyzer",
+            "fielddata": true
+        },
+        "maskedPhone": {
             "type": "text",
             "fields": {
                 "raw": {
@@ -263,36 +152,13 @@
         "name": {
             "type": "text",
             "fields": {
-                "raw": {
-                    "type": "text",
-                    "analyzer": "keylower",
-                    "fielddata": true
-                }
-            },
-            "copy_to": [
-                "all_fields"
-            ],
-            "analyzer": "cs_index_analyzer",
-            "search_analyzer": "cs_search_analyzer",
-            "fielddata": true
-        },
-        "startDate": {
-            "type": "date",
-            "fields": {
-                "raw": {
-                    "type": "date"
+                "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
                 }
             }
         },
-        "status": {
-            "type": "long",
-            "fields": {
-                "raw": {
-                    "type": "long"
-                }
-            }
-        },
-        "updatedDate": {
+        "rootOrgName": {
             "type": "text",
             "fields": {
                 "raw": {
@@ -308,21 +174,21 @@
             "search_analyzer": "cs_search_analyzer",
             "fielddata": true
         },
-        "participantCount": {
-            "type": "long",
+        "subOrgName": {
+            "type": "text",
             "fields": {
                 "raw": {
-                    "type": "long"
+                    "type": "text",
+                    "analyzer": "keylower",
+                    "fielddata": true
                 }
-            }
-        },
-        "completedCount": {
-            "type": "long",
-            "fields": {
-                "raw": {
-                    "type": "long"
-                }
-            }
+            },
+            "copy_to": [
+                "all_fields"
+            ],
+            "analyzer": "cs_index_analyzer",
+            "search_analyzer": "cs_search_analyzer",
+            "fielddata": true
         }
     }
 }
