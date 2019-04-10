@@ -889,6 +889,7 @@ public final class JsonKey {
   public static final String DEVICE_ID = "did";
   public static final String SUNBIRD_GZIP_FILTER_ENABLED = "sunbird_gzip_filter_enabled";
   public static final String COMPLETED_PERCENT = "completedPercent";
+  public static final String PARTICIPANT_COUNT = "participantCount";
 
   private JsonKey() {}
 }
