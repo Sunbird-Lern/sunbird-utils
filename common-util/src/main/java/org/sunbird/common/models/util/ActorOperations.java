@@ -114,8 +114,6 @@ public enum ActorOperations {
   UPDATE_USER_NOTES_ES("updateUserNotesToElastic"),
   USER_CURRENT_LOGIN("userCurrentLogin"),
   GET_MEDIA_TYPES("getMediaTypes"),
-  SEARCH_AUDIT_LOG("searchAuditLog"),
-  PROCESS_AUDIT_LOG("processAuditLog"),
   ADD_SKILL("addSkill"),
   GET_SKILL("getSkill"),
   UPDATE_SKILL("updateSkill"),

@@ -887,6 +887,6 @@ public final class JsonKey {
   public static final String SUNBIRD_KEYCLOAK_USER_FEDERATION_PROVIDER_ID =
       "sunbird_keycloak_user_federation_provider_id";
   public static final String DEVICE_ID = "did";
-
+  public static final String SUNBIRD_GZIP_FILTER_ENABLED = "sunbird_gzip_filter_enabled";
   private JsonKey() {}
 }

@@ -42,6 +42,7 @@ public class ProjectUtil {
   /** format the date in YYYY-MM-DD hh:mm:ss:SSZ */
   private static AtomicInteger atomicInteger = new AtomicInteger();
 
+  public static Integer DEFAULT_BATCH_SIZE = 10;
   public static final long BACKGROUND_ACTOR_WAIT_TIME = 30;
   public static final String ELASTIC_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
   public static final String YEAR_MONTH_DATE_FORMAT = "yyyy-MM-dd";
@@ -344,7 +345,6 @@ public class ProjectUtil {
    */
   public enum EsIndex {
     sunbird("searchindex"),
-    sunbirdDataAudit("sunbirddataaudit"),
     sunbirdPlugin("sunbirdplugin");
     private String indexName;
 
@@ -370,7 +370,6 @@ public class ProjectUtil {
     organisation("org"),
     usercourses("usercourses"),
     usernotes("usernotes"),
-    history("history"),
     userprofilevisibility("userprofilevisibility"),
     telemetry("telemetry"),
     location("location"),

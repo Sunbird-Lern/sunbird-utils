@@ -9,17 +9,12 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.actor.core.BaseRouter;
-import org.sunbird.actor.service.SunbirdMWService;
 import org.sunbird.common.exception.ProjectCommonException;
-import org.sunbird.common.models.response.Response;
-import org.sunbird.common.models.util.ActorOperations;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
-import org.sunbird.learner.util.AuditLogActions;
-import org.sunbird.learner.util.AuditOperation;
 import scala.concurrent.ExecutionContext;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
@@ -119,20 +114,6 @@ public class RequestRouter extends BaseRouter {
               }
             } else {
               parent.tell(result, self());
-              // Audit log method call
-              if (result instanceof Response
-                  && AuditLogActions.auditLogUrlMap.containsKey(message.getOperation())) {
-                AuditOperation auditOperation =
-                    (AuditOperation) AuditLogActions.auditLogUrlMap.get(message.getOperation());
-                Map<String, Object> map = new HashMap<>();
-                map.put(JsonKey.OPERATION, auditOperation);
-                map.put(JsonKey.REQUEST, message);
-                map.put(JsonKey.RESPONSE, result);
-                Request request = new Request();
-                request.setOperation(ActorOperations.PROCESS_AUDIT_LOG.getValue());
-                request.setRequest(map);
-                SunbirdMWService.tellToBGRouter(request, self());
-              }
             }
           }
         },
