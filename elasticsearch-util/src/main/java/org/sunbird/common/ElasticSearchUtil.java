@@ -1154,7 +1154,7 @@ public class ElasticSearchUtil {
       String sunbirdIndex, String... sunbirdTypes) {
     List<Map<String, String>> mappedIndexesAndTypes = new ArrayList<>();
     for (String sunbirdType : sunbirdTypes) {
-    	mappedIndexesAndTypes.add(getMappedIndexAndType(sunbirdIndex, sunbirdType));
+      mappedIndexesAndTypes.add(getMappedIndexAndType(sunbirdIndex, sunbirdType));
     }
     return mappedIndexesAndTypes;
   }
