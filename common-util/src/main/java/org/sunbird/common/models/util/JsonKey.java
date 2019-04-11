@@ -890,6 +890,7 @@ public final class JsonKey {
   public static final String SUNBIRD_GZIP_FILTER_ENABLED = "sunbird_gzip_filter_enabled";
   public static final String BOARD = "board";
   public static final String MEDIUM = "medium";
+  public static final String SUNBIRD_GZIP_ENABLE = "sunbird_gzip_enable";
 
   private JsonKey() {}
 }
