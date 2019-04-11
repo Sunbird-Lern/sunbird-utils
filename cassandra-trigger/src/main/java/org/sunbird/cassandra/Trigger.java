@@ -41,7 +41,7 @@ public class Trigger implements ITrigger {
   private static ObjectMapper mapper = new ObjectMapper();
 
   static {
-    String filePath = System.getProperty("sunbird.cassandra.trigger.log");
+    String filePath = System.getProperty("sunbird_cassandra_audit_file_path");
     if (filePath == null) {
       filePath = "/var/log/cassandra/triggerAuditLog.log";
     }
