@@ -783,6 +783,8 @@ public enum ResponseCode {
       ResponseMessage.Message.ERROR_INVALID_TEXTBOOK_UNIT_ID),
   invalidRequestTimeout(
       ResponseMessage.Key.INVALID_REQUEST_TIMEOUT, ResponseMessage.Message.INVALID_REQUEST_TIMEOUT),
+  errorBGMSMismatch(
+      ResponseMessage.Key.BGMS_MISMATCH_ERROR, ResponseMessage.Message.BGMS_MISMATCH_ERROR),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
