@@ -412,9 +412,9 @@ public class TextBookTocUploader {
   private void updateBGMSData(Map<String, Object> row, Map<String, Object> contentHierarchy) {
     Map<String, Object> outputMapping =
         getObjectFrom(getConfigValue(JsonKey.TEXTBOOK_TOC_OUTPUT_MAPPING), Map.class);
-    Map<String, Object> frameCategories =
+    Map<String, Object> frameworkCategories =
         (Map<String, Object>) outputMapping.get("frameworkCategories");
-    for (Entry<String, Object> entry : frameCategories.entrySet()) {
+    for (Entry<String, Object> entry : frameworkCategories.entrySet()) {
       String key = entry.getKey();
       if (null == contentHierarchy.get(key)) {
         row.put(key, "");
