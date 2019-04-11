@@ -267,18 +267,20 @@ public class CassandraOperationImpl implements CassandraOperation {
         selectBuilder = QueryBuilder.select().all();
       }
       Select selectQuery = selectBuilder.from(keyspaceName, tableName);
-      Where selectWhere = selectQuery.where();
-      for (Entry<String, Object> entry : propertyMap.entrySet()) {
-        if (entry.getValue() instanceof List) {
-          List<Object> list = (List) entry.getValue();
-          if (null != list) {
-            Object[] propertyValues = list.toArray(new Object[list.size()]);
-            Clause clause = QueryBuilder.in(entry.getKey(), propertyValues);
+      if (MapUtils.isNotEmpty(propertyMap)) {
+        Where selectWhere = selectQuery.where();
+        for (Entry<String, Object> entry : propertyMap.entrySet()) {
+          if (entry.getValue() instanceof List) {
+            List<Object> list = (List) entry.getValue();
+            if (null != list) {
+              Object[] propertyValues = list.toArray(new Object[list.size()]);
+              Clause clause = QueryBuilder.in(entry.getKey(), propertyValues);
+              selectWhere.and(clause);
+            }
+          } else {
+            Clause clause = QueryBuilder.eq(entry.getKey(), entry.getValue());
             selectWhere.and(clause);
           }
-        } else {
-          Clause clause = QueryBuilder.eq(entry.getKey(), entry.getValue());
-          selectWhere.and(clause);
         }
       }
       ResultSet results =
@@ -871,13 +873,10 @@ public class CassandraOperationImpl implements CassandraOperation {
       List<Integer> ttls) {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
-        "CassandraOperationImpl:batchInsertWithTTL: call started at "
-            + startTime,
-        LoggerEnum.INFO);
+        "CassandraOperationImpl:batchInsertWithTTL: call started at " + startTime, LoggerEnum.INFO);
     if (CollectionUtils.isEmpty(records) || CollectionUtils.isEmpty(ttls)) {
       ProjectLogger.log(
-          "CassandraOperationImpl:batchInsertWithTTL: records or ttls is empty",
-          LoggerEnum.ERROR);
+          "CassandraOperationImpl:batchInsertWithTTL: records or ttls is empty", LoggerEnum.ERROR);
       ProjectCommonException.throwServerErrorException(ResponseCode.SERVER_ERROR);
     }
     if (ttls.size() != records.size()) {
@@ -914,7 +913,10 @@ public class CassandraOperationImpl implements CassandraOperation {
         | QueryValidationException
         | NoHostAvailableException
         | IllegalStateException e) {
-      ProjectLogger.log("CassandraOperationImpl:batchInsertWithTTL: Exception occurred with error message = " + e.getMessage(), e);
+      ProjectLogger.log(
+          "CassandraOperationImpl:batchInsertWithTTL: Exception occurred with error message = "
+              + e.getMessage(),
+          e);
       throw new ProjectCommonException(
           ResponseCode.SERVER_ERROR.getErrorCode(),
           ResponseCode.SERVER_ERROR.getErrorMessage(),
@@ -923,5 +925,4 @@ public class CassandraOperationImpl implements CassandraOperation {
     logQueryElapseTime("batchInsertWithTTL", startTime);
     return response;
   }
-
 }
