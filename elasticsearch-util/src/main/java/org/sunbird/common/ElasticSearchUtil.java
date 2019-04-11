@@ -20,11 +20,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
-import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
-import org.elasticsearch.action.admin.indices.exists.types.TypesExistsRequest;
-import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkProcessor;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -41,8 +36,6 @@ import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.io.stream.StreamInput;
-import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.ExistsQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
@@ -76,8 +69,6 @@ import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.common.util.ConfigUtil;
 import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
-import org.sunbird.helper.ElasticSearchMapping;
-import org.sunbird.helper.ElasticSearchSettings;
 
 /**
  * This class will provide all required operation for elastic search.
@@ -105,77 +96,6 @@ public class ElasticSearchUtil {
 
   private ElasticSearchUtil() {}
 
-  static {
-    // disabling this because by default it will create mapping with dynamic type.
-    // verifyAndCreateIndicesAndTypes();
-  }
-
-  /**
-   * This method will read indices and type values from Elastic Search configuration file. It
-   * verifies if configured indices and types exist in Elastic Search. If any index or type does not
-   * exist then it will be created in Elastic Search.
-   *
-   * @return True, if there is no exception. Otherwise, False is returned.
-   */
-  private static boolean verifyAndCreateIndicesAndTypes() {
-    boolean response = false;
-    if (config != null) {
-      try {
-        List<Object> list = (List) config.getAnyRefList("elasticsearch.indices");
-        if (CollectionUtils.isNotEmpty(list)) {
-          for (Object obj : list) {
-            Map<String, Object> map = (Map) obj;
-            verifyOrCreateIndex((String) map.get(JsonKey.NAME));
-            verifyOrCreateType(
-                (String) map.get(JsonKey.NAME),
-                ((List<String>) map.get(JsonKey.ES_TYPES)).toArray(new String[0]));
-            response = true;
-          }
-        } else {
-          ProjectLogger.log(
-              "ElasticSearchUtil:verifyAndCreateIndicesAndTypes: No index is configured",
-              LoggerEnum.INFO.name());
-        }
-      } catch (Exception e) {
-        ProjectLogger.log(
-            "ElasticSearchUtil:verifyAndCreateIndicesAndTypes: Exception occurred with error message = "
-                + e.getMessage(),
-            e);
-      }
-    } else {
-      ProjectLogger.log(
-          "ElasticSearchUtil:verifyAndCreateIndicesAndTypes: Config is null",
-          LoggerEnum.INFO.name());
-    }
-    return response;
-  }
-
-  private static void verifyOrCreateIndex(String indexName) {
-    try {
-      boolean isExist =
-          ConnectionManager.getClient()
-              .admin()
-              .indices()
-              .exists(Requests.indicesExistsRequest(indexName))
-              .get()
-              .isExists();
-      if (isExist) {
-        indexMap.put(indexName, true);
-      } else {
-        boolean created =
-            createIndex(indexName, null, null, ElasticSearchSettings.createSettingsForIndex());
-        if (created) {
-          indexMap.put(indexName, true);
-        }
-      }
-    } catch (Exception e) {
-      ProjectLogger.log(
-          "ElasticSearchUtil:verifyOrCreateIndex: Exception occurred with error message = "
-              + e.getMessage(),
-          e);
-    }
-  }
-
   /**
    * This method will put a new data entry inside Elastic search. identifier value becomes _id
    * inside ES, so every time provide a unique value while saving it.
@@ -198,10 +118,17 @@ public class ElasticSearchUtil {
       ProjectLogger.log("Identifier value is null or empty ,not able to save data.");
       return "ERROR";
     }
+    Map<String, String> mappedIndexAndType = getMappedIndexAndType(index, type);
     try {
       data.put("identifier", identifier);
       IndexResponse response =
-          ConnectionManager.getClient().prepareIndex(index, type, identifier).setSource(data).get();
+          ConnectionManager.getClient()
+              .prepareIndex(
+                  mappedIndexAndType.get(JsonKey.INDEX),
+                  mappedIndexAndType.get(JsonKey.TYPE),
+                  identifier)
+              .setSource(data)
+              .get();
       ProjectLogger.log(
           "Save value==" + response.getId() + " " + response.status(), LoggerEnum.INFO.name());
       ProjectLogger.log(
@@ -244,14 +171,26 @@ public class ElasticSearchUtil {
             + " for Type "
             + type,
         LoggerEnum.PERF_LOG);
+    Map<String, String> mappedIndexAndType = getMappedIndexAndType(index, type);
     GetResponse response = null;
     if (StringUtils.isBlank(index) || StringUtils.isBlank(identifier)) {
       ProjectLogger.log("Invalid request is coming.");
       return new HashMap<>();
     } else if (StringUtils.isBlank(type)) {
-      response = ConnectionManager.getClient().prepareGet().setIndex(index).setId(identifier).get();
+      response =
+          ConnectionManager.getClient()
+              .prepareGet()
+              .setIndex(mappedIndexAndType.get(JsonKey.INDEX))
+              .setId(identifier)
+              .get();
     } else {
-      response = ConnectionManager.getClient().prepareGet(index, type, identifier).get();
+      response =
+          ConnectionManager.getClient()
+              .prepareGet(
+                  mappedIndexAndType.get(JsonKey.INDEX),
+                  mappedIndexAndType.get(JsonKey.TYPE),
+                  identifier)
+              .get();
     }
     if (response == null || null == response.getSource()) {
       return new HashMap<>();
@@ -289,11 +228,15 @@ public class ElasticSearchUtil {
       Entry<String, Object> entry = itr.next();
       sourceBuilder.query(QueryBuilders.commonTermsQuery(entry.getKey(), entry.getValue()));
     }
+    Map<String, String> mappedIndexAndType = getMappedIndexAndType(index, type);
     SearchResponse sr = null;
     try {
       sr =
           ConnectionManager.getClient()
-              .search(new SearchRequest(index).types(type).source(sourceBuilder))
+              .search(
+                  new SearchRequest(mappedIndexAndType.get(JsonKey.INDEX))
+                      .types(mappedIndexAndType.get(JsonKey.TYPE))
+                      .source(sourceBuilder))
               .get();
     } catch (InterruptedException e) {
       ProjectLogger.log("Error, interrupted while connecting to Elasticsearch", e);
@@ -338,9 +281,16 @@ public class ElasticSearchUtil {
         && !StringUtils.isBlank(type)
         && !StringUtils.isBlank(identifier)
         && data != null) {
+      Map<String, String> mappedIndexAndType = getMappedIndexAndType(index, type);
       try {
         UpdateResponse response =
-            ConnectionManager.getClient().prepareUpdate(index, type, identifier).setDoc(data).get();
+            ConnectionManager.getClient()
+                .prepareUpdate(
+                    mappedIndexAndType.get(JsonKey.INDEX),
+                    mappedIndexAndType.get(JsonKey.TYPE),
+                    identifier)
+                .setDoc(data)
+                .get();
         ProjectLogger.log(
             "updated response==" + response.getResult().name(), LoggerEnum.INFO.name());
         if (response.getResult().name().equals("UPDATED")) {
@@ -396,9 +346,20 @@ public class ElasticSearchUtil {
         && !StringUtils.isBlank(identifier)
         && data != null
         && data.size() > 0) {
-      IndexRequest indexRequest = new IndexRequest(index, type, identifier).source(data);
+      Map<String, String> mappedIndexAndType = getMappedIndexAndType(index, type);
+      IndexRequest indexRequest =
+          new IndexRequest(
+                  mappedIndexAndType.get(JsonKey.INDEX),
+                  mappedIndexAndType.get(JsonKey.TYPE),
+                  identifier)
+              .source(data);
       UpdateRequest updateRequest =
-          new UpdateRequest(index, type, identifier).doc(data).upsert(indexRequest);
+          new UpdateRequest(
+                  mappedIndexAndType.get(JsonKey.INDEX),
+                  mappedIndexAndType.get(JsonKey.TYPE),
+                  identifier)
+              .doc(data)
+              .upsert(indexRequest);
       UpdateResponse response = null;
       try {
         response = ConnectionManager.getClient().update(updateRequest).get();
@@ -451,8 +412,15 @@ public class ElasticSearchUtil {
     if (!StringUtils.isBlank(index)
         && !StringUtils.isBlank(type)
         && !StringUtils.isBlank(identifier)) {
+      Map<String, String> mappedIndexAndType = getMappedIndexAndType(index, type);
       try {
-        deleteResponse = ConnectionManager.getClient().prepareDelete(index, type, identifier).get();
+        deleteResponse =
+            ConnectionManager.getClient()
+                .prepareDelete(
+                    mappedIndexAndType.get(JsonKey.INDEX),
+                    mappedIndexAndType.get(JsonKey.TYPE),
+                    identifier)
+                .get();
         ProjectLogger.log(
             "delete info ==" + deleteResponse.getResult().name() + " " + deleteResponse.getId());
       } catch (Exception e) {
@@ -475,111 +443,6 @@ public class ElasticSearchUtil {
   }
 
   /**
-   * This method will create index , type ,setting and mapping.
-   *
-   * @param index String index name
-   * @param type String type name
-   * @param mappings String
-   * @param settings String
-   * @return boolean
-   */
-  @SuppressWarnings("deprecation")
-  public static boolean createIndex(String index, String type, String mappings, String settings) {
-    boolean response = false;
-    if (StringUtils.isBlank(index)) {
-      return response;
-    }
-    CreateIndexResponse createIndexResponse = null;
-    TransportClient client = ConnectionManager.getClient();
-    try {
-      CreateIndexRequestBuilder createIndexBuilder = client.admin().indices().prepareCreate(index);
-      if (!StringUtils.isBlank(settings)) {
-        createIndexResponse =
-            createIndexBuilder
-                .setSettings(Settings.readSettingsFromStream(StreamInput.wrap(settings.getBytes())))
-                .get();
-      } else {
-        createIndexResponse = createIndexBuilder.get();
-      }
-      if (createIndexResponse != null && createIndexResponse.isAcknowledged()) {
-        response = true;
-        if (!StringUtils.isBlank(mappings) && !StringUtils.isBlank(type)) {
-          PutMappingResponse mappingResponse =
-              client
-                  .admin()
-                  .indices()
-                  .preparePutMapping(index)
-                  .setType(type)
-                  .setSource(mappings)
-                  .get();
-          if (mappingResponse.isAcknowledged()) {
-            response = true;
-          } else {
-            response = false;
-          }
-        } else if (!StringUtils.isBlank(type)) {
-          PutMappingResponse mappingResponse =
-              client.admin().indices().preparePutMapping(index).setType(type).get();
-          if (mappingResponse.isAcknowledged()) {
-            response = true;
-          } else {
-            response = false;
-          }
-        }
-      }
-    } catch (Exception e) {
-      ProjectLogger.log(e.getMessage(), e);
-      response = false;
-    }
-    ProjectLogger.log("Index creation status==" + response, LoggerEnum.INFO.name());
-    return response;
-  }
-
-  /**
-   * This method will update type and mapping under already created index.
-   *
-   * @param indexName String
-   * @param typeName String
-   * @param mapping String
-   * @return boolean
-   */
-  @SuppressWarnings("deprecation")
-  public static boolean addOrUpdateMapping(String indexName, String typeName, String mapping) {
-    try {
-      PutMappingResponse response =
-          ConnectionManager.getClient()
-              .admin()
-              .indices()
-              .preparePutMapping(indexName)
-              .setType(typeName)
-              .setSource(mapping)
-              .get();
-      if (response.isAcknowledged()) {
-        return true;
-      }
-    } catch (Exception e) {
-      ProjectLogger.log(e.getMessage(), e);
-    }
-    return false;
-  }
-
-  /**
-   * This method will delete the index
-   *
-   * @param index String name of the index which we need to delete.
-   * @return boolean
-   */
-  public static boolean deleteIndex(String index) {
-    boolean response = false;
-    DeleteIndexResponse deleteResponse =
-        ConnectionManager.getClient().admin().indices().prepareDelete(index).get();
-    if (deleteResponse != null && deleteResponse.isAcknowledged()) {
-      response = true;
-    }
-    return response;
-  }
-
-  /**
    * Method to perform the elastic search on the basis of SearchDTO . SearchDTO contains the search
    * criteria like fields, facets, sort by , filters etc. here user can pass single type to search
    * or multiple type or null
@@ -590,10 +453,22 @@ public class ElasticSearchUtil {
   public static Map<String, Object> complexSearch(
       SearchDTO searchDTO, String index, String... type) {
     long startTime = System.currentTimeMillis();
+    List<Map<String, String>> indicesAndTypesMapping = getMappedIndexesAndTypes(index, type);
+    String[] indices =
+        indicesAndTypesMapping
+            .stream()
+            .map(indexMap -> indexMap.get(JsonKey.INDEX))
+            .toArray(String[]::new);
+    String[] types =
+        indicesAndTypesMapping
+            .stream()
+            .map(indexMap -> indexMap.get(JsonKey.TYPE))
+            .distinct()
+            .toArray(String[]::new);
     ProjectLogger.log(
         "ElasticSearchUtil complexSearch method started at ==" + startTime, LoggerEnum.PERF_LOG);
     SearchRequestBuilder searchRequestBuilder =
-        getSearchBuilder(ConnectionManager.getClient(), index, type);
+        getSearchBuilder(ConnectionManager.getClient(), indices, types);
     // check mode and set constraints
     Map<String, Float> constraintsMap = getConstraints(searchDTO);
 
@@ -675,7 +550,7 @@ public class ElasticSearchUtil {
       addAggregations(searchRequestBuilder, searchDTO.getFacets());
     }
     ProjectLogger.log(
-        "calling search builder======" + searchRequestBuilder.toString(), LoggerEnum.DEBUG.name());
+        "calling search builder======" + searchRequestBuilder.toString(), LoggerEnum.INFO.name());
     SearchResponse response = null;
     try {
       response = searchRequestBuilder.execute().actionGet();
@@ -787,7 +662,7 @@ public class ElasticSearchUtil {
   }
 
   private static SearchRequestBuilder getSearchBuilder(
-      TransportClient client, String index, String... type) {
+      TransportClient client, String[] index, String... type) {
 
     if (type == null || type.length == 0) {
       return client.prepareSearch().setIndices(index);
@@ -893,47 +768,6 @@ public class ElasticSearchUtil {
     return value.equalsIgnoreCase(ASC_ORDER) ? SortOrder.ASC : SortOrder.DESC;
   }
 
-  /**
-   * Creates types (if not already existing) for given index in Elastic Search.
-   *
-   * @param index Index
-   * @param types Types for given index to verify or create
-   */
-  private static void verifyOrCreateType(String index, String... types) {
-    for (String type : types) {
-      if (!typeMap.containsKey(type)) {
-        TypesExistsRequest typesExistsRequest = new TypesExistsRequest(new String[] {index}, type);
-        try {
-          boolean typeResponse =
-              ConnectionManager.getClient()
-                  .admin()
-                  .indices()
-                  .typesExists(typesExistsRequest)
-                  .get()
-                  .isExists();
-          if (typeResponse) {
-            typeMap.put(type, true);
-          } else {
-            boolean response =
-                addOrUpdateMapping(index, type, ElasticSearchMapping.createMapping());
-            if (response) {
-              typeMap.put(type, true);
-            }
-          }
-        } catch (InterruptedException | ExecutionException e) {
-          ProjectLogger.log(e.getMessage(), e);
-          boolean response = addOrUpdateMapping(index, type, ElasticSearchMapping.createMapping());
-          ProjectLogger.log(
-              "ElasticSearchUtil:verifyOrCreateType: Exception occurred with error message = "
-                  + response);
-          if (response) {
-            typeMap.put(type, true);
-          }
-        }
-      }
-    }
-  }
-
   private static MatchQueryBuilder createMatchQuery(String name, Object text, Float boost) {
     if (isNotNull(boost)) {
       return QueryBuilders.matchQuery(name, text).boost(boost);
@@ -1026,6 +860,7 @@ public class ElasticSearchUtil {
         "ElasticSearchUtil bulkInsertData method started at ==" + startTime + " for Type " + type,
         LoggerEnum.PERF_LOG);
     boolean response = true;
+    Map<String, String> mappedIndexAndType = getMappedIndexAndType(index, type);
     try {
       BulkProcessor bulkProcessor =
           BulkProcessor.builder(
@@ -1063,7 +898,11 @@ public class ElasticSearchUtil {
       for (Map<String, Object> map : dataList) {
         map.put(JsonKey.IDENTIFIER, map.get(JsonKey.ID));
         IndexRequest request =
-            new IndexRequest(index, type, (String) map.get(JsonKey.IDENTIFIER)).source(map);
+            new IndexRequest(
+                    mappedIndexAndType.get(JsonKey.INDEX),
+                    mappedIndexAndType.get(JsonKey.TYPE),
+                    (String) map.get(JsonKey.IDENTIFIER))
+                .source(map);
         bulkProcessor.add(request);
       }
       // Flush any remaining requests
@@ -1098,12 +937,15 @@ public class ElasticSearchUtil {
    */
   public static boolean healthCheck() {
     boolean indexResponse = false;
+    Map<String, String> mappedIndexAndType =
+        getMappedIndexAndType(
+            ProjectUtil.EsIndex.sunbird.getIndexName(), ProjectUtil.EsType.user.getTypeName());
     try {
       indexResponse =
           ConnectionManager.getClient()
               .admin()
               .indices()
-              .exists(Requests.indicesExistsRequest(ProjectUtil.EsIndex.sunbird.getIndexName()))
+              .exists(Requests.indicesExistsRequest(mappedIndexAndType.get(JsonKey.INDEX)))
               .get()
               .isExists();
     } catch (Exception e) {
@@ -1137,7 +979,15 @@ public class ElasticSearchUtil {
       ProjectLogger.log("ES URL from Properties file");
       baseUrl = PropertiesCache.getInstance().getProperty(JsonKey.ES_URL);
     }
-    String requestURL = baseUrl + "/" + index + "/" + type + "/" + "_search";
+    Map<String, String> mappedIndexAndType = getMappedIndexAndType(index, type);
+    String requestURL =
+        baseUrl
+            + "/"
+            + mappedIndexAndType.get(JsonKey.INDEX)
+            + "/"
+            + mappedIndexAndType.get(JsonKey.TYPE)
+            + "/"
+            + "_search";
     Map<String, String> headers = new HashMap<>();
     headers.put("Content-Type", "application/json");
     Map<String, Object> responseData = new HashMap<>();
@@ -1278,5 +1128,34 @@ public class ElasticSearchUtil {
                   return (String) obj.get("id");
                 },
                 val -> val));
+  }
+
+  private static Map<String, String> getMappedIndexAndType(
+      String sunbirdIndex, String sunbirdType) {
+    String mappedIndexAndType = "mapping." + sunbirdIndex + "." + sunbirdType;
+    Map<String, String> mappedIndexAndTypeResult = new HashMap<>();
+    if (config.hasPath(mappedIndexAndType)) {
+      mappedIndexAndTypeResult = (Map<String, String>) config.getAnyRef(mappedIndexAndType);
+    } else {
+      ProjectCommonException.throwServerErrorException(ResponseCode.SERVER_ERROR);
+    }
+    ProjectLogger.log(
+        "Elasticsearch input index "
+            + sunbirdIndex
+            + " types "
+            + sunbirdType
+            + " output "
+            + mappedIndexAndTypeResult,
+        LoggerEnum.DEBUG);
+    return mappedIndexAndTypeResult;
+  }
+
+  private static List<Map<String, String>> getMappedIndexesAndTypes(
+      String sunbirdIndex, String... sunbirdTypes) {
+    List<Map<String, String>> mappedIndexesAndTypes = new ArrayList<>();
+    for (String sunbirdType : sunbirdTypes) {
+      mappedIndexesAndTypes.add(getMappedIndexAndType(sunbirdIndex, sunbirdType));
+    }
+    return mappedIndexesAndTypes;
   }
 }
