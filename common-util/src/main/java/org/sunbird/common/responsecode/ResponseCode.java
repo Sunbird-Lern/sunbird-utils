@@ -784,7 +784,7 @@ public enum ResponseCode {
   invalidRequestTimeout(
       ResponseMessage.Key.INVALID_REQUEST_TIMEOUT, ResponseMessage.Message.INVALID_REQUEST_TIMEOUT),
   errorBGMSMismatch(
-      ResponseMessage.Key.BGMS_MISMATCH_ERROR, ResponseMessage.Message.BGMS_MISMATCH_ERROR),
+      ResponseMessage.Key.ERROR_BGMS_MISMATCH, ResponseMessage.Message.ERROR_BGMS_MISMATCH),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
