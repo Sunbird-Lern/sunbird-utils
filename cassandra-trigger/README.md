@@ -23,7 +23,9 @@ CREATE TRIGGER <trigger_name> ON <table_name> USING 'org.sunbird.cassandra.Trigg
 ```
 
 e.g.
+```
 CREATE TRIGGER location_trigger ON sunbird.location USING 'org.sunbird.cassandra.Trigger';
+```
 
 5. After trigger is created on a table, any modification of data in table will result in a corresponding audit event to be written into the audit log file. The default location of audit log file is "/var/log/cassandra/triggerAuditLog.log". 
 
