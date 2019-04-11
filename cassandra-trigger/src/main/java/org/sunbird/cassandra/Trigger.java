@@ -33,11 +33,10 @@ import org.sunbird.common.audit.AuditUtil;
 
 public class Trigger implements ITrigger {
 
-  private static final String KEYSPACE = "keyspace";
-  private static final String TABLE = "table";
+  private static final String OBJECT_TYPE = "objectType";
   private static final String OPERATION_TYPE = "operationType";
-  private static final String UPDATE_ROW = "UPDATE_ROW";
-  private static final String DELETE_ROW = "DELETE_ROW";
+  private static final String UPDATE_ROW = "UPSERT";
+  private static final String DELETE_ROW = "DELETE";
   private static final String FILE_TO_WRITE = "/var/log/cassandra/triggerAuditLog.log";
   private static ObjectMapper mapper = new ObjectMapper();
 
@@ -129,8 +128,7 @@ public class Trigger implements ITrigger {
       if (!levelDeletion.isLive()) {
         Map<String, Object> eventMap = new HashMap<>();
         eventMap.put(OPERATION_TYPE, DELETE_ROW);
-        eventMap.put(TABLE, partition.metadata().cfName);
-        eventMap.put(KEYSPACE, partition.metadata().ksName);
+        eventMap.put(OBJECT_TYPE, partition.metadata().cfName);
         eventMap.putAll(partitionKeyData);
         return eventMap;
       }
@@ -164,8 +162,7 @@ public class Trigger implements ITrigger {
           }
         }
         eventMap.put(OPERATION_TYPE, UPDATE_ROW);
-        eventMap.put(TABLE, partition.metadata().cfName);
-        eventMap.put(KEYSPACE, partition.metadata().ksName);
+        eventMap.put(OBJECT_TYPE, partition.metadata().cfName);
         eventMap.putAll(partitionKeyData);
         eventMap.putAll(clusterKeyData);
         return eventMap;
