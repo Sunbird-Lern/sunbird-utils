@@ -408,6 +408,7 @@ public class TextBookTocUploader {
     }
   }
 
+  @SuppressWarnings("unchecked")
   private void updateBGMSData(Map<String, Object> row, Map<String, Object> contentHierarchy) {
     Map<String, Object> outputMapping =
         getObjectFrom(getConfigValue(JsonKey.TEXTBOOK_TOC_OUTPUT_MAPPING), Map.class);
@@ -415,7 +416,11 @@ public class TextBookTocUploader {
         (Map<String, Object>) outputMapping.get("frameworkCategories");
     for (Entry<String, Object> entry : frameCategories.entrySet()) {
       String key = entry.getKey();
-      row.put(key, contentHierarchy.get(key));
+      if (null == contentHierarchy.get(key)) {
+        row.put(key, "");
+      } else {
+        row.put(key, contentHierarchy.get(key));
+      }
     }
   }
 
