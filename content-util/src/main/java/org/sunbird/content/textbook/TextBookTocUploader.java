@@ -419,11 +419,7 @@ public class TextBookTocUploader {
       if (null == contentHierarchy.get(key)) {
         row.put(key, "");
       } else {
-        if (contentHierarchy.get(key) instanceof List) {
-          row.put(key, String.join(",", (List<String>) contentHierarchy.get(key)));
-        } else {
-          row.put(key, contentHierarchy.get(key));
-        }
+        row.put(key, stringify(contentHierarchy.get(key)));
       }
     }
   }
