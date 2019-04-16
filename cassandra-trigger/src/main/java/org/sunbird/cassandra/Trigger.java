@@ -37,8 +37,16 @@ public class Trigger implements ITrigger {
   private static final String OPERATION_TYPE = "operationType";
   private static final String UPDATE_ROW = "UPSERT";
   private static final String DELETE_ROW = "DELETE";
-  private static final String FILE_TO_WRITE = "/var/log/cassandra/triggerAuditLog.log";
+  private static final String FILE_TO_WRITE;
   private static ObjectMapper mapper = new ObjectMapper();
+
+  static {
+    String filePath = System.getProperty("sunbird_cassandra_audit_file_path");
+    if (filePath == null) {
+      filePath = "/var/log/cassandra/triggerAuditLog.log";
+    }
+    FILE_TO_WRITE = filePath;
+  }
 
   @Override
   public Collection<Mutation> augment(Partition update) {

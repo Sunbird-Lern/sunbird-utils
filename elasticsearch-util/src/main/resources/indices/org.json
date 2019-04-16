@@ -296,20 +296,160 @@
                     }
                 },
                 "contactDetail": {
-                    "type": "text",
-                    "fields": {
-                        "raw": {
+                    "properties": {
+                        "Email": {
                             "type": "text",
-                            "analyzer": "keylower",
+                            "fields": {
+                                "raw": {
+                                    "type": "text",
+                                    "analyzer": "keylower",
+                                    "fielddata": true
+                                }
+                            },
+                            "copy_to": [
+                                "all_fields"
+                            ],
+                            "analyzer": "cs_index_analyzer",
+                            "search_analyzer": "cs_search_analyzer",
+                            "fielddata": true
+                        },
+                        "Phone ": {
+                            "type": "text",
+                            "fields": {
+                                "raw": {
+                                    "type": "text",
+                                    "analyzer": "keylower",
+                                    "fielddata": true
+                                }
+                            },
+                            "copy_to": [
+                                "all_fields"
+                            ],
+                            "analyzer": "cs_index_analyzer",
+                            "search_analyzer": "cs_search_analyzer",
+                            "fielddata": true
+                        },
+                        "Phone Number": {
+                            "type": "text",
+                            "fields": {
+                                "raw": {
+                                    "type": "text",
+                                    "analyzer": "keylower",
+                                    "fielddata": true
+                                }
+                            },
+                            "copy_to": [
+                                "all_fields"
+                            ],
+                            "analyzer": "cs_index_analyzer",
+                            "search_analyzer": "cs_search_analyzer",
+                            "fielddata": true
+                        },
+                        "Phonenumber": {
+                            "type": "text",
+                            "fields": {
+                                "raw": {
+                                    "type": "text",
+                                    "analyzer": "keylower",
+                                    "fielddata": true
+                                }
+                            },
+                            "copy_to": [
+                                "all_fields"
+                            ],
+                            "analyzer": "cs_index_analyzer",
+                            "search_analyzer": "cs_search_analyzer",
+                            "fielddata": true
+                        },
+                        "address": {
+                            "type": "text",
+                            "fields": {
+                                "raw": {
+                                    "type": "text",
+                                    "analyzer": "keylower",
+                                    "fielddata": true
+                                }
+                            },
+                            "copy_to": [
+                                "all_fields"
+                            ],
+                            "analyzer": "cs_index_analyzer",
+                            "search_analyzer": "cs_search_analyzer",
+                            "fielddata": true
+                        },
+                        "age": {
+                            "type": "long",
+                            "fields": {
+                                "raw": {
+                                    "type": "long"
+                                }
+                            }
+                        },
+                        "email": {
+                            "type": "text",
+                            "fields": {
+                                "raw": {
+                                    "type": "text",
+                                    "analyzer": "keylower",
+                                    "fielddata": true
+                                }
+                            },
+                            "copy_to": [
+                                "all_fields"
+                            ],
+                            "analyzer": "cs_index_analyzer",
+                            "search_analyzer": "cs_search_analyzer",
+                            "fielddata": true
+                        },
+                        "fax": {
+                            "type": "text",
+                            "fields": {
+                                "raw": {
+                                    "type": "text",
+                                    "analyzer": "keylower",
+                                    "fielddata": true
+                                }
+                            },
+                            "copy_to": [
+                                "all_fields"
+                            ],
+                            "analyzer": "cs_index_analyzer",
+                            "search_analyzer": "cs_search_analyzer",
+                            "fielddata": true
+                        },
+                        "name": {
+                            "type": "text",
+                            "fields": {
+                                "raw": {
+                                    "type": "text",
+                                    "analyzer": "keylower",
+                                    "fielddata": true
+                                }
+                            },
+                            "copy_to": [
+                                "all_fields"
+                            ],
+                            "analyzer": "cs_index_analyzer",
+                            "search_analyzer": "cs_search_analyzer",
+                            "fielddata": true
+                        },
+                        "phone": {
+                            "type": "text",
+                            "fields": {
+                                "raw": {
+                                    "type": "text",
+                                    "analyzer": "keylower",
+                                    "fielddata": true
+                                }
+                            },
+                            "copy_to": [
+                                "all_fields"
+                            ],
+                            "analyzer": "cs_index_analyzer",
+                            "search_analyzer": "cs_search_analyzer",
                             "fielddata": true
                         }
-                    },
-                    "copy_to": [
-                        "all_fields"
-                    ],
-                    "analyzer": "cs_index_analyzer",
-                    "search_analyzer": "cs_search_analyzer",
-                    "fielddata": true
+                    }
                 },
                 "contactdetails": {
                     "type": "object"

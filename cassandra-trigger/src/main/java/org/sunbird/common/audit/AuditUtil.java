@@ -1,7 +1,7 @@
 package org.sunbird.common.audit;
 
+import java.time.Instant;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,7 +74,7 @@ public class AuditUtil {
     resultMap.put("operationType", operationType);
     resultMap.put("eventType", "transactional");
     resultMap.put("userId", "ANONYMOUS");
-    resultMap.put("createdOn", new java.sql.Timestamp(Calendar.getInstance().getTime().getTime()));
+    resultMap.put("createdOn", Instant.now().toString());
     resultMap.put("objectType", objectType);
     return resultMap;
   }
