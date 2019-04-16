@@ -35,6 +35,8 @@ public class CourseBatch implements Serializable {
   private String startDate;
   private Integer status;
   private String updatedDate;
+  private long completedCount;
+  private long participantCount;
 
   public String getId() {
     return id;
@@ -214,6 +216,22 @@ public class CourseBatch implements Serializable {
     this.setCourseAdditionalInfo(getAdditionalCourseInfo(contentDetails));
     this.setCreatedBy(createdBy);
     this.setCreatedDate(ProjectUtil.getFormattedDate());
+  }
+
+  public long getCompletedCount() {
+    return completedCount;
+  }
+
+  public void setCompletedCount(long completedCount) {
+    this.completedCount = completedCount;
+  }
+
+  public long getParticipantCount() {
+    return participantCount;
+  }
+
+  public void setParticipantCount(long participantCount) {
+    this.participantCount = participantCount;
   }
 
   private Map<String, String> getAdditionalCourseInfo(Map<String, Object> contentDetails) {

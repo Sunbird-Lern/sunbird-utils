@@ -345,7 +345,8 @@ public class ProjectUtil {
    */
   public enum EsIndex {
     sunbird("searchindex"),
-    sunbirdPlugin("sunbirdplugin");
+    sunbirdPlugin("sunbirdplugin"),
+    courseBatchStats("cbatchstats");
     private String indexName;
 
     private EsIndex(String name) {
@@ -375,7 +376,8 @@ public class ProjectUtil {
     location("location"),
     announcementType("announcementtype"),
     announcement("announcement"),
-    metrics("metrics");
+    metrics("metrics"),
+    doc("_doc");
     private String typeName;
 
     private EsType(String name) {
