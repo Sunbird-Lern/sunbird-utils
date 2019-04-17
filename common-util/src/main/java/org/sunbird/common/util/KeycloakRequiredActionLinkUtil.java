@@ -79,6 +79,17 @@ public class KeycloakRequiredActionLinkUtil {
     headers.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
     headers.put(JsonKey.AUTHORIZATION, JsonKey.BEARER + getAdminAccessToken());
 
+    ProjectLogger.log(
+        "KeycloakRequiredActionLinkUtil:generateLink: complete URL "
+            + ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_URL)
+            + "realms/"
+            + ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_RELAM)
+            + SUNBIRD_KEYCLOAK_REQD_ACTION_LINK,
+        LoggerEnum.INFO.name());
+    ProjectLogger.log(
+        "KeycloakRequiredActionLinkUtil:generateLink: request body "
+            + mapper.writeValueAsString(request),
+        LoggerEnum.INFO.name());
     RequestBodyEntity baseRequest =
         Unirest.post(
                 ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_URL)
