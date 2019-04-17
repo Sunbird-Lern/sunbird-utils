@@ -99,7 +99,6 @@ public enum ActorOperations {
   CASSANDRA("cassandra"),
   ES("es"),
   EKSTEP("ekstep"),
-  COURSE_PROGRESS_METRICS_DATA("courseProgressMetricsData"),
   GET_ORG_TYPE_LIST("getOrgTypeList"),
   CREATE_ORG_TYPE("createOrgType"),
   UPDATE_ORG_TYPE("updateOrgType"),
