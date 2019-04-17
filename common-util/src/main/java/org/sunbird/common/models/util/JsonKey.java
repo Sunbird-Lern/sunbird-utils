@@ -893,6 +893,7 @@ public final class JsonKey {
   public static final String BOARD = "board";
   public static final String MEDIUM = "medium";
   public static final String SUNBIRD_GZIP_ENABLE = "sunbird_gzip_enable";
+  public static final String SHOW_DOWNLOAD_LINK = "showDownloadLink";
 
   private JsonKey() {}
 }
