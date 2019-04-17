@@ -135,8 +135,6 @@ public class ActorOperationTest {
     Assert.assertEquals("cassandra", ActorOperations.CASSANDRA.getValue());
     Assert.assertEquals("es", ActorOperations.ES.getValue());
     Assert.assertEquals("ekstep", ActorOperations.EKSTEP.getValue());
-    Assert.assertEquals(
-        "courseProgressMetricsData", ActorOperations.COURSE_PROGRESS_METRICS_DATA.getValue());
     Assert.assertEquals("getOrgTypeList", ActorOperations.GET_ORG_TYPE_LIST.getValue());
     Assert.assertEquals("createOrgType", ActorOperations.CREATE_ORG_TYPE.getValue());
     Assert.assertEquals("updateOrgType", ActorOperations.UPDATE_ORG_TYPE.getValue());
