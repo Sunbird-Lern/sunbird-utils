@@ -90,7 +90,10 @@ public class KeycloakRequiredActionLinkUtil {
     HttpResponse<JsonNode> response = baseRequest.asJson();
 
     ProjectLogger.log(
-        "KeycloakRequiredActionLinkUtil:generateLink: Response status = " + response.getStatus(),
+        "KeycloakRequiredActionLinkUtil:generateLink: Response status = "
+            + response.getStatus()
+            + " body "
+            + response.getBody(),
         LoggerEnum.INFO.name());
 
     return response.getBody().getObject().getString(LINK);
