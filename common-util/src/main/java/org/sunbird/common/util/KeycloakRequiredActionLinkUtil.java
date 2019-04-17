@@ -63,6 +63,7 @@ public class KeycloakRequiredActionLinkUtil {
     request.put(REDIRECT_URI, redirectUri);
 
     try {
+      Thread.sleep(1000);
       return generateLink(request);
     } catch (Exception ex) {
       ProjectLogger.log(
