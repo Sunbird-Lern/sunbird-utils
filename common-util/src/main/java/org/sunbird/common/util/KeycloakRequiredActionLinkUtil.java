@@ -63,7 +63,8 @@ public class KeycloakRequiredActionLinkUtil {
     request.put(REDIRECT_URI, redirectUri);
 
     try {
-      Thread.sleep(1000);
+      Thread.sleep(
+          Integer.parseInt(ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SYNC_READ_WAIT_TIME)));
       return generateLink(request);
     } catch (Exception ex) {
       ProjectLogger.log(

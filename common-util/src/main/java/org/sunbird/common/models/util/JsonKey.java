@@ -894,6 +894,7 @@ public final class JsonKey {
   public static final String MEDIUM = "medium";
   public static final String SUNBIRD_GZIP_ENABLE = "sunbird_gzip_enable";
   public static final String SHOW_DOWNLOAD_LINK = "showDownloadLink";
+  public static final String SUNBIRD_SYNC_READ_WAIT_TIME = "sunbird_sync_read_wait_time";
 
   private JsonKey() {}
 }
