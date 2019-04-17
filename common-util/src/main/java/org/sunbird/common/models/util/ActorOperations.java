@@ -99,7 +99,6 @@ public enum ActorOperations {
   CASSANDRA("cassandra"),
   ES("es"),
   EKSTEP("ekstep"),
-  COURSE_PROGRESS_METRICS_DATA("courseProgressMetricsData"),
   GET_ORG_TYPE_LIST("getOrgTypeList"),
   CREATE_ORG_TYPE("createOrgType"),
   UPDATE_ORG_TYPE("updateOrgType"),
@@ -154,7 +153,8 @@ public enum ActorOperations {
   BACKGROUND_DECRYPTION("backgroundDecryption"),
   VERIFY_OTP("verifyOTP"),
   SEND_OTP("sendOTP"),
-  GET_USER_TYPES("getUserTypes");
+  GET_USER_TYPES("getUserTypes"),
+  COURSE_POGRESS_MAIL_GENERATION("courseProgressMailGeneration");
 
   private String value;
 
