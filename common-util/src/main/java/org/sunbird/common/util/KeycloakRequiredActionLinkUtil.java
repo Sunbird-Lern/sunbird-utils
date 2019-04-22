@@ -63,6 +63,8 @@ public class KeycloakRequiredActionLinkUtil {
     request.put(REDIRECT_URI, redirectUri);
 
     try {
+      Thread.sleep(
+          Integer.parseInt(ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SYNC_READ_WAIT_TIME)));
       return generateLink(request);
     } catch (Exception ex) {
       ProjectLogger.log(
@@ -79,6 +81,17 @@ public class KeycloakRequiredActionLinkUtil {
     headers.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
     headers.put(JsonKey.AUTHORIZATION, JsonKey.BEARER + getAdminAccessToken());
 
+    ProjectLogger.log(
+        "KeycloakRequiredActionLinkUtil:generateLink: complete URL "
+            + ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_URL)
+            + "realms/"
+            + ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_RELAM)
+            + SUNBIRD_KEYCLOAK_REQD_ACTION_LINK,
+        LoggerEnum.INFO.name());
+    ProjectLogger.log(
+        "KeycloakRequiredActionLinkUtil:generateLink: request body "
+            + mapper.writeValueAsString(request),
+        LoggerEnum.INFO.name());
     RequestBodyEntity baseRequest =
         Unirest.post(
                 ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_URL)
