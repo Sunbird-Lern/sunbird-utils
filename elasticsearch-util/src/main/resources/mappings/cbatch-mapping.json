@@ -323,6 +323,14 @@
                     "type": "long"
                 }
             }
+        },
+        "reportUpdatedOn": {
+            "type": "date",
+            "fields": {
+                "raw": {
+                    "type": "date"
+                }
+            }
         }
     }
 }
