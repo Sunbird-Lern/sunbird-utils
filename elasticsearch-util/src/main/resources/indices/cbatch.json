@@ -355,6 +355,14 @@
                     "search_analyzer": "cs_search_analyzer",
                     "fielddata": true
                 }
+            },
+            "reportUpdatedOn": {
+                "type": "date",
+                "fields": {
+                    "raw": {
+                        "type": "date"
+                    }
+                }
             }
         }
     }
