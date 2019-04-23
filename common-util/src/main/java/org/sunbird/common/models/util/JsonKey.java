@@ -899,5 +899,6 @@ public final class JsonKey {
   public static final String SUNBIRD_COURSE_METRICS_REPORT_FOLDER =
       "sunbird_course_metrics_report_folder";
   public static final String SUNBIRD_COURSE_METRICS_BASE_URL = "sunbird_course_metrics_base_url";
+  public static final String REPORT_UPDATED_ON = "reportUpdatedOn";
   private JsonKey() {}
 }
