@@ -900,5 +900,8 @@ public final class JsonKey {
       "sunbird_course_metrics_report_folder";
   public static final String SUNBIRD_COURSE_METRICS_BASE_URL = "sunbird_course_metrics_base_url";
   public static final String REPORT_UPDATED_ON = "reportUpdatedOn";
+  public static final String ANALYTICS_ACCOUNT_NAME = "sunbird_analytics_blob_account_name";
+  public static final String ANALYTICS_ACCOUNT_KEY = "sunbird_analytics_blob_account_key";
+
   private JsonKey() {}
 }
