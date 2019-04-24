@@ -36,10 +36,11 @@ public abstract class BaseActor extends UntypedAbstractActor {
 
   public abstract void onReceive(Request request) throws Throwable;
 
-  private final static String confFile = "eventSync.conf";
+  private final static String eventSyncConfFile = "eventSync.conf";
   private final static String EVENT_SYNC = "eventSync";
+  private final static String DEFAULT = "default";
 
-  private static Config config = ConfigFactory.parseResources(confFile);
+  private static Config config = ConfigFactory.parseResources(eventSyncConfFile);
   private static Map<String, String> eventSyncProperties = new HashMap<>();
 
   @Override
@@ -144,17 +145,18 @@ public abstract class BaseActor extends UntypedAbstractActor {
 
   protected String getEventSyncSetting(String actor) {
     if (eventSyncProperties.isEmpty()) {
-      intiEventSyncProperties();
+      initEventSyncProperties();
     }
     String key = StringFormatter.joinByDot(EVENT_SYNC, actor);
     if (eventSyncProperties.containsKey(key)) {
       return eventSyncProperties.get(key);
     }
 
-    return null;
+    key = StringFormatter.joinByDot(EVENT_SYNC, DEFAULT);
+    return eventSyncProperties.get(key);
   }
 
-  private void intiEventSyncProperties() {
+  private void initEventSyncProperties() {
 
     Set<Entry<String, ConfigValue>> confs = config.entrySet();
     for (Entry<String, ConfigValue> conf : confs) {
