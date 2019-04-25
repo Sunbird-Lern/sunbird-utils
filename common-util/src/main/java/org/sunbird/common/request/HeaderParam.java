@@ -29,7 +29,7 @@ public enum HeaderParam {
   X_Authenticated_Client_Id("x-authenticated-client-id"),
   X_APP_ID("x-app-id"),
   CHANNEL_ID("x-channel-id"),
-  Response_Length("x-response-length");
+  X_Response_Length("x-response-length");
   /** name of the parameter */
   private String name;
 
