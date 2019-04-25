@@ -354,13 +354,13 @@
                     "analyzer": "cs_index_analyzer",
                     "search_analyzer": "cs_search_analyzer",
                     "fielddata": true
-                }
-            },
-            "reportUpdatedOn": {
-                "type": "date",
-                "fields": {
-                    "raw": {
-                        "type": "date"
+                },
+                "reportUpdatedOn": {
+                    "type": "date",
+                    "fields": {
+                        "raw": {
+                            "type": "date"
+                        }
                     }
                 }
             }
