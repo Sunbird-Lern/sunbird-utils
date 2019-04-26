@@ -31,7 +31,6 @@ import akka.actor.ActorSelection;
 import akka.actor.UntypedAbstractActor;
 import scala.concurrent.duration.Duration;
 
-/** @author Vinaya & Mahesh Kumar Gangula */
 public abstract class BaseActor extends UntypedAbstractActor {
 
   public abstract void onReceive(Request request) throws Throwable;
@@ -41,6 +40,7 @@ public abstract class BaseActor extends UntypedAbstractActor {
   private final static String DEFAULT = "default";
 
   private static Config config = ConfigFactory.parseResources(eventSyncConfFile);
+
   private static Map<String, String> eventSyncProperties = new HashMap<>();
 
   @Override
@@ -147,6 +147,7 @@ public abstract class BaseActor extends UntypedAbstractActor {
     if (eventSyncProperties.isEmpty()) {
       initEventSyncProperties();
     }
+
     String key = StringFormatter.joinByDot(EVENT_SYNC, actor);
     if (eventSyncProperties.containsKey(key)) {
       return eventSyncProperties.get(key);
@@ -157,7 +158,6 @@ public abstract class BaseActor extends UntypedAbstractActor {
   }
 
   private void initEventSyncProperties() {
-
     Set<Entry<String, ConfigValue>> confs = config.entrySet();
     for (Entry<String, ConfigValue> conf : confs) {
       eventSyncProperties.put(conf.getKey(), conf.getValue().unwrapped().toString());
