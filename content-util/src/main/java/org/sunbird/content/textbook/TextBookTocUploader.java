@@ -333,15 +333,12 @@ public class TextBookTocUploader {
               if (!(JsonKey.TEXTBOOK.equalsIgnoreCase((String) s.get(JsonKey.CONTENT_TYPE))
                   || JsonKey.TEXTBOOK_UNIT.equalsIgnoreCase(
                       (String) s.get(JsonKey.CONTENT_TYPE)))) {
-                String url =
-                    ProjectUtil.getConfigValue(JsonKey.SUNBIRD_LINKED_CONTENT_BASE_URL)
-                        + (String) s.get(JsonKey.IDENTIFIER);
                 String key =
                     MessageFormat.format(
                         ProjectUtil.getConfigValue(JsonKey.SUNBIRD_TOC_LINKED_CONTENT_COLUMN_NAME),
                         (((int) s.get(JsonKey.INDEX)) - size));
                 if (ROW_METADATA.contains(key)) {
-                  row.put(key, url);
+                  row.put(key, (String) s.get(JsonKey.IDENTIFIER));
                 }
               }
             });
