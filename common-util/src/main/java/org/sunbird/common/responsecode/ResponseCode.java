@@ -766,8 +766,8 @@ public enum ResponseCode {
   errorDialCodeLinkingClientError(
       ResponseMessage.Key.ERROR_TEXTBOOK_UPDATE, ResponseMessage.Message.ERROR_TEXTBOOK_UPDATE),
   errorInvalidLinkedContentId(
-      ResponseMessage.Key.ERROR_INVALID_LINKED_CONTENT_URL,
-      ResponseMessage.Message.ERROR_INVALID_LINKED_CONTENT_URL),
+      ResponseMessage.Key.ERROR_INVALID_LINKED_CONTENT_ID,
+      ResponseMessage.Message.ERROR_INVALID_LINKED_CONTENT_ID),
   errorDuplicateLinkedContentId(
       ResponseMessage.Key.ERROR_DUPLICATE_LINKED_CONTENT,
       ResponseMessage.Message.ERROR_DUPLICATE_LINKED_CONTENT),
