@@ -41,9 +41,7 @@ public class HeaderBuilder {
             JsonKey.MESSAGE_ID,
             (String) ExecutionContext.getCurrent().getRequestContext().get(JsonKey.REQUEST_ID));
       }
-      if (ExecutionContext.getCurrent()
-              .getRequestContext()
-              .containsKey(JsonKey.LOG_LEVEL_HEADER_KEY)
+      if (ExecutionContext.getCurrent().getRequestContext().containsKey(JsonKey.LOG_LEVEL)
           && !this.headers.containsKey(JsonKey.LOG_LEVEL_HEADER_KEY)) {
         this.headers.put(
             JsonKey.LOG_LEVEL_HEADER_KEY,
