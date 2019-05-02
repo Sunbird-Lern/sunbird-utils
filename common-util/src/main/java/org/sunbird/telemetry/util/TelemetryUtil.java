@@ -149,6 +149,6 @@ public final class TelemetryUtil {
     request
         .getContext()
         .put(JsonKey.TELEMETRY_CONTEXT, ExecutionContext.getCurrent().getRequestContext());
-    //TelemetryLmaxWriter.getInstance().submitMessage(request);
+    TelemetryLmaxWriter.getInstance().submitMessage(request);
   }
 }
