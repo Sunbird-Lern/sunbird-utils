@@ -171,16 +171,12 @@ public class ProjectLogger {
     LogEvent te = new LogEvent();
     Map<String, Object> eks = new HashMap<String, Object>();
     eks.put(JsonKey.LEVEL, logLevel);
-    eks.put(JsonKey.MESSAGE, message);
     String msgId = ExecutionContext.getRequestId();
     if (null != msgId) {
       eks.put(JsonKey.REQUEST_MESSAGE_ID, msgId);
     }
     if (null != data) {
       eks.put(JsonKey.DATA, data);
-    }
-    if (null != exception) {
-      eks.put(JsonKey.STACKTRACE, ExceptionUtils.getStackTrace(exception));
     }
     if (ExecutionContext.getCurrent() != null
         && ExecutionContext.getCurrent().getRequestContext() != null) {
@@ -190,6 +186,10 @@ public class ProjectLogger {
             ExecutionContext.getCurrent().getRequestContext().get(JsonKey.DEVICE_ID));
       }
     }
+    if (null != exception) {
+      eks.put(JsonKey.STACKTRACE, ExceptionUtils.getStackTrace(exception));
+    }
+    eks.put(JsonKey.MESSAGE, message);
     if (logEnum != null) {
       te.setEid(logEnum.name());
     } else {
