@@ -119,6 +119,13 @@ public class ProjectLogger {
   }
 
   private static void backendLog(String message, Object data, Throwable e, String logLevel) {
+    if (ExecutionContext.getCurrent() != null
+        && ExecutionContext.getCurrent().getRequestContext() != null) {
+      if (ExecutionContext.getCurrent().getRequestContext().containsKey(JsonKey.LOG_LEVEL)) {
+        logLevel =
+            (String) ExecutionContext.getCurrent().getRequestContext().get(JsonKey.LOG_LEVEL);
+      }
+    }
     if (!StringUtils.isBlank(logLevel)) {
 
       switch (logLevel) {
@@ -174,6 +181,14 @@ public class ProjectLogger {
     }
     if (null != exception) {
       eks.put(JsonKey.STACKTRACE, ExceptionUtils.getStackTrace(exception));
+    }
+    if (ExecutionContext.getCurrent() != null
+        && ExecutionContext.getCurrent().getRequestContext() != null) {
+      if (ExecutionContext.getCurrent().getRequestContext().containsKey(JsonKey.DEVICE_ID)) {
+        eks.put(
+            JsonKey.DEVICE_ID,
+            ExecutionContext.getCurrent().getRequestContext().get(JsonKey.DEVICE_ID));
+      }
     }
     if (logEnum != null) {
       te.setEid(logEnum.name());

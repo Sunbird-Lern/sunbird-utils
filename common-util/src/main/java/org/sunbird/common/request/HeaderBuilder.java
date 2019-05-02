@@ -47,10 +47,7 @@ public class HeaderBuilder {
           && !this.headers.containsKey(JsonKey.LOG_LEVEL_HEADER_KEY)) {
         this.headers.put(
             JsonKey.LOG_LEVEL_HEADER_KEY,
-            (String)
-                ExecutionContext.getCurrent()
-                    .getRequestContext()
-                    .get(JsonKey.LOG_LEVEL_HEADER_KEY));
+            (String) ExecutionContext.getCurrent().getRequestContext().get(JsonKey.LOG_LEVEL));
       }
     }
     return this.headers;
