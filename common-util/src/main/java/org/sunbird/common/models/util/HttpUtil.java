@@ -37,6 +37,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.sunbird.common.models.response.HttpUtilResponse;
 import org.sunbird.common.request.ExecutionContext;
+import org.sunbird.common.request.HeaderBuilder;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.telemetry.util.TelemetryEvents;
@@ -64,7 +65,8 @@ public class HttpUtil {
       throws IOException {
     long startTime = System.currentTimeMillis();
     Map<String, Object> logInfo = genarateLogInfo(JsonKey.API_CALL, "API CALL : " + requestURL);
-    HttpURLConnection httpURLConnection = getRequest(requestURL, headers, startTime);
+    HttpURLConnection httpURLConnection =
+        getRequest(requestURL, new HeaderBuilder(headers).build(), startTime);
     String str = getResponse(httpURLConnection);
     long stopTime = System.currentTimeMillis();
     long elapsedTime = stopTime - startTime;
@@ -93,7 +95,8 @@ public class HttpUtil {
       throws IOException {
     long startTime = System.currentTimeMillis();
     Map<String, Object> logInfo = genarateLogInfo(JsonKey.API_CALL, "API CALL : " + requestURL);
-    HttpURLConnection httpURLConnection = getRequest(requestURL, headers, startTime);
+    HttpURLConnection httpURLConnection =
+        getRequest(requestURL, new HeaderBuilder(headers).build(), startTime);
     HttpUtilResponse response = null;
     String body = "";
     try {
@@ -158,7 +161,8 @@ public class HttpUtil {
       throws IOException {
     long startTime = System.currentTimeMillis();
     Map<String, Object> logInfo = genarateLogInfo(JsonKey.API_CALL, "API CALL : " + requestURL);
-    HttpURLConnection httpURLConnection = postRequest(requestURL, params, headers, startTime);
+    HttpURLConnection httpURLConnection =
+        postRequest(requestURL, params, new HeaderBuilder(headers).build(), startTime);
     String str = getResponse(httpURLConnection);
     long stopTime = System.currentTimeMillis();
     long elapsedTime = stopTime - startTime;
@@ -188,7 +192,8 @@ public class HttpUtil {
       throws IOException {
     long startTime = System.currentTimeMillis();
     Map<String, Object> logInfo = genarateLogInfo(JsonKey.API_CALL, "API CALL : " + requestURL);
-    HttpURLConnection httpURLConnection = postRequest(requestURL, params, headers, startTime);
+    HttpURLConnection httpURLConnection =
+        postRequest(requestURL, params, new HeaderBuilder(headers).build(), startTime);
     HttpUtilResponse response = null;
     String body = "";
     try {
@@ -276,7 +281,8 @@ public class HttpUtil {
       String requestURL, String params, Map<String, String> headers) throws IOException {
     long startTime = System.currentTimeMillis();
     Map<String, Object> logInfo = genarateLogInfo(JsonKey.API_CALL, "API CALL : " + requestURL);
-    HttpURLConnection httpURLConnection = postRequest(requestURL, params, headers, startTime);
+    HttpURLConnection httpURLConnection =
+        postRequest(requestURL, params, new HeaderBuilder(headers).build(), startTime);
     String str = getResponse(httpURLConnection);
     long stopTime = System.currentTimeMillis();
     long elapsedTime = stopTime - startTime;
@@ -344,7 +350,8 @@ public class HttpUtil {
       String requestURL, String params, Map<String, String> headers) throws IOException {
     long startTime = System.currentTimeMillis();
     Map<String, Object> logInfo = genarateLogInfo(JsonKey.API_CALL, "API CALL : " + requestURL);
-    HttpURLConnection httpURLConnection = postRequest(requestURL, params, headers, startTime);
+    HttpURLConnection httpURLConnection =
+        postRequest(requestURL, params, new HeaderBuilder(headers).build(), startTime);
     HttpUtilResponse response = null;
     String body = "";
     try {
@@ -426,7 +433,7 @@ public class HttpUtil {
 
     try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
       HttpPatch patch = new HttpPatch(requestURL);
-      setHeaders(patch, headers);
+      setHeaders(patch, new HeaderBuilder(headers).build());
       StringEntity entity = new StringEntity(params);
       patch.setEntity(entity);
       CloseableHttpResponse response = httpClient.execute(patch);
@@ -556,7 +563,7 @@ public class HttpUtil {
         LoggerEnum.PERF_LOG);
 
     HttpPatch patch = new HttpPatch(requestURL);
-    setHeaders(patch, headers);
+    setHeaders(patch, new HeaderBuilder(headers).build());
     StringEntity entity = new StringEntity(params);
     patch.setEntity(entity);
     try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
@@ -611,7 +618,7 @@ public class HttpUtil {
         LoggerEnum.PERF_LOG);
     try (CloseableHttpClient client = HttpClients.createDefault()) {
       HttpPost httpPost = new HttpPost(url);
-      Set<Entry<String, String>> headerEntry = headers.entrySet();
+      Set<Entry<String, String>> headerEntry = new HeaderBuilder(headers).build().entrySet();
       for (Entry<String, String> headerObj : headerEntry) {
         httpPost.addHeader(headerObj.getKey(), headerObj.getValue());
       }
@@ -692,7 +699,7 @@ public class HttpUtil {
       HttpDelete httpDelete = new HttpDelete(url);
       ProjectLogger.log("Executing sendDeleteRequest " + httpDelete.getRequestLine());
       Map<String, Object> logInfo = genarateLogInfo(JsonKey.API_CALL, "API CALL : " + url);
-      Set<Entry<String, String>> headerEntry = headers.entrySet();
+      Set<Entry<String, String>> headerEntry = new HeaderBuilder(headers).build().entrySet();
       for (Entry<String, String> headerObj : headerEntry) {
         httpDelete.addHeader(headerObj.getKey(), headerObj.getValue());
       }
@@ -746,7 +753,7 @@ public class HttpUtil {
       httpDelete.setEntity(input);
       ProjectLogger.log("Executing sendDeleteRequest " + httpDelete.getRequestLine());
       Map<String, Object> logInfo = genarateLogInfo(JsonKey.API_CALL, "API CALL : " + url);
-      Set<Entry<String, String>> headerEntry = headers.entrySet();
+      Set<Entry<String, String>> headerEntry = new HeaderBuilder(headers).build().entrySet();
       for (Entry<String, String> headerObj : headerEntry) {
         httpDelete.addHeader(headerObj.getKey(), headerObj.getValue());
       }
@@ -792,7 +799,7 @@ public class HttpUtil {
       HttpPost httpPost = new HttpPost(url);
       HttpEntity entity = new ByteArrayEntity(byteArr);
       httpPost.setEntity(entity);
-      Set<Entry<String, String>> headerEntry = headers.entrySet();
+      Set<Entry<String, String>> headerEntry = new HeaderBuilder(headers).build().entrySet();
       for (Entry<String, String> headerObj : headerEntry) {
         httpPost.addHeader(headerObj.getKey(), headerObj.getValue());
       }
@@ -833,7 +840,7 @@ public class HttpUtil {
       httpDelete.setEntity(input);
       ProjectLogger.log("Executing sendDeleteRequest " + httpDelete.getRequestLine());
       Map<String, Object> logInfo = genarateLogInfo(JsonKey.API_CALL, "API CALL : " + url);
-      Set<Entry<String, String>> headerEntry = headers.entrySet();
+      Set<Entry<String, String>> headerEntry = new HeaderBuilder(headers).build().entrySet();
       for (Entry<String, String> headerObj : headerEntry) {
         httpDelete.addHeader(headerObj.getKey(), headerObj.getValue());
       }

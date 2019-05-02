@@ -15,6 +15,7 @@ import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
+import org.sunbird.common.request.HeaderBuilder;
 
 /**
  * Keycloak utility to create required action links.
@@ -98,7 +99,7 @@ public class KeycloakRequiredActionLinkUtil {
                     + "realms/"
                     + ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_RELAM)
                     + SUNBIRD_KEYCLOAK_REQD_ACTION_LINK)
-            .headers(headers)
+            .headers(new HeaderBuilder(headers).build())
             .body(mapper.writeValueAsString(request));
     HttpResponse<JsonNode> response = baseRequest.asJson();
 
@@ -121,7 +122,7 @@ public class KeycloakRequiredActionLinkUtil {
                     + "realms/"
                     + ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_RELAM)
                     + "/protocol/openid-connect/token")
-            .headers(headers)
+            .headers(new HeaderBuilder(headers).build())
             .field("client_id", ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_CLIENT_ID))
             .field(USER_NAME, ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_USERNAME))
             .field(PASSWORD, ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_PASSWORD))

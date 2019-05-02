@@ -28,6 +28,7 @@ import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
+import org.sunbird.common.request.HeaderBuilder;
 import org.sunbird.common.responsecode.ResponseCode;
 
 public class TextBookTocUtil {
@@ -38,7 +39,7 @@ public class TextBookTocUtil {
     Map<String, String> headers = new HashMap<>();
     headers.put(AUTHORIZATION, BEARER + getConfigValue(SUNBIRD_AUTHORIZATION));
     headers.put("Content-Type", "application/json");
-    return headers;
+    return new HeaderBuilder(headers).build();
   }
 
   public static Response getRelatedFrameworkById(String frameworkId) {
