@@ -120,7 +120,7 @@ public class RequestRouter extends BaseRouter {
             } else {
               parent.tell(result, self());
               // Audit log method call
-              if (result instanceof Response
+              /*if (result instanceof Response
                   && AuditLogActions.auditLogUrlMap.containsKey(message.getOperation())) {
                 AuditOperation auditOperation =
                     (AuditOperation) AuditLogActions.auditLogUrlMap.get(message.getOperation());
@@ -132,7 +132,7 @@ public class RequestRouter extends BaseRouter {
                 request.setOperation(ActorOperations.PROCESS_AUDIT_LOG.getValue());
                 request.setRequest(map);
                 SunbirdMWService.tellToBGRouter(request, self());
-              }
+              }*/
             }
           }
         },
