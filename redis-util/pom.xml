@@ -4,12 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.sunbird</groupId>
-	<artifactId>redis-utils</artifactId>
+	<artifactId>cache-utils</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>redis-util</name>
-	<url>http://maven.apache.org</url>
+	<name>cache-util</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
