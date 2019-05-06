@@ -13,7 +13,7 @@ public class RedisConnectionManager {
   private static String host = ProjectUtil.getConfigValue("sunbird_redis_host");
   private static String port = ProjectUtil.getConfigValue("sunbird_redis_port");
   private static Boolean isRedisCluster = host.contains(",") ? true : false;
-  private static String scan_interval = ProjectUtil.getConfigValue("sunbird_redis_scan_interval");
+  private static String scanInterval = ProjectUtil.getConfigValue("sunbird_redis_scan_interval");
   private static RedissonClient client = null;
 
   public static RedissonClient getClient() {
@@ -69,7 +69,7 @@ public class RedisConnectionManager {
       config.setCodec(new StringCodec());
       ClusterServersConfig clusterConfig = config.useClusterServers();
 
-      clusterConfig.setScanInterval(Integer.parseInt(scan_interval));
+      clusterConfig.setScanInterval(Integer.parseInt(scanInterval));
 
       for (int i = 0; i < hosts.length && i < ports.length; i++) {
         clusterConfig.addNodeAddress("redis://" + hosts[i] + ":" + ports[i]);
