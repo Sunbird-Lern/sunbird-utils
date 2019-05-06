@@ -19,13 +19,9 @@ public class RedisConnectionManager {
 
   public static RedissonClient getClient() {
     if (client == null) {
-      ProjectLogger.log("Redis  clinet is null ", LoggerEnum.INFO.name());
+      ProjectLogger.log("RedisConnectionManager:getClient: Redis client is null", LoggerEnum.INFO.name());
       boolean start = initialiseConnection();
-      if (start) {
-        ProjectLogger.log(
-            "After calling initialiseConnection Redis client value " + client,
-            LoggerEnum.INFO.name());
-      }
+      ProjectLogger.log("RedisConnectionManager:getClient: Connection status = " + start, LoggerEnum.INFO.name());
     }
     return client;
   }
@@ -33,56 +29,49 @@ public class RedisConnectionManager {
   private static boolean initialiseConnection() {
     try {
       if (isRedisCluster) {
-        ProjectLogger.log(
-            "RedisConnectionManager:initialiseConnection initalising Cluster.",
-            LoggerEnum.INFO.name());
         initialisingClusterServer(host, port);
-        return true;
+      } else {
+        initialiseSingleServer(host, port);
       }
-      ProjectLogger.log(
-          "RedisConnectionManager:initialiseConnection initalising Single Server.",
-          LoggerEnum.INFO.name());
-      initialiseSingleServer(host, port);
-      return true;
     } catch (Exception e) {
-      ProjectLogger.log("Error while initialising redis connection", e);
+      ProjectLogger.log("RedisConnectionManager:initialiseConnection: Error occurred = " + e.getMessage(), e);
       return false;
     }
+    return true;
   }
 
   private static void initialiseSingleServer(String host, String port) {
+    ProjectLogger.log("RedisConnectionManager: initialiseSingleServer called", LoggerEnum.INFO.name());
+    
     Config config = new Config();
     config.useSingleServer().setAddress("127.0.0.1" + ":" + "6379");
     config.setCodec(new StringCodec());
     client = Redisson.create(config);
   }
 
-  // cluster state scan interval in milliseconds
-  // use "rediss://" for SSL connection
   private static void initialisingClusterServer(String host, String port) {
+    ProjectLogger.log("RedisConnectionManager: initialisingClusterServer called with host = " + host + " port = " + port, LoggerEnum.INFO.name());
+    
     String[] hosts = host.split(",");
     String[] ports = port.split(",");
+
     Config config = new Config();
+
     try {
       config.setCodec(new StringCodec());
       ClusterServersConfig clusterConfig = config.useClusterServers();
-      ProjectLogger.log(
-          "RedisConnectionManager:initialisingClusterServer with ip :" + hosts.toString(),
-          LoggerEnum.INFO.name());
-
+      
       clusterConfig.setScanInterval(2000);
+      
       for (int i = 0; i < hosts.length && i < ports.length; i++) {
         clusterConfig.addNodeAddress("redis://" + hosts[i] + ":" + ports[i]);
       }
 
       client = Redisson.create(config);
-      ProjectLogger.log(
-          "RedisConnectionManager:initialisingClusterServer client created ",
-          LoggerEnum.INFO.name());
+
+      ProjectLogger.log("RedisConnectionManager:initialisingClusterServer: Redis client is created", LoggerEnum.INFO.name());
     } catch (Exception e) {
-      ProjectLogger.log(
-          "RedisConnectionManager:initialisingClusterServer Exception " + e,
-          LoggerEnum.INFO.name());
+      ProjectLogger.log("RedisConnectionManager:initialisingClusterServer: Error occurred = " + e.getMessage(), LoggerEnum.ERROR.name());
     }
   }
 }
