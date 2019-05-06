@@ -10,7 +10,6 @@ import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 
 public class RedisConnectionManager {
-
   private static String host = ProjectUtil.getConfigValue("sunbird_redis_host");
   private static String port = ProjectUtil.getConfigValue("sunbird_redis_port");
   private static Boolean isRedisCluster = host.contains(",") ? true : false;
