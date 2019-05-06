@@ -903,7 +903,7 @@ public final class JsonKey {
   public static final String ANALYTICS_ACCOUNT_NAME = "sunbird_analytics_blob_account_name";
   public static final String ANALYTICS_ACCOUNT_KEY = "sunbird_analytics_blob_account_key";
   public static final String PAGE_MANAGEMENT = "page_management";
-  public static final String REDIS_CACHE_ENABLE = "redis_cache_enable";
+  public static final String REDIS_CACHE_ENABLE = "sunbird_cache_enable";
 
   private JsonKey() {}
 }
