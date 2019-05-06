@@ -8,37 +8,22 @@ import org.jboss.logging.Logger;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 
-/** @author Manzarul */
 public class JsonUtil {
 
   private static Logger logger = Logger.getLogger(JsonUtil.class);
 
-  /**
-   * This method will convert Object to Json String
-   *
-   * @param object Object
-   * @return String
-   */
   public static String toJson(Object object) {
     ObjectMapper mapper = new ObjectMapper();
     try {
       return mapper.writeValueAsString(object);
     } catch (Exception e) {
-      ProjectLogger.log("JsonUtil:getJsonString error occured : " + e, LoggerEnum.INFO);
+      ProjectLogger.log("JsonUtil:getJsonString: Error occurred = " + e.getMessage(), LoggerEnum.ERROR);
     }
     return null;
   }
-  /**
-   * This method will check incoming value is null or empty it will do empty check by doing trim
-   * method. in case of null or empty it will return true else false.
-   *
-   * @param value
-   * @return
-   */
+
   public static boolean isStringNullOREmpty(String value) {
     if (value == null || "".equals(value.trim())) {
-
-      logger.debug("String is either null or empty.");
       return true;
     }
     return false;
@@ -52,7 +37,7 @@ public class JsonUtil {
       JsonNode node = mapper.readTree(res);
       result = mapper.convertValue(node, clazz);
     } catch (IOException e) {
-      ProjectLogger.log("JsonUtil:getAsObject error occured : " + e, LoggerEnum.INFO);
+      ProjectLogger.log("JsonUtil:getAsObject: Error occurred = " + e.getMessage(), LoggerEnum.ERROR);
       e.printStackTrace();
     }
     return result;
@@ -65,7 +50,7 @@ public class JsonUtil {
       String json = mapper.writeValueAsString(map);
       node = mapper.readTree(json);
     } catch (IOException e) {
-      ProjectLogger.log("JsonUtil:getHashOfString error occured : " + e, LoggerEnum.INFO);
+      ProjectLogger.log("JsonUtil:getHashCode: Error occurred = " + e.getMessage(), LoggerEnum.ERROR);
     }
     return node.hashCode();
   }
