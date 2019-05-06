@@ -9,12 +9,10 @@ import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 
 public class RedisCache implements Cache {
-
   private static final String CACHE_MAP_LIST = "cache.mapNames";
   private Map<String, String> properties = readConfig();
-  private String mapNameListStr = properties.get(CACHE_MAP_LIST);
-  private String[] mapNameList = mapNameListStr.split(",");
-  private RedissonClient client = null;
+  private String[] mapNameList = properties.get(CACHE_MAP_LIST).split(",");
+  private RedissonClient client;
 
   public RedisCache() {
     client = RedisConnectionManager.getClient();
