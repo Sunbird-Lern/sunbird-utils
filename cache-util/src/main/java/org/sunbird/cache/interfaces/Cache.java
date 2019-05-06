@@ -2,22 +2,26 @@ package org.sunbird.cache.interfaces;
 
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigValue;
+import com.typesafe.config.Config;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 public interface Cache {
-
   static final String CACHE_CONFIG_FILE = "cache.conf";
 
   default Map<String, String> readConfig() {
-    Map<String, String> props = new HashMap<>();
-    com.typesafe.config.Config config = ConfigFactory.load(CACHE_CONFIG_FILE);
-    Set<Map.Entry<String, ConfigValue>> configSet = config.entrySet();
-    for (Map.Entry<String, ConfigValue> confEntry : configSet) {
-      props.put(confEntry.getKey(), confEntry.getValue().unwrapped().toString());
+    Map<String, String> properties = new HashMap<>();
+
+    Config config = ConfigFactory.load(CACHE_CONFIG_FILE);
+
+    Set<Map.Entry<String, ConfigValue>> configEntrySet = config.entrySet();
+    
+    for (Map.Entry<String, ConfigValue> configEntry : configEntrySet) {
+      properties.put(configEntry.getKey(), configEntry.getValue().unwrapped().toString());
     }
-    return props;
+
+    return properties;
   }
 
   public String get(String mapName, String key);
