@@ -1,7 +1,5 @@
 package org.sunbird.common.models.util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
@@ -31,7 +29,6 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.sunbird.common.exception.ProjectCommonException;
-import org.sunbird.common.models.response.Response;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 
@@ -988,38 +985,5 @@ public class ProjectUtil {
       userId = fedUserId.replace(prefix, "");
     }
     return userId;
-  }
-  public static String getJsonString(Object obj) {
-    try {
-      return mapper.writeValueAsString(obj);
-    } catch (JsonProcessingException e) {
-      ProjectLogger.log("ProjectUtil:getJsonString error occured : " + e, LoggerEnum.INFO);
-
-    }
-    return null;
-  }
-
-  public static <T> T getAsObject(String res, Class<T> clazz) {
-    T result = null;
-    try {
-      JsonNode node = mapper.readTree(res);
-      result = mapper.convertValue(node, clazz);
-    } catch (IOException e) {
-      ProjectLogger.log("ProjectUtil:getAsObject error occured : " + e, LoggerEnum.INFO);
-      e.printStackTrace();
-    }
-    return result;
-  }
-
-  public static int getHashCode(Map<String,Object> map) {
-  
-    JsonNode node = null;
-    try {
-      String json = mapper.writeValueAsString(map);
-      node = mapper.readTree(json);
-    } catch (IOException e) {
-      ProjectLogger.log("ProjectUtil:getHashOfString error occured : " + e, LoggerEnum.INFO);
-    }
-    return node.hashCode();
   }
 }

@@ -8,11 +8,11 @@ import java.util.Set;
 
 public interface Cache {
 
-  static final String REDIS_CONFIG_FILE = "cache.conf";
+  static final String CACHE_CONFIG_FILE = "cache.conf";
 
   default Map<String, String> readConfig() {
     Map<String, String> props = new HashMap<>();
-    com.typesafe.config.Config config = ConfigFactory.load(REDIS_CONFIG_FILE);
+    com.typesafe.config.Config config = ConfigFactory.load(CACHE_CONFIG_FILE);
     Set<Map.Entry<String, ConfigValue>> configSet = config.entrySet();
     for (Map.Entry<String, ConfigValue> confEntry : configSet) {
       props.put(confEntry.getKey(), confEntry.getValue().unwrapped().toString());

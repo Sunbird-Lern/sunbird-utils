@@ -16,8 +16,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.jboss.logging.Logger;
 import org.sunbird.notification.sms.Sms;
 import org.sunbird.notification.sms.provider.ISmsProvider;
-import org.sunbird.notification.utils.JsonUtil;
 import org.sunbird.notification.utils.PropertiesCache;
+import org.sunbird.util.JsonUtil;
 
 public class Msg91SmsProvider implements ISmsProvider {
 
