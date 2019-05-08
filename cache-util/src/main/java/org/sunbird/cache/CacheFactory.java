@@ -4,6 +4,7 @@ import org.sunbird.cache.interfaces.Cache;
 import org.sunbird.redis.RedisCache;
 
 public class CacheFactory {
+
   private static Cache cache = null;
 
   private CacheFactory() {}
