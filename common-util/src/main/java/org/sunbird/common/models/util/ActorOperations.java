@@ -153,7 +153,8 @@ public enum ActorOperations {
   BACKGROUND_DECRYPTION("backgroundDecryption"),
   VERIFY_OTP("verifyOTP"),
   SEND_OTP("sendOTP"),
-  GET_USER_TYPES("getUserTypes");
+  GET_USER_TYPES("getUserTypes"),
+  CLEAR_CACHE("clearCache");
 
   private String value;
 
