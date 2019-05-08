@@ -7,6 +7,7 @@ import org.redisson.api.RedissonClient;
 import org.sunbird.cache.interfaces.Cache;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
+import org.sunbird.notification.utils.JsonUtil;
 
 public class RedisCache implements Cache {
   private static final String CACHE_MAP_LIST = "cache.mapNames";
@@ -20,28 +21,40 @@ public class RedisCache implements Cache {
 
   @Override
   public String get(String mapName, String key) {
-    ProjectLogger.log("RedisCache:get: mapName = " + mapName + ", key = " + key, LoggerEnum.INFO.name());
-    
+    ProjectLogger.log(
+        "RedisCache:get: mapName = " + mapName + ", key = " + key, LoggerEnum.INFO.name());
+
     try {
       RMap<String, String> map = client.getMap(mapName);
       String s = map.get(key);
       return s;
     } catch (Exception e) {
-      ProjectLogger.log("RedisCache:get: Error occurred mapName = " + mapName + ", key = " + key, LoggerEnum.ERROR.name());
+      ProjectLogger.log(
+          "RedisCache:get: Error occurred mapName = " + mapName + ", key = " + key,
+          LoggerEnum.ERROR.name());
     }
     return null;
   }
 
   @Override
   public boolean put(String mapName, String key, String value) {
-    ProjectLogger.log("RedisCache:put: mapName = " + mapName + ", key = " + key + ", value = " + value, LoggerEnum.INFO.name());
-    
+    ProjectLogger.log(
+        "RedisCache:put: mapName = " + mapName + ", key = " + key + ", value = " + value,
+        LoggerEnum.INFO.name());
+
     try {
       RMap<String, String> map = client.getMap(mapName);
       map.put(key, value);
       return true;
     } catch (Exception e) {
-      ProjectLogger.log("RedisCache:put: Error occurred mapName = " + mapName + ", key = " + key + ", value = " + value, LoggerEnum.ERROR.name());
+      ProjectLogger.log(
+          "RedisCache:put: Error occurred mapName = "
+              + mapName
+              + ", key = "
+              + key
+              + ", value = "
+              + value,
+          LoggerEnum.ERROR.name());
     }
     return false;
   }
@@ -55,7 +68,9 @@ public class RedisCache implements Cache {
       map.clear();
       return true;
     } catch (Exception e) {
-      ProjectLogger.log("RedisCache:clear: Error occurred mapName = " + mapName + " error = " + e, LoggerEnum.ERROR.name());
+      ProjectLogger.log(
+          "RedisCache:clear: Error occurred mapName = " + mapName + " error = " + e,
+          LoggerEnum.ERROR.name());
     }
     return false;
   }
@@ -63,7 +78,6 @@ public class RedisCache implements Cache {
   @Override
   public void clearAll() {
     ProjectLogger.log("RedisCache: clearAll called", LoggerEnum.INFO.name());
-
     for (int i = 0; i < mapNameList.length; i++) {
       clear(mapNameList[i]);
     }
@@ -72,9 +86,49 @@ public class RedisCache implements Cache {
   @Override
   public boolean setMapExpiry(String name, long seconds) {
     boolean result = client.getMap(name).expire(seconds, TimeUnit.SECONDS);
-    
-    ProjectLogger.log("RedisCache:setMapExpiry: name = " + name + " seconds = " + seconds + " result = " + result, LoggerEnum.INFO.name());
+
+    ProjectLogger.log(
+        "RedisCache:setMapExpiry: name = " + name + " seconds = " + seconds + " result = " + result,
+        LoggerEnum.INFO.name());
 
     return result;
+  }
+
+  public boolean put(String mapName, String key, Object value) {
+    ProjectLogger.log(
+        "RedisCache:put: mapName = " + mapName + ", key = " + key + ", value = " + value,
+        LoggerEnum.INFO.name());
+
+    try {
+      String res = JsonUtil.toJson(value);
+      RMap<String, String> map = client.getMap(mapName);
+      map.put(key, res);
+      return true;
+    } catch (Exception e) {
+      ProjectLogger.log(
+          "RedisCache:put: Error occurred mapName = "
+              + mapName
+              + ", key = "
+              + key
+              + ", value = "
+              + value,
+          LoggerEnum.ERROR.name());
+    }
+    return false;
+  }
+
+  public Object get(String mapName, String key, Class<?> cls) {
+    ProjectLogger.log(
+        "RedisCache:get: mapName = " + mapName + ", key = " + key, LoggerEnum.INFO.name());
+    try {
+      RMap<String, String> map = client.getMap(mapName);
+      String s = map.get(key);
+      return JsonUtil.getAsObject(s, cls);
+    } catch (Exception e) {
+      ProjectLogger.log(
+          "RedisCache:get: Error occurred mapName = " + mapName + ", key = " + key,
+          LoggerEnum.ERROR.name());
+    }
+    return null;
   }
 }
