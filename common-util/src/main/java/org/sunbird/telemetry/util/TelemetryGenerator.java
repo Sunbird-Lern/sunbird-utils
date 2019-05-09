@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.telemetry.dto.Actor;
 import org.sunbird.telemetry.dto.Context;
@@ -41,7 +42,7 @@ public class TelemetryGenerator {
     }
     String actorId = (String) context.get(JsonKey.ACTOR_ID);
     String actorType = (String) context.get(JsonKey.ACTOR_TYPE);
-    Actor actor = new Actor(actorId, actorType);
+    Actor actor = new Actor(actorId, StringUtils.capitalize(actorType));
     Target targetObject =
         generateTargetObject((Map<String, Object>) params.get(JsonKey.TARGET_OBJECT));
     Context eventContext = getContext(context);
@@ -70,11 +71,10 @@ public class TelemetryGenerator {
     ArrayList<Map<String, Object>> list = (ArrayList<Map<String, Object>>) correlatedObjects;
     ArrayList<Map<String, Object>> targetList = new ArrayList<>();
     if (null != list && !list.isEmpty()) {
-
       for (Map<String, Object> m : list) {
         Map<String, Object> map = new HashMap<>();
         map.put(JsonKey.ID, m.get(JsonKey.ID));
-        map.put(JsonKey.TYPE, m.get(JsonKey.TYPE));
+        map.put(JsonKey.TYPE, StringUtils.capitalize((String) m.get(JsonKey.TYPE)));
         targetList.add(map);
       }
     }
@@ -84,7 +84,9 @@ public class TelemetryGenerator {
   private static Target generateTargetObject(Map<String, Object> targetObject) {
 
     Target target =
-        new Target((String) targetObject.get(JsonKey.ID), (String) targetObject.get(JsonKey.TYPE));
+        new Target(
+            (String) targetObject.get(JsonKey.ID),
+            StringUtils.capitalize((String) targetObject.get(JsonKey.TYPE)));
     if (targetObject.get(JsonKey.ROLLUP) != null) {
       target.setRollup((Map<String, String>) targetObject.get(JsonKey.ROLLUP));
     }
@@ -118,30 +120,36 @@ public class TelemetryGenerator {
   }
 
   private static List<String> getProps(Map<String, Object> map) {
-    return (List<String>)
-        map.entrySet()
-            .stream()
-            .map(entry -> entry.getKey())
-            .map(
-                key -> {
-                  if (map.get(key) instanceof Map) {
-                    List<String> keys = getProps((Map<String, Object>) map.get(key));
-                    return keys.stream()
-                        .map(childKey -> key + "." + childKey)
-                        .collect(Collectors.toList());
-                  } else {
-                    return Arrays.asList(key);
-                  }
-                })
-            .flatMap(List::stream)
-            .collect(Collectors.toList());
+    try {
+      return map.entrySet()
+          .stream()
+          .map(entry -> entry.getKey())
+          .map(
+              key -> {
+                if (map.get(key) instanceof Map) {
+                  List<String> keys = getProps((Map<String, Object>) map.get(key));
+                  return keys.stream()
+                      .map(childKey -> key + "." + childKey)
+                      .collect(Collectors.toList());
+                } else {
+                  return Arrays.asList(key);
+                }
+              })
+          .flatMap(List::stream)
+          .collect(Collectors.toList());
+    } catch (Exception e) {
+      ProjectLogger.log("TelemetryGenerator:getProps error =" + e, LoggerEnum.ERROR.name());
+    }
+    return new ArrayList<>();
   }
 
   private static Context getContext(Map<String, Object> context) {
     String channel = (String) context.get(JsonKey.CHANNEL);
     String env = (String) context.get(JsonKey.ENV);
+    String did = (String) context.get(JsonKey.DEVICE_ID);
     Producer producer = getProducer(context);
-    Context eventContext = new Context(channel, env, producer);
+    Context eventContext = new Context(channel, StringUtils.capitalize(env), producer);
+    eventContext.setDid(did);
     if (context.get(JsonKey.ROLLUP) != null
         && !((Map<String, String>) context.get(JsonKey.ROLLUP)).isEmpty()) {
       eventContext.setRollup((Map<String, String>) context.get(JsonKey.ROLLUP));
@@ -150,17 +158,27 @@ public class TelemetryGenerator {
   }
 
   private static Producer getProducer(Map<String, Object> context) {
-
-    String id = (String) context.get(JsonKey.PDATA_ID);
-    String pid = (String) context.get(JsonKey.PDATA_PID);
-    String ver = (String) context.get(JsonKey.PDATA_VERSION);
-    return new Producer(id, pid, ver);
+    String id = "";
+    if (context != null && context.size() != 0) {
+      if (StringUtils.isNotBlank((String) context.get(JsonKey.APP_ID))) {
+        id = (String) context.get(JsonKey.APP_ID);
+      } else {
+        id = (String) context.get(JsonKey.PDATA_ID);
+      }
+      String pid = (String) context.get(JsonKey.PDATA_PID);
+      String ver = (String) context.get(JsonKey.PDATA_VERSION);
+      return new Producer(id, pid, ver);
+    } else {
+      return new Producer("", "", "");
+    }
   }
 
   private static String getTelemetry(Telemetry telemetry) {
     String event = "";
     try {
       event = mapper.writeValueAsString(telemetry);
+      ProjectLogger.log(
+          "TelemetryGenerator:getTelemetry = Telemetry Event : " + event, LoggerEnum.INFO.name());
     } catch (Exception e) {
       ProjectLogger.log(e.getMessage(), e);
     }
@@ -181,7 +199,7 @@ public class TelemetryGenerator {
     }
     String actorId = (String) context.get(JsonKey.ACTOR_ID);
     String actorType = (String) context.get(JsonKey.ACTOR_TYPE);
-    Actor actor = new Actor(actorId, actorType);
+    Actor actor = new Actor(actorId, StringUtils.capitalize(actorType));
 
     Context eventContext = getContext(context);
 
@@ -243,7 +261,7 @@ public class TelemetryGenerator {
     }
     String actorId = (String) context.get(JsonKey.ACTOR_ID);
     String actorType = (String) context.get(JsonKey.ACTOR_TYPE);
-    Actor actor = new Actor(actorId, actorType);
+    Actor actor = new Actor(actorId, StringUtils.capitalize(actorType));
 
     Context eventContext = getContext(context);
 
@@ -252,7 +270,7 @@ public class TelemetryGenerator {
     if (!StringUtils.isBlank(reqId)) {
       Map<String, Object> map = new HashMap<>();
       map.put(JsonKey.ID, reqId);
-      map.put(JsonKey.TYPE, JsonKey.REQUEST);
+      map.put(JsonKey.TYPE, StringUtils.capitalize(JsonKey.REQUEST));
       eventContext.getCdata().add(map);
     }
 
@@ -307,7 +325,7 @@ public class TelemetryGenerator {
     }
     String actorId = (String) context.get(JsonKey.ACTOR_ID);
     String actorType = (String) context.get(JsonKey.ACTOR_TYPE);
-    Actor actor = new Actor(actorId, actorType);
+    Actor actor = new Actor(actorId, StringUtils.capitalize(actorType));
 
     Context eventContext = getContext(context);
 

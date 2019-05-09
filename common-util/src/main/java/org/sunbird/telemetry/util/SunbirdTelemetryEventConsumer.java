@@ -43,7 +43,7 @@ public class SunbirdTelemetryEventConsumer {
         String telemetryReq = mapper.writeValueAsString(getTelemetryRequest(request));
         ProjectLogger.log(
             "SunbirdTelemetryEventConsumer:consume telemetry request:" + telemetryReq,
-            LoggerEnum.DEBUG.name());
+            LoggerEnum.INFO.name());
         try {
           String response = HttpUtil.sendPostRequest(getTelemetryUrl(), telemetryReq, getHeaders());
           ProjectLogger.log(

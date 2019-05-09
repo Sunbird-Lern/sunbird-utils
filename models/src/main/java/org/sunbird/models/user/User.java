@@ -58,6 +58,8 @@ public class User implements Serializable {
   private String loginId;
   private String registryId;
   private String organisationId;
+  private String maskedEmail;
+  private String maskedPhone;
   private List<Map<String, String>> externalIds;
   private String userType;
   private Timestamp tncAcceptedOn;
@@ -416,6 +418,22 @@ public class User implements Serializable {
 
   public void setTncAcceptedOn(Timestamp tncAcceptedOn) {
     this.tncAcceptedOn = tncAcceptedOn;
+  }
+
+  public String getMaskedEmail() {
+    return maskedEmail;
+  }
+
+  public void setMaskedEmail(String maskedEmail) {
+    this.maskedEmail = maskedEmail;
+  }
+
+  public String getMaskedPhone() {
+    return maskedPhone;
+  }
+
+  public void setMaskedPhone(String maskedPhone) {
+    this.maskedPhone = maskedPhone;
   }
 
   public String getTncAcceptedVersion() {

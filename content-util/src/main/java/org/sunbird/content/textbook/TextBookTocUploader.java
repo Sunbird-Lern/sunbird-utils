@@ -16,6 +16,7 @@ import static org.sunbird.common.models.util.JsonKey.VERSION_KEY;
 import static org.sunbird.common.models.util.LoggerEnum.ERROR;
 import static org.sunbird.common.models.util.LoggerEnum.INFO;
 import static org.sunbird.common.models.util.ProjectLogger.log;
+import static org.sunbird.common.models.util.ProjectUtil.getConfigValue;
 import static org.sunbird.common.responsecode.ResponseCode.SERVER_ERROR;
 import static org.sunbird.common.responsecode.ResponseCode.errorProcessingRequest;
 import static org.sunbird.content.textbook.FileExtension.Extension.CSV;
@@ -30,6 +31,7 @@ import static org.sunbird.content.textbook.TextBookTocFileConfig.LEVELS;
 import static org.sunbird.content.textbook.TextBookTocFileConfig.ROW_METADATA;
 import static org.sunbird.content.textbook.TextBookTocFileConfig.SUPPRESS_EMPTY_COLUMNS;
 import static org.sunbird.content.util.ContentCloudStore.upload;
+import static org.sunbird.content.util.TextBookTocUtil.getObjectFrom;
 import static org.sunbird.content.util.TextBookTocUtil.stringify;
 
 import java.io.File;
@@ -38,6 +40,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -91,7 +94,12 @@ public class TextBookTocUploader {
       deleteQuietly(file);
       log("Creating file for CSV at Location: " + file.getAbsolutePath(), INFO.name());
       touch(file);
+      Instant startTime = Instant.now();
       populateDataIntoFile(content, file);
+      log(
+          "Timed:TextBookTocUploader:execute time taken in processing "
+              + (Instant.now().getEpochSecond() - startTime.getEpochSecond()),
+          INFO.name());
       log(
           "Uploading "
               + fileExtension.getExtension()
@@ -161,6 +169,7 @@ public class TextBookTocUploader {
             "Writing Data to Output Stream for Textbook | Id " + content.get(IDENTIFIER),
             INFO.name());
         for (Map<String, Object> row : rows) {
+          updateBGMSData(row, content);
           Object[] tempRow =
               IntStream.range(0, KEY_NAMES.size())
                   .mapToObj(
@@ -196,6 +205,7 @@ public class TextBookTocUploader {
             "Writing Data to Output Stream for Textbook | Id " + content.get(IDENTIFIER),
             INFO.name());
         for (Map<String, Object> row : rows) {
+          updateBGMSData(row, content);
           Object[] tempRow =
               IntStream.range(0, KEY_NAMES.size())
                   .mapToObj(i -> row.get(KEY_NAMES.get(i)))
@@ -394,6 +404,22 @@ public class TextBookTocUploader {
           processHierarchyRecursiveSuppressColumns(child, level);
           updateMetadataSuppressColumns(null, level--);
         }
+      }
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  private void updateBGMSData(Map<String, Object> row, Map<String, Object> contentHierarchy) {
+    Map<String, Object> outputMapping =
+        getObjectFrom(getConfigValue(JsonKey.TEXTBOOK_TOC_OUTPUT_MAPPING), Map.class);
+    Map<String, Object> frameworkCategories =
+        (Map<String, Object>) outputMapping.get("frameworkCategories");
+    for (Entry<String, Object> entry : frameworkCategories.entrySet()) {
+      String key = entry.getKey();
+      if (null == contentHierarchy.get(key)) {
+        row.put(key, "");
+      } else {
+        row.put(key, stringify(contentHierarchy.get(key)));
       }
     }
   }

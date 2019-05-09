@@ -9,7 +9,6 @@ import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
-import com.typesafe.config.Config;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,6 +49,8 @@ import org.elasticsearch.client.AdminClient;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.IndicesAdminClient;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.util.concurrent.FutureUtils;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.Aggregations;
@@ -69,16 +70,14 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.core.classloader.annotations.SuppressStaticInitializationFor;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.responsecode.ResponseCode;
-import org.sunbird.common.util.ConfigUtil;
 import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
-import org.sunbird.helper.ElasticSearchMapping;
-import org.sunbird.helper.ElasticSearchSettings;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(PowerMockRunner.class)
@@ -89,7 +88,11 @@ import org.sunbird.helper.ElasticSearchSettings;
   AcknowledgedResponse.class,
   GetRequestBuilder.class,
   HttpUtil.class,
-  BulkProcessor.class
+  BulkProcessor.class,
+  FutureUtils.class,
+  SearchHit.class,
+  SearchHits.class,
+  Aggregations.class
 })
 @SuppressStaticInitializationFor({"org.sunbird.common.ConnectionManager"})
 public class ElasticSearchUtilTest {
@@ -119,17 +122,6 @@ public class ElasticSearchUtilTest {
     mockRulesForIndexes();
     mockRulesHttpRequest();
     mockRulesBulkInsert();
-  }
-
-  @Test
-  public void testCreateIndexSuccess() {
-    boolean response =
-        ElasticSearchUtil.createIndex(
-            INDEX_NAME,
-            TYPE_NAME,
-            ElasticSearchMapping.createMapping(),
-            ElasticSearchSettings.createSettingsForIndex());
-    assertTrue(response);
   }
 
   @Test
@@ -235,13 +227,6 @@ public class ElasticSearchUtilTest {
     searchDTO.setFields(fields);
     searchDTO.setQuery("organisation");
 
-    List<Map<String, String>> facets = new ArrayList<>();
-    Map<String, String> m1 = new HashMap<>();
-    m1.put("description", null);
-    m1.put("createdOn", JsonKey.DATE_HISTOGRAM);
-    facets.add(m1);
-    searchDTO.setFacets(facets);
-
     List<String> mode = Arrays.asList("soft");
     searchDTO.setMode(mode);
     Map<String, Integer> constraintMap = new HashMap<String, Integer>();
@@ -252,7 +237,7 @@ public class ElasticSearchUtilTest {
     mockRulesForSearch(3);
     Map map = ElasticSearchUtil.complexSearch(searchDTO, INDEX_NAME, TYPE_NAME);
 
-    assertEquals(3, map.size());
+    assertEquals(2, map.size());
   }
 
   @Test
@@ -320,24 +305,33 @@ public class ElasticSearchUtilTest {
 
   @Test
   public void testGetByIdentifierFailureWithoutIndex() {
-    Map<String, Object> responseMap =
-        ElasticSearchUtil.getDataByIdentifier(
-            null, TYPE_NAME, (String) chemistryMap.get("courseId"));
-    assertEquals(0, responseMap.size());
+    try {
+      Map<String, Object> responseMap =
+          ElasticSearchUtil.getDataByIdentifier(
+              null, TYPE_NAME, (String) chemistryMap.get("courseId"));
+    } catch (ProjectCommonException ex) {
+      assertEquals(ResponseCode.SERVER_ERROR.getResponseCode(), ex.getResponseCode());
+    }
   }
 
   @Test
   public void testGetByIdentifierFailureWithoutType() {
     mockRulesForGet(true);
-    Map<String, Object> responseMap =
-        ElasticSearchUtil.getDataByIdentifier(INDEX_NAME, null, "testcourse123");
-    assertEquals(0, responseMap.size());
+    try {
+      Map<String, Object> responseMap =
+          ElasticSearchUtil.getDataByIdentifier(INDEX_NAME, null, "testcourse123");
+    } catch (ProjectCommonException ex) {
+      assertEquals(ResponseCode.SERVER_ERROR.getResponseCode(), ex.getResponseCode());
+    }
   }
 
   @Test
   public void testGetByIdentifierFailureWithoutTypeAndIndexIdentifier() {
-    Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(null, null, "");
-    assertEquals(0, responseMap.size());
+    try {
+      Map<String, Object> responseMap = ElasticSearchUtil.getDataByIdentifier(null, null, "");
+    } catch (ProjectCommonException ex) {
+      assertEquals(ResponseCode.SERVER_ERROR.getResponseCode(), ex.getResponseCode());
+    }
   }
 
   @Test
@@ -410,46 +404,6 @@ public class ElasticSearchUtilTest {
     boolean response =
         ElasticSearchUtil.upsertData(
             INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"), innermap);
-    assertFalse(response);
-  }
-
-  @Test
-  public void testCreateIndexFailureWithEmptyIndexName() {
-    boolean response =
-        ElasticSearchUtil.createIndex(
-            "",
-            TYPE_NAME,
-            ElasticSearchMapping.createMapping(),
-            ElasticSearchSettings.createSettingsForIndex());
-    assertFalse(response);
-  }
-
-  @Test
-  public void testCreateIndexFailureWithEmptyIndexNameAndType() {
-    boolean response =
-        ElasticSearchUtil.createIndex(
-            "",
-            null,
-            ElasticSearchMapping.createMapping(),
-            ElasticSearchSettings.createSettingsForIndex());
-    assertFalse(response);
-  }
-
-  @Test
-  public void testCreateIndexFailureWithEmptyMapping() {
-    mockRulesForIndexes(false);
-    boolean response =
-        ElasticSearchUtil.createIndex(
-            INDEX_NAME, TYPE_NAME, null, ElasticSearchSettings.createSettingsForIndex());
-    assertFalse(response);
-  }
-
-  @Test
-  public void testCreateIndexFailureWithEmptySettings() {
-    mockRulesForIndexes(false);
-    boolean response =
-        ElasticSearchUtil.createIndex(
-            INDEX_NAME, TYPE_NAME, ElasticSearchMapping.createMapping(), null);
     assertFalse(response);
   }
 
@@ -535,14 +489,6 @@ public class ElasticSearchUtilTest {
   }
 
   @Test
-  public void testAddOrUpdateMappingSuccess() {
-    boolean bool =
-        ElasticSearchUtil.addOrUpdateMapping(
-            INDEX_NAME, TYPE_NAME, ElasticSearchMapping.createMapping());
-    assertTrue(bool);
-  }
-
-  @Test
   public void testSearchMetricsDataSuccess() {
     String index = "searchindex";
     String type = "user";
@@ -563,24 +509,52 @@ public class ElasticSearchUtilTest {
     }
   }
 
+  @Test
+  public void testGetMappedIndexAndTypeSuccess() throws Exception {
+    Map<String, String> result =
+        Whitebox.invokeMethod(
+            ElasticSearchUtil.class, "getMappedIndexAndType", "searchindex", "user");
+    assertEquals("user", result.get(JsonKey.INDEX));
+    assertEquals("_doc", result.get(JsonKey.TYPE));
+  }
+
+  @Test
+  public void testGetMappedIndexAndTypeFailure() throws Exception {
+    try {
+      Map<String, String> result =
+          Whitebox.invokeMethod(
+              ElasticSearchUtil.class, "getMappedIndexAndType", "searchindex", "usertest");
+    } catch (ProjectCommonException ex) {
+      assertEquals(ResponseCode.SERVER_ERROR.getResponseCode(), ex.getResponseCode());
+    }
+  }
+
+  @Test
+  public void testGetMappedIndexesAndTypesSuccess() throws Exception {
+    List<Map<String, String>> result =
+        Whitebox.invokeMethod(
+            ElasticSearchUtil.class, "getMappedIndexesAndTypes", "searchindex", "user", "org");
+    assertEquals(2, result.size());
+  }
+
+  @Test
+  public void testGetMappedIndexesAndTypesFailure() throws Exception {
+    try {
+      Map<String, String> result =
+          Whitebox.invokeMethod(
+              ElasticSearchUtil.class,
+              "getMappedIndexesAndTypes",
+              "searchindex",
+              "user",
+              "orgtest");
+    } catch (ProjectCommonException ex) {
+      assertEquals(ResponseCode.SERVER_ERROR.getResponseCode(), ex.getResponseCode());
+    }
+  }
+
   public void testCalculatedEndTimeSuccess() {
     long endTime = ElasticSearchUtil.calculateEndTime(START_TIME);
     assertTrue(endTime > START_TIME);
-  }
-
-  // @Test
-  public void testCreatedIndexAndTypesSuccess() {
-    Config config = ConfigUtil.getConfig(ElasticSearchUtil.ES_CONFIG_FILE);
-    List<Object> list = (List) config.getAnyRefList("elasticsearch.indices");
-    for (Object obj : list) {
-      Map<String, Object> map = (Map) obj;
-      String indexName = (String) map.get(JsonKey.NAME);
-      List<String> types = (List<String>) map.get(JsonKey.ES_TYPES);
-      assertEquals(ElasticSearchUtil.indexMap.get(indexName), true);
-      for (String type : types) {
-        assertEquals(ElasticSearchUtil.typeMap.get(type), true);
-      }
-    }
   }
 
   private static Map<String, Object> initializeChemistryCourse(int appendVal) {
@@ -763,14 +737,14 @@ public class ElasticSearchUtilTest {
     when(searchResponse.getHits()).thenReturn(searchHits);
     when(searchResponse.getAggregations()).thenReturn(aggregations);
     when(aggregations.get(Mockito.eq("description"))).thenReturn(terms);
-    when(aggregations.get(Mockito.eq("createdOn"))).thenReturn(histogram);
-    when(terms.getBuckets()).thenReturn(new ArrayList<Terms.Bucket>());
+    //    when(aggregations.get(Mockito.eq("createdOn"))).thenReturn(histogram);
+    when(terms.getBuckets()).thenReturn(new ArrayList<>());
     when(histogram.getBuckets()).thenReturn(new ArrayList<>());
 
     when(searchHits.getTotalHits()).thenReturn(expectedValue);
 
     when(searchHits.iterator()).thenReturn(lst.iterator());
-    when(hit1.getSource()).thenReturn(new HashMap());
+    when(hit1.getSourceAsMap()).thenReturn(new HashMap());
   }
 
   private static void mockRulesForInsert() {
@@ -862,7 +836,9 @@ public class ElasticSearchUtilTest {
     }
     doReturn(mockCreateIndexReqBldr).when(indicesAdminMock).prepareCreate(Mockito.anyString());
 
-    doReturn(mockCreateIndexReqBldr).when(mockCreateIndexReqBldr).setSettings(Mockito.anyString());
+    doReturn(mockCreateIndexReqBldr)
+        .when(mockCreateIndexReqBldr)
+        .setSettings(Mockito.any(Settings.class));
 
     doReturn(mockCreateIndResp).when(mockCreateIndexReqBldr).get();
     doReturn(true).when(mockCreateIndResp).isAcknowledged();

@@ -22,6 +22,8 @@ public class SearchDTO {
   private Map<String, Object> sortBy = new HashMap<>();
   private String operation;
   private String query;
+  private List<String> queryFields;
+
   private Integer limit = 250;
   private Integer offset = 0;
   private boolean fuzzySearch = false;
@@ -163,5 +165,13 @@ public class SearchDTO {
 
   public void setExcludedFields(List<String> excludedFields) {
     this.excludedFields = excludedFields;
+  }
+
+  public List<String> getQueryFields() {
+    return queryFields;
+  }
+
+  public void setQueryFields(List<String> queryFields) {
+    this.queryFields = queryFields;
   }
 }

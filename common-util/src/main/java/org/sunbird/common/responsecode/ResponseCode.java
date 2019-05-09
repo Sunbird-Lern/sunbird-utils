@@ -783,6 +783,8 @@ public enum ResponseCode {
       ResponseMessage.Message.ERROR_INVALID_TEXTBOOK_UNIT_ID),
   invalidRequestTimeout(
       ResponseMessage.Key.INVALID_REQUEST_TIMEOUT, ResponseMessage.Message.INVALID_REQUEST_TIMEOUT),
+  errorBGMSMismatch(
+      ResponseMessage.Key.ERROR_BGMS_MISMATCH, ResponseMessage.Message.ERROR_BGMS_MISMATCH),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
@@ -790,7 +792,9 @@ public enum ResponseCode {
   UNAUTHORIZED(401),
   FORBIDDEN(403),
   REDIRECTION_REQUIRED(302),
-  TOO_MANY_REQUESTS(429);
+  TOO_MANY_REQUESTS(429),
+  SERVICE_UNAVAILABLE(503);
+
   private int responseCode;
   /** error code contains String value */
   private String errorCode;

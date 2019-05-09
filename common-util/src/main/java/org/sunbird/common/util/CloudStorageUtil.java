@@ -58,6 +58,20 @@ public class CloudStorageUtil {
   public static String getSignedUrl(
       CloudStorageType storageType, String container, String objectKey) {
     IStorageService storageService = getStorageService(storageType);
+    return getSignedUrl(storageService, storageType, container, objectKey);
+  }
+
+  public static String getAnalyticsSignedUrl(
+      CloudStorageType storageType, String container, String objectKey) {
+    IStorageService analyticsStorageService = getAnalyticsStorageService(storageType);
+    return getSignedUrl(analyticsStorageService, storageType, container, objectKey);
+  }
+
+  public static String getSignedUrl(
+      IStorageService storageService,
+      CloudStorageType storageType,
+      String container,
+      String objectKey) {
     int timeoutInSeconds = getTimeoutInSeconds();
     return storageService.getSignedURL(
         container, objectKey, Some.apply(timeoutInSeconds), Some.apply("r"));
@@ -66,7 +80,17 @@ public class CloudStorageUtil {
   private static IStorageService getStorageService(CloudStorageType storageType) {
     String storageKey = PropertiesCache.getInstance().getProperty(JsonKey.ACCOUNT_NAME);
     String storageSecret = PropertiesCache.getInstance().getProperty(JsonKey.ACCOUNT_KEY);
+    return getStorageService(storageType, storageKey, storageSecret);
+  }
 
+  private static IStorageService getAnalyticsStorageService(CloudStorageType storageType) {
+    String storageKey = PropertiesCache.getInstance().getProperty(JsonKey.ANALYTICS_ACCOUNT_NAME);
+    String storageSecret = PropertiesCache.getInstance().getProperty(JsonKey.ANALYTICS_ACCOUNT_KEY);
+    return getStorageService(storageType, storageKey, storageSecret);
+  }
+
+  private static IStorageService getStorageService(
+      CloudStorageType storageType, String storageKey, String storageSecret) {
     StorageConfig storageConfig =
         new StorageConfig(storageType.getType(), storageKey, storageSecret);
     IStorageService storageService = StorageServiceFactory.getStorageService(storageConfig);

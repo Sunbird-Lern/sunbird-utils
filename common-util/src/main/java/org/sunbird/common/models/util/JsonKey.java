@@ -436,6 +436,7 @@ public final class JsonKey {
   public static final String PUBLIC = "public";
   public static final String PUBLISH_COURSE = "publishCourse";
   public static final String QUERY = "query";
+  public static final String QUERY_FIELDS = "queryFields";
   public static final String RECEIVER_ID = "receiverId";
   public static final String RECIPIENT_COUNT = "recipientCount";
   public static final String RECIPIENT_EMAILS = "recipientEmails";
@@ -632,6 +633,9 @@ public final class JsonKey {
   public static final String SUNBIRD_CONTENT_SERVICE_BASE_URL = "sunbird_content_service_base_url";
   public static final String SUNBIRD_CONTENT_SERVICE_AUTHORIZATION =
       "sunbird_content_service_authorization";
+  public static final String SUNBIRD_HEALTH_CHECK_ENABLE = "sunbird_health_check_enable";
+  public static final String HEALTH = "health";
+  public static final String SERVICE = "service";
   public static final String SOFT_CONSTRAINTS = "softConstraints";
   public static final String SUNBIRD_API_BASE_URL = "sunbird_api_base_url";
   public static final String SUNBIRD_API_MGR_BASE_URL = "sunbird_api_mgr_base_url";
@@ -645,7 +649,6 @@ public final class JsonKey {
   public static final String SUNBIRD_LMS_TELEMETRY = "Sunbird_LMS_Telemetry";
   public static final String SUNBIRD_LMS_AUTHORIZATION = "sunbird_authorization";
   public static final String ETS = "ets";
-  public static final String CHANNEL_ID = "x-channel-id";
   public static final String CONTENT_ENCODING = "Content-Encoding";
   public static final String EK_STEP = "EK-STEP";
   public static final String RESOURCE_NAME = "resourceName";
@@ -881,6 +884,23 @@ public final class JsonKey {
   public static final String DATA_SOURCE = "dataSource";
   public static final String SUNBIRD_DIALCODE_SEARCH_API = "sunbird_dialcode_search_api";
   public static final String FROM_BEGINING = "fromBegining";
+  public static final String SUNBIRD_KEYCLOAK_USER_FEDERATION_PROVIDER_ID =
+      "sunbird_keycloak_user_federation_provider_id";
+  public static final String DEVICE_ID = "did";
+  public static final String SUNBIRD_GZIP_FILTER_ENABLED = "sunbird_gzip_filter_enabled";
+  public static final String COMPLETED_PERCENT = "completedPercent";
+  public static final String PARTICIPANT_COUNT = "participantCount";
+  public static final String BOARD = "board";
+  public static final String MEDIUM = "medium";
+  public static final String SUNBIRD_GZIP_ENABLE = "sunbird_gzip_enable";
+  public static final String SHOW_DOWNLOAD_LINK = "showDownloadLink";
+  public static final String SUNBIRD_SYNC_READ_WAIT_TIME = "sunbird_sync_read_wait_time";
+  public static final String SUNBIRD_COURSE_METRICS_CONTANER = "sunbird_course_metrics_container";
+  public static final String SUNBIRD_COURSE_METRICS_REPORT_FOLDER =
+      "sunbird_course_metrics_report_folder";
+  public static final String REPORT_UPDATED_ON = "reportUpdatedOn";
+  public static final String ANALYTICS_ACCOUNT_NAME = "sunbird_analytics_blob_account_name";
+  public static final String ANALYTICS_ACCOUNT_KEY = "sunbird_analytics_blob_account_key";
 
   private JsonKey() {}
 }
