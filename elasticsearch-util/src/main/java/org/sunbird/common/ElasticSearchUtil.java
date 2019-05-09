@@ -2,8 +2,6 @@ package org.sunbird.common;
 
 import static org.sunbird.common.models.util.ProjectUtil.isNotNull;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.typesafe.config.Config;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -18,8 +16,10 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkProcessor;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -35,6 +35,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Requests;
+//import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.ExistsQueryBuilder;
@@ -69,6 +70,13 @@ import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.common.util.ConfigUtil;
 import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.typesafe.config.Config;
+
+import akka.dispatch.Futures;
+import scala.concurrent.Future;
+import scala.concurrent.Promise;
 
 /**
  * This class will provide all required operation for elastic search.
@@ -1158,4 +1166,56 @@ public class ElasticSearchUtil {
     }
     return mappedIndexesAndTypes;
   }
+  
+	public static Future<Map<String, Object>> doAsyncSearch(String index, String type, SearchDTO searchDTO) {
+		Map<String,String> indexTypeMap = getMappedIndexAndType(index, type);
+		Promise<Map<String, Object>> promise = Futures.promise();
+		SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+		if (!StringUtils.isBlank(searchDTO.getQuery())) {
+			SimpleQueryStringBuilder sqsb = QueryBuilders.simpleQueryStringQuery(searchDTO.getQuery());
+			if (CollectionUtils.isEmpty(searchDTO.getQueryFields())) {
+				boolQueryBuilder.must(sqsb.field("all_fields"));
+			} else {
+				Map<String, Float> searchFields = searchDTO.getQueryFields().stream()
+						.collect(Collectors.<String, String, Float>toMap(s -> s, v -> 1.0f));
+				boolQueryBuilder.must(sqsb.fields(searchFields));
+			}
+		}
+		sourceBuilder.from(searchDTO.getOffset() != null ? searchDTO.getOffset() : 0);
+		sourceBuilder.size(searchDTO.getLimit() != null ? searchDTO.getLimit() : 250);
+		// check mode and set constraints
+		Map<String, Float> constraintsMap = getConstraints(searchDTO);
+		// apply additional properties
+		if (searchDTO.getAdditionalProperties() != null && searchDTO.getAdditionalProperties().size() > 0) {
+			for (Map.Entry<String, Object> entry : searchDTO.getAdditionalProperties().entrySet()) {
+				addAdditionalProperties(boolQueryBuilder, entry, constraintsMap);
+			}
+		}
+		sourceBuilder.query(boolQueryBuilder);
+		SearchRequest searchRequest = new SearchRequest(indexTypeMap.get(JsonKey.INDEX));
+		searchRequest.source(sourceBuilder);
+		ActionListener<SearchResponse> listener = new ActionListener<SearchResponse>() {
+			@Override
+			public void onResponse(SearchResponse searchResponse) {
+				List<Map<String, Object>> mapList = new ArrayList<>();
+				Map<String, Object> responseMap = new HashMap<>();
+				SearchHits hits = searchResponse.getHits();
+				for (SearchHit hit : hits.getHits()) {
+					mapList.add(hit.getSourceAsMap());
+				}
+				responseMap.put(JsonKey.CONTENT, mapList);
+				responseMap.put(JsonKey.COUNT, hits.getTotalHits());
+				promise.success(responseMap);
+			}
+
+			@Override
+			public void onFailure(Exception e) {
+				promise.failure(e);
+			}
+		};
+		ConnectionManager.getRestClient().searchAsync(searchRequest, listener);
+		return promise.future();
+	}
+  
 }
