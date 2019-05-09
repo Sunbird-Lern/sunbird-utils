@@ -1,4 +1,3 @@
-/** */
 package org.sunbird.common.models.util;
 
 /**
@@ -904,6 +903,8 @@ public final class JsonKey {
   public static final String ANALYTICS_ACCOUNT_KEY = "sunbird_analytics_blob_account_key";
   public static final String PAGE_MANAGEMENT = "page_management";
   public static final String SUNBIRD_CACHE_ENABLE = "sunbird_cache_enable";
+  public static final String MAP_NAME = "mapName";
+  public static final String PAGE_ASSEMBLE = "pageAssemble";
 
   private JsonKey() {}
 }
