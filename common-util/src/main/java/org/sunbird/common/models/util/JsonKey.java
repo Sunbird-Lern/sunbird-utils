@@ -1,4 +1,3 @@
-/** */
 package org.sunbird.common.models.util;
 
 /**
