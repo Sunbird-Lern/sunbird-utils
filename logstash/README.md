@@ -6,7 +6,7 @@
 
 3. Create a kafka topic - local.lms.audit.events
 
-4. Replace path of `/var/log/cassandra/triggerAuditLog.log` in logstash.conf file with the path of cassandra trigger log (if needed)
+4. Replace path of `/var/log/cassandra/triggerAuditLog.log` in `logstash.conf` file with the path of cassandra trigger log (if needed).
 
 5. Replace `sincedb_path` to a valid one in developer machine
 
