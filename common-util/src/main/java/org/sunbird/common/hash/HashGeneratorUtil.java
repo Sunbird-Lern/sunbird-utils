@@ -5,19 +5,20 @@ import java.util.Arrays;
 import java.util.List;
 
 public class HashGeneratorUtil {
-  private static List<Integer> a = null;
-  private static int n = 300;
+  private static List<Integer> primes = null;
+  private static int MAX_NUMBER = 300;
+  private static int numPrimes = 7;
 
   private static List<Integer> getPrimes() {
     List<Integer> list = new ArrayList<>();
-    boolean prime[] = new boolean[n + 1];
+    boolean prime[] = new boolean[MAX_NUMBER + 1];
     Arrays.fill(prime, true);
-    for (int p = 2; p * p <= n; p++) {
+    for (int p = 2; p * p <= MAX_NUMBER; p++) {
       if (prime[p] == true) {
-        for (int i = p * p; i <= n; i += p) prime[i] = false;
+        for (int i = p * p; i <= MAX_NUMBER; i += p) prime[i] = false;
       }
     }
-    for (int i = 7; i <= n; i++) {
+    for (int i = numPrimes; i <= MAX_NUMBER; i++) {
       if (prime[i] == true) {
         list.add(i);
       }
@@ -25,32 +26,32 @@ public class HashGeneratorUtil {
     return list;
   }
 
-  public static long getHashCode(String s1) {
-    if (a == null) {
-      a = getPrimes();
+  public static long getHashCode(String jsonString) {
+    if (primes == null) {
+      primes = getPrimes();
     }
-    s1 = s1.trim();
+    jsonString = jsonString.trim();
     int brackets = 0;
-    long hash = 7;
-    long collons = 1;
+    long hash = numPrimes;
+    long colons = 1;
     long commas = 1;
-    for (int i = 0; i < s1.length(); i++) {
-      if (s1.charAt(i) == '{' || s1.charAt(i) == '[') {
+    for (int i = 0; i < jsonString.length(); i++) {
+      if (jsonString.charAt(i) == '{' || jsonString.charAt(i) == '[') {
         brackets++;
-      } else if (s1.charAt(i) == '}' || s1.charAt(i) == ']') {
+      } else if (jsonString.charAt(i) == '}' || jsonString.charAt(i) == ']') {
         brackets--;
-      } else if (s1.charAt(i) == ':') {
-        collons++;
-      } else if (s1.charAt(i) == ',') {
+      } else if (jsonString.charAt(i) == ':') {
+        colons++;
+      } else if (jsonString.charAt(i) == ',') {
         commas++;
-      } else if (s1.charAt(i) != ' ') {
-        if (brackets < a.size()) {
-          hash = hash + s1.charAt(i) * a.get(brackets);
+      } else if (jsonString.charAt(i) != ' ') {
+        if (brackets < primes.size()) {
+          hash = hash + jsonString.charAt(i) * primes.get(brackets);
         } else {
           return 0;
         }
       }
     }
-    return hash + collons * 17 + commas * 19;
+    return hash + colons * 17 + commas * 19;
   }
 }

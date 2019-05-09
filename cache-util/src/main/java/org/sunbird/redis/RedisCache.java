@@ -11,12 +11,21 @@ import org.sunbird.notification.utils.JsonUtil;
 
 public class RedisCache implements Cache {
   private static final String CACHE_MAP_LIST = "cache.mapNames";
+  private static final String CACHE_MAP_TTL = "cache.ttl";
+  private static final String DEFAULT_ENTRY = "default_entry";
+  private static final String DEFAULT_VALUE = "default_value";
+  private static boolean initTTL = false;
   private Map<String, String> properties = readConfig();
   private String[] mapNameList = properties.get(CACHE_MAP_LIST).split(",");
+
   private RedissonClient client;
 
   public RedisCache() {
     client = RedisConnectionManager.getClient();
+    if (!initTTL) {
+      setDefaultTTL();
+      initTTL = !initTTL;
+    }
   }
 
   @Override
@@ -90,5 +99,15 @@ public class RedisCache implements Cache {
         LoggerEnum.INFO.name());
 
     return result;
+  }
+
+  private void setDefaultTTL() {
+    ProjectLogger.log("RedisCache:setDefaultTTL setting default ttl all the maps");
+    for (int i = 0; i < mapNameList.length; i++) {
+      put(mapNameList[i], DEFAULT_ENTRY, DEFAULT_VALUE);
+      ProjectLogger.log("****** : cache.ttl = " + properties.get(CACHE_MAP_TTL));
+      long time = Long.valueOf(properties.get(CACHE_MAP_TTL + "." + mapNameList[i]));
+      setMapExpiry(mapNameList[i], time);
+    }
   }
 }
