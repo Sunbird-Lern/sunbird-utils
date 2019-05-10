@@ -46,14 +46,17 @@ public abstract class BaseRouter extends BaseActor {
     for (Class<? extends BaseActor> actor : actors) {
       ActorConfig routerDetails = actor.getAnnotation(ActorConfig.class);
       if (null != routerDetails) {
+        String dispatcher = routerDetails.dispatcher();
         switch (name) {
           case "BackgroundRequestRouter":
             String[] bgOperations = routerDetails.asyncTasks();
-            createActor(context, actor, bgOperations, "brr-usr-dispatcher");
+            dispatcher = (StringUtils.isNotBlank(dispatcher)) ? dispatcher : "brr-usr-dispatcher";
+            createActor(context, actor, bgOperations, dispatcher);
             break;
           case "RequestRouter":
             String[] operations = routerDetails.tasks();
-            createActor(context, actor, operations, "rr-usr-dispatcher");
+            dispatcher = (StringUtils.isNotBlank(dispatcher)) ? dispatcher : "rr-usr-dispatcher";
+            createActor(context, actor, operations, dispatcher);
             break;
           default:
             System.out.println("Router with name '" + name + "' not supported.");
