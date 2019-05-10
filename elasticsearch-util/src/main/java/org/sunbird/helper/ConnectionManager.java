@@ -129,6 +129,7 @@ public class ConnectionManager {
     }
     builder = builder.put("client.transport.sniff", false);
     builder = builder.put("client.transport.ignore_cluster_name", true);
+    builder = builder.put("es.set.netty.runtime.available.processors", false);
     client = new PreBuiltTransportClient(builder.build());
     for (int i = 0; i < host.size(); i++) {
       client.addTransportAddress(
