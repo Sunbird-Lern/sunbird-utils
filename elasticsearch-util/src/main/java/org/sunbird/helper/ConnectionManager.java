@@ -37,6 +37,7 @@ public class ConnectionManager {
   private static String port = propertiesCache.getProperty("es.host.port");
 
   static {
+    System.setProperty("es.set.netty.runtime.available.processors", "false");
     initialiseConnection();
     registerShutDownHook();
     initialiseRestClientConnection();
