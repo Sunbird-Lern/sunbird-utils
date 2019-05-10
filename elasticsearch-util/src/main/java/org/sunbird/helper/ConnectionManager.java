@@ -130,7 +130,6 @@ public class ConnectionManager {
     }
     builder = builder.put("client.transport.sniff", false);
     builder = builder.put("client.transport.ignore_cluster_name", true);
-    builder = builder.put("es.set.netty.runtime.available.processors", false);
     client = new PreBuiltTransportClient(builder.build());
     for (int i = 0; i < host.size(); i++) {
       client.addTransportAddress(
@@ -228,6 +227,10 @@ public class ConnectionManager {
       String cluster = System.getenv(JsonKey.SUNBIRD_ES_CLUSTER);
       String hostName = System.getenv(JsonKey.SUNBIRD_ES_IP);
       String port = System.getenv(JsonKey.SUNBIRD_ES_PORT);
+      ProjectLogger.log(
+          "Value set for es.set.netty.runtime.available.processors "
+              + System.getProperty("es.set.netty.runtime.available.processors"),
+          LoggerEnum.INFO.name());
       if (StringUtils.isBlank(hostName) || StringUtils.isBlank(port)) {
         return false;
       }
