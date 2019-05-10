@@ -32,6 +32,7 @@ public class ConnectionManager {
   private static String port = propertiesCache.getProperty("es.host.port");
 
   static {
+    System.setProperty("es.set.netty.runtime.available.processors", "false");
     initialiseConnection();
     registerShutDownHook();
   }
@@ -147,6 +148,10 @@ public class ConnectionManager {
       String cluster = System.getenv(JsonKey.SUNBIRD_ES_CLUSTER);
       String hostName = System.getenv(JsonKey.SUNBIRD_ES_IP);
       String port = System.getenv(JsonKey.SUNBIRD_ES_PORT);
+      ProjectLogger.log(
+          "Value set for es.set.netty.runtime.available.processors "
+              + System.getProperty("es.set.netty.runtime.available.processors"),
+          LoggerEnum.INFO.name());
       if (StringUtils.isBlank(hostName) || StringUtils.isBlank(port)) {
         return false;
       }
