@@ -1,7 +1,8 @@
 package org.sunbird.cache;
 
 import org.sunbird.cache.interfaces.Cache;
-import org.sunbird.redis.RedisCache;
+
+// import org.sunbird.redis.RedisCache;
 
 public class CacheFactory {
 
@@ -9,10 +10,10 @@ public class CacheFactory {
 
   private CacheFactory() {}
 
-  public static Cache getInstance() {
-    if (null == cache) {
-      cache = new RedisCache();
-    }
-    return cache;
-  }
+  //  public static Cache getInstance() {
+  //    if (null == cache) {
+  //      cache = new RedisCache();
+  //    }
+  //    return cache;
+  //  }
 }
