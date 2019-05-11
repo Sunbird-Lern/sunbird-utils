@@ -21,9 +21,6 @@ public class RedisCache implements Cache {
 
   @Override
   public String get(String mapName, String key) {
-    ProjectLogger.log(
-        "RedisCache:get: mapName = " + mapName + ", key = " + key, LoggerEnum.INFO.name());
-
     try {
       RMap<String, String> map = client.getMap(mapName);
       String s = map.get(key);
@@ -41,7 +38,6 @@ public class RedisCache implements Cache {
     ProjectLogger.log(
         "RedisCache:put: mapName = " + mapName + ", key = " + key + ", value = " + value,
         LoggerEnum.INFO.name());
-
     try {
       RMap<String, String> map = client.getMap(mapName);
       map.put(key, value);
@@ -62,7 +58,6 @@ public class RedisCache implements Cache {
   @Override
   public boolean clear(String mapName) {
     ProjectLogger.log("RedisCache:clear: mapName = " + mapName, LoggerEnum.INFO.name());
-
     try {
       RMap<String, String> map = client.getMap(mapName);
       map.clear();
@@ -118,8 +113,6 @@ public class RedisCache implements Cache {
   }
 
   public Object get(String mapName, String key, Class<?> cls) {
-    ProjectLogger.log(
-        "RedisCache:get: mapName = " + mapName + ", key = " + key, LoggerEnum.INFO.name());
     try {
       RMap<String, String> map = client.getMap(mapName);
       String s = map.get(key);
