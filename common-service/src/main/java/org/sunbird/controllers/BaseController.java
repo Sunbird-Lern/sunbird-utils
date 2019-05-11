@@ -41,7 +41,7 @@ import play.mvc.Results;
  */
 public class BaseController extends Controller {
 
-  private static final int AKKA_WAIT_TIME = 10;
+  private static final int AKKA_WAIT_TIME = 30;
   protected Timeout timeout = new Timeout(AKKA_WAIT_TIME, TimeUnit.SECONDS);
   private static Object actorRef = null;
   private static ResponseIdUtil util = new ResponseIdUtil();
