@@ -15,7 +15,7 @@ import scala.concurrent.Future;
 import scala.concurrent.Promise;
 
 /** @author Mahesh Kumar Gangula */
-public class RestUtil {
+public class  RestUtil {
 
   static {
     
@@ -60,15 +60,7 @@ public class RestUtil {
   }
 
   public static HttpResponse<JsonNode> execute(BaseRequest request) throws Exception {
-    ProjectLogger.log("RestUtil:execute: request url = " + request.getHttpRequest().getUrl());
-    Body body = request.getHttpRequest().getBody();
-    if ((body != null) && (body instanceof RequestBodyEntity)) {
-      RequestBodyEntity rbody = (RequestBodyEntity) body;
-      ProjectLogger.log("RestUtil:execute: request body = " + rbody.getBody());
-    }
-
-    HttpResponse<JsonNode> response = request.asJson();
-    return response;
+    return  request.asJson();
   }
 
   public static String getFromResponse(HttpResponse<JsonNode> resp, String key) throws Exception {
