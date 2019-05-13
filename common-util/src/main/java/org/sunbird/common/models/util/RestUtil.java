@@ -24,7 +24,6 @@ public class  RestUtil {
     Unirest.setDefaultHeader("Content-Type", "application/json");
     Unirest.setDefaultHeader("Authorization", "Bearer " + apiKey);
     Unirest.setDefaultHeader("Connection", "Keep-Alive");
-    Unirest.setConcurrency(500, 500);
   }
 
   public static Future<HttpResponse<JsonNode>> executeAsync(BaseRequest request) {
