@@ -48,8 +48,7 @@ public class ProjectUtil {
   public static final String YEAR_MONTH_DATE_FORMAT = "yyyy-MM-dd";
   private static Map<String, String> templateMap = new HashMap<>();
   private static final int randomPasswordLength = 9;
-  private static final String prefix =
-      "f:" + getConfigValue(JsonKey.SUNBIRD_KEYCLOAK_USER_FEDERATION_PROVIDER_ID) + ":";
+
   protected static final String FILE_NAME[] = {
     "cassandratablecolumn.properties",
     "elasticsearch.config.properties",
@@ -981,6 +980,8 @@ public class ProjectUtil {
 
   public static String getLmsUserId(String fedUserId) {
     String userId = fedUserId;
+    String prefix =
+        "f:" + getConfigValue(JsonKey.SUNBIRD_KEYCLOAK_USER_FEDERATION_PROVIDER_ID) + ":";
     if (StringUtils.isNotBlank(fedUserId) && fedUserId.startsWith(prefix)) {
       userId = fedUserId.replace(prefix, "");
     }
