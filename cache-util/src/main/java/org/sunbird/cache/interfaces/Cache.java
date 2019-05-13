@@ -24,7 +24,11 @@ public interface Cache {
     return properties;
   }
 
-  public Object get(String mapName, String key, Class<?> clazz);
+  public String get(String mapName, String key);
+
+  public Object get(String mapName, String key, Class<?> cls);
+
+  public boolean put(String mapName, String key, String value);
 
   public boolean put(String mapName, String key, Object value);
 
