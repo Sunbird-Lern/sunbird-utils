@@ -1,5 +1,6 @@
 package org.sunbird.redis;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import org.redisson.api.RMap;
@@ -123,5 +124,52 @@ public class RedisCache implements Cache {
           LoggerEnum.ERROR.name());
     }
     return null;
+  }
+
+  @Override
+  public Object get(String mapName, Map<String, Object> reqParams, Class<?> cls) {
+    try {
+      String key = JsonUtil.getHashCode(reqParams) + "";
+      RMap<String, String> map = client.getMap(mapName);
+      String s = map.get(key);
+      return JsonUtil.getAsObject(s, cls);
+    } catch (Exception e) {
+      ProjectLogger.log(
+          "RedisCache:get: Error occurred mapName = "
+              + mapName
+              + ", key = "
+              + Collections.singleton(reqParams.toString()),
+          LoggerEnum.ERROR.name());
+    }
+    return null;
+  }
+
+  public boolean put(String mapName, Map<String, Object> paramMap, Object value) {
+    ProjectLogger.log(
+        "RedisCache:put: mapName = "
+            + mapName
+            + ", key = "
+            + Collections.singleton(paramMap.toString())
+            + ", value = "
+            + value,
+        LoggerEnum.INFO.name());
+    int key;
+    try {
+      key = JsonUtil.getHashCode(paramMap);
+      String res = JsonUtil.toJson(value);
+      RMap<String, String> map = client.getMap(mapName);
+      map.put(key + "", res);
+      return true;
+    } catch (Exception e) {
+      ProjectLogger.log(
+          "RedisCache:put: Error occurred mapName = "
+              + mapName
+              + ", key = "
+              + Collections.singleton(paramMap.toString())
+              + ", value = "
+              + value,
+          LoggerEnum.ERROR.name());
+    }
+    return false;
   }
 }
