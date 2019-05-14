@@ -1,19 +1,17 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project
+		xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
 	<groupId>org.sunbird</groupId>
 	<artifactId>common-util</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>sunbird_common_util</name>
 	<url>http://maven.apache.org</url>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- <versions.jacoco>0.7.6.201602180812</versions.jacoco> -->
 	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -92,7 +90,6 @@
 			<artifactId>javax.mail</artifactId>
 			<version>1.6.0</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jackson2-provider</artifactId>
@@ -108,7 +105,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/com.moparisthebest/junidecode -->
 		<dependency>
 			<groupId>com.moparisthebest</groupId>
@@ -142,26 +138,22 @@
 			<artifactId>commons-csv</artifactId>
 			<version>1.4</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.jvnet.mock-javamail</groupId>
 			<artifactId>mock-javamail</artifactId>
 			<version>1.9</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>com.googlecode.libphonenumber</groupId>
 			<artifactId>libphonenumber</artifactId>
 			<version>8.10.2</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.tika</groupId>
 			<artifactId>tika-core</artifactId>
 			<version>1.16</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.lmax</groupId>
 			<artifactId>disruptor</artifactId>
@@ -173,7 +165,6 @@
 			<artifactId>httpclient</artifactId>
 			<version>4.5</version>
 		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -187,14 +178,12 @@
 			<version>1.6.5</version>
 			<!--<scope>test</scope> -->
 		</dependency>
-
 		<dependency>
 			<groupId>org.powermock</groupId>
 			<artifactId>powermock-api-mockito</artifactId>
 			<version>1.6.5</version>
 			<!--<scope>test</scope> -->
 		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -206,7 +195,6 @@
 			<artifactId>unirest-java</artifactId>
 			<version>1.4.9</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
@@ -218,24 +206,24 @@
 			<version>1.2.1</version>
 			<exclusions>
 				<exclusion>
-                                        <groupId>com.sun.jersey</groupId>
-                                        <artifactId>jersey-core</artifactId>
+					<groupId>com.sun.jersey</groupId>
+					<artifactId>jersey-core</artifactId>
 				</exclusion>
 				<exclusion>
-                                        <groupId>com.sun.jersey</groupId>
-                                        <artifactId>jersey-server</artifactId>
+					<groupId>com.sun.jersey</groupId>
+					<artifactId>jersey-server</artifactId>
 				</exclusion>
 				<exclusion>
-							            <groupId>com.fasterxml.jackson.module</groupId>
-							            <artifactId>jackson-module-scala_2.11</artifactId>
+					<groupId>com.fasterxml.jackson.module</groupId>
+					<artifactId>jackson-module-scala_2.11</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
-            <groupId>com.fasterxml.jackson.module</groupId>
-            <artifactId>jackson-module-scala_2.11</artifactId>
-            <version>2.9.5</version>
-        </dependency>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-module-scala_2.11</artifactId>
+			<version>2.9.5</version>
+		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-common</artifactId>
@@ -251,13 +239,12 @@
 			<artifactId>jersey-server</artifactId>
 			<version>2.27</version>
 		</dependency>
-        <dependency>
-            <groupId>org.sunbird</groupId>
-            <artifactId>sunbird-notification</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
-
+		<dependency>
+			<groupId>org.sunbird</groupId>
+			<artifactId>sunbird-notification</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
 	<repositories>
 		<repository>
 			<id>cloud-store</id>
@@ -276,16 +263,13 @@
 						<target>1.8</target>
 					</configuration>
 				</plugin>
-
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-checkstyle-plugin</artifactId>
 					<version>2.17</version>
 				</plugin>
-
 			</plugins>
 		</pluginManagement>
-
 		<plugins>
 			<plugin>
 				<groupId>org.jacoco</groupId>
