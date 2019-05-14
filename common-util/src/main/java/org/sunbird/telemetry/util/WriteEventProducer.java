@@ -21,6 +21,8 @@ public class WriteEventProducer {
       };
 
   public void onData(Request request) {
+    
+    /* ProjectLogger.log("Publishing " + request.toString(), LoggerEnum.INFO.name()); */
     // publish the message to disruptor
     disruptor.publishEvent(TRANSLATOR_ONE_ARG, request);
   }
