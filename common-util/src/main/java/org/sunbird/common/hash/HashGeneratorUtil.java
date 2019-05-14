@@ -3,6 +3,7 @@ package org.sunbird.common.hash;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.sunbird.notification.utils.JsonUtil;
 
 public class HashGeneratorUtil {
   private static List<Integer> primes = null;
@@ -53,5 +54,10 @@ public class HashGeneratorUtil {
       }
     }
     return hash + colons * 17 + commas * 19;
+  }
+
+  public static String getHashCodeAsString(Object request) {
+    String responseAsString = JsonUtil.toJson(request);
+    return String.valueOf(HashGeneratorUtil.getHashCode(responseAsString));
   }
 }
