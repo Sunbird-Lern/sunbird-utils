@@ -7,15 +7,13 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.async.Callback;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.BaseRequest;
-import com.mashape.unirest.request.body.Body;
-import com.mashape.unirest.request.body.RequestBodyEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import scala.concurrent.Future;
 import scala.concurrent.Promise;
 
 /** @author Mahesh Kumar Gangula */
-public class RestUtil {
+public class  RestUtil {
 
   static {
     
@@ -25,17 +23,13 @@ public class RestUtil {
     }
     Unirest.setDefaultHeader("Content-Type", "application/json");
     Unirest.setDefaultHeader("Authorization", "Bearer " + apiKey);
+    Unirest.setDefaultHeader("Connection", "Keep-Alive");
   }
 
   public static Future<HttpResponse<JsonNode>> executeAsync(BaseRequest request) {
     ProjectLogger.log("RestUtil:execute: request url = " + request.getHttpRequest().getUrl());
-    Promise<HttpResponse<JsonNode>> promise = Futures.promise();
+    Promise<HttpResponse<JsonNode>> promise =  Futures.promise();
 
-    Body body = request.getHttpRequest().getBody();
-    if ((body != null) && (body instanceof RequestBodyEntity)) {
-      RequestBodyEntity rbody = (RequestBodyEntity) body;
-      ProjectLogger.log("RestUtil:execute: request body = " + rbody.getBody());
-    }
     request.asJsonAsync(
         new Callback<JsonNode>() {
 
@@ -59,15 +53,7 @@ public class RestUtil {
   }
 
   public static HttpResponse<JsonNode> execute(BaseRequest request) throws Exception {
-    ProjectLogger.log("RestUtil:execute: request url = " + request.getHttpRequest().getUrl());
-    Body body = request.getHttpRequest().getBody();
-    if ((body != null) && (body instanceof RequestBodyEntity)) {
-      RequestBodyEntity rbody = (RequestBodyEntity) body;
-      ProjectLogger.log("RestUtil:execute: request body = " + rbody.getBody());
-    }
-
-    HttpResponse<JsonNode> response = request.asJson();
-    return response;
+    return  request.asJson();
   }
 
   public static String getFromResponse(HttpResponse<JsonNode> resp, String key) throws Exception {

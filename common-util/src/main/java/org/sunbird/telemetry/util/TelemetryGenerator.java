@@ -120,22 +120,27 @@ public class TelemetryGenerator {
   }
 
   private static List<String> getProps(Map<String, Object> map) {
-    return map.entrySet()
-        .stream()
-        .map(entry -> entry.getKey())
-        .map(
-            key -> {
-              if (map.get(key) instanceof Map) {
-                List<String> keys = getProps((Map<String, Object>) map.get(key));
-                return keys.stream()
-                    .map(childKey -> key + "." + childKey)
-                    .collect(Collectors.toList());
-              } else {
-                return Arrays.asList(key);
-              }
-            })
-        .flatMap(List::stream)
-        .collect(Collectors.toList());
+    try {
+      return map.entrySet()
+          .stream()
+          .map(entry -> entry.getKey())
+          .map(
+              key -> {
+                if (map.get(key) instanceof Map) {
+                  List<String> keys = getProps((Map<String, Object>) map.get(key));
+                  return keys.stream()
+                      .map(childKey -> key + "." + childKey)
+                      .collect(Collectors.toList());
+                } else {
+                  return Arrays.asList(key);
+                }
+              })
+          .flatMap(List::stream)
+          .collect(Collectors.toList());
+    } catch (Exception e) {
+      ProjectLogger.log("TelemetryGenerator:getProps error =" + e, LoggerEnum.ERROR.name());
+    }
+    return new ArrayList<>();
   }
 
   private static Context getContext(Map<String, Object> context) {

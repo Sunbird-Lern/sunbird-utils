@@ -14,4 +14,6 @@ public @interface ActorConfig {
   String[] tasks();
 
   String[] asyncTasks();
+
+  String dispatcher() default "";
 }
