@@ -2,8 +2,6 @@ package org.sunbird.common;
 
 import static org.sunbird.common.models.util.ProjectUtil.isNotNull;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.typesafe.config.Config;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -18,6 +16,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.bulk.BulkItemResponse;
@@ -69,6 +68,9 @@ import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.common.util.ConfigUtil;
 import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.typesafe.config.Config;
 
 /**
  * This class will provide all required operation for elastic search.
@@ -305,12 +307,14 @@ public class ElasticSearchUtil {
                   + elapsedTime,
               LoggerEnum.PERF_LOG);
           return true;
+        }else {
+        	ProjectLogger.log("ElasticSearchUtil:updateData update was not success:"+response.getResult(), LoggerEnum.INFO.name());	
         }
       } catch (Exception e) {
-        ProjectLogger.log(e.getMessage(), e);
+        ProjectLogger.log("ElasticSearchUtil:updateData exception occured:"+ e.getMessage(), LoggerEnum.ERROR.name());
       }
     } else {
-      ProjectLogger.log("Requested data is invalid.");
+      ProjectLogger.log("ElasticSearchUtil:updateData Requested data is invalid.",LoggerEnum.INFO.name());
     }
     long stopTime = System.currentTimeMillis();
     long elapsedTime = stopTime - startTime;
