@@ -1,1 +1,0 @@
-ALTER TABLE sunbird.course_batch DROP participant;
