@@ -15,6 +15,7 @@ import java.util.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
@@ -62,6 +63,7 @@ import org.sunbird.helper.ServiceFactory;
   Delete.Selection.class
 })
 @PowerMockIgnore("javax.management.*")
+@Ignore
 public class CassandraOperationImplTest {
 
   private static Cluster cluster;

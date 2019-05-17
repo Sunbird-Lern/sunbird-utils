@@ -48,6 +48,7 @@ public class ProjectUtil {
   public static final String YEAR_MONTH_DATE_FORMAT = "yyyy-MM-dd";
   private static Map<String, String> templateMap = new HashMap<>();
   private static final int randomPasswordLength = 9;
+
   protected static final String FILE_NAME[] = {
     "cassandratablecolumn.properties",
     "elasticsearch.config.properties",
