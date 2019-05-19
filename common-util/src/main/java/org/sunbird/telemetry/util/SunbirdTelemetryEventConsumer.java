@@ -1,11 +1,12 @@
 package org.sunbird.telemetry.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.ws.rs.core.MediaType;
+
 import org.apache.http.HttpHeaders;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
@@ -15,6 +16,8 @@ import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.request.TelemetryV3Request;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Dispatcher for telemetry data to Sunbird telemetry service. Sunbird telemetry service is
@@ -43,7 +46,7 @@ public class SunbirdTelemetryEventConsumer {
         String telemetryReq = mapper.writeValueAsString(getTelemetryRequest(request));
         ProjectLogger.log(
             "SunbirdTelemetryEventConsumer:consume telemetry request:" + telemetryReq,
-            LoggerEnum.INFO.name());
+            LoggerEnum.DEBUG.name());
         try {
           String response = HttpUtil.sendPostRequest(getTelemetryUrl(), telemetryReq, getHeaders());
           ProjectLogger.log(
@@ -57,7 +60,7 @@ public class SunbirdTelemetryEventConsumer {
           ProjectLogger.log(
               "SunbirdTelemetryEventConsumer:consume: Failure request = "
                   + mapper.writeValueAsString(getTelemetryRequest(request)),
-              LoggerEnum.INFO.name());
+              LoggerEnum.DEBUG.name());
         }
       } catch (Exception e) {
         ProjectLogger.log(
