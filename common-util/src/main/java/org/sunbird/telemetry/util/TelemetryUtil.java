@@ -20,7 +20,7 @@ public final class TelemetryUtil {
 
     Map<String, Object> target = new HashMap<>();
     target.put(JsonKey.ID, id);
-    target.put(JsonKey.TYPE, type);
+    target.put(JsonKey.TYPE, StringUtils.capitalize(type));
     target.put(JsonKey.CURRENT_STATE, currentState);
     target.put(JsonKey.PREV_STATE, prevState);
     return target;

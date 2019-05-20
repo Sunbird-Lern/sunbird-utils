@@ -1,5 +1,6 @@
 package org.sunbird.telemetry.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -7,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
-
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
@@ -18,8 +18,6 @@ import org.sunbird.telemetry.dto.Context;
 import org.sunbird.telemetry.dto.Producer;
 import org.sunbird.telemetry.dto.Target;
 import org.sunbird.telemetry.dto.Telemetry;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * class to transform the request data to telemetry events
@@ -107,7 +105,7 @@ public class TelemetryGenerator {
 
     Map<String, Object> target = (Map<String, Object>) params.get(JsonKey.TARGET_OBJECT);
     if (target.get(JsonKey.CURRENT_STATE) != null) {
-      edata.put(JsonKey.STATE, StringUtils.capitalize((String)target.get(JsonKey.CURRENT_STATE)));
+      edata.put(JsonKey.STATE, StringUtils.capitalize((String) target.get(JsonKey.CURRENT_STATE)));
       if (JsonKey.UPDATE.equalsIgnoreCase((String) target.get(JsonKey.CURRENT_STATE))
           && edata.get(props) != null) {
         removeAttributes((Map<String, Object>) edata.get(props), JsonKey.ID);
@@ -181,7 +179,7 @@ public class TelemetryGenerator {
     try {
       event = mapper.writeValueAsString(telemetry);
       ProjectLogger.log(
-          "TelemetryGenerator:getTelemetry = Telemetry Event : " + event, LoggerEnum.DEBUG.name());
+          "TelemetryGenerator:getTelemetry = Telemetry Event : " + event, LoggerEnum.INFO.name());
     } catch (Exception e) {
       ProjectLogger.log(e.getMessage(), e);
     }
@@ -281,7 +279,7 @@ public class TelemetryGenerator {
     String logLevel = (String) params.get(JsonKey.LOG_LEVEL);
     String message = (String) params.get(JsonKey.MESSAGE);
 
-    edata.put(JsonKey.TYPE, logType);
+    edata.put(JsonKey.TYPE, StringUtils.capitalize(logType));
     edata.put(JsonKey.LEVEL, logLevel);
     edata.put(JsonKey.MESSAGE, message != null ? message : "");
 
@@ -346,7 +344,13 @@ public class TelemetryGenerator {
     String stackTrace = (String) params.get(JsonKey.STACKTRACE);
     edata.put(JsonKey.ERROR, error);
     edata.put(JsonKey.ERR_TYPE, errorType);
-    edata.put(JsonKey.STACKTRACE, stackTrace);
+    String firstHundredChars = "";
+    if (stackTrace.length() > 100) {
+      firstHundredChars = stackTrace.substring(0, 100);
+    } else {
+      firstHundredChars = stackTrace;
+    }
+    edata.put(JsonKey.STACKTRACE, firstHundredChars);
     return edata;
   }
 
