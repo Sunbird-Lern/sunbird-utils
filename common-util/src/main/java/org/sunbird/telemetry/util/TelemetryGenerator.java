@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
+import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.TelemetryEnvKey;
 import org.sunbird.telemetry.dto.Actor;
 import org.sunbird.telemetry.dto.Context;
@@ -344,13 +345,7 @@ public class TelemetryGenerator {
     String stackTrace = (String) params.get(JsonKey.STACKTRACE);
     edata.put(JsonKey.ERROR, error);
     edata.put(JsonKey.ERR_TYPE, errorType);
-    String firstHundredChars = "";
-    if (stackTrace.length() > 100) {
-      firstHundredChars = stackTrace.substring(0, 100);
-    } else {
-      firstHundredChars = stackTrace;
-    }
-    edata.put(JsonKey.STACKTRACE, firstHundredChars);
+    edata.put(JsonKey.STACKTRACE, ProjectUtil.getFirstNCharacterString(stackTrace, 100));
     return edata;
   }
 
