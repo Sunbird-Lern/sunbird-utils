@@ -987,4 +987,17 @@ public class ProjectUtil {
     }
     return userId;
   }
+
+  public static String getFirstNCharacterString(String originalText, int noOfChar) {
+    if (StringUtils.isBlank(originalText)) {
+      return "";
+    }
+    String firstNChars = "";
+    if (originalText.length() > noOfChar) {
+      firstNChars = originalText.substring(0, noOfChar);
+    } else {
+      firstNChars = originalText;
+    }
+    return firstNChars;
+  }
 }
