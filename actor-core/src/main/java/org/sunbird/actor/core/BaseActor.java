@@ -1,11 +1,18 @@
 package org.sunbird.actor.core;
 
+import akka.actor.ActorRef;
+import akka.actor.ActorSelection;
+import akka.actor.UntypedAbstractActor;
+import akka.util.Timeout;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+import com.typesafe.config.ConfigValue;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.CompletionStage;
-
+import java.util.concurrent.TimeUnit;
 import org.sunbird.actor.router.BackgroundRequestRouter;
 import org.sunbird.actor.router.RequestRouter;
 import org.sunbird.actor.service.BaseMWService;
@@ -21,26 +28,18 @@ import org.sunbird.common.models.util.StringFormatter;
 import org.sunbird.common.request.ExecutionContext;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
-
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
-import com.typesafe.config.ConfigValue;
-
-import akka.actor.ActorRef;
-import akka.actor.ActorSelection;
-import akka.actor.UntypedAbstractActor;
 import scala.concurrent.duration.Duration;
 
 public abstract class BaseActor extends UntypedAbstractActor {
 
   public abstract void onReceive(Request request) throws Throwable;
 
-  private final static String eventSyncConfFile = "eventSync.conf";
-  private final static String EVENT_SYNC = "eventSync";
-  private final static String DEFAULT = "default";
-
+  private static final String eventSyncConfFile = "eventSync.conf";
+  private static final String EVENT_SYNC = "eventSync";
+  private static final String DEFAULT = "default";
+  public static final int AKKA_WAIT_TIME = 30;
+  public static Timeout timeout = new Timeout(AKKA_WAIT_TIME, TimeUnit.SECONDS);
   private static Config config = ConfigFactory.parseResources(eventSyncConfFile);
-
   private static Map<String, String> eventSyncProperties = new HashMap<>();
 
   @Override
