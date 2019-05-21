@@ -5,6 +5,7 @@ import org.redisson.api.RedissonClient;
 import org.redisson.client.codec.StringCodec;
 import org.redisson.config.ClusterServersConfig;
 import org.redisson.config.Config;
+import org.redisson.config.SingleServerConfig;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
@@ -50,10 +51,10 @@ public class RedisConnectionManager {
         "RedisConnectionManager: initialiseSingleServer called", LoggerEnum.INFO.name());
 
     Config config = new Config();
-    config.useSingleServer().setAddress(host + ":" + port);
+    SingleServerConfig singleServerConfig = config.useSingleServer();
+    singleServerConfig.setAddress(host + ":" + port);
+    singleServerConfig.setConnectionPoolSize(poolsize);
     config.setCodec(new StringCodec());
-    config.setNettyThreads(poolsize);
-    config.setThreads(poolsize);
     client = Redisson.create(config);
   }
 
