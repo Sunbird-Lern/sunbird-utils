@@ -1,6 +1,5 @@
 package org.sunbird.telemetry.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -8,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
@@ -19,6 +19,8 @@ import org.sunbird.telemetry.dto.Context;
 import org.sunbird.telemetry.dto.Producer;
 import org.sunbird.telemetry.dto.Target;
 import org.sunbird.telemetry.dto.Telemetry;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * class to transform the request data to telemetry events
@@ -180,7 +182,7 @@ public class TelemetryGenerator {
     try {
       event = mapper.writeValueAsString(telemetry);
       ProjectLogger.log(
-          "TelemetryGenerator:getTelemetry = Telemetry Event : " + event, LoggerEnum.INFO.name());
+          "TelemetryGenerator:getTelemetry = Telemetry Event : " + event, LoggerEnum.DEBUG.name());
     } catch (Exception e) {
       ProjectLogger.log(e.getMessage(), e);
     }
