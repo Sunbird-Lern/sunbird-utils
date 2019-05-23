@@ -3,6 +3,7 @@ package org.sunbird.common.hash;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.sunbird.common.models.util.datasecurity.OneWayHashing;
 
 public class HashGeneratorUtil {
   private static List<Integer> primes = null;
@@ -26,32 +27,7 @@ public class HashGeneratorUtil {
     return list;
   }
 
-  public static long getHashCode(String jsonString) {
-    if (primes == null) {
-      primes = getPrimes();
-    }
-    jsonString = jsonString.trim();
-    int brackets = 0;
-    long hash = numPrimes;
-    long colons = 1;
-    long commas = 1;
-    for (int i = 0; i < jsonString.length(); i++) {
-      if (jsonString.charAt(i) == '{' || jsonString.charAt(i) == '[') {
-        brackets++;
-      } else if (jsonString.charAt(i) == '}' || jsonString.charAt(i) == ']') {
-        brackets--;
-      } else if (jsonString.charAt(i) == ':') {
-        colons++;
-      } else if (jsonString.charAt(i) == ',') {
-        commas++;
-      } else if (jsonString.charAt(i) != ' ') {
-        if (brackets < primes.size()) {
-          hash = hash + jsonString.charAt(i) * primes.get(brackets);
-        } else {
-          return 0;
-        }
-      }
-    }
-    return hash + colons * 17 + commas * 19;
+  public static String getHashCode(String jsonString) {
+    return OneWayHashing.encryptVal(jsonString);
   }
 }

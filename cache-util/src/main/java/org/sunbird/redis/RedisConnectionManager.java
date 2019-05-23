@@ -5,6 +5,8 @@ import org.redisson.api.RedissonClient;
 import org.redisson.client.codec.StringCodec;
 import org.redisson.config.ClusterServersConfig;
 import org.redisson.config.Config;
+import org.redisson.config.SingleServerConfig;
+import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
@@ -14,6 +16,8 @@ public class RedisConnectionManager {
   private static String port = ProjectUtil.getConfigValue("sunbird_redis_port");
   private static Boolean isRedisCluster = host.contains(",") ? true : false;
   private static String scanInterval = ProjectUtil.getConfigValue("sunbird_redis_scan_interval");
+  private static int poolsize =
+      Integer.valueOf(ProjectUtil.getConfigValue(JsonKey.SUNBIRD_REDIS_CONN_POOL_SIZE));
   private static RedissonClient client = null;
 
   public static RedissonClient getClient() {
@@ -47,7 +51,9 @@ public class RedisConnectionManager {
         "RedisConnectionManager: initialiseSingleServer called", LoggerEnum.INFO.name());
 
     Config config = new Config();
-    config.useSingleServer().setAddress(host + ":" + port);
+    SingleServerConfig singleServerConfig = config.useSingleServer();
+    singleServerConfig.setAddress(host + ":" + port);
+    singleServerConfig.setConnectionPoolSize(poolsize);
     config.setCodec(new StringCodec());
     client = Redisson.create(config);
   }
@@ -70,6 +76,7 @@ public class RedisConnectionManager {
       ClusterServersConfig clusterConfig = config.useClusterServers();
 
       clusterConfig.setScanInterval(Integer.parseInt(scanInterval));
+      clusterConfig.setMasterConnectionPoolSize(poolsize);
 
       for (int i = 0; i < hosts.length && i < ports.length; i++) {
         clusterConfig.addNodeAddress("redis://" + hosts[i] + ":" + ports[i]);

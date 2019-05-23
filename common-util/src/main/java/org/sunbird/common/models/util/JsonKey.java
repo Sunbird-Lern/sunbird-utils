@@ -907,6 +907,7 @@ public final class JsonKey {
   public static final String PAGE_ASSEMBLE = "pageAssemble";
   public static final String SIGNUP_TYPE = "signupType";
   public static final String TELEMETRY_SOURCE = "source";
+  public static final String SUNBIRD_REDIS_CONN_POOL_SIZE = "sunbird_redis_connection_pool_size";
 
   private JsonKey() {}
 }
