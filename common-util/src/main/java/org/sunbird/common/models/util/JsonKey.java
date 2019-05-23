@@ -905,7 +905,8 @@ public final class JsonKey {
   public static final String SUNBIRD_CACHE_ENABLE = "sunbird_cache_enable";
   public static final String MAP_NAME = "mapName";
   public static final String PAGE_ASSEMBLE = "pageAssemble";
-  public static final String signupType = "signupType";
+  public static final String SIGNUP_TYPE = "signupType";
+  public static final String TELEMETRY_SOURCE = "source";
 
   private JsonKey() {}
 }
