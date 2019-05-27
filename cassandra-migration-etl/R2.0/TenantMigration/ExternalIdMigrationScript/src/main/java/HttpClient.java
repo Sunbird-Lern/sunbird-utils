@@ -70,14 +70,13 @@ public class HttpClient {
       if (StringUtils.isBlank(parms.getClientId())) {
         parms.setClientId("admin-cli");
       }
-      // String
-      url =
+      String url =
           parms
               .getBaseUrl()
               .concat("/auth/realms/")
               .concat(parms.getRealm())
               .concat("/protocol/openid-connect/token");
-      // String url = "http://localhost:8080/auth/realms/master/protocol/openid-connect/token";
+      // String url="http://localhost:8080/auth/realms/master/protocol/openid-connect/token";
       if (StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(url)) {
         CloseableHttpClient client = HttpClients.createDefault();
         ObjectMapper mapper = new ObjectMapper();

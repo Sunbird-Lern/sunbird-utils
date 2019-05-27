@@ -15,6 +15,7 @@ public class CsvManager {
   SearchUtil searchUtil;
   QueryBuilder queryBuilder;
   FileWriter fwCsv;
+  FileWriter recordNotProcessed;
 
   public CsvManager(RequestParams params) throws IOException {
     this.requestParams = params;
@@ -23,12 +24,14 @@ public class CsvManager {
     queryBuilder = new QueryBuilder(requestParams);
     fwCsv = new FileWriter("userExtId.csv");
     fwCsv.write("userName,userId,treasuryId,channel\n");
+    recordNotProcessed = new FileWriter("UserFailed.csv");
   }
 
-  public void processCsv() throws IOException {
+  public void processCsv() throws Exception {
     fw = new FileWriter(requestParams.getCsvFileOutput());
     String line = "";
     String cvsSplitBy = ",";
+    validateInputRootOrgId(requestParams.getChannel(), requestParams.getRootOrgId());
     if (FileValidator.isValidFile(
         requestParams.getCsvFileInput(), requestParams.getCsvFileOutput())) {
       try {
@@ -57,6 +60,7 @@ public class CsvManager {
           }
         }
       } catch (Exception e) {
+        e.printStackTrace();
         logger.error(" CsvManager : processCsv:  " + e);
       } finally {
         if (br != null) {
@@ -65,6 +69,8 @@ public class CsvManager {
             fw.close();
             fwCsv.flush();
             fwCsv.close();
+            recordNotProcessed.flush();
+            recordNotProcessed.close();
             logger.info("Connection Closed");
           } catch (Exception e) {
             logger.error("error in closing connection " + e.getMessage());
@@ -153,6 +159,14 @@ public class CsvManager {
       }
 
     } else {
+      recordNotProcessed.write(
+          "Record not processed with this "
+              + username
+              + " and schoolID "
+              + schoolId
+              + " since "
+              + userOrgMap.get("failedReason")
+              + "\n");
       logger.error(
           "Record not processed with this "
               + username
@@ -223,16 +237,17 @@ public class CsvManager {
       throws IOException {
 
     Map<String, Object> orgMap = new HashMap<>();
+    Map<String, Object> userOrgMap = new HashMap<>();
     boolean flag = false;
     Map<String, Object> userMap = getUserDetails(userName);
-    if (StringUtils.isNotBlank(schoolId)) {
-      orgMap = getOrgDetails(schoolId);
-    }
-    Map<String, Object> userOrgMap = new HashMap<>();
-    userOrgMap.put("userMap", userMap);
-    userOrgMap.put("orgMap", orgMap);
-    userOrgMap.put("failedReason", "");
     if (userMap.size() != 0) {
+      if (StringUtils.isNotBlank(schoolId)) {
+        orgMap = getOrgDetails(schoolId);
+      }
+      userOrgMap.put("userMap", userMap);
+      userOrgMap.put("orgMap", orgMap);
+      userOrgMap.put("failedReason", "");
+
       if (StringUtils.isNotBlank(schoolId)) {
         if (orgMap.size() != 0) {
           flag = true; // schoolId is valid
@@ -243,12 +258,11 @@ public class CsvManager {
       } else {
         flag = true; // schoolId is not provided associating userTo root org.
       }
-
+      userOrgMap.put("queryToBeProcessed", flag);
     } else {
-      flag = false; // userName is invalid
-      userOrgMap.put("failedReason", "userName is invalid");
+      userOrgMap.put("failedReason", "no user found or user search failed");
+      userOrgMap.put("queryToBeProcessed", flag);
     }
-    userOrgMap.put("queryToBeProcessed", flag);
     return userOrgMap;
   }
 
@@ -262,7 +276,15 @@ public class CsvManager {
     try {
       fwCsv.write(query + "\n");
     } catch (Exception e) {
-      logger.error("Exception occured while writing to write in  userExtId.csv");
+      logger.error("Exception occurred while writing to write in  userExtId.csv");
+    }
+  }
+
+  public void validateInputRootOrgId(String channel, String rootOrgId) throws Exception {
+
+    Map<String, Object> orgMap = searchUtil.validateRootOrgId(rootOrgId, channel);
+    if (orgMap.size() == 0) {
+      throw new Exception(" Please provide valid channel and rootOrgId");
     }
   }
 }

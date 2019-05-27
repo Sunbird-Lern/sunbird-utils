@@ -82,7 +82,7 @@ public class CsvManager {
   public void performUserUpdateRequest(
       String userName, String userId, String treasuryId, String channel) {
     try {
-      String url = parms.getBaseUrl().concat("v1/user/update");
+      String url = parms.getBaseUrl().concat("/api/user/v1/update");
       String authToken = client.generateAuthToken(userName);
       logger.info("The auth token generated is " + authToken);
       Map<String, Object> reqMap = prepareUserUpdateRequest(userId, treasuryId, channel);
