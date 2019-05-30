@@ -2,21 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.sunbird</groupId>
-  <artifactId>common-module</artifactId>
+  <artifactId>sunbird-util</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>sunbird_common_module</name>
+  <name>sunbird_util</name>
   <modules>
-    <module>common-util</module>
-    <module>cassandra-dac</module>
-    <module>elasticsearch-util</module>
+	<module>sunbird-common</module>
+    <module>sunbird-cassandra-dac</module>
+    <module>sunbird-es-dac</module>
     <module>sunbird-notification</module>
     <module>models</module>
-    <module>actor-util</module>
-    <module>request-validator</module>
-    <module>actor-core</module>
-    <module>kafka-client</module>
-    <module>extensions</module>
     <module>content-util</module>
     <module>cache-util</module>
   </modules>

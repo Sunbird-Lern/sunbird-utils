@@ -1,2 +1,0 @@
-CREATE TABLE IF NOT EXISTS sunbird.usr_external_identity(externalId text, provider text, idType text, userId text, createdOn timestamp, lastUpdatedOn timestamp, createdBy text, lastUpdatedBy text, PRIMARY KEY(provider, idType, externalId));
-CREATE INDEX inx_usrextid_user_id ON sunbird.usr_external_identity(userId);

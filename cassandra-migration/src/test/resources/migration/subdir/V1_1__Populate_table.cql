@@ -1,1 +1,0 @@
-INSERT INTO test (space, key, value) VALUES ('myspace', 'mykey', 'myvalue');

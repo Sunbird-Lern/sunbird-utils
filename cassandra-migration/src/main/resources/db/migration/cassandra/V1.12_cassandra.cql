@@ -1,1 +1,0 @@
-ALTER TABLE sunbird.user_org ADD hashTagId text;

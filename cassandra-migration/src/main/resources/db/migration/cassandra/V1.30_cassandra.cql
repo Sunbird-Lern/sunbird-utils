@@ -1,1 +1,0 @@
-INSERT INTO sunbird.system_settings(id, field, value) VALUES('orgProfileConfig', 'orgProfileConfig', '{"csv":{"supportedColumns":{"SCHOOL NAME":"orgName","BLOCK CODE":"locationCode","STATUS":"status","SCHOOL ID":"orgId","EXTERNAL ID":"externalId","DESCRIPTION":"description"},"mandatoryColumns":["orgName","locationCode","status"]}}');

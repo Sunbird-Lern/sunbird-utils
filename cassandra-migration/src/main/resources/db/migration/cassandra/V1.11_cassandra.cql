@@ -1,1 +1,0 @@
-ALTER TABLE sunbird.user ADD phoneVerified boolean;
