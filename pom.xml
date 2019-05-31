@@ -5,11 +5,11 @@
   <artifactId>sunbird-util</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>sunbird_util</name>
+  <name>Sunbird Utils</name>
   <modules>
-	<module>sunbird-common</module>
-    <module>sunbird-cassandra-dac</module>
-    <module>sunbird-es-dac</module>
+	<module>sunbird-platform-core</module>
+    <module>sunbird-cassandra-utils</module>
+    <module>sunbird-es-utils</module>
     <module>sunbird-notification</module>
     <module>models</module>
     <module>content-util</module>
