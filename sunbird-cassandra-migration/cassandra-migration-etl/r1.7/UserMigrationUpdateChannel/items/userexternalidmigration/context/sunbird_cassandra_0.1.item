@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<talendfile:ContextType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" xmi:id="_p4Ht8KEXEeifEef3UlW1AA" confirmationNeeded="false" name="Default">
-  <contextParameter xmi:id="_p4Ht8aEXEeifEef3UlW1AA" comment="" name="sunbird_cassandra_port" prompt="sunbird_cassandra_port?" promptNeeded="false" type="id_String" value="9042"/>
-  <contextParameter xmi:id="_p4Ht8qEXEeifEef3UlW1AA" comment="" name="sunbird_cassandra_keyspace" prompt="sunbird_cassandra_keyspace?" promptNeeded="false" type="id_String" value="sunbird"/>
-  <contextParameter xmi:id="_p4Ht86EXEeifEef3UlW1AA" comment="" name="sunbird_cassandra_username" prompt="sunbird_cassandra_username?" promptNeeded="false" type="id_String" value="&quot;&quot;"/>
-  <contextParameter xmi:id="_p4Ht9KEXEeifEef3UlW1AA" comment="" name="sunbird_cassandra_password" prompt="sunbird_cassandra_password?" promptNeeded="false" type="id_Password" value="0RMsyjmybrE="/>
-  <contextParameter xmi:id="_p4Ht9aEXEeifEef3UlW1AA" comment="" name="sunbird_cassandra_server" prompt="sunbird_cassandra_server?" promptNeeded="false" type="id_String" value="localhost"/>
-  <contextParameter xmi:id="_4UEtQKEvEeifEef3UlW1AA" comment="" name="sunbird_channel_migration_log_file" prompt="sunbird_channel_migration_log_file?" promptNeeded="false" type="id_String" value="D:/channel_migration_log.csv"/>
-</talendfile:ContextType>
