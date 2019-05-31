@@ -10,9 +10,7 @@
   <modules>
     <module>common-util</module>
     <module>actor-util</module>
-    <module>request-validator</module>
     <module>actor-core</module>
-    <module>extensions</module>
 	<module>sunbird-commons</module>
   </modules>
 </project>
