@@ -361,9 +361,9 @@ public class KeyCloakServiceImplTest extends BaseHttpTest {
         fedUserId);
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void testUpdatePassword() throws Exception {
-    doReturn(null).when(KeyCloakConnectionProvider.class, "getConnection");
-    keyCloakService.updatePassword(userId.get(JsonKey.USER_ID), "password");
+    boolean updated = keyCloakService.updatePassword(userId.get(JsonKey.USER_ID), "password");
+    Assert.assertTrue(updated);
   }
 }

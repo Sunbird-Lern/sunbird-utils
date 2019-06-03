@@ -12,7 +12,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import javax.management.Notification;
 import org.apache.http.impl.client.HttpClients;
 import org.junit.Assert;
 import org.junit.Before;
@@ -31,7 +30,6 @@ import org.sunbird.services.sso.impl.KeyCloakServiceImpl;
   BufferedReader.class,
   HttpUtil.class,
   HttpClients.class,
-  Notification.class,
   KeyCloakConnectionProvider.class,
   KeyCloakServiceImpl.class
 })
