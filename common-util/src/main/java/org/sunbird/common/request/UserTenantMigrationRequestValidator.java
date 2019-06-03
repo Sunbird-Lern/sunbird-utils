@@ -4,8 +4,17 @@ import java.util.Map;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.responsecode.ResponseCode;
 
+/**
+ * Request validator class for user tenant migration request.
+ * @author Amit Kumar
+ *
+ */
 public class UserTenantMigrationRequestValidator extends UserRequestValidator {
-
+	
+  /**
+   * This method will validate the user migration request.
+   * @param request user migration request body
+   */
   public void validateUserTenantMigrateRequest(Request request) {
     Map<String, Object> req = request.getRequest();
     validateParam(
