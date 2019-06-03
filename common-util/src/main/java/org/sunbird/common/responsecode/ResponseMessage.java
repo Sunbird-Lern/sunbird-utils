@@ -431,6 +431,7 @@ public interface ResponseMessage {
     String INVALID_REQUEST_TIMEOUT = "Invalid request timeout value {0}.";
     String ERROR_USER_UPDATE_PASSWORD = "User is created but password couldn't be updated.";
     String ERROR_BGMS_MISMATCH = "Mismatch in {0} at row - {1}";
+    String ERROR_USER_MIGRATION_FAILED = "User migration failed.";
   }
 
   interface Key {
@@ -798,5 +799,6 @@ public interface ResponseMessage {
     String ERROR_INVALID_TEXTBOOK_UNIT_ID = "ERROR_INVALID_TEXTBOOK_UNIT_ID";
     String INVALID_REQUEST_TIMEOUT = "INVALID_REQUEST_TIMEOUT";
     String ERROR_BGMS_MISMATCH = "ERROR_BGMS_MISMATCH";
+    String ERROR_USER_MIGRATION_FAILED = "ERROR_USER_MIGRATION_FAILED";
   }
 }
