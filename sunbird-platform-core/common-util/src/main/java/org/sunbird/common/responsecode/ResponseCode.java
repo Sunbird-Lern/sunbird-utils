@@ -786,6 +786,9 @@ public enum ResponseCode {
       ResponseMessage.Key.INVALID_REQUEST_TIMEOUT, ResponseMessage.Message.INVALID_REQUEST_TIMEOUT),
   errorBGMSMismatch(
       ResponseMessage.Key.ERROR_BGMS_MISMATCH, ResponseMessage.Message.ERROR_BGMS_MISMATCH),
+  errorUserMigrationFailed(
+      ResponseMessage.Key.ERROR_USER_MIGRATION_FAILED,
+      ResponseMessage.Message.ERROR_USER_MIGRATION_FAILED),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

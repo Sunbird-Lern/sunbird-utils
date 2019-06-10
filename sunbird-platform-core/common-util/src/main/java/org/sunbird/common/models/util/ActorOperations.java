@@ -154,7 +154,8 @@ public enum ActorOperations {
   VERIFY_OTP("verifyOTP"),
   SEND_OTP("sendOTP"),
   GET_USER_TYPES("getUserTypes"),
-  CLEAR_CACHE("clearCache");
+  CLEAR_CACHE("clearCache"),
+  USER_TENANT_MIGRATE("userTenantMigrate");
 
   private String value;
 
