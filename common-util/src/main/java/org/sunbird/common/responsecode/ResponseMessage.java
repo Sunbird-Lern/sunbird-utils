@@ -280,6 +280,7 @@ public interface ResponseMessage {
         "User is Inactive for this org. Please make it active to proceed.";
     String USER_UPDATE_FAILED_FOR_THIS_ORG = "user updation failed for this org.";
     String PAGE_NOT_EXIST = "Requested page does not exist.";
+    String SECTION_NOT_EXIST = "Requested section does not exist.";
     String ORG_NOT_EXIST = "Requested organisation does not exist.";
     String INVALID_PAGE_SOURCE = "Invalid page source.";
     String BADGE_SUBTYPE_REQUIRED = "Please provide badge class subtype.";
@@ -684,6 +685,7 @@ public interface ResponseMessage {
     String USER_UPDATE_FAILED_FOR_THIS_ORG = "USER_UPDATE_FAILED_FOR_THIS_ORG";
     String PREFERENCE_KEY_MISSING = "PREFERENCE_KEY_MISSING";
     String PAGE_NOT_EXIST = "PAGE_NOT_EXIST";
+    String SECTION_NOT_EXIST = "SECTION_NOT_EXIST";
     String ORG_NOT_EXIST = "ORG_NOT_EXIST";
     String INVALID_PAGE_SOURCE = "INVALID_PAGE_SOURCE";
     String BADGE_SUBTYPE_REQUIRED = "BADGE_SUBTYPE_REQUIRED";
