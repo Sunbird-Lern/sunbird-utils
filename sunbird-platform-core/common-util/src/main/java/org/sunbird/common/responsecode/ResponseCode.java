@@ -517,6 +517,7 @@ public enum ResponseCode {
       ResponseMessage.Key.USER_UPDATE_FAILED_FOR_THIS_ORG,
       ResponseMessage.Message.USER_UPDATE_FAILED_FOR_THIS_ORG),
   pageDoesNotExist(ResponseMessage.Key.PAGE_NOT_EXIST, ResponseMessage.Message.PAGE_NOT_EXIST),
+  sectionDoesNotExist(ResponseMessage.Key.SECTION_NOT_EXIST, ResponseMessage.Message.SECTION_NOT_EXIST),
   orgDoesNotExist(ResponseMessage.Key.ORG_NOT_EXIST, ResponseMessage.Message.ORG_NOT_EXIST),
   invalidPageSource(
       ResponseMessage.Key.INVALID_PAGE_SOURCE, ResponseMessage.Message.INVALID_PAGE_SOURCE),
