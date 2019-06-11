@@ -138,7 +138,6 @@ public final class JsonKey {
   public static final String COURSE_CREATOR = "courseCreator";
   public static final String COURSE_DURATION = "courseDuration";
   public static final String COURSE_ENROLL_DATE = "enrolledDate";
-  public static final String COURSE_ENROLLMENT = "course_enrollment";
   public static final String COURSE_ID = "courseId";
   public static final String COURSE_IDS = "courseIds";
   public static final String COURSE_LIST = "courseList";
