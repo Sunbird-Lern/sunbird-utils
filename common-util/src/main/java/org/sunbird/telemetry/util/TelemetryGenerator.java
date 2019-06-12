@@ -1,6 +1,5 @@
 package org.sunbird.telemetry.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -8,15 +7,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
+import org.sunbird.common.models.util.ProjectUtil;
+import org.sunbird.common.models.util.TelemetryEnvKey;
 import org.sunbird.telemetry.dto.Actor;
 import org.sunbird.telemetry.dto.Context;
 import org.sunbird.telemetry.dto.Producer;
 import org.sunbird.telemetry.dto.Target;
 import org.sunbird.telemetry.dto.Telemetry;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * class to transform the request data to telemetry events
@@ -56,7 +60,7 @@ public class TelemetryGenerator {
     if (!StringUtils.isBlank(reqId)) {
       Map<String, Object> map = new HashMap<>();
       map.put(JsonKey.ID, reqId);
-      map.put(JsonKey.TYPE, JsonKey.REQUEST);
+      map.put(JsonKey.TYPE, TelemetryEnvKey.REQUEST_UPPER_CAMEL);
       eventContext.getCdata().add(map);
     }
 
@@ -104,7 +108,7 @@ public class TelemetryGenerator {
 
     Map<String, Object> target = (Map<String, Object>) params.get(JsonKey.TARGET_OBJECT);
     if (target.get(JsonKey.CURRENT_STATE) != null) {
-      edata.put(JsonKey.STATE, target.get(JsonKey.CURRENT_STATE));
+      edata.put(JsonKey.STATE, StringUtils.capitalize((String) target.get(JsonKey.CURRENT_STATE)));
       if (JsonKey.UPDATE.equalsIgnoreCase((String) target.get(JsonKey.CURRENT_STATE))
           && edata.get(props) != null) {
         removeAttributes((Map<String, Object>) edata.get(props), JsonKey.ID);
@@ -178,7 +182,7 @@ public class TelemetryGenerator {
     try {
       event = mapper.writeValueAsString(telemetry);
       ProjectLogger.log(
-          "TelemetryGenerator:getTelemetry = Telemetry Event : " + event, LoggerEnum.INFO.name());
+          "TelemetryGenerator:getTelemetry = Telemetry Event : " + event, LoggerEnum.DEBUG.name());
     } catch (Exception e) {
       ProjectLogger.log(e.getMessage(), e);
     }
@@ -208,16 +212,8 @@ public class TelemetryGenerator {
     if (!StringUtils.isBlank(reqId)) {
       Map<String, Object> map = new HashMap<>();
       map.put(JsonKey.ID, reqId);
-      map.put(JsonKey.TYPE, JsonKey.REQUEST);
+      map.put(JsonKey.TYPE, TelemetryEnvKey.REQUEST_UPPER_CAMEL);
       eventContext.getCdata().add(map);
-    }
-    // collect x-app-id and put it into cdata.
-    String appId = (String) context.get(JsonKey.APP_ID);
-    if (StringUtils.isNotBlank(appId)) {
-      Map<String, Object> appIdMap = new HashMap<>();
-      appIdMap.put(JsonKey.ID, appId);
-      appIdMap.put(JsonKey.TYPE, JsonKey.APP_ID);
-      eventContext.getCdata().add(appIdMap);
     }
     Map<String, Object> edata = generateSearchEdata(params);
     Telemetry telemetry =
@@ -235,7 +231,7 @@ public class TelemetryGenerator {
     Long size = (Long) params.get(JsonKey.SIZE);
     List<Map> topn = (List<Map>) params.get(JsonKey.TOPN);
 
-    edata.put(JsonKey.TYPE, type);
+    edata.put(JsonKey.TYPE, StringUtils.capitalize(type));
     if (null == query) {
       query = "";
     }
@@ -270,7 +266,7 @@ public class TelemetryGenerator {
     if (!StringUtils.isBlank(reqId)) {
       Map<String, Object> map = new HashMap<>();
       map.put(JsonKey.ID, reqId);
-      map.put(JsonKey.TYPE, StringUtils.capitalize(JsonKey.REQUEST));
+      map.put(JsonKey.TYPE, TelemetryEnvKey.REQUEST_UPPER_CAMEL);
       eventContext.getCdata().add(map);
     }
 
@@ -286,7 +282,7 @@ public class TelemetryGenerator {
     String logLevel = (String) params.get(JsonKey.LOG_LEVEL);
     String message = (String) params.get(JsonKey.MESSAGE);
 
-    edata.put(JsonKey.TYPE, logType);
+    edata.put(JsonKey.TYPE, StringUtils.capitalize(logType));
     edata.put(JsonKey.LEVEL, logLevel);
     edata.put(JsonKey.MESSAGE, message != null ? message : "");
 
@@ -334,7 +330,7 @@ public class TelemetryGenerator {
     if (!StringUtils.isBlank(reqId)) {
       Map<String, Object> map = new HashMap<>();
       map.put(JsonKey.ID, reqId);
-      map.put(JsonKey.TYPE, JsonKey.REQUEST);
+      map.put(JsonKey.TYPE, TelemetryEnvKey.REQUEST_UPPER_CAMEL);
       eventContext.getCdata().add(map);
     }
 
@@ -351,7 +347,7 @@ public class TelemetryGenerator {
     String stackTrace = (String) params.get(JsonKey.STACKTRACE);
     edata.put(JsonKey.ERROR, error);
     edata.put(JsonKey.ERR_TYPE, errorType);
-    edata.put(JsonKey.STACKTRACE, stackTrace);
+    edata.put(JsonKey.STACKTRACE, ProjectUtil.getFirstNCharacterString(stackTrace, 100));
     return edata;
   }
 

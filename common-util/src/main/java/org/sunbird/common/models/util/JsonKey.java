@@ -1,4 +1,3 @@
-/** */
 package org.sunbird.common.models.util;
 
 /**
@@ -899,8 +898,17 @@ public final class JsonKey {
   public static final String SUNBIRD_COURSE_METRICS_REPORT_FOLDER =
       "sunbird_course_metrics_report_folder";
   public static final String REPORT_UPDATED_ON = "reportUpdatedOn";
+  public static final String SUNBIRD_GZIP_SIZE_THRESHOLD = "sunbird_gzip_size_threshold";
   public static final String ANALYTICS_ACCOUNT_NAME = "sunbird_analytics_blob_account_name";
   public static final String ANALYTICS_ACCOUNT_KEY = "sunbird_analytics_blob_account_key";
+  public static final String PAGE_MANAGEMENT = "page_management";
+  public static final String SUNBIRD_CACHE_ENABLE = "sunbird_cache_enable";
+  public static final String MAP_NAME = "mapName";
+  public static final String PAGE_ASSEMBLE = "pageAssemble";
+  public static final String SIGNUP_TYPE = "signupType";
+  public static final String REQUEST_SOURCE = "source";
+
+  public static final String SUNBIRD_REDIS_CONN_POOL_SIZE = "sunbird_redis_connection_pool_size";
 
   private JsonKey() {}
 }

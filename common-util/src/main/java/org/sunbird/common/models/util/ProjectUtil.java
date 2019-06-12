@@ -48,6 +48,7 @@ public class ProjectUtil {
   public static final String YEAR_MONTH_DATE_FORMAT = "yyyy-MM-dd";
   private static Map<String, String> templateMap = new HashMap<>();
   private static final int randomPasswordLength = 9;
+
   protected static final String FILE_NAME[] = {
     "cassandratablecolumn.properties",
     "elasticsearch.config.properties",
@@ -985,5 +986,18 @@ public class ProjectUtil {
       userId = fedUserId.replace(prefix, "");
     }
     return userId;
+  }
+
+  public static String getFirstNCharacterString(String originalText, int noOfChar) {
+    if (StringUtils.isBlank(originalText)) {
+      return "";
+    }
+    String firstNChars = "";
+    if (originalText.length() > noOfChar) {
+      firstNChars = originalText.substring(0, noOfChar);
+    } else {
+      firstNChars = originalText;
+    }
+    return firstNChars;
   }
 }

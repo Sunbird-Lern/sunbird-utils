@@ -50,6 +50,7 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.csv.CSVPrinter;
@@ -320,31 +321,29 @@ public class TextBookTocUploader {
         List<Map<String, Object>> children =
             (List<Map<String, Object>>)
                 ((Map<String, Object>) childrenMap.get(identifier)).get(JsonKey.CHILDREN);
-        int childWithContentTypeAsTextbook = 0;
-        for (Map<String, Object> child : children) {
-          if (JsonKey.TEXTBOOK.equalsIgnoreCase((String) child.get(JsonKey.CONTENT_TYPE))
-              || JsonKey.TEXTBOOK_UNIT.equalsIgnoreCase((String) child.get(JsonKey.CONTENT_TYPE))) {
-            childWithContentTypeAsTextbook++;
-          }
-        }
-        final int size = childWithContentTypeAsTextbook;
-        children.forEach(
-            s -> {
-              if (!(JsonKey.TEXTBOOK.equalsIgnoreCase((String) s.get(JsonKey.CONTENT_TYPE))
-                  || JsonKey.TEXTBOOK_UNIT.equalsIgnoreCase(
-                      (String) s.get(JsonKey.CONTENT_TYPE)))) {
-                String url =
-                    ProjectUtil.getConfigValue(JsonKey.SUNBIRD_LINKED_CONTENT_BASE_URL)
-                        + (String) s.get(JsonKey.IDENTIFIER);
-                String key =
-                    MessageFormat.format(
-                        ProjectUtil.getConfigValue(JsonKey.SUNBIRD_TOC_LINKED_CONTENT_COLUMN_NAME),
-                        (((int) s.get(JsonKey.INDEX)) - size));
-                if (ROW_METADATA.contains(key)) {
-                  row.put(key, url);
-                }
-              }
-            });
+        AtomicInteger linkedContent = new AtomicInteger(1);
+        children
+            .stream()
+            .filter(
+                s ->
+                    !(JsonKey.TEXTBOOK.equalsIgnoreCase((String) s.get(JsonKey.CONTENT_TYPE))
+                        || JsonKey.TEXTBOOK_UNIT.equalsIgnoreCase(
+                            (String) s.get(JsonKey.CONTENT_TYPE))))
+            .sorted(
+                (s, p) -> {
+                  return (int) s.get(JsonKey.INDEX) - (int) p.get(JsonKey.INDEX);
+                })
+            .forEach(
+                s -> {
+                  String key =
+                      MessageFormat.format(
+                          ProjectUtil.getConfigValue(
+                              JsonKey.SUNBIRD_TOC_LINKED_CONTENT_COLUMN_NAME),
+                          linkedContent.getAndAdd(1));
+                  if (ROW_METADATA.contains(key)) {
+                    row.put(key, (String) s.get(JsonKey.IDENTIFIER));
+                  }
+                });
       }
     }
   }
