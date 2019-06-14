@@ -1,3 +1,4 @@
+
 package org.sunbird.common.models.util;
 
 /**
@@ -909,6 +910,7 @@ public final class JsonKey {
   public static final String REQUEST_SOURCE = "source";
 
   public static final String SUNBIRD_REDIS_CONN_POOL_SIZE = "sunbird_redis_connection_pool_size";
+  public static final String RECIPIENT_PHONES = "recipientPhones";
 
   private JsonKey() {}
 }
