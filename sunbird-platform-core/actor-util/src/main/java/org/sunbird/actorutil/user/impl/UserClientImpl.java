@@ -10,8 +10,10 @@ import org.apache.commons.collections.CollectionUtils;
 import org.sunbird.actorutil.InterServiceCommunication;
 import org.sunbird.actorutil.InterServiceCommunicationFactory;
 import org.sunbird.actorutil.user.UserClient;
-import org.sunbird.common.ElasticSearchUtil;
+import org.sunbird.common.ElasticSearchHelper;
+import org.sunbird.common.ElasticSearchTcpImpl;
 import org.sunbird.common.exception.ProjectCommonException;
+import org.sunbird.common.inf.ElasticSearchUtil;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.ActorOperations;
 import org.sunbird.common.models.util.JsonKey;
@@ -21,11 +23,13 @@ import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.dto.SearchDTO;
+import scala.concurrent.Future;
 
 public class UserClientImpl implements UserClient {
 
   private static InterServiceCommunication interServiceCommunication =
       InterServiceCommunicationFactory.getInstance();
+  private ElasticSearchUtil esUtil = new ElasticSearchTcpImpl();
 
   @Override
   public String createUser(ActorRef actorRef, Map<String, Object> userMap) {
@@ -60,11 +64,13 @@ public class UserClientImpl implements UserClient {
     list.add(facets);
     searchDto.setFacets(list);
 
-    Map<String, Object> esResponse =
-        ElasticSearchUtil.complexSearch(
+    Future<Map<String, Object>> esResponseF =
+        esUtil.complexSearch(
             searchDto,
             ProjectUtil.EsIndex.sunbird.getIndexName(),
             ProjectUtil.EsType.user.getTypeName());
+    Map<String, Object> esResponse =
+        (Map<String, Object>) ElasticSearchHelper.getObjectFromFuture(esResponseF);
 
     if (null != esResponse) {
       List<Map<String, Object>> facetsResponse =

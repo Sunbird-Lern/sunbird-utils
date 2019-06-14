@@ -46,7 +46,7 @@ import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortMode;
 import org.sunbird.common.exception.ProjectCommonException;
-import org.sunbird.common.inf.ElasticSearchClientInf;
+import org.sunbird.common.inf.ElasticSearchUtil;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
@@ -60,7 +60,7 @@ import org.sunbird.helper.ConnectionManager;
 import scala.concurrent.Future;
 import scala.concurrent.Promise;
 
-public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
+public class ElasticSearchTcpImpl implements ElasticSearchUtil {
   private static final List<String> upsertResults =
       new ArrayList<>(Arrays.asList("CREATED", "UPDATED", "NOOP"));
   public static final int WAIT_TIME = 30;
@@ -76,6 +76,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
    * @param data Map<String,Object>
    * @return String identifier for created data
    */
+  @Override
   public Future<String> createData(
       String index, String type, String identifier, Map<String, Object> data) {
     long startTime = System.currentTimeMillis();
@@ -90,7 +91,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
       promise.success("ERROR");
       return promise.future();
     }
-    Map<String, String> mappedIndexAndType = ElasticSearchUtil.getMappedIndexAndType(index, type);
+    Map<String, String> mappedIndexAndType = ElasticSearchHelper.getMappedIndexAndType(index, type);
     try {
       data.put("identifier", identifier);
       IndexResponse response =
@@ -109,7 +110,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
               + " for Type "
               + type
               + " ,Total time elapsed = "
-              + ElasticSearchUtil.calculateEndTime(startTime),
+              + ElasticSearchHelper.calculateEndTime(startTime),
           LoggerEnum.PERF_LOG);
       promise.success(response.getId());
       return promise.future();
@@ -121,7 +122,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
               + " for Type "
               + type
               + " ,Total time elapsed = "
-              + ElasticSearchUtil.calculateEndTime(startTime),
+              + ElasticSearchHelper.calculateEndTime(startTime),
           LoggerEnum.PERF_LOG);
       promise.failure(e);
       promise.success("");
@@ -137,6 +138,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
    * @param identifier String
    * @return Map<String,Object> or null
    */
+  @Override
   public Future<Map<String, Object>> getDataByIdentifier(
       String index, String type, String identifier) {
     long startTime = System.currentTimeMillis();
@@ -147,7 +149,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
             + " for Type "
             + type,
         LoggerEnum.PERF_LOG);
-    Map<String, String> mappedIndexAndType = ElasticSearchUtil.getMappedIndexAndType(index, type);
+    Map<String, String> mappedIndexAndType = ElasticSearchHelper.getMappedIndexAndType(index, type);
     GetResponse response = null;
     if (StringUtils.isBlank(index) || StringUtils.isBlank(identifier)) {
       ProjectLogger.log("Invalid request is coming.");
@@ -195,6 +197,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
    * @param searchData Map<String,Object>
    * @return Map<String,Object>
    */
+  @Override
   public Future<Map<String, Object>> searchData(
       String index, String type, Map<String, Object> searchData) {
     long startTime = System.currentTimeMillis();
@@ -208,7 +211,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
       Entry<String, Object> entry = itr.next();
       sourceBuilder.query(QueryBuilders.commonTermsQuery(entry.getKey(), entry.getValue()));
     }
-    Map<String, String> mappedIndexAndType = ElasticSearchUtil.getMappedIndexAndType(index, type);
+    Map<String, String> mappedIndexAndType = ElasticSearchHelper.getMappedIndexAndType(index, type);
     SearchResponse sr = null;
     try {
       sr =
@@ -255,6 +258,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
    * @param data Map<String,Object>
    * @return boolean
    */
+  @Override
   public Future<Boolean> updateData(
       String index, String type, String identifier, Map<String, Object> data) {
     long startTime = System.currentTimeMillis();
@@ -266,7 +270,8 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
         && !StringUtils.isBlank(type)
         && !StringUtils.isBlank(identifier)
         && data != null) {
-      Map<String, String> mappedIndexAndType = ElasticSearchUtil.getMappedIndexAndType(index, type);
+      Map<String, String> mappedIndexAndType =
+          ElasticSearchHelper.getMappedIndexAndType(index, type);
       try {
         UpdateResponse response =
             ConnectionManager.getClient()
@@ -330,6 +335,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
    * @param data Map<String,Object>
    * @return boolean
    */
+  @Override
   public Future<Boolean> upsertData(
       String index, String type, String identifier, Map<String, Object> data) {
     long startTime = System.currentTimeMillis();
@@ -342,7 +348,8 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
         && !StringUtils.isBlank(identifier)
         && data != null
         && data.size() > 0) {
-      Map<String, String> mappedIndexAndType = ElasticSearchUtil.getMappedIndexAndType(index, type);
+      Map<String, String> mappedIndexAndType =
+          ElasticSearchHelper.getMappedIndexAndType(index, type);
       IndexRequest indexRequest =
           new IndexRequest(
                   mappedIndexAndType.get(JsonKey.INDEX),
@@ -404,6 +411,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
    * @param type String
    * @param identifier String
    */
+  @Override
   public Future<Boolean> removeData(String index, String type, String identifier) {
     long startTime = System.currentTimeMillis();
     Promise<Boolean> promise = Futures.promise();
@@ -413,7 +421,8 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
     if (!StringUtils.isBlank(index)
         && !StringUtils.isBlank(type)
         && !StringUtils.isBlank(identifier)) {
-      Map<String, String> mappedIndexAndType = ElasticSearchUtil.getMappedIndexAndType(index, type);
+      Map<String, String> mappedIndexAndType =
+          ElasticSearchHelper.getMappedIndexAndType(index, type);
       try {
         deleteResponse =
             ConnectionManager.getClient()
@@ -453,13 +462,14 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
    * @param type var arg of String
    * @return search result as Map.
    */
+  @Override
   public Future<Map<String, Object>> complexSearch(
       SearchDTO searchDTO, String index, String... type) {
 
     long startTime = System.currentTimeMillis();
     Promise<Map<String, Object>> promise = Futures.promise();
     List<Map<String, String>> indicesAndTypesMapping =
-        ElasticSearchUtil.getMappedIndexesAndTypes(index, type);
+        ElasticSearchHelper.getMappedIndexesAndTypes(index, type);
     String[] indices =
         indicesAndTypesMapping
             .stream()
@@ -474,9 +484,9 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
     ProjectLogger.log(
         "ElasticSearchUtil complexSearch method started at ==" + startTime, LoggerEnum.PERF_LOG);
     SearchRequestBuilder searchRequestBuilder =
-        ElasticSearchUtil.getSearchBuilder(ConnectionManager.getClient(), indices, types);
+        ElasticSearchHelper.getSearchBuilder(ConnectionManager.getClient(), indices, types);
     // check mode and set constraints
-    Map<String, Float> constraintsMap = ElasticSearchUtil.getConstraints(searchDTO);
+    Map<String, Float> constraintsMap = ElasticSearchHelper.getConstraints(searchDTO);
 
     BoolQueryBuilder query = new BoolQueryBuilder();
 
@@ -484,7 +494,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
     String channel = PropertiesCache.getInstance().getProperty(JsonKey.SUNBIRD_ES_CHANNEL);
     if (!(StringUtils.isBlank(channel) || JsonKey.SUNBIRD_ES_CHANNEL.equals(channel))) {
       query.must(
-          ElasticSearchUtil.createMatchQuery(
+          ElasticSearchHelper.createMatchQuery(
               JsonKey.CHANNEL, channel, constraintsMap.get(JsonKey.CHANNEL)));
     }
 
@@ -507,18 +517,18 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
       for (Map.Entry<String, Object> entry : searchDTO.getSortBy().entrySet()) {
         if (!entry.getKey().contains(".")) {
           searchRequestBuilder.addSort(
-              entry.getKey() + ElasticSearchUtil.RAW_APPEND,
-              ElasticSearchUtil.getSortOrder((String) entry.getValue()));
+              entry.getKey() + ElasticSearchHelper.RAW_APPEND,
+              ElasticSearchHelper.getSortOrder((String) entry.getValue()));
         } else {
           Map<String, Object> map = (Map<String, Object>) entry.getValue();
           Map<String, String> dataMap = (Map) map.get(JsonKey.TERM);
           for (Map.Entry<String, String> dateMapEntry : dataMap.entrySet()) {
             FieldSortBuilder mySort =
-                SortBuilders.fieldSort(entry.getKey() + ElasticSearchUtil.RAW_APPEND)
+                SortBuilders.fieldSort(entry.getKey() + ElasticSearchHelper.RAW_APPEND)
                     .setNestedFilter(
                         new TermQueryBuilder(dateMapEntry.getKey(), dateMapEntry.getValue()))
                     .sortMode(SortMode.MIN)
-                    .order(ElasticSearchUtil.getSortOrder((String) map.get(JsonKey.ORDER)));
+                    .order(ElasticSearchHelper.getSortOrder((String) map.get(JsonKey.ORDER)));
             searchRequestBuilder.addSort(mySort);
           }
         }
@@ -547,7 +557,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
     if (searchDTO.getAdditionalProperties() != null
         && searchDTO.getAdditionalProperties().size() > 0) {
       for (Map.Entry<String, Object> entry : searchDTO.getAdditionalProperties().entrySet()) {
-        ElasticSearchUtil.addAdditionalProperties(query, entry, constraintsMap);
+        ElasticSearchHelper.addAdditionalProperties(query, entry, constraintsMap);
       }
     }
 
@@ -556,7 +566,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
     List finalFacetList = new ArrayList();
 
     if (null != searchDTO.getFacets() && !searchDTO.getFacets().isEmpty()) {
-      ElasticSearchUtil.addAggregations(searchRequestBuilder, searchDTO.getFacets());
+      ElasticSearchHelper.addAggregations(searchRequestBuilder, searchDTO.getFacets());
     }
     ProjectLogger.log(
         "calling search builder======" + searchRequestBuilder.toString(), LoggerEnum.INFO.name());
@@ -637,7 +647,8 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
    * @return Map<String,Map<String,Objec>> It will return a map with id as key and the data from ES
    *     as value
    */
-  public Map<String, Map<String, Object>> getEsResultByListOfIds(
+  @Override
+  public Future<Map<String, Map<String, Object>>> getEsResultByListOfIds(
       List<String> ids, List<String> fields, ProjectUtil.EsType typeToSearch) {
 
     Map<String, Object> filters = new HashMap<>();
@@ -651,20 +662,24 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
         complexSearch(
             searchDTO, ProjectUtil.EsIndex.sunbird.getIndexName(), typeToSearch.getTypeName());
     Map<String, Object> result =
-        (Map<String, Object>) ElasticSearchUtil.getObjectFromFuture(resultF);
+        (Map<String, Object>) ElasticSearchHelper.getObjectFromFuture(resultF);
     List<Map<String, Object>> esContent = (List<Map<String, Object>>) result.get(JsonKey.CONTENT);
-    return esContent
-        .stream()
-        .collect(
-            Collectors.toMap(
-                obj -> {
-                  return (String) obj.get("id");
-                },
-                val -> val));
+    Promise<Map<String, Map<String, Object>>> promise = Futures.promise();
+    promise.success(
+        esContent
+            .stream()
+            .collect(
+                Collectors.toMap(
+                    obj -> {
+                      return (String) obj.get("id");
+                    },
+                    val -> val)));
+    return promise.future();
   }
 
+  @Override
   public Future<Map<String, Object>> doAsyncSearch(String index, String type, SearchDTO searchDTO) {
-    Map<String, String> indexTypeMap = ElasticSearchUtil.getMappedIndexAndType(index, type);
+    Map<String, String> indexTypeMap = ElasticSearchHelper.getMappedIndexAndType(index, type);
     Promise<Map<String, Object>> promise = Futures.promise();
     SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
     BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -684,12 +699,12 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
     sourceBuilder.from(searchDTO.getOffset() != null ? searchDTO.getOffset() : 0);
     sourceBuilder.size(searchDTO.getLimit() != null ? searchDTO.getLimit() : 250);
     // check mode and set constraints
-    Map<String, Float> constraintsMap = ElasticSearchUtil.getConstraints(searchDTO);
+    Map<String, Float> constraintsMap = ElasticSearchHelper.getConstraints(searchDTO);
     // apply additional properties
     if (searchDTO.getAdditionalProperties() != null
         && searchDTO.getAdditionalProperties().size() > 0) {
       for (Map.Entry<String, Object> entry : searchDTO.getAdditionalProperties().entrySet()) {
-        ElasticSearchUtil.addAdditionalProperties(boolQueryBuilder, entry, constraintsMap);
+        ElasticSearchHelper.addAdditionalProperties(boolQueryBuilder, entry, constraintsMap);
       }
     }
     sourceBuilder.query(boolQueryBuilder);
@@ -726,6 +741,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
    * @param dataList List<Map<String, Object>>
    * @return boolean
    */
+  @Override
   public Future<Boolean> bulkInsertData(
       String index, String type, List<Map<String, Object>> dataList) {
     Promise<Boolean> promise = Futures.promise();
@@ -734,7 +750,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
         "ElasticSearchUtil bulkInsertData method started at ==" + startTime + " for Type " + type,
         LoggerEnum.PERF_LOG);
     promise.success(true);
-    Map<String, String> mappedIndexAndType = ElasticSearchUtil.getMappedIndexAndType(index, type);
+    Map<String, String> mappedIndexAndType = ElasticSearchHelper.getMappedIndexAndType(index, type);
     try {
       BulkProcessor bulkProcessor =
           BulkProcessor.builder(
@@ -810,12 +826,13 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
    *
    * @return boolean
    */
+  @Override
   public Future<Boolean> healthCheck() {
     Promise<Boolean> promise = Futures.promise();
 
     boolean indexResponse = false;
     Map<String, String> mappedIndexAndType =
-        ElasticSearchUtil.getMappedIndexAndType(
+        ElasticSearchHelper.getMappedIndexAndType(
             ProjectUtil.EsIndex.sunbird.getIndexName(), ProjectUtil.EsType.user.getTypeName());
     try {
       indexResponse =
@@ -842,6 +859,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
    * @return ES response for the query
    */
   @SuppressWarnings("unchecked")
+  @Override
   public Response searchMetricsData(String index, String type, String rawQuery) {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log("Metrics search method started at ==" + startTime, LoggerEnum.PERF_LOG);
@@ -858,7 +876,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchClientInf {
       ProjectLogger.log("ES URL from Properties file");
       baseUrl = PropertiesCache.getInstance().getProperty(JsonKey.ES_URL);
     }
-    Map<String, String> mappedIndexAndType = ElasticSearchUtil.getMappedIndexAndType(index, type);
+    Map<String, String> mappedIndexAndType = ElasticSearchHelper.getMappedIndexAndType(index, type);
     String requestURL =
         baseUrl
             + "/"

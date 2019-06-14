@@ -3,10 +3,11 @@ package org.sunbird.common.inf;
 import java.util.List;
 import java.util.Map;
 import org.sunbird.common.models.response.Response;
+import org.sunbird.common.models.util.ProjectUtil.EsType;
 import org.sunbird.dto.SearchDTO;
 import scala.concurrent.Future;
 
-public interface ElasticSearchClientInf {
+public interface ElasticSearchUtil {
   /**
    * This method will put a new data entry inside Elastic search. identifier value becomes _id
    * inside ES, so every time provide a unique value while saving it.
@@ -104,4 +105,10 @@ public interface ElasticSearchClientInf {
       String index, String type, List<Map<String, Object>> dataList);
 
   public Future<Map<String, Object>> doAsyncSearch(String index, String type, SearchDTO searchDTO);
+
+  public Future<Boolean> upsertData(
+      String indexName, String typeName, String string, Map<String, Object> privateFieldsMap);
+
+  public Future<Map<String, Map<String, Object>>> getEsResultByListOfIds(
+      List<String> organisationIds, List<String> fields, EsType organisation);
 }

@@ -46,7 +46,7 @@ import scala.concurrent.Future;
  * @author arvind
  * @author Manzarul
  */
-public class ElasticSearchUtil {
+public class ElasticSearchHelper {
 
   public static final String LTE = "<=";
   public static final String LT = "<";
@@ -64,7 +64,7 @@ public class ElasticSearchUtil {
   public static final int WAIT_TIME = 30;
   public static Timeout timeout = new Timeout(WAIT_TIME, TimeUnit.SECONDS);
 
-  private ElasticSearchUtil() {}
+  private ElasticSearchHelper() {}
 
   @SuppressWarnings("unchecked")
   public static Object getObjectFromFuture(Future future) {
