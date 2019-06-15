@@ -13,8 +13,8 @@ import org.sunbird.actorutil.InterServiceCommunication;
 import org.sunbird.actorutil.InterServiceCommunicationFactory;
 import org.sunbird.actorutil.org.OrganisationClient;
 import org.sunbird.common.ElasticSearchHelper;
-import org.sunbird.common.ElasticSearchTcpImpl;
 import org.sunbird.common.exception.ProjectCommonException;
+import org.sunbird.common.factory.EsClientFactory;
 import org.sunbird.common.inf.ElasticSearchUtil;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.ActorOperations;
@@ -33,7 +33,7 @@ public class OrganisationClientImpl implements OrganisationClient {
   private static InterServiceCommunication interServiceCommunication =
       InterServiceCommunicationFactory.getInstance();
   ObjectMapper objectMapper = new ObjectMapper();
-  private ElasticSearchUtil esUtil = new ElasticSearchTcpImpl();
+  private ElasticSearchUtil esUtil = EsClientFactory.getTcpClient();
 
   @Override
   public String createOrg(ActorRef actorRef, Map<String, Object> orgMap) {
