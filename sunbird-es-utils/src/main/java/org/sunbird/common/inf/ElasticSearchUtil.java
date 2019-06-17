@@ -107,7 +107,7 @@ public interface ElasticSearchUtil {
   public Future<Map<String, Object>> doAsyncSearch(String index, String type, SearchDTO searchDTO);
 
   public Future<Boolean> upsertData(
-      String indexName, String typeName, String string, Map<String, Object> privateFieldsMap);
+      String index, String type, String identifier, Map<String, Object> data);
 
   public Future<Map<String, Map<String, Object>>> getEsResultByListOfIds(
       List<String> organisationIds, List<String> fields, EsType organisation);

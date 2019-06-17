@@ -4,6 +4,7 @@ import akka.dispatch.Futures;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -65,6 +66,9 @@ import scala.concurrent.Promise;
  * @author github.com/iostream04
  */
 public class ElasticSearchRestHighImpl implements ElasticSearchUtil {
+  private static final List<String> upsertResults =
+      new ArrayList<>(Arrays.asList("CREATED", "UPDATED", "NOOP"));
+
   @Override
   public Future<Map<String, Object>> doAsyncSearch(String index, String type, SearchDTO searchDTO) {
     Map<String, String> indexTypeMap = ElasticSearchHelper.getMappedIndexAndType(index, type);
@@ -906,15 +910,124 @@ public class ElasticSearchRestHighImpl implements ElasticSearchUtil {
 
   @Override
   public Future<Boolean> upsertData(
-      String indexName, String typeName, String string, Map<String, Object> privateFieldsMap) {
-    // TODO Auto-generated method stub
-    return null;
+      String index, String type, String identifier, Map<String, Object> data) {
+    long startTime = System.currentTimeMillis();
+    Promise<Boolean> promise = Futures.promise();
+    ProjectLogger.log(
+        "ElasticSearchUtil upsertData method started at ==" + startTime + " for Type " + type,
+        LoggerEnum.PERF_LOG);
+    if (!StringUtils.isBlank(index)
+        && !StringUtils.isBlank(type)
+        && !StringUtils.isBlank(identifier)
+        && data != null
+        && data.size() > 0) {
+      Map<String, String> mappedIndexAndType =
+          ElasticSearchHelper.getMappedIndexAndType(index, type);
+
+      IndexRequest indexRequest =
+          new IndexRequest(
+                  mappedIndexAndType.get(JsonKey.INDEX),
+                  mappedIndexAndType.get(JsonKey.TYPE),
+                  identifier)
+              .source(data);
+
+      UpdateRequest updateRequest =
+          new UpdateRequest(
+                  mappedIndexAndType.get(JsonKey.INDEX),
+                  mappedIndexAndType.get(JsonKey.TYPE),
+                  identifier)
+              .upsert(indexRequest);
+
+      ActionListener<UpdateResponse> listener =
+          new ActionListener<UpdateResponse>() {
+            @Override
+            public void onResponse(UpdateResponse updateResponse) {
+              promise.success(true);
+              if (updateResponse.getResult() == DocWriteResponse.Result.CREATED) {
+                ProjectLogger.log(
+                    "ElasticSearchUtilRest updateData  Success with upsert for index : "
+                        + index
+                        + ",type : "
+                        + type
+                        + ",identifier : "
+                        + identifier,
+                    LoggerEnum.INFO);
+              } else if (updateResponse.getResult() == DocWriteResponse.Result.UPDATED) {
+                ProjectLogger.log(
+                    "ElasticSearchUtilRest updateData  Success for index : "
+                        + index
+                        + ",type : "
+                        + type
+                        + ",identifier : "
+                        + identifier,
+                    LoggerEnum.INFO);
+              } else if (updateResponse.getResult() == DocWriteResponse.Result.NOOP) {
+                promise.success(false);
+                ProjectLogger.log(
+                    "ElasticSearchUtilRest updateData  falied for index : "
+                        + index
+                        + ",type : "
+                        + type
+                        + ",identifier : "
+                        + identifier,
+                    LoggerEnum.INFO);
+              }
+
+              long stopTime = System.currentTimeMillis();
+              long elapsedTime = stopTime - startTime;
+              ProjectLogger.log(
+                  "ElasticSearchUtilRest updateData method end at =="
+                      + stopTime
+                      + " for Type "
+                      + type
+                      + " ,Total time elapsed = "
+                      + elapsedTime,
+                  LoggerEnum.PERF_LOG);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+              ProjectLogger.log(
+                  "ElasticSearchUtilRest : updateData exception occured:" + e.getMessage(),
+                  LoggerEnum.ERROR.name());
+              promise.failure(e);
+            }
+          };
+      ConnectionManager.getRestClient().updateAsync(updateRequest, listener);
+      return promise.future();
+    } else {
+      ProjectLogger.log("Requested data is invalid.");
+      promise.success(false);
+      return promise.future();
+    }
   }
 
   @Override
   public Future<Map<String, Map<String, Object>>> getEsResultByListOfIds(
-      List<String> organisationIds, List<String> fields, EsType organisation) {
-    // TODO Auto-generated method stub
-    return null;
+      List<String> ids, List<String> fields, EsType typeToSearch) {
+    Map<String, Object> filters = new HashMap<>();
+    filters.put(JsonKey.ID, ids);
+
+    SearchDTO searchDTO = new SearchDTO();
+    searchDTO.getAdditionalProperties().put(JsonKey.FILTERS, filters);
+    searchDTO.setFields(fields);
+
+    Future<Map<String, Object>> resultF =
+        complexSearch(
+            searchDTO, ProjectUtil.EsIndex.sunbird.getIndexName(), typeToSearch.getTypeName());
+    Map<String, Object> result =
+        (Map<String, Object>) ElasticSearchHelper.getObjectFromFuture(resultF);
+    List<Map<String, Object>> esContent = (List<Map<String, Object>>) result.get(JsonKey.CONTENT);
+    Promise<Map<String, Map<String, Object>>> promise = Futures.promise();
+    promise.success(
+        esContent
+            .stream()
+            .collect(
+                Collectors.toMap(
+                    obj -> {
+                      return (String) obj.get("id");
+                    },
+                    val -> val)));
+    return promise.future();
   }
 }
