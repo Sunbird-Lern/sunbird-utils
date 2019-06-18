@@ -679,13 +679,18 @@ public final class RequestValidator {
         && CollectionUtils.isEmpty(
             (List<String>) (request.getRequest().get(JsonKey.RECIPIENT_USERIDS)))
         && MapUtils.isEmpty(
-            (Map<String, Object>) (request.getRequest().get(JsonKey.RECIPIENT_SEARCH_QUERY)))) {
+            (Map<String, Object>) (request.getRequest().get(JsonKey.RECIPIENT_SEARCH_QUERY)))
+        && CollectionUtils.isEmpty(
+            (List<String>) (request.getRequest().get(JsonKey.RECIPIENT_PHONES)))) {
       throw new ProjectCommonException(
           ResponseCode.mandatoryParamsMissing.getErrorCode(),
           MessageFormat.format(
               ResponseCode.mandatoryParamsMissing.getErrorMessage(),
               StringFormatter.joinByOr(
-                  StringFormatter.joinByComma(JsonKey.RECIPIENT_EMAILS, JsonKey.RECIPIENT_USERIDS),
+                  StringFormatter.joinByComma(
+                      JsonKey.RECIPIENT_EMAILS,
+                      JsonKey.RECIPIENT_USERIDS,
+                      JsonKey.RECIPIENT_PHONES),
                   JsonKey.RECIPIENT_SEARCH_QUERY)),
           ERROR_CODE);
     }
