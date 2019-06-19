@@ -11,9 +11,9 @@ import org.sunbird.actorutil.InterServiceCommunication;
 import org.sunbird.actorutil.InterServiceCommunicationFactory;
 import org.sunbird.actorutil.user.UserClient;
 import org.sunbird.common.ElasticSearchHelper;
-import org.sunbird.common.ElasticSearchTcpImpl;
 import org.sunbird.common.exception.ProjectCommonException;
-import org.sunbird.common.inf.ElasticSearchUtil;
+import org.sunbird.common.factory.EsClientFactory;
+import org.sunbird.common.inf.ElasticService;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.ActorOperations;
 import org.sunbird.common.models.util.JsonKey;
@@ -29,7 +29,7 @@ public class UserClientImpl implements UserClient {
 
   private static InterServiceCommunication interServiceCommunication =
       InterServiceCommunicationFactory.getInstance();
-  private ElasticSearchUtil esUtil = new ElasticSearchTcpImpl();
+  private ElasticService esUtil = EsClientFactory.getRestClient();
 
   @Override
   public String createUser(ActorRef actorRef, Map<String, Object> userMap) {
@@ -65,12 +65,12 @@ public class UserClientImpl implements UserClient {
     searchDto.setFacets(list);
 
     Future<Map<String, Object>> esResponseF =
-        esUtil.complexSearch(
+        esUtil.search(
             searchDto,
             ProjectUtil.EsIndex.sunbird.getIndexName(),
             ProjectUtil.EsType.user.getTypeName());
     Map<String, Object> esResponse =
-        (Map<String, Object>) ElasticSearchHelper.getObjectFromFuture(esResponseF);
+        (Map<String, Object>) ElasticSearchHelper.getResponseFromFuture(esResponseF);
 
     if (null != esResponse) {
       List<Map<String, Object>> facetsResponse =

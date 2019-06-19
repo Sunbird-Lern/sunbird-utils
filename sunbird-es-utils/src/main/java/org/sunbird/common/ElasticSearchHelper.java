@@ -16,6 +16,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.client.transport.TransportClient;
@@ -66,48 +67,75 @@ public class ElasticSearchHelper {
 
   private ElasticSearchHelper() {}
 
+  /**
+   * This method will return the object after getting complete future.
+   *
+   * @param future
+   * @return Object which future inherites
+   */
   @SuppressWarnings("unchecked")
-  public static Object getObjectFromFuture(Future future) {
+  public static Object getResponseFromFuture(Future future) {
     try {
       Object result = Await.result(future, timeout.duration());
       return result;
     } catch (Exception e) {
       ProjectLogger.log(
-          "ElasticSearchUtil : getObjectFromFuture : error occured " + e, LoggerEnum.ERROR);
+          "ElasticSearchHelper:getResponseFromFuture : error occured " + e, LoggerEnum.ERROR);
     }
     return null;
   }
 
-  public static void addAggregations(
+  /**
+   * This method adds aggregations to the incoming SearchRequestBuilder object
+   *
+   * @param searchRequestBuilder
+   * @param facets
+   * @return SearchRequestBuilder
+   */
+  public static SearchRequestBuilder addAggregations(
       SearchRequestBuilder searchRequestBuilder, List<Map<String, String>> facets) {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
-        "ElasticSearchUtil addAggregations method started at ==" + startTime, LoggerEnum.PERF_LOG);
-    Map<String, String> map = facets.get(0);
-    for (Map.Entry<String, String> entry : map.entrySet()) {
-
-      String key = entry.getKey();
-      String value = entry.getValue();
-      if (JsonKey.DATE_HISTOGRAM.equalsIgnoreCase(value)) {
-        searchRequestBuilder.addAggregation(
-            AggregationBuilders.dateHistogram(key)
-                .field(key + RAW_APPEND)
-                .dateHistogramInterval(DateHistogramInterval.days(1)));
-
-      } else if (null == value) {
-        searchRequestBuilder.addAggregation(AggregationBuilders.terms(key).field(key + RAW_APPEND));
-      }
-    }
-    long stopTime = System.currentTimeMillis();
-    long elapsedTime = stopTime - startTime;
-    ProjectLogger.log(
-        "ElasticSearchUtil addAggregations method end at =="
-            + stopTime
-            + " ,Total time elapsed = "
-            + elapsedTime,
+        "ElasticSearchHelper:addAggregations method started at ==" + startTime,
         LoggerEnum.PERF_LOG);
+    if (facets != null && !facets.isEmpty()) {
+      Map<String, String> map = facets.get(0);
+      if (!MapUtils.isEmpty(map)) {
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+
+          String key = entry.getKey();
+          String value = entry.getValue();
+          if (JsonKey.DATE_HISTOGRAM.equalsIgnoreCase(value)) {
+            searchRequestBuilder.addAggregation(
+                AggregationBuilders.dateHistogram(key)
+                    .field(key + RAW_APPEND)
+                    .dateHistogramInterval(DateHistogramInterval.days(1)));
+
+          } else if (null == value) {
+            searchRequestBuilder.addAggregation(
+                AggregationBuilders.terms(key).field(key + RAW_APPEND));
+          }
+        }
+      }
+      long stopTime = System.currentTimeMillis();
+      long elapsedTime = stopTime - startTime;
+      ProjectLogger.log(
+          "ElasticSearchHelper:addAggregations method end at =="
+              + stopTime
+              + " ,Total time elapsed = "
+              + elapsedTime,
+          LoggerEnum.PERF_LOG);
+    }
+
+    return searchRequestBuilder;
   }
 
+  /**
+   * This method returns any constraints defined in searchDto object
+   *
+   * @param searchDTO
+   * @return Map
+   */
   public static Map<String, Float> getConstraints(SearchDTO searchDTO) {
     if (null != searchDTO.getSoftConstraints() && !searchDTO.getSoftConstraints().isEmpty()) {
       return searchDTO
@@ -119,7 +147,15 @@ public class ElasticSearchHelper {
     return Collections.emptyMap();
   }
 
-  public static SearchRequestBuilder getSearchBuilder(
+  /**
+   * This method return SearchRequestBuilder for transport client
+   *
+   * @param client
+   * @param index
+   * @param type
+   * @return SearchRequestBuilder
+   */
+  public static SearchRequestBuilder getTransportSearchBuilder(
       TransportClient client, String[] index, String... type) {
 
     if (type == null || type.length == 0) {
@@ -129,103 +165,156 @@ public class ElasticSearchHelper {
     }
   }
 
-  /** Method to add the additional search query like range query , exists - not exist filter etc. */
+  /**
+   * Method to add the additional search query like range query , exists - not exist filter etc.
+   *
+   * @param query
+   * @param entry
+   * @param constraintsMap
+   */
   @SuppressWarnings("unchecked")
   public static void addAdditionalProperties(
       BoolQueryBuilder query, Entry<String, Object> entry, Map<String, Float> constraintsMap) {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
-        "ElasticSearchUtil addAdditionalProperties method started at ==" + startTime,
+        "ElasticSearchHelper:addAdditionalProperties method started at ==" + startTime,
         LoggerEnum.PERF_LOG);
     String key = entry.getKey();
-
-    if (key.equalsIgnoreCase(JsonKey.FILTERS)) {
+    if (JsonKey.FILTERS.equalsIgnoreCase(key)) {
 
       Map<String, Object> filters = (Map<String, Object>) entry.getValue();
       for (Map.Entry<String, Object> en : filters.entrySet()) {
-        createFilterESOpperation(en, query, constraintsMap);
+        query = createFilterESOpperation(en, query, constraintsMap);
       }
-    } else if (key.equalsIgnoreCase(JsonKey.EXISTS) || key.equalsIgnoreCase(JsonKey.NOT_EXISTS)) {
-      createESOpperation(entry, query, constraintsMap);
+    } else if (JsonKey.EXISTS.equalsIgnoreCase(key) || JsonKey.NOT_EXISTS.equalsIgnoreCase(key)) {
+      query = createESOpperation(entry, query, constraintsMap);
     }
     long stopTime = System.currentTimeMillis();
     long elapsedTime = stopTime - startTime;
     ProjectLogger.log(
-        "ElasticSearchUtil addAdditionalProperties method end at =="
+        "ElasticSearchHelper:addAdditionalProperties method end at =="
             + stopTime
             + " ,Total time elapsed = "
             + elapsedTime,
         LoggerEnum.PERF_LOG);
   }
 
-  /** Method to create CommonTermQuery , multimatch and Range Query. */
+  /**
+   * Method to create CommonTermQuery , multimatch and Range Query.
+   *
+   * @param entry
+   * @param query
+   * @param constraintsMap
+   * @return BoolQueryBuilder
+   */
   @SuppressWarnings("unchecked")
-  private static void createFilterESOpperation(
+  private static BoolQueryBuilder createFilterESOpperation(
       Entry<String, Object> entry, BoolQueryBuilder query, Map<String, Float> constraintsMap) {
 
     String key = entry.getKey();
     Object val = entry.getValue();
-    if (val instanceof List) {
-      if (!((List) val).isEmpty()) {
-        if (((List) val).get(0) instanceof String) {
-          ((List<String>) val).replaceAll(String::toLowerCase);
-          query.must(
-              createTermsQuery(key + RAW_APPEND, (List<String>) val, constraintsMap.get(key)));
-        } else {
-          query.must(createTermsQuery(key, (List) val, constraintsMap.get(key)));
-        }
-      }
+    if (val instanceof List && val != null) {
+      query = getTermQueryFromList(val, key, query, constraintsMap);
     } else if (val instanceof Map) {
-      Map<String, Object> value = (Map<String, Object>) val;
-      Map<String, Object> rangeOperation = new HashMap<>();
-      Map<String, Object> lexicalOperation = new HashMap<>();
-      for (Map.Entry<String, Object> it : value.entrySet()) {
-        String operation = it.getKey();
-        if (operation.startsWith(LT) || operation.startsWith(GT)) {
-          rangeOperation.put(operation, it.getValue());
-        } else if (operation.startsWith(STARTS_WITH) || operation.startsWith(ENDS_WITH)) {
-          lexicalOperation.put(operation, it.getValue());
-        }
-      }
-      if (!(rangeOperation.isEmpty())) {
-        query.must(createRangeQuery(key, rangeOperation, constraintsMap.get(key)));
-      }
-      if (!(lexicalOperation.isEmpty())) {
-        query.must(createLexicalQuery(key, lexicalOperation, constraintsMap.get(key)));
-      }
-
+      query = getTermQueryFromMap(val, key, query, constraintsMap);
     } else if (val instanceof String) {
       query.must(
           createTermQuery(key + RAW_APPEND, ((String) val).toLowerCase(), constraintsMap.get(key)));
     } else {
       query.must(createTermQuery(key + RAW_APPEND, val, constraintsMap.get(key)));
     }
+    return query;
+  }
+
+  /**
+   * This method returns termQuery if any present in map provided
+   *
+   * @param val
+   * @param key
+   * @param query
+   * @param constraintsMap
+   * @return BoolQueryBuilder
+   */
+  private static BoolQueryBuilder getTermQueryFromMap(
+      Object val, String key, BoolQueryBuilder query, Map<String, Float> constraintsMap) {
+    Map<String, Object> value = (Map<String, Object>) val;
+    Map<String, Object> rangeOperation = new HashMap<>();
+    Map<String, Object> lexicalOperation = new HashMap<>();
+    for (Map.Entry<String, Object> it : value.entrySet()) {
+      String operation = it.getKey();
+      if (operation.startsWith(LT) || operation.startsWith(GT)) {
+        rangeOperation.put(operation, it.getValue());
+      } else if (operation.startsWith(STARTS_WITH) || operation.startsWith(ENDS_WITH)) {
+        lexicalOperation.put(operation, it.getValue());
+      }
+    }
+    if (!(rangeOperation.isEmpty())) {
+      query.must(createRangeQuery(key, rangeOperation, constraintsMap.get(key)));
+    }
+    if (!(lexicalOperation.isEmpty())) {
+      query.must(createLexicalQuery(key, lexicalOperation, constraintsMap.get(key)));
+    }
+
+    return query;
+  }
+
+  /**
+   * This method returns termQuery if any present in List provided
+   *
+   * @param val
+   * @param key
+   * @param query
+   * @param constraintsMap
+   * @return BoolQueryBuilder
+   */
+  private static BoolQueryBuilder getTermQueryFromList(
+      Object val, String key, BoolQueryBuilder query, Map<String, Float> constraintsMap) {
+    if (!((List) val).isEmpty()) {
+      if (((List) val).get(0) instanceof String) {
+        ((List<String>) val).replaceAll(String::toLowerCase);
+        query.must(createTermsQuery(key + RAW_APPEND, (List<String>) val, constraintsMap.get(key)));
+      } else {
+        query.must(createTermsQuery(key, (List) val, constraintsMap.get(key)));
+      }
+    }
+    return null;
   }
 
   /** Method to create EXISTS and NOT EXIST FILTER QUERY . */
   @SuppressWarnings("unchecked")
-  private static void createESOpperation(
+  private static BoolQueryBuilder createESOpperation(
       Entry<String, Object> entry, BoolQueryBuilder query, Map<String, Float> constraintsMap) {
 
     String operation = entry.getKey();
-    List<String> existsList = (List<String>) entry.getValue();
+    if (entry.getValue() instanceof List) {
+      List<String> existsList = (List<String>) entry.getValue();
 
-    if (operation.equalsIgnoreCase(JsonKey.EXISTS)) {
-      for (String name : existsList) {
-        query.must(createExistQuery(name, constraintsMap.get(name)));
-      }
-    } else if (operation.equalsIgnoreCase(JsonKey.NOT_EXISTS)) {
-      for (String name : existsList) {
-        query.mustNot(createExistQuery(name, constraintsMap.get(name)));
+      if (operation.equalsIgnoreCase(JsonKey.EXISTS)) {
+        for (String name : existsList) {
+          query.must(createExistQuery(name, constraintsMap.get(name)));
+        }
+      } else if (operation.equalsIgnoreCase(JsonKey.NOT_EXISTS)) {
+        for (String name : existsList) {
+          query.mustNot(createExistQuery(name, constraintsMap.get(name)));
+        }
       }
     }
+    return query;
   }
 
   /** Method to return the sorting order on basis of string param . */
   public static SortOrder getSortOrder(String value) {
-    return value.equalsIgnoreCase(ASC_ORDER) ? SortOrder.ASC : SortOrder.DESC;
+    return ASC_ORDER.equalsIgnoreCase(value) ? SortOrder.ASC : SortOrder.DESC;
   }
 
+  /**
+   * This method return MatchQueryBuilder Object with boosts if any provided
+   *
+   * @param name
+   * @param text
+   * @param boost
+   * @return MatchQueryBuilder
+   */
   public static MatchQueryBuilder createMatchQuery(String name, Object text, Float boost) {
     if (isNotNull(boost)) {
       return QueryBuilders.matchQuery(name, text).boost(boost);
@@ -234,6 +323,14 @@ public class ElasticSearchHelper {
     }
   }
 
+  /**
+   * This method returns TermsQueryBuilder with boosts if any provided
+   *
+   * @param key
+   * @param values
+   * @param boost
+   * @return TermsQueryBuilder
+   */
   private static TermsQueryBuilder createTermsQuery(String key, List values, Float boost) {
     if (isNotNull(boost)) {
       return QueryBuilders.termsQuery(key, (values).stream().toArray(Object[]::new)).boost(boost);
@@ -242,19 +339,28 @@ public class ElasticSearchHelper {
     }
   }
 
+  /**
+   * This method returns RangeQueryBuilder with boosts if any provided
+   *
+   * @param name
+   * @param rangeOperation
+   * @param boost
+   * @return RangeQueryBuilder
+   */
   private static RangeQueryBuilder createRangeQuery(
       String name, Map<String, Object> rangeOperation, Float boost) {
 
     RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(name + RAW_APPEND);
     for (Map.Entry<String, Object> it : rangeOperation.entrySet()) {
-      if (it.getKey().equalsIgnoreCase(LTE)) {
-        rangeQueryBuilder.lte(it.getValue());
-      } else if (it.getKey().equalsIgnoreCase(LT)) {
-        rangeQueryBuilder.lt(it.getValue());
-      } else if (it.getKey().equalsIgnoreCase(GTE)) {
-        rangeQueryBuilder.gte(it.getValue());
-      } else if (it.getKey().equalsIgnoreCase(GT)) {
-        rangeQueryBuilder.gt(it.getValue());
+      switch (it.getKey()) {
+        case LTE:
+          rangeQueryBuilder.lte(it.getValue());
+        case LT:
+          rangeQueryBuilder.lt(it.getValue());
+        case GTE:
+          rangeQueryBuilder.gte(it.getValue());
+        case GT:
+          rangeQueryBuilder.gt(it.getValue());
       }
     }
     if (isNotNull(boost)) {
@@ -263,6 +369,14 @@ public class ElasticSearchHelper {
     return rangeQueryBuilder;
   }
 
+  /**
+   * This method returns TermQueryBuilder with boosts if any provided
+   *
+   * @param name
+   * @param text
+   * @param boost
+   * @return TermQueryBuilder
+   */
   private static TermQueryBuilder createTermQuery(String name, Object text, Float boost) {
     if (isNotNull(boost)) {
       return QueryBuilders.termQuery(name, text).boost(boost);
@@ -271,6 +385,13 @@ public class ElasticSearchHelper {
     }
   }
 
+  /**
+   * this method return ExistsQueryBuilder with boosts if any provided
+   *
+   * @param name
+   * @param boost
+   * @return ExistsQueryBuilder
+   */
   private static ExistsQueryBuilder createExistQuery(String name, Float boost) {
     if (isNotNull(boost)) {
       return QueryBuilders.existsQuery(name).boost(boost);
@@ -279,25 +400,40 @@ public class ElasticSearchHelper {
     }
   }
 
+  /**
+   * This method create lexical query with boosts if any provided
+   *
+   * @param key
+   * @param rangeOperation
+   * @param boost
+   * @return QueryBuilder
+   */
   public static QueryBuilder createLexicalQuery(
       String key, Map<String, Object> rangeOperation, Float boost) {
     QueryBuilder queryBuilder = null;
     for (Map.Entry<String, Object> it : rangeOperation.entrySet()) {
-      if (it.getKey().equalsIgnoreCase(STARTS_WITH)) {
-        String startsWithVal = (String) it.getValue();
-        if (StringUtils.isNotBlank(startsWithVal)) {
-          startsWithVal = startsWithVal.toLowerCase();
-        }
-        if (isNotNull(boost)) {
-          queryBuilder = QueryBuilders.prefixQuery(key + RAW_APPEND, startsWithVal).boost(boost);
-        }
-        queryBuilder = QueryBuilders.prefixQuery(key + RAW_APPEND, startsWithVal);
-      } else if (it.getKey().equalsIgnoreCase(ENDS_WITH)) {
-        String endsWithRegex = "~" + it.getValue();
-        if (isNotNull(boost)) {
-          queryBuilder = QueryBuilders.regexpQuery(key + RAW_APPEND, endsWithRegex).boost(boost);
-        }
-        queryBuilder = QueryBuilders.regexpQuery(key + RAW_APPEND, endsWithRegex);
+      switch (it.getKey()) {
+        case STARTS_WITH:
+          {
+            String startsWithVal = (String) it.getValue();
+            if (StringUtils.isNotBlank(startsWithVal)) {
+              startsWithVal = startsWithVal.toLowerCase();
+            }
+            if (isNotNull(boost)) {
+              queryBuilder =
+                  QueryBuilders.prefixQuery(key + RAW_APPEND, startsWithVal).boost(boost);
+            }
+            queryBuilder = QueryBuilders.prefixQuery(key + RAW_APPEND, startsWithVal);
+          }
+        case ENDS_WITH:
+          {
+            String endsWithRegex = "~" + it.getValue();
+            if (isNotNull(boost)) {
+              queryBuilder =
+                  QueryBuilders.regexpQuery(key + RAW_APPEND, endsWithRegex).boost(boost);
+            }
+            queryBuilder = QueryBuilders.regexpQuery(key + RAW_APPEND, endsWithRegex);
+          }
       }
     }
     return queryBuilder;
@@ -314,8 +450,96 @@ public class ElasticSearchHelper {
     return System.currentTimeMillis() - startTime;
   }
 
+  /**
+   * This method will create search dto on this of searchquery provided
+   *
+   * @param searchQueryMap Map<String,Object>
+   * @return SearchDto
+   */
   public static SearchDTO createSearchDTO(Map<String, Object> searchQueryMap) {
     SearchDTO search = new SearchDTO();
+    search = getBasicBuiders(search, searchQueryMap);
+    search = setOffset(search, searchQueryMap);
+    search = getLimits(search, searchQueryMap);
+    if (searchQueryMap.containsKey(JsonKey.GROUP_QUERY)) {
+      search
+          .getGroupQuery()
+          .addAll(
+              (Collection<? extends Map<String, Object>>) searchQueryMap.get(JsonKey.GROUP_QUERY));
+    }
+    search = getSoftConstraints(search, searchQueryMap);
+    return search;
+  }
+
+  /**
+   * This method add any softconstraints present in seach query to search DTo
+   *
+   * @param searchDto serach
+   * @param Map searchQueryMap
+   * @return SearchDTO
+   */
+  private static SearchDTO getSoftConstraints(
+      SearchDTO search, Map<String, Object> searchQueryMap) {
+    if (searchQueryMap.containsKey(JsonKey.SOFT_CONSTRAINTS)) {
+      // Play is converting int value to bigInt so need to cnvert back those data to iny
+      // SearchDto soft constraints expect Map<String, Integer>
+      Map<String, Integer> constraintsMap = new HashMap<>();
+      Set<Entry<String, BigInteger>> entrySet =
+          ((Map<String, BigInteger>) searchQueryMap.get(JsonKey.SOFT_CONSTRAINTS)).entrySet();
+      Iterator<Entry<String, BigInteger>> itr = entrySet.iterator();
+      while (itr.hasNext()) {
+        Entry<String, BigInteger> entry = itr.next();
+        constraintsMap.put(entry.getKey(), entry.getValue().intValue());
+      }
+      search.setSoftConstraints(constraintsMap);
+    }
+    return search;
+  }
+
+  /**
+   * This method adds any limits present in the search query
+   *
+   * @param SearchDTO search
+   * @param Map searchQueryMap
+   * @return SearchDTO
+   */
+  private static SearchDTO getLimits(SearchDTO search, Map<String, Object> searchQueryMap) {
+    if (searchQueryMap.containsKey(JsonKey.LIMIT)) {
+      if ((searchQueryMap.get(JsonKey.LIMIT)) instanceof Integer) {
+        search.setLimit((int) searchQueryMap.get(JsonKey.LIMIT));
+      } else {
+        search.setLimit(((BigInteger) searchQueryMap.get(JsonKey.LIMIT)).intValue());
+      }
+    }
+    return search;
+  }
+
+  /**
+   * This method adds offset if any present in the searchQuery
+   *
+   * @param SearchDTO search
+   * @param map searchQueryMap
+   * @return SearchDTO
+   */
+  private static SearchDTO setOffset(SearchDTO search, Map<String, Object> searchQueryMap) {
+    if (searchQueryMap.containsKey(JsonKey.OFFSET)) {
+      if ((searchQueryMap.get(JsonKey.OFFSET)) instanceof Integer) {
+        search.setOffset((int) searchQueryMap.get(JsonKey.OFFSET));
+      } else {
+        search.setOffset(((BigInteger) searchQueryMap.get(JsonKey.OFFSET)).intValue());
+      }
+    }
+    return search;
+  }
+
+  /**
+   * This method adds basic query parameter to SearchDTO if any provided
+   *
+   * @param SearchDTO search
+   * @param Map searchQueryMap
+   * @return SearchDTO
+   */
+  private static SearchDTO getBasicBuiders(SearchDTO search, Map<String, Object> searchQueryMap) {
     if (searchQueryMap.containsKey(JsonKey.QUERY)) {
       search.setQuery((String) searchQueryMap.get(JsonKey.QUERY));
     }
@@ -344,42 +568,16 @@ public class ElasticSearchHelper {
           .getSortBy()
           .putAll((Map<? extends String, ? extends String>) searchQueryMap.get(JsonKey.SORT_BY));
     }
-    if (searchQueryMap.containsKey(JsonKey.OFFSET)) {
-      if ((searchQueryMap.get(JsonKey.OFFSET)) instanceof Integer) {
-        search.setOffset((int) searchQueryMap.get(JsonKey.OFFSET));
-      } else {
-        search.setOffset(((BigInteger) searchQueryMap.get(JsonKey.OFFSET)).intValue());
-      }
-    }
-    if (searchQueryMap.containsKey(JsonKey.LIMIT)) {
-      if ((searchQueryMap.get(JsonKey.LIMIT)) instanceof Integer) {
-        search.setLimit((int) searchQueryMap.get(JsonKey.LIMIT));
-      } else {
-        search.setLimit(((BigInteger) searchQueryMap.get(JsonKey.LIMIT)).intValue());
-      }
-    }
-    if (searchQueryMap.containsKey(JsonKey.GROUP_QUERY)) {
-      search
-          .getGroupQuery()
-          .addAll(
-              (Collection<? extends Map<String, Object>>) searchQueryMap.get(JsonKey.GROUP_QUERY));
-    }
-    if (searchQueryMap.containsKey(JsonKey.SOFT_CONSTRAINTS)) {
-      // Play is converting int value to bigInt so need to cnvert back those data to iny
-      // SearchDto soft constraints expect Map<String, Integer>
-      Map<String, Integer> constraintsMap = new HashMap<>();
-      Set<Entry<String, BigInteger>> entrySet =
-          ((Map<String, BigInteger>) searchQueryMap.get(JsonKey.SOFT_CONSTRAINTS)).entrySet();
-      Iterator<Entry<String, BigInteger>> itr = entrySet.iterator();
-      while (itr.hasNext()) {
-        Entry<String, BigInteger> entry = itr.next();
-        constraintsMap.put(entry.getKey(), entry.getValue().intValue());
-      }
-      search.setSoftConstraints(constraintsMap);
-    }
     return search;
   }
 
+  /**
+   * This method return map of index and type mapping
+   *
+   * @param sunbirdIndex
+   * @param sunbirdType
+   * @return Map
+   */
   public static Map<String, String> getMappedIndexAndType(String sunbirdIndex, String sunbirdType) {
     String mappedIndexAndType = "mapping." + sunbirdIndex + "." + sunbirdType;
     Map<String, String> mappedIndexAndTypeResult = new HashMap<>();
@@ -399,6 +597,13 @@ public class ElasticSearchHelper {
     return mappedIndexAndTypeResult;
   }
 
+  /**
+   * This method return list of mapping of all the index and type provided in the arguments
+   *
+   * @param sunbirdIndex
+   * @param sunbirdTypes
+   * @return List
+   */
   public static List<Map<String, String>> getMappedIndexesAndTypes(
       String sunbirdIndex, String... sunbirdTypes) {
     List<Map<String, String>> mappedIndexesAndTypes = new ArrayList<>();

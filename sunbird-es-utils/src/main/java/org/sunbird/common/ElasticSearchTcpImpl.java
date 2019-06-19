@@ -10,13 +10,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkProcessor;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -26,7 +24,6 @@ import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchPhaseExecutionException;
-import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateRequest;
@@ -41,12 +38,11 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortMode;
 import org.sunbird.common.exception.ProjectCommonException;
-import org.sunbird.common.inf.ElasticSearchUtil;
+import org.sunbird.common.inf.ElasticService;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
@@ -60,7 +56,7 @@ import org.sunbird.helper.ConnectionManager;
 import scala.concurrent.Future;
 import scala.concurrent.Promise;
 
-public class ElasticSearchTcpImpl implements ElasticSearchUtil {
+public class ElasticSearchTcpImpl implements ElasticService {
   private static final List<String> upsertResults =
       new ArrayList<>(Arrays.asList("CREATED", "UPDATED", "NOOP"));
   public static final int WAIT_TIME = 30;
@@ -77,17 +73,19 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
    * @return String identifier for created data
    */
   @Override
-  public Future<String> createData(
+  public Future<String> save(
       String index, String type, String identifier, Map<String, Object> data) {
     long startTime = System.currentTimeMillis();
     Promise<String> promise = Futures.promise();
     ProjectLogger.log(
-        "ElasticSearchUtil createData method started at ==" + startTime + " for Type " + type,
+        "ElasticSearchTcpImpl:save method started at ==" + startTime + " for Type " + type,
         LoggerEnum.PERF_LOG);
     if (StringUtils.isBlank(identifier)
         || StringUtils.isBlank(type)
         || StringUtils.isBlank(index)) {
-      ProjectLogger.log("Identifier value is null or empty ,not able to save data.");
+      ProjectLogger.log(
+          "ElasticSearchTcpImpl:save Identifier value is null or empty ,not able to save data.",
+          LoggerEnum.ERROR);
       promise.success("ERROR");
       return promise.future();
     }
@@ -103,9 +101,10 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
               .setSource(data)
               .get();
       ProjectLogger.log(
-          "Save value==" + response.getId() + " " + response.status(), LoggerEnum.INFO.name());
+          "ElasticSearchTcpImpl:save" + "Save value==" + response.getId() + " " + response.status(),
+          LoggerEnum.INFO.name());
       ProjectLogger.log(
-          "ElasticSearchUtil createData method end at =="
+          "ElasticSearchTcpImpl:save method end at =="
               + System.currentTimeMillis()
               + " for Type "
               + type
@@ -115,9 +114,10 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
       promise.success(response.getId());
       return promise.future();
     } catch (Exception e) {
-      ProjectLogger.log("Error while saving " + type + " id : " + identifier, e);
       ProjectLogger.log(
-          "ElasticSearchUtil createData method end at =="
+          "ElasticSearchTcpImpl:save Error while saving " + type + " id : " + identifier, e);
+      ProjectLogger.log(
+          "ElasticSearchTcpImpl:save method end at =="
               + System.currentTimeMillis()
               + " for Type "
               + type
@@ -126,8 +126,8 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
           LoggerEnum.PERF_LOG);
       promise.failure(e);
       promise.success("");
-      return promise.future();
     }
+    return promise.future();
   }
 
   /**
@@ -152,7 +152,8 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
     Map<String, String> mappedIndexAndType = ElasticSearchHelper.getMappedIndexAndType(index, type);
     GetResponse response = null;
     if (StringUtils.isBlank(index) || StringUtils.isBlank(identifier)) {
-      ProjectLogger.log("Invalid request is coming.");
+      ProjectLogger.log(
+          "ElasticSearchTcpImpl:getDataByIdentifier Invalid request is coming.", LoggerEnum.INFO);
       promise.success(new HashMap<>());
       return promise.future();
     } else if (StringUtils.isBlank(type)) {
@@ -175,76 +176,15 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
       promise.success(new HashMap<>());
       return promise.future();
     }
-    long stopTime = System.currentTimeMillis();
-    long elapsedTime = stopTime - startTime;
+    long elapsedTime = ElasticSearchHelper.calculateEndTime(startTime);
     ProjectLogger.log(
-        "ElasticSearchUtil getDataByIdentifier method end at =="
-            + stopTime
+        "ElasticSearchTcpImpl:getDataByIdentifier method "
             + " for Type "
             + type
             + " ,Total time elapsed = "
             + elapsedTime,
         LoggerEnum.PERF_LOG);
     promise.success(response.getSource());
-    return promise.future();
-  }
-
-  /**
-   * This method will do the data search inside ES. based on incoming search data.
-   *
-   * @param index String
-   * @param type String
-   * @param searchData Map<String,Object>
-   * @return Map<String,Object>
-   */
-  @Override
-  public Future<Map<String, Object>> searchData(
-      String index, String type, Map<String, Object> searchData) {
-    long startTime = System.currentTimeMillis();
-    Promise<Map<String, Object>> promise = Futures.promise();
-    ProjectLogger.log(
-        "ElasticSearchUtil searchData method started at ==" + startTime + " for Type " + type,
-        LoggerEnum.PERF_LOG);
-    SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
-    Iterator<Entry<String, Object>> itr = searchData.entrySet().iterator();
-    while (itr.hasNext()) {
-      Entry<String, Object> entry = itr.next();
-      sourceBuilder.query(QueryBuilders.commonTermsQuery(entry.getKey(), entry.getValue()));
-    }
-    Map<String, String> mappedIndexAndType = ElasticSearchHelper.getMappedIndexAndType(index, type);
-    SearchResponse sr = null;
-    try {
-      sr =
-          ConnectionManager.getClient()
-              .search(
-                  new SearchRequest(mappedIndexAndType.get(JsonKey.INDEX))
-                      .types(mappedIndexAndType.get(JsonKey.TYPE))
-                      .source(sourceBuilder))
-              .get();
-    } catch (InterruptedException e) {
-      ProjectLogger.log("Error, interrupted while connecting to Elasticsearch", e);
-      Thread.currentThread().interrupt();
-
-    } catch (ExecutionException e) {
-      ProjectLogger.log("Error while execution in Elasticsearch", e);
-      promise.failure(e);
-    }
-    if (sr.getHits() == null || sr.getHits().getTotalHits() == 0) {
-      promise.success(new HashMap<>());
-      return promise.future();
-    }
-    sr.getHits().getAt(0);
-    long stopTime = System.currentTimeMillis();
-    long elapsedTime = stopTime - startTime;
-    ProjectLogger.log(
-        "ElasticSearchUtil searchData method end at =="
-            + stopTime
-            + " for Type "
-            + type
-            + " ,Total time elapsed = "
-            + elapsedTime,
-        LoggerEnum.PERF_LOG);
-    promise.success(sr.getAggregations().asList().get(0).getMetaData());
     return promise.future();
   }
 
@@ -259,12 +199,12 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
    * @return boolean
    */
   @Override
-  public Future<Boolean> updateData(
+  public Future<Boolean> update(
       String index, String type, String identifier, Map<String, Object> data) {
     long startTime = System.currentTimeMillis();
     Promise<Boolean> promise = Futures.promise();
     ProjectLogger.log(
-        "ElasticSearchUtil updateData method started at ==" + startTime + " for Type " + type,
+        "ElasticSearchUtil:update method started at ==" + startTime + " for Type " + type,
         LoggerEnum.PERF_LOG);
     if (!StringUtils.isBlank(index)
         && !StringUtils.isBlank(type)
@@ -282,12 +222,13 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
                 .setDoc(data)
                 .get();
         ProjectLogger.log(
-            "updated response==" + response.getResult().name(), LoggerEnum.INFO.name());
+            "ElasticSearchTcpImpl:update" + "updated response==" + response.getResult().name(),
+            LoggerEnum.INFO.name());
         if (response.getResult().name().equals("UPDATED")) {
           long stopTime = System.currentTimeMillis();
           long elapsedTime = stopTime - startTime;
           ProjectLogger.log(
-              "ElasticSearchUtil updateData method end at =="
+              "ElasticSearchTcpImpl:update method end at =="
                   + stopTime
                   + " for Type "
                   + type
@@ -298,24 +239,22 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
           return promise.future();
         } else {
           ProjectLogger.log(
-              "ElasticSearchUtil:updateData update was not success:" + response.getResult(),
+              "ElasticSearchTcpImpl:update update was not success:" + response.getResult(),
               LoggerEnum.INFO.name());
         }
       } catch (Exception e) {
         ProjectLogger.log(
-            "ElasticSearchUtil:updateData exception occured:" + e.getMessage(),
+            "ElasticSearchTcpImpl:update exception occured:" + e.getMessage(),
             LoggerEnum.ERROR.name());
         promise.failure(e);
       }
     } else {
       ProjectLogger.log(
-          "ElasticSearchUtil:updateData Requested data is invalid.", LoggerEnum.INFO.name());
+          "ElasticSearchTcpImpl:update Requested data is invalid.", LoggerEnum.INFO.name());
     }
-    long stopTime = System.currentTimeMillis();
-    long elapsedTime = stopTime - startTime;
+    long elapsedTime = ElasticSearchHelper.calculateEndTime(startTime);
     ProjectLogger.log(
-        "ElasticSearchUtil updateData method end at =="
-            + stopTime
+        "ElasticSearchTcpImpl:update method end  =="
             + " for Type "
             + type
             + " ,Total time elapsed = "
@@ -326,7 +265,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
   }
 
   /**
-   * This method will upser data based on identifier.take the data based on identifier and merge
+   * This method will upsert data based on identifier.take the data based on identifier and merge
    * with incoming data then update it and if identifier does not exist , it will insert data .
    *
    * @param index String
@@ -336,12 +275,12 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
    * @return boolean
    */
   @Override
-  public Future<Boolean> upsertData(
+  public Future<Boolean> upsert(
       String index, String type, String identifier, Map<String, Object> data) {
     long startTime = System.currentTimeMillis();
     Promise<Boolean> promise = Futures.promise();
     ProjectLogger.log(
-        "ElasticSearchUtil upsertData method started at ==" + startTime + " for Type " + type,
+        "ElasticSearchTcpImpl:upsert method started at ==" + startTime + " for Type " + type,
         LoggerEnum.PERF_LOG);
     if (!StringUtils.isBlank(index)
         && !StringUtils.isBlank(type)
@@ -372,13 +311,12 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
         promise.success(false);
         return promise.future();
       }
-      ProjectLogger.log("updated response==" + response.getResult().name());
+      ProjectLogger.log(
+          "ElasticSearchTcpImpl:upsertData updated response==" + response.getResult().name());
       if (upsertResults.contains(response.getResult().name())) {
-        long stopTime = System.currentTimeMillis();
-        long elapsedTime = stopTime - startTime;
+        long elapsedTime = ElasticSearchHelper.calculateEndTime(startTime);
         ProjectLogger.log(
-            "ElasticSearchUtil upsertData method end at =="
-                + stopTime
+            "ElasticSearchTcpImpl:upsertData method end =="
                 + " for Type "
                 + type
                 + " ,Total time elapsed = "
@@ -388,14 +326,12 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
         return promise.future();
       }
     } else {
-      ProjectLogger.log("Requested data is invalid.");
+      ProjectLogger.log("ElasticSearchTcpImpl:upsert Requested data is invalid.", LoggerEnum.INFO);
       promise.success(false);
     }
-    long stopTime = System.currentTimeMillis();
-    long elapsedTime = stopTime - startTime;
+    long elapsedTime = ElasticSearchHelper.calculateEndTime(startTime);
     ProjectLogger.log(
-        "ElasticSearchUtil upsertData method end at =="
-            + stopTime
+        "ElasticSearchTcpImpl:upsert method end =="
             + " for Type "
             + type
             + " ,Total time elapsed = "
@@ -412,11 +348,11 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
    * @param identifier String
    */
   @Override
-  public Future<Boolean> removeData(String index, String type, String identifier) {
+  public Future<Boolean> delete(String index, String type, String identifier) {
     long startTime = System.currentTimeMillis();
     Promise<Boolean> promise = Futures.promise();
     ProjectLogger.log(
-        "ElasticSearchUtil removeData method started at ==" + startTime, LoggerEnum.PERF_LOG);
+        "ElasticSearchTcpImpl:delete method started at ==" + startTime, LoggerEnum.PERF_LOG);
     DeleteResponse deleteResponse = null;
     if (!StringUtils.isBlank(index)
         && !StringUtils.isBlank(type)
@@ -432,23 +368,23 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
                     identifier)
                 .get();
         ProjectLogger.log(
-            "delete info ==" + deleteResponse.getResult().name() + " " + deleteResponse.getId());
+            "ElasticSearchTcpImpl:delete info =="
+                + deleteResponse.getResult().name()
+                + " "
+                + deleteResponse.getId());
       } catch (Exception e) {
         promise.failure(e);
         ProjectLogger.log(e.getMessage(), e);
       }
     } else {
-      ProjectLogger.log("Data can not be deleted due to invalid input.");
+      ProjectLogger.log(
+          "ElasticSearchTcpImpl:delete Data can not be deleted due to invalid input.");
       promise.success(false);
       return promise.future();
     }
-    long stopTime = System.currentTimeMillis();
-    long elapsedTime = stopTime - startTime;
+    long elapsedTime = ElasticSearchHelper.calculateEndTime(startTime);
     ProjectLogger.log(
-        "ElasticSearchUtil removeData method end at =="
-            + stopTime
-            + " ,Total time elapsed = "
-            + elapsedTime,
+        "ElasticSearchTcpImpl:delete method end ==" + " ,Total time elapsed = " + elapsedTime,
         LoggerEnum.PERF_LOG);
     promise.success(deleteResponse.getResult().name().equalsIgnoreCase("DELETED"));
     return promise.future();
@@ -463,8 +399,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
    * @return search result as Map.
    */
   @Override
-  public Future<Map<String, Object>> complexSearch(
-      SearchDTO searchDTO, String index, String... type) {
+  public Future<Map<String, Object>> search(SearchDTO searchDTO, String index, String... type) {
 
     long startTime = System.currentTimeMillis();
     Promise<Map<String, Object>> promise = Futures.promise();
@@ -482,9 +417,10 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
             .distinct()
             .toArray(String[]::new);
     ProjectLogger.log(
-        "ElasticSearchUtil complexSearch method started at ==" + startTime, LoggerEnum.PERF_LOG);
+        "ElasticSearchTcpImpl:search method started at ==" + startTime, LoggerEnum.PERF_LOG);
     SearchRequestBuilder searchRequestBuilder =
-        ElasticSearchHelper.getSearchBuilder(ConnectionManager.getClient(), indices, types);
+        ElasticSearchHelper.getTransportSearchBuilder(
+            ConnectionManager.getClient(), indices, types);
     // check mode and set constraints
     Map<String, Float> constraintsMap = ElasticSearchHelper.getConstraints(searchDTO);
 
@@ -566,10 +502,13 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
     List finalFacetList = new ArrayList();
 
     if (null != searchDTO.getFacets() && !searchDTO.getFacets().isEmpty()) {
-      ElasticSearchHelper.addAggregations(searchRequestBuilder, searchDTO.getFacets());
+      searchRequestBuilder =
+          ElasticSearchHelper.addAggregations(searchRequestBuilder, searchDTO.getFacets());
     }
     ProjectLogger.log(
-        "calling search builder======" + searchRequestBuilder.toString(), LoggerEnum.INFO.name());
+        "ElasticSearchTcpImpl:search calling search builder======"
+            + searchRequestBuilder.toString(),
+        LoggerEnum.INFO.name());
     SearchResponse response = null;
     try {
       response = searchRequestBuilder.execute().actionGet();
@@ -629,13 +568,9 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
       responsemap.put(JsonKey.FACETS, finalFacetList);
     }
     responsemap.put(JsonKey.COUNT, count);
-    long stopTime = System.currentTimeMillis();
-    long elapsedTime = stopTime - startTime;
+    long elapsedTime = ElasticSearchHelper.calculateEndTime(startTime);
     ProjectLogger.log(
-        "ElasticSearchUtil complexSearch method end at =="
-            + stopTime
-            + " ,Total time elapsed = "
-            + elapsedTime,
+        "ElasticSearchTcpImpl:search method end" + " ,Total time elapsed = " + elapsedTime,
         LoggerEnum.PERF_LOG);
     promise.success(responsemap);
     return promise.future();
@@ -644,7 +579,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
    * @param ids List of ids of document
    * @param fields List of fields which needs to captured
    * @param typeToSearch type of ES
-   * @return Map<String,Map<String,Objec>> It will return a map with id as key and the data from ES
+   * @return Map<String,Map<String,Object>> It will return a map with id as key and the data from ES
    *     as value
    */
   @Override
@@ -659,10 +594,9 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
     searchDTO.setFields(fields);
 
     Future<Map<String, Object>> resultF =
-        complexSearch(
-            searchDTO, ProjectUtil.EsIndex.sunbird.getIndexName(), typeToSearch.getTypeName());
+        search(searchDTO, ProjectUtil.EsIndex.sunbird.getIndexName(), typeToSearch.getTypeName());
     Map<String, Object> result =
-        (Map<String, Object>) ElasticSearchHelper.getObjectFromFuture(resultF);
+        (Map<String, Object>) ElasticSearchHelper.getResponseFromFuture(resultF);
     List<Map<String, Object>> esContent = (List<Map<String, Object>>) result.get(JsonKey.CONTENT);
     Promise<Map<String, Map<String, Object>>> promise = Futures.promise();
     promise.success(
@@ -677,62 +611,6 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
     return promise.future();
   }
 
-  @Override
-  public Future<Map<String, Object>> doAsyncSearch(String index, String type, SearchDTO searchDTO) {
-    Map<String, String> indexTypeMap = ElasticSearchHelper.getMappedIndexAndType(index, type);
-    Promise<Map<String, Object>> promise = Futures.promise();
-    SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
-    BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-    if (!StringUtils.isBlank(searchDTO.getQuery())) {
-      SimpleQueryStringBuilder sqsb = QueryBuilders.simpleQueryStringQuery(searchDTO.getQuery());
-      if (CollectionUtils.isEmpty(searchDTO.getQueryFields())) {
-        boolQueryBuilder.must(sqsb.field("all_fields"));
-      } else {
-        Map<String, Float> searchFields =
-            searchDTO
-                .getQueryFields()
-                .stream()
-                .collect(Collectors.<String, String, Float>toMap(s -> s, v -> 1.0f));
-        boolQueryBuilder.must(sqsb.fields(searchFields));
-      }
-    }
-    sourceBuilder.from(searchDTO.getOffset() != null ? searchDTO.getOffset() : 0);
-    sourceBuilder.size(searchDTO.getLimit() != null ? searchDTO.getLimit() : 250);
-    // check mode and set constraints
-    Map<String, Float> constraintsMap = ElasticSearchHelper.getConstraints(searchDTO);
-    // apply additional properties
-    if (searchDTO.getAdditionalProperties() != null
-        && searchDTO.getAdditionalProperties().size() > 0) {
-      for (Map.Entry<String, Object> entry : searchDTO.getAdditionalProperties().entrySet()) {
-        ElasticSearchHelper.addAdditionalProperties(boolQueryBuilder, entry, constraintsMap);
-      }
-    }
-    sourceBuilder.query(boolQueryBuilder);
-    SearchRequest searchRequest = new SearchRequest(indexTypeMap.get(JsonKey.INDEX));
-    searchRequest.source(sourceBuilder);
-    ActionListener<SearchResponse> listener =
-        new ActionListener<SearchResponse>() {
-          @Override
-          public void onResponse(SearchResponse searchResponse) {
-            List<Map<String, Object>> mapList = new ArrayList<>();
-            Map<String, Object> responseMap = new HashMap<>();
-            SearchHits hits = searchResponse.getHits();
-            for (SearchHit hit : hits.getHits()) {
-              mapList.add(hit.getSourceAsMap());
-            }
-            responseMap.put(JsonKey.CONTENT, mapList);
-            responseMap.put(JsonKey.COUNT, hits.getTotalHits());
-            promise.success(responseMap);
-          }
-
-          @Override
-          public void onFailure(Exception e) {
-            promise.failure(e);
-          }
-        };
-    ConnectionManager.getRestClient().searchAsync(searchRequest, listener);
-    return promise.future();
-  }
   /**
    * This method will do the bulk data insertion.
    *
@@ -742,12 +620,11 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
    * @return boolean
    */
   @Override
-  public Future<Boolean> bulkInsertData(
-      String index, String type, List<Map<String, Object>> dataList) {
+  public Future<Boolean> bulkInsert(String index, String type, List<Map<String, Object>> dataList) {
     Promise<Boolean> promise = Futures.promise();
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
-        "ElasticSearchUtil bulkInsertData method started at ==" + startTime + " for Type " + type,
+        "ElasticSearchTcpImpl:bulkInsert method started at ==" + startTime + " for Type " + type,
         LoggerEnum.PERF_LOG);
     promise.success(true);
     Map<String, String> mappedIndexAndType = ElasticSearchHelper.getMappedIndexAndType(index, type);
@@ -767,7 +644,8 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
                         while (bulkResponse.hasNext()) {
                           BulkItemResponse bResponse = bulkResponse.next();
                           ProjectLogger.log(
-                              "Bulk insert api response==="
+                              "ElasticSearchTcpImpl:bulkInsert"
+                                  + "Bulk insert api response==="
                                   + bResponse.getId()
                                   + " "
                                   + bResponse.isFailed());
@@ -778,7 +656,8 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
                     @Override
                     public void afterBulk(
                         long executionId, BulkRequest request, Throwable failure) {
-                      ProjectLogger.log("Bulk upload error block", failure);
+                      ProjectLogger.log(
+                          "ElasticSearchTcpImpl:bulkInsert Bulk upload error block", failure);
                     }
                   })
               .setBulkActions(10000)
@@ -808,11 +687,10 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
       promise.success(false);
       ProjectLogger.log(e.getMessage(), e);
     }
-    long stopTime = System.currentTimeMillis();
-    long elapsedTime = stopTime - startTime;
+    long elapsedTime = ElasticSearchHelper.calculateEndTime(startTime);
     ProjectLogger.log(
-        "ElasticSearchUtil bulkInsertData method end at =="
-            + stopTime
+        "ElasticSearchTcpImpl:bulkInsert method end  at =="
+            + System.currentTimeMillis()
             + " for Type "
             + type
             + " ,Total time elapsed = "
@@ -843,7 +721,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
               .get()
               .isExists();
     } catch (Exception e) {
-      ProjectLogger.log("ElasticSearchUtil:healthCheck error " + e.getMessage(), e);
+      ProjectLogger.log("ElasticSearchTcpImpl:healthCheck error " + e.getMessage(), e);
       promise.failure(e);
     }
     promise.success(indexResponse);
@@ -862,7 +740,9 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
   @Override
   public Response searchMetricsData(String index, String type, String rawQuery) {
     long startTime = System.currentTimeMillis();
-    ProjectLogger.log("Metrics search method started at ==" + startTime, LoggerEnum.PERF_LOG);
+    ProjectLogger.log(
+        "ElasticSearchTcpImpl:searchMetricsData : Metrics search method started at ==" + startTime,
+        LoggerEnum.PERF_LOG);
     String baseUrl = null;
     if (!StringUtils.isBlank(System.getenv(JsonKey.SUNBIRD_ES_IP))) {
       String envHost = System.getenv(JsonKey.SUNBIRD_ES_IP);
@@ -873,7 +753,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
               + ":"
               + PropertiesCache.getInstance().getProperty(JsonKey.ES_METRICS_PORT);
     } else {
-      ProjectLogger.log("ES URL from Properties file");
+      ProjectLogger.log("ElasaticSearchTcpImplES URL from Properties file");
       baseUrl = PropertiesCache.getInstance().getProperty(JsonKey.ES_URL);
     }
     Map<String, String> mappedIndexAndType = ElasticSearchHelper.getMappedIndexAndType(index, type);
@@ -908,11 +788,10 @@ public class ElasticSearchTcpImpl implements ElasticSearchUtil {
     }
     Response response = new Response();
     response.put(JsonKey.RESPONSE, responseData);
-    long stopTime = System.currentTimeMillis();
-    long elapsedTime = stopTime - startTime;
+    long elapsedTime = ElasticSearchHelper.calculateEndTime(startTime);
     ProjectLogger.log(
-        "ElasticSearchUtil metrics search method end at == "
-            + stopTime
+        "ElasticSearchTcpImpl:searchMetricsData :ElasticSearchUtil metrics search method end at == "
+            + +System.currentTimeMillis()
             + " ,Total time elapsed = "
             + elapsedTime,
         LoggerEnum.PERF_LOG);

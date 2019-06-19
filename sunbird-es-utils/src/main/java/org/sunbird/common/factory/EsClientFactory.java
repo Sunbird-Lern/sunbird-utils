@@ -2,21 +2,21 @@ package org.sunbird.common.factory;
 
 import org.sunbird.common.ElasticSearchRestHighImpl;
 import org.sunbird.common.ElasticSearchTcpImpl;
-import org.sunbird.common.inf.ElasticSearchUtil;
+import org.sunbird.common.inf.ElasticService;
 
 public class EsClientFactory {
 
-  private static ElasticSearchUtil tcpClient = null;
-  private static ElasticSearchUtil restClient = null;
+  private static ElasticService tcpClient = null;
+  private static ElasticService restClient = null;
 
-  public static ElasticSearchUtil getTcpClient() {
+  public static ElasticService getTcpClient() {
     if (tcpClient == null) {
       tcpClient = new ElasticSearchTcpImpl();
     }
     return tcpClient;
   }
 
-  public static ElasticSearchUtil getRestClient() {
+  public static ElasticService getRestClient() {
     if (restClient == null) {
       restClient = new ElasticSearchRestHighImpl();
     }

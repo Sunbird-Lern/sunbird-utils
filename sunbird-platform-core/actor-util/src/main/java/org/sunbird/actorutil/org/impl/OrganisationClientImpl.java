@@ -15,7 +15,7 @@ import org.sunbird.actorutil.org.OrganisationClient;
 import org.sunbird.common.ElasticSearchHelper;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.factory.EsClientFactory;
-import org.sunbird.common.inf.ElasticSearchUtil;
+import org.sunbird.common.inf.ElasticService;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.ActorOperations;
 import org.sunbird.common.models.util.JsonKey;
@@ -33,7 +33,7 @@ public class OrganisationClientImpl implements OrganisationClient {
   private static InterServiceCommunication interServiceCommunication =
       InterServiceCommunicationFactory.getInstance();
   ObjectMapper objectMapper = new ObjectMapper();
-  private ElasticSearchUtil esUtil = EsClientFactory.getTcpClient();
+  private ElasticService esUtil = EsClientFactory.getRestClient();
 
   @Override
   public String createOrg(ActorRef actorRef, Map<String, Object> orgMap) {
@@ -115,12 +115,12 @@ public class OrganisationClientImpl implements OrganisationClient {
     filter.put(JsonKey.PROVIDER, provider);
     searchDto.getAdditionalProperties().put(JsonKey.FILTERS, filter);
     Future<Map<String, Object>> esResponseF =
-        esUtil.complexSearch(
+        esUtil.search(
             searchDto,
             ProjectUtil.EsIndex.sunbird.getIndexName(),
             ProjectUtil.EsType.organisation.getTypeName());
     Map<String, Object> esResponse =
-        (Map<String, Object>) ElasticSearchHelper.getObjectFromFuture(esResponseF);
+        (Map<String, Object>) ElasticSearchHelper.getResponseFromFuture(esResponseF);
     List<Map<String, Object>> list = (List<Map<String, Object>>) esResponse.get(JsonKey.CONTENT);
     if (!list.isEmpty()) {
       map = list.get(0);
@@ -139,7 +139,7 @@ public class OrganisationClientImpl implements OrganisationClient {
             ProjectUtil.EsType.organisation.getTypeName(),
             id);
 
-    map = (Map<String, Object>) ElasticSearchHelper.getObjectFromFuture(mapF);
+    map = (Map<String, Object>) ElasticSearchHelper.getResponseFromFuture(mapF);
     if (MapUtils.isEmpty(map)) {
       return null;
     } else {
@@ -159,12 +159,12 @@ public class OrganisationClientImpl implements OrganisationClient {
   private List<Organisation> searchOrganisation(SearchDTO searchDto) {
     List<Organisation> orgList = new ArrayList<>();
     Future<Map<String, Object>> resultF =
-        esUtil.complexSearch(
+        esUtil.search(
             searchDto,
             ProjectUtil.EsIndex.sunbird.getIndexName(),
             ProjectUtil.EsType.organisation.getTypeName());
     Map<String, Object> result =
-        (Map<String, Object>) ElasticSearchHelper.getObjectFromFuture(resultF);
+        (Map<String, Object>) ElasticSearchHelper.getResponseFromFuture(resultF);
 
     List<Map<String, Object>> orgMapList = (List<Map<String, Object>>) result.get(JsonKey.CONTENT);
     if (CollectionUtils.isNotEmpty(orgMapList)) {
