@@ -170,11 +170,9 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
                         + identifier,
                     LoggerEnum.INFO);
               }
-              long stopTime = System.currentTimeMillis();
-              long elapsedTime = stopTime - startTime;
+              long elapsedTime = calculateEndTime(startTime);
               ProjectLogger.log(
-                  "ElasticSearchRestHighImpl:update method end at =="
-                      + stopTime
+                  "ElasticSearchRestHighImpl:update method end =="
                       + " for INdex "
                       + index
                       + " ,Total time elapsed = "
@@ -197,7 +195,9 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
           "ElasticSearchRestHighImpl:update Requested data is invalid.", LoggerEnum.INFO.name());
       promise.failure(
           new ProjectCommonException(
-              "", "Requested data is invalid", ResponseCode.invalidData.getResponseCode()));
+              ResponseCode.invalidData.getErrorCode(),
+              ResponseCode.invalidData.getErrorMessage(),
+              ResponseCode.invalidData.getResponseCode()));
     }
     return promise.future();
   }
@@ -231,11 +231,9 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
               Map<String, Object> sourceAsMap = getResponse.getSourceAsMap();
               if (MapUtils.isNotEmpty(sourceAsMap)) {
                 promise.success(sourceAsMap);
-                long stopTime = System.currentTimeMillis();
-                long elapsedTime = stopTime - startTime;
+                long elapsedTime = calculateEndTime(startTime);
                 ProjectLogger.log(
-                    "ElasticSearchRestHighImpl:getDataByIdentifier method end at =="
-                        + stopTime
+                    "ElasticSearchRestHighImpl:getDataByIdentifier method end =="
                         + " for Index "
                         + index
                         + " ,Total time elapsed = "
@@ -302,13 +300,9 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
 
     ConnectionManager.getRestClient().deleteAsync(delRequest, listener);
 
-    long stopTime = System.currentTimeMillis();
-    long elapsedTime = stopTime - startTime;
+    long elapsedTime = calculateEndTime(startTime);
     ProjectLogger.log(
-        "ElasticSearchRestHighImpl:delete method end at =="
-            + stopTime
-            + " ,Total time elapsed = "
-            + elapsedTime,
+        "ElasticSearchRestHighImpl:delete method end ==" + " ,Total time elapsed = " + elapsedTime,
         LoggerEnum.PERF_LOG);
     return promise.future();
   }
@@ -546,11 +540,9 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
     }
     Response response = new Response();
     response.put(JsonKey.RESPONSE, responseData);
-    long stopTime = System.currentTimeMillis();
-    long elapsedTime = stopTime - startTime;
+    long elapsedTime = calculateEndTime(startTime);
     ProjectLogger.log(
-        "ElasticSearchRestHighImpl:searchMetricsData search method end at == "
-            + stopTime
+        "ElasticSearchRestHighImpl:searchMetricsData search method end == "
             + " ,Total time elapsed = "
             + elapsedTime,
         LoggerEnum.PERF_LOG);
@@ -607,11 +599,9 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
         };
     ConnectionManager.getRestClient().bulkAsync(request, listener);
 
-    long stopTime = System.currentTimeMillis();
-    long elapsedTime = stopTime - startTime;
+    long elapsedTime = calculateEndTime(startTime);
     ProjectLogger.log(
-        "ElasticSearchRestHighImpl:bulkInsert method end at =="
-            + stopTime
+        "ElasticSearchRestHighImpl:bulkInsert method end =="
             + " for Index "
             + index
             + " ,Total time elapsed = "
@@ -646,11 +636,9 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
             AggregationBuilders.terms(key).field(key + ElasticSearchHelper.RAW_APPEND));
       }
     }
-    long stopTime = System.currentTimeMillis();
-    long elapsedTime = stopTime - startTime;
+    long elapsedTime = calculateEndTime(startTime);
     ProjectLogger.log(
-        "ElasticSearchUtilRest:addAggregations method end at =="
-            + stopTime
+        "ElasticSearchUtilRest:addAggregations method end =="
             + " ,Total time elapsed = "
             + elapsedTime,
         LoggerEnum.PERF_LOG);

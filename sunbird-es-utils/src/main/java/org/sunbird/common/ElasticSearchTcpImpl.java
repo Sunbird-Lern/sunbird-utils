@@ -177,11 +177,9 @@ public class ElasticSearchTcpImpl implements ElasticSearchService {
             "ElasticSearchTcpImpl:update" + "updated response==" + response.getResult().name(),
             LoggerEnum.INFO.name());
         if (response.getResult().name().equals("UPDATED")) {
-          long stopTime = System.currentTimeMillis();
-          long elapsedTime = stopTime - startTime;
+          long elapsedTime = ElasticSearchHelper.calculateEndTime(startTime);
           ProjectLogger.log(
-              "ElasticSearchTcpImpl:update method end at =="
-                  + stopTime
+              "ElasticSearchTcpImpl:update method end =="
                   + " for index "
                   + index
                   + " ,Total time elapsed = "
@@ -332,7 +330,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchService {
     ProjectLogger.log(
         "ElasticSearchTcpImpl:search method started at ==" + startTime, LoggerEnum.PERF_LOG);
     SearchRequestBuilder searchRequestBuilder =
-        ElasticSearchHelper.getTransportSearchBuilder(ConnectionManager.getClient(), indices, _DOC);
+        ElasticSearchHelper.getTransportSearchBuilder(ConnectionManager.getClient(), indices);
     // check mode and set constraints
     Map<String, Float> constraintsMap = ElasticSearchHelper.getConstraints(searchDTO);
 

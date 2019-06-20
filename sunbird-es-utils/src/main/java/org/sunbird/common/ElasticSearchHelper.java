@@ -71,6 +71,7 @@ public class ElasticSearchHelper {
   public static Timeout timeout = new Timeout(WAIT_TIME, TimeUnit.SECONDS);
   public static final List<String> upsertResults =
       new ArrayList<>(Arrays.asList("CREATED", "UPDATED", "NOOP"));
+  private static final String _DOC = "_doc";
 
   private ElasticSearchHelper() {}
 
@@ -163,13 +164,8 @@ public class ElasticSearchHelper {
    * @return SearchRequestBuilder
    */
   public static SearchRequestBuilder getTransportSearchBuilder(
-      TransportClient client, String[] index, String... type) {
-
-    if (type == null || type.length == 0) {
-      return client.prepareSearch().setIndices(index);
-    } else {
-      return client.prepareSearch().setIndices(index).setTypes(type);
-    }
+      TransportClient client, String[] index) {
+    return client.prepareSearch().setIndices(index).setTypes(_DOC);
   }
 
   /**
