@@ -13,7 +13,7 @@ import org.sunbird.actorutil.user.UserClient;
 import org.sunbird.common.ElasticSearchHelper;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.factory.EsClientFactory;
-import org.sunbird.common.inf.ElasticService;
+import org.sunbird.common.inf.ElasticSearchService;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.ActorOperations;
 import org.sunbird.common.models.util.JsonKey;
@@ -29,7 +29,7 @@ public class UserClientImpl implements UserClient {
 
   private static InterServiceCommunication interServiceCommunication =
       InterServiceCommunicationFactory.getInstance();
-  private ElasticService esUtil = EsClientFactory.getRestClient();
+  private ElasticSearchService esUtil = EsClientFactory.getInstance(JsonKey.REST);
 
   @Override
   public String createUser(ActorRef actorRef, Map<String, Object> userMap) {
@@ -65,10 +65,7 @@ public class UserClientImpl implements UserClient {
     searchDto.setFacets(list);
 
     Future<Map<String, Object>> esResponseF =
-        esUtil.search(
-            searchDto,
-            ProjectUtil.EsIndex.sunbird.getIndexName(),
-            ProjectUtil.EsType.user.getTypeName());
+        esUtil.search(searchDto, ProjectUtil.EsType.user.getTypeName());
     Map<String, Object> esResponse =
         (Map<String, Object>) ElasticSearchHelper.getResponseFromFuture(esResponseF);
 

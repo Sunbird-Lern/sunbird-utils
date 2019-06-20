@@ -6,6 +6,7 @@ import akka.util.Timeout;
 import com.typesafe.config.Config;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.ExistsQueryBuilder;
@@ -28,14 +30,17 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.index.query.TermsQueryBuilder;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
+import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket;
 import org.elasticsearch.search.sort.SortOrder;
-import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
-import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.common.util.ConfigUtil;
 import org.sunbird.dto.SearchDTO;
 import scala.concurrent.Await;
@@ -64,6 +69,8 @@ public class ElasticSearchHelper {
   private static Config config = ConfigUtil.getConfig(ES_CONFIG_FILE);
   public static final int WAIT_TIME = 30;
   public static Timeout timeout = new Timeout(WAIT_TIME, TimeUnit.SECONDS);
+  public static final List<String> upsertResults =
+      new ArrayList<>(Arrays.asList("CREATED", "UPDATED", "NOOP"));
 
   private ElasticSearchHelper() {}
 
@@ -189,11 +196,9 @@ public class ElasticSearchHelper {
     } else if (JsonKey.EXISTS.equalsIgnoreCase(key) || JsonKey.NOT_EXISTS.equalsIgnoreCase(key)) {
       query = createESOpperation(entry, query, constraintsMap);
     }
-    long stopTime = System.currentTimeMillis();
-    long elapsedTime = stopTime - startTime;
+    long elapsedTime = calculateEndTime(startTime);
     ProjectLogger.log(
-        "ElasticSearchHelper:addAdditionalProperties method end at =="
-            + stopTime
+        "ElasticSearchHelper:addAdditionalProperties method end =="
             + " ,Total time elapsed = "
             + elapsedTime,
         LoggerEnum.PERF_LOG);
@@ -286,14 +291,14 @@ public class ElasticSearchHelper {
       Entry<String, Object> entry, BoolQueryBuilder query, Map<String, Float> constraintsMap) {
 
     String operation = entry.getKey();
-    if (entry.getValue() instanceof List) {
+    if (entry.getValue() != null && entry.getValue() instanceof List) {
       List<String> existsList = (List<String>) entry.getValue();
 
-      if (operation.equalsIgnoreCase(JsonKey.EXISTS)) {
+      if (JsonKey.EXISTS.equalsIgnoreCase(operation)) {
         for (String name : existsList) {
           query.must(createExistQuery(name, constraintsMap.get(name)));
         }
-      } else if (operation.equalsIgnoreCase(JsonKey.NOT_EXISTS)) {
+      } else if (JsonKey.NOT_EXISTS.equalsIgnoreCase(operation)) {
         for (String name : existsList) {
           query.mustNot(createExistQuery(name, constraintsMap.get(name)));
         }
@@ -310,16 +315,16 @@ public class ElasticSearchHelper {
   /**
    * This method return MatchQueryBuilder Object with boosts if any provided
    *
-   * @param name
-   * @param text
+   * @param name of the attribute
+   * @param value of the attribute
    * @param boost
    * @return MatchQueryBuilder
    */
-  public static MatchQueryBuilder createMatchQuery(String name, Object text, Float boost) {
+  public static MatchQueryBuilder createMatchQuery(String name, Object value, Float boost) {
     if (isNotNull(boost)) {
-      return QueryBuilders.matchQuery(name, text).boost(boost);
+      return QueryBuilders.matchQuery(name, value).boost(boost);
     } else {
-      return QueryBuilders.matchQuery(name, text);
+      return QueryBuilders.matchQuery(name, value);
     }
   }
 
@@ -572,44 +577,65 @@ public class ElasticSearchHelper {
   }
 
   /**
-   * This method return map of index and type mapping
+   * Method returns map which contains all the request data from elasticsearch
    *
-   * @param sunbirdIndex
-   * @param sunbirdType
-   * @return Map
+   * @param SearchResponse
+   * @param searchDTO
+   * @param finalFacetList
+   * @return
    */
-  public static Map<String, String> getMappedIndexAndType(String sunbirdIndex, String sunbirdType) {
-    String mappedIndexAndType = "mapping." + sunbirdIndex + "." + sunbirdType;
-    Map<String, String> mappedIndexAndTypeResult = new HashMap<>();
-    if (config.hasPath(mappedIndexAndType)) {
-      mappedIndexAndTypeResult = (Map<String, String>) config.getAnyRef(mappedIndexAndType);
-    } else {
-      ProjectCommonException.throwServerErrorException(ResponseCode.SERVER_ERROR);
-    }
-    ProjectLogger.log(
-        "Elasticsearch input index "
-            + sunbirdIndex
-            + " types "
-            + sunbirdType
-            + " output "
-            + mappedIndexAndTypeResult,
-        LoggerEnum.DEBUG);
-    return mappedIndexAndTypeResult;
-  }
+  public static Map<String, Object> getSearchResponseMap(
+      SearchResponse response, SearchDTO searchDTO, List finalFacetList) {
+    Map<String, Object> responseMap = new HashMap<>();
+    List<Map<String, Object>> esSource = new ArrayList<>();
+    long count = 0;
+    if (response != null) {
+      SearchHits hits = response.getHits();
+      count = hits.getTotalHits();
 
-  /**
-   * This method return list of mapping of all the index and type provided in the arguments
-   *
-   * @param sunbirdIndex
-   * @param sunbirdTypes
-   * @return List
-   */
-  public static List<Map<String, String>> getMappedIndexesAndTypes(
-      String sunbirdIndex, String... sunbirdTypes) {
-    List<Map<String, String>> mappedIndexesAndTypes = new ArrayList<>();
-    for (String sunbirdType : sunbirdTypes) {
-      mappedIndexesAndTypes.add(getMappedIndexAndType(sunbirdIndex, sunbirdType));
+      for (SearchHit hit : hits) {
+        esSource.add(hit.getSourceAsMap());
+      }
+
+      // fetch aggregations aggregations
+      if (null != searchDTO.getFacets() && !searchDTO.getFacets().isEmpty()) {
+        Map<String, String> m1 = searchDTO.getFacets().get(0);
+        for (Map.Entry<String, String> entry : m1.entrySet()) {
+          String field = entry.getKey();
+          String aggsType = entry.getValue();
+          List<Object> aggsList = new ArrayList<>();
+          Map facetMap = new HashMap();
+          if (JsonKey.DATE_HISTOGRAM.equalsIgnoreCase(aggsType)) {
+            Histogram agg = response.getAggregations().get(field);
+            for (Histogram.Bucket ent : agg.getBuckets()) {
+              // DateTime key = (DateTime) ent.getKey(); // Key
+              String keyAsString = ent.getKeyAsString(); // Key as String
+              long docCount = ent.getDocCount(); // Doc count
+              Map internalMap = new HashMap();
+              internalMap.put(JsonKey.NAME, keyAsString);
+              internalMap.put(JsonKey.COUNT, docCount);
+              aggsList.add(internalMap);
+            }
+          } else {
+            Terms aggs = response.getAggregations().get(field);
+            for (Bucket bucket : aggs.getBuckets()) {
+              Map internalMap = new HashMap();
+              internalMap.put(JsonKey.NAME, bucket.getKey());
+              internalMap.put(JsonKey.COUNT, bucket.getDocCount());
+              aggsList.add(internalMap);
+            }
+          }
+          facetMap.put("values", aggsList);
+          facetMap.put(JsonKey.NAME, field);
+          finalFacetList.add(facetMap);
+        }
+      }
     }
-    return mappedIndexesAndTypes;
+    responseMap.put(JsonKey.CONTENT, esSource);
+    if (!(finalFacetList.isEmpty())) {
+      responseMap.put(JsonKey.FACETS, finalFacetList);
+    }
+    responseMap.put(JsonKey.COUNT, count);
+    return responseMap;
   }
 }

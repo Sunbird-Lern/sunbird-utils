@@ -73,7 +73,7 @@ import org.powermock.core.classloader.annotations.SuppressStaticInitializationFo
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.factory.EsClientFactory;
-import org.sunbird.common.inf.ElasticService;
+import org.sunbird.common.inf.ElasticSearchService;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
@@ -107,7 +107,7 @@ public class ElasticSearchTcpImplTest {
   private static final String STARTS_WITH = "startsWith";
   private static final String ENDS_WITH = "endsWith";
   private static final long START_TIME = System.currentTimeMillis();
-  private ElasticService esUtil = EsClientFactory.getTcpClient();
+  private ElasticSearchService esService = EsClientFactory.getInstance(JsonKey.TCP);
 
   @BeforeClass
   public static void initClass() throws Exception {
@@ -132,17 +132,17 @@ public class ElasticSearchTcpImplTest {
   public void testCreateDataSuccess() {
     mockRulesForInsert();
 
-    esUtil.save(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"), chemistryMap);
+    esService.save(INDEX_NAME, (String) chemistryMap.get("courseId"), chemistryMap);
     assertNotNull(chemistryMap.get("courseId"));
 
-    esUtil.save(INDEX_NAME, TYPE_NAME, (String) physicsMap.get("courseId"), physicsMap);
+    esService.save(INDEX_NAME, (String) physicsMap.get("courseId"), physicsMap);
     assertNotNull(physicsMap.get("courseId"));
   }
 
   @Test
   public void testGetByIdentifierSuccess() {
     Future<Map<String, Object>> responseMapF =
-        esUtil.getDataByIdentifier(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"));
+        esService.getDataByIdentifier(INDEX_NAME, (String) chemistryMap.get("courseId"));
 
     Map<String, Object> responseMap =
         (Map<String, Object>) ElasticSearchHelper.getResponseFromFuture(responseMapF);
@@ -167,7 +167,7 @@ public class ElasticSearchTcpImplTest {
     when(getResponse.getSource()).thenReturn(innermap);
 
     Future<Boolean> responseF =
-        esUtil.update(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"), innermap);
+        esService.update(INDEX_NAME, (String) chemistryMap.get("courseId"), innermap);
     boolean response = (boolean) ElasticSearchHelper.getResponseFromFuture(responseF);
     assertTrue(response);
   }
@@ -241,7 +241,7 @@ public class ElasticSearchTcpImplTest {
     searchDTO.setSoftConstraints(constraintMap);
     searchDTO.setQuery("organisation Name published");
     mockRulesForSearch(3);
-    Future<Map<String, Object>> map = esUtil.search(searchDTO, INDEX_NAME, TYPE_NAME);
+    Future<Map<String, Object>> map = esService.search(searchDTO, INDEX_NAME);
     Map<String, Object> response =
         (Map<String, Object>) ElasticSearchHelper.getResponseFromFuture(map);
 
@@ -277,7 +277,7 @@ public class ElasticSearchTcpImplTest {
     searchDTO.setQuery("organisation");
     mockRulesForSearch(3);
 
-    Future<Map<String, Object>> map = esUtil.search(searchDTO, INDEX_NAME, TYPE_NAME);
+    Future<Map<String, Object>> map = esService.search(searchDTO, INDEX_NAME);
     Map<String, Object> response =
         (Map<String, Object>) ElasticSearchHelper.getResponseFromFuture(map);
     assertEquals(2, response.size());
@@ -311,7 +311,7 @@ public class ElasticSearchTcpImplTest {
     searchDTO.setAdditionalProperties(additionalProperties);
     searchDTO.setQuery("organisation");
     mockRulesForSearch(3);
-    Future<Map<String, Object>> map = esUtil.search(searchDTO, INDEX_NAME, TYPE_NAME);
+    Future<Map<String, Object>> map = esService.search(searchDTO, INDEX_NAME);
     Map<String, Object> response =
         (Map<String, Object>) ElasticSearchHelper.getResponseFromFuture(map);
     assertEquals(2, response.size());
@@ -321,18 +321,7 @@ public class ElasticSearchTcpImplTest {
   public void testGetByIdentifierFailureWithoutIndex() {
     try {
       Future<Map<String, Object>> responseMap =
-          esUtil.getDataByIdentifier(null, TYPE_NAME, (String) chemistryMap.get("courseId"));
-    } catch (ProjectCommonException ex) {
-      assertEquals(ResponseCode.SERVER_ERROR.getResponseCode(), ex.getResponseCode());
-    }
-  }
-
-  @Test
-  public void testGetByIdentifierFailureWithoutType() {
-    mockRulesForGet(true);
-    try {
-      Future<Map<String, Object>> responseMap =
-          esUtil.getDataByIdentifier(INDEX_NAME, null, "testcourse123");
+          esService.getDataByIdentifier(null, (String) chemistryMap.get("courseId"));
     } catch (ProjectCommonException ex) {
       assertEquals(ResponseCode.SERVER_ERROR.getResponseCode(), ex.getResponseCode());
     }
@@ -341,7 +330,7 @@ public class ElasticSearchTcpImplTest {
   @Test
   public void testGetByIdentifierFailureWithoutTypeAndIndexIdentifier() {
     try {
-      Future<Map<String, Object>> responseMap = esUtil.getDataByIdentifier(null, null, "");
+      Future<Map<String, Object>> responseMap = esService.getDataByIdentifier(null, "");
     } catch (ProjectCommonException ex) {
       assertEquals(ResponseCode.SERVER_ERROR.getResponseCode(), ex.getResponseCode());
     }
@@ -349,7 +338,7 @@ public class ElasticSearchTcpImplTest {
 
   @Test
   public void testGetDataByIdentifierFailureWithoutIdentifier() {
-    Future<Map<String, Object>> responseMap = esUtil.getDataByIdentifier(INDEX_NAME, TYPE_NAME, "");
+    Future<Map<String, Object>> responseMap = esService.getDataByIdentifier(INDEX_NAME, "");
     Map<String, Object> map =
         (Map<String, Object>) ElasticSearchHelper.getResponseFromFuture(responseMap);
     assertEquals(0, map.size());
@@ -360,7 +349,7 @@ public class ElasticSearchTcpImplTest {
     Map<String, Object> innermap = new HashMap<>();
     innermap.put("courseName", "Updated Course Name");
     innermap.put("organisationId", "updatedOrgId");
-    Future<Boolean> response = esUtil.update(INDEX_NAME, TYPE_NAME, null, innermap);
+    Future<Boolean> response = esService.update(INDEX_NAME, null, innermap);
     boolean result = (boolean) ElasticSearchHelper.getResponseFromFuture(response);
     assertFalse(result);
   }
@@ -369,7 +358,7 @@ public class ElasticSearchTcpImplTest {
   public void testUpdateDataFailureWithEmptyMap() {
     Map<String, Object> innermap = new HashMap<>();
     Future<Boolean> response =
-        esUtil.update(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"), innermap);
+        esService.update(INDEX_NAME, (String) chemistryMap.get("courseId"), innermap);
     boolean result = (boolean) ElasticSearchHelper.getResponseFromFuture(response);
     assertFalse(result);
   }
@@ -377,7 +366,7 @@ public class ElasticSearchTcpImplTest {
   @Test
   public void testUpdateDataFailureWithNullMap() {
     Future<Boolean> response =
-        esUtil.update(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"), null);
+        esService.update(INDEX_NAME, (String) chemistryMap.get("courseId"), null);
     boolean result = (boolean) ElasticSearchHelper.getResponseFromFuture(response);
     assertFalse(result);
   }
@@ -387,7 +376,7 @@ public class ElasticSearchTcpImplTest {
     Map<String, Object> innermap = new HashMap<>();
     innermap.put("courseName", "Updated Course Name");
     innermap.put("organisationId", "updatedOrgId");
-    Future<Boolean> response = esUtil.upsert(INDEX_NAME, TYPE_NAME, null, innermap);
+    Future<Boolean> response = esService.upsert(INDEX_NAME, null, innermap);
     boolean result = (boolean) ElasticSearchHelper.getResponseFromFuture(response);
     assertFalse(result);
   }
@@ -398,18 +387,7 @@ public class ElasticSearchTcpImplTest {
     innermap.put("courseName", "Updated Course Name");
     innermap.put("organisationId", "updatedOrgId");
     Future<Boolean> response =
-        esUtil.upsert(null, TYPE_NAME, (String) chemistryMap.get("courseId"), innermap);
-    boolean result = (boolean) ElasticSearchHelper.getResponseFromFuture(response);
-    assertFalse(result);
-  }
-
-  @Test
-  public void testUpsertDataFailureWithoutIndexType() {
-    Map<String, Object> innermap = new HashMap<>();
-    innermap.put("courseName", "Updated Course Name");
-    innermap.put("organisationId", "updatedOrgId");
-    Future<Boolean> response =
-        esUtil.upsert(INDEX_NAME, null, (String) chemistryMap.get("courseId"), innermap);
+        esService.upsert(null, (String) chemistryMap.get("courseId"), innermap);
     boolean result = (boolean) ElasticSearchHelper.getResponseFromFuture(response);
     assertFalse(result);
   }
@@ -418,7 +396,7 @@ public class ElasticSearchTcpImplTest {
   public void testUpsertDataFailureWithEmptyMap() {
     Map<String, Object> innermap = new HashMap<>();
     Future<Boolean> response =
-        esUtil.upsert(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"), innermap);
+        esService.upsert(INDEX_NAME, (String) chemistryMap.get("courseId"), innermap);
     boolean result = (boolean) ElasticSearchHelper.getResponseFromFuture(response);
     assertFalse(result);
   }
@@ -426,22 +404,14 @@ public class ElasticSearchTcpImplTest {
   @Test
   public void testSaveDataFailureWithoutIndexName() {
     Future<String> response =
-        esUtil.save("", TYPE_NAME, (String) chemistryMap.get("courseId"), chemistryMap);
-    String result = (String) ElasticSearchHelper.getResponseFromFuture(response);
-    assertEquals("ERROR", result);
-  }
-
-  @Test
-  public void testSaveDataFailureWithoutTypeName() {
-    Future<String> response =
-        esUtil.save(INDEX_NAME, "", (String) chemistryMap.get("courseId"), chemistryMap);
+        esService.save("", (String) chemistryMap.get("courseId"), chemistryMap);
     String result = (String) ElasticSearchHelper.getResponseFromFuture(response);
     assertEquals("ERROR", result);
   }
 
   @Test
   public void testGetDataByIdentifierFailureByEmptyIdentifier() {
-    Future<Map<String, Object>> responseMap = esUtil.getDataByIdentifier(INDEX_NAME, TYPE_NAME, "");
+    Future<Map<String, Object>> responseMap = esService.getDataByIdentifier(INDEX_NAME, "");
     Map<String, Object> response =
         (Map<String, Object>) ElasticSearchHelper.getResponseFromFuture(responseMap);
     assertEquals(0, response.size());
@@ -449,15 +419,14 @@ public class ElasticSearchTcpImplTest {
 
   @Test
   public void testRemoveDataSuccessByIdentifier() {
-    Future<Boolean> response =
-        esUtil.delete(INDEX_NAME, TYPE_NAME, (String) chemistryMap.get("courseId"));
+    Future<Boolean> response = esService.delete(INDEX_NAME, (String) chemistryMap.get("courseId"));
     boolean result = (boolean) ElasticSearchHelper.getResponseFromFuture(response);
     assertEquals(true, result);
   }
 
   @Test
   public void testRemoveDataFailureByIdentifierEmpty() {
-    Future<Boolean> response = esUtil.delete(INDEX_NAME, TYPE_NAME, "");
+    Future<Boolean> response = esService.delete(INDEX_NAME, "");
     boolean result = (boolean) ElasticSearchHelper.getResponseFromFuture(response);
     assertEquals(false, result);
   }
@@ -472,7 +441,7 @@ public class ElasticSearchTcpImplTest {
 
   @Test
   public void testHealthCheckSuccess() {
-    Future<Boolean> response = esUtil.healthCheck();
+    Future<Boolean> response = esService.healthCheck();
     boolean result = (boolean) ElasticSearchHelper.getResponseFromFuture(response);
     assertEquals(true, result);
   }
@@ -481,7 +450,7 @@ public class ElasticSearchTcpImplTest {
   public void testUpsertDataSuccess() {
     Map<String, Object> data = new HashMap<String, Object>();
     data.put("test", "test");
-    Future<Boolean> response = esUtil.upsert(INDEX_NAME, TYPE_NAME, "test-12349", data);
+    Future<Boolean> response = esService.upsert(INDEX_NAME, "test-12349", data);
     boolean result = (boolean) ElasticSearchHelper.getResponseFromFuture(response);
     assertEquals(true, result);
   }
@@ -493,7 +462,7 @@ public class ElasticSearchTcpImplTest {
     data.put("test2", "manzarul");
     List<Map<String, Object>> listOfMap = new ArrayList<Map<String, Object>>();
     listOfMap.add(data);
-    Future<Boolean> response = esUtil.bulkInsert(INDEX_NAME, TYPE_NAME, listOfMap);
+    Future<Boolean> response = esService.bulkInsert(INDEX_NAME, listOfMap);
     boolean result = (boolean) ElasticSearchHelper.getResponseFromFuture(response);
     assertEquals(true, result);
   }
@@ -503,7 +472,7 @@ public class ElasticSearchTcpImplTest {
     String index = "searchindex";
     String type = "user";
     String rawQuery = "{\"query\":{\"match_none\":{}}}";
-    Response response = esUtil.searchMetricsData(index, type, rawQuery);
+    Response response = esService.searchMetricsData(index, rawQuery);
     assertEquals(ResponseCode.OK, response.getResponseCode());
   }
 
@@ -513,7 +482,7 @@ public class ElasticSearchTcpImplTest {
     String type = "usertest";
     String rawQuery = "{\"query\":{\"match_none\":{}}}";
     try {
-      esUtil.searchMetricsData(index, type, rawQuery);
+      esService.searchMetricsData(index, rawQuery);
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.unableToConnectToES.getErrorCode(), e.getCode());
     }

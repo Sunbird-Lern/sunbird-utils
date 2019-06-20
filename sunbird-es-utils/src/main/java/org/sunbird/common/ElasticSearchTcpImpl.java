@@ -5,7 +5,6 @@ import akka.util.Timeout;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -33,16 +32,11 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.SimpleQueryStringBuilder;
 import org.elasticsearch.index.query.TermQueryBuilder;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortMode;
 import org.sunbird.common.exception.ProjectCommonException;
-import org.sunbird.common.inf.ElasticService;
+import org.sunbird.common.inf.ElasticSearchService;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
@@ -56,58 +50,45 @@ import org.sunbird.helper.ConnectionManager;
 import scala.concurrent.Future;
 import scala.concurrent.Promise;
 
-public class ElasticSearchTcpImpl implements ElasticService {
-  private static final List<String> upsertResults =
-      new ArrayList<>(Arrays.asList("CREATED", "UPDATED", "NOOP"));
+public class ElasticSearchTcpImpl implements ElasticSearchService {
   public static final int WAIT_TIME = 30;
   public static Timeout timeout = new Timeout(WAIT_TIME, TimeUnit.SECONDS);
-
+  private static final String _DOC = "_doc";
   /**
    * This method will put a new data entry inside Elastic search. identifier value becomes _id
    * inside ES, so every time provide a unique value while saving it.
    *
    * @param index String ES index name
-   * @param type String ES type name
    * @param identifier ES column identifier as an String
    * @param data Map<String,Object>
-   * @return String identifier for created data
+   * @return identifier for created data
    */
   @Override
-  public Future<String> save(
-      String index, String type, String identifier, Map<String, Object> data) {
+  public Future<String> save(String index, String identifier, Map<String, Object> data) {
     long startTime = System.currentTimeMillis();
     Promise<String> promise = Futures.promise();
     ProjectLogger.log(
-        "ElasticSearchTcpImpl:save method started at ==" + startTime + " for Type " + type,
+        "ElasticSearchTcpImpl:save method started at ==" + startTime + " for Index " + index,
         LoggerEnum.PERF_LOG);
-    if (StringUtils.isBlank(identifier)
-        || StringUtils.isBlank(type)
-        || StringUtils.isBlank(index)) {
+    if (StringUtils.isBlank(identifier) || StringUtils.isBlank(index)) {
       ProjectLogger.log(
           "ElasticSearchTcpImpl:save Identifier value is null or empty ,not able to save data.",
           LoggerEnum.ERROR);
       promise.success("ERROR");
       return promise.future();
     }
-    Map<String, String> mappedIndexAndType = ElasticSearchHelper.getMappedIndexAndType(index, type);
     try {
       data.put("identifier", identifier);
       IndexResponse response =
-          ConnectionManager.getClient()
-              .prepareIndex(
-                  mappedIndexAndType.get(JsonKey.INDEX),
-                  mappedIndexAndType.get(JsonKey.TYPE),
-                  identifier)
-              .setSource(data)
-              .get();
+          ConnectionManager.getClient().prepareIndex(index, _DOC, identifier).setSource(data).get();
       ProjectLogger.log(
           "ElasticSearchTcpImpl:save" + "Save value==" + response.getId() + " " + response.status(),
           LoggerEnum.INFO.name());
       ProjectLogger.log(
           "ElasticSearchTcpImpl:save method end at =="
               + System.currentTimeMillis()
-              + " for Type "
-              + type
+              + " for INdex "
+              + index
               + " ,Total time elapsed = "
               + ElasticSearchHelper.calculateEndTime(startTime),
           LoggerEnum.PERF_LOG);
@@ -115,12 +96,12 @@ public class ElasticSearchTcpImpl implements ElasticService {
       return promise.future();
     } catch (Exception e) {
       ProjectLogger.log(
-          "ElasticSearchTcpImpl:save Error while saving " + type + " id : " + identifier, e);
+          "ElasticSearchTcpImpl:save Error while saving index " + index + " id : " + identifier, e);
       ProjectLogger.log(
           "ElasticSearchTcpImpl:save method end at =="
               + System.currentTimeMillis()
-              + " for Type "
-              + type
+              + " for Index "
+              + index
               + " ,Total time elapsed = "
               + ElasticSearchHelper.calculateEndTime(startTime),
           LoggerEnum.PERF_LOG);
@@ -134,43 +115,27 @@ public class ElasticSearchTcpImpl implements ElasticService {
    * This method will provide data form ES based on incoming identifier. we can get data by passing
    * index and identifier values , or all the three
    *
-   * @param type String
    * @param identifier String
    * @return Map<String,Object> or null
    */
   @Override
-  public Future<Map<String, Object>> getDataByIdentifier(
-      String index, String type, String identifier) {
+  public Future<Map<String, Object>> getDataByIdentifier(String index, String identifier) {
     long startTime = System.currentTimeMillis();
     Promise<Map<String, Object>> promise = Futures.promise();
     ProjectLogger.log(
         "ElasticSearchUtil getDataByIdentifier method started at =="
             + startTime
-            + " for Type "
-            + type,
+            + " for index "
+            + index,
         LoggerEnum.PERF_LOG);
-    Map<String, String> mappedIndexAndType = ElasticSearchHelper.getMappedIndexAndType(index, type);
     GetResponse response = null;
     if (StringUtils.isBlank(index) || StringUtils.isBlank(identifier)) {
       ProjectLogger.log(
           "ElasticSearchTcpImpl:getDataByIdentifier Invalid request is coming.", LoggerEnum.INFO);
       promise.success(new HashMap<>());
       return promise.future();
-    } else if (StringUtils.isBlank(type)) {
-      response =
-          ConnectionManager.getClient()
-              .prepareGet()
-              .setIndex(mappedIndexAndType.get(JsonKey.INDEX))
-              .setId(identifier)
-              .get();
     } else {
-      response =
-          ConnectionManager.getClient()
-              .prepareGet(
-                  mappedIndexAndType.get(JsonKey.INDEX),
-                  mappedIndexAndType.get(JsonKey.TYPE),
-                  identifier)
-              .get();
+      response = ConnectionManager.getClient().prepareGet(index, _DOC, identifier).get();
     }
     if (response == null || null == response.getSource()) {
       promise.success(new HashMap<>());
@@ -179,8 +144,8 @@ public class ElasticSearchTcpImpl implements ElasticService {
     long elapsedTime = ElasticSearchHelper.calculateEndTime(startTime);
     ProjectLogger.log(
         "ElasticSearchTcpImpl:getDataByIdentifier method "
-            + " for Type "
-            + type
+            + " for index "
+            + index
             + " ,Total time elapsed = "
             + elapsedTime,
         LoggerEnum.PERF_LOG);
@@ -193,34 +158,21 @@ public class ElasticSearchTcpImpl implements ElasticService {
    * with incoming data then update it.
    *
    * @param index String
-   * @param type String
    * @param identifier String
    * @param data Map<String,Object>
    * @return boolean
    */
   @Override
-  public Future<Boolean> update(
-      String index, String type, String identifier, Map<String, Object> data) {
+  public Future<Boolean> update(String index, String identifier, Map<String, Object> data) {
     long startTime = System.currentTimeMillis();
     Promise<Boolean> promise = Futures.promise();
     ProjectLogger.log(
-        "ElasticSearchUtil:update method started at ==" + startTime + " for Type " + type,
+        "ElasticSearchUtil:update method started at ==" + startTime + " for index " + index,
         LoggerEnum.PERF_LOG);
-    if (!StringUtils.isBlank(index)
-        && !StringUtils.isBlank(type)
-        && !StringUtils.isBlank(identifier)
-        && data != null) {
-      Map<String, String> mappedIndexAndType =
-          ElasticSearchHelper.getMappedIndexAndType(index, type);
+    if (!StringUtils.isBlank(index) && !StringUtils.isBlank(identifier) && data != null) {
       try {
         UpdateResponse response =
-            ConnectionManager.getClient()
-                .prepareUpdate(
-                    mappedIndexAndType.get(JsonKey.INDEX),
-                    mappedIndexAndType.get(JsonKey.TYPE),
-                    identifier)
-                .setDoc(data)
-                .get();
+            ConnectionManager.getClient().prepareUpdate(index, _DOC, identifier).setDoc(data).get();
         ProjectLogger.log(
             "ElasticSearchTcpImpl:update" + "updated response==" + response.getResult().name(),
             LoggerEnum.INFO.name());
@@ -230,8 +182,8 @@ public class ElasticSearchTcpImpl implements ElasticService {
           ProjectLogger.log(
               "ElasticSearchTcpImpl:update method end at =="
                   + stopTime
-                  + " for Type "
-                  + type
+                  + " for index "
+                  + index
                   + " ,Total time elapsed = "
                   + elapsedTime,
               LoggerEnum.PERF_LOG);
@@ -255,8 +207,8 @@ public class ElasticSearchTcpImpl implements ElasticService {
     long elapsedTime = ElasticSearchHelper.calculateEndTime(startTime);
     ProjectLogger.log(
         "ElasticSearchTcpImpl:update method end  =="
-            + " for Type "
-            + type
+            + " for Index "
+            + index
             + " ,Total time elapsed = "
             + elapsedTime,
         LoggerEnum.PERF_LOG);
@@ -269,39 +221,24 @@ public class ElasticSearchTcpImpl implements ElasticService {
    * with incoming data then update it and if identifier does not exist , it will insert data .
    *
    * @param index String
-   * @param type String
    * @param identifier String
    * @param data Map<String,Object>
    * @return boolean
    */
   @Override
-  public Future<Boolean> upsert(
-      String index, String type, String identifier, Map<String, Object> data) {
+  public Future<Boolean> upsert(String index, String identifier, Map<String, Object> data) {
     long startTime = System.currentTimeMillis();
     Promise<Boolean> promise = Futures.promise();
     ProjectLogger.log(
-        "ElasticSearchTcpImpl:upsert method started at ==" + startTime + " for Type " + type,
+        "ElasticSearchTcpImpl:upsert method started at ==" + startTime + " for INdex " + index,
         LoggerEnum.PERF_LOG);
     if (!StringUtils.isBlank(index)
-        && !StringUtils.isBlank(type)
         && !StringUtils.isBlank(identifier)
         && data != null
         && data.size() > 0) {
-      Map<String, String> mappedIndexAndType =
-          ElasticSearchHelper.getMappedIndexAndType(index, type);
-      IndexRequest indexRequest =
-          new IndexRequest(
-                  mappedIndexAndType.get(JsonKey.INDEX),
-                  mappedIndexAndType.get(JsonKey.TYPE),
-                  identifier)
-              .source(data);
+      IndexRequest indexRequest = new IndexRequest(index, _DOC, identifier).source(data);
       UpdateRequest updateRequest =
-          new UpdateRequest(
-                  mappedIndexAndType.get(JsonKey.INDEX),
-                  mappedIndexAndType.get(JsonKey.TYPE),
-                  identifier)
-              .doc(data)
-              .upsert(indexRequest);
+          new UpdateRequest(index, _DOC, identifier).doc(data).upsert(indexRequest);
       UpdateResponse response = null;
       try {
         response = ConnectionManager.getClient().update(updateRequest).get();
@@ -313,12 +250,12 @@ public class ElasticSearchTcpImpl implements ElasticService {
       }
       ProjectLogger.log(
           "ElasticSearchTcpImpl:upsertData updated response==" + response.getResult().name());
-      if (upsertResults.contains(response.getResult().name())) {
+      if (ElasticSearchHelper.upsertResults.contains(response.getResult().name())) {
         long elapsedTime = ElasticSearchHelper.calculateEndTime(startTime);
         ProjectLogger.log(
             "ElasticSearchTcpImpl:upsertData method end =="
-                + " for Type "
-                + type
+                + " for index "
+                + index
                 + " ,Total time elapsed = "
                 + elapsedTime,
             LoggerEnum.PERF_LOG);
@@ -332,8 +269,8 @@ public class ElasticSearchTcpImpl implements ElasticService {
     long elapsedTime = ElasticSearchHelper.calculateEndTime(startTime);
     ProjectLogger.log(
         "ElasticSearchTcpImpl:upsert method end =="
-            + " for Type "
-            + type
+            + " for index "
+            + index
             + " ,Total time elapsed = "
             + elapsedTime,
         LoggerEnum.PERF_LOG);
@@ -344,29 +281,18 @@ public class ElasticSearchTcpImpl implements ElasticService {
    * This method will remove data from ES based on identifier.
    *
    * @param index String
-   * @param type String
    * @param identifier String
    */
   @Override
-  public Future<Boolean> delete(String index, String type, String identifier) {
+  public Future<Boolean> delete(String index, String identifier) {
     long startTime = System.currentTimeMillis();
     Promise<Boolean> promise = Futures.promise();
     ProjectLogger.log(
         "ElasticSearchTcpImpl:delete method started at ==" + startTime, LoggerEnum.PERF_LOG);
     DeleteResponse deleteResponse = null;
-    if (!StringUtils.isBlank(index)
-        && !StringUtils.isBlank(type)
-        && !StringUtils.isBlank(identifier)) {
-      Map<String, String> mappedIndexAndType =
-          ElasticSearchHelper.getMappedIndexAndType(index, type);
+    if (!StringUtils.isBlank(index) && !StringUtils.isBlank(identifier)) {
       try {
-        deleteResponse =
-            ConnectionManager.getClient()
-                .prepareDelete(
-                    mappedIndexAndType.get(JsonKey.INDEX),
-                    mappedIndexAndType.get(JsonKey.TYPE),
-                    identifier)
-                .get();
+        deleteResponse = ConnectionManager.getClient().prepareDelete(index, _DOC, identifier).get();
         ProjectLogger.log(
             "ElasticSearchTcpImpl:delete info =="
                 + deleteResponse.getResult().name()
@@ -392,35 +318,21 @@ public class ElasticSearchTcpImpl implements ElasticService {
 
   /**
    * Method to perform the elastic search on the basis of SearchDTO . SearchDTO contains the search
-   * criteria like fields, facets, sort by , filters etc. here user can pass single type to search
-   * or multiple type or null
+   * criteria like fields, facets, sort by ,range, filters etc.
    *
-   * @param type var arg of String
    * @return search result as Map.
    */
   @Override
-  public Future<Map<String, Object>> search(SearchDTO searchDTO, String index, String... type) {
+  public Future<Map<String, Object>> search(SearchDTO searchDTO, String index) {
 
     long startTime = System.currentTimeMillis();
     Promise<Map<String, Object>> promise = Futures.promise();
-    List<Map<String, String>> indicesAndTypesMapping =
-        ElasticSearchHelper.getMappedIndexesAndTypes(index, type);
-    String[] indices =
-        indicesAndTypesMapping
-            .stream()
-            .map(indexMap -> indexMap.get(JsonKey.INDEX))
-            .toArray(String[]::new);
-    String[] types =
-        indicesAndTypesMapping
-            .stream()
-            .map(indexMap -> indexMap.get(JsonKey.TYPE))
-            .distinct()
-            .toArray(String[]::new);
+    String[] indices = {index};
+
     ProjectLogger.log(
         "ElasticSearchTcpImpl:search method started at ==" + startTime, LoggerEnum.PERF_LOG);
     SearchRequestBuilder searchRequestBuilder =
-        ElasticSearchHelper.getTransportSearchBuilder(
-            ConnectionManager.getClient(), indices, types);
+        ElasticSearchHelper.getTransportSearchBuilder(ConnectionManager.getClient(), indices, _DOC);
     // check mode and set constraints
     Map<String, Float> constraintsMap = ElasticSearchHelper.getConstraints(searchDTO);
 
@@ -518,67 +430,18 @@ public class ElasticSearchTcpImpl implements ElasticService {
           ResponseCode.invalidValue, e.getRootCause().getMessage());
     }
 
-    List<Map<String, Object>> esSource = new ArrayList<>();
-    Map<String, Object> responsemap = new HashMap<>();
-    long count = 0;
-    if (response != null) {
-      SearchHits hits = response.getHits();
-      count = hits.getTotalHits();
-
-      for (SearchHit hit : hits) {
-        esSource.add(hit.getSourceAsMap());
-      }
-
-      // fetch aggregations aggregations
-      if (null != searchDTO.getFacets() && !searchDTO.getFacets().isEmpty()) {
-        Map<String, String> m1 = searchDTO.getFacets().get(0);
-        for (Map.Entry<String, String> entry : m1.entrySet()) {
-          String field = entry.getKey();
-          String aggsType = entry.getValue();
-          List<Object> aggsList = new ArrayList<>();
-          Map facetMap = new HashMap();
-          if (JsonKey.DATE_HISTOGRAM.equalsIgnoreCase(aggsType)) {
-            Histogram agg = response.getAggregations().get(field);
-            for (Histogram.Bucket ent : agg.getBuckets()) {
-              // DateTime key = (DateTime) ent.getKey(); // Key
-              String keyAsString = ent.getKeyAsString(); // Key as String
-              long docCount = ent.getDocCount(); // Doc count
-              Map internalMap = new HashMap();
-              internalMap.put(JsonKey.NAME, keyAsString);
-              internalMap.put(JsonKey.COUNT, docCount);
-              aggsList.add(internalMap);
-            }
-          } else {
-            Terms aggs = response.getAggregations().get(field);
-            for (Bucket bucket : aggs.getBuckets()) {
-              Map internalMap = new HashMap();
-              internalMap.put(JsonKey.NAME, bucket.getKey());
-              internalMap.put(JsonKey.COUNT, bucket.getDocCount());
-              aggsList.add(internalMap);
-            }
-          }
-          facetMap.put("values", aggsList);
-          facetMap.put(JsonKey.NAME, field);
-          finalFacetList.add(facetMap);
-        }
-      }
-    }
-    responsemap.put(JsonKey.CONTENT, esSource);
-    if (!(finalFacetList.isEmpty())) {
-      responsemap.put(JsonKey.FACETS, finalFacetList);
-    }
-    responsemap.put(JsonKey.COUNT, count);
+    Map<String, Object> responseMap =
+        ElasticSearchHelper.getSearchResponseMap(response, searchDTO, finalFacetList);
     long elapsedTime = ElasticSearchHelper.calculateEndTime(startTime);
     ProjectLogger.log(
         "ElasticSearchTcpImpl:search method end" + " ,Total time elapsed = " + elapsedTime,
         LoggerEnum.PERF_LOG);
-    promise.success(responsemap);
+    promise.success(responseMap);
     return promise.future();
   }
   /**
-   * @param ids List of ids of document
+   * @param List of document's ids
    * @param fields List of fields which needs to captured
-   * @param typeToSearch type of ES
    * @return Map<String,Map<String,Object>> It will return a map with id as key and the data from ES
    *     as value
    */
@@ -593,8 +456,7 @@ public class ElasticSearchTcpImpl implements ElasticService {
     searchDTO.getAdditionalProperties().put(JsonKey.FILTERS, filters);
     searchDTO.setFields(fields);
 
-    Future<Map<String, Object>> resultF =
-        search(searchDTO, ProjectUtil.EsIndex.sunbird.getIndexName(), typeToSearch.getTypeName());
+    Future<Map<String, Object>> resultF = search(searchDTO, typeToSearch.getTypeName());
     Map<String, Object> result =
         (Map<String, Object>) ElasticSearchHelper.getResponseFromFuture(resultF);
     List<Map<String, Object>> esContent = (List<Map<String, Object>>) result.get(JsonKey.CONTENT);
@@ -615,19 +477,17 @@ public class ElasticSearchTcpImpl implements ElasticService {
    * This method will do the bulk data insertion.
    *
    * @param index String index name
-   * @param type String type name
    * @param dataList List<Map<String, Object>>
    * @return boolean
    */
   @Override
-  public Future<Boolean> bulkInsert(String index, String type, List<Map<String, Object>> dataList) {
+  public Future<Boolean> bulkInsert(String index, List<Map<String, Object>> dataList) {
     Promise<Boolean> promise = Futures.promise();
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
-        "ElasticSearchTcpImpl:bulkInsert method started at ==" + startTime + " for Type " + type,
+        "ElasticSearchTcpImpl:bulkInsert method started at ==" + startTime + " for index " + index,
         LoggerEnum.PERF_LOG);
     promise.success(true);
-    Map<String, String> mappedIndexAndType = ElasticSearchHelper.getMappedIndexAndType(index, type);
     try {
       BulkProcessor bulkProcessor =
           BulkProcessor.builder(
@@ -667,11 +527,7 @@ public class ElasticSearchTcpImpl implements ElasticService {
       for (Map<String, Object> map : dataList) {
         map.put(JsonKey.IDENTIFIER, map.get(JsonKey.ID));
         IndexRequest request =
-            new IndexRequest(
-                    mappedIndexAndType.get(JsonKey.INDEX),
-                    mappedIndexAndType.get(JsonKey.TYPE),
-                    (String) map.get(JsonKey.IDENTIFIER))
-                .source(map);
+            new IndexRequest(index, _DOC, (String) map.get(JsonKey.IDENTIFIER)).source(map);
         bulkProcessor.add(request);
       }
       // Flush any remaining requests
@@ -691,8 +547,8 @@ public class ElasticSearchTcpImpl implements ElasticService {
     ProjectLogger.log(
         "ElasticSearchTcpImpl:bulkInsert method end  at =="
             + System.currentTimeMillis()
-            + " for Type "
-            + type
+            + " for index "
+            + index
             + " ,Total time elapsed = "
             + elapsedTime,
         LoggerEnum.PERF_LOG);
@@ -709,15 +565,12 @@ public class ElasticSearchTcpImpl implements ElasticService {
     Promise<Boolean> promise = Futures.promise();
 
     boolean indexResponse = false;
-    Map<String, String> mappedIndexAndType =
-        ElasticSearchHelper.getMappedIndexAndType(
-            ProjectUtil.EsIndex.sunbird.getIndexName(), ProjectUtil.EsType.user.getTypeName());
     try {
       indexResponse =
           ConnectionManager.getClient()
               .admin()
               .indices()
-              .exists(Requests.indicesExistsRequest(mappedIndexAndType.get(JsonKey.INDEX)))
+              .exists(Requests.indicesExistsRequest(ProjectUtil.EsType.user.getTypeName()))
               .get()
               .isExists();
     } catch (Exception e) {
@@ -732,13 +585,12 @@ public class ElasticSearchTcpImpl implements ElasticService {
    * Method to execute ES query with the limitation of size set to 0 Currently this is a rest call
    *
    * @param index ES indexName
-   * @param type ES type
    * @param rawQuery actual query to be executed
    * @return ES response for the query
    */
   @SuppressWarnings("unchecked")
   @Override
-  public Response searchMetricsData(String index, String type, String rawQuery) {
+  public Response searchMetricsData(String index, String rawQuery) {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
         "ElasticSearchTcpImpl:searchMetricsData : Metrics search method started at ==" + startTime,
@@ -756,15 +608,7 @@ public class ElasticSearchTcpImpl implements ElasticService {
       ProjectLogger.log("ElasaticSearchTcpImplES URL from Properties file");
       baseUrl = PropertiesCache.getInstance().getProperty(JsonKey.ES_URL);
     }
-    Map<String, String> mappedIndexAndType = ElasticSearchHelper.getMappedIndexAndType(index, type);
-    String requestURL =
-        baseUrl
-            + "/"
-            + mappedIndexAndType.get(JsonKey.INDEX)
-            + "/"
-            + mappedIndexAndType.get(JsonKey.TYPE)
-            + "/"
-            + "_search";
+    String requestURL = baseUrl + "/" + index + "/" + _DOC + "/" + "_search";
     Map<String, String> headers = new HashMap<>();
     headers.put("Content-Type", "application/json");
     Map<String, Object> responseData = new HashMap<>();

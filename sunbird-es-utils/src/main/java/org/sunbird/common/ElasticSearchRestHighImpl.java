@@ -2,9 +2,7 @@ package org.sunbird.common;
 
 import akka.dispatch.Futures;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -33,24 +31,18 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.SimpleQueryStringBuilder;
 import org.elasticsearch.index.query.TermQueryBuilder;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
-import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortMode;
 import org.sunbird.common.exception.ProjectCommonException;
-import org.sunbird.common.inf.ElasticService;
+import org.sunbird.common.inf.ElasticSearchService;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
-import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.ProjectUtil.EsType;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.responsecode.ResponseCode;
@@ -64,10 +56,9 @@ import scala.concurrent.Promise;
  *
  * @author github.com/iostream04
  */
-public class ElasticSearchRestHighImpl implements ElasticService {
-  private static final List<String> upsertResults =
-      new ArrayList<>(Arrays.asList("CREATED", "UPDATED", "NOOP"));
+public class ElasticSearchRestHighImpl implements ElasticSearchService {
   private static final String ERROR = "ERROR";
+  private static final String _DOC = "_doc";
 
   /**
    * This method will put a new data entry inside Elastic search. identifier value becomes _id
@@ -79,16 +70,13 @@ public class ElasticSearchRestHighImpl implements ElasticService {
    * @return Future<String> which contains identifier for created data
    */
   @Override
-  public Future<String> save(
-      String index, String type, String identifier, Map<String, Object> data) {
+  public Future<String> save(String index, String identifier, Map<String, Object> data) {
     long startTime = System.currentTimeMillis();
     Promise<String> promise = Futures.promise();
     ProjectLogger.log(
-        "ElasticSearchUtilRest save method started at ==" + startTime + " for Type " + type,
+        "ElasticSearchUtilRest save method started at ==" + startTime + " for Index " + index,
         LoggerEnum.PERF_LOG);
-    if (StringUtils.isBlank(identifier)
-        || StringUtils.isBlank(type)
-        || StringUtils.isBlank(index)) {
+    if (StringUtils.isBlank(identifier) || StringUtils.isBlank(index)) {
       ProjectLogger.log(
           "ElasticSearchRestHighImpl:save Identifier value is null or empty ,not able to save data.");
       promise.success(ERROR);
@@ -96,21 +84,15 @@ public class ElasticSearchRestHighImpl implements ElasticService {
     }
     data.put("identifier", identifier);
 
-    Map<String, String> mappedIndexAndType = ElasticSearchHelper.getMappedIndexAndType(index, type);
-    IndexRequest indexRequest =
-        new IndexRequest(
-                mappedIndexAndType.get(JsonKey.INDEX),
-                mappedIndexAndType.get(JsonKey.TYPE),
-                identifier)
-            .source(data);
+    IndexRequest indexRequest = new IndexRequest(index, _DOC, identifier).source(data);
 
     ActionListener<IndexResponse> listener =
         new ActionListener<IndexResponse>() {
           @Override
           public void onResponse(IndexResponse indexResponse) {
             ProjectLogger.log(
-                "ElasticSearchRestHighImpl:save Success for type : "
-                    + type
+                "ElasticSearchRestHighImpl:save Success for index : "
+                    + index
                     + ", identifier :"
                     + identifier,
                 LoggerEnum.INFO);
@@ -119,8 +101,8 @@ public class ElasticSearchRestHighImpl implements ElasticService {
             ProjectLogger.log(
                 "ElasticSearchRestHighImpl:save method end at =="
                     + System.currentTimeMillis()
-                    + " for Type "
-                    + type
+                    + " for Index "
+                    + index
                     + " ,Total time elapsed = "
                     + calculateEndTime(startTime),
                 LoggerEnum.PERF_LOG);
@@ -132,7 +114,7 @@ public class ElasticSearchRestHighImpl implements ElasticService {
             ProjectLogger.log(
                 "ElasticSearchRestHighImpl:save "
                     + "Error while saving "
-                    + type
+                    + index
                     + " id : "
                     + identifier
                     + " with error :"
@@ -141,8 +123,8 @@ public class ElasticSearchRestHighImpl implements ElasticService {
             ProjectLogger.log(
                 "ElasticSearchRestHighImpl:save method end at =="
                     + System.currentTimeMillis()
-                    + " for Type "
-                    + type
+                    + " for INdex "
+                    + index
                     + " ,Total time elapsed = "
                     + calculateEndTime(startTime),
                 LoggerEnum.PERF_LOG);
@@ -162,27 +144,16 @@ public class ElasticSearchRestHighImpl implements ElasticService {
    * @return true or false
    */
   @Override
-  public Future<Boolean> update(
-      String index, String type, String identifier, Map<String, Object> data) {
+  public Future<Boolean> update(String index, String identifier, Map<String, Object> data) {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
-        "ElasticSearchRestHighImpl:update method started at ==" + startTime + " for Type " + type,
+        "ElasticSearchRestHighImpl:update method started at ==" + startTime + " for Index " + index,
         LoggerEnum.PERF_LOG);
     Promise<Boolean> promise = Futures.promise();
     ;
 
-    if (!StringUtils.isBlank(index)
-        && !StringUtils.isBlank(type)
-        && !StringUtils.isBlank(identifier)
-        && data != null) {
-      Map<String, String> mappedIndexAndType =
-          ElasticSearchHelper.getMappedIndexAndType(index, type);
-      UpdateRequest updateRequest =
-          new UpdateRequest(
-                  mappedIndexAndType.get(JsonKey.INDEX),
-                  mappedIndexAndType.get(JsonKey.TYPE),
-                  identifier)
-              .doc(data);
+    if (!StringUtils.isBlank(index) && !StringUtils.isBlank(identifier) && data != null) {
+      UpdateRequest updateRequest = new UpdateRequest(index, _DOC, identifier).doc(data);
 
       ActionListener<UpdateResponse> listener =
           new ActionListener<UpdateResponse>() {
@@ -195,8 +166,6 @@ public class ElasticSearchRestHighImpl implements ElasticService {
                 ProjectLogger.log(
                     "ElasticSearchRestHighImpl:update  Success with upsert for index : "
                         + index
-                        + ",type : "
-                        + type
                         + ",identifier : "
                         + identifier,
                     LoggerEnum.INFO);
@@ -206,8 +175,8 @@ public class ElasticSearchRestHighImpl implements ElasticService {
               ProjectLogger.log(
                   "ElasticSearchRestHighImpl:update method end at =="
                       + stopTime
-                      + " for Type "
-                      + type
+                      + " for INdex "
+                      + index
                       + " ,Total time elapsed = "
                       + elapsedTime,
                   LoggerEnum.PERF_LOG);
@@ -242,24 +211,17 @@ public class ElasticSearchRestHighImpl implements ElasticService {
    * @return Map<String,Object> or null
    */
   @Override
-  public Future<Map<String, Object>> getDataByIdentifier(
-      String index, String type, String identifier) {
+  public Future<Map<String, Object>> getDataByIdentifier(String index, String identifier) {
     long startTime = System.currentTimeMillis();
     Promise<Map<String, Object>> promise = Futures.promise();
     ProjectLogger.log(
         "ElasticSearchRestHighImpl:getDataByIdentifier method started at =="
             + startTime
-            + " for Type "
-            + type,
+            + " for Index "
+            + index,
         LoggerEnum.PERF_LOG);
 
-    Map<String, String> mappedIndexAndType = ElasticSearchHelper.getMappedIndexAndType(index, type);
-
-    GetRequest getRequest =
-        new GetRequest(
-            mappedIndexAndType.get(JsonKey.INDEX),
-            mappedIndexAndType.get(JsonKey.TYPE),
-            identifier);
+    GetRequest getRequest = new GetRequest(index, _DOC, identifier);
 
     ActionListener<GetResponse> listener =
         new ActionListener<GetResponse>() {
@@ -274,8 +236,8 @@ public class ElasticSearchRestHighImpl implements ElasticService {
                 ProjectLogger.log(
                     "ElasticSearchRestHighImpl:getDataByIdentifier method end at =="
                         + stopTime
-                        + " for Type "
-                        + type
+                        + " for Index "
+                        + index
                         + " ,Total time elapsed = "
                         + elapsedTime,
                     LoggerEnum.PERF_LOG);
@@ -306,17 +268,12 @@ public class ElasticSearchRestHighImpl implements ElasticService {
    * @param identifier String
    */
   @Override
-  public Future<Boolean> delete(String index, String type, String identifier) {
+  public Future<Boolean> delete(String index, String identifier) {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
         "ElasticSearchRestHighImpl:delete method started at ==" + startTime, LoggerEnum.PERF_LOG);
     Promise<Boolean> promise = Futures.promise();
-    Map<String, String> mappedIndexAndType = ElasticSearchHelper.getMappedIndexAndType(index, type);
-    DeleteRequest delRequest =
-        new DeleteRequest(
-            mappedIndexAndType.get(JsonKey.INDEX),
-            mappedIndexAndType.get(JsonKey.TYPE),
-            identifier);
+    DeleteRequest delRequest = new DeleteRequest(index, _DOC, identifier);
     ActionListener<DeleteResponse> listener =
         new ActionListener<DeleteResponse>() {
           @Override
@@ -325,8 +282,6 @@ public class ElasticSearchRestHighImpl implements ElasticService {
               ProjectLogger.log(
                   "ElasticSearchRestHighImpl:delete Async : Document  not found for index : "
                       + index
-                      + ", Type : "
-                      + type
                       + " , identifier : "
                       + identifier,
                   LoggerEnum.INFO);
@@ -368,26 +323,14 @@ public class ElasticSearchRestHighImpl implements ElasticService {
    */
   @Override
   @SuppressWarnings({"unchecked", "rawtypes"})
-  public Future<Map<String, Object>> search(SearchDTO searchDTO, String index, String... type) {
+  public Future<Map<String, Object>> search(SearchDTO searchDTO, String index) {
     long startTime = System.currentTimeMillis();
-    List<Map<String, String>> indicesAndTypesMapping =
-        ElasticSearchHelper.getMappedIndexesAndTypes(index, type);
-    String[] indices =
-        indicesAndTypesMapping
-            .stream()
-            .map(indexMap -> indexMap.get(JsonKey.INDEX))
-            .toArray(String[]::new);
-    String[] types =
-        indicesAndTypesMapping
-            .stream()
-            .map(indexMap -> indexMap.get(JsonKey.TYPE))
-            .distinct()
-            .toArray(String[]::new);
+
     ProjectLogger.log(
         "ElasticSearchRestHighImpl:search method started at ==" + startTime, LoggerEnum.PERF_LOG);
     SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-    SearchRequest searchRequest = new SearchRequest(indices);
-    searchRequest.types(types);
+    SearchRequest searchRequest = new SearchRequest(index);
+    searchRequest.types(_DOC);
 
     // check mode and set constraints
     Map<String, Float> constraintsMap = ElasticSearchHelper.getConstraints(searchDTO);
@@ -487,61 +430,11 @@ public class ElasticSearchRestHighImpl implements ElasticService {
             if (response.getHits() == null || response.getHits().getTotalHits() == 0) {
               promise.success(new HashMap<>());
             } else {
-              List<Map<String, Object>> esSource = new ArrayList<>();
-              Map<String, Object> responseMap = new HashMap<>();
-              long count = 0;
-              if (response != null) {
-                SearchHits hits = response.getHits();
-                count = hits.getTotalHits();
-
-                for (SearchHit hit : hits) {
-                  esSource.add(hit.getSourceAsMap());
-                }
-
-                // fetch aggregations aggregations
-                if (null != searchDTO.getFacets() && !searchDTO.getFacets().isEmpty()) {
-                  Map<String, String> m1 = searchDTO.getFacets().get(0);
-                  for (Map.Entry<String, String> entry : m1.entrySet()) {
-                    String field = entry.getKey();
-                    String aggsType = entry.getValue();
-                    List<Object> aggsList = new ArrayList<>();
-                    Map facetMap = new HashMap();
-                    if (JsonKey.DATE_HISTOGRAM.equalsIgnoreCase(aggsType)) {
-                      Histogram agg = response.getAggregations().get(field);
-                      for (Histogram.Bucket ent : agg.getBuckets()) {
-                        // DateTime key = (DateTime) ent.getKey(); // Key
-                        String keyAsString = ent.getKeyAsString(); // Key as String
-                        long docCount = ent.getDocCount(); // Doc count
-                        Map internalMap = new HashMap();
-                        internalMap.put(JsonKey.NAME, keyAsString);
-                        internalMap.put(JsonKey.COUNT, docCount);
-                        aggsList.add(internalMap);
-                      }
-                    } else {
-                      Terms aggs = response.getAggregations().get(field);
-                      for (Bucket bucket : aggs.getBuckets()) {
-                        Map internalMap = new HashMap();
-                        internalMap.put(JsonKey.NAME, bucket.getKey());
-                        internalMap.put(JsonKey.COUNT, bucket.getDocCount());
-                        aggsList.add(internalMap);
-                      }
-                    }
-                    facetMap.put("values", aggsList);
-                    facetMap.put(JsonKey.NAME, field);
-                    finalFacetList.add(facetMap);
-                  }
-                }
-              }
-              responseMap.put(JsonKey.CONTENT, esSource);
-              if (!(finalFacetList.isEmpty())) {
-                responseMap.put(JsonKey.FACETS, finalFacetList);
-              }
-              responseMap.put(JsonKey.COUNT, count);
-              long stopTime = System.currentTimeMillis();
-              long elapsedTime = stopTime - startTime;
+              Map<String, Object> responseMap =
+                  ElasticSearchHelper.getSearchResponseMap(response, searchDTO, finalFacetList);
+              long elapsedTime = calculateEndTime(startTime);
               ProjectLogger.log(
-                  "ElasticSearchRestHighImpl:search method end at =="
-                      + stopTime
+                  "ElasticSearchRestHighImpl:search method end "
                       + " ,Total time elapsed = "
                       + elapsedTime,
                   LoggerEnum.PERF_LOG);
@@ -555,8 +448,8 @@ public class ElasticSearchRestHighImpl implements ElasticService {
 
             long elapsedTime = calculateEndTime(startTime);
             ProjectLogger.log(
-                "ElasticSearchRestHighImpl:search method end   for Type "
-                    + type
+                "ElasticSearchRestHighImpl:search method end   for Index "
+                    + index
                     + " ,Total time elapsed = "
                     + elapsedTime,
                 LoggerEnum.PERF_LOG);
@@ -578,12 +471,7 @@ public class ElasticSearchRestHighImpl implements ElasticService {
   @Override
   public Future<Boolean> healthCheck() {
 
-    Map<String, String> mappedIndexAndType =
-        ElasticSearchHelper.getMappedIndexAndType(
-            ProjectUtil.EsIndex.sunbird.getIndexName(), ProjectUtil.EsType.user.getTypeName());
-
-    GetIndexRequest indexRequest =
-        new GetIndexRequest().indices(mappedIndexAndType.get(JsonKey.INDEX));
+    GetIndexRequest indexRequest = new GetIndexRequest().indices("user");
     Promise<Boolean> promise = Futures.promise();
     ActionListener<Boolean> listener =
         new ActionListener<Boolean>() {
@@ -617,7 +505,7 @@ public class ElasticSearchRestHighImpl implements ElasticService {
    */
   @SuppressWarnings("unchecked")
   @Override
-  public Response searchMetricsData(String index, String type, String rawQuery) {
+  public Response searchMetricsData(String index, String rawQuery) {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
         "ElasticSearchRestHighImpl:searchMetricsData method started at ==" + startTime,
@@ -637,15 +525,7 @@ public class ElasticSearchRestHighImpl implements ElasticService {
           LoggerEnum.INFO);
       baseUrl = PropertiesCache.getInstance().getProperty(JsonKey.ES_URL);
     }
-    Map<String, String> mappedIndexAndType = ElasticSearchHelper.getMappedIndexAndType(index, type);
-    String requestURL =
-        baseUrl
-            + "/"
-            + mappedIndexAndType.get(JsonKey.INDEX)
-            + "/"
-            + mappedIndexAndType.get(JsonKey.TYPE)
-            + "/"
-            + "_search";
+    String requestURL = baseUrl + "/" + index + "/" + _DOC + "/" + "_search";
     Map<String, String> headers = new HashMap<>();
     headers.put("Content-Type", "application/json");
     Map<String, Object> responseData = new HashMap<>();
@@ -656,15 +536,12 @@ public class ElasticSearchRestHighImpl implements ElasticService {
       String responseStr = HttpUtil.sendPostRequest(requestURL, rawQuery, headers);
       ObjectMapper mapper = new ObjectMapper();
       responseData = mapper.readValue(responseStr, Map.class);
-    } catch (IOException e) {
+    } catch (Exception e) {
+      ProjectLogger.log(
+          "ElasticSearchRestHighImpl:searchMerticData, error occured : " + e, LoggerEnum.ERROR);
       throw new ProjectCommonException(
           ResponseCode.unableToConnectToES.getErrorCode(),
           ResponseCode.unableToConnectToES.getErrorMessage(),
-          ResponseCode.SERVER_ERROR.getResponseCode());
-    } catch (Exception e) {
-      throw new ProjectCommonException(
-          ResponseCode.unableToParseData.getErrorCode(),
-          ResponseCode.unableToParseData.getErrorMessage(),
           ResponseCode.SERVER_ERROR.getResponseCode());
     }
     Response response = new Response();
@@ -689,22 +566,18 @@ public class ElasticSearchRestHighImpl implements ElasticService {
    * @return boolean
    */
   @Override
-  public Future<Boolean> bulkInsert(String index, String type, List<Map<String, Object>> dataList) {
+  public Future<Boolean> bulkInsert(String index, List<Map<String, Object>> dataList) {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
         "ElasticSearchRestHighImpl:bulkInsert method started at =="
             + startTime
-            + " for Type "
-            + type,
+            + " for Index "
+            + index,
         LoggerEnum.PERF_LOG);
-    Map<String, String> mappedIndexAndType = ElasticSearchHelper.getMappedIndexAndType(index, type);
     BulkRequest request = new BulkRequest();
     Promise<Boolean> promise = Futures.promise();
     for (Map<String, Object> data : dataList) {
-      request.add(
-          new IndexRequest(
-                  mappedIndexAndType.get(JsonKey.INDEX), mappedIndexAndType.get(JsonKey.TYPE))
-              .source(data));
+      request.add(new IndexRequest(index, _DOC).source(data));
     }
     ActionListener<BulkResponse> listener =
         new ActionListener<BulkResponse>() {
@@ -739,8 +612,8 @@ public class ElasticSearchRestHighImpl implements ElasticService {
     ProjectLogger.log(
         "ElasticSearchRestHighImpl:bulkInsert method end at =="
             + stopTime
-            + " for Type "
-            + type
+            + " for Index "
+            + index
             + " ,Total time elapsed = "
             + elapsedTime,
         LoggerEnum.PERF_LOG);
@@ -795,48 +668,30 @@ public class ElasticSearchRestHighImpl implements ElasticService {
    * @return boolean
    */
   @Override
-  public Future<Boolean> upsert(
-      String index, String type, String identifier, Map<String, Object> data) {
+  public Future<Boolean> upsert(String index, String identifier, Map<String, Object> data) {
     long startTime = System.currentTimeMillis();
     Promise<Boolean> promise = Futures.promise();
     ProjectLogger.log(
-        "ElasticSearchUtil upsert method started at ==" + startTime + " for Type " + type,
+        "ElasticSearchUtil upsert method started at ==" + startTime + " for INdex " + index,
         LoggerEnum.PERF_LOG);
     if (!StringUtils.isBlank(index)
-        && !StringUtils.isBlank(type)
         && !StringUtils.isBlank(identifier)
         && data != null
         && data.size() > 0) {
-      Map<String, String> mappedIndexAndType =
-          ElasticSearchHelper.getMappedIndexAndType(index, type);
 
-      IndexRequest indexRequest =
-          new IndexRequest(
-                  mappedIndexAndType.get(JsonKey.INDEX),
-                  mappedIndexAndType.get(JsonKey.TYPE),
-                  identifier)
-              .source(data);
+      IndexRequest indexRequest = new IndexRequest(index, _DOC, identifier).source(data);
 
-      UpdateRequest updateRequest =
-          new UpdateRequest(
-                  mappedIndexAndType.get(JsonKey.INDEX),
-                  mappedIndexAndType.get(JsonKey.TYPE),
-                  identifier)
-              .upsert(indexRequest);
+      UpdateRequest updateRequest = new UpdateRequest(index, _DOC, identifier).upsert(indexRequest);
 
       ActionListener<UpdateResponse> listener =
           new ActionListener<UpdateResponse>() {
             @Override
             public void onResponse(UpdateResponse updateResponse) {
               promise.success(true);
-              if (updateResponse.getResult() == DocWriteResponse.Result.CREATED
-                  || updateResponse.getResult() == DocWriteResponse.Result.UPDATED
-                  || updateResponse.getResult() == DocWriteResponse.Result.NOOP) {
+              if (ElasticSearchHelper.upsertResults.contains(updateResponse.getResult())) {
                 ProjectLogger.log(
                     "ElasticSearchUtilRest updateData  Success for index : "
                         + index
-                        + ",type : "
-                        + type
                         + ",identifier : "
                         + identifier,
                     LoggerEnum.INFO);
@@ -844,8 +699,8 @@ public class ElasticSearchRestHighImpl implements ElasticService {
               long elapsedTime = calculateEndTime(startTime);
               ProjectLogger.log(
                   "ElasticSearchUtilRest upsert method end =="
-                      + " for Type "
-                      + type
+                      + " for Index "
+                      + index
                       + " ,Total time elapsed = "
                       + elapsedTime,
                   LoggerEnum.PERF_LOG);
@@ -864,6 +719,11 @@ public class ElasticSearchRestHighImpl implements ElasticService {
     } else {
       ProjectLogger.log(
           "ElasticSearchRestHighImpl:upsert Requested data is invalid.", LoggerEnum.ERROR);
+      promise.failure(
+          new ProjectCommonException(
+              ResponseCode.invalidData.getErrorCode(),
+              ResponseCode.invalidData.getErrorMessage(),
+              ResponseCode.invalidData.getResponseCode()));
       return promise.future();
     }
   }
@@ -887,8 +747,7 @@ public class ElasticSearchRestHighImpl implements ElasticService {
     searchDTO.getAdditionalProperties().put(JsonKey.FILTERS, filters);
     searchDTO.setFields(fields);
 
-    Future<Map<String, Object>> resultF =
-        search(searchDTO, ProjectUtil.EsIndex.sunbird.getIndexName(), typeToSearch.getTypeName());
+    Future<Map<String, Object>> resultF = search(searchDTO, typeToSearch.getTypeName());
     Map<String, Object> result =
         (Map<String, Object>) ElasticSearchHelper.getResponseFromFuture(resultF);
     List<Map<String, Object>> esContent = (List<Map<String, Object>>) result.get(JsonKey.CONTENT);
