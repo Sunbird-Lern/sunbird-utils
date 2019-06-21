@@ -51,6 +51,7 @@ import scala.concurrent.Future;
  *
  * @author arvind
  * @author Manzarul
+ * @author mayank:github.com/iostream04
  */
 public class ElasticSearchHelper {
 
@@ -79,7 +80,7 @@ public class ElasticSearchHelper {
    * This method will return the object after getting complete future.
    *
    * @param future
-   * @return Object which future inherites
+   * @return Object which future inherits
    */
   @SuppressWarnings("unchecked")
   public static Object getResponseFromFuture(Future future) {
@@ -88,7 +89,7 @@ public class ElasticSearchHelper {
       return result;
     } catch (Exception e) {
       ProjectLogger.log(
-          "ElasticSearchHelper:getResponseFromFuture : error occured " + e, LoggerEnum.ERROR);
+          "ElasticSearchHelper:getResponseFromFuture: error occured " + e, LoggerEnum.ERROR);
     }
     return null;
   }
@@ -96,15 +97,15 @@ public class ElasticSearchHelper {
   /**
    * This method adds aggregations to the incoming SearchRequestBuilder object
    *
-   * @param searchRequestBuilder
-   * @param facets
+   * @param searchRequestBuilder which will be updated with facets if any present
+   * @param facets Facets provide aggregated data based on a search query
    * @return SearchRequestBuilder
    */
   public static SearchRequestBuilder addAggregations(
       SearchRequestBuilder searchRequestBuilder, List<Map<String, String>> facets) {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
-        "ElasticSearchHelper:addAggregations method started at ==" + startTime,
+        "ElasticSearchHelper:addAggregations: method started at ==" + startTime,
         LoggerEnum.PERF_LOG);
     if (facets != null && !facets.isEmpty()) {
       Map<String, String> map = facets.get(0);
@@ -125,11 +126,9 @@ public class ElasticSearchHelper {
           }
         }
       }
-      long stopTime = System.currentTimeMillis();
-      long elapsedTime = stopTime - startTime;
+      long elapsedTime = calculateEndTime(startTime);
       ProjectLogger.log(
-          "ElasticSearchHelper:addAggregations method end at =="
-              + stopTime
+          "ElasticSearchHelper:addAggregations method end =="
               + " ,Total time elapsed = "
               + elapsedTime,
           LoggerEnum.PERF_LOG);
@@ -141,8 +140,8 @@ public class ElasticSearchHelper {
   /**
    * This method returns any constraints defined in searchDto object
    *
-   * @param searchDTO
-   * @return Map
+   * @param searchDTO with constraints
+   * @return Map for constraints present in serachDTO
    */
   public static Map<String, Float> getConstraints(SearchDTO searchDTO) {
     if (null != searchDTO.getSoftConstraints() && !searchDTO.getSoftConstraints().isEmpty()) {
@@ -158,10 +157,9 @@ public class ElasticSearchHelper {
   /**
    * This method return SearchRequestBuilder for transport client
    *
-   * @param client
-   * @param index
-   * @param type
-   * @return SearchRequestBuilder
+   * @param client transport client instance
+   * @param index to be checkout
+   * @return SearchRequestBuilder for a provided request
    */
   public static SearchRequestBuilder getTransportSearchBuilder(
       TransportClient client, String[] index) {
@@ -171,16 +169,16 @@ public class ElasticSearchHelper {
   /**
    * Method to add the additional search query like range query , exists - not exist filter etc.
    *
-   * @param query
-   * @param entry
-   * @param constraintsMap
+   * @param query query which will be updated
+   * @param entry which will have key to be search and respective values
+   * @param constraintsMap constraints on key and values
    */
   @SuppressWarnings("unchecked")
   public static void addAdditionalProperties(
       BoolQueryBuilder query, Entry<String, Object> entry, Map<String, Float> constraintsMap) {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
-        "ElasticSearchHelper:addAdditionalProperties method started at ==" + startTime,
+        "ElasticSearchHelper:addAdditionalProperties: method started at ==" + startTime,
         LoggerEnum.PERF_LOG);
     String key = entry.getKey();
     if (JsonKey.FILTERS.equalsIgnoreCase(key)) {
@@ -194,7 +192,7 @@ public class ElasticSearchHelper {
     }
     long elapsedTime = calculateEndTime(startTime);
     ProjectLogger.log(
-        "ElasticSearchHelper:addAdditionalProperties method end =="
+        "ElasticSearchHelper:addAdditionalProperties: method end =="
             + " ,Total time elapsed = "
             + elapsedTime,
         LoggerEnum.PERF_LOG);
@@ -203,9 +201,9 @@ public class ElasticSearchHelper {
   /**
    * Method to create CommonTermQuery , multimatch and Range Query.
    *
-   * @param entry
-   * @param query
-   * @param constraintsMap
+   * @param entry which contains key for search and respective values
+   * @param query Object which will be updated
+   * @param constraintsMap constraints for key and values
    * @return BoolQueryBuilder
    */
   @SuppressWarnings("unchecked")
@@ -230,10 +228,10 @@ public class ElasticSearchHelper {
   /**
    * This method returns termQuery if any present in map provided
    *
-   * @param val
-   * @param key
-   * @param query
-   * @param constraintsMap
+   * @param key for search in termquery
+   * @param val value of the key to be searched
+   * @param query which will be updated according to key , value and constraints
+   * @param constraintsMap for setting any constraints on values for the specified key
    * @return BoolQueryBuilder
    */
   private static BoolQueryBuilder getTermQueryFromMap(
@@ -262,10 +260,10 @@ public class ElasticSearchHelper {
   /**
    * This method returns termQuery if any present in List provided
    *
-   * @param val
-   * @param key
-   * @param query
-   * @param constraintsMap
+   * @param key for search in termquery
+   * @param val value of the key to be searched
+   * @param query which will be updated according to key , value and constraints
+   * @param constraintsMap for setting any constraints on values for the specified key
    * @return BoolQueryBuilder
    */
   private static BoolQueryBuilder getTermQueryFromList(
@@ -278,10 +276,16 @@ public class ElasticSearchHelper {
         query.must(createTermsQuery(key, (List) val, constraintsMap.get(key)));
       }
     }
-    return null;
+    return query;
   }
 
   /** Method to create EXISTS and NOT EXIST FILTER QUERY . */
+  /**
+   * @param entry contains operations and keys for filter
+   * @param query do get updated with provided operations
+   * @param constraintsMap to set ant constraints on keys for filter
+   * @return
+   */
   @SuppressWarnings("unchecked")
   private static BoolQueryBuilder createESOpperation(
       Entry<String, Object> entry, BoolQueryBuilder query, Map<String, Float> constraintsMap) {
@@ -313,7 +317,7 @@ public class ElasticSearchHelper {
    *
    * @param name of the attribute
    * @param value of the attribute
-   * @param boost
+   * @param boost for increasing the search parameters priority
    * @return MatchQueryBuilder
    */
   public static MatchQueryBuilder createMatchQuery(String name, Object value, Float boost) {
@@ -327,9 +331,9 @@ public class ElasticSearchHelper {
   /**
    * This method returns TermsQueryBuilder with boosts if any provided
    *
-   * @param key
-   * @param values
-   * @param boost
+   * @param key : field name
+   * @param values : values for the field value
+   * @param boost for increasing the search parameters priority
    * @return TermsQueryBuilder
    */
   private static TermsQueryBuilder createTermsQuery(String key, List values, Float boost) {
@@ -343,9 +347,9 @@ public class ElasticSearchHelper {
   /**
    * This method returns RangeQueryBuilder with boosts if any provided
    *
-   * @param name
-   * @param rangeOperation
-   * @param boost
+   * @param name for the field
+   * @param rangeOperation: keys and value related to range
+   * @param boost for increasing the search parameters priority
    * @return RangeQueryBuilder
    */
   private static RangeQueryBuilder createRangeQuery(
@@ -373,24 +377,24 @@ public class ElasticSearchHelper {
   /**
    * This method returns TermQueryBuilder with boosts if any provided
    *
-   * @param name
-   * @param text
-   * @param boost
+   * @param name of the field for termquery
+   * @param value of the field for termquery
+   * @param boost for increasing the search parameters priority
    * @return TermQueryBuilder
    */
-  private static TermQueryBuilder createTermQuery(String name, Object text, Float boost) {
+  private static TermQueryBuilder createTermQuery(String name, Object value, Float boost) {
     if (isNotNull(boost)) {
-      return QueryBuilders.termQuery(name, text).boost(boost);
+      return QueryBuilders.termQuery(name, value).boost(boost);
     } else {
-      return QueryBuilders.termQuery(name, text);
+      return QueryBuilders.termQuery(name, value);
     }
   }
 
   /**
    * this method return ExistsQueryBuilder with boosts if any provided
    *
-   * @param name
-   * @param boost
+   * @param name of the field which required for exists operation
+   * @param boost for increasing the search parameters priority
    * @return ExistsQueryBuilder
    */
   private static ExistsQueryBuilder createExistQuery(String name, Float boost) {
@@ -404,9 +408,9 @@ public class ElasticSearchHelper {
   /**
    * This method create lexical query with boosts if any provided
    *
-   * @param key
-   * @param rangeOperation
-   * @param boost
+   * @param key for search
+   * @param rangeOperation to search or match in a particular way
+   * @param boost for increasing the search parameters priority
    * @return QueryBuilder
    */
   public static QueryBuilder createLexicalQuery(
@@ -452,10 +456,10 @@ public class ElasticSearchHelper {
   }
 
   /**
-   * This method will create search dto on this of searchquery provided
+   * This method will create searchdto on this of searchquery provided
    *
-   * @param searchQueryMap Map<String,Object>
-   * @return SearchDto
+   * @param searchQueryMap Map<String,Object> contains query
+   * @return SearchDto for search data in elastic search
    */
   public static SearchDTO createSearchDTO(Map<String, Object> searchQueryMap) {
     SearchDTO search = new SearchDTO();
@@ -475,9 +479,9 @@ public class ElasticSearchHelper {
   /**
    * This method add any softconstraints present in seach query to search DTo
    *
-   * @param searchDto serach
-   * @param Map searchQueryMap
-   * @return SearchDTO
+   * @param SearchDTO search which contains the search parameters for elastic search.
+   * @param Map searchQueryMap which contains soft_constraints
+   * @return SearchDTO updated searchDTO which contains soft_constraits
    */
   private static SearchDTO getSoftConstraints(
       SearchDTO search, Map<String, Object> searchQueryMap) {
@@ -500,9 +504,9 @@ public class ElasticSearchHelper {
   /**
    * This method adds any limits present in the search query
    *
-   * @param SearchDTO search
-   * @param Map searchQueryMap
-   * @return SearchDTO
+   * @param SearchDTO search which contains the search parameters for elastic search.
+   * @param Map searchQueryMap which contain limit
+   * @return SearchDTO updated searchDTO which contains limit
    */
   private static SearchDTO getLimits(SearchDTO search, Map<String, Object> searchQueryMap) {
     if (searchQueryMap.containsKey(JsonKey.LIMIT)) {
@@ -518,9 +522,9 @@ public class ElasticSearchHelper {
   /**
    * This method adds offset if any present in the searchQuery
    *
-   * @param SearchDTO search
-   * @param map searchQueryMap
-   * @return SearchDTO
+   * @param SearchDTO search which contains the search parameters for elastic search.
+   * @param map searchQueryMap which contains offset
+   * @return SearchDTO updated searchDTO which contain offset
    */
   private static SearchDTO setOffset(SearchDTO search, Map<String, Object> searchQueryMap) {
     if (searchQueryMap.containsKey(JsonKey.OFFSET)) {
@@ -575,10 +579,10 @@ public class ElasticSearchHelper {
   /**
    * Method returns map which contains all the request data from elasticsearch
    *
-   * @param SearchResponse
-   * @param searchDTO
-   * @param finalFacetList
-   * @return
+   * @param SearchResponse response from elastic search
+   * @param searchDTO searchDTO which was used to search data
+   * @param finalFacetList Facets provide aggregated data based on a search query
+   * @return Map which will have all the requested data
    */
   public static Map<String, Object> getSearchResponseMap(
       SearchResponse response, SearchDTO searchDTO, List finalFacetList) {

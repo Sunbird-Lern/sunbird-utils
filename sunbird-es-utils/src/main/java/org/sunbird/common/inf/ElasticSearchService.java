@@ -3,7 +3,6 @@ package org.sunbird.common.inf;
 import java.util.List;
 import java.util.Map;
 import org.sunbird.common.models.response.Response;
-import org.sunbird.common.models.util.ProjectUtil.EsType;
 import org.sunbird.dto.SearchDTO;
 import scala.concurrent.Future;
 
@@ -97,9 +96,10 @@ public interface ElasticSearchService {
   /**
    * @param ids List of ids of document
    * @param fields List of fields which needs to captured
+   * @param index elastic search index in which search should be done
    * @return Map<String,Map<String,Object>> It will return a map with id as key and the data from ES
    *     as value
    */
   public Future<Map<String, Map<String, Object>>> getEsResultByListOfIds(
-      List<String> organisationIds, List<String> fields, EsType organisation);
+      List<String> organisationIds, List<String> fields, String index);
 }
