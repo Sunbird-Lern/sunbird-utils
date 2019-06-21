@@ -1,12 +1,26 @@
 package org.sunbird.common.inf;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
+import org.sunbird.common.ElasticSearchHelper;
+import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
+import org.sunbird.common.models.util.HttpUtil;
+import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.LoggerEnum;
+import org.sunbird.common.models.util.ProjectLogger;
+import org.sunbird.common.models.util.PropertiesCache;
+import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.dto.SearchDTO;
 import scala.concurrent.Future;
 
 public interface ElasticSearchService {
+  public static final String _DOC = "_doc";
+
   /**
    * This method will put a new data entry inside Elastic search. identifier value becomes _id
    * inside ES, so every time provide a unique value while saving it.
@@ -58,16 +72,6 @@ public interface ElasticSearchService {
   public Future<Map<String, Object>> search(SearchDTO searchDTO, String index);
 
   /**
-   * Method to execute ES raw query with the limitation of size set to 0 Currently, This is a not a
-   * tcp call.
-   *
-   * @param index ES indexName
-   * @param rawQuery actual query to be executed
-   * @return Response Object from elastic Search
-   */
-  public Response searchMetricsData(String index, String rawQuery);
-
-  /**
    * This method will do the health check of elastic search.
    *
    * @return boolean
@@ -93,6 +97,7 @@ public interface ElasticSearchService {
    * @return boolean
    */
   public Future<Boolean> upsert(String index, String identifier, Map<String, Object> data);
+
   /**
    * @param ids List of ids of document
    * @param fields List of fields which needs to captured
@@ -102,4 +107,66 @@ public interface ElasticSearchService {
    */
   public Future<Map<String, Map<String, Object>>> getEsResultByListOfIds(
       List<String> organisationIds, List<String> fields, String index);
+
+  /**
+   * Method to execute ES raw query with the limitation of size set to 0 Currently, This is a not a
+   * tcp call.
+   *
+   * @param index ES indexName
+   * @param rawQuery actual query to be executed
+   * @return Response Object from elastic Search
+   */
+  default Response searchMetricsData(String index, String rawQuery) {
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log(
+        "ElasticSearchTcpImpl:searchMetricsData: "
+            + "Metrics search method started at =="
+            + startTime,
+        LoggerEnum.PERF_LOG);
+    String baseUrl = null;
+    if (!StringUtils.isBlank(System.getenv(JsonKey.SUNBIRD_ES_IP))) {
+      String envHost = System.getenv(JsonKey.SUNBIRD_ES_IP);
+      String[] host = envHost.split(",");
+      baseUrl =
+          "http://"
+              + host[0]
+              + ":"
+              + PropertiesCache.getInstance().getProperty(JsonKey.ES_METRICS_PORT);
+    } else {
+      ProjectLogger.log("ElasticSearchTcpImpl:searchMetricsData:" + " ES URL from Properties file");
+      baseUrl = PropertiesCache.getInstance().getProperty(JsonKey.ES_URL);
+    }
+    String requestURL = baseUrl + "/" + index + "/" + "_doc" + "/" + "_search";
+    Map<String, String> headers = new HashMap<>();
+    headers.put("Content-Type", "application/json");
+    Map<String, Object> responseData = new HashMap<>();
+    try {
+      // TODO:Currently this is making a rest call but needs to be modified to make
+      // the call using
+      // ElasticSearch client
+      String responseStr = HttpUtil.sendPostRequest(requestURL, rawQuery, headers);
+      ObjectMapper mapper = new ObjectMapper();
+      responseData = mapper.readValue(responseStr, Map.class);
+    } catch (IOException e) {
+      throw new ProjectCommonException(
+          ResponseCode.unableToConnectToES.getErrorCode(),
+          ResponseCode.unableToConnectToES.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    } catch (Exception e) {
+      throw new ProjectCommonException(
+          ResponseCode.unableToParseData.getErrorCode(),
+          ResponseCode.unableToParseData.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    Response response = new Response();
+    response.put(JsonKey.RESPONSE, responseData);
+    ProjectLogger.log(
+        "ElasticSearchTcpImpl:searchMetricsData: "
+            + "ElasticSearchUtil metrics search method end at == "
+            + System.currentTimeMillis()
+            + " ,Total time elapsed = "
+            + ElasticSearchHelper.calculateEndTime(startTime),
+        LoggerEnum.PERF_LOG);
+    return response;
+  }
 }

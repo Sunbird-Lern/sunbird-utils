@@ -2,8 +2,6 @@ package org.sunbird.common;
 
 import akka.dispatch.Futures;
 import akka.util.Timeout;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -37,8 +35,6 @@ import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortMode;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.inf.ElasticSearchService;
-import org.sunbird.common.models.response.Response;
-import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
@@ -58,7 +54,7 @@ import scala.concurrent.Promise;
 public class ElasticSearchTcpImpl implements ElasticSearchService {
   public static final int WAIT_TIME = 30;
   public static Timeout timeout = new Timeout(WAIT_TIME, TimeUnit.SECONDS);
-  private static final String _DOC = "_doc";
+
   /**
    * This method will put a new data entry inside Elastic search. identifier value becomes _id
    * inside ES, so every time provide a unique value while saving it.
@@ -74,11 +70,11 @@ public class ElasticSearchTcpImpl implements ElasticSearchService {
     Promise<String> promise = Futures.promise();
     ProjectLogger.log(
         "ElasticSearchTcpImpl:save: method started at ==" + startTime + " for Index " + index,
-        LoggerEnum.PERF_LOG);
+        LoggerEnum.PERF_LOG.name());
     if (StringUtils.isBlank(identifier) || StringUtils.isBlank(index)) {
       ProjectLogger.log(
           "ElasticSearchTcpImpl:save: Identifier value is null or empty ,not able to save data.",
-          LoggerEnum.ERROR);
+          LoggerEnum.ERROR.name());
       promise.success("ERROR");
       return promise.future();
     }
@@ -100,13 +96,18 @@ public class ElasticSearchTcpImpl implements ElasticSearchService {
               + index
               + " ,Total time elapsed = "
               + ElasticSearchHelper.calculateEndTime(startTime),
-          LoggerEnum.PERF_LOG);
+          LoggerEnum.PERF_LOG.name());
       promise.success(response.getId());
       return promise.future();
     } catch (Exception e) {
       ProjectLogger.log(
-          "ElasticSearchTcpImpl:save: Error while saving index " + index + " id : " + identifier,
-          e);
+          "ElasticSearchTcpImpl:save: Error while saving index "
+              + index
+              + " id : "
+              + identifier
+              + " with error :"
+              + e,
+          LoggerEnum.INFO.name());
       ProjectLogger.log(
           "ElasticSearchTcpImpl:save: method end at =="
               + System.currentTimeMillis()
@@ -114,8 +115,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchService {
               + index
               + " ,Total time elapsed = "
               + ElasticSearchHelper.calculateEndTime(startTime),
-          LoggerEnum.PERF_LOG);
-      promise.failure(e);
+          LoggerEnum.PERF_LOG.name());
       promise.success("");
     }
     return promise.future();
@@ -126,7 +126,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchService {
    * index and identifier values , or all the three
    *
    * @param identifier String
-   * @return Map<String,Object> or null
+   * @return Map<String,Object> or empty map
    */
   @Override
   public Future<Map<String, Object>> getDataByIdentifier(String index, String identifier) {
@@ -137,11 +137,12 @@ public class ElasticSearchTcpImpl implements ElasticSearchService {
             + startTime
             + " for index "
             + index,
-        LoggerEnum.PERF_LOG);
+        LoggerEnum.PERF_LOG.name());
     GetResponse response = null;
     if (StringUtils.isBlank(index) || StringUtils.isBlank(identifier)) {
       ProjectLogger.log(
-          "ElasticSearchTcpImpl:getDataByIdentifier: Invalid request is coming.", LoggerEnum.INFO);
+          "ElasticSearchTcpImpl:getDataByIdentifier: Invalid request is coming.",
+          LoggerEnum.INFO.name());
       promise.success(new HashMap<>());
       return promise.future();
     } else {
@@ -151,14 +152,13 @@ public class ElasticSearchTcpImpl implements ElasticSearchService {
       promise.success(new HashMap<>());
       return promise.future();
     }
-    long elapsedTime = ElasticSearchHelper.calculateEndTime(startTime);
     ProjectLogger.log(
         "ElasticSearchTcpImpl:getDataByIdentifier: method "
             + " for index "
             + index
             + " ,Total time elapsed = "
-            + elapsedTime,
-        LoggerEnum.PERF_LOG);
+            + ElasticSearchHelper.calculateEndTime(startTime),
+        LoggerEnum.PERF_LOG.name());
     promise.success(response.getSource());
     return promise.future();
   }
@@ -178,7 +178,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchService {
     Promise<Boolean> promise = Futures.promise();
     ProjectLogger.log(
         "ElasticSearchTcpImpl:update: method started at ==" + startTime + " for index " + index,
-        LoggerEnum.PERF_LOG);
+        LoggerEnum.PERF_LOG.name());
     if (!StringUtils.isBlank(index) && !StringUtils.isBlank(identifier) && data != null) {
       try {
         UpdateResponse response =
@@ -187,14 +187,13 @@ public class ElasticSearchTcpImpl implements ElasticSearchService {
             "ElasticSearchTcpImpl:update: " + "updated response==" + response.getResult().name(),
             LoggerEnum.INFO.name());
         if (response.getResult().name().equals("UPDATED")) {
-          long elapsedTime = ElasticSearchHelper.calculateEndTime(startTime);
           ProjectLogger.log(
               "ElasticSearchTcpImpl:update: method end =="
                   + " for index "
                   + index
                   + " ,Total time elapsed = "
-                  + elapsedTime,
-              LoggerEnum.PERF_LOG);
+                  + ElasticSearchHelper.calculateEndTime(startTime),
+              LoggerEnum.PERF_LOG.name());
           promise.success(true);
           return promise.future();
         } else {
@@ -212,14 +211,13 @@ public class ElasticSearchTcpImpl implements ElasticSearchService {
       ProjectLogger.log(
           "ElasticSearchTcpImpl:update: Requested data is invalid.", LoggerEnum.INFO.name());
     }
-    long elapsedTime = ElasticSearchHelper.calculateEndTime(startTime);
     ProjectLogger.log(
         "ElasticSearchTcpImpl:update: method end  =="
             + " for Index "
             + index
             + " ,Total time elapsed = "
-            + elapsedTime,
-        LoggerEnum.PERF_LOG);
+            + ElasticSearchHelper.calculateEndTime(startTime),
+        LoggerEnum.PERF_LOG.name());
     promise.success(false);
     return promise.future();
   }
@@ -239,7 +237,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchService {
     Promise<Boolean> promise = Futures.promise();
     ProjectLogger.log(
         "ElasticSearchTcpImpl:upsert: method started at ==" + startTime + " for INdex " + index,
-        LoggerEnum.PERF_LOG);
+        LoggerEnum.PERF_LOG.name());
     if (!StringUtils.isBlank(index)
         && !StringUtils.isBlank(identifier)
         && data != null
@@ -251,37 +249,36 @@ public class ElasticSearchTcpImpl implements ElasticSearchService {
       try {
         response = ConnectionManager.getClient().update(updateRequest).get();
       } catch (InterruptedException | ExecutionException e) {
-        ProjectLogger.log(e.getMessage(), e);
-        promise.failure(e);
+        ProjectLogger.log("ElasticSearchTcpImpl:upsert: error occured == " + e.getMessage(), e);
         promise.success(false);
         return promise.future();
       }
       ProjectLogger.log(
-          "ElasticSearchTcpImpl:upsert: updated response==" + response.getResult().name());
+          "ElasticSearchTcpImpl:upsert: updated response==" + response.getResult().name(),
+          LoggerEnum.INFO.name());
       if (ElasticSearchHelper.upsertResults.contains(response.getResult().name())) {
-        long elapsedTime = ElasticSearchHelper.calculateEndTime(startTime);
         ProjectLogger.log(
             "ElasticSearchTcpImpl:upsert: method end =="
                 + " for index "
                 + index
                 + " ,Total time elapsed = "
-                + elapsedTime,
-            LoggerEnum.PERF_LOG);
+                + ElasticSearchHelper.calculateEndTime(startTime),
+            LoggerEnum.PERF_LOG.name());
         promise.success(true);
         return promise.future();
       }
     } else {
-      ProjectLogger.log("ElasticSearchTcpImpl:upsert: Requested data is invalid.", LoggerEnum.INFO);
+      ProjectLogger.log(
+          "ElasticSearchTcpImpl:upsert: Requested data is invalid.", LoggerEnum.INFO.name());
       promise.success(false);
     }
-    long elapsedTime = ElasticSearchHelper.calculateEndTime(startTime);
     ProjectLogger.log(
         "ElasticSearchTcpImpl:upsert: method end =="
             + " for index "
             + index
             + " ,Total time elapsed = "
-            + elapsedTime,
-        LoggerEnum.PERF_LOG);
+            + ElasticSearchHelper.calculateEndTime(startTime),
+        LoggerEnum.PERF_LOG.name());
     return promise.future();
   }
 
@@ -296,7 +293,8 @@ public class ElasticSearchTcpImpl implements ElasticSearchService {
     long startTime = System.currentTimeMillis();
     Promise<Boolean> promise = Futures.promise();
     ProjectLogger.log(
-        "ElasticSearchTcpImpl:delete: method started at ==" + startTime, LoggerEnum.PERF_LOG);
+        "ElasticSearchTcpImpl:delete: method started at ==" + startTime,
+        LoggerEnum.PERF_LOG.name());
     DeleteResponse deleteResponse = null;
     if (!StringUtils.isBlank(index) && !StringUtils.isBlank(identifier)) {
       try {
@@ -305,21 +303,31 @@ public class ElasticSearchTcpImpl implements ElasticSearchService {
             "ElasticSearchTcpImpl:delete: info =="
                 + deleteResponse.getResult().name()
                 + " "
-                + deleteResponse.getId());
+                + deleteResponse.getId(),
+            LoggerEnum.INFO.name());
       } catch (Exception e) {
         promise.failure(e);
-        ProjectLogger.log(e.getMessage(), e);
+        ProjectLogger.log(
+            "ElasticSearchTcpImpl:delete: error occured for index and identifier  == "
+                + index
+                + " and "
+                + identifier
+                + " with error "
+                + e.getMessage(),
+            e);
       }
     } else {
       ProjectLogger.log(
-          "ElasticSearchTcpImpl:delete: Data can not be deleted due to invalid input.");
+          "ElasticSearchTcpImpl:delete: Data can not be deleted due to invalid input.",
+          LoggerEnum.INFO.name());
       promise.success(false);
       return promise.future();
     }
-    long elapsedTime = ElasticSearchHelper.calculateEndTime(startTime);
     ProjectLogger.log(
-        "ElasticSearchTcpImpl:delete: method end ==" + " ,Total time elapsed = " + elapsedTime,
-        LoggerEnum.PERF_LOG);
+        "ElasticSearchTcpImpl:delete: method end =="
+            + " ,Total time elapsed = "
+            + ElasticSearchHelper.calculateEndTime(startTime),
+        LoggerEnum.PERF_LOG.name());
     promise.success(deleteResponse.getResult().name().equalsIgnoreCase("DELETED"));
     return promise.future();
   }
@@ -338,7 +346,8 @@ public class ElasticSearchTcpImpl implements ElasticSearchService {
     String[] indices = {index};
 
     ProjectLogger.log(
-        "ElasticSearchTcpImpl:search: method started at ==" + startTime, LoggerEnum.PERF_LOG);
+        "ElasticSearchTcpImpl:search: method started at ==" + startTime,
+        LoggerEnum.PERF_LOG.name());
     SearchRequestBuilder searchRequestBuilder =
         ElasticSearchHelper.getTransportSearchBuilder(ConnectionManager.getClient(), indices);
     // check mode and set constraints
@@ -439,10 +448,11 @@ public class ElasticSearchTcpImpl implements ElasticSearchService {
 
     Map<String, Object> responseMap =
         ElasticSearchHelper.getSearchResponseMap(response, searchDTO, finalFacetList);
-    long elapsedTime = ElasticSearchHelper.calculateEndTime(startTime);
     ProjectLogger.log(
-        "ElasticSearchTcpImpl:search: method end" + " ,Total time elapsed = " + elapsedTime,
-        LoggerEnum.PERF_LOG);
+        "ElasticSearchTcpImpl:search: method end"
+            + " ,Total time elapsed = "
+            + ElasticSearchHelper.calculateEndTime(startTime),
+        LoggerEnum.PERF_LOG.name());
     promise.success(responseMap);
     return promise.future();
   }
@@ -478,6 +488,9 @@ public class ElasticSearchTcpImpl implements ElasticSearchService {
                       return (String) obj.get("id");
                     },
                     val -> val)));
+    ProjectLogger.log(
+        "ElasticSearchTcpImpl:getEsResultByListOfIds: method complete for  for index " + index,
+        LoggerEnum.INFO.name());
     return promise.future();
   }
 
@@ -494,7 +507,7 @@ public class ElasticSearchTcpImpl implements ElasticSearchService {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
         "ElasticSearchTcpImpl:bulkInsert: method started at ==" + startTime + " for index " + index,
-        LoggerEnum.PERF_LOG);
+        LoggerEnum.PERF_LOG.name());
     promise.success(true);
     try {
       BulkProcessor bulkProcessor =
@@ -516,7 +529,8 @@ public class ElasticSearchTcpImpl implements ElasticSearchService {
                                   + "Bulk insert api response==="
                                   + bResponse.getId()
                                   + " "
-                                  + bResponse.isFailed());
+                                  + bResponse.isFailed(),
+                              LoggerEnum.INFO.name());
                         }
                       }
                     }
@@ -525,7 +539,9 @@ public class ElasticSearchTcpImpl implements ElasticSearchService {
                     public void afterBulk(
                         long executionId, BulkRequest request, Throwable failure) {
                       ProjectLogger.log(
-                          "ElasticSearchTcpImpl:bulkInsert: Bulk upload error block", failure);
+                          "ElasticSearchTcpImpl:bulkInsert: Bulk upload error block with error "
+                              + failure,
+                          LoggerEnum.INFO.name());
                     }
                   })
               .setBulkActions(10000)
@@ -547,19 +563,17 @@ public class ElasticSearchTcpImpl implements ElasticSearchService {
       // Refresh your indices
       ConnectionManager.getClient().admin().indices().prepareRefresh().get();
     } catch (Exception e) {
-      promise.failure(e);
       promise.success(false);
-      ProjectLogger.log(e.getMessage(), e);
+      ProjectLogger.log("ElasticSearchTcpImpl:bulkInsert: Bulk upload error " + e.getMessage(), e);
     }
-    long elapsedTime = ElasticSearchHelper.calculateEndTime(startTime);
     ProjectLogger.log(
         "ElasticSearchTcpImpl:bulkInsert: method end  at =="
             + System.currentTimeMillis()
             + " for index "
             + index
             + " ,Total time elapsed = "
-            + elapsedTime,
-        LoggerEnum.PERF_LOG);
+            + ElasticSearchHelper.calculateEndTime(startTime),
+        LoggerEnum.PERF_LOG.name());
     return promise.future();
   }
 
@@ -587,66 +601,5 @@ public class ElasticSearchTcpImpl implements ElasticSearchService {
     }
     promise.success(indexResponse);
     return promise.future();
-  }
-
-  /**
-   * Method to execute ES query with the limitation of size set to 0 Currently this is a rest call
-   *
-   * @param index ES indexName
-   * @param rawQuery actual query to be executed
-   * @return ES response for the query
-   */
-  @SuppressWarnings("unchecked")
-  @Override
-  public Response searchMetricsData(String index, String rawQuery) {
-    long startTime = System.currentTimeMillis();
-    ProjectLogger.log(
-        "ElasticSearchTcpImpl:searchMetricsData: Metrics search method started at ==" + startTime,
-        LoggerEnum.PERF_LOG);
-    String baseUrl = null;
-    if (!StringUtils.isBlank(System.getenv(JsonKey.SUNBIRD_ES_IP))) {
-      String envHost = System.getenv(JsonKey.SUNBIRD_ES_IP);
-      String[] host = envHost.split(",");
-      baseUrl =
-          "http://"
-              + host[0]
-              + ":"
-              + PropertiesCache.getInstance().getProperty(JsonKey.ES_METRICS_PORT);
-    } else {
-      ProjectLogger.log("ElasticSearchTcpImpl:searchMetricsData: ES URL from Properties file");
-      baseUrl = PropertiesCache.getInstance().getProperty(JsonKey.ES_URL);
-    }
-    String requestURL = baseUrl + "/" + index + "/" + _DOC + "/" + "_search";
-    Map<String, String> headers = new HashMap<>();
-    headers.put("Content-Type", "application/json");
-    Map<String, Object> responseData = new HashMap<>();
-    try {
-      // TODO:Currently this is making a rest call but needs to be modified to make
-      // the call using
-      // ElasticSearch client
-      String responseStr = HttpUtil.sendPostRequest(requestURL, rawQuery, headers);
-      ObjectMapper mapper = new ObjectMapper();
-      responseData = mapper.readValue(responseStr, Map.class);
-    } catch (IOException e) {
-      throw new ProjectCommonException(
-          ResponseCode.unableToConnectToES.getErrorCode(),
-          ResponseCode.unableToConnectToES.getErrorMessage(),
-          ResponseCode.SERVER_ERROR.getResponseCode());
-    } catch (Exception e) {
-      throw new ProjectCommonException(
-          ResponseCode.unableToParseData.getErrorCode(),
-          ResponseCode.unableToParseData.getErrorMessage(),
-          ResponseCode.SERVER_ERROR.getResponseCode());
-    }
-    Response response = new Response();
-    response.put(JsonKey.RESPONSE, responseData);
-    long elapsedTime = ElasticSearchHelper.calculateEndTime(startTime);
-    ProjectLogger.log(
-        "ElasticSearchTcpImpl:searchMetricsData: ElasticSearchUtil metrics search method end at == "
-            + +System.currentTimeMillis()
-            + " ,Total time elapsed = "
-            + elapsedTime,
-        LoggerEnum.PERF_LOG);
-    return response;
   }
 }

@@ -89,7 +89,7 @@ public class ElasticSearchHelper {
       return result;
     } catch (Exception e) {
       ProjectLogger.log(
-          "ElasticSearchHelper:getResponseFromFuture: error occured " + e, LoggerEnum.ERROR);
+          "ElasticSearchHelper:getResponseFromFuture: error occured " + e, LoggerEnum.INFO.name());
     }
     return null;
   }
@@ -106,7 +106,7 @@ public class ElasticSearchHelper {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
         "ElasticSearchHelper:addAggregations: method started at ==" + startTime,
-        LoggerEnum.PERF_LOG);
+        LoggerEnum.PERF_LOG.name());
     if (facets != null && !facets.isEmpty()) {
       Map<String, String> map = facets.get(0);
       if (!MapUtils.isEmpty(map)) {
@@ -131,7 +131,7 @@ public class ElasticSearchHelper {
           "ElasticSearchHelper:addAggregations method end =="
               + " ,Total time elapsed = "
               + elapsedTime,
-          LoggerEnum.PERF_LOG);
+          LoggerEnum.PERF_LOG.name());
     }
 
     return searchRequestBuilder;
@@ -179,7 +179,7 @@ public class ElasticSearchHelper {
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
         "ElasticSearchHelper:addAdditionalProperties: method started at ==" + startTime,
-        LoggerEnum.PERF_LOG);
+        LoggerEnum.PERF_LOG.name());
     String key = entry.getKey();
     if (JsonKey.FILTERS.equalsIgnoreCase(key)) {
 
@@ -195,7 +195,7 @@ public class ElasticSearchHelper {
         "ElasticSearchHelper:addAdditionalProperties: method end =="
             + " ,Total time elapsed = "
             + elapsedTime,
-        LoggerEnum.PERF_LOG);
+        LoggerEnum.PERF_LOG.name());
   }
 
   /**
@@ -209,7 +209,8 @@ public class ElasticSearchHelper {
   @SuppressWarnings("unchecked")
   private static BoolQueryBuilder createFilterESOpperation(
       Entry<String, Object> entry, BoolQueryBuilder query, Map<String, Float> constraintsMap) {
-
+    ProjectLogger.log(
+        "ElasticSearchHelper:createFilterESOpperation: method started ", LoggerEnum.INFO.name());
     String key = entry.getKey();
     Object val = entry.getValue();
     if (val instanceof List && val != null) {
@@ -222,6 +223,8 @@ public class ElasticSearchHelper {
     } else {
       query.must(createTermQuery(key + RAW_APPEND, val, constraintsMap.get(key)));
     }
+    ProjectLogger.log(
+        "ElasticSearchHelper:createFilterESOpperation: method end ", LoggerEnum.INFO.name());
     return query;
   }
 
@@ -236,6 +239,8 @@ public class ElasticSearchHelper {
    */
   private static BoolQueryBuilder getTermQueryFromMap(
       Object val, String key, BoolQueryBuilder query, Map<String, Float> constraintsMap) {
+    ProjectLogger.log(
+        "ElasticSearchHelper:getTermQueryFromMap: method started ", LoggerEnum.INFO.name());
     Map<String, Object> value = (Map<String, Object>) val;
     Map<String, Object> rangeOperation = new HashMap<>();
     Map<String, Object> lexicalOperation = new HashMap<>();
@@ -253,6 +258,8 @@ public class ElasticSearchHelper {
     if (!(lexicalOperation.isEmpty())) {
       query.must(createLexicalQuery(key, lexicalOperation, constraintsMap.get(key)));
     }
+    ProjectLogger.log(
+        "ElasticSearchHelper:getTermQueryFromMap: method end ", LoggerEnum.INFO.name());
 
     return query;
   }
@@ -360,12 +367,16 @@ public class ElasticSearchHelper {
       switch (it.getKey()) {
         case LTE:
           rangeQueryBuilder.lte(it.getValue());
+          break;
         case LT:
           rangeQueryBuilder.lt(it.getValue());
+          break;
         case GTE:
           rangeQueryBuilder.gte(it.getValue());
+          break;
         case GT:
           rangeQueryBuilder.gt(it.getValue());
+          break;
       }
     }
     if (isNotNull(boost)) {
@@ -429,6 +440,7 @@ public class ElasticSearchHelper {
                   QueryBuilders.prefixQuery(key + RAW_APPEND, startsWithVal).boost(boost);
             }
             queryBuilder = QueryBuilders.prefixQuery(key + RAW_APPEND, startsWithVal);
+            break;
           }
         case ENDS_WITH:
           {
@@ -438,6 +450,7 @@ public class ElasticSearchHelper {
                   QueryBuilders.regexpQuery(key + RAW_APPEND, endsWithRegex).boost(boost);
             }
             queryBuilder = QueryBuilders.regexpQuery(key + RAW_APPEND, endsWithRegex);
+            break;
           }
       }
     }
@@ -486,7 +499,7 @@ public class ElasticSearchHelper {
   private static SearchDTO getSoftConstraints(
       SearchDTO search, Map<String, Object> searchQueryMap) {
     if (searchQueryMap.containsKey(JsonKey.SOFT_CONSTRAINTS)) {
-      // Play is converting int value to bigInt so need to cnvert back those data to iny
+      // Play is converting int value to bigInt so need to convert back those data to int
       // SearchDto soft constraints expect Map<String, Integer>
       Map<String, Integer> constraintsMap = new HashMap<>();
       Set<Entry<String, BigInteger>> entrySet =
@@ -598,38 +611,7 @@ public class ElasticSearchHelper {
       }
 
       // fetch aggregations aggregations
-      if (null != searchDTO.getFacets() && !searchDTO.getFacets().isEmpty()) {
-        Map<String, String> m1 = searchDTO.getFacets().get(0);
-        for (Map.Entry<String, String> entry : m1.entrySet()) {
-          String field = entry.getKey();
-          String aggsType = entry.getValue();
-          List<Object> aggsList = new ArrayList<>();
-          Map facetMap = new HashMap();
-          if (JsonKey.DATE_HISTOGRAM.equalsIgnoreCase(aggsType)) {
-            Histogram agg = response.getAggregations().get(field);
-            for (Histogram.Bucket ent : agg.getBuckets()) {
-              // DateTime key = (DateTime) ent.getKey(); // Key
-              String keyAsString = ent.getKeyAsString(); // Key as String
-              long docCount = ent.getDocCount(); // Doc count
-              Map internalMap = new HashMap();
-              internalMap.put(JsonKey.NAME, keyAsString);
-              internalMap.put(JsonKey.COUNT, docCount);
-              aggsList.add(internalMap);
-            }
-          } else {
-            Terms aggs = response.getAggregations().get(field);
-            for (Bucket bucket : aggs.getBuckets()) {
-              Map internalMap = new HashMap();
-              internalMap.put(JsonKey.NAME, bucket.getKey());
-              internalMap.put(JsonKey.COUNT, bucket.getDocCount());
-              aggsList.add(internalMap);
-            }
-          }
-          facetMap.put("values", aggsList);
-          facetMap.put(JsonKey.NAME, field);
-          finalFacetList.add(facetMap);
-        }
-      }
+      finalFacetList = getFinalFacetList(response, searchDTO, finalFacetList);
     }
     responseMap.put(JsonKey.CONTENT, esSource);
     if (!(finalFacetList.isEmpty())) {
@@ -637,5 +619,46 @@ public class ElasticSearchHelper {
     }
     responseMap.put(JsonKey.COUNT, count);
     return responseMap;
+  }
+
+  private static List getFinalFacetList(
+      SearchResponse response, SearchDTO searchDTO, List finalFacetList) {
+    if (null != searchDTO.getFacets() && !searchDTO.getFacets().isEmpty()) {
+      ProjectLogger.log(
+          "ElasticSearchHelper:getFinalFacetList: " + "method start with facets not null",
+          LoggerEnum.INFO);
+      Map<String, String> m1 = searchDTO.getFacets().get(0);
+      for (Map.Entry<String, String> entry : m1.entrySet()) {
+        String field = entry.getKey();
+        String aggsType = entry.getValue();
+        List<Object> aggsList = new ArrayList<>();
+        Map facetMap = new HashMap();
+        if (JsonKey.DATE_HISTOGRAM.equalsIgnoreCase(aggsType)) {
+          Histogram agg = response.getAggregations().get(field);
+          for (Histogram.Bucket ent : agg.getBuckets()) {
+            // DateTime key = (DateTime) ent.getKey(); // Key
+            String keyAsString = ent.getKeyAsString(); // Key as String
+            long docCount = ent.getDocCount(); // Doc count
+            Map internalMap = new HashMap();
+            internalMap.put(JsonKey.NAME, keyAsString);
+            internalMap.put(JsonKey.COUNT, docCount);
+            aggsList.add(internalMap);
+          }
+        } else {
+          Terms aggs = response.getAggregations().get(field);
+          for (Bucket bucket : aggs.getBuckets()) {
+            Map internalMap = new HashMap();
+            internalMap.put(JsonKey.NAME, bucket.getKey());
+            internalMap.put(JsonKey.COUNT, bucket.getDocCount());
+            aggsList.add(internalMap);
+          }
+        }
+        facetMap.put("values", aggsList);
+        facetMap.put(JsonKey.NAME, field);
+        finalFacetList.add(facetMap);
+      }
+      ProjectLogger.log("ElasticSearchHelper:getFinalFacetList: " + "method end ", LoggerEnum.INFO);
+    }
+    return finalFacetList;
   }
 }

@@ -12,6 +12,12 @@ public class EsClientFactory {
   private static ElasticSearchService tcpClient = null;
   private static ElasticSearchService restClient = null;
 
+  /**
+   * This method return REST/TCP client for elastic search
+   *
+   * @param type can be "tcp" or "rest"
+   * @return ElasticSearchService with the respected type impl
+   */
   public static ElasticSearchService getInstance(String type) {
     if (JsonKey.TCP.equals(type)) {
       return getTcpClient();
