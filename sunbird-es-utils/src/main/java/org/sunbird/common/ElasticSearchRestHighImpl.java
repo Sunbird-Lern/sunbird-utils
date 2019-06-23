@@ -430,8 +430,16 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
         new ActionListener<SearchResponse>() {
           @Override
           public void onResponse(SearchResponse response) {
+            ProjectLogger.log(
+                "ElasticSearchRestHighImpl:search:onResponse  response1 = " + response,
+                LoggerEnum.INFO.name());
             if (response.getHits() == null || response.getHits().getTotalHits() == 0) {
-              promise.success(new HashMap<>());
+
+              Map<String, Object> responseMap = new HashMap<>();
+              List<Map<String, Object>> esSource = new ArrayList<>();
+              responseMap.put(JsonKey.CONTENT, esSource);
+              responseMap.put(JsonKey.COUNT, 0);
+              promise.success(responseMap);
             } else {
               Map<String, Object> responseMap =
                   ElasticSearchHelper.getSearchResponseMap(response, searchDTO, finalFacetList);
