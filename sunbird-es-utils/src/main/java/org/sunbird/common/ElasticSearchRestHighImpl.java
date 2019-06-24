@@ -428,7 +428,7 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
           public void onResponse(SearchResponse response) {
             ProjectLogger.log(
                 "ElasticSearchRestHighImpl:search:onResponse  response1 = " + response,
-                LoggerEnum.INFO.name());
+                LoggerEnum.DEBUG.name());
             if (response.getHits() == null || response.getHits().getTotalHits() == 0) {
 
               Map<String, Object> responseMap = new HashMap<>();
