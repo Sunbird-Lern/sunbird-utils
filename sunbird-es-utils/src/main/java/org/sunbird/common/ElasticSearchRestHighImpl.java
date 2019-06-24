@@ -166,10 +166,7 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
             @Override
             public void onResponse(UpdateResponse updateResponse) {
               promise.success(true);
-              if (updateResponse.getResult() == DocWriteResponse.Result.CREATED
-                  || updateResponse.getResult() == DocWriteResponse.Result.UPDATED
-                  || updateResponse.getResult() == DocWriteResponse.Result.NOOP) {
-                ProjectLogger.log(
+                             ProjectLogger.log(
                     "ElasticSearchRestHighImpl:update:  Success with "
                         + updateResponse.getResult()
                         + " response from elastic search for index"
@@ -177,7 +174,6 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
                         + ",identifier : "
                         + identifier,
                     LoggerEnum.INFO.name());
-              }
               ProjectLogger.log(
                   "ElasticSearchRestHighImpl:update: method end =="
                       + " for INdex "
