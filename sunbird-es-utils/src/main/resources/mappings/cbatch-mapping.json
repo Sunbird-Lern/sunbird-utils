@@ -180,6 +180,14 @@
                 }
             }
         },
+         "enrollmentEndDate": {
+           "type": "date",
+           "fields": {
+              "raw":  {
+                  "type": "date"
+               }
+           }
+        },
         "enrollmentType": {
             "type": "text",
             "fields": {
