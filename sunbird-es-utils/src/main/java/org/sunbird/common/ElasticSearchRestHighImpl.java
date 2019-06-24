@@ -628,14 +628,12 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
             @Override
             public void onResponse(UpdateResponse updateResponse) {
               promise.success(true);
-              if (ElasticSearchHelper.upsertResults.contains(updateResponse.getResult())) {
                 ProjectLogger.log(
-                    "ElasticSearchUtilRest:upsert:  Success for index : "
+                    "ElasticSearchUtilRest:upsert:  Response for index : " +updateResponse.getResult()+","
                         + index
                         + ",identifier : "
                         + identifier,
                     LoggerEnum.INFO.name());
-              }
               ProjectLogger.log(
                   "ElasticSearchUtilRest:upsert: method end =="
                       + " for Index "
