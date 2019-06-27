@@ -165,7 +165,7 @@ public interface ResponseMessage {
     String DATE_FORMAT_ERRROR = "Date format error.";
     String END_DATE_ERROR = "End date should be greater than start date.";
     String ENROLLMENT_END_DATE_START_ERROR="Enrollment End date should be greater than course batch start date.";
-    String ENROLLMENT_END_DATE_END_ERROR ="Enrollment End date should be less than course batch end date.";
+    String ENROLLMENT_END_DATE_END_ERROR ="Enrollment End date should be lesser than course batch end date.";
     String ENROLLMENT_END_DATE_UPDATE_ERROR="Invalid Enrollment End date. Please provide future date.";
     String INVALID_CSV_FILE = "Please provide valid csv file.";
     String INVALID_COURSE_BATCH_ID = "Invalid course batch id ";

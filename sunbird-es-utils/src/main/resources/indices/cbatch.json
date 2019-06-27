@@ -331,14 +331,6 @@
                         }
                     }
                 },
-                "enrollmentEndDate": {
-                    "type": "date",
-                    "fields": {
-                        "raw": {
-                            "type": "date"
-                        }
-                    }
-                },
                 "status": {
                     "type": "long",
                     "fields": {
