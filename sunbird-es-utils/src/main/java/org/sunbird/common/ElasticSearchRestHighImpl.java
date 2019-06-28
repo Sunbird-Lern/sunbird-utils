@@ -138,6 +138,7 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
 
     return promise.future();
   }
+
   /**
    * This method will update data entry inside Elastic search, using identifier and provided data .
    *
@@ -166,14 +167,14 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
             @Override
             public void onResponse(UpdateResponse updateResponse) {
               promise.success(true);
-                             ProjectLogger.log(
-                    "ElasticSearchRestHighImpl:update:  Success with "
-                        + updateResponse.getResult()
-                        + " response from elastic search for index"
-                        + index
-                        + ",identifier : "
-                        + identifier,
-                    LoggerEnum.INFO.name());
+              ProjectLogger.log(
+                  "ElasticSearchRestHighImpl:update:  Success with "
+                      + updateResponse.getResult()
+                      + " response from elastic search for index"
+                      + index
+                      + ",identifier : "
+                      + identifier,
+                  LoggerEnum.INFO.name());
               ProjectLogger.log(
                   "ElasticSearchRestHighImpl:update: method end =="
                       + " for INdex "
@@ -217,46 +218,64 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
   public Future<Map<String, Object>> getDataByIdentifier(String index, String identifier) {
     long startTime = System.currentTimeMillis();
     Promise<Map<String, Object>> promise = Futures.promise();
-    ProjectLogger.log(
-        "ElasticSearchRestHighImpl:getDataByIdentifier: method started at =="
-            + startTime
-            + " for Index "
-            + index,
-        LoggerEnum.PERF_LOG.name());
+    if (StringUtils.isNotEmpty(identifier) && StringUtils.isNotEmpty(index)) {
 
-    GetRequest getRequest = new GetRequest(index, _DOC, identifier);
+      ProjectLogger.log(
+          "ElasticSearchRestHighImpl:getDataByIdentifier: method started at =="
+              + startTime
+              + " for Index "
+              + index,
+          LoggerEnum.PERF_LOG.name());
 
-    ActionListener<GetResponse> listener =
-        new ActionListener<GetResponse>() {
-          @Override
-          public void onResponse(GetResponse getResponse) {
-            if (getResponse.isExists()) {
-              Map<String, Object> sourceAsMap = getResponse.getSourceAsMap();
-              if (MapUtils.isNotEmpty(sourceAsMap)) {
-                promise.success(sourceAsMap);
-                ProjectLogger.log(
-                    "ElasticSearchRestHighImpl:getDataByIdentifier: method end =="
-                        + " for Index "
-                        + index
-                        + " ,Total time elapsed = "
-                        + calculateEndTime(startTime),
-                    LoggerEnum.PERF_LOG.name());
-              } else {
-                promise.success(new HashMap<>());
+      GetRequest getRequest = new GetRequest(index, _DOC, identifier);
+
+      ActionListener<GetResponse> listener =
+          new ActionListener<GetResponse>() {
+            @Override
+            public void onResponse(GetResponse getResponse) {
+              if (getResponse.isExists()) {
+                Map<String, Object> sourceAsMap = getResponse.getSourceAsMap();
+                if (MapUtils.isNotEmpty(sourceAsMap)) {
+                  promise.success(sourceAsMap);
+                  ProjectLogger.log(
+                      "ElasticSearchRestHighImpl:getDataByIdentifier: method end =="
+                          + " for Index "
+                          + index
+                          + " ,Total time elapsed = "
+                          + calculateEndTime(startTime),
+                      LoggerEnum.PERF_LOG.name());
+                } else {
+                  promise.success(new HashMap<>());
+                }
               }
             }
-          }
 
-          @Override
-          public void onFailure(Exception e) {
-            ProjectLogger.log(
-                "ElasticSearchRestHighImpl:getDataByIdentifier: method Failed with error == " + e,
-                LoggerEnum.INFO.name());
-            promise.failure(e);
-          }
-        };
+            @Override
+            public void onFailure(Exception e) {
+              ProjectLogger.log(
+                  "ElasticSearchRestHighImpl:getDataByIdentifier: method Failed with error == " + e,
+                  LoggerEnum.INFO.name());
+              promise.failure(e);
+            }
+          };
 
-    ConnectionManager.getRestClient().getAsync(getRequest, listener);
+      ConnectionManager.getRestClient().getAsync(getRequest, listener);
+    } else {
+      ProjectLogger.log(
+          "ElasticSearchRestHighImpl:getDataByIdentifier:  "
+              + "provided index or identifier is null, index = "
+              + index
+              + ","
+              + " identifier = "
+              + identifier,
+          LoggerEnum.INFO);
+      promise.failure(
+          new ProjectCommonException(
+              ResponseCode.invalidData.getErrorCode(),
+              ResponseCode.invalidData.getErrorMessage(),
+              ResponseCode.invalidData.getResponseCode()));
+    }
+
     return promise.future();
   }
 
@@ -274,34 +293,50 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
         "ElasticSearchRestHighImpl:delete: method started at ==" + startTime,
         LoggerEnum.PERF_LOG.name());
     Promise<Boolean> promise = Futures.promise();
-    DeleteRequest delRequest = new DeleteRequest(index, _DOC, identifier);
-    ActionListener<DeleteResponse> listener =
-        new ActionListener<DeleteResponse>() {
-          @Override
-          public void onResponse(DeleteResponse deleteResponse) {
-            if (deleteResponse.getResult() == DocWriteResponse.Result.NOT_FOUND) {
-              ProjectLogger.log(
-                  "ElasticSearchRestHighImpl:delete:OnResponse: Document  not found for index : "
-                      + index
-                      + " , identifier : "
-                      + identifier,
-                  LoggerEnum.INFO.name());
-              promise.success(false);
-            } else {
-              promise.success(true);
+    if (StringUtils.isNotEmpty(identifier) && StringUtils.isNotEmpty(index)) {
+      DeleteRequest delRequest = new DeleteRequest(index, _DOC, identifier);
+      ActionListener<DeleteResponse> listener =
+          new ActionListener<DeleteResponse>() {
+            @Override
+            public void onResponse(DeleteResponse deleteResponse) {
+              if (deleteResponse.getResult() == DocWriteResponse.Result.NOT_FOUND) {
+                ProjectLogger.log(
+                    "ElasticSearchRestHighImpl:delete:OnResponse: Document  not found for index : "
+                        + index
+                        + " , identifier : "
+                        + identifier,
+                    LoggerEnum.INFO.name());
+                promise.success(false);
+              } else {
+                promise.success(true);
+              }
             }
-          }
 
-          @Override
-          public void onFailure(Exception e) {
-            ProjectLogger.log(
-                "ElasticSearchRestHighImpl:delete: Async Failed due to error :" + e,
-                LoggerEnum.INFO.name());
-            promise.failure(e);
-          }
-        };
+            @Override
+            public void onFailure(Exception e) {
+              ProjectLogger.log(
+                  "ElasticSearchRestHighImpl:delete: Async Failed due to error :" + e,
+                  LoggerEnum.INFO.name());
+              promise.failure(e);
+            }
+          };
 
-    ConnectionManager.getRestClient().deleteAsync(delRequest, listener);
+      ConnectionManager.getRestClient().deleteAsync(delRequest, listener);
+    } else {
+      ProjectLogger.log(
+          "ElasticSearchRestHighImpl:delete:  "
+              + "provided index or identifier is null, index = "
+              + index
+              + ","
+              + " identifier = "
+              + identifier,
+          LoggerEnum.INFO);
+      promise.failure(
+          new ProjectCommonException(
+              ResponseCode.invalidData.getErrorCode(),
+              ResponseCode.invalidData.getErrorMessage(),
+              ResponseCode.invalidData.getResponseCode()));
+    }
 
     ProjectLogger.log(
         "ElasticSearchRestHighImpl:delete: method end =="
@@ -628,12 +663,14 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
             @Override
             public void onResponse(UpdateResponse updateResponse) {
               promise.success(true);
-                ProjectLogger.log(
-                    "ElasticSearchUtilRest:upsert:  Response for index : " +updateResponse.getResult()+","
-                        + index
-                        + ",identifier : "
-                        + identifier,
-                    LoggerEnum.INFO.name());
+              ProjectLogger.log(
+                  "ElasticSearchUtilRest:upsert:  Response for index : "
+                      + updateResponse.getResult()
+                      + ","
+                      + index
+                      + ",identifier : "
+                      + identifier,
+                  LoggerEnum.INFO.name());
               ProjectLogger.log(
                   "ElasticSearchUtilRest:upsert: method end =="
                       + " for Index "
