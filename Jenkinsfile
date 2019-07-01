@@ -28,7 +28,7 @@ node() {
 
         stage('Build') {
             sh """
-            cd cassandra-migration
+            cd sunbird-cassandra-migration/cassandra-migration
             mvn clean install -DskipTests
             """
         }
@@ -37,7 +37,7 @@ node() {
         stage('Archive artifacts'){
             sh """
                         mkdir cassandra_artifacts
-                        cp cassandra-migration/target/cassandra-migration-*-jar-with-dependencies.jar cassandra_artifacts
+                        cp sunbird-cassandra-migration/cassandra-migration/target/cassandra-migration-*-jar-with-dependencies.jar cassandra_artifacts
                         zip -j cassandra_artifacts.zip:${artifact_version} cassandra_artifacts/*
                     """
             archiveArtifacts artifacts: "cassandra_artifacts.zip:${artifact_version}", fingerprint: true, onlyIfSuccessful: true
