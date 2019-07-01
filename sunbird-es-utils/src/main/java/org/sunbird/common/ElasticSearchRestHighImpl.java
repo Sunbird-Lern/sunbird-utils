@@ -35,7 +35,6 @@ import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInter
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortMode;
-import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.inf.ElasticSearchService;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
@@ -198,10 +197,7 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
       ProjectLogger.log(
           "ElasticSearchRestHighImpl:update: Requested data is invalid.", LoggerEnum.INFO.name());
       promise.failure(
-          new ProjectCommonException(
-              ResponseCode.invalidData.getErrorCode(),
-              ResponseCode.invalidData.getErrorMessage(),
-              ResponseCode.invalidData.getResponseCode()));
+          ProjectUtil.createClientException(ResponseCode.invalidData));
     }
     return promise.future();
   }
@@ -268,12 +264,8 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
               + ","
               + " identifier = "
               + identifier,
-          LoggerEnum.INFO);
-      promise.failure(
-          new ProjectCommonException(
-              ResponseCode.invalidData.getErrorCode(),
-              ResponseCode.invalidData.getErrorMessage(),
-              ResponseCode.invalidData.getResponseCode()));
+          LoggerEnum.INFO.name());
+      promise.failure(ProjectUtil.createClientException(ResponseCode.invalidData));
     }
 
     return promise.future();
@@ -330,12 +322,8 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
               + ","
               + " identifier = "
               + identifier,
-          LoggerEnum.INFO);
-      promise.failure(
-          new ProjectCommonException(
-              ResponseCode.invalidData.getErrorCode(),
-              ResponseCode.invalidData.getErrorMessage(),
-              ResponseCode.invalidData.getResponseCode()));
+          LoggerEnum.INFO.name());
+      promise.failure(ProjectUtil.createClientException(ResponseCode.invalidData));
     }
 
     ProjectLogger.log(
@@ -693,11 +681,7 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
     } else {
       ProjectLogger.log(
           "ElasticSearchRestHighImpl:upsert: Requested data is invalid.", LoggerEnum.ERROR.name());
-      promise.failure(
-          new ProjectCommonException(
-              ResponseCode.invalidData.getErrorCode(),
-              ResponseCode.invalidData.getErrorMessage(),
-              ResponseCode.invalidData.getResponseCode()));
+      promise.failure(ProjectUtil.createClientException(ResponseCode.invalidData));
       return promise.future();
     }
   }
