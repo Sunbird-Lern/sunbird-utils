@@ -82,6 +82,11 @@ import org.sunbird.dto.SearchDTO;
 import org.sunbird.helper.ConnectionManager;
 import scala.concurrent.Future;
 
+/**
+ * Test class for Elastic search TCP client Impl
+ *
+ * @author github.com/iostream04
+ */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({"javax.management.*", "javax.net.ssl.*", "javax.security.*"})
@@ -103,10 +108,8 @@ public class ElasticSearchTcpImplTest {
   private static Map<String, Object> physicsMap = null;
   private static TransportClient client = null;
   private static final String INDEX_NAME = "sbtestindex";
-  private static final String TYPE_NAME = "sbtesttype";
   private static final String STARTS_WITH = "startsWith";
   private static final String ENDS_WITH = "endsWith";
-  private static final long START_TIME = System.currentTimeMillis();
   private ElasticSearchService esService = EsClientFactory.getInstance(JsonKey.TCP);
 
   @BeforeClass
@@ -320,8 +323,7 @@ public class ElasticSearchTcpImplTest {
   @Test
   public void testGetByIdentifierFailureWithoutIndex() {
     try {
-      Future<Map<String, Object>> responseMap =
-          esService.getDataByIdentifier(null, (String) chemistryMap.get("courseId"));
+      esService.getDataByIdentifier(null, (String) chemistryMap.get("courseId"));
     } catch (ProjectCommonException ex) {
       assertEquals(ResponseCode.SERVER_ERROR.getResponseCode(), ex.getResponseCode());
     }
@@ -330,7 +332,7 @@ public class ElasticSearchTcpImplTest {
   @Test
   public void testGetByIdentifierFailureWithoutTypeAndIndexIdentifier() {
     try {
-      Future<Map<String, Object>> responseMap = esService.getDataByIdentifier(null, "");
+      esService.getDataByIdentifier(null, "");
     } catch (ProjectCommonException ex) {
       assertEquals(ResponseCode.SERVER_ERROR.getResponseCode(), ex.getResponseCode());
     }
@@ -470,7 +472,6 @@ public class ElasticSearchTcpImplTest {
   @Test
   public void testSearchMetricsDataSuccess() {
     String index = "searchindex";
-    String type = "user";
     String rawQuery = "{\"query\":{\"match_none\":{}}}";
     Response response = esService.searchMetricsData(index, rawQuery);
     assertEquals(ResponseCode.OK, response.getResponseCode());
@@ -479,7 +480,6 @@ public class ElasticSearchTcpImplTest {
   @Test
   public void testSearchMetricsDataFailure() {
     String index = "searchtest";
-    String type = "usertest";
     String rawQuery = "{\"query\":{\"match_none\":{}}}";
     try {
       esService.searchMetricsData(index, rawQuery);
@@ -668,7 +668,7 @@ public class ElasticSearchTcpImplTest {
     when(searchResponse.getHits()).thenReturn(searchHits);
     when(searchResponse.getAggregations()).thenReturn(aggregations);
     when(aggregations.get(Mockito.eq("description"))).thenReturn(terms);
-    //    when(aggregations.get(Mockito.eq("createdOn"))).thenReturn(histogram);
+    // when(aggregations.get(Mockito.eq("createdOn"))).thenReturn(histogram);
     when(terms.getBuckets()).thenReturn(new ArrayList<>());
     when(histogram.getBuckets()).thenReturn(new ArrayList<>());
 
