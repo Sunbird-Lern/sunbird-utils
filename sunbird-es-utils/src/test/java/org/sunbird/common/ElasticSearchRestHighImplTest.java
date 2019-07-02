@@ -147,16 +147,6 @@ public class ElasticSearchRestHighImplTest {
   }
 
   @Test
-  public void testGetDataByIdentifierSuccess() {
-    mockRulesForGet(false);
-    Future<Map<String, Object>> result = esService.getDataByIdentifier("test", "001");
-    Map<String, Object> res =
-        (Map<String, Object>) ElasticSearchHelper.getResponseFromFuture(result);
-    String any = (String) res.get("test");
-    assertEquals("any", any);
-  }
-
-  @Test
   public void testGetDataByIdentifierFailureWithEmptyIndex() {
     try {
       esService.getDataByIdentifier("", "001");
