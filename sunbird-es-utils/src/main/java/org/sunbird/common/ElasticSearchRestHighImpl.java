@@ -196,8 +196,7 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
     } else {
       ProjectLogger.log(
           "ElasticSearchRestHighImpl:update: Requested data is invalid.", LoggerEnum.INFO.name());
-      promise.failure(
-          ProjectUtil.createClientException(ResponseCode.invalidData));
+      promise.failure(ProjectUtil.createClientException(ResponseCode.invalidData));
     }
     return promise.future();
   }
@@ -244,6 +243,7 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
                   promise.success(new HashMap<>());
                 }
               }
+              promise.success(new HashMap<>());
             }
 
             @Override

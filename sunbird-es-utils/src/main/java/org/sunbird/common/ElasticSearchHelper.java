@@ -68,7 +68,7 @@ public class ElasticSearchHelper {
   protected static Map<String, Boolean> typeMap = new HashMap<>();
   protected static final String ES_CONFIG_FILE = "elasticsearch.conf";
   private static Config config = ConfigUtil.getConfig(ES_CONFIG_FILE);
-  public static final int WAIT_TIME = 30;
+  public static final int WAIT_TIME = 5;
   public static Timeout timeout = new Timeout(WAIT_TIME, TimeUnit.SECONDS);
   public static final List<String> upsertResults =
       new ArrayList<>(Arrays.asList("CREATED", "UPDATED", "NOOP"));
