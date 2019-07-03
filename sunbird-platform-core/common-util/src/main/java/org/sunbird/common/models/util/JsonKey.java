@@ -547,9 +547,9 @@ public final class JsonKey {
   public static final String SUNBIRD_SSO_URL = "sunbird_sso_url";
   public static final String SUNBIRD_SSO_USERNAME = "sunbird_sso_username";
   public static final String SUNBIRD_WEB_URL = "sunbird_web_url";
-  public static final String SUNBIRD_GET_ORGANISATION_API="sunbird_get_organisation_api";
-  public static final String SUNBIRD_GET_SINGLE_USER_API="sunbird_get_single_user_api";
-  public static final String SUNBIRD_GET_MULTIPLE_USER_API="sunbird_get_multiple_user_api";
+  public static final String SUNBIRD_GET_ORGANISATION_API="sunbird_search_organisation_api";
+  public static final String SUNBIRD_GET_SINGLE_USER_API="sunbird_read_user_api";
+  public static final String SUNBIRD_GET_MULTIPLE_USER_API="sunbird_search_user_api";
   public static final String SUNBIRD_CHANNEL_READ_API = "sunbird_channel_read_api";
   public static final String SUNBIRD_FRAMEWORK_READ_API = "sunbird_framework_read_api";
   public static final String SUNBIRD_CONTENT_GET_HIERARCHY_API = "sunbird_get_hierarchy_api";
