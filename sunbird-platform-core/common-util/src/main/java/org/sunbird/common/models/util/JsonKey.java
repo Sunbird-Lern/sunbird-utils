@@ -638,7 +638,7 @@ public final class JsonKey {
   public static final String HEALTH = "health";
   public static final String SERVICE = "service";
   public static final String SOFT_CONSTRAINTS = "softConstraints";
-  public static final String SUNBIRD_API_BASE_URL = "sunbird_api_base_url";
+  public static final String SUNBIRD_USER_ORG_API_BASE_URL = "sunbird_user_org_api_base_url";
   public static final String SUNBIRD_API_MGR_BASE_URL = "sunbird_api_mgr_base_url";
   public static final String SUNBIRD_AUTHORIZATION = "sunbird_authorization";
   public static final String SUNBIRD_CS_BASE_URL = "sunbird_cs_base_url";
