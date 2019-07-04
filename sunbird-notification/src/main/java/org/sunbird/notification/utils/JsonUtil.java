@@ -1,37 +1,41 @@
 package org.sunbird.notification.utils;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import org.jboss.logging.Logger;
 
-/** @author Manzarul */
 public class JsonUtil {
-
   private static Logger logger = Logger.getLogger(JsonUtil.class);
 
-  /**
-   * This method will convert Object to Json String
-   *
-   * @param object Object
-   * @return String
-   */
-  public static String toJson(Object object) throws Exception {
+  public static String toJson(Object object) {
     ObjectMapper mapper = new ObjectMapper();
-    return mapper.writeValueAsString(object);
+    try {
+      return mapper.writeValueAsString(object);
+    } catch (Exception e) {
+      // ProjectLogger.log("JsonUtil:getJsonString error occured : " + e, LoggerEnum.INFO);
+    }
+    return null;
   }
 
-  /**
-   * This method will check incoming value is null or empty it will do empty check by doing trim
-   * method. in case of null or empty it will return true else false.
-   *
-   * @param value
-   * @return
-   */
   public static boolean isStringNullOREmpty(String value) {
     if (value == null || "".equals(value.trim())) {
-
-      logger.debug("String is either null or empty.");
       return true;
     }
     return false;
+  }
+
+  public static <T> T getAsObject(String res, Class<T> clazz) {
+    ObjectMapper mapper = new ObjectMapper();
+
+    T result = null;
+    try {
+      JsonNode node = mapper.readTree(res);
+      result = mapper.convertValue(node, clazz);
+    } catch (IOException e) {
+      // ProjectLogger.log("JsonUtil:getAsObject error occured : " + e, LoggerEnum.INFO);
+      e.printStackTrace();
+    }
+    return result;
   }
 }
