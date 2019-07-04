@@ -517,6 +517,7 @@ public final class JsonKey {
   public static final String SUNBIRD = "sunbird";
   public static final String SUNBIRD_ALLOWED_LOGIN = "sunbird_allowed_login";
   public static final String SUNBIRD_APP_URL = "sunbird_app_url";
+  public static final String SUNBIRD_API_BASE_URL = "sunbird_api_base_url";
   public static final String SUNBIRD_CASSANDRA_IP = "sunbird_cassandra_host";
   public static final String SUNBIRD_CASSANDRA_KEYSPACE = "sunbird_cassandra_keyspace";
   public static final String SUNBIRD_CASSANDRA_MODE = "sunbird_cassandra_mode";
