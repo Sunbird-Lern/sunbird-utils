@@ -18,7 +18,7 @@ import java.util.*;
 public class CassandraHelper {
 
   /** this variable is initialized so that list can easily handle the size of user.. */
-  public static final int initialiCapacity = 50000;
+  public static final int initialCapacity = 50000;
 
   /**
    * these methods will be used to convert resultSet into List of User entity Object.
@@ -28,7 +28,7 @@ public class CassandraHelper {
    */
   public static List<User> getUserListFromResultSet(ResultSet resultSet) {
 
-    List<User> userList = new ArrayList<>(initialiCapacity);
+    List<User> userList = new ArrayList<>(initialCapacity);
     Iterator<Row> iterator = resultSet.iterator();
     while (iterator.hasNext()) {
       Row row = iterator.next();
@@ -58,7 +58,7 @@ public class CassandraHelper {
    */
   public static String getInsertRecordQuery(User user) {
     return String.format(
-        "INSERT INTO usr_external_identity (provider, idtype, externalid, createdby, createdon, lastupdatedby, lastupdatedon, originalexternalid, originalidtype, originalprovider, userid) VALUES('%s','%s', '%s', '%s', %s,'%s',%s,'%s','%s','%s','%s');",
+        "INSERT INTO sunbird.usr_external_identity (provider, idtype, externalid, createdby, createdon, lastupdatedby, lastupdatedon, originalexternalid, originalidtype, originalprovider, userid) VALUES('%s','%s', '%s', '%s', %s,'%s',%s,'%s','%s','%s','%s');",
         user.getProvider(),
         user.getIdType(),
         user.getExternalId(),

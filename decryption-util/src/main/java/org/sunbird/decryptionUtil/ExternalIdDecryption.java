@@ -21,9 +21,10 @@ public class ExternalIdDecryption {
       RequestParams requestParams = prepareRequestParams();
       RequestParamValidator.getInstance(requestParams).validate();
       ConnectionFactory connectionFactory = new CassandraConnectionFactory();
-      DataProcessor dataProcessor = DataProcessor.getInstance(connectionFactory, requestParams);
-      dataProcessor.startProcessingExternalIds();
+      RecordProcessor recordProcessor = RecordProcessor.getInstance(connectionFactory, requestParams);
+      recordProcessor.startProcessingExternalIds();
     } catch (Exception e) {
+      e.printStackTrace();
       throw new Exception(e.getMessage());
     }
   }

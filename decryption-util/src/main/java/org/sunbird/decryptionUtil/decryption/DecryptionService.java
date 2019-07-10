@@ -1,5 +1,9 @@
 package org.sunbird.decryptionUtil.decryption;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import java.io.IOException;
+
 /** DecryptionService provides methods for decryption of data. */
 public interface DecryptionService {
 
@@ -14,5 +18,5 @@ public interface DecryptionService {
    * @param data Input data
    * @return Decrypted data
    */
-  String decryptData(String data);
+  String decryptData(String data) throws BadPaddingException, IOException, IllegalBlockSizeException;
 }

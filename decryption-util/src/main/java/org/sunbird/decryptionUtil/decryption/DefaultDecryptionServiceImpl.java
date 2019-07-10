@@ -1,8 +1,11 @@
 package org.sunbird.decryptionUtil.decryption;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.spec.SecretKeySpec;
 import org.apache.log4j.Logger;
 
@@ -27,12 +30,11 @@ public class DefaultDecryptionServiceImpl implements DecryptionService {
   }
 
   @Override
-  public String decryptData(String data) {
+  public String decryptData(String data) throws BadPaddingException, IOException, IllegalBlockSizeException {
     return decrypt(data);
   }
 
-  private String decrypt(String value) {
-    try {
+  private String decrypt(String value) throws IOException, BadPaddingException, IllegalBlockSizeException {
       String dValue = null;
       String valueToDecrypt = value.trim();
       for (int i = 0; i < ITERATIONS; i++) {
@@ -42,9 +44,6 @@ public class DefaultDecryptionServiceImpl implements DecryptionService {
         valueToDecrypt = dValue;
       }
       return dValue;
-    } catch (Exception ex) {
-      return value;
-    }
   }
 
   private static Key generateKey() {
