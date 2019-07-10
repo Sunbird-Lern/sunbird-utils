@@ -24,7 +24,6 @@ public class ExternalIdDecryption {
       RecordProcessor recordProcessor = RecordProcessor.getInstance(connectionFactory, requestParams);
       recordProcessor.startProcessingExternalIds();
     } catch (Exception e) {
-      e.printStackTrace();
       throw new Exception(e.getMessage());
     }
   }

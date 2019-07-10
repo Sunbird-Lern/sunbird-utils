@@ -25,6 +25,7 @@ public class RecordProcessor extends StatusTracker {
     private RequestParams requestParams;
     private DecryptionService decryptionService;
     private static Logger logger = LoggerFactory.getLoggerInstance(RecordProcessor.class.getName());
+    public static final String successRecordFilePath="successRecords.txt";
 
     /**
      * constructor for the class
@@ -32,7 +33,7 @@ public class RecordProcessor extends StatusTracker {
      * @param connectionFactory
      * @param requestParams
      */
-    private RecordProcessor(ConnectionFactory connectionFactory, RequestParams requestParams) {
+    private RecordProcessor(ConnectionFactory connectionFactory, RequestParams requestParams){
         this.connectionFactory = connectionFactory;
         this.requestParams = requestParams;
         this.connection =
@@ -52,7 +53,7 @@ public class RecordProcessor extends StatusTracker {
      * @return
      */
     public static RecordProcessor getInstance(
-            ConnectionFactory connectionFactory, RequestParams requestParams) {
+            ConnectionFactory connectionFactory, RequestParams requestParams){
         return new RecordProcessor(connectionFactory, requestParams);
     }
 
@@ -76,7 +77,7 @@ public class RecordProcessor extends StatusTracker {
      */
     public void startProcessingExternalIds() {
         List<User> usersList = getUserDataFromDbAsList();
-        logger.info("the data got is " + usersList.get(0).getOriginalExternalId());
+        logTotalRecords(usersList.size());
         usersList
                 .stream()
                 .forEach(
@@ -87,13 +88,13 @@ public class RecordProcessor extends StatusTracker {
                                 User user = getDecryptedUserObject(userObject);
                                 performSequentialOperationOnRecord(user, compositeKeysMap);
                                 endTracingRecord(userObject.getUserId());
-                            }
-                            catch (Exception e){
-                                logger.error(String.format("failed to process externalId: %s provider: %s idType: %s",compositeKeysMap.get(DbColumnConstants.externalId),compositeKeysMap.get(DbColumnConstants.provider),compositeKeysMap.get(DbColumnConstants.idType)));
+                            } catch (Exception e) {
+                                logExceptionOnProcessingRecord(compositeKeysMap);
                             }
                         });
 
         connection.closeConnection();
+        closeWriterConnection();
     }
 
     private static Map<String, String> getCompositeKeysMap(User user) {
