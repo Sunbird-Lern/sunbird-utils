@@ -54,19 +54,10 @@ public class RequestParams {
 
   @Override
   public String toString() {
-    return "RequestParams{"
-        + "cassandraHost='"
-        + cassandraHost
-        + '\''
-        + ", cassandraKeyspaceName='"
-        + cassandraKeyspaceName
-        + '\''
-        + ", cassandraPort='"
-        + cassandraPort
-        + '\''
-        + ", sunbirdEncryptionKey='"
-        + sunbirdEncryptionKey
-        + '\''
-        + '}';
+    return "RequestParams{" +
+            "cassandraHost='" + cassandraHost + '\'' +
+            ", cassandraKeyspaceName='" + cassandraKeyspaceName + '\'' +
+            ", cassandraPort='" + cassandraPort + '\'' +
+            '}';
   }
 }
