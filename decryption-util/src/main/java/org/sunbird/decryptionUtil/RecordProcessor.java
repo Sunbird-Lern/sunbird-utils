@@ -155,8 +155,6 @@ public class RecordProcessor extends StatusTracker {
      * @return
      */
     private List<User> removePreProcessedRecordFromList(List<String> preProcessedRecords, List<User> totalRecords) {
-        logger.info("total records found preprocessed is " + preProcessedRecords.size());
-        logger.info("total records in db is " + totalRecords.size());
         totalRecords.removeIf(user -> (preProcessedRecords.contains(getFormattedCompositeKeys(user))));
         logTotalRecords(totalRecords.size());
         return totalRecords;
@@ -170,7 +168,9 @@ public class RecordProcessor extends StatusTracker {
      */
     private List<User> getRecordsToBeProcessed() throws IOException {
         List<User> totalUsersList = getUserDataFromDbAsList();
+        logger.info("total records in db is " + totalUsersList.size());
         List<String> preProcessedRecords = RecordTracker.getPreProcessedRecordsAsList();
+        logger.info("total records found preprocessed is " + preProcessedRecords.size());
         return removePreProcessedRecordFromList(preProcessedRecords, totalUsersList);
     }
 }

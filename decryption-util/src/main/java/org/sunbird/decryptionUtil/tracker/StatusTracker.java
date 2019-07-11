@@ -47,7 +47,7 @@ public class StatusTracker {
     }
 
     public static void logExceptionOnProcessingRecord(Map<String, String> compositeKeysMap) {
-        logger.error(String.format("may be this record is preprocessed but cant detect by the service or error occurred while decrypting while processing record with externalId:%s provider:%s idType:%s", compositeKeysMap.get(DbColumnConstants.externalId), compositeKeysMap.get(DbColumnConstants.provider), compositeKeysMap.get(DbColumnConstants.idType)));
+        logger.error(String.format("Error occurred in  decrypting  record with externalId:%s provider:%s idType:%s", compositeKeysMap.get(DbColumnConstants.externalId), compositeKeysMap.get(DbColumnConstants.provider), compositeKeysMap.get(DbColumnConstants.idType)));
     }
 
     public static void logTotalRecords(long count) {
@@ -70,6 +70,7 @@ public class StatusTracker {
             }
 
         } catch (Exception e) {
+            logger.error(String.format("%s:%s:error occurred while writing preProcessed records to file",StatusTracker.class.getSimpleName(),"writeSuccessRecordToFile"));
         }
     }
 
@@ -77,6 +78,7 @@ public class StatusTracker {
         try {
             fw.close();
         } catch (Exception e) {
+            logger.error(String.format("%s:%s:error occurred while closing connection to  file %s",StatusTracker.class.getSimpleName(),"writeSuccessRecordToFile",EnvConstants.PRE_PROCESSED_RECORDS_FILE));
         }
     }
 
