@@ -26,7 +26,6 @@ public class RecordProcessor extends StatusTracker {
     private RequestParams requestParams;
     private DecryptionService decryptionService;
     private static Logger logger = LoggerFactory.getLoggerInstance(RecordProcessor.class.getName());
-    public static final String successRecordFilePath = "successRecords.txt";
 
     /**
      * constructor for the class
@@ -109,8 +108,8 @@ public class RecordProcessor extends StatusTracker {
     private User getDecryptedUserObject(User userObject) throws BadPaddingException, IOException, IllegalBlockSizeException {
         String externalId = decryptionService.decryptData(userObject.getExternalId());
         String originalExternalId = decryptionService.decryptData(userObject.getOriginalExternalId());
-        userObject.setExternalId(externalId.concat("1"));
-        userObject.setOriginalExternalId(originalExternalId.concat("1"));
+        userObject.setExternalId(externalId);
+        userObject.setOriginalExternalId(originalExternalId);
         return userObject;
     }
 
