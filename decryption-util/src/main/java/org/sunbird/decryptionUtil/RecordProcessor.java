@@ -13,6 +13,7 @@ import org.sunbird.decryptionUtil.connection.factory.ConnectionFactory;
 import org.sunbird.decryptionUtil.constants.DbColumnConstants;
 import org.sunbird.decryptionUtil.decryption.DecryptionService;
 import org.sunbird.decryptionUtil.decryption.DefaultDecryptionServiceImpl;
+import org.sunbird.decryptionUtil.tracker.RecordTracker;
 import org.sunbird.decryptionUtil.tracker.StatusTracker;
 
 import javax.crypto.BadPaddingException;
@@ -25,7 +26,7 @@ public class RecordProcessor extends StatusTracker {
     private RequestParams requestParams;
     private DecryptionService decryptionService;
     private static Logger logger = LoggerFactory.getLoggerInstance(RecordProcessor.class.getName());
-    public static final String successRecordFilePath="successRecords.txt";
+    public static final String successRecordFilePath = "successRecords.txt";
 
     /**
      * constructor for the class
@@ -33,7 +34,7 @@ public class RecordProcessor extends StatusTracker {
      * @param connectionFactory
      * @param requestParams
      */
-    private RecordProcessor(ConnectionFactory connectionFactory, RequestParams requestParams){
+    private RecordProcessor(ConnectionFactory connectionFactory, RequestParams requestParams) {
         this.connectionFactory = connectionFactory;
         this.requestParams = requestParams;
         this.connection =
@@ -53,7 +54,7 @@ public class RecordProcessor extends StatusTracker {
      * @return
      */
     public static RecordProcessor getInstance(
-            ConnectionFactory connectionFactory, RequestParams requestParams){
+            ConnectionFactory connectionFactory, RequestParams requestParams) {
         return new RecordProcessor(connectionFactory, requestParams);
     }
 
@@ -72,12 +73,12 @@ public class RecordProcessor extends StatusTracker {
 
     /**
      * this method will be used to process externalId
+     * this method will get the count of total number of records that need to be processed
      *
      * @return
      */
-    public void startProcessingExternalIds() {
-        List<User> usersList = getUserDataFromDbAsList();
-        logTotalRecords(usersList.size());
+    public void startProcessingExternalIds() throws IOException {
+        List<User> usersList = getRecordsToBeProcessed();
         usersList
                 .stream()
                 .forEach(
@@ -87,10 +88,10 @@ public class RecordProcessor extends StatusTracker {
                                 startTracingRecord(userObject.getUserId());
                                 User user = getDecryptedUserObject(userObject);
                                 performSequentialOperationOnRecord(user, compositeKeysMap);
-                                endTracingRecord(userObject.getUserId());
                             } catch (Exception e) {
                                 logExceptionOnProcessingRecord(compositeKeysMap);
                             }
+                            endTracingRecord(userObject.getUserId());
                         });
 
         connection.closeConnection();
@@ -144,4 +145,33 @@ public class RecordProcessor extends StatusTracker {
     }
 
 
+    private String getFormattedCompositeKeys(User user) {
+        return String.format("%s:%s:%s", user.getProvider(), user.getIdType(), user.getExternalId());
+    }
+
+    /**
+     * this methods
+     * @param preProcessedRecords
+     * @param totalRecords
+     * @return
+     */
+    private List<User> removePreProcessedRecordFromList(List<String> preProcessedRecords, List<User> totalRecords) {
+        logger.info("total records found preprocessed is " + preProcessedRecords.size());
+        logger.info("total records in db is " + totalRecords.size());
+        totalRecords.removeIf(user -> (preProcessedRecords.contains(getFormattedCompositeKeys(user))));
+        logTotalRecords(totalRecords.size());
+        return totalRecords;
+    }
+
+    /**
+     * this methods get the count of records from cassandra as totalUserList
+     * then this method will remove the preprocessed records from totalUserList.
+     * @return List<String>
+     * @throws IOException
+     */
+    private List<User> getRecordsToBeProcessed() throws IOException {
+        List<User> totalUsersList = getUserDataFromDbAsList();
+        List<String> preProcessedRecords = RecordTracker.getPreProcessedRecordsAsList();
+        return removePreProcessedRecordFromList(preProcessedRecords, totalUsersList);
+    }
 }

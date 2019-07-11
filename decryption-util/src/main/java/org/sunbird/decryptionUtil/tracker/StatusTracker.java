@@ -3,6 +3,7 @@ package org.sunbird.decryptionUtil.tracker;
 import org.apache.log4j.Logger;
 import org.sunbird.decryptionUtil.LoggerFactory;
 import org.sunbird.decryptionUtil.constants.DbColumnConstants;
+import org.sunbird.decryptionUtil.constants.EnvConstants;
 
 import java.io.FileWriter;
 import java.util.Map;
@@ -17,7 +18,7 @@ public class StatusTracker {
     }
 
     public static void endTracingRecord(String id) {
-        logger.info("================================ UserId: " + id + " ended ===========================================");
+        logger.info("================================ UserId: " + id + " ended ===========================================\n");
     }
 
     public static void logQuery(String query) {
@@ -25,41 +26,47 @@ public class StatusTracker {
     }
 
     public static void logFailedRecord(Map<String, String> compositeKeysMap) {
-        logger.info(String.format("Record Failed with externalId: %s provider: %s and idType: %s", compositeKeysMap.get(DbColumnConstants.externalId), compositeKeysMap.get(DbColumnConstants.provider), compositeKeysMap.get(DbColumnConstants.idType)));
+        logger.info(String.format("Record Failed with externalId:%s provider:%s and idType:%s", compositeKeysMap.get(DbColumnConstants.externalId), compositeKeysMap.get(DbColumnConstants.provider), compositeKeysMap.get(DbColumnConstants.idType)));
     }
 
     public static void logSuccessRecord(String externalId, String provider, String idType) {
-        logger.info(String.format("Record updation success with externalId: %s provider: %s and idType: %s", externalId, provider, idType));
+        logger.info(String.format("Record updation success with externalId:%s provider:%s and idType:%s", externalId, provider, idType));
         writeSuccessRecordToFile(provider,idType,externalId);
     }
 
     public static void logDeletedRecord(Map<String, String> compositeKeysMap) {
-        logger.info(String.format("Record deleted with externalId: %s provider: %s and idType: %s", compositeKeysMap.get(DbColumnConstants.externalId), compositeKeysMap.get(DbColumnConstants.provider), compositeKeysMap.get(DbColumnConstants.idType)));
+        logger.info(String.format("Record deleted with externalId:%s provider:%s and idType:%s", compositeKeysMap.get(DbColumnConstants.externalId), compositeKeysMap.get(DbColumnConstants.provider), compositeKeysMap.get(DbColumnConstants.idType)));
     }
 
     public static void logInsertedRecord(String externalId, String provider, String idType) {
-        logger.info(String.format("Record insertion success with externalId: %s provider: %s and idType: %s", externalId, provider, idType));
+        logger.info(String.format("Record insertion success with externalId:%s provider:%s and idType:%s", externalId, provider, idType));
     }
 
     public static void logFailedDeletedRecord(Map<String, String> compositeKeysMap) {
-        logger.info(String.format("Record failed to delete with externalId: %s provider: %s and idType: %s", compositeKeysMap.get(DbColumnConstants.externalId), compositeKeysMap.get(DbColumnConstants.provider), compositeKeysMap.get(DbColumnConstants.idType)));
+        logger.info(String.format("Record failed to delete with externalId: %s provider:%s and idType:%s", compositeKeysMap.get(DbColumnConstants.externalId), compositeKeysMap.get(DbColumnConstants.provider), compositeKeysMap.get(DbColumnConstants.idType)));
     }
 
     public static void logExceptionOnProcessingRecord(Map<String, String> compositeKeysMap) {
-        logger.error(String.format("error occurred while processing record with externalId: %s provider: %s idType: %s", compositeKeysMap.get(DbColumnConstants.externalId), compositeKeysMap.get(DbColumnConstants.provider), compositeKeysMap.get(DbColumnConstants.idType)));
+        logger.error(String.format("may be this record is preprocessed but cant detect by the service or error occurred while decrypting while processing record with externalId:%s provider:%s idType:%s", compositeKeysMap.get(DbColumnConstants.externalId), compositeKeysMap.get(DbColumnConstants.provider), compositeKeysMap.get(DbColumnConstants.idType)));
     }
 
     public static void logTotalRecords(long count) {
         logger.error(String.format("================================ Total Records to be processed: %s ========================================", count));
     }
+    public static void logPreProcessedRecord(Map<String, String> compositeKeysMap) {
+        logger.error(String.format("Record with  externalId:%s provider:%s idType:%s pre processed", compositeKeysMap.get(DbColumnConstants.externalId), compositeKeysMap.get(DbColumnConstants.provider), compositeKeysMap.get(DbColumnConstants.idType)));
+    }
+
 
 
     public static void writeSuccessRecordToFile(String provider, String idType, String externalId) {
         try {
             if (fw != null) {
                 fw.write(String.format("%s:%s:%s", provider, idType, externalId));
+                fw.write("\n");
+                fw.flush();
             } else {
-                fw = new FileWriter("successRecords.txt");
+                fw = new FileWriter(EnvConstants.PRE_PROCESSED_RECORDS_FILE);
             }
 
         } catch (Exception e) {
