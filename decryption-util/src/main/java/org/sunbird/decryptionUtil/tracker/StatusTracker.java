@@ -68,9 +68,9 @@ public class StatusTracker {
             } else {
                 fw = new FileWriter(EnvConstants.PRE_PROCESSED_RECORDS_FILE);
             }
-
         } catch (Exception e) {
-            logger.error(String.format("%s:%s:error occurred while writing preProcessed records to file",StatusTracker.class.getSimpleName(),"writeSuccessRecordToFile"));
+            logger.error(String.format("%s:%s:error occurred while writing preProcessed records to file with message %s",StatusTracker.class.getSimpleName(),"writeSuccessRecordToFile",e.getMessage()));
+            System.exit(0);
         }
     }
 
@@ -78,7 +78,7 @@ public class StatusTracker {
         try {
             fw.close();
         } catch (Exception e) {
-            logger.error(String.format("%s:%s:error occurred while closing connection to  file %s",StatusTracker.class.getSimpleName(),"writeSuccessRecordToFile",EnvConstants.PRE_PROCESSED_RECORDS_FILE));
+            logger.error(String.format("%s error occurred while closing connection to  file %s","writeSuccessRecordToFile",EnvConstants.PRE_PROCESSED_RECORDS_FILE));
         }
     }
 
