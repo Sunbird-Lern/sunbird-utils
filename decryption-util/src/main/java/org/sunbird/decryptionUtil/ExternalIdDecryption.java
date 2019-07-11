@@ -17,18 +17,15 @@ public class ExternalIdDecryption {
    */
   public static void main(String[] args) throws Exception {
 
-//    try {
-//      RequestParams requestParams = prepareRequestParams();
-//      RequestParamValidator.getInstance(requestParams).validate();
-//      ConnectionFactory connectionFactory = new CassandraConnectionFactory();
-//      RecordProcessor recordProcessor = RecordProcessor.getInstance(connectionFactory, requestParams);
-//      recordProcessor.startProcessingExternalIds();
-//    } catch (Exception e) {
-//      throw new Exception(e.getMessage());
-//    }
-
-    prepareRequestParams();
-    System.out.println("+++++++++++++++++++++++++successfully Invoked++++++++++++++++++++++++++++");
+    try {
+      RequestParams requestParams = prepareRequestParams();
+      RequestParamValidator.getInstance(requestParams).validate();
+      ConnectionFactory connectionFactory = new CassandraConnectionFactory();
+      RecordProcessor recordProcessor = RecordProcessor.getInstance(connectionFactory, requestParams);
+      recordProcessor.startProcessingExternalIds();
+    } catch (Exception e) {
+      throw new Exception(e.getMessage());
+    }
   }
 
   /**
