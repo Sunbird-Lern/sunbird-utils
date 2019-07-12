@@ -9,7 +9,7 @@
 # How to run
   - require env variable to be set : </br>
   
-        - cassandra_host
+        - sunbird_cassandra_host
         - sunbird_cassandra_keyspace
         - sunbird_cassandra_port
         - sunbird_encryption_key

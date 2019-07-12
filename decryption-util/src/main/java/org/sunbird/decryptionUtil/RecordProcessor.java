@@ -90,7 +90,9 @@ public class RecordProcessor extends StatusTracker {
                             } catch (Exception e) {
                                 logExceptionOnProcessingRecord(compositeKeysMap);
                             }
-                            endTracingRecord(userObject.getUserId());
+                            finally {
+                                endTracingRecord(userObject.getUserId());
+                            }
                         });
 
         connection.closeConnection();
