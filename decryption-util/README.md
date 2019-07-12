@@ -5,7 +5,7 @@
       -  Note down the count.
       -  Take backUp of cassandra db.
       -  select externalid,originalexternalid from sunbird.usr_external_identity;
-      -  verify the column externalid, originalexternalid should be in encrpted format
+      -  verify the column externalid, originalexternalid should be in encrypted format
 # How to run
   - require env variable to be set : </br>
   
@@ -18,7 +18,7 @@
    - cd target
    - java -jar decryptionUtil-1.0-SNAPSHOT-jar-with-dependencies.jar 
      
-# PostRequesties:
+# Steps Two Verify:
    - Login to cassandra
    - select externalid,originalexternalid from sunbird.usr_external_identity;
    - verify the column externalid, originalexternalid should be in decrypted format.
