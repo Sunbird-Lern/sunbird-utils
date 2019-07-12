@@ -245,7 +245,8 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
               }
               else{
               promise.success(new HashMap<>());
-            }}
+            }
+            }
 
             @Override
             public void onFailure(Exception e) {
