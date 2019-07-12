@@ -1,6 +1,9 @@
 # ExternalIdDecryption
 # PreRequesties: 
       -  Login to cassandra
+      -  SELECT COUNT(*) FROM sunbird.usr_external_identity;  
+      -  Note down the count.
+      -  Take backUp of cassandra db.
       -  select externalid,originalexternalid from sunbird.usr_external_identity;
       -  verify the column externalid, originalexternalid should be in encrpted format
 # How to run
@@ -19,3 +22,5 @@
    - Login to cassandra
    - select externalid,originalexternalid from sunbird.usr_external_identity;
    - verify the column externalid, originalexternalid should be in decrypted format.
+   - SELECT COUNT(*) FROM sunbird.usr_external_identity;  
+   - count after running and before running should matches.
