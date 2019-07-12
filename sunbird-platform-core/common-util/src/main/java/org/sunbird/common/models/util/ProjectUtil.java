@@ -366,6 +366,7 @@ public class ProjectUtil {
    */
   public enum EsType {
     course("cbatch"),
+    courseBatch("course-batch"),
     content("content"),
     badgeassociations("badgeassociations"),
     user("user"),
