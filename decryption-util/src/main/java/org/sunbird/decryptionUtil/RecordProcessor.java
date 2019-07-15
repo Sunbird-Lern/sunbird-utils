@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.util.TextUtils;
 import org.apache.log4j.Logger;
 import org.sunbird.decryptionUtil.connection.Connection;
@@ -87,7 +88,7 @@ public class RecordProcessor extends StatusTracker {
                             Map<String, String> compositeKeysMap = getCompositeKeysMap(userObject);
                             try {
                                 startTracingRecord(userObject.getUserId());
-                                if (TextUtils.isEmpty(userObject.getExternalId()) || TextUtils.isEmpty(userObject.getOriginalExternalId())) {
+                                    if (StringUtils.isEmpty(userObject.getExternalId()) || StringUtils.isEmpty(userObject.getOriginalExternalId())) {
                                     logCorruptedRecord(compositeKeysMap, userObject.getOriginalExternalId());
                                     deleteCorruptedRecord(compositeKeysMap);
                                 } else {
