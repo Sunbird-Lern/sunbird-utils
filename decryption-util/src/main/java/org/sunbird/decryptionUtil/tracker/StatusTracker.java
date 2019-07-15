@@ -14,11 +14,11 @@ public class StatusTracker {
     static FileWriter fw;
 
     public static void startTracingRecord(String id) {
-        logger.info("================================ UserId: " + id + " started===========================================");
+        logger.info("UserId: " + id + " started...");
     }
 
     public static void endTracingRecord(String id) {
-        logger.info("================================ UserId: " + id + " ended ===========================================\n");
+        logger.info("UserId: " + id + " ended...\n");
     }
 
     public static void logQuery(String query) {
