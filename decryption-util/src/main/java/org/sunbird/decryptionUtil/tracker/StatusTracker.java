@@ -47,11 +47,11 @@ public class StatusTracker {
     }
 
     public static void logExceptionOnProcessingRecord(Map<String, String> compositeKeysMap) {
-        logger.error(String.format("Error occurred in  decrypting  record with externalId:%s provider:%s idType:%s", compositeKeysMap.get(DbColumnConstants.externalId), compositeKeysMap.get(DbColumnConstants.provider), compositeKeysMap.get(DbColumnConstants.idType)));
+        logger.error(String.format("Error occurred in  decrypting  record with externalId:%s provider:%s idType:%s REMOVING record from database......", compositeKeysMap.get(DbColumnConstants.externalId), compositeKeysMap.get(DbColumnConstants.provider), compositeKeysMap.get(DbColumnConstants.idType)));
     }
 
     public static void logTotalRecords(long count) {
-        logger.error(String.format("================================ Total Records to be processed: %s ========================================", count));
+        logger.info(String.format("================================ Total Records to be processed: %s ========================================", count));
     }
     public static void logPreProcessedRecord(Map<String, String> compositeKeysMap) {
         logger.error(String.format("Record with  externalId:%s provider:%s idType:%s pre processed", compositeKeysMap.get(DbColumnConstants.externalId), compositeKeysMap.get(DbColumnConstants.provider), compositeKeysMap.get(DbColumnConstants.idType)));

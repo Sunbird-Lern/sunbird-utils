@@ -88,6 +88,7 @@ public class RecordProcessor extends StatusTracker {
                                 User user = getDecryptedUserObject(userObject);
                                 performSequentialOperationOnRecord(user, compositeKeysMap);
                             } catch (Exception e) {
+                                connection.deleteRecord(compositeKeysMap);
                                 logExceptionOnProcessingRecord(compositeKeysMap);
                             }
                             finally {
