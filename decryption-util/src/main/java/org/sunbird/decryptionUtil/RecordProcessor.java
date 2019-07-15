@@ -3,10 +3,12 @@ package org.sunbird.decryptionUtil;
 import com.datastax.driver.core.ResultSet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.util.TextUtils;
 import org.apache.log4j.Logger;
 import org.sunbird.decryptionUtil.connection.Connection;
 import org.sunbird.decryptionUtil.connection.factory.ConnectionFactory;
@@ -64,9 +66,9 @@ public class RecordProcessor extends StatusTracker {
      * @return List<User>
      */
     private List<User> getUserDataFromDbAsList() {
+        List<User> usersList = new ArrayList<>();
         ResultSet resultSet = connection.getRecords("select * from usr_external_identity");
-        List<User> usersList = CassandraHelper.getUserListFromResultSet(resultSet);
-        logger.debug(usersList.iterator().next());
+        usersList.addAll(CassandraHelper.getUserListFromResultSet(resultSet));
         return usersList;
     }
 
@@ -85,13 +87,16 @@ public class RecordProcessor extends StatusTracker {
                             Map<String, String> compositeKeysMap = getCompositeKeysMap(userObject);
                             try {
                                 startTracingRecord(userObject.getUserId());
-                                User user = getDecryptedUserObject(userObject);
-                                performSequentialOperationOnRecord(user, compositeKeysMap);
+                                if (TextUtils.isEmpty(userObject.getExternalId()) || TextUtils.isEmpty(userObject.getOriginalExternalId())) {
+                                    logCorruptedRecord(compositeKeysMap,userObject.getOriginalExternalId());
+                                    deleteCorruptedRecord(compositeKeysMap);
+                                } else {
+                                    User user = getDecryptedUserObject(userObject);
+                                    performSequentialOperationOnRecord(user, compositeKeysMap);
+                                }
                             } catch (Exception e) {
-                                connection.deleteRecord(compositeKeysMap);
                                 logExceptionOnProcessingRecord(compositeKeysMap);
-                            }
-                            finally {
+                            } finally {
                                 endTracingRecord(userObject.getUserId());
                             }
                         });
@@ -153,6 +158,7 @@ public class RecordProcessor extends StatusTracker {
 
     /**
      * this methods
+     *
      * @param preProcessedRecords
      * @param totalRecords
      * @return
@@ -166,6 +172,7 @@ public class RecordProcessor extends StatusTracker {
     /**
      * this methods get the count of records from cassandra as totalUserList
      * then this method will remove the preprocessed records from totalUserList.
+     *
      * @return List<String>
      * @throws IOException
      */
@@ -175,5 +182,15 @@ public class RecordProcessor extends StatusTracker {
         List<String> preProcessedRecords = RecordTracker.getPreProcessedRecordsAsList();
         logger.info("total records found preprocessed is " + preProcessedRecords.size());
         return removePreProcessedRecordFromList(preProcessedRecords, totalUsersList);
+    }
+
+    private void deleteCorruptedRecord(Map<String, String> compositeKeysMap) {
+        boolean isCorruptRecordDeleted = connection.deleteRecord(compositeKeysMap);
+        if (isCorruptRecordDeleted) {
+            logDeletedRecord(compositeKeysMap);
+        } else {
+            logFailedDeletedRecord(compositeKeysMap);
+        }
+
     }
 }
