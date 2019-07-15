@@ -88,7 +88,7 @@ public class RecordProcessor extends StatusTracker {
                             try {
                                 startTracingRecord(userObject.getUserId());
                                 if (TextUtils.isEmpty(userObject.getExternalId()) || TextUtils.isEmpty(userObject.getOriginalExternalId())) {
-                                    logCorruptedRecord(compositeKeysMap,userObject.getOriginalExternalId());
+                                    logCorruptedRecord(compositeKeysMap, userObject.getOriginalExternalId());
                                     deleteCorruptedRecord(compositeKeysMap);
                                 } else {
                                     User user = getDecryptedUserObject(userObject);
