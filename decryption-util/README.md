@@ -24,3 +24,4 @@
    - verify the column externalid, originalexternalid should be in decrypted format.
    -  Run the Query: SELECT COUNT(*) FROM sunbird.usr_external_identity;  
    - count after running and before running should matches.
+   - At the end of the run the program will generate the file named ```preProcessecRecords.txt``` where its easy to identify the records which are successfully processed
