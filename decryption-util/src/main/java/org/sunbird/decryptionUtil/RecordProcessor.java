@@ -87,12 +87,8 @@ public class RecordProcessor extends StatusTracker {
                             Map<String, String> compositeKeysMap = getCompositeKeysMap(userObject);
                             try {
                                 startTracingRecord(userObject.getUserId());
-                                    if (StringUtils.isEmpty(userObject.getExternalId()) || StringUtils.isEmpty(userObject.getOriginalExternalId())) {
-                                    logCorruptedRecord(compositeKeysMap, userObject.getOriginalExternalId());
-                                } else {
-                                    User user = getDecryptedUserObject(userObject);
-                                    performSequentialOperationOnRecord(user, compositeKeysMap);
-                                }
+                                User user = getDecryptedUserObject(userObject);
+                                performSequentialOperationOnRecord(user, compositeKeysMap);
                             } catch (Exception e) {
                                 logExceptionOnProcessingRecord(compositeKeysMap);
                             } finally {
@@ -114,9 +110,11 @@ public class RecordProcessor extends StatusTracker {
 
     private User getDecryptedUserObject(User userObject) throws BadPaddingException, IOException, IllegalBlockSizeException {
         String externalId = decryptionService.decryptData(userObject.getExternalId());
-        String originalExternalId = decryptionService.decryptData(userObject.getOriginalExternalId());
+        if (StringUtils.isNotBlank(userObject.getOriginalExternalId())) {
+            String originalExternalId = decryptionService.decryptData(userObject.getOriginalExternalId());
+            userObject.setOriginalExternalId(originalExternalId);
+        }
         userObject.setExternalId(externalId);
-        userObject.setOriginalExternalId(originalExternalId);
         return userObject;
     }
 
