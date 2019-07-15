@@ -646,7 +646,7 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
       IndexRequest indexRequest = new IndexRequest(index, _DOC, identifier).source(data);
 
       UpdateRequest updateRequest = new UpdateRequest(index, _DOC, identifier).upsert(indexRequest);
-
+      updateRequest.doc(indexRequest);
       ActionListener<UpdateResponse> listener =
           new ActionListener<UpdateResponse>() {
             @Override

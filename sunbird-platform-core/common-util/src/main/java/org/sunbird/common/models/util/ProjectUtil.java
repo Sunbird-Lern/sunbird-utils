@@ -365,7 +365,8 @@ public class ProjectUtil {
    * @author Manzarul
    */
   public enum EsType {
-    course("course-batch"),
+    course("cbatch"),
+    courseBatch("course-batch"),
     content("content"),
     badgeassociations("badgeassociations"),
     user("user"),

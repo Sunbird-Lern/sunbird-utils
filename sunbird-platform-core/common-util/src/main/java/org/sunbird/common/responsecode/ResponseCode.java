@@ -795,6 +795,7 @@ public enum ResponseCode {
   errorUserMigrationFailed(
       ResponseMessage.Key.ERROR_USER_MIGRATION_FAILED,
       ResponseMessage.Message.ERROR_USER_MIGRATION_FAILED),
+  emptyContentsForUpdateBatchStatus(ResponseMessage.Key.EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS, ResponseMessage.Message.EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

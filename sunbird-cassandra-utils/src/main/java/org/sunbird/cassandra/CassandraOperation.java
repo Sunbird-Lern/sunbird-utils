@@ -341,4 +341,7 @@ public interface CassandraOperation {
    */
   Response batchInsertWithTTL(
       String keyspaceName, String tableName, List<Map<String, Object>> records, List<Integer> ttls);
+
+
+  public Response getRecords(String keyspace, String table, Map<String, Object> filters, List<String> fields);
 }
