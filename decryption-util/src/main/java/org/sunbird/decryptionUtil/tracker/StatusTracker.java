@@ -82,8 +82,7 @@ public class StatusTracker {
                 fw.close();
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            logger.error(String.format("%s error occurred while closing connection to  file %s", "writeSuccessRecordToFile", EnvConstants.PRE_PROCESSED_RECORDS_FILE));
+            logger.error(String.format("%s error occurred while closing connection to file %s and error is %s", "writeSuccessRecordToFile", EnvConstants.PRE_PROCESSED_RECORDS_FILE,e.getMessage()));
         }
     }
 
