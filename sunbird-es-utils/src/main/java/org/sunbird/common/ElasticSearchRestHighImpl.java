@@ -242,8 +242,9 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
                 } else {
                   promise.success(new HashMap<>());
                 }
+              } else {
+                promise.success(new HashMap<>());
               }
-              promise.success(new HashMap<>());
             }
 
             @Override

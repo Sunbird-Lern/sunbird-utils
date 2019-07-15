@@ -371,7 +371,7 @@ public class ProjectUtil {
     badgeassociations("badgeassociations"),
     user("user"),
     organisation("org"),
-    usercourses("usercourses"),
+    usercourses("user-courses"),
     usernotes("usernotes"),
     userprofilevisibility("userprofilevisibility"),
     telemetry("telemetry"),
