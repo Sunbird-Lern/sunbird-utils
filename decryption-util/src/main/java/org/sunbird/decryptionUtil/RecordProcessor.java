@@ -89,7 +89,6 @@ public class RecordProcessor extends StatusTracker {
                                 startTracingRecord(userObject.getUserId());
                                     if (StringUtils.isEmpty(userObject.getExternalId()) || StringUtils.isEmpty(userObject.getOriginalExternalId())) {
                                     logCorruptedRecord(compositeKeysMap, userObject.getOriginalExternalId());
-                                    deleteCorruptedRecord(compositeKeysMap);
                                 } else {
                                     User user = getDecryptedUserObject(userObject);
                                     performSequentialOperationOnRecord(user, compositeKeysMap);
@@ -184,13 +183,4 @@ public class RecordProcessor extends StatusTracker {
         return removePreProcessedRecordFromList(preProcessedRecords, totalUsersList);
     }
 
-    private void deleteCorruptedRecord(Map<String, String> compositeKeysMap) {
-        boolean isCorruptRecordDeleted = connection.deleteRecord(compositeKeysMap);
-        if (isCorruptRecordDeleted) {
-            logDeletedRecord(compositeKeysMap);
-        } else {
-            logFailedDeletedRecord(compositeKeysMap);
-        }
-
-    }
 }

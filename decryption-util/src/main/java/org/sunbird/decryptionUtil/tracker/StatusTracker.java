@@ -58,9 +58,8 @@ public class StatusTracker {
         logger.error(String.format("Record with  externalId:%s provider:%s idType:%s pre processed", compositeKeysMap.get(DbColumnConstants.externalId), compositeKeysMap.get(DbColumnConstants.provider), compositeKeysMap.get(DbColumnConstants.idType)));
     }
     public static void logCorruptedRecord(Map<String, String> compositeKeysMap,String orignalExternalId) {
-        logger.info(String.format("corrupted Record found with provider='%s' AND idtype='%s' AND externalid='%s AND orignalexternalid='%s''", compositeKeysMap.get(DbColumnConstants.provider), compositeKeysMap.get(DbColumnConstants.idType),compositeKeysMap.get(DbColumnConstants.externalId),orignalExternalId));
+        logger.info(String.format("SKIPPING the record because corrupted Record found with provider='%s' AND idtype='%s' AND externalid='%s' AND orignalexternalid='%s'", compositeKeysMap.get(DbColumnConstants.provider), compositeKeysMap.get(DbColumnConstants.idType),compositeKeysMap.get(DbColumnConstants.externalId),orignalExternalId));
     }
-
 
     public static void writeSuccessRecordToFile(String provider, String idType, String externalId) {
         try {
