@@ -116,7 +116,6 @@ public class WriteEventHandler implements EventHandler<Request> {
     params.put(JsonKey.CORRELATED_OBJECTS, correlatedObjects);
     String telemetry = telemetryDataAssembler.audit(context, params);
     if (StringUtils.isNotBlank(telemetry) && telemetryObjectValidator.validateAudit(telemetry)) {
-      telemetryFlush.flushTelemetry(telemetry);
       if (!Boolean.parseBoolean(ProjectUtil.getConfigValue(JsonKey.SUNBIRD_AUDIT_EVNET_BATCH_ALLOWED))) {
 			ProjectLogger.log("WriteEventHandler:processLogEvent: Audit Event is going to be processed = ", LoggerEnum.INFO.name());
 			List<String> list = new ArrayList<String>();
