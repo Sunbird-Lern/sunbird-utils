@@ -23,7 +23,7 @@ import org.sunbird.common.responsecode.ResponseCode;
 public class CassandraDACImpl extends CassandraOperationImpl {
 
     public Response getRecords(String keySpace, String table, Map<String, Object> filters, List<String> fields) {
-        Response response = new Response()
+        Response response = new Response();
         Session session = connectionManager.getSession(keySpace);
         try {
             Select select;
