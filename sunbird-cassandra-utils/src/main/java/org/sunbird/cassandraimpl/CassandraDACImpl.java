@@ -12,7 +12,6 @@ import java.util.Map;
 import com.datastax.driver.core.querybuilder.Select;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.CassandraUtil;
 import org.sunbird.common.Constants;
 import org.sunbird.common.exception.ProjectCommonException;
@@ -23,15 +22,15 @@ import org.sunbird.common.responsecode.ResponseCode;
 
 public class CassandraDACImpl extends CassandraOperationImpl {
 
-    public Response getRecords(String keyspace, String table, Map<String, Object> filters, List<String> fields) {
+    public Response getRecords(String keySpace, String table, Map<String, Object> filters, List<String> fields) {
         Response response = new Response();
-        Session session = connectionManager.getSession(keyspace);
+        Session session = connectionManager.getSession(keySpace);
         try {
             Select select;
             if (CollectionUtils.isNotEmpty(fields)) {
-                select = QueryBuilder.select((String[]) fields.toArray()).from(keyspace, table);
+                select = QueryBuilder.select((String[]) fields.toArray()).from(keySpace, table);
             } else {
-                select = QueryBuilder.select().all().from(keyspace, table);
+                select = QueryBuilder.select().all().from(keySpace, table);
             }
 
             if (MapUtils.isNotEmpty(filters)) {
