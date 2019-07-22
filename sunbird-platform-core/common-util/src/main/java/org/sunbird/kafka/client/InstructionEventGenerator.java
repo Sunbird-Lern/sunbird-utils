@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class InstructorEventGenerator {
+public class InstructionEventGenerator {
 
     private static ObjectMapper mapper = new ObjectMapper();
     private static String beJobRequesteventId = "BE_JOB_REQUEST";
@@ -21,7 +21,7 @@ public class InstructorEventGenerator {
 
     private static String actorId = "Sunbird LMS Samza Job";
     private static String actorType = "System";
-    private static String pdataId = "org.sunbird.learner";
+    private static String pdataId = "org.sunbird.platform";
     private static String pdataVersion = "1.0";
 
 
@@ -43,8 +43,13 @@ public class InstructorEventGenerator {
         Map<String, Object> context = new HashMap<>();
         Map<String, Object> object = new HashMap<>();
         Map<String, Object> edata = new HashMap<>();
-        actor.put("id", actorId);
-        actor.put("type", actorType);
+        if(MapUtils.isNotEmpty((Map)data.get("actor"))) {
+            actor.putAll((Map<String, Object>) data.get("actor"));
+        } else {
+            actor.put("id", actorId);
+            actor.put("type", actorType);
+        }
+
 
         if(MapUtils.isNotEmpty((Map)data.get("context"))){
             context.putAll((Map<String, Object>)data.get("context"));
