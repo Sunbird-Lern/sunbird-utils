@@ -28,7 +28,7 @@ import org.sunbird.common.responsecode.ResponseCode;
  */
 public class KafkaClient {
 
-  private final static String BOOTSTRAP_SERVERS = ProjectUtil.getConfigValue("kafka.urls");
+  private final static String BOOTSTRAP_SERVERS = ProjectUtil.getConfigValue("kafka_urls");
   private static Producer<Long, String> producer;
   private static Consumer<Long, String> consumer;
 

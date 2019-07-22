@@ -27,7 +27,7 @@ public class InstructionEventGenerator {
 
     public static void pushInstructionEvent(Map<String, Object> data) throws Exception{
         String beJobRequestEvent = generateInstructionEventMetadata(data);
-        String topic = ProjectUtil.getConfigValue("kafka.topics.instruction");
+        String topic = ProjectUtil.getConfigValue("kafka_topics_instruction");
         if(StringUtils.isBlank(beJobRequestEvent)) {
             throw new ProjectCommonException("BE_JOB_REQUEST_EXCEPTION", "Event is not generated properly.", ResponseCode.CLIENT_ERROR.getResponseCode());
         }
@@ -81,7 +81,7 @@ public class InstructionEventGenerator {
 
         TelemetryBJREvent te = new TelemetryBJREvent();
         long unixTime = System.currentTimeMillis();
-        String mid = "LMS."+System.currentTimeMillis()+"."+ UUID.randomUUID();
+        String mid = "LP."+System.currentTimeMillis()+"."+ UUID.randomUUID();
         edata.put("iteration", iteration);
 
         te.setEid(beJobRequesteventId);
