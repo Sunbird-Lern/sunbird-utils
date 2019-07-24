@@ -10,4 +10,4 @@ CREATE TABLE IF NOT EXISTS sunbird_courses.content_consumption (userid text, con
 CREATE INDEX inx_cc_status ON sunbird_courses.content_consumption (status);
 
 CREATE TABLE IF NOT EXISTS sunbird_courses.bulk_upload_process(id text, status int, data text, successResult text, failureResult text, uploadedBy text, uploadedDate text, processStartTime text, processEndTime text, ObjectType text, PRIMARY KEY (id));
-CREATE INDEX inx_status ON sunbird_courses.bulk_upload_process(status);
+CREATE INDEX inx_bup_status ON sunbird_courses.bulk_upload_process(status);
