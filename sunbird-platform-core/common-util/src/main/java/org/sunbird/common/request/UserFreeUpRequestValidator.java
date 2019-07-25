@@ -78,7 +78,7 @@ public class UserFreeUpRequestValidator extends BaseRequestValidator {
             throw new ProjectCommonException(
                     ResponseCode.dataTypeError.getErrorCode(),
                     ProjectUtil.formatMessage(
-                            "Valid identifier is not presentin List ,Valid identifiers are " + Arrays.toString(array), JsonKey.IDENTIFIER, JsonKey.DATA),
+                            "Valid identifier is not present in List ,Valid identifiers are " + Arrays.toString(array), JsonKey.IDENTIFIER, JsonKey.DATA),
                     ERROR_CODE);
 
         }
