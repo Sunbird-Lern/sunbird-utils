@@ -9,6 +9,7 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.sunbird.common.CassandraUtil;
@@ -84,7 +85,7 @@ public class CassandraDACImpl extends CassandraOperationImpl {
         }
       }
       ResultSetFuture future = session.executeAsync(select);
-      Futures.addCallback(future, callback);
+      Futures.addCallback(future, callback, Executors.newFixedThreadPool(1));
     } catch (Exception e) {
       ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + table + " : " + e.getMessage(), e);
       throw new ProjectCommonException(
