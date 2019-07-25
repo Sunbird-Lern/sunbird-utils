@@ -4,11 +4,14 @@ package org.sunbird.helper;
 import org.sunbird.cassandra.CassandraOperation;
 import org.sunbird.cassandraimpl.CassandraOperationImpl;
 
+import javax.inject.Singleton;
+
 /**
  * This class will provide cassandraOperationImpl instance.
  *
  * @author Manzarul
  */
+@Singleton
 public class ServiceFactory {
   private static CassandraOperation operation = null;
 
