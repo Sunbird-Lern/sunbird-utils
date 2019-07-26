@@ -15,13 +15,18 @@ public class UserFreeUpRequestValidator extends BaseRequestValidator {
     private Request request;
     private static List<String> identifiers = new ArrayList<>();
     static {
-        identifiers.add("email");
-        identifiers.add("phone");
+        identifiers.add(JsonKey.EMAIL);
+        identifiers.add(JsonKey.PHONE);
     }
 
     private static final int ERROR_CODE = ResponseCode.CLIENT_ERROR.getResponseCode();
 
 
+    /**
+     * this method is used to get the instance to UserFreeUpRequestValidator class
+     * @param request
+     * @return
+     */
     public static UserFreeUpRequestValidator getInstance(Request request) {
         return new UserFreeUpRequestValidator(request);
     }
@@ -30,6 +35,9 @@ public class UserFreeUpRequestValidator extends BaseRequestValidator {
         this.request = request;
     }
 
+    /**
+     * this is the method we need to call to validate the IdentifierFreeUpUser request.
+     */
     public void validate() {
         validateIdPresence();
         validateIdentifier();
