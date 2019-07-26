@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.sunbird.helper;
 
 import org.sunbird.cassandra.CassandraOperation;
@@ -13,7 +10,7 @@ import org.sunbird.cassandraimpl.CassandraOperationImpl;
  * @author Manzarul
  */
 public class ServiceFactory {
-    private static volatile CassandraOperation operation = null;
+    private static CassandraOperation operation = null;
 
     private ServiceFactory() {
     }
