@@ -1,7 +1,9 @@
 **/target/**
-/.project
-/.settings
+**/.project
+**/.settings
 /.idea
 /*.iml
 *.iml
 *.log
+**/velocity.log*
+**/.DS_Store
