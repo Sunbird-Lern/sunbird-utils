@@ -1,2 +1,2 @@
-ALTER TABLE sunbird.user ADD prevPhone text;
-ALTER TABLE sunbird.user ADD prevEmail text;
+ALTER TABLE sunbird.user ADD prevUsedPhone text;
+ALTER TABLE sunbird.user ADD prevUsedEmail text;
