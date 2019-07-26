@@ -12,12 +12,11 @@ import java.util.List;
 
 public class UserFreeUpRequestValidator extends BaseRequestValidator {
 
-    static String[] array = {"email", "phone"};
     private Request request;
-    private static List<String> identifier = new ArrayList<>();
-
+    private static List<String> identifiers = new ArrayList<>();
     static {
-        identifier.addAll(Arrays.asList(array));
+        identifiers.add("email");
+        identifiers.add("phone");
     }
 
     private static final int ERROR_CODE = ResponseCode.CLIENT_ERROR.getResponseCode();
@@ -74,13 +73,12 @@ public class UserFreeUpRequestValidator extends BaseRequestValidator {
 
     private void validateSubset() {
         List<String> identifierVal = (List<String>) request.getRequest().get(JsonKey.IDENTIFIER);
-        if (!identifier.containsAll(identifierVal)) {
+        if (!identifiers.containsAll(identifierVal)) {
             throw new ProjectCommonException(
                     ResponseCode.dataTypeError.getErrorCode(),
                     ProjectUtil.formatMessage(
-                            "Valid identifier is not present in List ,Valid identifiers are " + Arrays.toString(array), JsonKey.IDENTIFIER, JsonKey.DATA),
+                            String.format("%s %s",ResponseCode.invalidIdentifier.getErrorMessage(),Arrays.toString(identifiers.toArray())), JsonKey.IDENTIFIER, JsonKey.DATA),
                     ERROR_CODE);
-
         }
     }
 

@@ -795,6 +795,7 @@ public enum ResponseCode {
   errorUserMigrationFailed(
       ResponseMessage.Key.ERROR_USER_MIGRATION_FAILED,
       ResponseMessage.Message.ERROR_USER_MIGRATION_FAILED),
+  invalidIdentifier(ResponseMessage.Key.VALID_IDENTIFIER_ABSENSE,ResponseMessage.Message.IDENTIFIER_VALIDATION_FAILED),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
