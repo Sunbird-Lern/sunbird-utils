@@ -10,7 +10,7 @@ public interface ResponseMessage {
   interface Message {
 
     String UNAUTHORIZED_USER = "You are not authorized.";
-    String INVALID_USER_CREDENTIALS = "Invalid User credentials.";
+    String INVALID_USER_CREDENTIALS = "Please check your credentials";
     String OPERATION_TIMEOUT = "Request processing taking too long time. Please try again later.";
     String INVALID_OPERATION_NAME =
         "Operation name is invalid. Please provide a valid operation name";
