@@ -157,8 +157,8 @@ public enum ActorOperations {
   CLEAR_CACHE("clearCache"),
   USER_TENANT_MIGRATE("userTenantMigrate"),
   GET_PARTICIPANTS("getParticipants"),
-  FREEUP_USER_IDENTITY("freeUpUserIdentity");
-
+  FREEUP_USER_IDENTITY("freeUpUserIdentity"),
+  RESET_PASSWORD("resetPassword");
   private String value;
 
   /**
