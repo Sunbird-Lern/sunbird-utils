@@ -156,7 +156,9 @@ public enum ActorOperations {
   GET_USER_TYPES("getUserTypes"),
   CLEAR_CACHE("clearCache"),
   USER_TENANT_MIGRATE("userTenantMigrate"),
-  GET_PARTICIPANTS("getParticipants");
+  GET_PARTICIPANTS("getParticipants"),
+  MERGE_USER("mergeUser"),
+  MERGE_USERS_TO_ELASTIC("mergerUserSToElastic");
 
   private String value;
 

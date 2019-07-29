@@ -795,6 +795,8 @@ public enum ResponseCode {
   errorUserMigrationFailed(
       ResponseMessage.Key.ERROR_USER_MIGRATION_FAILED,
       ResponseMessage.Message.ERROR_USER_MIGRATION_FAILED),
+  mergeeIdRequired(ResponseMessage.Key.MERGEE_ID_MISSING, ResponseMessage.Message.MERGEE_ID_MISSING),
+  mergerIdRequired(ResponseMessage.Key.MERGER_ID_MISSING, ResponseMessage.Message.MERGER_ID_MISSING),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
