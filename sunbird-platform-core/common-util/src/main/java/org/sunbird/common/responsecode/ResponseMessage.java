@@ -437,6 +437,7 @@ public interface ResponseMessage {
     String ERROR_USER_UPDATE_PASSWORD = "User is created but password couldn't be updated.";
     String ERROR_BGMS_MISMATCH = "Mismatch in {0} at row - {1}";
     String ERROR_USER_MIGRATION_FAILED = "User migration failed.";
+    String IDENTIFIER_VALIDATION_FAILED="Valid identifier is not present in List, Valid supported identifiers are ";
     String MERGEE_ID_MISSING = "Mergee id is mandatory.";
     String MERGER_ID_MISSING = "Merger id is mandatory.";
   }
@@ -812,6 +813,7 @@ public interface ResponseMessage {
     String INVALID_REQUEST_TIMEOUT = "INVALID_REQUEST_TIMEOUT";
     String ERROR_BGMS_MISMATCH = "ERROR_BGMS_MISMATCH";
     String ERROR_USER_MIGRATION_FAILED = "ERROR_USER_MIGRATION_FAILED";
+    String VALID_IDENTIFIER_ABSENSE="IDENTIFIER IN LIST IS NOT SUPPORTED OR INCORRECT";
     String MERGEE_ID_MISSING = "MERGEE_ID_MISSING";
     String MERGER_ID_MISSING = "MERGER_ID_MISSING";
   }
