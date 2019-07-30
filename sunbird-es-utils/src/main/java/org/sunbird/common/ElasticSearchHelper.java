@@ -216,7 +216,12 @@ public class ElasticSearchHelper {
     if (val instanceof List && val != null) {
       query = getTermQueryFromList(val, key, query, constraintsMap);
     } else if (val instanceof Map) {
-      query = getTermQueryFromMap(val, key, query, constraintsMap);
+       if(key.equalsIgnoreCase(JsonKey.ES_OR_OPERATION)){
+         createEsOrFilterQuery((Map<String,Object>)val,query,constraintsMap);
+       }
+       else {
+         query = getTermQueryFromMap(val, key, query, constraintsMap);
+       }
     } else if (val instanceof String) {
       query.must(
           createTermQuery(key + RAW_APPEND, ((String) val).toLowerCase(), constraintsMap.get(key)));
@@ -227,6 +232,7 @@ public class ElasticSearchHelper {
         "ElasticSearchHelper:createFilterESOpperation: method end ", LoggerEnum.INFO.name());
     return query;
   }
+
 
   /**
    * This method returns termQuery if any present in map provided
@@ -261,6 +267,18 @@ public class ElasticSearchHelper {
     ProjectLogger.log(
         "ElasticSearchHelper:getTermQueryFromMap: method end ", LoggerEnum.INFO.name());
 
+    return query;
+  }
+
+    private static BoolQueryBuilder createEsOrFilterQuery(Map<String,Object>orFilters, BoolQueryBuilder query, Map<String, Float> constraintsMap) {
+    ProjectLogger.log(
+            "ElasticSearchHelper:createEsOrFilterQuery: method started ", LoggerEnum.INFO.name());
+    ProjectLogger.log("Got data in or filters query"+Collections.singleton(orFilters.toString()),LoggerEnum.INFO.name());
+    for (Map.Entry<String,Object>mp:orFilters.entrySet()){
+      query.should(QueryBuilders.termQuery(mp.getKey()+RAW_APPEND , mp.getValue()));
+      }
+    ProjectLogger.log(
+            "ElasticSearchHelper:createEsOrFilterQuery: method end ", LoggerEnum.INFO.name());
     return query;
   }
 
@@ -350,6 +368,7 @@ public class ElasticSearchHelper {
       return QueryBuilders.termsQuery(key, (values).stream().toArray(Object[]::new));
     }
   }
+
 
   /**
    * This method returns RangeQueryBuilder with boosts if any provided
