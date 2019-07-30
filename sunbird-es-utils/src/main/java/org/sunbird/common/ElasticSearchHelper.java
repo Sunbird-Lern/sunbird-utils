@@ -217,7 +217,7 @@ public class ElasticSearchHelper {
       query = getTermQueryFromList(val, key, query, constraintsMap);
     } else if (val instanceof Map) {
        if(key.equalsIgnoreCase(JsonKey.ES_OR_OPERATION)){
-         createEsOrFilterQuery((Map<String,Object>)val,query,constraintsMap);
+         query.must(createEsOrFilterQuery((Map<String,Object>)val,constraintsMap));
        }
        else {
          query = getTermQueryFromMap(val, key, query, constraintsMap);
@@ -270,7 +270,8 @@ public class ElasticSearchHelper {
     return query;
   }
 
-    private static BoolQueryBuilder createEsOrFilterQuery(Map<String,Object>orFilters, BoolQueryBuilder query, Map<String, Float> constraintsMap) {
+    private static BoolQueryBuilder createEsOrFilterQuery(Map<String,Object>orFilters,  Map<String, Float> constraintsMap) {
+        BoolQueryBuilder query=new BoolQueryBuilder();
     ProjectLogger.log(
             "ElasticSearchHelper:createEsOrFilterQuery: method started ", LoggerEnum.INFO.name());
     ProjectLogger.log("Got data in or filters query"+Collections.singleton(orFilters.toString()),LoggerEnum.INFO.name());
