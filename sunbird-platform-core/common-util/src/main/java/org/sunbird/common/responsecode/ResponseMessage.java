@@ -440,6 +440,7 @@ public interface ResponseMessage {
     String IDENTIFIER_VALIDATION_FAILED="Valid identifier is not present in List, Valid supported identifiers are ";
     String MERGEE_ID_MISSING = "Mergee id is mandatory.";
     String MERGER_ID_MISSING = "Merger id is mandatory.";
+    String MERGEE_ID_NOT_EXISTS = "Mergee id not exists";
   }
 
   interface Key {
@@ -816,5 +817,6 @@ public interface ResponseMessage {
     String VALID_IDENTIFIER_ABSENSE="IDENTIFIER IN LIST IS NOT SUPPORTED OR INCORRECT";
     String MERGEE_ID_MISSING = "MERGEE_ID_MISSING";
     String MERGER_ID_MISSING = "MERGER_ID_MISSING";
+    String MERGEE_ID_NOT_EXISTS = "MERGEE_ID_NOT_EXISTS";
   }
 }
