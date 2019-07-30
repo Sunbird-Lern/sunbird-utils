@@ -916,8 +916,8 @@ public final class JsonKey {
   public static final String TCP = "tcp";
   public static final String REST = "rest";
   public static final String SUNBIRD_AUDIT_EVNET_BATCH_ALLOWED = "sunbird_audit_event_batch_allowed";
-  public static final String PREV_USED_EMAIL ="prevusedemail";
-  public static final String PREV_USED_PHONE ="prevusedphone";
+  public static final String PREV_USED_EMAIL ="prevUsedEmail";
+  public static final String PREV_USED_PHONE ="prevUsedPhone";
   public static final String MERGE = "merge";
   public static final String FROM_ACCOUNT_ID ="fromAccountId";
   public static final String TO_ACCOUNT_ID = "toAccountId";
