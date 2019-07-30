@@ -158,9 +158,9 @@ public enum ActorOperations {
   USER_TENANT_MIGRATE("userTenantMigrate"),
   GET_PARTICIPANTS("getParticipants"),
   FREEUP_USER_IDENTITY("freeUpUserIdentity"),
+  RESET_PASSWORD("resetPassword"),
   MERGE_USER("mergeUser"),
   MERGE_USERS_TO_ELASTIC("mergerUserSToElastic");
-
   private String value;
 
   /**
