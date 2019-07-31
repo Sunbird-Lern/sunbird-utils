@@ -795,6 +795,9 @@ public enum ResponseCode {
   errorUserMigrationFailed(
       ResponseMessage.Key.ERROR_USER_MIGRATION_FAILED,
       ResponseMessage.Message.ERROR_USER_MIGRATION_FAILED),
+  errorUserHasNotCreatedAnyCourse(
+          ResponseMessage.Key.ERROR_USER_HAS_NOT_CREATED_ANY_COURSE,
+          ResponseMessage.Message.ERROR_USER_HAS_NOT_CREATED_ANY_COURSE),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
