@@ -964,14 +964,14 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   public void validateUserMergeRequest(Request request) {
-    if(null == request.getRequest().get("mergeeId") || StringUtils.isEmpty((String) request.getRequest().get("mergeeId"))) {
+    if(StringUtils.isBlank((String) request.getRequest().get(JsonKey.FROM_ACCOUNT_ID))) {
       throw new ProjectCommonException(
               ResponseCode.mergeeIdRequired.getErrorCode(),
               ResponseCode.mergeeIdRequired.getErrorMessage(),
               ERROR_CODE);
     }
 
-    if(null == request.getRequest().get("mergerId") || StringUtils.isEmpty((String) request.getRequest().get("mergerId"))) {
+    if(StringUtils.isBlank((String) request.getRequest().get(JsonKey.TO_ACCOUNT_ID))) {
       throw new ProjectCommonException(
               ResponseCode.mergerIdRequired.getErrorCode(),
               ResponseCode.mergerIdRequired.getErrorMessage(),
