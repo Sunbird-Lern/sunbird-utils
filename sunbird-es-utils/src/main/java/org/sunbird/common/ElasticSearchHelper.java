@@ -217,7 +217,7 @@ public class ElasticSearchHelper {
       query = getTermQueryFromList(val, key, query, constraintsMap);
     } else if (val instanceof Map) {
        if(key.equalsIgnoreCase(JsonKey.ES_OR_OPERATION)){
-         query.must(createEsOrFilterQuery((Map<String,Object>)val,constraintsMap));
+         query.must(createEsORFilterQuery((Map<String,Object>)val));
        }
        else {
          query = getTermQueryFromMap(val, key, query, constraintsMap);
@@ -270,16 +270,15 @@ public class ElasticSearchHelper {
     return query;
   }
 
-    private static BoolQueryBuilder createEsOrFilterQuery(Map<String,Object>orFilters,  Map<String, Float> constraintsMap) {
+    private static BoolQueryBuilder createEsORFilterQuery(Map<String,Object>orFilters) {
         BoolQueryBuilder query=new BoolQueryBuilder();
     ProjectLogger.log(
-            "ElasticSearchHelper:createEsOrFilterQuery: method started ", LoggerEnum.INFO.name());
-    ProjectLogger.log("Got data in or filters query"+Collections.singleton(orFilters.toString()),LoggerEnum.INFO.name());
+            "ElasticSearchHelper:createEsORFilterQuery:method started ", LoggerEnum.INFO.name());
     for (Map.Entry<String,Object>mp:orFilters.entrySet()){
-      query.should(QueryBuilders.termQuery(mp.getKey()+RAW_APPEND , mp.getValue()));
+      query.should(QueryBuilders.termQuery(mp.getKey()+RAW_APPEND , ((String)mp.getValue()).toLowerCase()));
       }
     ProjectLogger.log(
-            "ElasticSearchHelper:createEsOrFilterQuery: method end ", LoggerEnum.INFO.name());
+            "ElasticSearchHelper:createEsORFilterQuery:method end ", LoggerEnum.INFO.name());
     return query;
   }
 
