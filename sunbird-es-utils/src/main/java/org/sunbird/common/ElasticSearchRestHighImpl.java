@@ -501,7 +501,7 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
   public Future<Boolean> healthCheck() {
 
     GetIndexRequest indexRequest =
-        new GetIndexRequest().indices(ProjectUtil.EsType.user.getTypeName());
+        new GetIndexRequest().indices(ProjectUtil.EsType.courseBatch.getTypeName(),ProjectUtil.EsType.usercourses.getTypeName());
     Promise<Boolean> promise = Futures.promise();
     ActionListener<Boolean> listener =
         new ActionListener<Boolean>() {
