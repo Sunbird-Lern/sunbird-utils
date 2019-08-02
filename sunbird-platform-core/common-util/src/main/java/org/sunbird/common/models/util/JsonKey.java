@@ -924,5 +924,9 @@ public final class JsonKey {
   public static final String TO_ACCOUNT_ID = "toAccountId";
   public static final String MERGEE_ID = "mergeeId";
   public static final String USER_MERGEE_ACCOUNT = "userMergeeAccount";
+  public static final String CERT_ID = "certId";
+  public static final String ACCESS_CODE = "accessCode";
+  public static final String USER_CERT = "user_cert";
+  public static final String STORE = "store";
   private JsonKey() {}
 }

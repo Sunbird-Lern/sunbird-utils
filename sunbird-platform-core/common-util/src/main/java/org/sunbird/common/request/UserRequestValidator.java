@@ -978,4 +978,20 @@ public class UserRequestValidator extends BaseRequestValidator {
               ERROR_CODE);
     }
   }
+
+  public void validateCertValidationRequest(Request request) {
+    if(StringUtils.isBlank((String) request.getRequest().get(JsonKey.CERT_ID))) {
+      throw new ProjectCommonException(
+              ResponseCode.certIdRequired.getErrorCode(),
+              ResponseCode.certIdRequired.getErrorMessage(),
+              ERROR_CODE);
+    }
+
+    if(StringUtils.isBlank((String) request.getRequest().get(JsonKey.ACCESS_CODE))) {
+      throw new ProjectCommonException(
+              ResponseCode.accessCodeRequired.getErrorCode(),
+              ResponseCode.accessCodeRequired.getErrorMessage(),
+              ERROR_CODE);
+    }
+  }
 }
