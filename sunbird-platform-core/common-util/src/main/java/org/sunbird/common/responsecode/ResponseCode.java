@@ -808,7 +808,10 @@ public enum ResponseCode {
   REDIRECTION_REQUIRED(302),
   TOO_MANY_REQUESTS(429),
   SERVICE_UNAVAILABLE(503),
-  PARAM_NOT_MATCH(ResponseMessage.Key.PARAM_NOT_MATCH,ResponseMessage.Message.PARAM_NOT_MATCH);
+  PARAM_NOT_MATCH(ResponseMessage.Key.PARAM_NOT_MATCH,ResponseMessage.Message.PARAM_NOT_MATCH),
+  PARTIAL_SUCCESS_RESPONSE(206);
+
+
 
   private int responseCode;
   /** error code contains String value */
