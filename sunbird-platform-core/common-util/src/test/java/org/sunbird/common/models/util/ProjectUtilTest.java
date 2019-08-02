@@ -270,7 +270,7 @@ public class ProjectUtilTest extends BaseHttpTest {
     assertEquals("cbatch", ProjectUtil.EsType.course.getTypeName());
     assertEquals("user", ProjectUtil.EsType.user.getTypeName());
     assertEquals("org", ProjectUtil.EsType.organisation.getTypeName());
-    assertEquals("usercourses", ProjectUtil.EsType.usercourses.getTypeName());
+    assertEquals("user-courses", ProjectUtil.EsType.usercourses.getTypeName());
     assertEquals("usernotes", ProjectUtil.EsType.usernotes.getTypeName());
     assertEquals("userprofilevisibility", ProjectUtil.EsType.userprofilevisibility.getTypeName());
   }
