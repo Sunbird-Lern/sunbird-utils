@@ -924,5 +924,6 @@ public final class JsonKey {
   public static final String TO_ACCOUNT_ID = "toAccountId";
   public static final String MERGEE_ID = "mergeeId";
   public static final String USER_MERGEE_ACCOUNT = "userMergeeAccount";
+  public static final String SEARCH_FUZZY="fuzzy";
   private JsonKey() {}
 }
