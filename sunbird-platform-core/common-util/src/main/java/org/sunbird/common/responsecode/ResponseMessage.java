@@ -820,6 +820,5 @@ public interface ResponseMessage {
     String TO_ACCOUNT_ID_MISSING = "TO_ACCOUNT_ID_MISSING";
     String FROM_ACCOUNT_ID_NOT_EXISTS = "FROM_ACCOUNT_ID_NOT_EXISTS";
     String PARAM_NOT_MATCH= "%s-NOT-MATCH";
-
   }
 }

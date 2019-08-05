@@ -978,4 +978,21 @@ public class UserRequestValidator extends BaseRequestValidator {
               ERROR_CODE);
     }
   }
+
+  public void validateCertValidationRequest(Request request) {
+    if(StringUtils.isBlank((String) request.getRequest().get(JsonKey.CERT_ID))) {
+      createClientError(ResponseCode.mandatoryParamsMissing, JsonKey.CERT_ID);
+    }
+
+    if(StringUtils.isBlank((String) request.getRequest().get(JsonKey.ACCESS_CODE))) {
+      createClientError(ResponseCode.mandatoryParamsMissing, JsonKey.ACCESS_CODE);
+    }
+  }
+
+  private void createClientError(ResponseCode responseCode, String field) {
+    throw new ProjectCommonException(
+            responseCode.getErrorCode(),
+            ProjectUtil.formatMessage(responseCode.getErrorMessage(),field),
+            ERROR_CODE);
+  }
 }

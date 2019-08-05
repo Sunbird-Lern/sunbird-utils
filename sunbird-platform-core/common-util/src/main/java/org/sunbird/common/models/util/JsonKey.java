@@ -926,5 +926,11 @@ public final class JsonKey {
   public static final String USER_MERGEE_ACCOUNT = "userMergeeAccount";
   public static final String SEARCH_FUZZY="fuzzy";
   public static final String SUNBIRD_FUZZY_SEARCH_THRESHOLD="sunbird_fuzzy_search_threshold";
+  public static final String CERT_ID = "certId";
+  public static final String ACCESS_CODE = "accessCode";
+  public static final String USER_CERT = "user_cert";
+  public static final String STORE = "store";
+  public static final String JSON = "json";
+  public static final String PDF = "pdf";
   private JsonKey() {}
 }
