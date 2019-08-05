@@ -442,9 +442,6 @@ public interface ResponseMessage {
     String TO_ACCOUNT_ID_MISSING = "To Account id is mandatory.";
     String FROM_ACCOUNT_ID_NOT_EXISTS = "From Account id not exists";
     String PARAM_NOT_MATCH="%s-NOT-MATCH";
-    String CERT_ID_MISSING = "Cert id is mandatory.";
-    String ACCESS_CODE_MISSING = "Access code is mandatory";
-    String INVALID_ACCESS_CODE = "Invalid access code";
   }
 
   interface Key {
@@ -823,8 +820,5 @@ public interface ResponseMessage {
     String TO_ACCOUNT_ID_MISSING = "TO_ACCOUNT_ID_MISSING";
     String FROM_ACCOUNT_ID_NOT_EXISTS = "FROM_ACCOUNT_ID_NOT_EXISTS";
     String PARAM_NOT_MATCH= "%s-NOT-MATCH";
-    String CERT_ID_MISSING = "CERT_ID_MISSING";
-    String ACCESS_CODE_MISSING = "ACCESS_CODE_MISSING";
-    String INVALID_ACCESS_CODE = "INVALID_ACCESS_CODE";
   }
 }

@@ -981,17 +981,18 @@ public class UserRequestValidator extends BaseRequestValidator {
 
   public void validateCertValidationRequest(Request request) {
     if(StringUtils.isBlank((String) request.getRequest().get(JsonKey.CERT_ID))) {
-      throw new ProjectCommonException(
-              ResponseCode.certIdRequired.getErrorCode(),
-              ResponseCode.certIdRequired.getErrorMessage(),
-              ERROR_CODE);
+      createClientError(ResponseCode.mandatoryParamsMissing, JsonKey.CERT_ID);
     }
 
     if(StringUtils.isBlank((String) request.getRequest().get(JsonKey.ACCESS_CODE))) {
-      throw new ProjectCommonException(
-              ResponseCode.accessCodeRequired.getErrorCode(),
-              ResponseCode.accessCodeRequired.getErrorMessage(),
-              ERROR_CODE);
+      createClientError(ResponseCode.mandatoryParamsMissing, JsonKey.ACCESS_CODE);
     }
+  }
+
+  private void createClientError(ResponseCode responseCode, String field) {
+    throw new ProjectCommonException(
+            responseCode.getErrorCode(),
+            ProjectUtil.formatMessage(responseCode.getErrorMessage(),field),
+            ERROR_CODE);
   }
 }

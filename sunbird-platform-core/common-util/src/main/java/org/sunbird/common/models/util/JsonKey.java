@@ -930,5 +930,7 @@ public final class JsonKey {
   public static final String ACCESS_CODE = "accessCode";
   public static final String USER_CERT = "user_cert";
   public static final String STORE = "store";
+  public static final String JSON = "json";
+  public static final String PDF = "pdf";
   private JsonKey() {}
 }
