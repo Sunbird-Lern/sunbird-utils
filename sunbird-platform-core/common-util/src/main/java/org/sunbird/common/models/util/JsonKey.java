@@ -934,6 +934,8 @@ public final class JsonKey {
   public static final String PDF = "pdf";
   public static final String JSON_URL="jsonURL";
   public static final String PDF_URL="pdfURL";
+  public static final String CREATED_AT="createdAt";
+  public static final String UPDATED_AT="updatedAt";
 
   private JsonKey() {}
 }
