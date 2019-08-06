@@ -932,5 +932,8 @@ public final class JsonKey {
   public static final String STORE = "store";
   public static final String JSON = "json";
   public static final String PDF = "pdf";
+  public static final String JSON_URL="jsonURL";
+  public static final String PDF_URL="pdfURL";
+
   private JsonKey() {}
 }
