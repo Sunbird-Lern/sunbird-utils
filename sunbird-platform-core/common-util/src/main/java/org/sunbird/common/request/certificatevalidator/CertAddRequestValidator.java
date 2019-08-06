@@ -35,10 +35,19 @@ public class CertAddRequestValidator extends BaseRequestValidator {
         this.request = request;
     }
 
+
+    /**
+     * this method we should use to get the instance of the validator class
+     * @param request
+     * @return
+     */
     public static CertAddRequestValidator getInstance(Request request) {
         return new CertAddRequestValidator(request);
     }
 
+    /**
+     * this method should be call to validate the request
+     */
     public void validate() {
         checkMandatoryFieldsPresent(request.getRequest(), mandatoryParamsList);
         validateUrls();
