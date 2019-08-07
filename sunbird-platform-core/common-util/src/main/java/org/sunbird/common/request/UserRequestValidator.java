@@ -963,7 +963,7 @@ public class UserRequestValidator extends BaseRequestValidator {
     }
   }
 
-  public void validateUserMergeRequest(Request request, String authUserToken, String sourceUserToken) {
+  public void validateUserMergeRequest(Request request) {
     if(StringUtils.isBlank((String) request.getRequest().get(JsonKey.FROM_ACCOUNT_ID))) {
       throw new ProjectCommonException(
               ResponseCode.fromAccountIdRequired.getErrorCode(),
@@ -976,12 +976,6 @@ public class UserRequestValidator extends BaseRequestValidator {
               ResponseCode.toAccountIdRequired.getErrorCode(),
               ResponseCode.toAccountIdRequired.getErrorMessage(),
               ERROR_CODE);
-    }
-    if(StringUtils.isBlank(authUserToken)) {
-      createClientError(ResponseCode.mandatoryHeaderParamsMissing, JsonKey.X_AUTHENTICATED_USER_TOKEN);
-    }
-    if(StringUtils.isBlank(sourceUserToken)) {
-      createClientError(ResponseCode.mandatoryHeaderParamsMissing, JsonKey.X_SOURCE_USER_TOKEN);
     }
   }
 
