@@ -811,8 +811,6 @@ public enum ResponseCode {
   PARAM_NOT_MATCH(ResponseMessage.Key.PARAM_NOT_MATCH,ResponseMessage.Message.PARAM_NOT_MATCH),
   PARTIAL_SUCCESS_RESPONSE(206);
 
-
-
   private int responseCode;
   /** error code contains String value */
   private String errorCode;
