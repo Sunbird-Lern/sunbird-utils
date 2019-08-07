@@ -932,8 +932,5 @@ public final class JsonKey {
   public static final String STORE = "store";
   public static final String JSON = "json";
   public static final String PDF = "pdf";
-  public static final String X_AUTHENTICATED_USER_TOKEN = "x-authenticated-user-token";
-  public static final String X_SOURCE_USER_TOKEN = "x-source-user-token";
-
   private JsonKey() {}
 }

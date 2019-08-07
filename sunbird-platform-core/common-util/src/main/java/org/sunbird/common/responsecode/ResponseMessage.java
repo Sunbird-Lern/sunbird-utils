@@ -442,7 +442,6 @@ public interface ResponseMessage {
     String TO_ACCOUNT_ID_MISSING = "To Account id is mandatory.";
     String FROM_ACCOUNT_ID_NOT_EXISTS = "From Account id not exists";
     String PARAM_NOT_MATCH="%s-NOT-MATCH";
-    String MANDATORY_HEADER_PARAMETER_MISSING = "Mandatory header parameter {0} is missing.";
   }
 
   interface Key {
@@ -821,6 +820,5 @@ public interface ResponseMessage {
     String TO_ACCOUNT_ID_MISSING = "TO_ACCOUNT_ID_MISSING";
     String FROM_ACCOUNT_ID_NOT_EXISTS = "FROM_ACCOUNT_ID_NOT_EXISTS";
     String PARAM_NOT_MATCH= "%s-NOT-MATCH";
-    String MANDATORY_HEADER_PARAMETER_MISSING = "MANDATORY_HEADER_PARAMETER_MISSING";;
   }
 }
