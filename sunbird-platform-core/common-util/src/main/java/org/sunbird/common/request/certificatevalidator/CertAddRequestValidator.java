@@ -1,14 +1,15 @@
 package org.sunbird.common.request.certificatevalidator;
 
-import org.apache.commons.validator.UrlValidator;
+import com.google.common.collect.Lists;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.request.BaseRequestValidator;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 
-import java.util.ArrayList;
+import java.text.MessageFormat;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -19,17 +20,7 @@ import java.util.List;
 public class CertAddRequestValidator extends BaseRequestValidator {
 
     private Request request;
-    private static UrlValidator urlValidator=new UrlValidator();
-    static List<String> mandatoryParamsList = new ArrayList<>();
-
-    static {
-
-        mandatoryParamsList.add(JsonKey.ID);
-        mandatoryParamsList.add(JsonKey.ACCESS_CODE);
-        mandatoryParamsList.add(JsonKey.PDF_URL);
-        mandatoryParamsList.add(JsonKey.JSON_URL);
-        mandatoryParamsList.add(JsonKey.USER_ID);
-    }
+    static List<String> mandatoryParamsList = Lists.newArrayList(JsonKey.ID,JsonKey.ACCESS_CODE,JsonKey.PDF_URL,JsonKey.USER_ID);
 
     private CertAddRequestValidator(Request request) {
         this.request = request;
@@ -50,18 +41,32 @@ public class CertAddRequestValidator extends BaseRequestValidator {
      */
     public void validate() {
         checkMandatoryFieldsPresent(request.getRequest(), mandatoryParamsList);
-        validateUrls();
+        validateMandatoryJsonData();
+    }
+
+
+    private void validateMandatoryJsonData(){
+       validatePresence();
+       validateDataType();
 
     }
 
-    private void validateUrl(String url){
-        if(!urlValidator.isValid(url)){
-            ProjectCommonException.throwClientErrorException(ResponseCode.invalidUrl);
+    private void validateDataType(){
+        if(!(request.get(JsonKey.JSON_DATA) instanceof Map)){
+            throw new ProjectCommonException(
+                    ResponseCode.dataTypeError.getErrorCode(),
+                    MessageFormat.format(
+                            ResponseCode.dataTypeError.getErrorMessage(), JsonKey.JSON_DATA, "MAP"),
+                    ResponseCode.CLIENT_ERROR.getResponseCode());
+        }}
+
+    private void validatePresence(){
+        if(null==request.get(JsonKey.JSON_DATA)) {
+            throw new ProjectCommonException(
+                    ResponseCode.mandatoryParamsMissing.getErrorCode(),
+                    ResponseCode.mandatoryParamsMissing.getErrorMessage(),
+                    ResponseCode.CLIENT_ERROR.getResponseCode(),
+                    JsonKey.JSON_DATA);
         }
     }
-    private void validateUrls(){
-        validateUrl((String) request.get(JsonKey.PDF_URL));
-        validateUrl((String)request.get(JsonKey.JSON_URL));
-    }
-
 }

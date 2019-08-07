@@ -932,7 +932,7 @@ public final class JsonKey {
   public static final String STORE = "store";
   public static final String JSON = "json";
   public static final String PDF = "pdf";
-  public static final String JSON_URL="jsonURL";
+  public static final String JSON_DATA ="jsonData";
   public static final String PDF_URL="pdfURL";
   public static final String CREATED_AT="createdAt";
   public static final String UPDATED_AT="updatedAt";
