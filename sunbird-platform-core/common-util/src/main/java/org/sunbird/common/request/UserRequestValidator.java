@@ -963,19 +963,33 @@ public class UserRequestValidator extends BaseRequestValidator {
     }
   }
 
-  public void validateUserMergeRequest(Request request) {
-    if(StringUtils.isBlank((String) request.getRequest().get(JsonKey.FROM_ACCOUNT_ID))) {
+  public void validateUserMergeRequest(Request request, String authUserToken, String sourceUserToken) {
+    if (StringUtils.isBlank((String) request.getRequest().get(JsonKey.FROM_ACCOUNT_ID))) {
       throw new ProjectCommonException(
               ResponseCode.fromAccountIdRequired.getErrorCode(),
               ResponseCode.fromAccountIdRequired.getErrorMessage(),
               ERROR_CODE);
     }
 
-    if(StringUtils.isBlank((String) request.getRequest().get(JsonKey.TO_ACCOUNT_ID))) {
+    if (StringUtils.isBlank((String) request.getRequest().get(JsonKey.TO_ACCOUNT_ID))) {
       throw new ProjectCommonException(
               ResponseCode.toAccountIdRequired.getErrorCode(),
               ResponseCode.toAccountIdRequired.getErrorMessage(),
               ERROR_CODE);
     }
+
+    if (StringUtils.isBlank(authUserToken)) {
+      createClientError(ResponseCode.mandatoryHeaderParamsMissing, JsonKey.X_AUTHENTICATED_USER_TOKEN);
+    }
+    if (StringUtils.isBlank(sourceUserToken)) {
+      createClientError(ResponseCode.mandatoryHeaderParamsMissing, JsonKey.X_SOURCE_USER_TOKEN);
+    }
+  }
+
+  private void createClientError(ResponseCode responseCode, String field) {
+    throw new ProjectCommonException(
+            responseCode.getErrorCode(),
+            ProjectUtil.formatMessage(responseCode.getErrorMessage(),field),
+            ERROR_CODE);
   }
 }
