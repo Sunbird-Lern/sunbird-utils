@@ -366,11 +366,12 @@ public class ProjectUtil {
    */
   public enum EsType {
     course("cbatch"),
+    courseBatch("course-batch"),
     content("content"),
     badgeassociations("badgeassociations"),
     user("user"),
     organisation("org"),
-    usercourses("usercourses"),
+    usercourses("user-courses"),
     usernotes("usernotes"),
     userprofilevisibility("userprofilevisibility"),
     telemetry("telemetry"),

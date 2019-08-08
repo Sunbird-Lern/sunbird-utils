@@ -439,6 +439,7 @@ public interface ResponseMessage {
     String ERROR_USER_MIGRATION_FAILED = "User migration failed.";
     String ERROR_USER_HAS_NOT_CREATED_ANY_COURSE = "User hasn't created any course, or may not have a creator role";
     String ERROR_UPLOAD_QRCODE_HTML_FAILED = "Uploading the html file to cloud storage has failed";
+    String EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS = "Contents should not be empty for batch status update.";
   }
 
   interface Key {
@@ -814,6 +815,6 @@ public interface ResponseMessage {
     String ERROR_USER_MIGRATION_FAILED = "ERROR_USER_MIGRATION_FAILED";
     String ERROR_USER_HAS_NOT_CREATED_ANY_COURSE = "USER_HAS_NOT_CREATED_ANY_COURSE";
     String ERROR_UPLOAD_QRCODE_HTML_FAILED = "ERROR_UPLOAD_QRCODE_HTML_FAILED";
-
+    String EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS = "EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS";
   }
 }
