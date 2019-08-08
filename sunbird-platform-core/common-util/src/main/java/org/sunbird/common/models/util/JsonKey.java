@@ -936,6 +936,8 @@ public final class JsonKey {
   public static final String PDF_URL="pdfURL";
   public static final String CREATED_AT="createdAt";
   public static final String UPDATED_AT="updatedAt";
+  public static final String SIGN_KEYS="signKeys";
+  public static final String ENC_KEYS="encKeys";
   public static final String SUNBIRD_STATE_IMG_URL = "sunbird_state_img_url";
   public static final String SUNBIRD_DIKSHA_IMG_URL = "sunbird_diksha_img_url";
   public static final String SUNBIRD_CERT_COMPLETION_IMG_URL = "sunbird_cert_completion_img_url";
