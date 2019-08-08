@@ -924,6 +924,24 @@ public final class JsonKey {
   public static final String TO_ACCOUNT_ID = "toAccountId";
   public static final String MERGEE_ID = "mergeeId";
   public static final String USER_MERGEE_ACCOUNT = "userMergeeAccount";
+  public static final String SEARCH_FUZZY="fuzzy";
+  public static final String SUNBIRD_FUZZY_SEARCH_THRESHOLD="sunbird_fuzzy_search_threshold";
+  public static final String CERT_ID = "certId";
+  public static final String ACCESS_CODE = "accessCode";
+  public static final String USER_CERT = "user_cert";
+  public static final String STORE = "store";
+  public static final String JSON = "json";
+  public static final String PDF = "pdf";
+  public static final String JSON_DATA ="jsonData";
+  public static final String PDF_URL="pdfURL";
+  public static final String CREATED_AT="createdAt";
+  public static final String UPDATED_AT="updatedAt";
+  public static final String SUNBIRD_STATE_IMG_URL = "sunbird_state_img_url";
+  public static final String SUNBIRD_DIKSHA_IMG_URL = "sunbird_diksha_img_url";
+  public static final String SUNBIRD_CERT_COMPLETION_IMG_URL = "sunbird_cert_completion_img_url";
+  public static final String stateImgUrl = "stateImgUrl";
+  public static final String dikshaImgUrl = "dikshaImgUrl";
+  public static final String certificateImgUrl = "certificateImgUrl";
   public static final String X_AUTHENTICATED_USER_TOKEN = "x-authenticated-user-token";
   public static final String X_SOURCE_USER_TOKEN = "x-source-user-token";
   private JsonKey() {}
