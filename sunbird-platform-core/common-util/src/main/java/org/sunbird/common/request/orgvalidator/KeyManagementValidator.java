@@ -13,12 +13,12 @@ import java.util.List;
  * this class is used to validate the request of the OrgAssignKeys Controller
  * @author anmolgupta
  */
-public class AssignKeyValidator extends BaseRequestValidator {
+public class KeyManagementValidator extends BaseRequestValidator {
 
 
     private Request request;
 
-    private AssignKeyValidator(Request request) {
+    private KeyManagementValidator(Request request) {
         this.request = request;
     }
 
@@ -28,8 +28,8 @@ public class AssignKeyValidator extends BaseRequestValidator {
      * @param request
      * @return
      */
-    public static AssignKeyValidator getInstance(Request request){
-        return new AssignKeyValidator(request);
+    public static KeyManagementValidator getInstance(Request request){
+        return new KeyManagementValidator(request);
     }
 
 
@@ -83,9 +83,9 @@ public class AssignKeyValidator extends BaseRequestValidator {
     private void validateSize(String key){
         if(((List)request.get(key)).size()==0){
             throw new ProjectCommonException(
-                    ResponseCode.errorInvalidParameterSize.getErrorCode(),
-                    ResponseCode.errorInvalidParameterSize.getErrorMessage(),
-                    ResponseCode.CLIENT_ERROR.getResponseCode(),key,">1","0");
+                    ResponseCode.errorMandatoryParamsEmpty.getErrorCode(),
+                    ResponseCode.errorMandatoryParamsEmpty.getErrorMessage(),
+                    ResponseCode.CLIENT_ERROR.getResponseCode(),key);
         }
 
     }
