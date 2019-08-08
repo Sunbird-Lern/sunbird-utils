@@ -945,5 +945,6 @@ public final class JsonKey {
   public static final String dikshaImgUrl = "dikshaImgUrl";
   public static final String certificateImgUrl = "certificateImgUrl";
   public static final String  SUNBIRD_RESET_PASS_MAIL_SUBJECT = "sunbird_reset_pass_mail_subject";
+  public static final String OTHER_LINK="otherLink";
   private JsonKey() {}
 }
