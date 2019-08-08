@@ -936,6 +936,8 @@ public final class JsonKey {
   public static final String PDF_URL="pdfURL";
   public static final String CREATED_AT="createdAt";
   public static final String UPDATED_AT="updatedAt";
+  public static final String SIGN_KEYS="signKeys";
+  public static final String ENC_KEYS="encKeys";
 
   private JsonKey() {}
 }
