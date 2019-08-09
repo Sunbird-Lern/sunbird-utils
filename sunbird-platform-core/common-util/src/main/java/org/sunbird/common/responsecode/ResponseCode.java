@@ -799,6 +799,9 @@ public enum ResponseCode {
   fromAccountIdRequired(ResponseMessage.Key.FROM_ACCOUNT_ID_MISSING, ResponseMessage.Message.FROM_ACCOUNT_ID_MISSING),
   toAccountIdRequired(ResponseMessage.Key.TO_ACCOUNT_ID_MISSING, ResponseMessage.Message.TO_ACCOUNT_ID_MISSING),
   fromAccountIdNotExists(ResponseMessage.Key.FROM_ACCOUNT_ID_NOT_EXISTS, ResponseMessage.Message.FROM_ACCOUNT_ID_NOT_EXISTS),
+  mandatoryHeaderParamsMissing(
+          ResponseMessage.Key.MANDATORY_HEADER_PARAMETER_MISSING,
+          ResponseMessage.Message.MANDATORY_HEADER_PARAMETER_MISSING),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

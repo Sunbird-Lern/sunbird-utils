@@ -944,7 +944,9 @@ public final class JsonKey {
   public static final String stateImgUrl = "stateImgUrl";
   public static final String dikshaImgUrl = "dikshaImgUrl";
   public static final String certificateImgUrl = "certificateImgUrl";
-  public static final String  SUNBIRD_RESET_PASS_MAIL_SUBJECT = "sunbird_reset_pass_mail_subject";
+  public static final String SUNBIRD_RESET_PASS_MAIL_SUBJECT = "sunbird_reset_pass_mail_subject";
   public static final String OTHER_LINK="otherLink";
+  public static final String X_AUTHENTICATED_USER_TOKEN = "x-authenticated-user-token";
+  public static final String X_SOURCE_USER_TOKEN = "x-source-user-token";
   private JsonKey() {}
 }
