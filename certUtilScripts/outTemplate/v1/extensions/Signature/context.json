@@ -1,0 +1,19 @@
+{
+  "title": "Signature",
+  "@context": {
+    "id": "@id",
+    "type": "@type",
+    "obi": "https://w3id.org/openbadges#",
+    "signature": "https://localhost/container/v1/extensions/Signature#",
+    "schema": "http://schema.org/",
+    "creator": "signature:creator",
+    "created": "signature:created",
+    "signatureValue": "signature:signatureValue"
+  },
+  "obi:validation": [
+    {
+      "obi:validatesType": "extensions:Signature",
+      "obi:validationSchema": "https://localhost/container/v1/extensions/Signature/schema.json"
+    }
+  ]
+}
