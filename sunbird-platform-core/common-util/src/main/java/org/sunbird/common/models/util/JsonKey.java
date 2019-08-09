@@ -936,12 +936,16 @@ public final class JsonKey {
   public static final String PDF_URL="pdfURL";
   public static final String CREATED_AT="createdAt";
   public static final String UPDATED_AT="updatedAt";
+  public static final String SIGN_KEYS="signKeys";
+  public static final String ENC_KEYS="encKeys";
   public static final String SUNBIRD_STATE_IMG_URL = "sunbird_state_img_url";
   public static final String SUNBIRD_DIKSHA_IMG_URL = "sunbird_diksha_img_url";
   public static final String SUNBIRD_CERT_COMPLETION_IMG_URL = "sunbird_cert_completion_img_url";
   public static final String stateImgUrl = "stateImgUrl";
   public static final String dikshaImgUrl = "dikshaImgUrl";
   public static final String certificateImgUrl = "certificateImgUrl";
+  public static final String SUNBIRD_RESET_PASS_MAIL_SUBJECT = "sunbird_reset_pass_mail_subject";
+  public static final String OTHER_LINK="otherLink";
   public static final String X_AUTHENTICATED_USER_TOKEN = "x-authenticated-user-token";
   public static final String X_SOURCE_USER_TOKEN = "x-source-user-token";
   private JsonKey() {}

@@ -162,7 +162,8 @@ public enum ActorOperations {
   MERGE_USER("mergeUser"),
   MERGE_USER_TO_ELASTIC("mergeUserToElastic"),
   VALIDATE_CERTIFICATE("validateCertificate"),
-  ADD_CERTIFICATE("addCertificate");
+  ADD_CERTIFICATE("addCertificate"),
+  ASSIGN_KEYS("assignKeys");
   private String value;
 
   /**
