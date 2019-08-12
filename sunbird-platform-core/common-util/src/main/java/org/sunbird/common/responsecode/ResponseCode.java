@@ -798,11 +798,14 @@ public enum ResponseCode {
   errorUserHasNotCreatedAnyCourse(
           ResponseMessage.Key.ERROR_USER_HAS_NOT_CREATED_ANY_COURSE,
           ResponseMessage.Message.ERROR_USER_HAS_NOT_CREATED_ANY_COURSE),
-
   emptyContentsForUpdateBatchStatus(ResponseMessage.Key.EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS, ResponseMessage.Message.EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS),
   errorUploadQRCodeCSVfailed(
           ResponseMessage.Key.ERROR_UPLOAD_QRCODE_CSV_FAILED,
           ResponseMessage.Message.ERROR_UPLOAD_QRCODE_CSV_FAILED),
+  errorNoDialcodesLinked(
+          ResponseMessage.Key.ERROR_NO_DIALCODES_LINKED,
+          ResponseMessage.Message.ERROR_NO_DIALCODES_LINKED),
+
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
