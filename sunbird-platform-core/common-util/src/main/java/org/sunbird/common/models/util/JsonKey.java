@@ -916,5 +916,6 @@ public final class JsonKey {
   public static final String TCP = "tcp";
   public static final String REST = "rest";
 
+  public static final String SUNBIRD_COURSE_DIALCODES_DB = "sunbird_course_dialcodes_db";
   private JsonKey() {}
 }
