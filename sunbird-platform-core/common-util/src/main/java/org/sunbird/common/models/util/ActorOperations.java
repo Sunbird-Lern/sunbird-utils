@@ -157,7 +157,9 @@ public enum ActorOperations {
   CLEAR_CACHE("clearCache"),
   USER_TENANT_MIGRATE("userTenantMigrate"),
   GET_PARTICIPANTS("getParticipants"),
-  DOWNLOAD_QR_CODES("downloadQRCodes");
+  DOWNLOAD_QR_CODES("downloadQRCodes"),
+  GET_USER_COURSE("getUserCourse");
+
   private String value;
 
   /**

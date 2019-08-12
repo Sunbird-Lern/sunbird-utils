@@ -438,6 +438,8 @@ public interface ResponseMessage {
     String ERROR_BGMS_MISMATCH = "Mismatch in {0} at row - {1}";
     String ERROR_USER_MIGRATION_FAILED = "User migration failed.";
     String ERROR_USER_HAS_NOT_CREATED_ANY_COURSE = "User hasn't created any course, or may not have a creator role";
+    String EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS = "Contents should not be empty for batch status update.";
+    String ERROR_UPLOAD_QRCODE_CSV_FAILED = "Uploading the html file to cloud storage has failed.";
   }
 
   interface Key {
@@ -812,5 +814,7 @@ public interface ResponseMessage {
     String ERROR_BGMS_MISMATCH = "ERROR_BGMS_MISMATCH";
     String ERROR_USER_MIGRATION_FAILED = "ERROR_USER_MIGRATION_FAILED";
     String ERROR_USER_HAS_NOT_CREATED_ANY_COURSE = "USER_HAS_NOT_CREATED_ANY_COURSE";
+    String EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS = "EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS";
+    String ERROR_UPLOAD_QRCODE_CSV_FAILED = "Uploading the html file to cloud storage has failed";
   }
 }
