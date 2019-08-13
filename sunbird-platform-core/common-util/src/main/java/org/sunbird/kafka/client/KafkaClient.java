@@ -28,13 +28,15 @@ import org.sunbird.common.responsecode.ResponseCode;
  */
 public class KafkaClient {
 
-  private final static String BOOTSTRAP_SERVERS = ProjectUtil.getConfigValue("kafka_urls");
+  private static final String BOOTSTRAP_SERVERS = ProjectUtil.getConfigValue("kafka_urls");
   private static Producer<Long, String> producer;
   private static Consumer<Long, String> consumer;
+  private static volatile Map<String, List<PartitionInfo>> topics;
 
   static {
     loadProducerProperties();
     loadConsumerProperties();
+    loadTopics();
   }
 
   private static void loadProducerProperties() {
@@ -43,7 +45,17 @@ public class KafkaClient {
     props.put(ProducerConfig.CLIENT_ID_CONFIG, "KafkaClientProducer");
     props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, LongSerializer.class.getName());
     props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+    props.put(ProducerConfig.LINGER_MS_CONFIG, ProjectUtil.getConfigValue("kafka_linger_ms"));
     producer = new KafkaProducer<Long, String>(props);
+  }
+
+  private static void loadTopics() {
+    if (consumer == null) {
+      loadConsumerProperties();
+    }
+    topics = consumer.listTopics();
+    ProjectLogger.log(
+        "KafkaClient:loadTopics Kafka topic infos =>" + topics, LoggerEnum.INFO.name());
   }
 
   private static void loadConsumerProperties() {
@@ -64,19 +76,23 @@ public class KafkaClient {
   }
 
   public static void send(String event, String topic) throws Exception {
-    if(validate(topic)) {
+    if (validate(topic)) {
       final Producer<Long, String> producer = getProducer();
       ProducerRecord<Long, String> record = new ProducerRecord<Long, String>(topic, event);
       producer.send(record);
-    }else {
+    } else {
       ProjectLogger.log("Topic id: " + topic + ", does not exists.", LoggerEnum.ERROR);
-      throw new ProjectCommonException("TOPIC_NOT_EXISTS_EXCEPTION", "Topic id: " + topic + ", does not exists.", ResponseCode.CLIENT_ERROR.getResponseCode());
+      throw new ProjectCommonException(
+          "TOPIC_NOT_EXISTS_EXCEPTION",
+          "Topic id: " + topic + ", does not exists.",
+          ResponseCode.CLIENT_ERROR.getResponseCode());
     }
   }
 
-  private static boolean validate(String topic) throws Exception{
-    Consumer<Long, String> consumer = getConsumer();
-    Map<String, List<PartitionInfo>> topics = consumer.listTopics();
+  private static boolean validate(String topic) throws Exception {
+    if (topics == null) {
+      loadTopics();
+    }
     return topics.keySet().contains(topic);
   }
 }
