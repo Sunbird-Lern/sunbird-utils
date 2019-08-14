@@ -948,6 +948,7 @@ public final class JsonKey {
   public static final String OTHER_LINK="otherLink";
   public static final String X_AUTHENTICATED_USER_TOKEN = "x-authenticated-user-token";
   public static final String X_SOURCE_USER_TOKEN = "x-source-user-token";
+  public static final String SUNBIRD_SUBDOMAIN_KEYCLOAK_BASE_URL = "sunbird_subdomain_keycloak_base_url";
   public static final String ACTION = "action";
   public static final String ITERATION = "iteration";
   public static final String TELEMETRY_TARGET_USER_MERGE_TYPE = "MergeUserCoursesAndCert";
