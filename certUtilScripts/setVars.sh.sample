@@ -1,0 +1,32 @@
+#Sets up all environment vars.
+
+################### CERT_UTILS configuration ##################################
+
+# The environment where this is being used.
+export PROTO=https://
+export DOMAIN=dev.sunbirded.org
+
+# Badge related
+export BADGE_NAME="Course Completion Certificate"
+export BADGE_DESCRIPTION="Successfully completed course on Sunbird"
+export BADGE_IMAGE=""
+export CRITERIA=""
+
+# Public key
+export ROOT_ORG_ID=1234
+export KEY_ID=1
+export PUBLICKEY_URL=$DOMAIN_URL/$ROOT_ORG_ID/$KEY_ID.json
+
+# Issuer
+export ISSUER_NAME="Government of Gujarat"
+export ISSUER_URL="https://gcert.gujarat.gov.in/gcert/"
+
+export BATCH_ID=batch_xyz
+
+export CONTAINER_NAME=certs
+export CLOUD_STORAGE_TYPE=azure
+export CLOUD_UPLOAD_RETRY_COUNT=3
+export AZURE_STORAGE_SECRET=someKey
+export AZURE_STORAGE_KEY=sb
+
+################### END -  configuration #############################

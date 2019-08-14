@@ -1,0 +1,17 @@
+{
+  "title": "Rank Assessment",
+  "@context": {
+    "id": "@id",
+    "type": "@type",
+    "obi": "https://w3id.org/openbadges#",
+    "rankAssessment": "https://dev.sunbirdev.org/certs/v1/extensions/RankAssessment#",
+    "schema": "http://schema.org/",
+    "maxValue": "rankAssessment:maxValue"
+  },
+  "obi:validation": [
+    {
+      "obi:validatesType": "extensions:RankAssessment",
+      "obi:validationSchema": "https://dev.sunbirdev.org/certs/v1/extensions/RankAssessment/schema.json"
+    }
+  ]
+}
