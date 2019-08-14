@@ -1,0 +1,19 @@
+{
+  "title": "MarksAssessment",
+  "@context": {
+    "id": "@id",
+    "type": "@type",
+    "obi": "https://w3id.org/openbadges#",
+    "marksAssessment": "https://dev.sunbirdev.org/certs/v1/extensions/MarksAssessment#",
+    "schema": "http://schema.org/",
+    "minValue": "marksAssessment:minValue",
+    "maxValue": "marksAssessment:maxValue",
+    "passValue": "marksAssessment:passValue"
+  },
+  "obi:validation": [
+    {
+      "obi:validatesType": "extensions:MarksAssessment",
+      "obi:validationSchema": "https://dev.sunbirdev.org/certs/v1/extensions/MarksAssessment/schema.json"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "title": "Assessed",
+  "@context": {
+    "id": "@id",
+    "obi": "https://w3id.org/openbadges#",
+    "assessedEvidence": "https://dev.sunbirdev.org/certs/v1/extensions/AssessedEvidence#",
+    "schema": "http://schema.org/",
+    "subject": "assessedEvidence:subject",
+    "assessedBy": "assessedEvidence:assessedBy",
+    "assessedOn": "assessedEvidence:assessedOn",
+    "assessment": "assessedEvidence:assessment",
+    "type": "assessedEvidence:type",
+    "value": "assessedEvidence:value",
+    "signature": "assessedEvidence:signature"
+  },
+  "obi:validation": [
+    {
+      "obi:validatesType": "extensions:AssessedEvidence",
+      "obi:validationSchema": "https://dev.sunbirdev.org/certs/v1/extensions/AssessedEvidence/schema.json"
+    }
+  ]
+}

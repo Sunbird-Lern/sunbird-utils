@@ -948,5 +948,13 @@ public final class JsonKey {
   public static final String OTHER_LINK="otherLink";
   public static final String X_AUTHENTICATED_USER_TOKEN = "x-authenticated-user-token";
   public static final String X_SOURCE_USER_TOKEN = "x-source-user-token";
+  public static final String SUNBIRD_SUBDOMAIN_KEYCLOAK_BASE_URL = "sunbird_subdomain_keycloak_base_url";
+  public static final String ACTION = "action";
+  public static final String ITERATION = "iteration";
+  public static final String TELEMETRY_TARGET_USER_MERGE_TYPE = "MergeUserCoursesAndCert";
+  public static final String TELEMETRY_PRODUCER_USER_MERGE_ID = "org.sunbird.platform";
+  public static final String TELEMETRY_EDATA_USER_MERGE_ACTION = "merge-user-courses-and-cert";
+  public static final String BE_JOB_REQUEST = "BE_JOB_REQUEST";
+  public static final String TELEMETRY_ACTOR_USER_MERGE_ID = "Merge User Courses and Cert";
   private JsonKey() {}
 }
