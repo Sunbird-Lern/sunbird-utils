@@ -1,6 +1,8 @@
 /** */
 package org.sunbird.cassandra;
 
+import com.datastax.driver.core.ResultSet;
+import com.google.common.util.concurrent.FutureCallback;
 import java.util.List;
 import java.util.Map;
 import org.sunbird.common.models.response.Response;
@@ -341,4 +343,23 @@ public interface CassandraOperation {
    */
   Response batchInsertWithTTL(
       String keyspaceName, String tableName, List<Map<String, Object>> records, List<Integer> ttls);
+
+  public Response getRecords(
+      String keyspace, String table, Map<String, Object> filters, List<String> fields);
+
+  /**
+   * Apply callback on cassandra async read call.
+   *
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param filters Column and value map for filtering
+   * @param fields List of columns to be returned in each record
+   * @param callback action callback to be applied on resultset when it is returned.
+   */
+  public void applyOperationOnRecordsAsync(
+      String keySpace,
+      String table,
+      Map<String, Object> filters,
+      List<String> fields,
+      FutureCallback<ResultSet> callback);
 }

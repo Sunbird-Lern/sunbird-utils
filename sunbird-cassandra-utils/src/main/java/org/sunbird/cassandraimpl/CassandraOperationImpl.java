@@ -44,9 +44,9 @@ import org.sunbird.helper.CassandraConnectionMngrFactory;
  * @author Amit Kumar
  * @desc this class will hold functions for cassandra db interaction
  */
-public class CassandraOperationImpl implements CassandraOperation {
+public abstract class CassandraOperationImpl implements CassandraOperation {
 
-  private CassandraConnectionManager connectionManager;
+  protected CassandraConnectionManager connectionManager;
 
   public CassandraOperationImpl() {
     PropertiesCache propertiesCache = PropertiesCache.getInstance();
@@ -173,9 +173,6 @@ public class CassandraOperationImpl implements CassandraOperation {
       String propertyName,
       Object propertyValue,
       List<String> fields) {
-    long startTime = System.currentTimeMillis();
-    ProjectLogger.log(
-        "Cassandra Service getRecordsByProperty method started at ==" + startTime, LoggerEnum.INFO);
     Response response = new Response();
     Session session = connectionManager.getSession(keyspaceName);
     try {
@@ -199,7 +196,6 @@ public class CassandraOperationImpl implements CassandraOperation {
           ResponseCode.SERVER_ERROR.getErrorMessage(),
           ResponseCode.SERVER_ERROR.getResponseCode());
     }
-    logQueryElapseTime("getRecordsByProperty", startTime);
     return response;
   }
 

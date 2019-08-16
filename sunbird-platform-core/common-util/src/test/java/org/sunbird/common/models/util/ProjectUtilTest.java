@@ -268,9 +268,10 @@ public class ProjectUtilTest extends BaseHttpTest {
   public void testEsTypeSuccess() {
     assertEquals("content", ProjectUtil.EsType.content.getTypeName());
     assertEquals("cbatch", ProjectUtil.EsType.course.getTypeName());
+    assertEquals("course-batch", ProjectUtil.EsType.courseBatch.getTypeName());
     assertEquals("user", ProjectUtil.EsType.user.getTypeName());
     assertEquals("org", ProjectUtil.EsType.organisation.getTypeName());
-    assertEquals("usercourses", ProjectUtil.EsType.usercourses.getTypeName());
+    assertEquals("user-courses", ProjectUtil.EsType.usercourses.getTypeName());
     assertEquals("usernotes", ProjectUtil.EsType.usernotes.getTypeName());
     assertEquals("userprofilevisibility", ProjectUtil.EsType.userprofilevisibility.getTypeName());
   }

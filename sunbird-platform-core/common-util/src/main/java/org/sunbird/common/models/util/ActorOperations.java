@@ -163,7 +163,10 @@ public enum ActorOperations {
   MERGE_USER_TO_ELASTIC("mergeUserToElastic"),
   VALIDATE_CERTIFICATE("validateCertificate"),
   ADD_CERTIFICATE("addCertificate"),
-  ASSIGN_KEYS("assignKeys");
+  ASSIGN_KEYS("assignKeys"),
+  DOWNLOAD_QR_CODES("downloadQRCodes"),
+  GET_USER_COURSE("getUserCourse");
+
   private String value;
 
   /**

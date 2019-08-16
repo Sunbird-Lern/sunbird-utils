@@ -915,6 +915,7 @@ public final class JsonKey {
   public static final String RECIPIENT_PHONES = "recipientPhones";
   public static final String TCP = "tcp";
   public static final String REST = "rest";
+<<<<<<< HEAD
   public static final String SUNBIRD_AUDIT_EVNET_BATCH_ALLOWED = "sunbird_audit_event_batch_allowed";
   public static final String ES_OR_OPERATION = "$or";
   public static final String PREV_USED_EMAIL ="prevUsedEmail";
@@ -956,5 +957,7 @@ public final class JsonKey {
   public static final String TELEMETRY_EDATA_USER_MERGE_ACTION = "merge-user-courses-and-cert";
   public static final String BE_JOB_REQUEST = "BE_JOB_REQUEST";
   public static final String TELEMETRY_ACTOR_USER_MERGE_ID = "Merge User Courses and Cert";
+
+  public static final String SUNBIRD_COURSE_DIALCODES_DB = "sunbird_course_dialcodes_db";
   private JsonKey() {}
 }
