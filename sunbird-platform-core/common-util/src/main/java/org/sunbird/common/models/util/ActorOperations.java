@@ -164,8 +164,8 @@ public enum ActorOperations {
   VALIDATE_CERTIFICATE("validateCertificate"),
   ADD_CERTIFICATE("addCertificate"),
   ASSIGN_KEYS("assignKeys"),
-  GET_SIGN_URL("getSignUrl");
-  	
+  GET_SIGN_URL("getSignUrl"),
+  MERGE_USER_CERTIFICATE("mergeUserCertificate");
   private String value;
 
   /**
