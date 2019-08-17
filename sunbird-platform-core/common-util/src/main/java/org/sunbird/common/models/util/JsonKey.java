@@ -915,7 +915,7 @@ public final class JsonKey {
   public static final String RECIPIENT_PHONES = "recipientPhones";
   public static final String TCP = "tcp";
   public static final String REST = "rest";
-  public static final String SUNBIRD_AUDIT_EVNET_BATCH_ALLOWED = "sunbird_audit_event_batch_allowed";
+  public static final String SUNBIRD_AUDIT_EVENT_BATCH_ALLOWED = "sunbird_audit_event_batch_allowed";
   public static final String ES_OR_OPERATION = "$or";
   public static final String PREV_USED_EMAIL ="prevUsedEmail";
   public static final String PREV_USED_PHONE ="prevUsedPhone";
@@ -949,5 +949,7 @@ public final class JsonKey {
   public static final String X_AUTHENTICATED_USER_TOKEN = "x-authenticated-user-token";
   public static final String X_SOURCE_USER_TOKEN = "x-source-user-token";
   public static final String SUNBIRD_SUBDOMAIN_KEYCLOAK_BASE_URL = "sunbird_subdomain_keycloak_base_url";
+  public static final String SUNBIRD_CERT_SERVICE_BASE_URL = "sunbird_cert_service_base_url";
+  public static final String SUNBIRD_CERT_DOWNLOAD_URI = "sunbird_cert_download_uri";
   private JsonKey() {}
 }
