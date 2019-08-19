@@ -1,6 +1,8 @@
 package org.sunbird.common.request.certificatevalidator;
 
 import com.google.common.collect.Lists;
+
+import org.apache.commons.lang.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.request.BaseRequestValidator;
@@ -18,6 +20,7 @@ import java.util.Map;
  * @author anmolgupta
  */
 public class CertAddRequestValidator extends BaseRequestValidator {
+	public static final String PDF_URL = "pdfUrl";
 
     private Request request;
     static List<String> mandatoryParamsList = Lists.newArrayList(JsonKey.ID,JsonKey.ACCESS_CODE,JsonKey.PDF_URL,JsonKey.USER_ID);
@@ -69,4 +72,15 @@ public class CertAddRequestValidator extends BaseRequestValidator {
                     JsonKey.JSON_DATA);
         }
     }
+    
+	public void validateDownlaodFileData() {
+		if (StringUtils.isBlank((String) request.getRequest().get(PDF_URL))) {
+			throw new ProjectCommonException(ResponseCode.mandatoryParamsMissing.getErrorCode(),
+					ResponseCode.mandatoryParamsMissing.getErrorMessage(), ResponseCode.CLIENT_ERROR.getResponseCode(),
+					PDF_URL);
+
+		}
+
+	}
+    
 }
