@@ -10,12 +10,12 @@ export DOMAIN=dev.sunbirded.org
 export BADGE_NAME="Course Completion Certificate"
 export BADGE_DESCRIPTION="Successfully completed course on Sunbird"
 export BADGE_IMAGE=""
-export CRITERIA=""
+export CRITERIA_NARRATIVE="Course completion certificate"
 
 # Public key
 export ROOT_ORG_ID=1234
 export KEY_ID=1
-export PUBLICKEY_URL=$DOMAIN_URL/$ROOT_ORG_ID/$KEY_ID.json
+export PUBLIC_KEY_PEM=""
 
 # Issuer
 export ISSUER_NAME="Government of Gujarat"
