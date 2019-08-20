@@ -18,8 +18,8 @@ export KEY_ID=1
 export PUBLIC_KEY_PEM=""
 
 # Issuer
-export ISSUER_NAME="Government of Gujarat"
-export ISSUER_URL="https://gcert.gujarat.gov.in/gcert/"
+export ISSUER_NAME="Project Sunbird"
+export ISSUER_URL="https://github.com/project-sunbird"
 
 export BATCH_ID=batch_xyz
 
