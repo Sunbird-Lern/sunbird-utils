@@ -2,9 +2,9 @@ const config = require("./config.js");
 var fs = require('fs');
 
 var badge = {
-    "id": config.domainUrl + "/" + process.env.CONTAINER_NAME + "/" + process.env.ROOT_ORG_ID + "/" + config.badge.batchId + "/Badge.json",
+    "id": config.domainUrl + "/" + config.slug + "/" + process.env.ROOT_ORG_ID + "/" + config.badge.batchId + "/Badge.json",
     "type": "BadgeClass",
-    "@context": config.domainUrl + "/" + process.env.CONTAINER_NAME + "/v1/context.json",
+    "@context": config.domainUrl + "/" + config.slug + "/v1/context.json",
     "name": config.badge.name,
     "description": config.badge.description,
     "image": config.badge.image,
@@ -12,26 +12,26 @@ var badge = {
         "type": [
             "Criteria"
         ],
-        "id": config.domainUrl + "/" + process.env.ROOT_ORG_ID + "/" + config.badge.batchId,
+        "id": config.domainUrl + "/" + config.slug + "/" + process.env.ROOT_ORG_ID + "/" + config.badge.batchId,
         "narrative": config.badge.narrative
     },
-    "issuer": config.domainUrl + "/" + process.env.CONTAINER_NAME + "/" + process.env.ROOT_ORG_ID + "/Issuer.json"
+    "issuer": config.domainUrl + "/" + config.slug + "/" + process.env.ROOT_ORG_ID + "/Issuer.json"
 }
 var issuer = {
-    "@context": config.domainUrl + "/" + process.env.CONTAINER_NAME + "/v1/context.json",
+    "@context": config.domainUrl + "/" + config.slug + "/v1/context.json",
     "type": "Issuer",
-    "id": config.domainUrl + "/" + process.env.CONTAINER_NAME + "/" + process.env.ROOT_ORG_ID + "/Issuer.json",
+    "id": config.domainUrl + "/" + config.slug + "/" + process.env.ROOT_ORG_ID + "/Issuer.json",
     "name": config.issuer.name,
     "url": config.issuer.url,
-    "publicKey": config.domainUrl + "/" + process.env.CONTAINER_NAME + "/" + process.env.ROOT_ORG_ID + "/" + process.env.KEY_ID + "_publickey.json"
+    "publicKey": config.domainUrl + "/" + config.slug + "/" + process.env.ROOT_ORG_ID + "/" + process.env.KEY_ID + "_publickey.json"
 }
 
 
 var publicKey = {
-    "@context": config.domainUrl + "/" + process.env.CONTAINER_NAME + "/v1/context.json",
+    "@context": config.domainUrl + "/" + config.slug + "/v1/context.json",
     "type": "CryptographicKey",
-    "id": config.domainUrl + "/" + process.env.CONTAINER_NAME + "/" + process.env.ROOT_ORG_ID + "/" + process.env.KEY_ID + "_publickey.json",
-    "owner": config.domainUrl + "/" + process.env.CONTAINER_NAME + "/" + process.env.ROOT_ORG_ID + "/Issuer.json",
+    "id": config.domainUrl + "/" + config.slug + "/" + process.env.ROOT_ORG_ID + "/" + process.env.KEY_ID + "_publickey.json",
+    "owner": config.domainUrl + "/" + config.slug + "/" + process.env.ROOT_ORG_ID + "/Issuer.json",
     "publicKeyPem": config.publicKeyPem
 }
 

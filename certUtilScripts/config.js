@@ -12,6 +12,7 @@ const config = {
     },
     "domainUrl": "" || process.env.PROTO + process.env.DOMAIN,
     "publicKeyPem": "" || process.env.PUBLIC_KEY_PEM,
+    "slug":"certs"
 }
 
 module.exports = config;
