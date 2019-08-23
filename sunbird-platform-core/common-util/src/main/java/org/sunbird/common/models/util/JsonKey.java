@@ -919,7 +919,7 @@ public final class JsonKey {
   public static final String ES_OR_OPERATION = "$or";
   public static final String PREV_USED_EMAIL ="prevUsedEmail";
   public static final String PREV_USED_PHONE ="prevUsedPhone";
-  public static final String MERGE = "merge";
+  public static final String MERGE_USER = "Mergeuser";
   public static final String FROM_ACCOUNT_ID ="fromAccountId";
   public static final String TO_ACCOUNT_ID = "toAccountId";
   public static final String MERGEE_ID = "mergeeId";
@@ -945,7 +945,6 @@ public final class JsonKey {
   public static final String dikshaImgUrl = "dikshaImgUrl";
   public static final String certificateImgUrl = "certificateImgUrl";
   public static final String SUNBIRD_RESET_PASS_MAIL_SUBJECT = "sunbird_reset_pass_mail_subject";
-  public static final String OTHER_LINK="otherLink";
   public static final String X_AUTHENTICATED_USER_TOKEN = "x-authenticated-user-token";
   public static final String X_SOURCE_USER_TOKEN = "x-source-user-token";
   public static final String SUNBIRD_SUBDOMAIN_KEYCLOAK_BASE_URL = "sunbird_subdomain_keycloak_base_url";
@@ -958,5 +957,8 @@ public final class JsonKey {
   public static final String TELEMETRY_EDATA_USER_MERGE_ACTION = "merge-user-courses-and-cert";
   public static final String BE_JOB_REQUEST = "BE_JOB_REQUEST";
   public static final String TELEMETRY_ACTOR_USER_MERGE_ID = "Merge User Courses and Cert";
+  public static final String CERTIFICATE = "Certificate";
+  public static final String MERGE_CERT = "Mergecert";
+
   private JsonKey() {}
 }
