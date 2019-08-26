@@ -957,6 +957,7 @@ public final class JsonKey {
   public static final String TELEMETRY_EDATA_USER_MERGE_ACTION = "merge-user-courses-and-cert";
   public static final String BE_JOB_REQUEST = "BE_JOB_REQUEST";
   public static final String TELEMETRY_ACTOR_USER_MERGE_ID = "Merge User Courses and Cert";
+  public static final String SUNBIRD_ACCOUNT_MERGE_BODY  = "sunbird_account_merge_body";
   public static final String CERTIFICATE = "Certificate";
   public static final String MERGE_CERT = "Mergecert";
 
