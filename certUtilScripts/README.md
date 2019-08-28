@@ -33,7 +33,8 @@ container_name <br>
             - ...other files...
 - <ROOT_ORG_ID>
     - <BATCH_ID>
+        - Badge.json
         - ...all certificate files go here...
-    - issuer.json
+    - Issuer.json
     - 1_publicKey.json
     - 2_publicKey.json
