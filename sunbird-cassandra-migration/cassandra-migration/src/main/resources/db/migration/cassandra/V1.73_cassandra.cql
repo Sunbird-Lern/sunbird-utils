@@ -1,0 +1,1 @@
+ALTER TABLE sunbird.user ADD IsStateValidated boolean;
