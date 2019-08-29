@@ -11,11 +11,12 @@ public class Matcher {
 
     /**
      * this method will match the two arguments , equal or not
-     * @param i1
-     * @param i2
+     * if two string is null or empty this method will return true
+     * @param firstVal
+     * @param secondeVal
      * @return boolean
      */
-    public static boolean matchIdentifiers(String i1,String i2){
-        return StringUtils.equalsIgnoreCase(i1,i2);
+    public static boolean matchIdentifiers(String firstVal,String secondeVal){
+        return StringUtils.equalsIgnoreCase(firstVal,secondeVal);
     }
 }
