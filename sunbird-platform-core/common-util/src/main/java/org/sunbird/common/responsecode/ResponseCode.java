@@ -934,7 +934,6 @@ public enum ResponseCode {
       ResponseCode value = null;
       ResponseCode responseCodes[] = ResponseCode.values();
       for (ResponseCode response : responseCodes) {
-        ProjectLogger.log("ResponseCode:getResponse:VALUE OF EXCEPTION".concat(response.getErrorCode()+""), LoggerEnum.INFO.name());
         if (response.getErrorCode().equals(errorCode)) {
           return response;
         }
