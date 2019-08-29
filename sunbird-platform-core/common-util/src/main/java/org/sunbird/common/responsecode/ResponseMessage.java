@@ -443,7 +443,7 @@ public interface ResponseMessage {
     String FROM_ACCOUNT_ID_NOT_EXISTS = "From Account id not exists";
     String PARAM_NOT_MATCH="%s-NOT-MATCH";
     String MANDATORY_HEADER_PARAMETER_MISSING = "Mandatory header parameter {0} is missing.";
-    String RECOVERY_PARAM_MATCH_EXCEPTION="{0} couldn't be same as {1}";
+    String RECOVERY_PARAM_MATCH_EXCEPTION="{0} could not be same as {1}";
   }
 
   interface Key {
