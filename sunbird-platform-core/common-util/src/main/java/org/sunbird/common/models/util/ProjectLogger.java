@@ -163,12 +163,16 @@ public class ProjectLogger {
     long unixTime = System.currentTimeMillis();
     LogEvent te = new LogEvent();
     Map<String, Object> eks = new HashMap<String, Object>();
-    eks.put(JsonKey.LEVEL, logLevel);
-    eks.put(JsonKey.MESSAGE, message);
     String msgId = ExecutionContext.getRequestId();
+    String deviceId =(String)ExecutionContext.getCurrent().getRequestContext().get(JsonKey.DEVICE_ID);
+    eks.put(JsonKey.LEVEL, logLevel);
     if (null != msgId) {
       eks.put(JsonKey.REQUEST_MESSAGE_ID, msgId);
     }
+    if (null != deviceId) {
+      eks.put(JsonKey.DEVICE_ID, deviceId);
+    }
+    eks.put(JsonKey.MESSAGE, message);
     if (null != data) {
       eks.put(JsonKey.DATA, data);
     }
