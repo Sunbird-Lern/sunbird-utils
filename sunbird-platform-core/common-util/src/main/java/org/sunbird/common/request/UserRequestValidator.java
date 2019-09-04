@@ -1005,10 +1005,10 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   private void validateRecoveryEmailOrPhone(Request userRequest) {
-    if (userRequest.getRequest().containsKey(JsonKey.RECOVERY_EMAIL) && StringUtils.isNotBlank((String)userRequest.get(JsonKey.RECOVERY_EMAIL))) {
+    if (StringUtils.isNotBlank((String)userRequest.get(JsonKey.RECOVERY_EMAIL))) {
       validateEmail((String) userRequest.get(JsonKey.RECOVERY_EMAIL));
     }
-    if (userRequest.getRequest().containsKey(JsonKey.RECOVERY_PHONE) && StringUtils.isNotBlank((String)userRequest.get(JsonKey.RECOVERY_PHONE))) {
+    if (StringUtils.isNotBlank((String)userRequest.get(JsonKey.RECOVERY_PHONE))) {
       validatePhone((String) userRequest.get(JsonKey.RECOVERY_PHONE));
     }
   }
