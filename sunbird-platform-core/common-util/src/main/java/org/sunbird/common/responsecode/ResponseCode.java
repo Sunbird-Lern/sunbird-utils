@@ -2,6 +2,8 @@ package org.sunbird.common.responsecode;
 
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.LoggerEnum;
+import org.sunbird.common.models.util.ProjectLogger;
 
 /** @author Manzarul */
 public enum ResponseCode {
@@ -802,6 +804,8 @@ public enum ResponseCode {
   mandatoryHeaderParamsMissing(
           ResponseMessage.Key.MANDATORY_HEADER_PARAMETER_MISSING,
           ResponseMessage.Message.MANDATORY_HEADER_PARAMETER_MISSING),
+  recoveryParamsMatchException(ResponseMessage.Key.RECOVERY_PARAM_MATCH_EXCEPTION,ResponseMessage.Message.RECOVERY_PARAM_MATCH_EXCEPTION),
+  PARAM_NOT_MATCH(ResponseMessage.Key.PARAM_NOT_MATCH,ResponseMessage.Message.PARAM_NOT_MATCH),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
@@ -811,9 +815,7 @@ public enum ResponseCode {
   REDIRECTION_REQUIRED(302),
   TOO_MANY_REQUESTS(429),
   SERVICE_UNAVAILABLE(503),
-  PARAM_NOT_MATCH(ResponseMessage.Key.PARAM_NOT_MATCH,ResponseMessage.Message.PARAM_NOT_MATCH),
   PARTIAL_SUCCESS_RESPONSE(206);
-
   private int responseCode;
   /** error code contains String value */
   private String errorCode;

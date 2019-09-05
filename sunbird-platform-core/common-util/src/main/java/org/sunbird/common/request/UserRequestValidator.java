@@ -367,6 +367,7 @@ public class UserRequestValidator extends BaseRequestValidator {
     validateLocationCodes(userRequest);
     validateExtIdTypeAndProvider(userRequest);
     validateFrameworkDetails(userRequest);
+    validateRecoveryEmailOrPhone(userRequest);
   }
 
   private void validateUserOrgField(Request userRequest) {
@@ -1001,5 +1002,14 @@ public class UserRequestValidator extends BaseRequestValidator {
             responseCode.getErrorCode(),
             ProjectUtil.formatMessage(responseCode.getErrorMessage(),field),
             ERROR_CODE);
+  }
+
+  private void validateRecoveryEmailOrPhone(Request userRequest) {
+    if (StringUtils.isNotBlank((String)userRequest.get(JsonKey.RECOVERY_EMAIL))) {
+      validateEmail((String) userRequest.get(JsonKey.RECOVERY_EMAIL));
+    }
+    if (StringUtils.isNotBlank((String)userRequest.get(JsonKey.RECOVERY_PHONE))) {
+      validatePhone((String) userRequest.get(JsonKey.RECOVERY_PHONE));
+    }
   }
 }
