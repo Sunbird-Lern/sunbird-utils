@@ -962,6 +962,12 @@ public final class JsonKey {
   public static final String MERGE_CERT = "Mergecert";
   public static final String RECOVERY_EMAIL="recoveryEmail";
   public static final String RECOVERY_PHONE="recoveryPhone";
+  public static final String SUPPORTED_COlUMNS="supportedColumns";
+  public static final String INPUT_STATUS="input status";
+  public static final String EXTERNAL_USER_ID="ext user id";
+  public static final String EXTERNAL_ORG_ID="ext org id";
+  public static final String MIGRATION_USER_OBJECT="MigrationUser";
+  public static final String TASK_COUNT="taskCount";
 
   private JsonKey() {}
 }
