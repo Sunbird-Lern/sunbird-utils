@@ -242,10 +242,9 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
                 } else {
                   promise.success(new HashMap<>());
                 }
+              } else {
+                promise.success(new HashMap<>());
               }
-              else{
-              promise.success(new HashMap<>());
-            }
             }
 
             @Override
@@ -548,7 +547,7 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
     BulkRequest request = new BulkRequest();
     Promise<Boolean> promise = Futures.promise();
     for (Map<String, Object> data : dataList) {
-      request.add(new IndexRequest(index, _DOC).source(data));
+      request.add(new IndexRequest(index, _DOC, (String) data.get(JsonKey.ID)).source(data));
     }
     ActionListener<BulkResponse> listener =
         new ActionListener<BulkResponse>() {
@@ -560,12 +559,15 @@ public class ElasticSearchRestHighImpl implements ElasticSearchService {
               while (responseItr.hasNext()) {
 
                 BulkItemResponse bResponse = responseItr.next();
-                ProjectLogger.log(
-                    "ElasticSearchRestHighImpl:bulkinsert: api response==="
-                        + bResponse.getId()
-                        + " "
-                        + bResponse.isFailed(),
-                    LoggerEnum.INFO.name());
+
+                if (bResponse.isFailed()) {
+                  ProjectLogger.log(
+                      "ElasticSearchRestHighImpl:bulkinsert: api response==="
+                          + bResponse.getId()
+                          + " "
+                          + bResponse.getFailureMessage(),
+                      LoggerEnum.INFO.name());
+                }
               }
             }
           }
