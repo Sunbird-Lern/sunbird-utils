@@ -1,8 +1,8 @@
 package org.sunbird.statevalidateutil.connection.factory;
 
 
-import org.sunbird.decryptionUtil.connection.CassandraConnection;
-import org.sunbird.decryptionUtil.connection.Connection;
+import org.sunbird.statevalidateutil.connection.CassandraConnection;
+import org.sunbird.statevalidateutil.connection.Connection;
 
 public class CassandraConnectionFactory implements ConnectionFactory {
   @Override

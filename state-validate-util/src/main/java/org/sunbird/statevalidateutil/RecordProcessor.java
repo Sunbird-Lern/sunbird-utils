@@ -81,11 +81,10 @@ public class RecordProcessor extends StatusTracker {
                                 startTracingRecord(userObject.getUserId());
                                 boolean isStateValidated = isStateUSer(userObject.getUserId(), custodianOrgId);
                                 Map<String, Object> userBooleanMap = new HashMap<>();
-                                userBooleanMap.put("isStateValidated", isStateValidated);
-                                userBooleanMap.put("emailVerified", userObject.getEmailVerified());
-                                userBooleanMap.put("phoneVerified", userObject.getPhoneVerified());
+                                userBooleanMap.put(DbColumnConstants.isStateValidated, isStateValidated);
+                                userBooleanMap.put(DbColumnConstants.emailVerified, userObject.getEmailVerified());
+                                userBooleanMap.put(DbColumnConstants.phoneVerified, userObject.getPhoneVerified());
                                 userObject.setFlagsValue(calcFieldsValue(userObject, userBooleanMap));
-                               // User user = getDecryptedUserObject(userObject);
                                 performSequentialOperationOnRecord(userObject, compositeKeysMap, isStateValidated);
                             } catch (Exception e) {
                                 logExceptionOnProcessingRecord(compositeKeysMap);
@@ -126,7 +125,7 @@ public class RecordProcessor extends StatusTracker {
 
     private boolean isStateUSer(String userId, String custodianOrgId) {
         String orgId = null;
-        ResultSet resultSet = connection.getRecords("select organisationid from user_org where userid="+userId);
+        ResultSet resultSet = connection.getRecords("select organisationid from user_org where userid='"+userId+"'");
         Iterator<Row> iterator = resultSet.iterator();
         Row row = iterator.next();
         orgId = row.getString(0);
@@ -168,7 +167,6 @@ public class RecordProcessor extends StatusTracker {
         logQuery(query);
         boolean isRecordInserted = connection.insertRecord(query);
         if (isRecordInserted) {
-            logInsertedRecord(user.getUserId(), user.getFlagsValue(),isStateValidated);
             logSuccessRecord(user.getUserId(), user.getFlagsValue(),isStateValidated);
         } else {
             logFailedRecord(compositeKeysMap);

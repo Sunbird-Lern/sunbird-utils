@@ -70,6 +70,12 @@ public class User implements Serializable {
   private String prevUsedEmail;
   private int flagsValue;
 
+  public User(Boolean emailVerified, Boolean phoneVerified, String userId) {
+    this.emailVerified = emailVerified;
+    this.phoneVerified = phoneVerified;
+    this.userId = userId;
+  }
+
   public List<String> getLocationIds() {
     return locationIds;
   }

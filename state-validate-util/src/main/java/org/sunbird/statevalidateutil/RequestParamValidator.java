@@ -6,7 +6,7 @@ import org.sunbird.statevalidateutil.constants.EnvConstants;
 
 public class RequestParamValidator {
 
-  private static Logger logger = LoggerFactory.getLoggerInstance(ValidateStateUser.class.getName());
+  private static Logger logger = LoggerFactory.getLoggerInstance(RequestParamValidator.class.getName());
   private RequestParams requestParams;
 
   private RequestParamValidator(RequestParams requestParams) {

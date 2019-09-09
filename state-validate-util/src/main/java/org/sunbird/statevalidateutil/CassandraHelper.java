@@ -2,6 +2,7 @@ package org.sunbird.statevalidateutil;
 
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
+import org.sunbird.statevalidateutil.constants.DbColumnConstants;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -32,7 +33,9 @@ public class CassandraHelper {
     Iterator<Row> iterator = resultSet.iterator();
     while (iterator.hasNext()) {
       Row row = iterator.next();
-      User user = (User) row;
+      User user = new User(row.getBool(DbColumnConstants.emailVerified),
+              row.getBool(DbColumnConstants.phoneVerified),
+              row.getString(DbColumnConstants.userId));
       userList.add(user);
     }
     return userList;
@@ -46,7 +49,7 @@ public class CassandraHelper {
    */
   public static String getInsertRecordQuery(User user) {
     return String.format(
-        "UPDATE sunbird.user set flagsValue='%s' where userid='%s'",
+        "UPDATE sunbird.user set flagsValue=%d where id='%s'",
         user.getFlagsValue(),
         user.getUserId());
   }

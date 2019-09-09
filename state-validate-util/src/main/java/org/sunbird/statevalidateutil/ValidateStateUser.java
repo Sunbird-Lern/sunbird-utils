@@ -7,7 +7,7 @@ import org.sunbird.statevalidateutil.constants.EnvConstants;
 
 import java.io.IOException;
 
-class ValidateStateUser {
+public class ValidateStateUser {
 
   static Logger logger = LoggerFactory.getLoggerInstance(ValidateStateUser.class.getName());
   private static String className = ValidateStateUser.class.getSimpleName();
@@ -30,6 +30,8 @@ class ValidateStateUser {
     requestParams.setCassandraHost(System.getenv(EnvConstants.SUNBIRD_CASSANDRA_HOST));
     requestParams.setCassandraKeyspaceName(
             System.getenv(EnvConstants.SUNBIRD_CASSANDRA_KEYSPACENAME));
+    requestParams.setCassandraKeyspaceName(
+            "sunbird");
     requestParams.setCassandraPort(System.getenv(EnvConstants.SUNBIRD_CASSANDRA_PORT));
     logger.info(
             String.format(
