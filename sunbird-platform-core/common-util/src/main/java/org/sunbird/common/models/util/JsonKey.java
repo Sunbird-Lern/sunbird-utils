@@ -971,7 +971,7 @@ public final class JsonKey {
   public static final String EXTERNAL_ORG_ID="ext org id";
   public static final String MIGRATION_USER_OBJECT="MigrationUser";
   public static final String TASK_COUNT="taskCount";
-  public static final String ERROR_VISUALIZATION_THRESHOLD="error_visualization_threshold";
+  public static final String ERROR_VISUALIZATION_THRESHOLD="sunbird_user_upload_error_visualization_threshold";
 
   private JsonKey() {}
 }
