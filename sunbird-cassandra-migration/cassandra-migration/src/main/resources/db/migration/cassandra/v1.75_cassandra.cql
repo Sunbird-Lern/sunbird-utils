@@ -1,1 +1,2 @@
-ALTER TABLE sunbird_courses.user_courses ADD certificates list<frozen <map<text,text>>>;
+ALTER TABLE sunbird.user drop IsStateValidated;
+Alter table sunbird.user add flagsValue int;

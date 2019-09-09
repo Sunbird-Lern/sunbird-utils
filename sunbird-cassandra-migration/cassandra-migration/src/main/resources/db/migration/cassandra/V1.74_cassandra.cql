@@ -1,2 +1,1 @@
-ALTER TABLE sunbird.user drop (emailverified,phoneVerified);
-Alter table sunbird.user add flagsValue int;
+ALTER TABLE sunbird_courses.user_courses ADD certificates list<frozen <map<text,text>>>;
