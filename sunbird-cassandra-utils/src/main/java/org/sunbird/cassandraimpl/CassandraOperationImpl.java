@@ -44,9 +44,9 @@ import org.sunbird.helper.CassandraConnectionMngrFactory;
  * @author Amit Kumar
  * @desc this class will hold functions for cassandra db interaction
  */
-public class CassandraOperationImpl implements CassandraOperation {
+public abstract class CassandraOperationImpl implements CassandraOperation {
 
-  private CassandraConnectionManager connectionManager;
+  protected CassandraConnectionManager connectionManager;
 
   public CassandraOperationImpl() {
     PropertiesCache propertiesCache = PropertiesCache.getInstance();
@@ -173,9 +173,6 @@ public class CassandraOperationImpl implements CassandraOperation {
       String propertyName,
       Object propertyValue,
       List<String> fields) {
-    long startTime = System.currentTimeMillis();
-    ProjectLogger.log(
-        "Cassandra Service getRecordsByProperty method started at ==" + startTime, LoggerEnum.INFO);
     Response response = new Response();
     Session session = connectionManager.getSession(keyspaceName);
     try {
@@ -199,7 +196,6 @@ public class CassandraOperationImpl implements CassandraOperation {
           ResponseCode.SERVER_ERROR.getErrorMessage(),
           ResponseCode.SERVER_ERROR.getResponseCode());
     }
-    logQueryElapseTime("getRecordsByProperty", startTime);
     return response;
   }
 
@@ -533,19 +529,21 @@ public class CassandraOperationImpl implements CassandraOperation {
     return response;
   }
 
-  /** This method updates all the records in a batch
+  /**
+   * This method updates all the records in a batch
+   *
    * @param keyspaceName
    * @param tableName
    * @param records
    * @return
    */
-  //@Override
+  // @Override
   public Response batchUpdateById(
-          String keyspaceName, String tableName, List<Map<String, Object>> records) {
+      String keyspaceName, String tableName, List<Map<String, Object>> records) {
 
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
-            "Cassandra Service batchUpdateById method started at ==" + startTime, LoggerEnum.INFO);
+        "Cassandra Service batchUpdateById method started at ==" + startTime, LoggerEnum.INFO);
 
     Session session = connectionManager.getSession(keyspaceName);
     Response response = new Response();
@@ -558,28 +556,28 @@ public class CassandraOperationImpl implements CassandraOperation {
         Assignments assignments = update.with();
         Update.Where where = update.where();
         map.entrySet()
-                .stream()
-                .forEach(
-                        x -> {
-                          if(Constants.ID.equals(x.getKey())) {
-                            where.and(QueryBuilder.eq(x.getKey(), x.getValue()));
-                          } else {
-                            assignments.and(QueryBuilder.set(x.getKey(), x.getValue()));
-                          }
-                        });
+            .stream()
+            .forEach(
+                x -> {
+                  if (Constants.ID.equals(x.getKey())) {
+                    where.and(QueryBuilder.eq(x.getKey(), x.getValue()));
+                  } else {
+                    assignments.and(QueryBuilder.set(x.getKey(), x.getValue()));
+                  }
+                });
         batchStatement.add(update);
       }
       resultSet = session.execute(batchStatement);
       response.put(Constants.RESPONSE, Constants.SUCCESS);
     } catch (QueryExecutionException
-            | QueryValidationException
-            | NoHostAvailableException
-            | IllegalStateException e) {
+        | QueryValidationException
+        | NoHostAvailableException
+        | IllegalStateException e) {
       ProjectLogger.log("Cassandra Batch Update Failed." + e.getMessage(), e);
       throw new ProjectCommonException(
-              ResponseCode.SERVER_ERROR.getErrorCode(),
-              ResponseCode.SERVER_ERROR.getErrorMessage(),
-              ResponseCode.SERVER_ERROR.getResponseCode());
+          ResponseCode.SERVER_ERROR.getErrorCode(),
+          ResponseCode.SERVER_ERROR.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
     }
     logQueryElapseTime("batchUpdateById", startTime);
     return response;
