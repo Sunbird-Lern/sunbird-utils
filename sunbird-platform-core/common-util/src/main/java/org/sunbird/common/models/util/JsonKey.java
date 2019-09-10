@@ -966,7 +966,6 @@ public final class JsonKey {
   public static final String RECOVERY_EMAIL = "recoveryEmail";
   public static final String RECOVERY_PHONE = "recoveryPhone";
   public static final String NESTED_KEY_FILTER = "nestedFilters";
-  public static final String IS_STATE_VALIDATED = "isStateValidated";
 
   private JsonKey() {}
 }
