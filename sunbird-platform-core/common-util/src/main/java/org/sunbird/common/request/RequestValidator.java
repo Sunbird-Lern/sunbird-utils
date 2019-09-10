@@ -98,7 +98,7 @@ public final class RequestValidator {
       if (!CollectionUtils.isEmpty(assessmentData)) {
         for (Map<String, Object> map : assessmentData) {
           if (map.containsKey(JsonKey.COURSE_ID)) {
-            if (ProjectUtil.isNull(map.get(JsonKey.COURSE_ID))) {
+            if (StringUtils.isBlank((String) map.get(JsonKey.COURSE_ID))) {
               throw new ProjectCommonException(
                       ResponseCode.courseIdRequired.getErrorCode(),
                       ResponseCode.courseIdRequiredError.getErrorMessage(),
@@ -112,7 +112,7 @@ public final class RequestValidator {
           }
 
           if (map.containsKey(JsonKey.CONTENT_ID)) {
-            if (ProjectUtil.isNull(map.get(JsonKey.CONTENT_ID))) {
+            if (StringUtils.isBlank((String) map.get(JsonKey.CONTENT_ID))) {
               throw new ProjectCommonException(
                       ResponseCode.contentIdRequired.getErrorCode(),
                       ResponseCode.contentIdRequiredError.getErrorMessage(),
@@ -126,7 +126,7 @@ public final class RequestValidator {
           }
 
           if (map.containsKey(JsonKey.BATCH_ID)) {
-            if (ProjectUtil.isNull(map.get(JsonKey.BATCH_ID))) {
+            if (StringUtils.isBlank((String) map.get(JsonKey.BATCH_ID))) {
               throw new ProjectCommonException(
                       ResponseCode.courseBatchIdRequired.getErrorCode(),
                       ResponseCode.courseBatchIdRequired.getErrorMessage(),
@@ -140,7 +140,7 @@ public final class RequestValidator {
           }
 
           if (map.containsKey(JsonKey.USER_ID)) {
-            if (ProjectUtil.isNull(map.get(JsonKey.USER_ID))) {
+            if (StringUtils.isBlank((String) map.get(JsonKey.USER_ID))) {
               throw new ProjectCommonException(
                       ResponseCode.userIdRequired.getErrorCode(),
                       ResponseCode.userIdRequired.getErrorMessage(),
@@ -154,7 +154,7 @@ public final class RequestValidator {
           }
 
           if (map.containsKey(JsonKey.ATTEMPT_ID)) {
-            if (ProjectUtil.isNull(map.get(JsonKey.ATTEMPT_ID))) {
+            if (StringUtils.isBlank((String) map.get(JsonKey.ATTEMPT_ID))) {
               throw new ProjectCommonException(
                       ResponseCode.attemptIdRequired.getErrorCode(),
                       ResponseCode.attemptIdRequired.getErrorMessage(),
