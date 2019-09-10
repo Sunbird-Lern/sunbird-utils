@@ -61,6 +61,7 @@ public final class JsonKey {
   public static final String APPROVED_BY_NAME = "approvedByName";
   public static final String APPROVED_DATE = "approvedDate";
   public static final String ASSESSMENT = "assessment";
+  public static final String ASSESSMENT_EVENTS = "assessments";
   public static final String ASSESSMENT_ANSWERS = "answers";
   public static final String ASSESSMENT_ATTEMPT_DATE = "attemptedDate";
   public static final String ASSESSMENT_EVAL_DB = "assessment_eval_db";
