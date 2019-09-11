@@ -1,0 +1,1 @@
+INSERT INTO sunbird.system_settings (id,field,value) VALUES ( 'shadowdbmandatorycolumn','shadowdbmandatorycolumn','{"csv":{"supportedColumns":["phone","email","Name","Ext Org ID","Ext User ID","Input Status"],"mandatoryFields":["email","phone","Name","Ext User ID","Input Status"]}}');
