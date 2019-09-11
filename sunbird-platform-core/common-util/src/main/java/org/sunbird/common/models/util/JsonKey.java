@@ -979,6 +979,8 @@ public final class JsonKey {
   public static final String NESTED_KEY_FILTER = "nestedFilters";
   public static final String STATE_VALIDATED = "stateValidated";
   public static final String FLAGS_VALUE = "flagsValue";
+  public static final String SUNBIRD_MIGRATE_USER_BODY="sunbird_migrate_user_body";
+  public static final String SMS="sms";
 
   private JsonKey() {}
 }
