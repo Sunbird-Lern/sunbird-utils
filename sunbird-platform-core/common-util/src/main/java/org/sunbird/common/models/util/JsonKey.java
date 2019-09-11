@@ -61,6 +61,7 @@ public final class JsonKey {
   public static final String APPROVED_BY_NAME = "approvedByName";
   public static final String APPROVED_DATE = "approvedDate";
   public static final String ASSESSMENT = "assessment";
+  public static final String ASSESSMENT_EVENTS = "assessments";
   public static final String ASSESSMENT_ANSWERS = "answers";
   public static final String ASSESSMENT_ATTEMPT_DATE = "attemptedDate";
   public static final String ASSESSMENT_EVAL_DB = "assessment_eval_db";
@@ -976,6 +977,8 @@ public final class JsonKey {
   public static final String TASK_COUNT="taskCount";
   public static final String ERROR_VISUALIZATION_THRESHOLD="sunbird_user_upload_error_visualization_threshold";
   public static final String NESTED_KEY_FILTER = "nestedFilters";
+  public static final String STATE_VALIDATED = "stateValidated";
+  public static final String FLAGS_VALUE = "flagsValue";
 
   private JsonKey() {}
 }
