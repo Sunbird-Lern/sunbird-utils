@@ -976,6 +976,9 @@ public final class JsonKey {
   public static final String TASK_COUNT="taskCount";
   public static final String ERROR_VISUALIZATION_THRESHOLD="sunbird_user_upload_error_visualization_threshold";
   public static final String NESTED_KEY_FILTER = "nestedFilters";
+  public static final String SHADOW_USER="shadow_user";
+  public static final String USER_EXT_ID="userExtId";
+  public static final String ORG_EXT_ID="orgExtId";
 
   private JsonKey() {}
 }

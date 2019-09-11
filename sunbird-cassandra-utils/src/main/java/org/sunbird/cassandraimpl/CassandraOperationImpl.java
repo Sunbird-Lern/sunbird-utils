@@ -40,6 +40,9 @@ import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.helper.CassandraConnectionManager;
 import org.sunbird.helper.CassandraConnectionMngrFactory;
 
+import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
+import static com.datastax.driver.core.querybuilder.QueryBuilder.lt;
+
 /**
  * @author Amit Kumar
  * @desc this class will hold functions for cassandra db interaction
@@ -146,7 +149,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
       Delete.Where delete =
           QueryBuilder.delete()
               .from(keyspaceName, tableName)
-              .where(QueryBuilder.eq(Constants.IDENTIFIER, identifier));
+              .where(eq(Constants.IDENTIFIER, identifier));
       connectionManager.getSession(keyspaceName).execute(delete);
       response.put(Constants.RESPONSE, Constants.SUCCESS);
     } catch (Exception e) {
@@ -185,7 +188,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
       Statement selectStatement =
           selectBuilder
               .from(keyspaceName, tableName)
-              .where(QueryBuilder.eq(propertyName, propertyValue));
+              .where(eq(propertyName, propertyValue));
       ResultSet results = null;
       results = session.execute(selectStatement);
       response = CassandraUtil.createResponse(results);
@@ -274,7 +277,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
               selectWhere.and(clause);
             }
           } else {
-            Clause clause = QueryBuilder.eq(entry.getKey(), entry.getValue());
+            Clause clause = eq(entry.getKey(), entry.getValue());
             selectWhere.and(clause);
           }
         }
@@ -405,7 +408,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
           .stream()
           .forEach(
               x -> {
-                where.and(QueryBuilder.eq(x.getKey(), x.getValue()));
+                where.and(eq(x.getKey(), x.getValue()));
               });
       Statement updateQuery = where;
       session.execute(updateQuery);
@@ -443,7 +446,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
       Select selectQuery = selectBuilder.from(keyspaceName, tableName);
       Where selectWhere = selectQuery.where();
       if (key instanceof String) {
-        selectWhere.and(QueryBuilder.eq(Constants.IDENTIFIER, key));
+        selectWhere.and(eq(Constants.IDENTIFIER, key));
       } else if (key instanceof Map) {
         Map<String, Object> compositeKey = (Map<String, Object>) key;
         compositeKey
@@ -560,7 +563,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
             .forEach(
                 x -> {
                   if (Constants.ID.equals(x.getKey())) {
-                    where.and(QueryBuilder.eq(x.getKey(), x.getValue()));
+                    where.and(eq(x.getKey(), x.getValue()));
                   } else {
                     assignments.and(QueryBuilder.set(x.getKey(), x.getValue()));
                   }
@@ -635,7 +638,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
     Response response = new Response();
     try {
       Select selectQuery = QueryBuilder.select().all().from(keyspaceName, tableName);
-      selectQuery.where().and(QueryBuilder.eq(propertyName, propertyValue));
+      selectQuery.where().and(eq(propertyName, propertyValue));
       ResultSet results =
           connectionManager.getSession(keyspaceName).execute(selectQuery.allowFiltering());
       response = CassandraUtil.createResponse(results);
@@ -671,7 +674,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
           .stream()
           .forEach(
               x -> {
-                Clause clause = QueryBuilder.eq(x.getKey(), x.getValue());
+                Clause clause = eq(x.getKey(), x.getValue());
                 deleteWhere.and(clause);
               });
       connectionManager.getSession(keyspaceName).execute(delete);
@@ -732,7 +735,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
       Select selectQuery = selectBuilder.from(keyspaceName, tableName);
       Where selectWhere = selectQuery.where();
       for (Entry<String, Object> entry : compositeKeyMap.entrySet()) {
-        Clause clause = QueryBuilder.eq(entry.getKey(), entry.getValue());
+        Clause clause = eq(entry.getKey(), entry.getValue());
         selectWhere.and(clause);
       }
       ResultSet results = connectionManager.getSession(keyspaceName).execute(selectQuery);
@@ -899,7 +902,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
           .stream()
           .forEach(
               primaryKey -> {
-                select.where().and(QueryBuilder.eq(primaryKey.getKey(), primaryKey.getValue()));
+                select.where().and(eq(primaryKey.getKey(), primaryKey.getValue()));
               });
       ProjectLogger.log("Query =" + select.getQueryString(), LoggerEnum.INFO);
       ResultSet results = connectionManager.getSession(keyspaceName).execute(select);
@@ -975,4 +978,15 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
     logQueryElapseTime("batchInsertWithTTL", startTime);
     return response;
   }
+
+  @Override
+  public Response getRecordWithCondition(String keyspace, String tableName, String key, int value) {
+    Select selectQuery=QueryBuilder.select().all().from(keyspace,tableName);
+    Clause clause=QueryBuilder.lt(key,value);
+    selectQuery.where().and(clause);
+    selectQuery.allowFiltering();
+    ResultSet resultSet=connectionManager.getSession(keyspace).execute(selectQuery);
+    Response response=CassandraUtil.createResponse(resultSet);
+    return response;  }
+
 }
