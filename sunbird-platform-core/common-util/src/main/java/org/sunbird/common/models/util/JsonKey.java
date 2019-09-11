@@ -979,6 +979,9 @@ public final class JsonKey {
   public static final String SHADOW_USER="shadow_user";
   public static final String USER_EXT_ID="userExtId";
   public static final String ORG_EXT_ID="orgExtId";
-
+  public static final String STATE_VALIDATED = "stateValidated";
+  public static final String FLAGS_VALUE = "flagsValue";
+  public static final String USER_STATUS="userStatus";
+  public static final String CLAIM_STATUS="claimStatus";
   private JsonKey() {}
 }
