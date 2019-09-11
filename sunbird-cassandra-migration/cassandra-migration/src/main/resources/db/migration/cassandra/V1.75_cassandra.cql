@@ -1,0 +1,1 @@
+Alter table sunbird.user add flagsValue int;
