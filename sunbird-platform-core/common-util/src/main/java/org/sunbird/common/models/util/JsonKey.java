@@ -984,5 +984,6 @@ public final class JsonKey {
   public static final String FLAGS_VALUE = "flagsValue";
   public static final String USER_STATUS="userStatus";
   public static final String CLAIM_STATUS="claimStatus";
+  public static final String CLAIMED_ON="claimedOn";
   private JsonKey() {}
 }
