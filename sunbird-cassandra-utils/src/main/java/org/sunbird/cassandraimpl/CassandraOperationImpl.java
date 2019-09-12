@@ -122,14 +122,15 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
       connectionManager.getSession(keyspaceName).execute(boundStatement);
       response.put(Constants.RESPONSE, Constants.SUCCESS);
     } catch (Exception e) {
+      e.printStackTrace();
       if (e.getMessage().contains(JsonKey.UNKNOWN_IDENTIFIER)) {
-        ProjectLogger.log(Constants.EXCEPTION_MSG_UPDATE + tableName + " : " + e.getMessage(), e);
+        ProjectLogger.log(Constants.EXCEPTION_MSG_UPDATE + tableName + " : " + e.getMessage(), e,LoggerEnum.ERROR.name());
         throw new ProjectCommonException(
             ResponseCode.invalidPropertyError.getErrorCode(),
             CassandraUtil.processExceptionForUnknownIdentifier(e),
             ResponseCode.CLIENT_ERROR.getResponseCode());
       }
-      ProjectLogger.log(Constants.EXCEPTION_MSG_UPDATE + tableName + " : " + e.getMessage(), e);
+      ProjectLogger.log(Constants.EXCEPTION_MSG_UPDATE + tableName + " : " + e.getMessage(), e,LoggerEnum.ERROR.name());
       throw new ProjectCommonException(
           ResponseCode.dbUpdateError.getErrorCode(),
           ResponseCode.dbUpdateError.getErrorMessage(),
