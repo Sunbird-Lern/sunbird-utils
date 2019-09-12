@@ -79,13 +79,13 @@ public class RecordProcessor extends StatusTracker {
                             Map<String, String> compositeKeysMap = getCompositeKeysMap(userObject);
                             try {
                                 startTracingRecord(userObject.getUserId());
-                                boolean isStateValidated = isStateUSer(userObject.getUserId(), custodianOrgId);
+                                boolean stateValidated = isStateUSer(userObject.getUserId(), custodianOrgId);
                                 Map<String, Object> userBooleanMap = new HashMap<>();
-                                userBooleanMap.put(DbColumnConstants.isStateValidated, isStateValidated);
+                                userBooleanMap.put(DbColumnConstants.stateValidated, stateValidated);
                                 userBooleanMap.put(DbColumnConstants.emailVerified, userObject.getEmailVerified());
                                 userBooleanMap.put(DbColumnConstants.phoneVerified, userObject.getPhoneVerified());
-                                userObject.setFlagsValue(calcFieldsValue(userObject, userBooleanMap));
-                                performSequentialOperationOnRecord(userObject, compositeKeysMap, isStateValidated);
+                                userObject.setFlagsValue(calcFieldsValue(userBooleanMap));
+                                performSequentialOperationOnRecord(userObject, compositeKeysMap, stateValidated);
                             } catch (Exception e) {
                                 logExceptionOnProcessingRecord(compositeKeysMap);
                             } finally {
@@ -97,28 +97,25 @@ public class RecordProcessor extends StatusTracker {
         closeWriterConnection();
     }
 
-    private int calcFieldsValue(User user, Map<String, Object> userBooleanMap) {
+    private int calcFieldsValue(Map<String, Object> userBooleanMap) {
         int userFlagValue = 0;
         Set<Map.Entry<String, Object>> mapEntry = userBooleanMap.entrySet();
         for(Map.Entry<String, Object> entry: mapEntry) {
-            if(StringUtils.isNotEmpty(entry.getKey())) {
-                userFlagValue += boolFlagValue(entry.getKey(), (Boolean) entry.getValue());
+            if(StringUtils.isNotEmpty(entry.getKey()) && (Boolean) entry.getValue()) {
+                userFlagValue += boolFlagValue(entry.getKey());
             }
         }
         return userFlagValue;
     }
 
-    public int boolFlagValue(String userFlagType, boolean isFlagEnabled) {
+    public int boolFlagValue(String userFlagType) {
         int decimalValue = 0;
-        if(userFlagType.equals(UserBoolFlagEnum.PHONE_VERIFIED.getUserFlagType()) &&
-                isFlagEnabled==UserBoolFlagEnum.PHONE_VERIFIED.isFlagEnabled()) {
+        if(userFlagType.equals(UserBoolFlagEnum.PHONE_VERIFIED.getUserFlagType())) {
             decimalValue = UserBoolFlagEnum.PHONE_VERIFIED.getUserFlagValue();
-        } else if (userFlagType.equals(UserBoolFlagEnum.EMAIL_VERIFIED.getUserFlagType()) &&
-                isFlagEnabled==UserBoolFlagEnum.EMAIL_VERIFIED.isFlagEnabled()) {
+        } else if (userFlagType.equals(UserBoolFlagEnum.EMAIL_VERIFIED.getUserFlagType())) {
             decimalValue = UserBoolFlagEnum.EMAIL_VERIFIED.getUserFlagValue();
-        } else if (userFlagType.equals(UserBoolFlagEnum.IS_STATE_VALIDATED.getUserFlagType()) &&
-                isFlagEnabled==UserBoolFlagEnum.IS_STATE_VALIDATED.isFlagEnabled()) {
-            decimalValue = UserBoolFlagEnum.IS_STATE_VALIDATED.getUserFlagValue();
+        } else if (userFlagType.equals(UserBoolFlagEnum.STATE_VALIDATED.getUserFlagType())) {
+            decimalValue = UserBoolFlagEnum.STATE_VALIDATED.getUserFlagValue();
         }
         return decimalValue;
     }
