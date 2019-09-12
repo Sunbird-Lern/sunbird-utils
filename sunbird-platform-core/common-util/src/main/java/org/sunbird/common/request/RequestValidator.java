@@ -97,6 +97,13 @@ public final class RequestValidator {
       List<Map<String, Object>> assessmentData = (List<Map<String, Object>>) contentRequestDto.getRequest().get(JsonKey.ASSESSMENT_EVENTS);
       if (!CollectionUtils.isEmpty(assessmentData)) {
         for (Map<String, Object> map : assessmentData) {
+          if (!map.containsKey(JsonKey.ASSESSMENT_TS)){
+            throw new ProjectCommonException(
+                    ResponseCode.assessmentAttemptDateRequired.getErrorCode(),
+                    ResponseCode.assessmentAttemptDateRequired.getErrorMessage(),
+                    ERROR_CODE);
+          }
+
           if (!map.containsKey(JsonKey.COURSE_ID) || StringUtils.isBlank((String) map.get(JsonKey.COURSE_ID))){
             throw new ProjectCommonException(
                     ResponseCode.courseIdRequired.getErrorCode(),
@@ -129,6 +136,13 @@ public final class RequestValidator {
             throw new ProjectCommonException(
                     ResponseCode.attemptIdRequired.getErrorCode(),
                     ResponseCode.attemptIdRequired.getErrorMessage(),
+                    ERROR_CODE);
+          }
+
+          if (!map.containsKey(JsonKey.EVENTS)) {
+            throw new ProjectCommonException(
+                    ResponseCode.eventsRequired.getErrorCode(),
+                    ResponseCode.eventsRequired.getErrorMessage(),
                     ERROR_CODE);
           }
         }
