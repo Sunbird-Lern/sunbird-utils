@@ -1,5 +1,8 @@
 package org.sunbird.common.models.util;
 
+import java.io.FileWriter;
+import java.util.Random;
+
 /**
  * This class will contains all the key related to request and response.
  *
@@ -58,6 +61,8 @@ public final class JsonKey {
   public static final String APPROVED_BY_NAME = "approvedByName";
   public static final String APPROVED_DATE = "approvedDate";
   public static final String ASSESSMENT = "assessment";
+  public static final String ASSESSMENT_EVENTS = "assessments";
+  public static final String ASSESSMENT_TS = "assessmentTs";
   public static final String ASSESSMENT_ANSWERS = "answers";
   public static final String ASSESSMENT_ATTEMPT_DATE = "attemptedDate";
   public static final String ASSESSMENT_EVAL_DB = "assessment_eval_db";
@@ -963,9 +968,21 @@ public final class JsonKey {
   public static final String SUNBIRD_ACCOUNT_MERGE_BODY = "sunbird_account_merge_body";
   public static final String CERTIFICATE = "Certificate";
   public static final String MERGE_CERT = "Mergecert";
-  public static final String RECOVERY_EMAIL = "recoveryEmail";
-  public static final String RECOVERY_PHONE = "recoveryPhone";
+  public static final String RECOVERY_EMAIL="recoveryEmail";
+  public static final String RECOVERY_PHONE="recoveryPhone";
+  public static final String SUPPORTED_COlUMNS="supportedColumns";
+  public static final String INPUT_STATUS="input status";
+  public static final String EXTERNAL_USER_ID="ext user id";
+  public static final String EXTERNAL_ORG_ID="ext org id";
+  public static final String MIGRATION_USER_OBJECT="MigrationUser";
+  public static final String TASK_COUNT="taskCount";
+  public static final String ERROR_VISUALIZATION_THRESHOLD="sunbird_user_upload_error_visualization_threshold";
   public static final String NESTED_KEY_FILTER = "nestedFilters";
+  public static final String STATE_VALIDATED = "stateValidated";
+  public static final String FLAGS_VALUE = "flagsValue";
+  public static final String SUNBIRD_MIGRATE_USER_BODY="sunbird_migrate_user_body";
+  public static final String SMS="sms";
+  public static final String SUNBIRD_ACCOUNT_MERGE_SUBJECT="sunbird_account_merge_subject";
 
   private JsonKey() {}
 }
