@@ -4,7 +4,6 @@ import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import org.sunbird.statevalidateutil.constants.DbColumnConstants;
 
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -36,7 +35,8 @@ public class CassandraHelper {
       Row row = iterator.next();
       User user = new User(row.getBool(DbColumnConstants.emailVerified),
               row.getBool(DbColumnConstants.phoneVerified),
-              row.getString(DbColumnConstants.userId));
+              row.getString(DbColumnConstants.userId),
+              row.getString(DbColumnConstants.rootOrgId));
       userList.add(user);
     }
     return userList;

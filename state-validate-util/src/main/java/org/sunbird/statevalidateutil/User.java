@@ -26,10 +26,11 @@ public class User implements Serializable {
   private String userId;
   private int flagsValue;
 
-  public User(Boolean emailVerified, Boolean phoneVerified, String userId) {
+  public User(Boolean emailVerified, Boolean phoneVerified, String userId, String rootOrgId) {
     this.emailVerified = emailVerified;
     this.phoneVerified = phoneVerified;
     this.userId = userId;
+    this.rootOrgId = rootOrgId;
   }
 
   public Boolean getEmailVerified() {
