@@ -6,3 +6,4 @@ CREATE INDEX inx_shausr_claimStatus ON sunbird.shadow_user(claimStatus);
 CREATE INDEX inx_shausr_userId ON sunbird.shadow_user(userId);
 CREATE INDEX inx_shausr_processId ON sunbird.shadow_user(processId);
 ALTER TABLE sunbird.user ADD (recoveryEmail text, recoveryPhone text);
+ALTER TABLE shadow_user ADD addedBy text;
