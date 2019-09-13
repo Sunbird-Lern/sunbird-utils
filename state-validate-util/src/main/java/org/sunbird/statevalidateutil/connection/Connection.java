@@ -29,5 +29,5 @@ public interface Connection {
      * this method is used to insert the user record into db
      * @return boolean
      */
-    public boolean insertRecord(String query);
+    public boolean updateRecord(String query);
 }

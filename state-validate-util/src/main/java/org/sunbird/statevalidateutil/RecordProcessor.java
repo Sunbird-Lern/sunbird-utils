@@ -76,20 +76,21 @@ public class RecordProcessor extends StatusTracker {
                 .stream()
                 .forEach(
                         userObject -> {
-                            Map<String, String> compositeKeysMap = getCompositeKeysMap(userObject);
+                            String userId = userObject.getUserId();
                             try {
-                                startTracingRecord(userObject.getUserId());
-                                boolean stateValidated = isStateUSer(userObject.getUserId(), custodianOrgId);
-                                Map<String, Object> userBooleanMap = new HashMap<>();
+
+                                startTracingRecord(userId);
+                                boolean stateValidated = isStateUSer(userObject.getRootOrgId(), custodianOrgId);
+                                Map<String, Boolean> userBooleanMap = new HashMap<>();
                                 userBooleanMap.put(DbColumnConstants.stateValidated, stateValidated);
                                 userBooleanMap.put(DbColumnConstants.emailVerified, userObject.getEmailVerified());
                                 userBooleanMap.put(DbColumnConstants.phoneVerified, userObject.getPhoneVerified());
                                 userObject.setFlagsValue(calcFieldsValue(userBooleanMap));
-                                performSequentialOperationOnRecord(userObject, compositeKeysMap, stateValidated);
+                                performSequentialOperationOnRecord(userObject, stateValidated);
                             } catch (Exception e) {
-                                logExceptionOnProcessingRecord(compositeKeysMap);
+                                logExceptionOnProcessingRecord(userId);
                             } finally {
-                                endTracingRecord(userObject.getUserId());
+                                endTracingRecord(userId);
                             }
                         });
 
@@ -97,11 +98,11 @@ public class RecordProcessor extends StatusTracker {
         closeWriterConnection();
     }
 
-    private int calcFieldsValue(Map<String, Object> userBooleanMap) {
+    private int calcFieldsValue(Map<String, Boolean> userBooleanMap) {
         int userFlagValue = 0;
-        Set<Map.Entry<String, Object>> mapEntry = userBooleanMap.entrySet();
-        for(Map.Entry<String, Object> entry: mapEntry) {
-            if(StringUtils.isNotEmpty(entry.getKey()) && (Boolean) entry.getValue()) {
+        Set<Map.Entry<String, Boolean>> mapEntry = userBooleanMap.entrySet();
+        for(Map.Entry<String, Boolean> entry: mapEntry) {
+            if(entry.getValue()) {
                 userFlagValue += boolFlagValue(entry.getKey());
             }
         }
@@ -120,13 +121,8 @@ public class RecordProcessor extends StatusTracker {
         return decimalValue;
     }
 
-    private boolean isStateUSer(String userId, String custodianOrgId) {
-        String orgId = null;
-        ResultSet resultSet = connection.getRecords("select organisationid from user_org where userid='"+userId+"'");
-        Iterator<Row> iterator = resultSet.iterator();
-        Row row = iterator.next();
-        orgId = row.getString(0);
-        if(!orgId.equals(custodianOrgId)) {
+    private boolean isStateUSer(String userRootOrgId, String custodianOrgId) {
+        if(!custodianOrgId.equals(userRootOrgId)) {
             return true;
         } else {
             return false;
@@ -142,37 +138,31 @@ public class RecordProcessor extends StatusTracker {
         return custOrgId;
     }
 
-    private static Map<String, String> getCompositeKeysMap(User user) {
+    /*private static Map<String, String> getCompositeKeysMap(User user) {
         Map<String, String> compositeKeysMap = new HashMap<>();
         compositeKeysMap.put(DbColumnConstants.userId, user.getUserId());
         return compositeKeysMap;
-    }
+    }*/
 
     /**
      * this method will perform sequential operation of db records
-     * - generate insert query
-     * - decrypt the externalIds and originalExternalIds
-     * - insert record
-     * - insert Record passes will then delete the record...
+     * - generate update query
+     * - update record
+     * - update Record passes will then delete the record...
      *
      * @param user
-     * @param compositeKeysMap
+     * @param isStateValidated
      */
-    private void performSequentialOperationOnRecord(User user, Map<String, String> compositeKeysMap, boolean isStateValidated) {
+    private void performSequentialOperationOnRecord(User user, boolean isStateValidated) {
 
-        String query = CassandraHelper.getInsertRecordQuery(user);
+        String query = CassandraHelper.getUpdateRecordQuery(user);
         logQuery(query);
-        boolean isRecordInserted = connection.insertRecord(query);
-        if (isRecordInserted) {
+        boolean isRecordUpdated = connection.updateRecord(query);
+        if (isRecordUpdated) {
             logSuccessRecord(user.getUserId(), user.getFlagsValue(),isStateValidated);
         } else {
-            logFailedRecord(compositeKeysMap);
+            logFailedRecord(user.getUserId());
         }
-    }
-
-
-    private String getFormattedCompositeKeys(User user) {
-        return String.format("%s:", user.getUserId());
     }
 
     /**
@@ -183,7 +173,7 @@ public class RecordProcessor extends StatusTracker {
      * @return
      */
     private List<User> removePreProcessedRecordFromList(List<String> preProcessedRecords, List<User> totalRecords) {
-        totalRecords.removeIf(user -> (preProcessedRecords.contains(getFormattedCompositeKeys(user))));
+        totalRecords.removeIf(user -> (preProcessedRecords.contains(user.getUserId())));
         logTotalRecords(totalRecords.size());
         return totalRecords;
     }

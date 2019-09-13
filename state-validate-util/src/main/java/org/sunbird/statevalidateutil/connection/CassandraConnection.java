@@ -43,7 +43,7 @@ public class CassandraConnection implements Connection {
 
 
     @Override
-    public boolean insertRecord(String query) {
+    public boolean updateRecord(String query) {
         try {
             ResultSet resultSet = session.execute(query);
             return resultSet.wasApplied();

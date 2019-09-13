@@ -5,6 +5,7 @@ import com.datastax.driver.core.Row;
 import org.sunbird.statevalidateutil.constants.DbColumnConstants;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -47,32 +48,19 @@ public class CassandraHelper {
    * @param user
    * @return query(String)
    */
-  public static String getInsertRecordQuery(User user) {
+  public static String getUpdateRecordQuery(User user) {
     return String.format(
-        "UPDATE sunbird.user set flagsValue=%d where id='%s'",
-        user.getFlagsValue(),
-        user.getUserId());
+        "UPDATE sunbird.user set flagsValue=%d, updatedDate='%s' where id='%s'",
+        user.getFlagsValue(), getFormattedDate(), user.getUserId());
   }
 
-  /**
-   * this method is used to get the cql timestamp from date
-   *
-   * @param date
-   * @return long
-   */
-  private static long getTimeStampFromDate(Date date) {
-    return date != null
-        ? new Timestamp(date.getTime()).getTime()
-        : new Timestamp(Calendar.getInstance().getTime().getTime()).getTime();
-  }
 
-  /**
-   * this method will give the today date timestamp and the field lastUpdatedOn will be updated by
-   * today's date time...
-   *
-   * @return long
+  /** This method returns date of format "yyyy-MM-dd HH:mm:ss:SSSZ"
+   * @return
    */
-  private static long getLastUpdatedOn() {
-    return new Timestamp(Calendar.getInstance().getTime().getTime()).getTime();
+  public static String getFormattedDate() {
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSSZ");
+    simpleDateFormat.setLenient(false);
+    return simpleDateFormat.format(new Date());
   }
 }

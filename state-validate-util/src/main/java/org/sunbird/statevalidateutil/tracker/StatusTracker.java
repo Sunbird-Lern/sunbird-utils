@@ -25,8 +25,8 @@ public class StatusTracker {
         logger.info(String.format("the insert query generated %s ", query));
     }
 
-    public static void logFailedRecord(Map<String, String> compositeKeysMap) {
-        logger.info(String.format("Record Failed with userId:%s", compositeKeysMap.get(DbColumnConstants.userId)));
+    public static void logFailedRecord(String userId) {
+        logger.info(String.format("Record Failed with userId:%s", userId));
     }
 
     public static void logSuccessRecord(String userId, int flagsValue, boolean isStateValidated) {
@@ -34,8 +34,8 @@ public class StatusTracker {
         writeSuccessRecordToFile(userId, flagsValue, isStateValidated);
     }
 
-    public static void logExceptionOnProcessingRecord(Map<String, String> compositeKeysMap) {
-        logger.error(String.format("Error occurred in  processing state validation record with externalId:%s ", compositeKeysMap.get(DbColumnConstants.userId)));
+    public static void logExceptionOnProcessingRecord(String userId) {
+        logger.error(String.format("Error occurred in  processing state validation record with externalId:%s ", userId));
     }
 
     public static void logTotalRecords(long count) {
