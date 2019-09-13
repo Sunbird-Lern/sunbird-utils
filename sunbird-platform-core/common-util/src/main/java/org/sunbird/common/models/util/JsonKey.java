@@ -978,11 +978,16 @@ public final class JsonKey {
   public static final String TASK_COUNT="taskCount";
   public static final String ERROR_VISUALIZATION_THRESHOLD="sunbird_user_upload_error_visualization_threshold";
   public static final String NESTED_KEY_FILTER = "nestedFilters";
+  public static final String SHADOW_USER="shadow_user";
+  public static final String USER_EXT_ID="userExtId";
+  public static final String ORG_EXT_ID="orgExtId";
   public static final String STATE_VALIDATED = "stateValidated";
   public static final String FLAGS_VALUE = "flagsValue";
+  public static final String USER_STATUS="userStatus";
+  public static final String CLAIM_STATUS="claimStatus";
+  public static final String CLAIMED_ON="claimedOn";
   public static final String SUNBIRD_MIGRATE_USER_BODY="sunbird_migrate_user_body";
   public static final String SMS="sms";
   public static final String SUNBIRD_ACCOUNT_MERGE_SUBJECT="sunbird_account_merge_subject";
-
   private JsonKey() {}
 }
