@@ -59,6 +59,10 @@ public class FCMHttpNotificationServiceImpl implements IFCMNotificationService {
     return sendTopicNotification(topic, data, FCM_URL, isDryRun);
   }
 
+  public static void setAccountKey (String key) {
+     FCM_ACCOUNT_KEY = key;
+   } 
+  
   /**
    * This method will send notification to FCM.
    *
