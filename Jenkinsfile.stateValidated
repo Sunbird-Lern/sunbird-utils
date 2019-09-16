@@ -37,7 +37,7 @@ node() {
         stage('Archive artifacts'){
             sh """
                         mkdir cassandra_artifacts
-                        cp state-validate-util/target/state-validate-util-1.0-SNAPSHOT-jar-with-dependencies.jar cassandra_artifacts
+                        cp state-validate-util/target/statevalidator-util-1.0-SNAPSHOT-jar-with-dependencies.jar cassandra_artifacts
                         zip -j cassandra_artifacts.zip:${artifact_version} cassandra_artifacts/*
                     """
             archiveArtifacts artifacts: "cassandra_artifacts.zip:${artifact_version}", fingerprint: true, onlyIfSuccessful: true
