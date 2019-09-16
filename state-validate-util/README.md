@@ -4,7 +4,7 @@
       -  SELECT COUNT(*) FROM sunbird.user;
       -  Note down the count.
       -  Take backUp of cassandra db.
-      -  Run the query : select flagsvalue,updateddate from sunbird.user;
+      -  Run the query : select id,flagsvalue,updateddate from sunbird.user;
       -  verify the column flagsvalue, updateddate are updated.
 # How to run
   - require env variable to be set : </br>
@@ -16,11 +16,11 @@
    
    - mvn clean compile assembly:single
    - cd target
-   - java -jar statevalidator-1.0-SNAPSHOT-jar-with-dependencies.jar
+   - java -jar statevalidator-util-1.0-SNAPSHOT-jar-with-dependencies.jar
      
 # Steps To Verify:
    - Login to cassandra
-   - select flagsvalue,updateddate from sunbird.user;
+   - select id,flagsvalue,updateddate from sunbird.user;
    - verify the column flagsvalue, updateddate should be updated. flagsvalue should be containing int value, updateddate should be recent date when jar starts executing
    -  Run the Query: SELECT COUNT(*) FROM sunbird.user;
    - count after running and before running should matches.
