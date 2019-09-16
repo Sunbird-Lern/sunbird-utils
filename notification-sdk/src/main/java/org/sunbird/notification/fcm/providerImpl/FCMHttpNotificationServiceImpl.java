@@ -61,6 +61,7 @@ public class FCMHttpNotificationServiceImpl implements IFCMNotificationService {
 
   public static void setAccountKey (String key) {
      FCM_ACCOUNT_KEY = key;
+    headerMap.put(NotificationConstant.AUTHORIZATION, FCM_ACCOUNT_KEY);
    } 
   
   /**
