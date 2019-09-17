@@ -831,7 +831,9 @@ public enum ResponseCode {
   errorNoDialcodesLinked(
       ResponseMessage.Key.ERROR_NO_DIALCODES_LINKED,
       ResponseMessage.Message.ERROR_NO_DIALCODES_LINKED),
-  eventsRequired(ResponseMessage.Key.EVENTS_DATA_MISSING, ResponseMessage.Message.EVENTS_DATA_MISSING),
+  eventsRequired(
+      ResponseMessage.Key.EVENTS_DATA_MISSING, ResponseMessage.Message.EVENTS_DATA_MISSING),
+  accountNotFound(ResponseMessage.Key.ACCOUNT_NOT_FOUND, ResponseMessage.Message.ACCOUNT_NOT_FOUND),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
