@@ -254,8 +254,6 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
         ProjectLogger.log("Exception occured while creating Embedded cassandra connection", e);
       } catch (IOException e) {
         ProjectLogger.log("Exception occured while creating Embedded cassandra connection", e);
-      } catch (InterruptedException e) {
-        ProjectLogger.log("Exception occured while creating Embedded cassandra connection", e);
       }
     }
     if (null != cassandraSessionMap.get(keyspace)) {
