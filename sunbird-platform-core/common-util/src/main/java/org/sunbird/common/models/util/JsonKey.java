@@ -21,8 +21,8 @@ public final class JsonKey {
   public static final String DOWNLOAD_LINK_EXPIRY_TIMEOUT = "download_link_expiry_timeout";
   public static final String SIGNED_URL = "signedUrl";
   public static final String REPORTS = "reports";
-  public static final String PROGRESS_REPORT_SIGNED_URL = "courseProgressReportURL";
-  public static final String ASSESSMENT_REPORT_SIGNED_URL = "assessmentReportURL";
+  public static final String PROGRESS_REPORT_SIGNED_URL = "courseProgressReportUrl";
+  public static final String ASSESSMENT_REPORT_SIGNED_URL = "assessmentReportUrl";
   public static final String BULK_UPLOAD_STATUS = "Status";
   public static final String BULK_UPLOAD_ERROR = "Remarks";
   public static final String ACTION_GROUP = "action_group";
