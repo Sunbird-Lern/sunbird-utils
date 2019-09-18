@@ -34,6 +34,10 @@ public class StatusTracker {
         writeSuccessRecordToFile(userId, flagsValue, isStateValidated);
     }
 
+    public static void logExistingRecord(String userId, int flagsValue) {
+        logger.info(String.format("Existing record with userId:%s and flagsValue:%d", userId, flagsValue));
+    }
+
     public static void logExceptionOnProcessingRecord(String userId) {
         logger.error(String.format("Error occurred in  processing state validation record with externalId:%s ", userId));
     }
