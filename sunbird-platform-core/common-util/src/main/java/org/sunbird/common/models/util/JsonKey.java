@@ -20,6 +20,9 @@ public final class JsonKey {
   public static final String ACCOUNT_NAME = "sunbird_account_name";
   public static final String DOWNLOAD_LINK_EXPIRY_TIMEOUT = "download_link_expiry_timeout";
   public static final String SIGNED_URL = "signedUrl";
+  public static final String REPORTS = "reports";
+  public static final String PROGRESS_REPORT_SIGNED_URL = "courseProgressReportURL";
+  public static final String ASSESSMENT_REPORT_SIGNED_URL = "assessmentReportURL";
   public static final String BULK_UPLOAD_STATUS = "Status";
   public static final String BULK_UPLOAD_ERROR = "Remarks";
   public static final String ACTION_GROUP = "action_group";
@@ -905,6 +908,8 @@ public final class JsonKey {
   public static final String SUNBIRD_COURSE_METRICS_CONTANER = "sunbird_course_metrics_container";
   public static final String SUNBIRD_COURSE_METRICS_REPORT_FOLDER =
       "sunbird_course_metrics_report_folder";
+  public static final String SUNBIRD_ASSESSMENT_REPORT_FOLDER =
+          "sunbird_assessment_report_folder";
   public static final String REPORT_UPDATED_ON = "reportUpdatedOn";
   public static final String SUNBIRD_GZIP_SIZE_THRESHOLD = "sunbird_gzip_size_threshold";
   public static final String ANALYTICS_ACCOUNT_NAME = "sunbird_analytics_blob_account_name";
