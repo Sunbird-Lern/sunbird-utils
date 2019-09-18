@@ -3,6 +3,7 @@ package org.sunbird.statevalidateutil;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import org.sunbird.statevalidateutil.constants.DbColumnConstants;
+import org.sunbird.statevalidateutil.tracker.StatusTracker;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -33,11 +34,15 @@ public class CassandraHelper {
     Iterator<Row> iterator = resultSet.iterator();
     while (iterator.hasNext()) {
       Row row = iterator.next();
-      User user = new User(row.getBool(DbColumnConstants.emailVerified),
-              row.getBool(DbColumnConstants.phoneVerified),
-              row.getString(DbColumnConstants.userId),
-              row.getString(DbColumnConstants.rootOrgId));
-      userList.add(user);
+      if(row.getObject(DbColumnConstants.flagsValue) == null) {
+        User user = new User(row.getBool(DbColumnConstants.emailVerified),
+                row.getBool(DbColumnConstants.phoneVerified),
+                row.getString(DbColumnConstants.userId),
+                row.getString(DbColumnConstants.rootOrgId));
+        userList.add(user);
+      } else {
+        StatusTracker.logExistingRecord(row.getString(DbColumnConstants.userId),row.getInt(DbColumnConstants.flagsValue));
+      }
     }
     return userList;
   }
