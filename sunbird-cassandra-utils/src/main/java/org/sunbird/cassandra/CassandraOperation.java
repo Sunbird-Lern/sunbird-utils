@@ -353,8 +353,6 @@ public interface CassandraOperation {
   /**
    * Apply callback on cassandra async read call.
    *
-   * @param keyspaceName Keyspace name
-   * @param tableName Table name
    * @param filters Column and value map for filtering
    * @param fields List of columns to be returned in each record
    * @param callback action callback to be applied on resultset when it is returned.
@@ -365,4 +363,7 @@ public interface CassandraOperation {
       Map<String, Object> filters,
       List<String> fields,
       FutureCallback<ResultSet> callback);
+
+
+  public Response getRecordWithCondition(String keyspace,String tableName,String key,int value);
 }

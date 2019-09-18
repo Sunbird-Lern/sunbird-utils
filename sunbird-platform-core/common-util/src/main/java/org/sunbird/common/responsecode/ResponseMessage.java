@@ -455,6 +455,7 @@ public interface ResponseMessage {
     String ERROR_UPLOAD_QRCODE_CSV_FAILED = "Uploading the html file to cloud storage has failed.";
     String ERROR_NO_DIALCODES_LINKED = "No dialcodes are linked to any courses created by user(s)";
     String EVENTS_DATA_MISSING = "Events array is mandatory";
+    String ACCOUNT_NOT_FOUND = "Account not found.";
   }
 
   interface Key {
@@ -840,5 +841,6 @@ public interface ResponseMessage {
     String ERROR_UPLOAD_QRCODE_CSV_FAILED = "ERROR_UPLOAD_QRCODE_CSV_FAILED";
     String ERROR_NO_DIALCODES_LINKED = "ERROR_NO_DIALCODES_LINKED";
     String EVENTS_DATA_MISSING = "EVENTS_DATA_MISSING";
+    String ACCOUNT_NOT_FOUND = "ACCOUNT_NOT_FOUND";
   }
 }
