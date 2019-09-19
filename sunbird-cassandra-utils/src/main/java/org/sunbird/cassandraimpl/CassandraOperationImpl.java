@@ -981,12 +981,15 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
   }
 
   @Override
-  public Response getRecordWithCondition(String keyspace, String tableName, String columnName,String key, int value) {
+  public Response getRecordByObjectType(String keyspace, String tableName, String columnName,String key, int value,String objectType) {
     Select selectQuery=QueryBuilder.select().column(columnName).from(keyspace,tableName);
     Clause clause=QueryBuilder.lt(key,value);
-    selectQuery.where(eq(JsonKey.OBJECT_TYPE,JsonKey.MIGRATION_USER_OBJECT)).and(clause);
+    selectQuery.where(eq(JsonKey.OBJECT_TYPE,objectType)).and(clause);
     selectQuery.allowFiltering();
     ResultSet resultSet=connectionManager.getSession(keyspace).execute(selectQuery);
     Response response=CassandraUtil.createResponse(resultSet);
-    return response; }}
+    return response;
+
+  }
+}
 
