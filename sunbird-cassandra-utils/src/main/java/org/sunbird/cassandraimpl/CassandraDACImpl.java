@@ -70,7 +70,7 @@ public class CassandraDACImpl extends CassandraOperationImpl {
       if (CollectionUtils.isNotEmpty(fields)) {
         select = QueryBuilder.select((String[]) fields.toArray()).from(keySpace, table);
       } else {
-        select = QueryBuilder.select().all().from(keySpace, table);
+        select = QueryBuilder.select().all().from(keySpace, table).allowFiltering();
       }
 
       if (MapUtils.isNotEmpty(filters)) {
