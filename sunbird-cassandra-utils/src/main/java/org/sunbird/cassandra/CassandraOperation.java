@@ -365,5 +365,5 @@ public interface CassandraOperation {
       FutureCallback<ResultSet> callback);
 
 
-  public Response getRecordWithCondition(String keyspace,String tableName,String key,int value);
+  public Response getRecordWithCondition(String keyspace,String tableName,String columnName,String key,int value);
 }
