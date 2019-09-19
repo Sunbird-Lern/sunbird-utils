@@ -51,8 +51,8 @@ public abstract class BaseMessageTest {
 		} catch (Exception e) {
 			Assert.fail("Exception while mocking static " + e.getLocalizedMessage());
 		}
-//		doReturn("randomString").when(pc).getProperty(Mockito.eq("sunbird.msg.91.auth"));
-//		doCallRealMethod().when(pc).getProperty(AdditionalMatchers.not(Mockito.eq("sunbird.msg.91.auth")));
+     	doReturn("randomString").when(pc).getProperty(Mockito.eq("sunbird.msg.91.auth"));
+        doCallRealMethod().when(pc).getProperty(AdditionalMatchers.not(Mockito.eq("sunbird.msg.91.auth")));
 	}
 
 }
