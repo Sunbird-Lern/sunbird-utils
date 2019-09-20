@@ -42,7 +42,7 @@ public final class RequestValidator {
   public static void validateUpdateContent(Request contentRequestDto) {
 
     List<Map<String, Object>> contents =  (List<Map<String, Object>>) contentRequestDto.getRequest().get(JsonKey.CONTENTS);
-    if (!CollectionUtils.isEmpty(contents)) {
+    if (CollectionUtils.isNotEmpty(contents)) {
       List<Map<String, Object>> list =
               (List<Map<String, Object>>) (contentRequestDto.getRequest().get(JsonKey.CONTENTS));
       for (Map<String, Object> map : list) {
@@ -92,7 +92,7 @@ public final class RequestValidator {
       }
     }
     List<Map<String, Object>> assessmentData = (List<Map<String, Object>>) contentRequestDto.getRequest().get(JsonKey.ASSESSMENT_EVENTS);
-    if (!CollectionUtils.isEmpty(assessmentData)) {
+    if (CollectionUtils.isNotEmpty(assessmentData)) {
         for (Map<String, Object> map : assessmentData) {
           if (!map.containsKey(JsonKey.ASSESSMENT_TS)){
             throw new ProjectCommonException(
