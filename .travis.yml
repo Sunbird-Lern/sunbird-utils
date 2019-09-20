@@ -1,6 +1,7 @@
 language: java
 jdk: openjdk8
 install: echo "Over-riding default script for travis-ci"
+dist: trusty
 script:
   - jdk_switcher use openjdk8
   - mvn clean package
