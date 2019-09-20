@@ -13,6 +13,7 @@ import org.sunbird.common.services.impl.ProfileCompletenessFactory;
 
 /**
  * This test class have the assumption that each profile attribute have the same weighted.
+ * for more details look at profilecompleteness.properties.
  *
  * @author Manzarul
  */
