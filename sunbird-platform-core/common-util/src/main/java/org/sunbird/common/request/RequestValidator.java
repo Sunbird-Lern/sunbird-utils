@@ -40,62 +40,59 @@ public final class RequestValidator {
    */
   @SuppressWarnings("unchecked")
   public static void validateUpdateContent(Request contentRequestDto) {
-    if (((List<Map<String, Object>>) (contentRequestDto.getRequest().get(JsonKey.CONTENTS)))
-        .isEmpty()) {
-      throw new ProjectCommonException(
-          ResponseCode.contentIdRequired.getErrorCode(),
-          ResponseCode.contentIdRequiredError.getErrorMessage(),
-          ERROR_CODE);
-    } else {
+
+    List<Map<String, Object>> contents =  (List<Map<String, Object>>) contentRequestDto.getRequest().get(JsonKey.CONTENTS);
+    if (!CollectionUtils.isEmpty(contents)) {
       List<Map<String, Object>> list =
-          (List<Map<String, Object>>) (contentRequestDto.getRequest().get(JsonKey.CONTENTS));
+              (List<Map<String, Object>>) (contentRequestDto.getRequest().get(JsonKey.CONTENTS));
       for (Map<String, Object> map : list) {
         if (null != map.get(JsonKey.LAST_UPDATED_TIME)) {
           boolean bool =
-              ProjectUtil.isDateValidFormat(
-                  "yyyy-MM-dd HH:mm:ss:SSSZ", (String) map.get(JsonKey.LAST_UPDATED_TIME));
+                  ProjectUtil.isDateValidFormat(
+                          "yyyy-MM-dd HH:mm:ss:SSSZ", (String) map.get(JsonKey.LAST_UPDATED_TIME));
           if (!bool) {
             throw new ProjectCommonException(
-                ResponseCode.dateFormatError.getErrorCode(),
-                ResponseCode.dateFormatError.getErrorMessage(),
-                ERROR_CODE);
+                    ResponseCode.dateFormatError.getErrorCode(),
+                    ResponseCode.dateFormatError.getErrorMessage(),
+                    ERROR_CODE);
           }
         }
         if (null != map.get(JsonKey.LAST_COMPLETED_TIME)) {
           boolean bool =
-              ProjectUtil.isDateValidFormat(
-                  "yyyy-MM-dd HH:mm:ss:SSSZ", (String) map.get(JsonKey.LAST_COMPLETED_TIME));
+                  ProjectUtil.isDateValidFormat(
+                          "yyyy-MM-dd HH:mm:ss:SSSZ", (String) map.get(JsonKey.LAST_COMPLETED_TIME));
           if (!bool) {
             throw new ProjectCommonException(
-                ResponseCode.dateFormatError.getErrorCode(),
-                ResponseCode.dateFormatError.getErrorMessage(),
-                ERROR_CODE);
+                    ResponseCode.dateFormatError.getErrorCode(),
+                    ResponseCode.dateFormatError.getErrorMessage(),
+                    ERROR_CODE);
           }
         }
         if (map.containsKey(JsonKey.CONTENT_ID)) {
 
           if (null == map.get(JsonKey.CONTENT_ID)) {
             throw new ProjectCommonException(
-                ResponseCode.contentIdRequired.getErrorCode(),
-                ResponseCode.contentIdRequiredError.getErrorMessage(),
-                ERROR_CODE);
+                    ResponseCode.contentIdRequired.getErrorCode(),
+                    ResponseCode.contentIdRequiredError.getErrorMessage(),
+                    ERROR_CODE);
           }
           if (ProjectUtil.isNull(map.get(JsonKey.STATUS))) {
             throw new ProjectCommonException(
-                ResponseCode.contentStatusRequired.getErrorCode(),
-                ResponseCode.contentStatusRequired.getErrorMessage(),
-                ERROR_CODE);
+                    ResponseCode.contentStatusRequired.getErrorCode(),
+                    ResponseCode.contentStatusRequired.getErrorMessage(),
+                    ERROR_CODE);
           }
 
         } else {
           throw new ProjectCommonException(
-              ResponseCode.contentIdRequired.getErrorCode(),
-              ResponseCode.contentIdRequiredError.getErrorMessage(),
-              ERROR_CODE);
+                  ResponseCode.contentIdRequired.getErrorCode(),
+                  ResponseCode.contentIdRequiredError.getErrorMessage(),
+                  ERROR_CODE);
         }
       }
-      List<Map<String, Object>> assessmentData = (List<Map<String, Object>>) contentRequestDto.getRequest().get(JsonKey.ASSESSMENT_EVENTS);
-      if (!CollectionUtils.isEmpty(assessmentData)) {
+    }
+    List<Map<String, Object>> assessmentData = (List<Map<String, Object>>) contentRequestDto.getRequest().get(JsonKey.ASSESSMENT_EVENTS);
+    if (!CollectionUtils.isEmpty(assessmentData)) {
         for (Map<String, Object> map : assessmentData) {
           if (!map.containsKey(JsonKey.ASSESSMENT_TS)){
             throw new ProjectCommonException(
@@ -146,7 +143,6 @@ public final class RequestValidator {
                     ERROR_CODE);
           }
         }
-      }
     }
   }
 
