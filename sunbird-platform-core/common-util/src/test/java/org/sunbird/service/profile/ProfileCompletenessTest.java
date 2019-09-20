@@ -13,6 +13,7 @@ import org.sunbird.common.services.impl.ProfileCompletenessFactory;
 
 /**
  * This test class have the assumption that each profile attribute have the same weighted.
+ * for more details look at profilecompleteness.properties.
  *
  * @author Manzarul
  */
@@ -55,6 +56,7 @@ public class ProfileCompletenessTest {
     requestMap.put(JsonKey.JOB_PROFILE, jobList);
     Map<String, Object> response = service.computeProfile(requestMap);
     int val = (int) response.get(JsonKey.COMPLETENESS);
+    if(val>100) {val =100;}
     Assert.assertEquals(100, val);
   }
 
@@ -110,7 +112,7 @@ public class ProfileCompletenessTest {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> response = service.computeProfile(requestMap);
     List<String> val = (List) response.get(JsonKey.MISSING_FIELDS);
-    Assert.assertEquals(16, val.size());
+    Assert.assertEquals(14, val.size());
   }
 
   @Test
@@ -131,15 +133,15 @@ public class ProfileCompletenessTest {
     requestMap.put(JsonKey.USERNAME, "test@test");
     Map<String, Object> response = service.computeProfile(requestMap);
     int val = (int) response.get(JsonKey.COMPLETENESS);
-    Assert.assertEquals(82, val);
+    Assert.assertEquals(79, val);
     requestMap.remove("avatar");
     response = service.computeProfile(requestMap);
     val = (int) response.get(JsonKey.COMPLETENESS);
-    Assert.assertEquals(75, val);
+    Assert.assertEquals(72, val);
     requestMap.put("avatar", "some value");
     response = service.computeProfile(requestMap);
     val = (int) response.get(JsonKey.COMPLETENESS);
-    Assert.assertEquals(82, val);
+    Assert.assertEquals(79, val);
     Map<String, Object> address = new HashMap<>();
     address.put(JsonKey.CITY, "Bangalore");
     address.put(JsonKey.STATE, "sdkjdfjks");
@@ -148,7 +150,7 @@ public class ProfileCompletenessTest {
     requestMap.put(JsonKey.ADDRESS, list);
     response = service.computeProfile(requestMap);
     val = (int) response.get(JsonKey.COMPLETENESS);
-    Assert.assertEquals(88, val);
+    Assert.assertEquals(86, val);
   }
 
   @Test
