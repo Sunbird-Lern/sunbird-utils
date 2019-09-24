@@ -180,7 +180,7 @@ public class TelemetryGenerator {
     try {
       event = mapper.writeValueAsString(telemetry);
       ProjectLogger.log(
-          "TelemetryGenerator:getTelemetry = Telemetry Event : " + event, LoggerEnum.DEBUG.name());
+          "TelemetryGenerator:getTelemetry = Telemetry Event : " + event, LoggerEnum.INFO.name());
     } catch (Exception e) {
       ProjectLogger.log(e.getMessage(), e);
     }

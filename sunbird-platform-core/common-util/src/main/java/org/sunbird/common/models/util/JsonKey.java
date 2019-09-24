@@ -994,5 +994,6 @@ public final class JsonKey {
   public static final String SUNBIRD_MIGRATE_USER_BODY="sunbird_migrate_user_body";
   public static final String SMS="sms";
   public static final String SUNBIRD_ACCOUNT_MERGE_SUBJECT="sunbird_account_merge_subject";
+  public static final String CONTEXT_TELEMETRY="telemetryContext";
   private JsonKey() {}
 }
