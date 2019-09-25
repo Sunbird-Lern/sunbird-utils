@@ -43,25 +43,25 @@ public interface ISmsProvider {
   boolean bulkSms(List<String> phoneNumber, String smsText);
   /**
    * This method will send OTP to user phone number.
-   * @param phoneNumber phone number without country code.
-   * @param message message should have ##otp##. during otp generation 
+   * @param OTPRequest otp request object.
+   *  message should have ##otp##. during otp generation 
    * ##otp## will be replaced with OTP value.
-   * @param countryCode String country code value Ex: 91 for India
+   * countryCode String country code value Ex: 91 for India
    * @return boolean
    */
   boolean sendOtp (OTPRequest otpRequest);
   /**
    * This method is used for resending otp on phone number only.
-   * @param phoneNumber phone number with out country code
-   * @param countryCode String country code value Ex: 91 for India
+   * @param OTPRequest otp request
+   * countryCode String country code value Ex: 91 for India
    * @return boolean
    */
   boolean resendOtp (OTPRequest otpRequest); 
   /**
    * This method will verify provided otp.
-   * @param phoneNumber phone number with out country code
-   * @param otp OTP , it should be number only
-   * @param countryCode String country code value Ex: 91 for India
+   * @param OTPRequest otp request
+   * OTP , it should be number only
+   * contryCode String country code value Ex: 91 for India
    * @return boolean
    */
   boolean verifyOtp (OTPRequest otpRequest);
