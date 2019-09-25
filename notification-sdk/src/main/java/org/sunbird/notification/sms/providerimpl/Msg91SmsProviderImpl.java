@@ -21,7 +21,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.sunbird.notification.beans.MessageResponse;
 import org.sunbird.notification.beans.OTPRequest;
-import org.sunbird.notification.beans.SMSConfig;
 import org.sunbird.notification.sms.Sms;
 import org.sunbird.notification.sms.provider.ISmsProvider;
 import org.sunbird.notification.utils.JsonUtil;
@@ -523,11 +522,11 @@ public class Msg91SmsProviderImpl implements ISmsProvider {
 		try {
 			messageResponse = mapper.readValue(response, MessageResponse.class);
 		} catch (JsonParseException e) {
-			e.printStackTrace();
+			logger.error("Error occured during response parsing:JsonParseException: " + e.getMessage());
 		} catch (JsonMappingException e) {
-			e.printStackTrace();
+			logger.error("Error occured during response parsing:JsonMappingException : " + e.getMessage());
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("Error occured during response parsing:IOException : " + e.getMessage());
 		}
 		return messageResponse;
 	}
