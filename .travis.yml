@@ -4,7 +4,7 @@ install: echo "Over-riding default script for travis-ci"
 dist: trusty
 script:
   - jdk_switcher use openjdk8
-  - mvn clean package
+  - mvn clean package -q
   - bash <(curl -s https://codecov.io/bash)
 cache:
   directories:
