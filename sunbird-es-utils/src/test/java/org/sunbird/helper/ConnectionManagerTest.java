@@ -11,6 +11,7 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
@@ -54,6 +55,7 @@ public class ConnectionManagerTest {
 	}
 
 	@Test
+	@Ignore
 	public void testInitialiseConnectionFromPropertiesFile() {
 		boolean response = ConnectionManager.initialiseConnectionFromPropertiesFile("test", "localhost", "9200");
 		Assert.assertTrue(response);

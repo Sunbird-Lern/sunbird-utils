@@ -642,7 +642,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
             | QueryValidationException
             | NoHostAvailableException
             | IllegalStateException e) {
-      ProjectLogger.log("Cassandra Batch Update Failed." + e.getMessage(), e);
+      ProjectLogger.log("Cassandra performBatchAction Failed." + e.getMessage(), e);
       throw new ProjectCommonException(
               ResponseCode.SERVER_ERROR.getErrorCode(),
               ResponseCode.SERVER_ERROR.getErrorMessage(),
