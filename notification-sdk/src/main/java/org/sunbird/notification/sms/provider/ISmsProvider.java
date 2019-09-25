@@ -2,6 +2,8 @@ package org.sunbird.notification.sms.provider;
 
 import java.util.List;
 
+import org.sunbird.notification.beans.OTPRequest;
+
 /**
  * This interface will provide all method for sending sms.
  * @author manzarul
@@ -47,14 +49,14 @@ public interface ISmsProvider {
    * @param countryCode String country code value Ex: 91 for India
    * @return boolean
    */
-  boolean sendOtp (String phoneNumber, String message,String countryCode);
+  boolean sendOtp (OTPRequest otpRequest);
   /**
    * This method is used for resending otp on phone number only.
    * @param phoneNumber phone number with out country code
    * @param countryCode String country code value Ex: 91 for India
    * @return boolean
    */
-  boolean resendOtp (String phoneNumber,String countryCode); 
+  boolean resendOtp (OTPRequest otpRequest); 
   /**
    * This method will verify provided otp.
    * @param phoneNumber phone number with out country code
@@ -62,5 +64,5 @@ public interface ISmsProvider {
    * @param countryCode String country code value Ex: 91 for India
    * @return boolean
    */
-  boolean verifyOtp (String phoneNumber, String otp,String countryCode);
+  boolean verifyOtp (OTPRequest otpRequest);
 }
