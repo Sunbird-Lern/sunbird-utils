@@ -587,6 +587,71 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
     return response;
   }
 
+  /**
+   * This method performs batch operations of insert and update on a same table, further other operations can be added to if it is necessary.
+   *
+   * @param keyspaceName
+   * @param tableName
+   * @param inputData
+   * @return
+   */
+  @Override
+  public Response performBatchAction(
+          String keyspaceName, String tableName, Map<String, Object> inputData) {
+
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log(
+            "Cassandra Service performBatchAction method started at ==" + startTime, LoggerEnum.INFO);
+
+    Session session = connectionManager.getSession(keyspaceName);
+    Response response = new Response();
+    BatchStatement batchStatement = new BatchStatement();
+    ResultSet resultSet = null;
+    try {
+        inputData.forEach((key, inputMap) -> {
+          Map<String, Object> record = (Map<String, Object>)inputMap;
+          if(key.equals(JsonKey.INSERT)) {
+            Insert insert = QueryBuilder.insertInto(keyspaceName, tableName);
+            record.entrySet()
+                    .stream()
+                    .forEach(
+                            x -> {
+                              insert.value(x.getKey(), x.getValue());
+                            });
+            batchStatement.add(insert);
+          } else if(key.equals(JsonKey.UPDATE)) {
+            Update update = QueryBuilder.update(keyspaceName, tableName);
+            Assignments assignments = update.with();
+            Update.Where where = update.where();
+            record.entrySet()
+                    .stream()
+                    .forEach(
+                            x -> {
+                              if (Constants.ID.equals(x.getKey())) {
+                                where.and(eq(x.getKey(), x.getValue()));
+                              } else {
+                                assignments.and(QueryBuilder.set(x.getKey(), x.getValue()));
+                              }
+                            });
+            batchStatement.add(update);
+          }
+        });
+      resultSet = session.execute(batchStatement);
+      response.put(Constants.RESPONSE, Constants.SUCCESS);
+    } catch (QueryExecutionException
+            | QueryValidationException
+            | NoHostAvailableException
+            | IllegalStateException e) {
+      ProjectLogger.log("Cassandra Batch Update Failed." + e.getMessage(), e);
+      throw new ProjectCommonException(
+              ResponseCode.SERVER_ERROR.getErrorCode(),
+              ResponseCode.SERVER_ERROR.getErrorMessage(),
+              ResponseCode.SERVER_ERROR.getResponseCode());
+      }
+    logQueryElapseTime("performBatchAction", startTime);
+    return response;
+  }
+
   @Override
   public Response batchUpdate(
       String keyspaceName, String tableName, List<Map<String, Map<String, Object>>> list) {
