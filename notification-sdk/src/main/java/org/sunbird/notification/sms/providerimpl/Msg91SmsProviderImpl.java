@@ -21,12 +21,10 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.sunbird.notification.beans.MessageResponse;
 import org.sunbird.notification.beans.OTPRequest;
-import org.sunbird.notification.beans.SMSConfig;
 import org.sunbird.notification.sms.Sms;
 import org.sunbird.notification.sms.provider.ISmsProvider;
 import org.sunbird.notification.utils.JsonUtil;
 import org.sunbird.notification.utils.NotificationConstant;
-import org.sunbird.notification.utils.SMSFactory;
 import org.sunbird.notification.utils.Util;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -407,6 +405,10 @@ public class Msg91SmsProviderImpl implements ISmsProvider {
 
 @Override
 	public boolean sendOtp(OTPRequest request) {
+		if (!isOtpRequestValid(request)) {
+			logger.info("Send opt request is not valid.");
+			return false;
+		}
 		boolean otpResponse = false;
 		try {
 			String data = createOtpReqData(request);
@@ -435,13 +437,17 @@ public class Msg91SmsProviderImpl implements ISmsProvider {
 
 @Override
 	public boolean resendOtp(OTPRequest request) {
+		if (!isPhoneNumberValid(request.getPhone())) {
+			logger.info("resend otp request is not valid ");
+			return false;
+		}
 		boolean response = false;
 		try {
 			HttpResponse<String> resendResponse = Unirest
 					.get(OTP_BASE_URL + "retryotp.php?retrytype=text&authkey="
 							+ Util.readValue(NotificationConstant.SUNBIRD_MSG_91_AUTH) + NotificationConstant.Ampersand
-							+ NotificationConstant.MOBILE + NotificationConstant.EQUAL 
-							+ request.getCountryCode() + request.getPhone())
+							+ NotificationConstant.MOBILE + NotificationConstant.EQUAL + request.getCountryCode()
+							+ request.getPhone())
 					.header("content-type", "application/x-www-form-urlencoded").asString();
 
 			if (resendResponse != null) {
@@ -469,6 +475,10 @@ public class Msg91SmsProviderImpl implements ISmsProvider {
 
 @Override
 	public boolean verifyOtp(OTPRequest request) {
+	    if (!isOtpRequestValid(request)) {
+	    	logger.info("Verify Opt request is not valid.");
+	    	return false;
+	    }
 		boolean response = false;
 		try {
 			HttpResponse<String> resendResponse = Unirest
@@ -541,6 +551,33 @@ public class Msg91SmsProviderImpl implements ISmsProvider {
 		}
 		return messageResponse;
 	}
+	
+	
+	private boolean isOtpRequestValid(OTPRequest request) {
+		boolean response = isPhoneNumberValid(request.getPhone());
+		if (response) {
+			response = isOtpLengthValid(request.getOtpLength());
+		}
+		return response;
+	}
+	
+	private boolean isPhoneNumberValid(String phone) {
+		if (StringUtils.isBlank(phone)) {
+			return false;
+		} else {
+			if (phone.trim().length() > 12 || phone.trim().length() < 10) {
+				return false;
+			}
+		}
+		return true;
+	}
  	
+	private boolean isOtpLengthValid(int otpLength) {
+		if (otpLength > 9 || otpLength < 4) {
+			return false;
+		}
+		return true;
+	}	
+	
 	
 }

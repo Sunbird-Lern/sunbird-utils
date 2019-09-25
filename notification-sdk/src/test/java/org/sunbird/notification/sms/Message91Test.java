@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.sunbird.notification.beans.OTPRequest;
 import org.sunbird.notification.beans.SMSConfig;
 import org.sunbird.notification.sms.provider.ISmsProvider;
 import org.sunbird.notification.sms.providerimpl.Msg91SmsProviderImpl;
@@ -12,6 +13,7 @@ import org.sunbird.notification.utils.SMSFactory;
 
 public class Message91Test extends BaseMessageTest {
 	SMSConfig config = new SMSConfig(null, "TESTSU");
+	
 	@Test
 	public void testInitSuccess() {
 		Msg91SmsProviderImpl service = new Msg91SmsProviderImpl("sms-auth-key", "TESTSU");
@@ -138,4 +140,76 @@ public class Message91Test extends BaseMessageTest {
 		Assert.assertFalse(response);
 	}
 
+	@Test
+	public void testSendOtpSuccess() {
+		ISmsProvider object = SMSFactory.getInstance("91SMS",config);
+		OTPRequest request = new OTPRequest("9663845334", "91", 5, 10, null, null);
+		boolean response = object.sendOtp(request);
+		Assert.assertTrue(response);
+	}
+	
+	@Test
+	public void testSendOtpFailureWithIncorrectPhone() {
+		ISmsProvider object = SMSFactory.getInstance("91SMS",config);
+		OTPRequest request = new OTPRequest("96638453", "91", 5, 10, null, null);
+		boolean response = object.sendOtp(request);
+		Assert.assertFalse(response);
+	}
+	
+	@Test
+	public void testSendOtpFailureWithPhoneLengthExceed() {
+		ISmsProvider object = SMSFactory.getInstance("91SMS",config);
+		OTPRequest request = new OTPRequest("9663845354321", "91", 5, 10, null, null);
+		boolean response = object.sendOtp(request);
+		Assert.assertFalse(response);
+	}
+	
+	@Test
+	public void testSendOtpFailureDueTOMinOtpLength() {
+		ISmsProvider object = SMSFactory.getInstance("91SMS",config);
+		OTPRequest request = new OTPRequest("9663845354", "91", 3, 10, null, null);
+		boolean response = object.sendOtp(request);
+		Assert.assertFalse(response);
+	}
+	
+	@Test
+	public void testSendOtpFailureDueTOMaxOtpLength() {
+		ISmsProvider object = SMSFactory.getInstance("91SMS",config);
+		OTPRequest request = new OTPRequest("9663845354", "91", 10, 10, null, null);
+		boolean response = object.sendOtp(request);
+		Assert.assertFalse(response);
+	}
+	
+	@Test
+	public void testresendOtpFailure() {
+		ISmsProvider object = SMSFactory.getInstance("91SMS",config);
+		OTPRequest request = new OTPRequest("96638453", "91", 0, 10, null,null);
+		boolean response = object.resendOtp(request);
+		Assert.assertFalse(response);
+	}
+	
+	@Test
+	public void testresendOtpFailureWithInvalidPhone() {
+		ISmsProvider object = SMSFactory.getInstance("91SMS",config);
+		OTPRequest request = new OTPRequest("96638453234", "91", 0, 10, null,null);
+		boolean response = object.resendOtp(request);
+		Assert.assertFalse(response);
+	}
+	
+	@Test
+	public void testverifyOtpFailureWithInvalidPhone() {
+		ISmsProvider object = SMSFactory.getInstance("91SMS",config);
+		OTPRequest request = new OTPRequest("96638453234", "91", 0, 10, null,null);
+		boolean response = object.verifyOtp(request);
+		Assert.assertFalse(response);
+	}
+	
+	@Test
+	public void testverifyOtpFailureWithInvalidOtpLength() {
+		ISmsProvider object = SMSFactory.getInstance("91SMS",config);
+		OTPRequest request = new OTPRequest("96638453234", "91", 0, 10, null,"234");
+		boolean response = object.verifyOtp(request);
+		Assert.assertFalse(response);
+	}
+	
 }
