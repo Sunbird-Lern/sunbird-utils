@@ -10,7 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 import org.sunbird.notification.fcm.provider.IFCMNotificationService;
 import org.sunbird.notification.utils.FCMResponse;
@@ -22,7 +23,7 @@ import org.sunbird.notification.utils.NotificationConstant;
  * @author manzarul
  */
 public class FCMHttpNotificationServiceImpl implements IFCMNotificationService {
-  private static Logger logger = Logger.getLogger("FCMHttpNotificationServiceImpl");
+  private static Logger logger = LogManager.getLogger("FCMHttpNotificationServiceImpl");
 
   /** FCM_URL URL of FCM server */
   public static final String FCM_URL = "https://fcm.googleapis.com/fcm/send";
@@ -120,10 +121,10 @@ public class FCMHttpNotificationServiceImpl implements IFCMNotificationService {
       HttpResponse<JsonNode> httpResponse =
           Unirest.post(FCM_URL).headers(headerMap).body(object).asJson();
       String response = httpResponse.getBody().toString();
-      logger.info("FCM Notification response== for device ids " + deviceIds + " " + response);
+     logger.info("FCM Notification response== for device ids " + deviceIds + " " + response);
       fcmResponse = mapper.readValue(response, FCMResponse.class);
     } catch (Exception e) {
-      logger.info(e.getMessage());
+     logger.info(e.getMessage());
     }
     return fcmResponse;
   }

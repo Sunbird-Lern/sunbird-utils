@@ -17,10 +17,11 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.sunbird.notification.beans.MessageResponse;
 import org.sunbird.notification.beans.OTPRequest;
+import org.sunbird.notification.beans.SMSConfig;
 import org.sunbird.notification.sms.Sms;
 import org.sunbird.notification.sms.provider.ISmsProvider;
 import org.sunbird.notification.utils.JsonUtil;
@@ -63,7 +64,7 @@ public class Msg91SmsProviderImpl implements ISmsProvider {
 	  this.authKey = authKey;
 	  this.sender = sender;
 	  boolean resposne = init();
-	 logger.info("SMS configuration values are set ==" + resposne);
+	logger.info("SMS configuration values are set ==" + resposne);
   }
   
   /** this method will do the SMS properties initialization. */
@@ -202,13 +203,9 @@ public class Msg91SmsProviderImpl implements ISmsProvider {
           StatusLine sl = response.getStatusLine();
           response.close();
           if (sl.getStatusCode() != 200) {
-            logger.error(
-                "SMS code for "
-                    + tempMobileNumber
-                    + " could not be sent: "
-                    + sl.getStatusCode()
-                    + " - "
-                    + sl.getReasonPhrase());
+						  logger.error( "SMS code for " + tempMobileNumber + " could not be sent: " +
+						  sl.getStatusCode() + " - " + sl.getReasonPhrase());
+						 
           }
           return sl.getStatusCode() == 200;
         } else {
@@ -223,7 +220,7 @@ public class Msg91SmsProviderImpl implements ISmsProvider {
       logger.error(e);
       return false;
     } catch (Exception e) {
-      logger.info("Msg91SmsProvider - Error in coverting providerDetails to string!");
+       logger.info("Msg91SmsProvider - Error in coverting providerDetails to string!");
       return false;
     } finally {
       closeHttpResource(httpClient);
@@ -294,23 +291,10 @@ public class Msg91SmsProviderImpl implements ISmsProvider {
   public boolean bulkSms(List<String> phoneNumber, String smsText) {
     List<String> phoneNumberList = null;
     logger.debug("Msg91SmsProvider@Sending " + smsText + "  to mobileNumber ");
-    logger.debug(
-        "Msg91SmsProvider@SMS Provider parameters \n"
-            + "Gateway - "
-            + baseUrl
-            + "\n"
-            + "authKey - "
-            + authKey
-            + "\n"
-            + "sender - "
-            + sender
-            + "\n"
-            + "country - "
-            + country
-            + "\n"
-            + "smsRoute - "
-            + smsRoute
-            + "\n");
+		  logger.debug( "Msg91SmsProvider@SMS Provider parameters \n" + "Gateway - " +
+		  baseUrl + "\n" + "authKey - " + authKey + "\n" + "sender - " + sender + "\n"
+		  + "country - " + country + "\n" + "smsRoute - " + smsRoute + "\n");
+		 
     if (JsonUtil.isStringNullOREmpty(smsText)) {
       logger.debug("can't sent empty msg.");
       return false;
@@ -358,13 +342,9 @@ public class Msg91SmsProviderImpl implements ISmsProvider {
         StatusLine sl = response.getStatusLine();
         response.close();
         if (sl.getStatusCode() != 200) {
-          logger.error(
-              "SMS code for "
-                  + phoneNumberList
-                  + " could not be sent: "
-                  + sl.getStatusCode()
-                  + " - "
-                  + sl.getReasonPhrase());
+					  logger.error( "SMS code for " + phoneNumberList + " could not be sent: " +
+					  sl.getStatusCode() + " - " + sl.getReasonPhrase());
+					 
         }
         return sl.getStatusCode() == 200;
       } else {
@@ -372,7 +352,7 @@ public class Msg91SmsProviderImpl implements ISmsProvider {
       }
 
     } catch (IOException e) {
-      logger.error(e);
+     logger.error(e);
       return false;
     } catch (Exception e) {
       logger.error("Msg91SmsProvider : send : error in converting providerDetails to String");
@@ -413,7 +393,7 @@ public class Msg91SmsProviderImpl implements ISmsProvider {
 		try {
 			String data = createOtpReqData(request);
 			HttpResponse<String> response = Unirest.get(OTP_BASE_URL + "sendotp.php?authkey="
-					+ Util.readValue(NotificationConstant.SUNBIRD_MSG_91_AUTH) + data).asString();
+					+ authKey + data).asString();
 			if (response != null) {
 				if (response.getStatus() == NotificationConstant.SUCCESS_CODE) {
 					MessageResponse messageResponse = convertMsg91Response(response.getBody());
@@ -445,7 +425,7 @@ public class Msg91SmsProviderImpl implements ISmsProvider {
 		try {
 			HttpResponse<String> resendResponse = Unirest
 					.get(OTP_BASE_URL + "retryotp.php?retrytype=text&authkey="
-							+ Util.readValue(NotificationConstant.SUNBIRD_MSG_91_AUTH) + NotificationConstant.Ampersand
+							+ authKey + NotificationConstant.Ampersand
 							+ NotificationConstant.MOBILE + NotificationConstant.EQUAL + request.getCountryCode()
 							+ request.getPhone())
 					.header("content-type", "application/x-www-form-urlencoded").asString();
@@ -460,7 +440,7 @@ public class Msg91SmsProviderImpl implements ISmsProvider {
 					}
 				} else {
 					logger.info("OTP resent failed with code and response data " + resendResponse.getStatus() + " -"
-							+ resendResponse.getBody());
+						+ resendResponse.getBody());
 				}
 
 			} else {
@@ -483,7 +463,7 @@ public class Msg91SmsProviderImpl implements ISmsProvider {
 		try {
 			HttpResponse<String> resendResponse = Unirest
 					.get(OTP_BASE_URL + "verifyRequestOTP.php?authkey="
-							+ Util.readValue(NotificationConstant.SUNBIRD_MSG_91_AUTH) + NotificationConstant.Ampersand
+							+ authKey + NotificationConstant.Ampersand
 							+ NotificationConstant.MOBILE + NotificationConstant.EQUAL + request.getCountryCode()
 							+ request.getPhone() + NotificationConstant.Ampersand + NotificationConstant.OTP
 							+ NotificationConstant.EQUAL + request.getOtp())
@@ -499,7 +479,7 @@ public class Msg91SmsProviderImpl implements ISmsProvider {
 					}
 				} else {
 					logger.info("OTP verification failed with code and response data " + resendResponse.getStatus()
-							+ " -" + resendResponse.getBody());
+						+ " -" + resendResponse.getBody());
 				}
 
 			} else {
@@ -578,6 +558,4 @@ public class Msg91SmsProviderImpl implements ISmsProvider {
 		}
 		return true;
 	}	
-	
-	
 }

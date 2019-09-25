@@ -4,14 +4,15 @@
 package org.sunbird.notification.utils;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author manzarul
  *
  */
 public class Util {
-	private static Logger logger = Logger.getLogger(Util.class);
+	private static Logger logger = LogManager.getLogger(Util.class);
 	private static PropertiesCache propertiesCache	= PropertiesCache.getInstance();
 	
 	/**

@@ -3,10 +3,12 @@ package org.sunbird.notification.utils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import org.jboss.logging.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class JsonUtil {
-  private static Logger logger = Logger.getLogger(JsonUtil.class);
+  private static Logger logger = LogManager.getLogger(JsonUtil.class);
 
   public static String toJson(Object object) {
     ObjectMapper mapper = new ObjectMapper();
