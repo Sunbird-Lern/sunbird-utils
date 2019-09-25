@@ -179,11 +179,9 @@ public class TelemetryGenerator {
     String event = "";
     try {
       event = mapper.writeValueAsString(telemetry);
-      ProjectLogger.log(
-          "TelemetryGenerator:getTelemetry = Telemetry Event : " + event, LoggerEnum.DEBUG.name());
+      ProjectLogger.log("TelemetryGenerator:getTelemetry = Telemetry Event : " + event, LoggerEnum.DEBUG.name());
     } catch (Exception e) {
-      ProjectLogger.log(e.getMessage(), e);
-    }
+      ProjectLogger.log("TelemetryGenerator:getTelemetry = Telemetry Event: failed to generate audit events:" +e, LoggerEnum.ERROR.name());    }
     return event;
   }
 
