@@ -22,7 +22,7 @@ public final class JsonKey {
   public static final String SIGNED_URL = "signedUrl";
   public static final String REPORTS = "reports";
   public static final String PROGRESS_REPORT_SIGNED_URL = "courseProgressReportUrl";
-  public static final String ASSESSMENT_REPORT_BLOB_URL = "blobUrl";
+  public static final String ASSESSMENT_REPORT_BLOB_URL = "reportUrl";
   public static final String ASSESSMENT_REPORT_SIGNED_URL = "assessmentReportUrl";
   public static final String BULK_UPLOAD_STATUS = "Status";
   public static final String BULK_UPLOAD_ERROR = "Remarks";
