@@ -142,7 +142,7 @@ public interface ResponseMessage {
     String USER_NOT_ENROLLED_COURSE = "User is not enrolled to given course batch.";
     String USER_ALREADY_COMPLETED_COURSE = "User already completed given course batch.";
     String COURSE_BATCH_ALREADY_COMPLETED = "Course batch is already completed.";
-    String COURSE_BATCH_ENROLLMENT_DATE_ENDED= "Course batch enrollment date has ended.";
+    String COURSE_BATCH_ENROLLMENT_DATE_ENDED = "Course batch enrollment date has ended.";
     String EXISTING_ORG_MEMBER = "You already have a membership of this organization.";
     String CONTENT_TYPE_ERROR = "Please add Content-Type header with value application/json";
     String INVALID_PROPERTY_ERROR = "Invalid property {0}.";
@@ -164,9 +164,12 @@ public interface ResponseMessage {
         "Batch start date should be either today or future date.";
     String DATE_FORMAT_ERRROR = "Date format error.";
     String END_DATE_ERROR = "End date should be greater than start date.";
-    String ENROLLMENT_END_DATE_START_ERROR="Enrollment End date should be greater than course batch start date.";
-    String ENROLLMENT_END_DATE_END_ERROR ="Enrollment End date should be lesser than course batch end date.";
-    String ENROLLMENT_END_DATE_UPDATE_ERROR="Invalid Enrollment End date. Please provide future date.";
+    String ENROLLMENT_END_DATE_START_ERROR =
+        "Enrollment End date should be greater than course batch start date.";
+    String ENROLLMENT_END_DATE_END_ERROR =
+        "Enrollment End date should be lesser than course batch end date.";
+    String ENROLLMENT_END_DATE_UPDATE_ERROR =
+        "Invalid Enrollment End date. Please provide future date.";
     String INVALID_CSV_FILE = "Please provide valid csv file.";
     String INVALID_COURSE_BATCH_ID = "Invalid course batch id ";
     String COURSE_BATCH_ID_MISSING = "Course batch Id required";
@@ -438,12 +441,14 @@ public interface ResponseMessage {
     String ERROR_BGMS_MISMATCH = "Mismatch in {0} at row - {1}";
     String ERROR_USER_MIGRATION_FAILED = "User migration failed.";
     String EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS = "Contents should not be empty for batch status update.";
-    String IDENTIFIER_VALIDATION_FAILED="Valid identifier is not present in List, Valid supported identifiers are ";
+    String IDENTIFIER_VALIDATION_FAILED =
+        "Valid identifier is not present in List, Valid supported identifiers are ";
     String FROM_ACCOUNT_ID_MISSING = "From Account id is mandatory.";
     String TO_ACCOUNT_ID_MISSING = "To Account id is mandatory.";
     String FROM_ACCOUNT_ID_NOT_EXISTS = "From Account id not exists";
-    String PARAM_NOT_MATCH="%s-NOT-MATCH";
+    String PARAM_NOT_MATCH = "%s-NOT-MATCH";
     String MANDATORY_HEADER_PARAMETER_MISSING = "Mandatory header parameter {0} is missing.";
+    String ACCOUNT_NOT_FOUND = "Account not found.";
   }
 
   interface Key {
@@ -563,7 +568,7 @@ public interface ResponseMessage {
     String USER_NOT_ENROLLED_COURSE = "USER_NOT_ENROLLED_COURSE";
     String USER_ALREADY_COMPLETED_COURSE = "USER_ALREADY_COMPLETED_COURSE";
     String COURSE_BATCH_ALREADY_COMPLETED = "COURSE_BATCH_ALREADY_COMPLETED";
-    String COURSE_BATCH_ENROLLMENT_DATE_ENDED= "COURSE_BATCH_ENROLLMENT_DATE_ENDED";
+    String COURSE_BATCH_ENROLLMENT_DATE_ENDED = "COURSE_BATCH_ENROLLMENT_DATE_ENDED";
     String CONTENT_TYPE_ERROR = "CONTENT_TYPE_ERROR";
     String INVALID_PROPERTY_ERROR = "INVALID_PROPERTY_ERROR";
     String USER_NAME_OR_ID_ERROR = "USER_NAME_OR_ID_ERROR";
@@ -583,7 +588,7 @@ public interface ResponseMessage {
     String END_DATE_ERROR = "END_DATE_ERROR";
     String ENROLLMENT_END_DATE_START_ERROR = "ENROLLMENT_END_DATE_START_ERROR";
     String ENROLLMENT_END_DATE_END_ERROR = "ENROLLMENT_END_DATE_END_ERROR";
-    String ENROLLMENT_END_DATE_UPDATE_ERROR ="ENROLLMENT_END_DATE_UPDATE_ERROR";
+    String ENROLLMENT_END_DATE_UPDATE_ERROR = "ENROLLMENT_END_DATE_UPDATE_ERROR";
     String INVALID_CSV_FILE = "INVALID_CSV_FILE";
     String INVALID_COURSE_BATCH_ID = "INVALID_COURSE_BATCH_ID";
     String COURSE_BATCH_ID_MISSING = "COURSE_BATCH_ID_MISSING";
@@ -822,7 +827,8 @@ public interface ResponseMessage {
     String FROM_ACCOUNT_ID_MISSING = "FROM_ACCOUNT_ID_MISSING";
     String TO_ACCOUNT_ID_MISSING = "TO_ACCOUNT_ID_MISSING";
     String FROM_ACCOUNT_ID_NOT_EXISTS = "FROM_ACCOUNT_ID_NOT_EXISTS";
-    String PARAM_NOT_MATCH= "%s-NOT-MATCH";
-    String MANDATORY_HEADER_PARAMETER_MISSING = "MANDATORY_HEADER_PARAMETER_MISSING";;
+    String PARAM_NOT_MATCH = "%s-NOT-MATCH";
+    String MANDATORY_HEADER_PARAMETER_MISSING = "MANDATORY_HEADER_PARAMETER_MISSING";
+    String ACCOUNT_NOT_FOUND = "ACCOUNT_NOT_FOUND";
   }
 }
