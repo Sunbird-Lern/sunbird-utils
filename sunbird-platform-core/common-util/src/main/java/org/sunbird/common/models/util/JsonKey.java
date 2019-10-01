@@ -1,4 +1,3 @@
-
 package org.sunbird.common.models.util;
 
 /**
@@ -519,6 +518,7 @@ public final class JsonKey {
   public static final String SUNBIRD = "sunbird";
   public static final String SUNBIRD_ALLOWED_LOGIN = "sunbird_allowed_login";
   public static final String SUNBIRD_APP_URL = "sunbird_app_url";
+  public static final String SUNBIRD_API_BASE_URL = "sunbird_api_base_url";
   public static final String SUNBIRD_CASSANDRA_IP = "sunbird_cassandra_host";
   public static final String SUNBIRD_CASSANDRA_KEYSPACE = "sunbird_cassandra_keyspace";
   public static final String SUNBIRD_CASSANDRA_MODE = "sunbird_cassandra_mode";
@@ -549,6 +549,9 @@ public final class JsonKey {
   public static final String SUNBIRD_SSO_URL = "sunbird_sso_url";
   public static final String SUNBIRD_SSO_USERNAME = "sunbird_sso_username";
   public static final String SUNBIRD_WEB_URL = "sunbird_web_url";
+  public static final String SUNBIRD_GET_ORGANISATION_API="sunbird_search_organisation_api";
+  public static final String SUNBIRD_GET_SINGLE_USER_API="sunbird_read_user_api";
+  public static final String SUNBIRD_GET_MULTIPLE_USER_API="sunbird_search_user_api";
   public static final String SUNBIRD_CHANNEL_READ_API = "sunbird_channel_read_api";
   public static final String SUNBIRD_FRAMEWORK_READ_API = "sunbird_framework_read_api";
   public static final String SUNBIRD_CONTENT_GET_HIERARCHY_API = "sunbird_get_hierarchy_api";
@@ -637,7 +640,7 @@ public final class JsonKey {
   public static final String HEALTH = "health";
   public static final String SERVICE = "service";
   public static final String SOFT_CONSTRAINTS = "softConstraints";
-  public static final String SUNBIRD_API_BASE_URL = "sunbird_api_base_url";
+  public static final String SUNBIRD_USER_ORG_API_BASE_URL = "sunbird_user_org_api_base_url";
   public static final String SUNBIRD_API_MGR_BASE_URL = "sunbird_api_mgr_base_url";
   public static final String SUNBIRD_AUTHORIZATION = "sunbird_authorization";
   public static final String SUNBIRD_CS_BASE_URL = "sunbird_cs_base_url";
@@ -911,6 +914,9 @@ public final class JsonKey {
 
   public static final String SUNBIRD_REDIS_CONN_POOL_SIZE = "sunbird_redis_connection_pool_size";
   public static final String RECIPIENT_PHONES = "recipientPhones";
+  public static final String TCP = "tcp";
+  public static final String REST = "rest";
+  public static final String SUNBIRD_AUDIT_EVNET_BATCH_ALLOWED = "sunbird_audit_event_batch_allowed";
 
   private JsonKey() {}
 }

@@ -248,6 +248,9 @@ public enum ResponseCode {
   courseBatchAlreadyCompleted(
       ResponseMessage.Key.COURSE_BATCH_ALREADY_COMPLETED,
       ResponseMessage.Message.COURSE_BATCH_ALREADY_COMPLETED),
+  courseBatchEnrollmentDateEnded(
+          ResponseMessage.Key.COURSE_BATCH_ENROLLMENT_DATE_ENDED,
+          ResponseMessage.Message.COURSE_BATCH_ENROLLMENT_DATE_ENDED),
   userAlreadyCompletedCourse(
       ResponseMessage.Key.USER_ALREADY_COMPLETED_COURSE,
       ResponseMessage.Message.USER_ALREADY_COMPLETED_COURSE),
@@ -288,6 +291,9 @@ public enum ResponseCode {
   dateFormatError(
       ResponseMessage.Key.DATE_FORMAT_ERRROR, ResponseMessage.Message.DATE_FORMAT_ERRROR),
   endDateError(ResponseMessage.Key.END_DATE_ERROR, ResponseMessage.Message.END_DATE_ERROR),
+  enrollmentEndDateStartError(ResponseMessage.Key.ENROLLMENT_END_DATE_START_ERROR, ResponseMessage.Message.ENROLLMENT_END_DATE_START_ERROR),
+  enrollmentEndDateEndError(ResponseMessage.Key.ENROLLMENT_END_DATE_END_ERROR, ResponseMessage.Message.ENROLLMENT_END_DATE_END_ERROR),
+    enrollmentEndDateUpdateError(ResponseMessage.Key.ENROLLMENT_END_DATE_UPDATE_ERROR, ResponseMessage.Message.ENROLLMENT_END_DATE_UPDATE_ERROR),
   csvError(ResponseMessage.Key.INVALID_CSV_FILE, ResponseMessage.Message.INVALID_CSV_FILE),
   invalidCourseBatchId(
       ResponseMessage.Key.INVALID_COURSE_BATCH_ID, ResponseMessage.Message.INVALID_COURSE_BATCH_ID),

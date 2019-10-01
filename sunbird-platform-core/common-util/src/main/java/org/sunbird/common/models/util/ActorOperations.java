@@ -155,7 +155,8 @@ public enum ActorOperations {
   SEND_OTP("sendOTP"),
   GET_USER_TYPES("getUserTypes"),
   CLEAR_CACHE("clearCache"),
-  USER_TENANT_MIGRATE("userTenantMigrate");
+  USER_TENANT_MIGRATE("userTenantMigrate"),
+  GET_PARTICIPANTS("getParticipants");
 
   private String value;
 
