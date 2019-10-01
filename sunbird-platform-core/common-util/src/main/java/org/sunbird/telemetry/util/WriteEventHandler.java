@@ -27,6 +27,7 @@ public class WriteEventHandler implements EventHandler<Request> {
   private TelemetryDataAssembler telemetryDataAssembler = TelemetryAssemblerFactory.get();
   private TelemetryObjectValidator telemetryObjectValidator = new TelemetryObjectValidatorV3();
   private SunbirdTelemetryEventConsumer consumer = SunbirdTelemetryEventConsumer.getInstance();
+
   @Override
   public void onEvent(Request request, long l, boolean b) throws Exception {
     try {
@@ -106,6 +107,7 @@ public class WriteEventHandler implements EventHandler<Request> {
   }
 
   private boolean processAuditEvent(Request request) {
+
     boolean success = false;
     Map<String, Object> context = (Map<String, Object>) request.get(JsonKey.CONTEXT);
     Map<String, Object> targetObject = (Map<String, Object>) request.get(JsonKey.TARGET_OBJECT);
@@ -125,6 +127,7 @@ public class WriteEventHandler implements EventHandler<Request> {
 		} else {
            telemetryFlush.flushTelemetry(telemetry);
          }
+
       success = true;
     } else {
       ProjectLogger.log(

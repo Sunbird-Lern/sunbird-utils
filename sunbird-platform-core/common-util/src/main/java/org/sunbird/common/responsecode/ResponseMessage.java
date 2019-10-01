@@ -143,6 +143,7 @@ public interface ResponseMessage {
     String USER_ALREADY_COMPLETED_COURSE = "User already completed given course batch.";
     String COURSE_BATCH_ALREADY_COMPLETED = "Course batch is already completed.";
     String COURSE_BATCH_ENROLLMENT_DATE_ENDED= "Course batch enrollment date has ended.";
+
     String EXISTING_ORG_MEMBER = "You already have a membership of this organization.";
     String CONTENT_TYPE_ERROR = "Please add Content-Type header with value application/json";
     String INVALID_PROPERTY_ERROR = "Invalid property {0}.";
