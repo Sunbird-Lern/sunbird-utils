@@ -1152,6 +1152,22 @@
             "search_analyzer": "cs_search_analyzer",
             "fielddata": true
         },
+        "prevUsedEmail": {
+            "type": "text",
+            "fields": {
+                "raw": {
+                    "type": "text",
+                    "analyzer": "keylower",
+                    "fielddata": true
+                }
+            },
+            "copy_to": [
+                "all_fields"
+            ],
+            "analyzer": "cs_index_analyzer",
+            "search_analyzer": "cs_search_analyzer",
+            "fielddata": true
+        },
         "emailVerified": {
             "type": "boolean",
             "fields": {
@@ -2401,6 +2417,22 @@
             }
         },
         "phone": {
+            "type": "text",
+            "fields": {
+                "raw": {
+                    "type": "text",
+                    "analyzer": "keylower",
+                    "fielddata": true
+                }
+            },
+            "copy_to": [
+                "all_fields"
+            ],
+            "analyzer": "cs_index_analyzer",
+            "search_analyzer": "cs_search_analyzer",
+            "fielddata": true
+        },
+        "prevUsedPhone": {
             "type": "text",
             "fields": {
                 "raw": {

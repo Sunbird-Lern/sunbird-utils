@@ -1,0 +1,20 @@
+{
+  "title": "Training Evidence",
+  "@context": {
+    "id": "@id",
+    "type": "@type",
+    "obi": "https://w3id.org/openbadges#",
+    "trainingEvidence": "https://localhost/container/v1/extensions/TrainingEvidence#",
+    "schema": "http://schema.org/",
+    "subject": "trainingEvidence:subject",
+    "trainedBy": "trainingEvidence:trainedBy",
+    "duration": "trainingEvidence:duration",
+    "session": "trainingEvidence:session"
+  },
+  "obi:validation": [
+    {
+      "obi:validatesType": "extensions:AssessedEvidence",
+      "obi:validationSchema": "https://localhost/container/v1/extensions/TrainingEvidence/schema.json"
+    }
+  ]
+}

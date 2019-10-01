@@ -22,6 +22,10 @@ public class StatusTracker {
         logger.info("UserId: " + id + " started...");
     }
 
+    public static void endTracingRecord(String id) {
+        logger.info("UserId: " + id + " ended...\n");
+    }
+
     public static void logQuery(String query) {
         logger.info(String.format("the insert query generated %s ", query));
     }
@@ -58,6 +62,13 @@ public class StatusTracker {
         logger.error(String.format("Record with  externalId:%s provider:%s idType:%s pre processed", compositeKeysMap.get(DbColumnConstants.externalId), compositeKeysMap.get(DbColumnConstants.provider), compositeKeysMap.get(DbColumnConstants.idType)));
     }
 
+    public static void logTotalRecords(long count) {
+        logger.info(String.format("================================ Total Records to be processed: %s ========================================", count));
+    }
+
+    public static void logPreProcessedRecord(Map<String, String> compositeKeysMap) {
+        logger.error(String.format("Record with  externalId:%s provider:%s idType:%s pre processed", compositeKeysMap.get(DbColumnConstants.externalId), compositeKeysMap.get(DbColumnConstants.provider), compositeKeysMap.get(DbColumnConstants.idType)));
+    }
     public static void logCorruptedRecord(Map<String, String> compositeKeysMap,String orignalExternalId) {
         logger.info(String.format("SKIPPING the record because corrupted Record found with provider='%s' AND idtype='%s' AND externalid='%s' AND orignalexternalid='%s'", compositeKeysMap.get(DbColumnConstants.provider), compositeKeysMap.get(DbColumnConstants.idType),compositeKeysMap.get(DbColumnConstants.externalId),orignalExternalId));
     }
