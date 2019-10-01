@@ -23,7 +23,6 @@ import org.sunbird.common.responsecode.ResponseCode;
 
 /**
  * Helper class for creating a Kafka consumer and producer.
- *
  * @author Pradyumna
  */
 public class KafkaClient {

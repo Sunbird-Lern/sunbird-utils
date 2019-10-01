@@ -1,6 +1,8 @@
 package org.sunbird.telemetry.util;
 
 import com.lmax.disruptor.EventHandler;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +25,6 @@ public class WriteEventHandler implements EventHandler<Request> {
   private TelemetryFlush telemetryFlush = TelemetryFlush.getInstance();
   private TelemetryDataAssembler telemetryDataAssembler = TelemetryAssemblerFactory.get();
   private TelemetryObjectValidator telemetryObjectValidator = new TelemetryObjectValidatorV3();
-
   @Override
   public void onEvent(Request request, long l, boolean b) throws Exception {
     try {

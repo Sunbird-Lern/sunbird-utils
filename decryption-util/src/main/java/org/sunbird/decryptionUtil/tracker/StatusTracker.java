@@ -19,6 +19,7 @@ public class StatusTracker {
 
     public static void endTracingRecord(String id) {
         logger.info("================================ UserId: " + id + " ended ===========================================\n");
+        logger.info("UserId: " + id + " started...");
     }
 
     public static void logQuery(String query) {
@@ -57,7 +58,9 @@ public class StatusTracker {
         logger.error(String.format("Record with  externalId:%s provider:%s idType:%s pre processed", compositeKeysMap.get(DbColumnConstants.externalId), compositeKeysMap.get(DbColumnConstants.provider), compositeKeysMap.get(DbColumnConstants.idType)));
     }
 
-
+    public static void logCorruptedRecord(Map<String, String> compositeKeysMap,String orignalExternalId) {
+        logger.info(String.format("SKIPPING the record because corrupted Record found with provider='%s' AND idtype='%s' AND externalid='%s' AND orignalexternalid='%s'", compositeKeysMap.get(DbColumnConstants.provider), compositeKeysMap.get(DbColumnConstants.idType),compositeKeysMap.get(DbColumnConstants.externalId),orignalExternalId));
+    }
 
     public static void writeSuccessRecordToFile(String provider, String idType, String externalId) {
         try {
@@ -76,9 +79,11 @@ public class StatusTracker {
 
     public static void closeWriterConnection() {
         try {
-            fw.close();
+            if (fw != null) {
+                fw.close();
+            }
         } catch (Exception e) {
-            logger.error(String.format("%s error occurred while closing connection to  file %s","writeSuccessRecordToFile",EnvConstants.PRE_PROCESSED_RECORDS_FILE));
+            logger.error(String.format("%s error occurred while closing connection to file %s and error is %s", "writeSuccessRecordToFile", EnvConstants.PRE_PROCESSED_RECORDS_FILE,e.getMessage()));
         }
     }
 

@@ -16,7 +16,6 @@ public class ExternalIdDecryption {
    * @throws Exception
    */
   public static void main(String[] args) throws Exception {
-
     try {
       RequestParams requestParams = prepareRequestParams();
       RequestParamValidator.getInstance(requestParams).validate();

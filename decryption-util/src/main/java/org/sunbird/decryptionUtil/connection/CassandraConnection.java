@@ -9,7 +9,6 @@ import com.datastax.driver.core.querybuilder.QueryBuilder;
 import org.apache.log4j.Logger;
 import org.sunbird.decryptionUtil.LoggerFactory;
 import org.sunbird.decryptionUtil.constants.DbColumnConstants;
-
 import java.util.Map;
 
 public class CassandraConnection implements Connection {

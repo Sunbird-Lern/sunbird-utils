@@ -3,7 +3,6 @@ package org.sunbird.helper;
 
 import org.sunbird.cassandra.CassandraOperation;
 import org.sunbird.cassandraimpl.CassandraDACImpl;
-import org.sunbird.cassandraimpl.CassandraOperationImpl;
 
 /**
  * This class will provide cassandraOperationImpl instance.

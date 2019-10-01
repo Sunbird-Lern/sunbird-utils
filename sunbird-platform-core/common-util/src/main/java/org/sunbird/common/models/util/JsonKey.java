@@ -138,6 +138,7 @@ public final class JsonKey {
   public static final String COURSE_CREATOR = "courseCreator";
   public static final String COURSE_DURATION = "courseDuration";
   public static final String COURSE_ENROLL_DATE = "enrolledDate";
+  public static final String COURSE_ENROLLMENT = "course_enrollment";
   public static final String COURSE_ID = "courseId";
   public static final String COURSE_IDS = "courseIds";
   public static final String COURSE_LIST = "courseList";
@@ -915,6 +916,7 @@ public final class JsonKey {
   public static final String RECIPIENT_PHONES = "recipientPhones";
   public static final String TCP = "tcp";
   public static final String REST = "rest";
+  public static final String SUNBIRD_AUDIT_EVNET_BATCH_ALLOWED = "sunbird_audit_event_batch_allowed";
 
   private JsonKey() {}
 }
