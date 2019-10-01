@@ -13,9 +13,11 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.sunbird.cassandraannotation.ClusteringKey;
 import org.sunbird.cassandraannotation.PartitioningKey;
 import org.sunbird.common.exception.ProjectCommonException;
@@ -73,27 +75,31 @@ public final class CassandraUtil {
    */
   public static Response createResponse(ResultSet results) {
     Response response = new Response();
-    List<Row> rows = results.all();
-    Map<String, Object> map = null;
     List<Map<String, Object>> responseList = new ArrayList<>();
-    String str =
-        results
-            .getColumnDefinitions()
-            .toString()
-            .substring(8, results.getColumnDefinitions().toString().length() - 1);
-    String[] keyArray = str.split("\\), ");
-    for (Row row : rows) {
-      map = new HashMap<>();
-      for (int i = 0; i < keyArray.length; i++) {
-        int pos = keyArray[i].indexOf(Constants.OPEN_BRACE);
-        String column = propertiesCache.readProperty(keyArray[i].substring(0, pos).trim());
-        map.put(column, row.getObject(column));
-      }
-      responseList.add(map);
-    }
+    Map<String, String> columnsMapping = fetchColumnsMapping(results);
+    Iterator<Row> rowIterator = results.iterator();
+    rowIterator.forEachRemaining(
+        row -> {
+          Map<String, Object> rowMap = new HashMap<>();
+          columnsMapping
+              .entrySet()
+              .stream()
+              .forEach(entry -> rowMap.put(entry.getKey(), row.getObject(entry.getValue())));
+          responseList.add(rowMap);
+        });
     ProjectLogger.log(responseList.toString());
     response.put(Constants.RESPONSE, responseList);
     return response;
+  }
+
+  public static Map<String, String> fetchColumnsMapping(ResultSet results) {
+    return results
+        .getColumnDefinitions()
+        .asList()
+        .stream()
+        .collect(
+            Collectors.toMap(
+                d -> propertiesCache.readProperty(d.getName()).trim(), d -> d.getName()));
   }
 
   /**

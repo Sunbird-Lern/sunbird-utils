@@ -8,8 +8,8 @@
       -  verify the column externalid, originalexternalid should be in encrypted format
 # How to run
   - require env variable to be set : </br>
-  
-        - sunbird_cassandra_host
+ 
+        - cassandra_host
         - sunbird_cassandra_keyspace
         - sunbird_cassandra_port
         - sunbird_encryption_key

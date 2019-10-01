@@ -34,7 +34,6 @@ public class OrganisationClientImpl implements OrganisationClient {
   private static InterServiceCommunication interServiceCommunication =
       InterServiceCommunicationFactory.getInstance();
   ObjectMapper objectMapper = new ObjectMapper();
-
   private ElasticSearchService esUtil = EsClientFactory.getInstance(JsonKey.REST);
 
   @Override

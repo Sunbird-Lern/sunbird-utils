@@ -9,7 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
-import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.request.Request;
 import org.sunbird.telemetry.collector.TelemetryAssemblerFactory;
 import org.sunbird.telemetry.collector.TelemetryDataAssembler;
@@ -26,8 +25,6 @@ public class WriteEventHandler implements EventHandler<Request> {
   private TelemetryFlush telemetryFlush = TelemetryFlush.getInstance();
   private TelemetryDataAssembler telemetryDataAssembler = TelemetryAssemblerFactory.get();
   private TelemetryObjectValidator telemetryObjectValidator = new TelemetryObjectValidatorV3();
-  private SunbirdTelemetryEventConsumer consumer = SunbirdTelemetryEventConsumer.getInstance();
-
   @Override
   public void onEvent(Request request, long l, boolean b) throws Exception {
     try {
@@ -118,16 +115,7 @@ public class WriteEventHandler implements EventHandler<Request> {
     params.put(JsonKey.CORRELATED_OBJECTS, correlatedObjects);
     String telemetry = telemetryDataAssembler.audit(context, params);
     if (StringUtils.isNotBlank(telemetry) && telemetryObjectValidator.validateAudit(telemetry)) {
-      if (!Boolean.parseBoolean(ProjectUtil.getConfigValue(JsonKey.SUNBIRD_AUDIT_EVNET_BATCH_ALLOWED))) {
-			ProjectLogger.log("WriteEventHandler:processLogEvent: Audit Event is going to be processed = ", LoggerEnum.INFO.name());
-			List<String> list = new ArrayList<String>();
-			list.add(telemetry);
-			Request auditRequest = telemetryFlush.createTelemetryRequest(list);
-			consumer.consume(auditRequest);
-		} else {
-           telemetryFlush.flushTelemetry(telemetry);
-         }
-
+      telemetryFlush.flushTelemetry(telemetry);
       success = true;
     } else {
       ProjectLogger.log(

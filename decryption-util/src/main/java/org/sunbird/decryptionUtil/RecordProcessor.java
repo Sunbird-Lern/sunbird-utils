@@ -66,9 +66,9 @@ public class RecordProcessor extends StatusTracker {
      * @return List<User>
      */
     private List<User> getUserDataFromDbAsList() {
-        List<User> usersList = new ArrayList<>();
         ResultSet resultSet = connection.getRecords("select * from usr_external_identity");
-        usersList.addAll(CassandraHelper.getUserListFromResultSet(resultSet));
+        List<User> usersList = CassandraHelper.getUserListFromResultSet(resultSet);
+        logger.debug(usersList.iterator().next());
         return usersList;
     }
 
@@ -108,7 +108,7 @@ public class RecordProcessor extends StatusTracker {
         return compositeKeysMap;
     }
 
-    /**
+     /**
      * this method is responsible to decrypt the externalId and originalExternalId
      * if originalExternalId is null or absent it will ignore it and decrypt only externalId.
      * @param userObject
@@ -119,18 +119,16 @@ public class RecordProcessor extends StatusTracker {
      */
     private User getDecryptedUserObject(User userObject) throws BadPaddingException, IOException, IllegalBlockSizeException {
         String externalId = decryptionService.decryptData(userObject.getExternalId());
-        if (StringUtils.isNotBlank(userObject.getOriginalExternalId())) {
-            String originalExternalId = decryptionService.decryptData(userObject.getOriginalExternalId());
-            userObject.setOriginalExternalId(originalExternalId);
-        }
+        String originalExternalId = decryptionService.decryptData(userObject.getOriginalExternalId());
         userObject.setExternalId(externalId);
+        userObject.setOriginalExternalId(originalExternalId);
         return userObject;
     }
 
     /**
      * this method will perform sequential operation of db records
      * - generate insert query
-     * - decrypt the externalIds and originalExternalIds
+     * - decrypt the externalIds and orignalExternalIds
      * - insert record
      * - insert Record passes will then delete the record...
      *
@@ -164,7 +162,6 @@ public class RecordProcessor extends StatusTracker {
 
     /**
      * this methods
-     *
      * @param preProcessedRecords
      * @param totalRecords
      * @return
@@ -178,7 +175,6 @@ public class RecordProcessor extends StatusTracker {
     /**
      * this methods get the count of records from cassandra as totalUserList
      * then this method will remove the preprocessed records from totalUserList.
-     *
      * @return List<String>
      * @throws IOException
      */
@@ -189,5 +185,4 @@ public class RecordProcessor extends StatusTracker {
         logger.info("total records found preprocessed is " + preProcessedRecords.size());
         return removePreProcessedRecordFromList(preProcessedRecords, totalUsersList);
     }
-
 }

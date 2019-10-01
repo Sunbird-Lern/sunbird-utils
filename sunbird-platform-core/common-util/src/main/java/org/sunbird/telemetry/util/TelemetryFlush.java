@@ -79,7 +79,7 @@ public class TelemetryFlush {
     }
   }
 
-  public Request createTelemetryRequest(List<String> eventList) {
+  private Request createTelemetryRequest(List<String> eventList) {
     Request req = null;
     try {
       List<Map<String, Object>> jsonList =

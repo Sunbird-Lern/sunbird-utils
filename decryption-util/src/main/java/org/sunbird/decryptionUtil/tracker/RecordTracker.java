@@ -49,6 +49,7 @@ public class RecordTracker {
         } catch (IOException e) {
             logger.error(String.format("no file found named %s creating it again....",EnvConstants.PRE_PROCESSED_RECORDS_FILE));
         }
+        preProcessedRecords.remove(preProcessedRecords.size() - 1);
         return preProcessedRecords;
     }
 

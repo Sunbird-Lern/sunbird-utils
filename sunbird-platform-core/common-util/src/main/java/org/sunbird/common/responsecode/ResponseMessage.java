@@ -143,7 +143,6 @@ public interface ResponseMessage {
     String USER_ALREADY_COMPLETED_COURSE = "User already completed given course batch.";
     String COURSE_BATCH_ALREADY_COMPLETED = "Course batch is already completed.";
     String COURSE_BATCH_ENROLLMENT_DATE_ENDED= "Course batch enrollment date has ended.";
-
     String EXISTING_ORG_MEMBER = "You already have a membership of this organization.";
     String CONTENT_TYPE_ERROR = "Please add Content-Type header with value application/json";
     String INVALID_PROPERTY_ERROR = "Invalid property {0}.";
@@ -438,6 +437,7 @@ public interface ResponseMessage {
     String ERROR_USER_UPDATE_PASSWORD = "User is created but password couldn't be updated.";
     String ERROR_BGMS_MISMATCH = "Mismatch in {0} at row - {1}";
     String ERROR_USER_MIGRATION_FAILED = "User migration failed.";
+    String EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS = "Contents should not be empty for batch status update.";
   }
 
   interface Key {
@@ -811,5 +811,6 @@ public interface ResponseMessage {
     String INVALID_REQUEST_TIMEOUT = "INVALID_REQUEST_TIMEOUT";
     String ERROR_BGMS_MISMATCH = "ERROR_BGMS_MISMATCH";
     String ERROR_USER_MIGRATION_FAILED = "ERROR_USER_MIGRATION_FAILED";
+    String EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS = "EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS";
   }
 }
