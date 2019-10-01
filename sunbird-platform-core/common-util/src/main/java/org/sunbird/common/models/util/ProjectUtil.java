@@ -379,7 +379,8 @@ public class ProjectUtil {
     announcementType("announcementtype"),
     announcement("announcement"),
     metrics("metrics"),
-    cbatchstats("cbatchstats");
+    cbatchstats("cbatchstats"),
+    cbatchassessment("cbatch-assessment");
     private String typeName;
 
     private EsType(String name) {
