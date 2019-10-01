@@ -217,6 +217,12 @@ public class ElasticSearchHelper {
       query = getTermQueryFromList(val, key, query, constraintsMap);
     } else if (val instanceof Map) {
       query = getTermQueryFromMap(val, key, query, constraintsMap);
+       if(key.equalsIgnoreCase(JsonKey.ES_OR_OPERATION)){
+         query.must(createEsORFilterQuery((Map<String,Object>)val));
+       }
+       else {
+         query = getTermQueryFromMap(val, key, query, constraintsMap);
+       }
     } else if (val instanceof String) {
       query.must(
           createTermQuery(key + RAW_APPEND, ((String) val).toLowerCase(), constraintsMap.get(key)));
@@ -261,6 +267,18 @@ public class ElasticSearchHelper {
     ProjectLogger.log(
         "ElasticSearchHelper:getTermQueryFromMap: method end ", LoggerEnum.INFO.name());
 
+    return query;
+  }
+
+    private static BoolQueryBuilder createEsORFilterQuery(Map<String,Object>orFilters) {
+        BoolQueryBuilder query=new BoolQueryBuilder();
+    ProjectLogger.log(
+            "ElasticSearchHelper:createEsORFilterQuery:method started ", LoggerEnum.INFO.name());
+    for (Map.Entry<String,Object>mp:orFilters.entrySet()){
+      query.should(QueryBuilders.termQuery(mp.getKey()+RAW_APPEND , ((String)mp.getValue()).toLowerCase()));
+      }
+    ProjectLogger.log(
+            "ElasticSearchHelper:createEsORFilterQuery:method end ", LoggerEnum.INFO.name());
     return query;
   }
 

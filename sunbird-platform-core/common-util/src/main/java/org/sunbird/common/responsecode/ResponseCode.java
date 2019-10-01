@@ -796,6 +796,13 @@ public enum ResponseCode {
       ResponseMessage.Key.ERROR_USER_MIGRATION_FAILED,
       ResponseMessage.Message.ERROR_USER_MIGRATION_FAILED),
   emptyContentsForUpdateBatchStatus(ResponseMessage.Key.EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS, ResponseMessage.Message.EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS),
+  invalidIdentifier(ResponseMessage.Key.VALID_IDENTIFIER_ABSENSE,ResponseMessage.Message.IDENTIFIER_VALIDATION_FAILED),
+  fromAccountIdRequired(ResponseMessage.Key.FROM_ACCOUNT_ID_MISSING, ResponseMessage.Message.FROM_ACCOUNT_ID_MISSING),
+  toAccountIdRequired(ResponseMessage.Key.TO_ACCOUNT_ID_MISSING, ResponseMessage.Message.TO_ACCOUNT_ID_MISSING),
+  fromAccountIdNotExists(ResponseMessage.Key.FROM_ACCOUNT_ID_NOT_EXISTS, ResponseMessage.Message.FROM_ACCOUNT_ID_NOT_EXISTS),
+  mandatoryHeaderParamsMissing(
+          ResponseMessage.Key.MANDATORY_HEADER_PARAMETER_MISSING,
+          ResponseMessage.Message.MANDATORY_HEADER_PARAMETER_MISSING),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
@@ -804,7 +811,9 @@ public enum ResponseCode {
   FORBIDDEN(403),
   REDIRECTION_REQUIRED(302),
   TOO_MANY_REQUESTS(429),
-  SERVICE_UNAVAILABLE(503);
+  SERVICE_UNAVAILABLE(503),
+  PARAM_NOT_MATCH(ResponseMessage.Key.PARAM_NOT_MATCH,ResponseMessage.Message.PARAM_NOT_MATCH),
+  PARTIAL_SUCCESS_RESPONSE(206);
 
   private int responseCode;
   /** error code contains String value */

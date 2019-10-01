@@ -1,0 +1,21 @@
+{
+  "title": "Assessed",
+  "@context": {
+    "id": "@id",
+    "type": "@type",
+    "obi": "https://w3id.org/openbadges#",
+    "certificateExtension": "https://localhost/container/v1/extensions/CertificateExtensions#",
+    "schema": "http://schema.org/",
+    "awardedThrough": "certificateExtension:awardedThrough",
+    "signatory": "certificateExtension:signatory",
+    "printUri": "certificateExtension:printUri",
+    "validFrom": "certificateExtension:validFrom",
+    "signature": "certificateExtension:signature"
+  },
+  "obi:validation": [
+    {
+      "obi:validatesType": "extensions:CertificateExtension",
+      "obi:validationSchema": "https://localhost/container/v1/extensions/CertificateExtension/schema.json"
+    }
+  ]
+}

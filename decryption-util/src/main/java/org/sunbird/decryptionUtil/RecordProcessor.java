@@ -108,7 +108,11 @@ public class RecordProcessor extends StatusTracker {
         return compositeKeysMap;
     }
 
+<<<<<<< HEAD
      /**
+=======
+    /**
+>>>>>>> 7bbedab82d8f5006d4eaf62498db5bd80e2d114c
      * this method is responsible to decrypt the externalId and originalExternalId
      * if originalExternalId is null or absent it will ignore it and decrypt only externalId.
      * @param userObject
@@ -119,16 +123,18 @@ public class RecordProcessor extends StatusTracker {
      */
     private User getDecryptedUserObject(User userObject) throws BadPaddingException, IOException, IllegalBlockSizeException {
         String externalId = decryptionService.decryptData(userObject.getExternalId());
-        String originalExternalId = decryptionService.decryptData(userObject.getOriginalExternalId());
+        if (StringUtils.isNotBlank(userObject.getOriginalExternalId())) {
+            String originalExternalId = decryptionService.decryptData(userObject.getOriginalExternalId());
+            userObject.setOriginalExternalId(originalExternalId);
+        }
         userObject.setExternalId(externalId);
-        userObject.setOriginalExternalId(originalExternalId);
         return userObject;
     }
 
     /**
      * this method will perform sequential operation of db records
      * - generate insert query
-     * - decrypt the externalIds and orignalExternalIds
+     * - decrypt the externalIds and originalExternalIds
      * - insert record
      * - insert Record passes will then delete the record...
      *

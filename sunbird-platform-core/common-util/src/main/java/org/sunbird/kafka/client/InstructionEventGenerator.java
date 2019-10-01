@@ -32,7 +32,7 @@ public class InstructionEventGenerator {
             throw new ProjectCommonException("BE_JOB_REQUEST_EXCEPTION", "Event is not generated properly.", ResponseCode.CLIENT_ERROR.getResponseCode());
         }
         if(StringUtils.isNotBlank(topic)) {
-            KafkaClient.send(beJobRequestEvent, topic);
+            //KafkaClient.send(beJobRequestEvent, topic);
         } else {
             throw new ProjectCommonException("BE_JOB_REQUEST_EXCEPTION", "Invalid topic id.", ResponseCode.CLIENT_ERROR.getResponseCode());
         }
