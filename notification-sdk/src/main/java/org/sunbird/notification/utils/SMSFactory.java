@@ -20,7 +20,7 @@ public class SMSFactory {
    * @param objectName String ,{"91SMS","some other impl"}
    * @return ISmsProvider
    */
-  public static ISmsProvider getInstance(String objectName,SMSConfig config) {
+  public static ISmsProvider getInstance(String objectName, SMSConfig config) {
     if ("91SMS".equalsIgnoreCase(objectName)) {
       ISmsProviderFactory factory = new Msg91SmsProviderFactory();
       return factory.create(config);

@@ -60,11 +60,11 @@ public class FCMHttpNotificationServiceImpl implements IFCMNotificationService {
     return sendTopicNotification(topic, data, FCM_URL, isDryRun);
   }
 
-  public static void setAccountKey (String key) {
-     FCM_ACCOUNT_KEY = key;
+  public static void setAccountKey(String key) {
+    FCM_ACCOUNT_KEY = key;
     headerMap.put(NotificationConstant.AUTHORIZATION, FCM_ACCOUNT_KEY);
-   } 
-  
+  }
+
   /**
    * This method will send notification to FCM.
    *
@@ -121,10 +121,10 @@ public class FCMHttpNotificationServiceImpl implements IFCMNotificationService {
       HttpResponse<JsonNode> httpResponse =
           Unirest.post(FCM_URL).headers(headerMap).body(object).asJson();
       String response = httpResponse.getBody().toString();
-     logger.info("FCM Notification response== for device ids " + deviceIds + " " + response);
+      logger.info("FCM Notification response== for device ids " + deviceIds + " " + response);
       fcmResponse = mapper.readValue(response, FCMResponse.class);
     } catch (Exception e) {
-     logger.info(e.getMessage());
+      logger.info(e.getMessage());
     }
     return fcmResponse;
   }

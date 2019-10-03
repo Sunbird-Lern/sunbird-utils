@@ -3,7 +3,6 @@ package org.sunbird.notification.utils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,7 +14,7 @@ public class JsonUtil {
     try {
       return mapper.writeValueAsString(object);
     } catch (Exception e) {
-    	logger.error("JsonUtil:getJsonString error occured : " + e);
+      logger.error("JsonUtil:getJsonString error occured : " + e);
     }
     return null;
   }
@@ -35,7 +34,7 @@ public class JsonUtil {
       JsonNode node = mapper.readTree(res);
       result = mapper.convertValue(node, clazz);
     } catch (IOException e) {
-    	logger.error("JsonUtil:getAsObject error occured : " + e);
+      logger.error("JsonUtil:getAsObject error occured : " + e);
       e.printStackTrace();
     }
     return result;
