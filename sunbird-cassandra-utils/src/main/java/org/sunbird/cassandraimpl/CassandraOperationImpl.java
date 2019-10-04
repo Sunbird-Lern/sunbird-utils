@@ -19,6 +19,8 @@ import com.datastax.driver.core.querybuilder.Select.Selection;
 import com.datastax.driver.core.querybuilder.Select.Where;
 import com.datastax.driver.core.querybuilder.Update;
 import com.datastax.driver.core.querybuilder.Update.Assignments;
+import com.google.common.util.concurrent.FutureCallback;
+
 import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.List;
@@ -41,7 +43,6 @@ import org.sunbird.helper.CassandraConnectionManager;
 import org.sunbird.helper.CassandraConnectionMngrFactory;
 
 import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
-import static com.datastax.driver.core.querybuilder.QueryBuilder.lt;
 
 /**
  * @author Amit Kumar
@@ -533,22 +534,19 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
     return response;
   }
 
-  /**
-   * This method updates all the records in a batch
-   *
+  /** This method updates all the records in a batch
    * @param keyspaceName
    * @param tableName
    * @param records
    * @return
    */
-  // @Override
+  //@Override
   public Response batchUpdateById(
-      String keyspaceName, String tableName, List<Map<String, Object>> records) {
+          String keyspaceName, String tableName, List<Map<String, Object>> records) {
 
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
-        "Cassandra Service batchUpdateById method started at ==" + startTime, LoggerEnum.INFO);
-
+            "Cassandra Service batchUpdateById method started at ==" + startTime, LoggerEnum.INFO);
     Session session = connectionManager.getSession(keyspaceName);
     Response response = new Response();
     BatchStatement batchStatement = new BatchStatement();
@@ -991,5 +989,17 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
     return response;
 
   }
+@Override
+public Response getRecords(String keyspace, String table, Map<String, Object> filters, List<String> fields) {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+@Override
+public void applyOperationOnRecordsAsync(String keySpace, String table, Map<String, Object> filters,
+		List<String> fields, FutureCallback<ResultSet> callback) {
+	// TODO Auto-generated method stub
+	
+}
 }
 

@@ -14,6 +14,14 @@ public class StatusTracker {
     static FileWriter fw;
 
     public static void startTracingRecord(String id) {
+<<<<<<< HEAD
+=======
+        logger.info("================================ UserId: " + id + " started===========================================");
+    }
+
+    public static void endTracingRecord(String id) {
+        logger.info("================================ UserId: " + id + " ended ===========================================\n");
+>>>>>>> origin/release-2.5.0
         logger.info("UserId: " + id + " started...");
     }
 
@@ -31,7 +39,11 @@ public class StatusTracker {
 
     public static void logSuccessRecord(String externalId, String provider, String idType) {
         logger.info(String.format("Record updation success with externalId:%s provider:%s and idType:%s", externalId, provider, idType));
+<<<<<<< HEAD
         writeSuccessRecordToFile(provider, idType, externalId);
+=======
+        writeSuccessRecordToFile(provider,idType,externalId);
+>>>>>>> origin/release-2.5.0
     }
 
     public static void logDeletedRecord(Map<String, String> compositeKeysMap) {
@@ -47,7 +59,18 @@ public class StatusTracker {
     }
 
     public static void logExceptionOnProcessingRecord(Map<String, String> compositeKeysMap) {
+<<<<<<< HEAD
         logger.error(String.format("Error occurred in  decrypting  record with externalId:%s provider:%s idType:%s ", compositeKeysMap.get(DbColumnConstants.externalId), compositeKeysMap.get(DbColumnConstants.provider), compositeKeysMap.get(DbColumnConstants.idType)));
+=======
+        logger.error(String.format("Error occurred in  decrypting  record with externalId:%s provider:%s idType:%s", compositeKeysMap.get(DbColumnConstants.externalId), compositeKeysMap.get(DbColumnConstants.provider), compositeKeysMap.get(DbColumnConstants.idType)));
+    }
+
+    public static void logTotalRecords(long count) {
+        logger.error(String.format("================================ Total Records to be processed: %s ========================================", count));
+    }
+    public static void logPreProcessedRecord(Map<String, String> compositeKeysMap) {
+        logger.error(String.format("Record with  externalId:%s provider:%s idType:%s pre processed", compositeKeysMap.get(DbColumnConstants.externalId), compositeKeysMap.get(DbColumnConstants.provider), compositeKeysMap.get(DbColumnConstants.idType)));
+>>>>>>> origin/release-2.5.0
     }
 
     public static void logTotalRecords(long count) {
@@ -71,7 +94,11 @@ public class StatusTracker {
                 fw = new FileWriter(EnvConstants.PRE_PROCESSED_RECORDS_FILE);
             }
         } catch (Exception e) {
+<<<<<<< HEAD
             logger.error(String.format("%s:%s:error occurred while writing preProcessed records to file with message %s", StatusTracker.class.getSimpleName(), "writeSuccessRecordToFile", e.getMessage()));
+=======
+            logger.error(String.format("%s:%s:error occurred while writing preProcessed records to file with message %s",StatusTracker.class.getSimpleName(),"writeSuccessRecordToFile",e.getMessage()));
+>>>>>>> origin/release-2.5.0
             System.exit(0);
         }
     }

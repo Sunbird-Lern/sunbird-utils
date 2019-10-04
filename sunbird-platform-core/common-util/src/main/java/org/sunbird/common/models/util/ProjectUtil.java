@@ -605,6 +605,7 @@ public class ProjectUtil {
     return map;
   }
 
+  
   private static String getFromEmail(Map<String, Object> map) {
     String fromEmail = (String) getValue(map, JsonKey.EMAIL_SERVER_FROM);
     if (StringUtils.isBlank(fromEmail)) {

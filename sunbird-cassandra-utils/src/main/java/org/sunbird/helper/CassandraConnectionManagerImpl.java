@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.Constants;
 import org.sunbird.common.exception.ProjectCommonException;
