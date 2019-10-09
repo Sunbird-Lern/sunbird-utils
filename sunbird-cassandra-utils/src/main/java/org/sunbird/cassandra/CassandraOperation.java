@@ -368,4 +368,7 @@ public interface CassandraOperation {
 
 
   public Response getRecordByObjectType(String keyspace,String tableName,String columnName,String key,int value,String objectType);
+
+  public Response performBatchAction(
+          String keyspaceName, String tableName, Map<String, Object> inputData);
 }
