@@ -19,6 +19,8 @@ import com.datastax.driver.core.querybuilder.Select.Selection;
 import com.datastax.driver.core.querybuilder.Select.Where;
 import com.datastax.driver.core.querybuilder.Update;
 import com.datastax.driver.core.querybuilder.Update.Assignments;
+import com.google.common.util.concurrent.FutureCallback;
+
 import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.List;
@@ -41,7 +43,6 @@ import org.sunbird.helper.CassandraConnectionManager;
 import org.sunbird.helper.CassandraConnectionMngrFactory;
 
 import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
-import static com.datastax.driver.core.querybuilder.QueryBuilder.lt;
 
 /**
  * @author Amit Kumar
@@ -533,22 +534,19 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
     return response;
   }
 
-  /**
-   * This method updates all the records in a batch
-   *
+  /** This method updates all the records in a batch
    * @param keyspaceName
    * @param tableName
    * @param records
    * @return
    */
-  // @Override
+  //@Override
   public Response batchUpdateById(
-      String keyspaceName, String tableName, List<Map<String, Object>> records) {
+          String keyspaceName, String tableName, List<Map<String, Object>> records) {
 
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
-        "Cassandra Service batchUpdateById method started at ==" + startTime, LoggerEnum.INFO);
-
+            "Cassandra Service batchUpdateById method started at ==" + startTime, LoggerEnum.INFO);
     Session session = connectionManager.getSession(keyspaceName);
     Response response = new Response();
     BatchStatement batchStatement = new BatchStatement();
@@ -556,19 +554,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
 
     try {
       for (Map<String, Object> map : records) {
-        Update update = QueryBuilder.update(keyspaceName, tableName);
-        Assignments assignments = update.with();
-        Update.Where where = update.where();
-        map.entrySet()
-            .stream()
-            .forEach(
-                x -> {
-                  if (Constants.ID.equals(x.getKey())) {
-                    where.and(eq(x.getKey(), x.getValue()));
-                  } else {
-                    assignments.and(QueryBuilder.set(x.getKey(), x.getValue()));
-                  }
-                });
+        Update update = createUpdateStatement(keyspaceName, tableName, map);
         batchStatement.add(update);
       }
       resultSet = session.execute(batchStatement);
@@ -590,20 +576,20 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
   /**
    * This method performs batch operations of insert and update on a same table, further other operations can be added to if it is necessary.
    *
-   * @param keyspaceName
+   * @param keySpaceName
    * @param tableName
    * @param inputData
    * @return
    */
   @Override
   public Response performBatchAction(
-          String keyspaceName, String tableName, Map<String, Object> inputData) {
+          String keySpaceName, String tableName, Map<String, Object> inputData) {
 
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
-            "Cassandra Service performBatchAction method started at ==" + startTime, LoggerEnum.INFO);
+            "Cassandra Service performBatchAction method started at ==" + startTime, LoggerEnum.INFO.name());
 
-    Session session = connectionManager.getSession(keyspaceName);
+    Session session = connectionManager.getSession(keySpaceName);
     Response response = new Response();
     BatchStatement batchStatement = new BatchStatement();
     ResultSet resultSet = null;
@@ -611,28 +597,10 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
         inputData.forEach((key, inputMap) -> {
           Map<String, Object> record = (Map<String, Object>)inputMap;
           if(key.equals(JsonKey.INSERT)) {
-            Insert insert = QueryBuilder.insertInto(keyspaceName, tableName);
-            record.entrySet()
-                    .stream()
-                    .forEach(
-                            x -> {
-                              insert.value(x.getKey(), x.getValue());
-                            });
+            Insert insert = createInsertStatement(keySpaceName, tableName, record);
             batchStatement.add(insert);
           } else if(key.equals(JsonKey.UPDATE)) {
-            Update update = QueryBuilder.update(keyspaceName, tableName);
-            Assignments assignments = update.with();
-            Update.Where where = update.where();
-            record.entrySet()
-                    .stream()
-                    .forEach(
-                            x -> {
-                              if (Constants.ID.equals(x.getKey())) {
-                                where.and(eq(x.getKey(), x.getValue()));
-                              } else {
-                                assignments.and(QueryBuilder.set(x.getKey(), x.getValue()));
-                              }
-                            });
+            Update update = createUpdateStatement(keySpaceName, tableName, record);
             batchStatement.add(update);
           }
         });
@@ -642,7 +610,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
             | QueryValidationException
             | NoHostAvailableException
             | IllegalStateException e) {
-      ProjectLogger.log("Cassandra performBatchAction Failed." + e.getMessage(), e);
+      ProjectLogger.log("Cassandra performBatchAction Failed." + e.getMessage(), LoggerEnum.ERROR.name());
       throw new ProjectCommonException(
               ResponseCode.SERVER_ERROR.getErrorCode(),
               ResponseCode.SERVER_ERROR.getErrorMessage(),
@@ -650,6 +618,34 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
       }
     logQueryElapseTime("performBatchAction", startTime);
     return response;
+  }
+
+  private Insert createInsertStatement(String keySpaceName, String tableName, Map<String, Object> record) {
+    Insert insert = QueryBuilder.insertInto(keySpaceName, tableName);
+    record.entrySet()
+            .stream()
+            .forEach(
+                    x -> {
+                      insert.value(x.getKey(), x.getValue());
+                    });
+    return insert;
+  }
+
+  private Update createUpdateStatement(String keySpaceName, String tableName, Map<String, Object> record) {
+    Update update = QueryBuilder.update(keySpaceName, tableName);
+    Assignments assignments = update.with();
+    Update.Where where = update.where();
+    record.entrySet()
+            .stream()
+            .forEach(
+                    x -> {
+                      if (Constants.ID.equals(x.getKey())) {
+                        where.and(eq(x.getKey(), x.getValue()));
+                      } else {
+                        assignments.and(QueryBuilder.set(x.getKey(), x.getValue()));
+                      }
+                    });
+    return update;
   }
 
   @Override
@@ -1056,5 +1052,17 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
     return response;
 
   }
+@Override
+public Response getRecords(String keyspace, String table, Map<String, Object> filters, List<String> fields) {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+@Override
+public void applyOperationOnRecordsAsync(String keySpace, String table, Map<String, Object> filters,
+		List<String> fields, FutureCallback<ResultSet> callback) {
+	// TODO Auto-generated method stub
+	
+}
 }
 

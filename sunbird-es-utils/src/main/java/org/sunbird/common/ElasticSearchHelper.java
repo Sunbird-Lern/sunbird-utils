@@ -223,11 +223,12 @@ public class ElasticSearchHelper {
     if (val instanceof List && val != null) {
       query = getTermQueryFromList(val, key, query, constraintsMap);
     } else if (val instanceof Map) {
-      if (key.equalsIgnoreCase(JsonKey.ES_OR_OPERATION)) {
-        query.must(createEsORFilterQuery((Map<String, Object>) val));
-      } else {
-        query = getTermQueryFromMap(val, key, query, constraintsMap);
-      }
+       if(key.equalsIgnoreCase(JsonKey.ES_OR_OPERATION)){
+         query.must(createEsORFilterQuery((Map<String,Object>)val));
+       }
+       else {
+         query = getTermQueryFromMap(val, key, query, constraintsMap);
+       }
     } else if (val instanceof String) {
       query.must(
           createTermQuery(key + RAW_APPEND, ((String) val).toLowerCase(), constraintsMap.get(key)));
@@ -383,7 +384,6 @@ public class ElasticSearchHelper {
     }
     ProjectLogger.log(
         "ElasticSearchHelper:getTermQueryFromMap: method end ", LoggerEnum.INFO.name());
-
     return query;
   }
 

@@ -1,0 +1,1 @@
+ALTER TABLE sunbird.user_cert add (isDeleted boolean, oldId text);

@@ -6,7 +6,10 @@ package org.sunbird.decryptionUtil.constants;
  * @author anmolgupta
  */
 public class EnvConstants {
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/release-2.5.0
     public static final String SUNBIRD_CASSANDRA_HOST = "sunbird_cassandra_host";
     public static final String SUNBIRD_CASSANDRA_KEYSPACENAME = "sunbird_cassandra_keyspace";
     public static final String SUNBIRD_CASSANDRA_PORT = "sunbird_cassandra_port";

@@ -964,13 +964,12 @@ public class UserRequestValidator extends BaseRequestValidator {
     }
   }
 
-  public void validateUserMergeRequest(
-      Request request, String authUserToken, String sourceUserToken) {
+  public void validateUserMergeRequest(Request request, String authUserToken, String sourceUserToken) {
     if (StringUtils.isBlank((String) request.getRequest().get(JsonKey.FROM_ACCOUNT_ID))) {
       throw new ProjectCommonException(
-          ResponseCode.fromAccountIdRequired.getErrorCode(),
-          ResponseCode.fromAccountIdRequired.getErrorMessage(),
-          ERROR_CODE);
+              ResponseCode.fromAccountIdRequired.getErrorCode(),
+              ResponseCode.fromAccountIdRequired.getErrorMessage(),
+              ERROR_CODE);
     }
 
     if (StringUtils.isBlank((String) request.getRequest().get(JsonKey.TO_ACCOUNT_ID))) {
@@ -984,6 +983,10 @@ public class UserRequestValidator extends BaseRequestValidator {
       createClientError(
           ResponseCode.mandatoryHeaderParamsMissing, JsonKey.X_AUTHENTICATED_USER_TOKEN);
     }
+
+    if (StringUtils.isBlank(authUserToken)) {
+      createClientError(ResponseCode.mandatoryHeaderParamsMissing, JsonKey.X_AUTHENTICATED_USER_TOKEN);
+    }
     if (StringUtils.isBlank(sourceUserToken)) {
       createClientError(ResponseCode.mandatoryHeaderParamsMissing, JsonKey.X_SOURCE_USER_TOKEN);
     }
@@ -993,11 +996,10 @@ public class UserRequestValidator extends BaseRequestValidator {
     if (StringUtils.isBlank((String) request.getRequest().get(JsonKey.CERT_ID))) {
       createClientError(ResponseCode.mandatoryParamsMissing, JsonKey.CERT_ID);
     }
-
-    if (StringUtils.isBlank((String) request.getRequest().get(JsonKey.ACCESS_CODE))) {
+    if(StringUtils.isBlank((String) request.getRequest().get(JsonKey.ACCESS_CODE))) {
       createClientError(ResponseCode.mandatoryParamsMissing, JsonKey.ACCESS_CODE);
     }
-  }
+  }  
 
   private void createClientError(ResponseCode responseCode, String field) {
     throw new ProjectCommonException(

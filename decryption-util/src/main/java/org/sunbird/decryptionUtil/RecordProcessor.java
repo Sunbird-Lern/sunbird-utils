@@ -66,9 +66,15 @@ public class RecordProcessor extends StatusTracker {
      * @return List<User>
      */
     private List<User> getUserDataFromDbAsList() {
+<<<<<<< HEAD
         List<User> usersList = new ArrayList<>();
         ResultSet resultSet = connection.getRecords("select * from usr_external_identity");
         usersList.addAll(CassandraHelper.getUserListFromResultSet(resultSet));
+=======
+        ResultSet resultSet = connection.getRecords("select * from usr_external_identity");
+        List<User> usersList = CassandraHelper.getUserListFromResultSet(resultSet);
+        logger.debug(usersList.iterator().next());
+>>>>>>> origin/release-2.5.0
         return usersList;
     }
 
@@ -108,7 +114,15 @@ public class RecordProcessor extends StatusTracker {
         return compositeKeysMap;
     }
 
+<<<<<<< HEAD
     /**
+=======
+<<<<<<< HEAD
+     /**
+=======
+    /**
+>>>>>>> 7bbedab82d8f5006d4eaf62498db5bd80e2d114c
+>>>>>>> origin/release-2.5.0
      * this method is responsible to decrypt the externalId and originalExternalId
      * if originalExternalId is null or absent it will ignore it and decrypt only externalId.
      * @param userObject
@@ -164,7 +178,10 @@ public class RecordProcessor extends StatusTracker {
 
     /**
      * this methods
+<<<<<<< HEAD
      *
+=======
+>>>>>>> origin/release-2.5.0
      * @param preProcessedRecords
      * @param totalRecords
      * @return
@@ -178,7 +195,10 @@ public class RecordProcessor extends StatusTracker {
     /**
      * this methods get the count of records from cassandra as totalUserList
      * then this method will remove the preprocessed records from totalUserList.
+<<<<<<< HEAD
      *
+=======
+>>>>>>> origin/release-2.5.0
      * @return List<String>
      * @throws IOException
      */
@@ -189,5 +209,8 @@ public class RecordProcessor extends StatusTracker {
         logger.info("total records found preprocessed is " + preProcessedRecords.size());
         return removePreProcessedRecordFromList(preProcessedRecords, totalUsersList);
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/release-2.5.0
 }
