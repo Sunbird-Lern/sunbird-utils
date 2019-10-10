@@ -13,7 +13,6 @@ export BADGE_IMAGE=""
 export CRITERIA_NARRATIVE="Course completion certificate"
 
 # Public key
-export ROOT_ORG_ID=1234
 export KEY_ID=1
 export PUBLIC_KEY_PEM=""
 

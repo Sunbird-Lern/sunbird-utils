@@ -31,10 +31,10 @@ container_name <br>
    - extensions
         - AssessedEvidence
             - ...other files...
-- <ROOT_ORG_ID>
     - <BATCH_ID>
         - Badge.json
         - ...all certificate files go here...
     - Issuer.json
-    - 1_publicKey.json
-    - 2_publicKey.json
+    - keys
+        - 1_publicKey.json
+        - 2_publicKey.json

@@ -2,7 +2,7 @@ const config = require("./config.js");
 var fs = require('fs');
 
 var badge = {
-    "id": config.domainUrl + "/" + config.slug + "/" + process.env.ROOT_ORG_ID + "/" + config.badge.batchId + "/Badge.json",
+    "id": config.domainUrl + "/" + config.slug + "/" + config.badge.batchId + "/Badge.json",
     "type": "BadgeClass",
     "@context": config.domainUrl + "/" + config.slug + "/v1/context.json",
     "name": config.badge.name,
@@ -12,26 +12,26 @@ var badge = {
         "type": [
             "Criteria"
         ],
-        "id": config.domainUrl + "/" + config.slug + "/" + process.env.ROOT_ORG_ID + "/" + config.badge.batchId,
+        "id": config.domainUrl + "/" + config.slug + "/" + config.badge.batchId,
         "narrative": config.badge.narrative
     },
-    "issuer": config.domainUrl + "/" + config.slug + "/" + process.env.ROOT_ORG_ID + "/Issuer.json"
+    "issuer": config.domainUrl + "/" + config.slug + "/Issuer.json"
 }
 var issuer = {
     "@context": config.domainUrl + "/" + config.slug + "/v1/context.json",
     "type": "Issuer",
-    "id": config.domainUrl + "/" + config.slug + "/" + process.env.ROOT_ORG_ID + "/Issuer.json",
+    "id": config.domainUrl + "/" + config.slug + "/Issuer.json",
     "name": config.issuer.name,
     "url": config.issuer.url,
-    "publicKey": config.domainUrl + "/" + config.slug + "/" + process.env.ROOT_ORG_ID + "/" + process.env.KEY_ID + "_publickey.json"
+    "publicKey": config.domainUrl + "/" + config.slug + "/keys/" + process.env.KEY_ID + "_publickey.json"
 }
 
 
 var publicKey = {
     "@context": config.domainUrl + "/" + config.slug + "/v1/context.json",
     "type": "CryptographicKey",
-    "id": config.domainUrl + "/" + config.slug + "/" + process.env.ROOT_ORG_ID + "/" + process.env.KEY_ID + "_publickey.json",
-    "owner": config.domainUrl + "/" + config.slug + "/" + process.env.ROOT_ORG_ID + "/Issuer.json",
+    "id": config.domainUrl + "/" + config.slug + "/keys/" + process.env.KEY_ID + "_publickey.json",
+    "owner": config.domainUrl + "/" + config.slug + "/Issuer.json",
     "publicKeyPem": config.publicKeyPem
 }
 
@@ -39,16 +39,16 @@ var outDirName = "./out";
 
 var methods = {
     createPublicKeyJson: function () {
-        let publicDir = outDirName + "/" + process.env.ROOT_ORG_ID
+        let publicDir = outDirName + "/keys"
         if (!fs.existsSync(publicDir)) {
             fs.mkdirSync(publicDir);
         }
-        if (writeToFile(outDirName + "/" + process.env.KEY_ID + "_publicKey.json", publicKey)) {
+        if (writeToFile(publicDir + "/" + process.env.KEY_ID + "_publicKey.json", publicKey)) {
             console.log("publicKey json is created")
         }
     },
     createIssuerJson: function () {
-        let issuerDir = outDirName + "/" + process.env.ROOT_ORG_ID
+        let issuerDir = outDirName
         if (!fs.existsSync(issuerDir)) {
             fs.mkdirSync(issuerDir);
         }
@@ -57,10 +57,10 @@ var methods = {
         }
     },
     createBadgeJson: function () {
-        let batchDir = outDirName + "/" + process.env.ROOT_ORG_ID + "/" + config.badge.batchId
+        let batchDir = outDirName + "/" + config.badge.batchId
         if (!fs.existsSync(batchDir)) {
-            if (!fs.existsSync(outDirName + "/" + process.env.ROOT_ORG_ID)) {
-                fs.mkdirSync(outDirName + "/" + process.env.ROOT_ORG_ID);
+            if (!fs.existsSync(outDirName)) {
+                fs.mkdirSync(outDirName);
             }
             fs.mkdirSync(batchDir);
         }
