@@ -29,7 +29,7 @@ public class SmtpEMailServiceImpl implements IEmailService {
       return false;
     } else if (CollectionUtils.isNotEmpty(emailReq.getBcc())) {
       return sendEmail.sendEmail(
-          emailReq.getTo().get(0), emailReq.getSubject(), emailReq.getBody(), emailReq.getBcc());
+          sendEmail.getFromEmail(), emailReq.getSubject(), emailReq.getBody(), emailReq.getBcc());
     } else if (CollectionUtils.isNotEmpty(emailReq.getCc())) {
       return sendEmail.sendMail(
           emailReq.getTo(), emailReq.getSubject(), emailReq.getBody(), emailReq.getCc());
