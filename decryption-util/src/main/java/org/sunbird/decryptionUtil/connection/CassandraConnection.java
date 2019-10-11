@@ -3,13 +3,13 @@ package org.sunbird.decryptionUtil.connection;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Session;
+import com.datastax.driver.core.policies.DefaultRetryPolicy;
 import com.datastax.driver.core.querybuilder.Clause;
 import com.datastax.driver.core.querybuilder.Delete;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import org.apache.log4j.Logger;
 import org.sunbird.decryptionUtil.LoggerFactory;
 import org.sunbird.decryptionUtil.constants.DbColumnConstants;
-
 import java.util.Map;
 
 public class CassandraConnection implements Connection {
@@ -76,9 +76,10 @@ public class CassandraConnection implements Connection {
      * this method will initialize the cassandra connection
      */
     public void initializeConnection() {
-        cluster = Cluster.builder().addContactPoint(host).build();
+        String[] hostsArray=host.split(",");
+        cluster = Cluster.builder().addContactPoints(hostsArray).withRetryPolicy(DefaultRetryPolicy.INSTANCE).build();
         session = cluster.connect(keyspaceName);
         session.execute("USE ".concat(keyspaceName));
-        logger.debug(String.format("cassandra connection created %s", session));
+        logger.info(String.format("cassandra connection created %s", session));
     }
 }

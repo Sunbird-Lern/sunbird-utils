@@ -9,7 +9,7 @@
 # How to run
   - require env variable to be set : </br>
   
-        - cassandra_host
+        - sunbird_cassandra_host
         - sunbird_cassandra_keyspace
         - sunbird_cassandra_port
         - sunbird_encryption_key
@@ -24,3 +24,4 @@
    - verify the column externalid, originalexternalid should be in decrypted format.
    -  Run the Query: SELECT COUNT(*) FROM sunbird.usr_external_identity;  
    - count after running and before running should matches.
+   - At the end of the run the program will generate the file named ```preProcessecRecords.txt``` which has provider,idType,externalId in format ```provider:idtype:externalid``` so  its easy to identify the records which are successfully processed...

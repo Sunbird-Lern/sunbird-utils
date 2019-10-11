@@ -249,8 +249,8 @@ public enum ResponseCode {
       ResponseMessage.Key.COURSE_BATCH_ALREADY_COMPLETED,
       ResponseMessage.Message.COURSE_BATCH_ALREADY_COMPLETED),
   courseBatchEnrollmentDateEnded(
-          ResponseMessage.Key.COURSE_BATCH_ENROLLMENT_DATE_ENDED,
-          ResponseMessage.Message.COURSE_BATCH_ENROLLMENT_DATE_ENDED),
+      ResponseMessage.Key.COURSE_BATCH_ENROLLMENT_DATE_ENDED,
+      ResponseMessage.Message.COURSE_BATCH_ENROLLMENT_DATE_ENDED),
   userAlreadyCompletedCourse(
       ResponseMessage.Key.USER_ALREADY_COMPLETED_COURSE,
       ResponseMessage.Message.USER_ALREADY_COMPLETED_COURSE),
@@ -291,9 +291,15 @@ public enum ResponseCode {
   dateFormatError(
       ResponseMessage.Key.DATE_FORMAT_ERRROR, ResponseMessage.Message.DATE_FORMAT_ERRROR),
   endDateError(ResponseMessage.Key.END_DATE_ERROR, ResponseMessage.Message.END_DATE_ERROR),
-  enrollmentEndDateStartError(ResponseMessage.Key.ENROLLMENT_END_DATE_START_ERROR, ResponseMessage.Message.ENROLLMENT_END_DATE_START_ERROR),
-  enrollmentEndDateEndError(ResponseMessage.Key.ENROLLMENT_END_DATE_END_ERROR, ResponseMessage.Message.ENROLLMENT_END_DATE_END_ERROR),
-    enrollmentEndDateUpdateError(ResponseMessage.Key.ENROLLMENT_END_DATE_UPDATE_ERROR, ResponseMessage.Message.ENROLLMENT_END_DATE_UPDATE_ERROR),
+  enrollmentEndDateStartError(
+      ResponseMessage.Key.ENROLLMENT_END_DATE_START_ERROR,
+      ResponseMessage.Message.ENROLLMENT_END_DATE_START_ERROR),
+  enrollmentEndDateEndError(
+      ResponseMessage.Key.ENROLLMENT_END_DATE_END_ERROR,
+      ResponseMessage.Message.ENROLLMENT_END_DATE_END_ERROR),
+  enrollmentEndDateUpdateError(
+      ResponseMessage.Key.ENROLLMENT_END_DATE_UPDATE_ERROR,
+      ResponseMessage.Message.ENROLLMENT_END_DATE_UPDATE_ERROR),
   csvError(ResponseMessage.Key.INVALID_CSV_FILE, ResponseMessage.Message.INVALID_CSV_FILE),
   invalidCourseBatchId(
       ResponseMessage.Key.INVALID_COURSE_BATCH_ID, ResponseMessage.Message.INVALID_COURSE_BATCH_ID),
@@ -523,7 +529,8 @@ public enum ResponseCode {
       ResponseMessage.Key.USER_UPDATE_FAILED_FOR_THIS_ORG,
       ResponseMessage.Message.USER_UPDATE_FAILED_FOR_THIS_ORG),
   pageDoesNotExist(ResponseMessage.Key.PAGE_NOT_EXIST, ResponseMessage.Message.PAGE_NOT_EXIST),
-  sectionDoesNotExist(ResponseMessage.Key.SECTION_NOT_EXIST, ResponseMessage.Message.SECTION_NOT_EXIST),
+  sectionDoesNotExist(
+      ResponseMessage.Key.SECTION_NOT_EXIST, ResponseMessage.Message.SECTION_NOT_EXIST),
   orgDoesNotExist(ResponseMessage.Key.ORG_NOT_EXIST, ResponseMessage.Message.ORG_NOT_EXIST),
   invalidPageSource(
       ResponseMessage.Key.INVALID_PAGE_SOURCE, ResponseMessage.Message.INVALID_PAGE_SOURCE),
@@ -795,16 +802,36 @@ public enum ResponseCode {
   errorUserMigrationFailed(
       ResponseMessage.Key.ERROR_USER_MIGRATION_FAILED,
       ResponseMessage.Message.ERROR_USER_MIGRATION_FAILED),
-  emptyContentsForUpdateBatchStatus(ResponseMessage.Key.EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS, ResponseMessage.Message.EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS),
+  invalidIdentifier(
+      ResponseMessage.Key.VALID_IDENTIFIER_ABSENSE,
+      ResponseMessage.Message.IDENTIFIER_VALIDATION_FAILED),
+  fromAccountIdRequired(
+      ResponseMessage.Key.FROM_ACCOUNT_ID_MISSING, ResponseMessage.Message.FROM_ACCOUNT_ID_MISSING),
+  toAccountIdRequired(
+      ResponseMessage.Key.TO_ACCOUNT_ID_MISSING, ResponseMessage.Message.TO_ACCOUNT_ID_MISSING),
+  fromAccountIdNotExists(
+      ResponseMessage.Key.FROM_ACCOUNT_ID_NOT_EXISTS,
+      ResponseMessage.Message.FROM_ACCOUNT_ID_NOT_EXISTS),
+  mandatoryHeaderParamsMissing(
+      ResponseMessage.Key.MANDATORY_HEADER_PARAMETER_MISSING,
+      ResponseMessage.Message.MANDATORY_HEADER_PARAMETER_MISSING),
+  recoveryParamsMatchException(
+      ResponseMessage.Key.RECOVERY_PARAM_MATCH_EXCEPTION,
+      ResponseMessage.Message.RECOVERY_PARAM_MATCH_EXCEPTION),
+  PARAM_NOT_MATCH(ResponseMessage.Key.PARAM_NOT_MATCH, ResponseMessage.Message.PARAM_NOT_MATCH),
+  emptyContentsForUpdateBatchStatus(
+      ResponseMessage.Key.EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS,
+      ResponseMessage.Message.EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS),
   errorUserHasNotCreatedAnyCourse(
-          ResponseMessage.Key.ERROR_USER_HAS_NOT_CREATED_ANY_COURSE,
-          ResponseMessage.Message.ERROR_USER_HAS_NOT_CREATED_ANY_COURSE),
+      ResponseMessage.Key.ERROR_USER_HAS_NOT_CREATED_ANY_COURSE,
+      ResponseMessage.Message.ERROR_USER_HAS_NOT_CREATED_ANY_COURSE),
   errorUploadQRCodeCSVfailed(
-          ResponseMessage.Key.ERROR_UPLOAD_QRCODE_CSV_FAILED,
-          ResponseMessage.Message.ERROR_UPLOAD_QRCODE_CSV_FAILED),
+      ResponseMessage.Key.ERROR_UPLOAD_QRCODE_CSV_FAILED,
+      ResponseMessage.Message.ERROR_UPLOAD_QRCODE_CSV_FAILED),
   errorNoDialcodesLinked(
-          ResponseMessage.Key.ERROR_NO_DIALCODES_LINKED,
-          ResponseMessage.Message.ERROR_NO_DIALCODES_LINKED),
+      ResponseMessage.Key.ERROR_NO_DIALCODES_LINKED,
+      ResponseMessage.Message.ERROR_NO_DIALCODES_LINKED),
+  eventsRequired(ResponseMessage.Key.EVENTS_DATA_MISSING, ResponseMessage.Message.EVENTS_DATA_MISSING),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
@@ -813,8 +840,8 @@ public enum ResponseCode {
   FORBIDDEN(403),
   REDIRECTION_REQUIRED(302),
   TOO_MANY_REQUESTS(429),
-  SERVICE_UNAVAILABLE(503);
-
+  SERVICE_UNAVAILABLE(503),
+  PARTIAL_SUCCESS_RESPONSE(206);
   private int responseCode;
   /** error code contains String value */
   private String errorCode;

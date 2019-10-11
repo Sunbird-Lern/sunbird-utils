@@ -157,8 +157,17 @@ public enum ActorOperations {
   CLEAR_CACHE("clearCache"),
   USER_TENANT_MIGRATE("userTenantMigrate"),
   GET_PARTICIPANTS("getParticipants"),
+  FREEUP_USER_IDENTITY("freeUpUserIdentity"),
+  RESET_PASSWORD("resetPassword"),
+  MERGE_USER("mergeUser"),
+  MERGE_USER_TO_ELASTIC("mergeUserToElastic"),
+  VALIDATE_CERTIFICATE("validateCertificate"),
+  ADD_CERTIFICATE("addCertificate"),
+  ASSIGN_KEYS("assignKeys"),
   DOWNLOAD_QR_CODES("downloadQRCodes"),
-  GET_USER_COURSE("getUserCourse");
+  GET_USER_COURSE("getUserCourse"),
+  GET_SIGN_URL("getSignUrl"),
+  MERGE_USER_CERTIFICATE("mergeUserCertificate");
 
   private String value;
 

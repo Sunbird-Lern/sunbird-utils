@@ -1,12 +1,14 @@
 package org.sunbird.telemetry.util;
 
 import com.lmax.disruptor.EventHandler;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
+import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.request.Request;
 import org.sunbird.telemetry.collector.TelemetryAssemblerFactory;
 import org.sunbird.telemetry.collector.TelemetryDataAssembler;
@@ -23,6 +25,7 @@ public class WriteEventHandler implements EventHandler<Request> {
   private TelemetryFlush telemetryFlush = TelemetryFlush.getInstance();
   private TelemetryDataAssembler telemetryDataAssembler = TelemetryAssemblerFactory.get();
   private TelemetryObjectValidator telemetryObjectValidator = new TelemetryObjectValidatorV3();
+  private SunbirdTelemetryEventConsumer consumer = SunbirdTelemetryEventConsumer.getInstance();
 
   @Override
   public void onEvent(Request request, long l, boolean b) throws Exception {
@@ -103,7 +106,6 @@ public class WriteEventHandler implements EventHandler<Request> {
   }
 
   private boolean processAuditEvent(Request request) {
-
     boolean success = false;
     Map<String, Object> context = (Map<String, Object>) request.get(JsonKey.CONTEXT);
     Map<String, Object> targetObject = (Map<String, Object>) request.get(JsonKey.TARGET_OBJECT);
@@ -114,7 +116,18 @@ public class WriteEventHandler implements EventHandler<Request> {
     params.put(JsonKey.CORRELATED_OBJECTS, correlatedObjects);
     String telemetry = telemetryDataAssembler.audit(context, params);
     if (StringUtils.isNotBlank(telemetry) && telemetryObjectValidator.validateAudit(telemetry)) {
-      telemetryFlush.flushTelemetry(telemetry);
+      if (!Boolean.parseBoolean(
+          ProjectUtil.getConfigValue(JsonKey.SUNBIRD_AUDIT_EVENT_BATCH_ALLOWED))) {
+        ProjectLogger.log(
+            "WriteEventHandler:processLogEvent: Audit Event is going to be processed = ",
+            LoggerEnum.INFO.name());
+        List<String> list = new ArrayList<String>();
+        list.add(telemetry);
+        Request auditRequest = telemetryFlush.createTelemetryRequest(list);
+        consumer.consume(auditRequest);
+      } else {
+        telemetryFlush.flushTelemetry(telemetry);
+      }
       success = true;
     } else {
       ProjectLogger.log(

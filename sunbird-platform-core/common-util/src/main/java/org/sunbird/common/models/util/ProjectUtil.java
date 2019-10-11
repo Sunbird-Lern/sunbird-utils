@@ -379,7 +379,8 @@ public class ProjectUtil {
     announcementType("announcementtype"),
     announcement("announcement"),
     metrics("metrics"),
-    cbatchstats("cbatchstats");
+    cbatchstats("cbatchstats"),
+    cbatchassessment("cbatch-assessment");
     private String typeName;
 
     private EsType(String name) {
@@ -579,7 +580,7 @@ public class ProjectUtil {
       context.put(JsonKey.COURSE_BATCH_URL, map.remove(JsonKey.COURSE_BATCH_URL));
     }
     context.put(JsonKey.ALLOWED_LOGIN, propertiesCache.getProperty(JsonKey.SUNBIRD_ALLOWED_LOGIN));
-
+    map = addCertStaticResource(map);
     for (Map.Entry<String, Object> entry : map.entrySet()) {
       context.put(entry.getKey(), entry.getValue());
     }
@@ -593,6 +594,16 @@ public class ProjectUtil {
     }
     ProjectLogger.log("ProjectUtil:getSunbirdLogoUrl: url = " + logoUrl, LoggerEnum.INFO.name());
     return logoUrl;
+  }
+
+  private static Map<String, Object> addCertStaticResource(Map<String, Object> map) {
+    map.putIfAbsent(
+        JsonKey.certificateImgUrl,
+        ProjectUtil.getConfigValue(JsonKey.SUNBIRD_CERT_COMPLETION_IMG_URL));
+    map.putIfAbsent(
+        JsonKey.dikshaImgUrl, ProjectUtil.getConfigValue(JsonKey.SUNBIRD_DIKSHA_IMG_URL));
+    map.putIfAbsent(JsonKey.stateImgUrl, ProjectUtil.getConfigValue(JsonKey.SUNBIRD_STATE_IMG_URL));
+    return map;
   }
 
   private static String getFromEmail(Map<String, Object> map) {

@@ -3,10 +3,12 @@ package org.sunbird.decryptionUtil;
 import com.datastax.driver.core.ResultSet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.sunbird.decryptionUtil.connection.Connection;
 import org.sunbird.decryptionUtil.connection.factory.ConnectionFactory;
@@ -64,9 +66,9 @@ public class RecordProcessor extends StatusTracker {
      * @return List<User>
      */
     private List<User> getUserDataFromDbAsList() {
+        List<User> usersList = new ArrayList<>();
         ResultSet resultSet = connection.getRecords("select * from usr_external_identity");
-        List<User> usersList = CassandraHelper.getUserListFromResultSet(resultSet);
-        logger.debug(usersList.iterator().next());
+        usersList.addAll(CassandraHelper.getUserListFromResultSet(resultSet));
         return usersList;
     }
 
@@ -89,8 +91,9 @@ public class RecordProcessor extends StatusTracker {
                                 performSequentialOperationOnRecord(user, compositeKeysMap);
                             } catch (Exception e) {
                                 logExceptionOnProcessingRecord(compositeKeysMap);
+                            } finally {
+                                endTracingRecord(userObject.getUserId());
                             }
-                            endTracingRecord(userObject.getUserId());
                         });
 
         connection.closeConnection();
@@ -105,18 +108,29 @@ public class RecordProcessor extends StatusTracker {
         return compositeKeysMap;
     }
 
+    /**
+     * this method is responsible to decrypt the externalId and originalExternalId
+     * if originalExternalId is null or absent it will ignore it and decrypt only externalId.
+     * @param userObject
+     * @return userObject
+     * @throws BadPaddingException
+     * @throws IOException
+     * @throws IllegalBlockSizeException
+     */
     private User getDecryptedUserObject(User userObject) throws BadPaddingException, IOException, IllegalBlockSizeException {
         String externalId = decryptionService.decryptData(userObject.getExternalId());
-        String originalExternalId = decryptionService.decryptData(userObject.getOriginalExternalId());
+        if (StringUtils.isNotBlank(userObject.getOriginalExternalId())) {
+            String originalExternalId = decryptionService.decryptData(userObject.getOriginalExternalId());
+            userObject.setOriginalExternalId(originalExternalId);
+        }
         userObject.setExternalId(externalId);
-        userObject.setOriginalExternalId(originalExternalId);
         return userObject;
     }
 
     /**
      * this method will perform sequential operation of db records
      * - generate insert query
-     * - decrypt the externalIds and orignalExternalIds
+     * - decrypt the externalIds and originalExternalIds
      * - insert record
      * - insert Record passes will then delete the record...
      *
@@ -150,6 +164,7 @@ public class RecordProcessor extends StatusTracker {
 
     /**
      * this methods
+     *
      * @param preProcessedRecords
      * @param totalRecords
      * @return
@@ -163,6 +178,7 @@ public class RecordProcessor extends StatusTracker {
     /**
      * this methods get the count of records from cassandra as totalUserList
      * then this method will remove the preprocessed records from totalUserList.
+     *
      * @return List<String>
      * @throws IOException
      */
@@ -173,4 +189,5 @@ public class RecordProcessor extends StatusTracker {
         logger.info("total records found preprocessed is " + preProcessedRecords.size());
         return removePreProcessedRecordFromList(preProcessedRecords, totalUsersList);
     }
+
 }

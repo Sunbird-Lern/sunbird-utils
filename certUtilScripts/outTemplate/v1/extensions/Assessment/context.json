@@ -1,0 +1,17 @@
+{
+  "title": "Assessment",
+  "@context": {
+    "id": "@id",
+    "type": "@type",
+    "obi": "https://w3id.org/openbadges#",
+    "assessment": "https://localhost/container/v1/extensions/Assessment#",
+    "schema": "http://schema.org/",
+    "value": "assessedEvidence:value"
+  },
+  "obi:validation": [
+    {
+      "obi:validatesType": "extensions:Assessment",
+      "obi:validationSchema": "https://localhost/container/extensions/Assessment/schema.json"
+    }
+  ]
+}
