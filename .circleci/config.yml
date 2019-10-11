@@ -1,0 +1,18 @@
+version: 2.1
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - restore_cache:
+          key: lms-dependency-cache-{{ checksum "pom.xml" }}
+      - run: mvn clean install
+      - save_cache:
+          key: lms-dependency-cache-{{ checksum "pom.xml" }}
+          paths: ~/.m2
+      
+workflows:
+  version: 2.1
+  workflow:
+    jobs:
+      - build
