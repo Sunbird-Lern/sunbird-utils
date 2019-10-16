@@ -730,6 +730,8 @@ public enum ResponseCode {
   errorProcessingRequest(
       ResponseMessage.Key.ERROR_PROCESSING_REQUEST,
       ResponseMessage.Message.ERROR_PROCESSING_REQUEST),
+  errorUnavailableCertificate(ResponseMessage.Key.ERROR_UNAVAILABLE_CERTIFICATE,
+          ResponseMessage.Message.ERROR_UNAVAILABLE_CERTIFICATE),
   invalidTextbook(ResponseMessage.Key.INVALID_TEXTBOOK, ResponseMessage.Message.INVALID_TEXTBOOK),
   csvRowsExceeds(ResponseMessage.Key.CSV_ROWS_EXCEEDS, ResponseMessage.Message.CSV_ROWS_EXCEEDS),
   invalidTextbookName(

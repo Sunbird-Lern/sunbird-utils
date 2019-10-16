@@ -393,8 +393,9 @@ public interface ResponseMessage {
     String ERROR_CONFLICTING_ROOT_ORG_ID =
         "Root organisation ID of API user is conflicting with that of specified organisation ID.";
     String ERROR_UPDATE_SETTING_NOT_ALLOWED = "Update of system setting {0} is not allowed.";
-    String ERROR_CREATING_FILE = "Eroor Reading File";
+    String ERROR_CREATING_FILE = "Error Reading File";
     String ERROR_PROCESSING_REQUEST = "Something went wrong while Processing Request";
+    String ERROR_UNAVAILABLE_CERTIFICATE = "Certificate is unavailable";
     String INVALID_TEXTBOOK = "Invalid Textbook. Please Provide Valid Textbook Identifier.";
     String CSV_ROWS_EXCEEDS = "Number of rows in csv file is more than ";
     String INVALID_TEXTBOOK_NAME =
@@ -793,6 +794,7 @@ public interface ResponseMessage {
     String ERROR_UPDATE_SETTING_NOT_ALLOWED = "ERROR_UPDATE_SETTING_NOT_ALLOWED";
     String ERROR_CREATING_FILE = "ERROR_CREATING_FILE";
     String ERROR_PROCESSING_REQUEST = "ERROR_PROCESSING_REQUEST";
+    String ERROR_UNAVAILABLE_CERTIFICATE = "ERROR_UNAVAILABLE_CERTIFICATE";
     String INVALID_TEXTBOOK = "INVALID_TEXTBOOK";
     String CSV_ROWS_EXCEEDS = "CSV_ROWS_EXCEEDS";
     String INVALID_TEXTBOOK_NAME = "INVALID_TEXTBOOK_NAME";

@@ -972,6 +972,7 @@ public final class JsonKey {
   public static final String SUNBIRD_COURSE_DIALCODES_DB = "sunbird_course_dialcodes_db";
   public static final String SUNBIRD_ACCOUNT_MERGE_BODY = "sunbird_account_merge_body";
   public static final String CERTIFICATE = "Certificate";
+  public static final String OLD_CERTIFICATE = "oldCertificate";
   public static final String MERGE_CERT = "Mergecert";
   public static final String RECOVERY_EMAIL="recoveryEmail";
   public static final String RECOVERY_PHONE="recoveryPhone";
@@ -995,5 +996,7 @@ public final class JsonKey {
   public static final String SMS="sms";
   public static final String SUNBIRD_ACCOUNT_MERGE_SUBJECT="sunbird_account_merge_subject";
   public static final String CONTEXT_TELEMETRY="telemetryContext";
+  public static final String OLD_ID = "oldId";
+
   private JsonKey() {}
 }
