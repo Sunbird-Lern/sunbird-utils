@@ -187,6 +187,22 @@ public class ProjectUtil {
     }
   }
 
+
+  public enum ACTION{
+    YES(1),
+    NO(0);
+
+    private int value;
+
+    ACTION(int value) {
+      this.value = value;
+    }
+
+    public int getValue() {
+      return value;
+    }
+  }
+
   /** @author Amit Kumar */
   public enum CourseMgmtStatus {
     DRAFT("draft"),
