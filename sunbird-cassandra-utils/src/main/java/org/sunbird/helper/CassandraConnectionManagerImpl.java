@@ -1,5 +1,18 @@
 package org.sunbird.helper;
 
+import com.datastax.driver.core.AtomicMonotonicTimestampGenerator;
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.ConsistencyLevel;
+import com.datastax.driver.core.Host;
+import com.datastax.driver.core.HostDistance;
+import com.datastax.driver.core.Metadata;
+import com.datastax.driver.core.PoolingOptions;
+import com.datastax.driver.core.ProtocolVersion;
+import com.datastax.driver.core.QueryLogger;
+import com.datastax.driver.core.QueryOptions;
+import com.datastax.driver.core.Session;
+import com.datastax.driver.core.TableMetadata;
+import com.datastax.driver.core.policies.DefaultRetryPolicy;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -14,20 +27,6 @@ import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.responsecode.ResponseCode;
-
-import com.datastax.driver.core.AtomicMonotonicTimestampGenerator;
-import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.ConsistencyLevel;
-import com.datastax.driver.core.Host;
-import com.datastax.driver.core.HostDistance;
-import com.datastax.driver.core.Metadata;
-import com.datastax.driver.core.PoolingOptions;
-import com.datastax.driver.core.ProtocolVersion;
-import com.datastax.driver.core.QueryLogger;
-import com.datastax.driver.core.QueryOptions;
-import com.datastax.driver.core.Session;
-import com.datastax.driver.core.TableMetadata;
-import com.datastax.driver.core.policies.DefaultRetryPolicy;
 
 /**
  * @author Amit Kumar
@@ -61,7 +60,7 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
   @Override
   public boolean createConnection(
       String ip, String port, String userName, String password, String keyspace) {
-       return createStandaloneConnection(ip, port, userName, password, keyspace);
+    return createStandaloneConnection(ip, port, userName, password, keyspace);
   }
 
   /**
@@ -217,6 +216,55 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
     return createCluster(ip, port, null, null, poolingOptions);
   }
 
+  /**
+   * Method to create the embedded cassandra connection on host{{read from external properties}} and
+   * port {{read from external properties}}.
+   *
+   * @param ip
+   * @param port
+   * @param userName
+   * @param password
+   * @param keyspace
+   * @return
+   */
+  private boolean createEmbeddedConnection(String keyspace) {
+    Session cassandraSession = null;
+
+    PropertiesCache propertiesCache = PropertiesCache.getInstance();
+    boolean connection = false;
+
+    if (null == cassandraSessionMap.get(keyspace)) {
+      try {
+        EmbeddedCassandraServerHelper.startEmbeddedCassandra(
+            Long.parseLong(propertiesCache.getProperty("embeddedCassandra_TimeOut")));
+        Cluster cluster =
+            new Cluster.Builder()
+                .addContactPoints(propertiesCache.getProperty(JsonKey.EMBEDDED_CASSANDRA_HOST))
+                .withPort(
+                    Integer.parseInt(propertiesCache.getProperty(JsonKey.EMBEDDED_CASSANDRA_PORT)))
+                .build();
+
+        cassandraSession = cluster.connect();
+        CQLDataLoader dataLoader = new CQLDataLoader(cassandraSession);
+        ProjectLogger.log("CASSANDRA EMBEDDED MODE - LOADING DATA");
+        dataLoader.load(
+            new ClassPathCQLDataSet(
+                propertiesCache.getProperty(JsonKey.EMBEDDED_CQL_FILE_NAME), keyspace));
+        if (null != cassandraSession) {
+          cassandraSessionMap.put(keyspace, cassandraSession);
+          cassandraclusterMap.put(keyspace, cluster);
+        }
+      } catch (TTransportException e) {
+        ProjectLogger.log("Exception occured while creating Embedded cassandra connection", e);
+      } catch (IOException e) {
+        ProjectLogger.log("Exception occured while creating Embedded cassandra connection", e);
+      }
+    }
+    if (null != cassandraSessionMap.get(keyspace)) {
+      connection = true;
+    }
+    return connection;
+  }
 
   @Override
   public Session getSession(String keyspaceName) {

@@ -379,7 +379,8 @@ public class ProjectUtil {
     announcementType("announcementtype"),
     announcement("announcement"),
     metrics("metrics"),
-    cbatchstats("cbatchstats");
+    cbatchstats("cbatchstats"),
+    cbatchassessment("cbatch-assessment");
     private String typeName;
 
     private EsType(String name) {
@@ -605,7 +606,6 @@ public class ProjectUtil {
     return map;
   }
 
-  
   private static String getFromEmail(Map<String, Object> map) {
     String fromEmail = (String) getValue(map, JsonKey.EMAIL_SERVER_FROM);
     if (StringUtils.isBlank(fromEmail)) {
