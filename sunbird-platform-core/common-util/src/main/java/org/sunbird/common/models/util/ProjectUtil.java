@@ -188,13 +188,13 @@ public class ProjectUtil {
   }
 
 
-  public enum ACTION{
+  public enum Action{
     YES(1),
     NO(0);
 
     private int value;
 
-    ACTION(int value) {
+    Action(int value) {
       this.value = value;
     }
 
