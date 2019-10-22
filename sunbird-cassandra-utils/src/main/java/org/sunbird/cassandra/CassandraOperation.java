@@ -371,4 +371,9 @@ public interface CassandraOperation {
 
   public Response performBatchAction(
           String keyspaceName, String tableName, Map<String, Object> inputData);
+
+  Response searchValueInList(String keyspace,String tableName,String key,String Value);
 }
+
+
+
