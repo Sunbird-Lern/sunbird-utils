@@ -1,1 +1,0 @@
-CREATE INDEX ON sunbird.shadow_user (userids);
