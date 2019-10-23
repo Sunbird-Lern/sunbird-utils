@@ -998,5 +998,7 @@ public final class JsonKey {
   public static final String CONTEXT_TELEMETRY="telemetryContext";
   public static final String OLD_ID = "oldId";
   public static final String IS_SSO_ROOTORG_ENABLED = "isSsoEnabled";
+  public static final String MAX_ATTEMPT="maxAttempt";
+  public static final String REMAINING_ATTEMPT="remainingAttempt";
   private JsonKey() {}
 }

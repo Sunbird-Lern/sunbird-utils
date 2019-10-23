@@ -836,6 +836,8 @@ public enum ResponseCode {
   eventsRequired(
       ResponseMessage.Key.EVENTS_DATA_MISSING, ResponseMessage.Message.EVENTS_DATA_MISSING),
   accountNotFound(ResponseMessage.Key.ACCOUNT_NOT_FOUND, ResponseMessage.Message.ACCOUNT_NOT_FOUND),
+  userMigrationFiled(ResponseMessage.Key.USER_MIGRATION_FAILED,ResponseMessage.Message.USER_MIGRATION_FAILED),
+  invalidUserExternalId(ResponseMessage.Key.INVALID_EXT_USER_ID,ResponseMessage.Message.INVALID_EXT_USER_ID),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
