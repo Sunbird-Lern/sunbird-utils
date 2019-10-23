@@ -167,9 +167,7 @@ public enum ActorOperations {
   ASSIGN_KEYS("assignKeys"),
   DOWNLOAD_QR_CODES("downloadQRCodes"),
   GET_SIGN_URL("getSignUrl"),
-  MERGE_USER_CERTIFICATE("mergeUserCertificate"),
-  MIGRATE_USER("migrateUser"),
-  REJECT_MIGRATION("rejectMigration");
+  MERGE_USER_CERTIFICATE("mergeUserCertificate");
   private String value;
 
   /**
