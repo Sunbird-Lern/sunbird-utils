@@ -1062,17 +1062,7 @@ public Response getRecords(String keyspace, String table, Map<String, Object> fi
 public void applyOperationOnRecordsAsync(String keySpace, String table, Map<String, Object> filters,
 		List<String> fields, FutureCallback<ResultSet> callback) {
 	// TODO Auto-generated method stub
-
+	
 }
-
-  @Override
-  public Response searchValueInList(String keyspace, String tableName, String key, String value) {
-    Select selectQuery = QueryBuilder.select().all().from(keyspace, tableName);
-    Clause clause = QueryBuilder.contains(key, value);
-    selectQuery.where(clause);
-    ResultSet resultSet = connectionManager.getSession(keyspace).execute(selectQuery);
-    Response response = CassandraUtil.createResponse(resultSet);
-    return response;
-  }
 }
 
