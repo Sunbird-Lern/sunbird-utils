@@ -12,6 +12,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- <versions.jacoco>0.7.6.201602180812</versions.jacoco> -->
+		<learner.akka.version>2.5.19</learner.akka.version>
 	</properties>
 
 	<dependencies>
@@ -24,17 +25,17 @@
 		<dependency>
 			<groupId>com.typesafe.akka</groupId>
 			<artifactId>akka-actor_2.11</artifactId>
-			<version>2.5.16</version>
+			<version>${learner.akka.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.typesafe.akka</groupId>
 			<artifactId>akka-slf4j_2.11</artifactId>
-			<version>2.5.16</version>
+			<version>${learner.akka.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.typesafe.akka</groupId>
 			<artifactId>akka-remote_2.11</artifactId>
-			<version>2.5.16</version>
+			<version>${learner.akka.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
