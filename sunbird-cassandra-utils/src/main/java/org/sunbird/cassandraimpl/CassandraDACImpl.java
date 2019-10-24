@@ -23,13 +23,6 @@ import org.sunbird.common.responsecode.ResponseCode;
 
 public class CassandraDACImpl extends CassandraOperationImpl {
 
-  public static enum AggregationType {
-    MAX,
-    MIN,
-    SUM,
-    AVG
-  };
-
   public Response getRecords(
       String keySpace, String table, Map<String, Object> filters, List<String> fields) {
     Response response = new Response();
