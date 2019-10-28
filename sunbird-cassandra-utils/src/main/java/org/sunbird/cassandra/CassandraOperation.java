@@ -364,6 +364,33 @@ public interface CassandraOperation {
       List<String> fields,
       FutureCallback<ResultSet> callback);
 
+  public Response getRecordWithCondition(String keyspace, String tableName, String key, int value);
 
-  public Response getRecordWithCondition(String keyspace,String tableName,String key,int value);
+  /**
+   * @param keySpace
+   * @param table
+   * @param primaryKey
+   * @param column
+   * @param key
+   * @param value
+   * @return
+   */
+  public Response updateAddMapRecord(
+      String keySpace,
+      String table,
+      Map<String, Object> primaryKey,
+      String column,
+      String key,
+      Object value);
+
+  /**
+   * @param keySpace
+   * @param table
+   * @param primaryKey
+   * @param column
+   * @param key
+   * @return
+   */
+  public Response updateRemoveMapRecord(
+      String keySpace, String table, Map<String, Object> primaryKey, String column, String key);
 }
