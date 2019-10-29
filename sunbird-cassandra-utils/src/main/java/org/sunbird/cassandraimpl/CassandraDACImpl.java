@@ -146,10 +146,12 @@ public class CassandraDACImpl extends CassandraOperationImpl {
     }
     try {
       Response response = new Response();
+      ProjectLogger.log("Remove Map-Key Query: "+ update.toString(), LoggerEnum.INFO);
       connectionManager.getSession(keySpace).execute(update);
       response.put(Constants.RESPONSE, Constants.SUCCESS);
       return response;
     } catch (Exception e) {
+      e.printStackTrace();
       ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + table + " : " + e.getMessage(), e);
       throw new ProjectCommonException(
           ResponseCode.SERVER_ERROR.getErrorCode(),
