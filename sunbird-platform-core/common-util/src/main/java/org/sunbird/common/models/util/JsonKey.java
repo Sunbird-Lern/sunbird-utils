@@ -997,6 +997,6 @@ public final class JsonKey {
   public static final String SUNBIRD_ACCOUNT_MERGE_SUBJECT="sunbird_account_merge_subject";
   public static final String CONTEXT_TELEMETRY="telemetryContext";
   public static final String OLD_ID = "oldId";
-  public static final String IS_SSO_ROOTORG_ENABLED = "isSsoEnabled";
+  public static final String IS_SSO_ROOTORG_ENABLED = "isSSOEnabled";
   private JsonKey() {}
 }
