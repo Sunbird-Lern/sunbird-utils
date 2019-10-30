@@ -20,6 +20,7 @@ public class EmailTest {
 
   private static GMailAuthenticator authenticator = null;
   private static Email emailService = null;
+  private static String subject = "Test1";
 
   @BeforeClass
   public static void setUp() {
@@ -28,7 +29,6 @@ public class EmailTest {
     config.setHost("localhost");
     config.setPort("3025");
     emailService = new Email(config);
-    // clear Mock JavaMail box
     Mailbox.clearAll();
   }
 
@@ -46,7 +46,6 @@ public class EmailTest {
 
   @Test
   public void sendEmailTest() throws MessagingException {
-    String subject = "Test1";
     List<String> to = new ArrayList<String>();
     to.add("testmail@test.com"); to.add("test1@test.com");
     emailService.sendEmail("testmail@test.com", subject, "Hi how are you", to);
@@ -57,7 +56,6 @@ public class EmailTest {
 
   @Test
   public void sendEmailToMultipleUser() throws MessagingException {
-    String subject = "Test1";
     List<String> to = new ArrayList<String>();
     to.add("testmail@test.com"); to.add("test1@test.com");
 		  emailService.sendMail(to, subject, "Test email body"); 
@@ -68,7 +66,6 @@ public class EmailTest {
 
   @Test
   public void sendEmailWithCCTest() throws MessagingException {
-    String subject = "Test1";
     List<String> emailList = new ArrayList<String>();
     emailList.add("testmail@test.com"); emailList.add("test1@test.com");
     List<String> ccEmailList = new ArrayList<String>();
@@ -79,6 +76,26 @@ public class EmailTest {
     Assert.assertEquals(subject, inbox.get(0).getSubject());
   }
 
+  @Test
+  public void sendEmailTOBCC() throws MessagingException{
+	  List<String> bcc = new ArrayList<String>();
+	  bcc.add("testmail@test.com");
+	  emailService.sendEmail("testgamil@gmail.com", subject, "Bcc email test body", bcc);
+	  List<Message> inbox = Mailbox.get("testmail@test.com");
+	  Assert.assertTrue(inbox.size() > 0);
+	  Assert.assertEquals(subject, inbox.get(0).getSubject());	  
+  }
+  
+  @Test
+  public void sendEmailWithAttachmentTest() throws MessagingException {
+	  List<String> to = new ArrayList<String>();
+	    to.add("testmail@test.com"); to.add("test1@test.com");
+    emailService.sendAttachment(to, "Test email as attached.", subject, "emailtemplate.vm");
+    List<Message> inbox = Mailbox.get("testmail@test.com");
+    Assert.assertTrue(inbox.size() > 0);
+    Assert.assertEquals(subject, inbox.get(0).getSubject());
+  }
+  
   @AfterClass
   public static void tearDown() {
     authenticator = null;
