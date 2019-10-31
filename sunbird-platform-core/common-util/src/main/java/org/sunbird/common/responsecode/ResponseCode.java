@@ -802,15 +802,38 @@ public enum ResponseCode {
   errorUserMigrationFailed(
       ResponseMessage.Key.ERROR_USER_MIGRATION_FAILED,
       ResponseMessage.Message.ERROR_USER_MIGRATION_FAILED),
-  emptyContentsForUpdateBatchStatus(ResponseMessage.Key.EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS, ResponseMessage.Message.EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS),
-  invalidIdentifier(ResponseMessage.Key.VALID_IDENTIFIER_ABSENSE,ResponseMessage.Message.IDENTIFIER_VALIDATION_FAILED),
-  fromAccountIdRequired(ResponseMessage.Key.FROM_ACCOUNT_ID_MISSING, ResponseMessage.Message.FROM_ACCOUNT_ID_MISSING),
-  toAccountIdRequired(ResponseMessage.Key.TO_ACCOUNT_ID_MISSING, ResponseMessage.Message.TO_ACCOUNT_ID_MISSING),
-  fromAccountIdNotExists(ResponseMessage.Key.FROM_ACCOUNT_ID_NOT_EXISTS, ResponseMessage.Message.FROM_ACCOUNT_ID_NOT_EXISTS),
-  accountNotFound(ResponseMessage.Key.ACCOUNT_NOT_FOUND, ResponseMessage.Message.ACCOUNT_NOT_FOUND),
+  invalidIdentifier(
+      ResponseMessage.Key.VALID_IDENTIFIER_ABSENSE,
+      ResponseMessage.Message.IDENTIFIER_VALIDATION_FAILED),
+  fromAccountIdRequired(
+      ResponseMessage.Key.FROM_ACCOUNT_ID_MISSING, ResponseMessage.Message.FROM_ACCOUNT_ID_MISSING),
+  toAccountIdRequired(
+      ResponseMessage.Key.TO_ACCOUNT_ID_MISSING, ResponseMessage.Message.TO_ACCOUNT_ID_MISSING),
+  fromAccountIdNotExists(
+      ResponseMessage.Key.FROM_ACCOUNT_ID_NOT_EXISTS,
+      ResponseMessage.Message.FROM_ACCOUNT_ID_NOT_EXISTS),
   mandatoryHeaderParamsMissing(
       ResponseMessage.Key.MANDATORY_HEADER_PARAMETER_MISSING,
       ResponseMessage.Message.MANDATORY_HEADER_PARAMETER_MISSING),
+  recoveryParamsMatchException(
+      ResponseMessage.Key.RECOVERY_PARAM_MATCH_EXCEPTION,
+      ResponseMessage.Message.RECOVERY_PARAM_MATCH_EXCEPTION),
+  PARAM_NOT_MATCH(ResponseMessage.Key.PARAM_NOT_MATCH, ResponseMessage.Message.PARAM_NOT_MATCH),
+  emptyContentsForUpdateBatchStatus(
+      ResponseMessage.Key.EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS,
+      ResponseMessage.Message.EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS),
+  errorUserHasNotCreatedAnyCourse(
+      ResponseMessage.Key.ERROR_USER_HAS_NOT_CREATED_ANY_COURSE,
+      ResponseMessage.Message.ERROR_USER_HAS_NOT_CREATED_ANY_COURSE),
+  errorUploadQRCodeCSVfailed(
+      ResponseMessage.Key.ERROR_UPLOAD_QRCODE_CSV_FAILED,
+      ResponseMessage.Message.ERROR_UPLOAD_QRCODE_CSV_FAILED),
+  errorNoDialcodesLinked(
+      ResponseMessage.Key.ERROR_NO_DIALCODES_LINKED,
+      ResponseMessage.Message.ERROR_NO_DIALCODES_LINKED),
+  eventsRequired(
+      ResponseMessage.Key.EVENTS_DATA_MISSING, ResponseMessage.Message.EVENTS_DATA_MISSING),
+  accountNotFound(ResponseMessage.Key.ACCOUNT_NOT_FOUND, ResponseMessage.Message.ACCOUNT_NOT_FOUND),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
@@ -820,9 +843,7 @@ public enum ResponseCode {
   REDIRECTION_REQUIRED(302),
   TOO_MANY_REQUESTS(429),
   SERVICE_UNAVAILABLE(503),
-  PARAM_NOT_MATCH(ResponseMessage.Key.PARAM_NOT_MATCH, ResponseMessage.Message.PARAM_NOT_MATCH),
   PARTIAL_SUCCESS_RESPONSE(206);
-
   private int responseCode;
   /** error code contains String value */
   private String errorCode;

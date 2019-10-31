@@ -440,7 +440,6 @@ public interface ResponseMessage {
     String ERROR_USER_UPDATE_PASSWORD = "User is created but password couldn't be updated.";
     String ERROR_BGMS_MISMATCH = "Mismatch in {0} at row - {1}";
     String ERROR_USER_MIGRATION_FAILED = "User migration failed.";
-    String EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS = "Contents should not be empty for batch status update.";
     String IDENTIFIER_VALIDATION_FAILED =
         "Valid identifier is not present in List, Valid supported identifiers are ";
     String FROM_ACCOUNT_ID_MISSING = "From Account id is mandatory.";
@@ -448,6 +447,14 @@ public interface ResponseMessage {
     String FROM_ACCOUNT_ID_NOT_EXISTS = "From Account id not exists";
     String PARAM_NOT_MATCH = "%s-NOT-MATCH";
     String MANDATORY_HEADER_PARAMETER_MISSING = "Mandatory header parameter {0} is missing.";
+    String RECOVERY_PARAM_MATCH_EXCEPTION = "{0} could not be same as {1}";
+    String EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS =
+        "Contents should not be empty for batch status update.";
+    String ERROR_USER_HAS_NOT_CREATED_ANY_COURSE =
+        "User hasn't created any course, or may not have a creator role";
+    String ERROR_UPLOAD_QRCODE_CSV_FAILED = "Uploading the html file to cloud storage has failed.";
+    String ERROR_NO_DIALCODES_LINKED = "No dialcodes are linked to any courses created by user(s)";
+    String EVENTS_DATA_MISSING = "Events array is mandatory";
     String ACCOUNT_NOT_FOUND = "Account not found.";
   }
 
@@ -822,13 +829,18 @@ public interface ResponseMessage {
     String INVALID_REQUEST_TIMEOUT = "INVALID_REQUEST_TIMEOUT";
     String ERROR_BGMS_MISMATCH = "ERROR_BGMS_MISMATCH";
     String ERROR_USER_MIGRATION_FAILED = "ERROR_USER_MIGRATION_FAILED";
-    String EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS = "EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS";
-    String VALID_IDENTIFIER_ABSENSE="IDENTIFIER IN LIST IS NOT SUPPORTED OR INCORRECT";
+    String VALID_IDENTIFIER_ABSENSE = "IDENTIFIER IN LIST IS NOT SUPPORTED OR INCORRECT";
     String FROM_ACCOUNT_ID_MISSING = "FROM_ACCOUNT_ID_MISSING";
     String TO_ACCOUNT_ID_MISSING = "TO_ACCOUNT_ID_MISSING";
     String FROM_ACCOUNT_ID_NOT_EXISTS = "FROM_ACCOUNT_ID_NOT_EXISTS";
     String PARAM_NOT_MATCH = "%s-NOT-MATCH";
     String MANDATORY_HEADER_PARAMETER_MISSING = "MANDATORY_HEADER_PARAMETER_MISSING";
+    String RECOVERY_PARAM_MATCH_EXCEPTION = "RECOVERY_PARAM_MATCH_EXCEPTION";
+    String EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS = "EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS";
+    String ERROR_USER_HAS_NOT_CREATED_ANY_COURSE = "USER_HAS_NOT_CREATED_ANY_COURSE";
+    String ERROR_UPLOAD_QRCODE_CSV_FAILED = "ERROR_UPLOAD_QRCODE_CSV_FAILED";
+    String ERROR_NO_DIALCODES_LINKED = "ERROR_NO_DIALCODES_LINKED";
+    String EVENTS_DATA_MISSING = "EVENTS_DATA_MISSING";
     String ACCOUNT_NOT_FOUND = "ACCOUNT_NOT_FOUND";
   }
 }

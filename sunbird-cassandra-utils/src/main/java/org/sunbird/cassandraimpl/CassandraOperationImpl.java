@@ -19,8 +19,6 @@ import com.datastax.driver.core.querybuilder.Select.Selection;
 import com.datastax.driver.core.querybuilder.Select.Where;
 import com.datastax.driver.core.querybuilder.Update;
 import com.datastax.driver.core.querybuilder.Update.Assignments;
-import com.google.common.util.concurrent.FutureCallback;
-
 import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.List;
@@ -42,11 +40,13 @@ import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.helper.CassandraConnectionManager;
 import org.sunbird.helper.CassandraConnectionMngrFactory;
 
+import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
+
 /**
  * @author Amit Kumar
  * @desc this class will hold functions for cassandra db interaction
  */
-public class CassandraOperationImpl implements CassandraOperation {
+public abstract class CassandraOperationImpl implements CassandraOperation {
 
   protected CassandraConnectionManager connectionManager;
 
@@ -121,14 +121,15 @@ public class CassandraOperationImpl implements CassandraOperation {
       connectionManager.getSession(keyspaceName).execute(boundStatement);
       response.put(Constants.RESPONSE, Constants.SUCCESS);
     } catch (Exception e) {
+      e.printStackTrace();
       if (e.getMessage().contains(JsonKey.UNKNOWN_IDENTIFIER)) {
-        ProjectLogger.log(Constants.EXCEPTION_MSG_UPDATE + tableName + " : " + e.getMessage(), e);
+        ProjectLogger.log(Constants.EXCEPTION_MSG_UPDATE + tableName + " : " + e.getMessage(), e,LoggerEnum.ERROR.name());
         throw new ProjectCommonException(
             ResponseCode.invalidPropertyError.getErrorCode(),
             CassandraUtil.processExceptionForUnknownIdentifier(e),
             ResponseCode.CLIENT_ERROR.getResponseCode());
       }
-      ProjectLogger.log(Constants.EXCEPTION_MSG_UPDATE + tableName + " : " + e.getMessage(), e);
+      ProjectLogger.log(Constants.EXCEPTION_MSG_UPDATE + tableName + " : " + e.getMessage(), e,LoggerEnum.ERROR.name());
       throw new ProjectCommonException(
           ResponseCode.dbUpdateError.getErrorCode(),
           ResponseCode.dbUpdateError.getErrorMessage(),
@@ -148,7 +149,7 @@ public class CassandraOperationImpl implements CassandraOperation {
       Delete.Where delete =
           QueryBuilder.delete()
               .from(keyspaceName, tableName)
-              .where(QueryBuilder.eq(Constants.IDENTIFIER, identifier));
+              .where(eq(Constants.IDENTIFIER, identifier));
       connectionManager.getSession(keyspaceName).execute(delete);
       response.put(Constants.RESPONSE, Constants.SUCCESS);
     } catch (Exception e) {
@@ -175,9 +176,6 @@ public class CassandraOperationImpl implements CassandraOperation {
       String propertyName,
       Object propertyValue,
       List<String> fields) {
-    long startTime = System.currentTimeMillis();
-    ProjectLogger.log(
-        "Cassandra Service getRecordsByProperty method started at ==" + startTime, LoggerEnum.INFO);
     Response response = new Response();
     Session session = connectionManager.getSession(keyspaceName);
     try {
@@ -190,7 +188,7 @@ public class CassandraOperationImpl implements CassandraOperation {
       Statement selectStatement =
           selectBuilder
               .from(keyspaceName, tableName)
-              .where(QueryBuilder.eq(propertyName, propertyValue));
+              .where(eq(propertyName, propertyValue));
       ResultSet results = null;
       results = session.execute(selectStatement);
       response = CassandraUtil.createResponse(results);
@@ -201,7 +199,6 @@ public class CassandraOperationImpl implements CassandraOperation {
           ResponseCode.SERVER_ERROR.getErrorMessage(),
           ResponseCode.SERVER_ERROR.getResponseCode());
     }
-    logQueryElapseTime("getRecordsByProperty", startTime);
     return response;
   }
 
@@ -280,7 +277,7 @@ public class CassandraOperationImpl implements CassandraOperation {
               selectWhere.and(clause);
             }
           } else {
-            Clause clause = QueryBuilder.eq(entry.getKey(), entry.getValue());
+            Clause clause = eq(entry.getKey(), entry.getValue());
             selectWhere.and(clause);
           }
         }
@@ -411,7 +408,7 @@ public class CassandraOperationImpl implements CassandraOperation {
           .stream()
           .forEach(
               x -> {
-                where.and(QueryBuilder.eq(x.getKey(), x.getValue()));
+                where.and(eq(x.getKey(), x.getValue()));
               });
       Statement updateQuery = where;
       session.execute(updateQuery);
@@ -449,7 +446,7 @@ public class CassandraOperationImpl implements CassandraOperation {
       Select selectQuery = selectBuilder.from(keyspaceName, tableName);
       Where selectWhere = selectQuery.where();
       if (key instanceof String) {
-        selectWhere.and(QueryBuilder.eq(Constants.IDENTIFIER, key));
+        selectWhere.and(eq(Constants.IDENTIFIER, key));
       } else if (key instanceof Map) {
         Map<String, Object> compositeKey = (Map<String, Object>) key;
         compositeKey
@@ -535,19 +532,21 @@ public class CassandraOperationImpl implements CassandraOperation {
     return response;
   }
 
-  /** This method updates all the records in a batch
+  /**
+   * This method updates all the records in a batch
+   *
    * @param keyspaceName
    * @param tableName
    * @param records
    * @return
    */
-  //@Override
+  // @Override
   public Response batchUpdateById(
-          String keyspaceName, String tableName, List<Map<String, Object>> records) {
+      String keyspaceName, String tableName, List<Map<String, Object>> records) {
 
     long startTime = System.currentTimeMillis();
     ProjectLogger.log(
-            "Cassandra Service batchUpdateById method started at ==" + startTime, LoggerEnum.INFO);
+        "Cassandra Service batchUpdateById method started at ==" + startTime, LoggerEnum.INFO);
 
     Session session = connectionManager.getSession(keyspaceName);
     Response response = new Response();
@@ -560,28 +559,28 @@ public class CassandraOperationImpl implements CassandraOperation {
         Assignments assignments = update.with();
         Update.Where where = update.where();
         map.entrySet()
-                .stream()
-                .forEach(
-                        x -> {
-                          if(Constants.ID.equals(x.getKey())) {
-                            where.and(QueryBuilder.eq(x.getKey(), x.getValue()));
-                          } else {
-                            assignments.and(QueryBuilder.set(x.getKey(), x.getValue()));
-                          }
-                        });
+            .stream()
+            .forEach(
+                x -> {
+                  if (Constants.ID.equals(x.getKey())) {
+                    where.and(eq(x.getKey(), x.getValue()));
+                  } else {
+                    assignments.and(QueryBuilder.set(x.getKey(), x.getValue()));
+                  }
+                });
         batchStatement.add(update);
       }
       resultSet = session.execute(batchStatement);
       response.put(Constants.RESPONSE, Constants.SUCCESS);
     } catch (QueryExecutionException
-            | QueryValidationException
-            | NoHostAvailableException
-            | IllegalStateException e) {
+        | QueryValidationException
+        | NoHostAvailableException
+        | IllegalStateException e) {
       ProjectLogger.log("Cassandra Batch Update Failed." + e.getMessage(), e);
       throw new ProjectCommonException(
-              ResponseCode.SERVER_ERROR.getErrorCode(),
-              ResponseCode.SERVER_ERROR.getErrorMessage(),
-              ResponseCode.SERVER_ERROR.getResponseCode());
+          ResponseCode.SERVER_ERROR.getErrorCode(),
+          ResponseCode.SERVER_ERROR.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
     }
     logQueryElapseTime("batchUpdateById", startTime);
     return response;
@@ -639,7 +638,7 @@ public class CassandraOperationImpl implements CassandraOperation {
     Response response = new Response();
     try {
       Select selectQuery = QueryBuilder.select().all().from(keyspaceName, tableName);
-      selectQuery.where().and(QueryBuilder.eq(propertyName, propertyValue));
+      selectQuery.where().and(eq(propertyName, propertyValue));
       ResultSet results =
           connectionManager.getSession(keyspaceName).execute(selectQuery.allowFiltering());
       response = CassandraUtil.createResponse(results);
@@ -675,7 +674,7 @@ public class CassandraOperationImpl implements CassandraOperation {
           .stream()
           .forEach(
               x -> {
-                Clause clause = QueryBuilder.eq(x.getKey(), x.getValue());
+                Clause clause = eq(x.getKey(), x.getValue());
                 deleteWhere.and(clause);
               });
       connectionManager.getSession(keyspaceName).execute(delete);
@@ -736,7 +735,7 @@ public class CassandraOperationImpl implements CassandraOperation {
       Select selectQuery = selectBuilder.from(keyspaceName, tableName);
       Where selectWhere = selectQuery.where();
       for (Entry<String, Object> entry : compositeKeyMap.entrySet()) {
-        Clause clause = QueryBuilder.eq(entry.getKey(), entry.getValue());
+        Clause clause = eq(entry.getKey(), entry.getValue());
         selectWhere.and(clause);
       }
       ResultSet results = connectionManager.getSession(keyspaceName).execute(selectQuery);
@@ -903,7 +902,7 @@ public class CassandraOperationImpl implements CassandraOperation {
           .stream()
           .forEach(
               primaryKey -> {
-                select.where().and(QueryBuilder.eq(primaryKey.getKey(), primaryKey.getValue()));
+                select.where().and(eq(primaryKey.getKey(), primaryKey.getValue()));
               });
       ProjectLogger.log("Query =" + select.getQueryString(), LoggerEnum.INFO);
       ResultSet results = connectionManager.getSession(keyspaceName).execute(select);
@@ -980,16 +979,16 @@ public class CassandraOperationImpl implements CassandraOperation {
     return response;
   }
 
-@Override
-public Response getRecords(String keyspace, String table, Map<String, Object> filters, List<String> fields) {
-	// TODO Auto-generated method stub
-	return null;
+  @Override
+  public Response getRecordByObjectType(String keyspace, String tableName, String columnName,String key, int value,String objectType) {
+    Select selectQuery=QueryBuilder.select().column(columnName).from(keyspace,tableName);
+    Clause clause=QueryBuilder.lt(key,value);
+    selectQuery.where(eq(JsonKey.OBJECT_TYPE,objectType)).and(clause);
+    selectQuery.allowFiltering();
+    ResultSet resultSet=connectionManager.getSession(keyspace).execute(selectQuery);
+    Response response=CassandraUtil.createResponse(resultSet);
+    return response;
+
+  }
 }
 
-@Override
-public void applyOperationOnRecordsAsync(String keySpace, String table, Map<String, Object> filters,
-		List<String> fields, FutureCallback<ResultSet> callback) {
-	// TODO Auto-generated method stub
-	
-}
-}
