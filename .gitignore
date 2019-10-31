@@ -7,4 +7,3 @@
 *.log
 **/velocity.log*
 **/.DS_Store
-/.metadata/

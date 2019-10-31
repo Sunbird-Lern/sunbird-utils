@@ -17,8 +17,10 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -189,6 +191,11 @@ public class ElasticSearchHelper {
       }
     } else if (JsonKey.EXISTS.equalsIgnoreCase(key) || JsonKey.NOT_EXISTS.equalsIgnoreCase(key)) {
       query = createESOpperation(entry, query, constraintsMap);
+    } else if (JsonKey.NESTED_KEY_FILTER.equalsIgnoreCase(key)) {
+      Map<String, Object> nestedFilters = (Map<String, Object>) entry.getValue();
+      for (Map.Entry<String, Object> en : nestedFilters.entrySet()) {
+        query = createNestedFilterESOpperation(en, query, constraintsMap);
+      }
     }
     long elapsedTime = calculateEndTime(startTime);
     ProjectLogger.log(
@@ -216,18 +223,66 @@ public class ElasticSearchHelper {
     if (val instanceof List && val != null) {
       query = getTermQueryFromList(val, key, query, constraintsMap);
     } else if (val instanceof Map) {
-      query = getTermQueryFromMap(val, key, query, constraintsMap);
-       if(key.equalsIgnoreCase(JsonKey.ES_OR_OPERATION)){
-         query.must(createEsORFilterQuery((Map<String,Object>)val));
-       }
-       else {
-         query = getTermQueryFromMap(val, key, query, constraintsMap);
-       }
+      if (key.equalsIgnoreCase(JsonKey.ES_OR_OPERATION)) {
+        query.must(createEsORFilterQuery((Map<String, Object>) val));
+      } else {
+        query = getTermQueryFromMap(val, key, query, constraintsMap);
+      }
     } else if (val instanceof String) {
       query.must(
           createTermQuery(key + RAW_APPEND, ((String) val).toLowerCase(), constraintsMap.get(key)));
     } else {
       query.must(createTermQuery(key + RAW_APPEND, val, constraintsMap.get(key)));
+    }
+    ProjectLogger.log(
+        "ElasticSearchHelper:createFilterESOpperation: method end ", LoggerEnum.INFO.name());
+    return query;
+  }
+
+  /**
+   * Method to create CommonTermQuery , multimatch and Range Query.
+   *
+   * @param entry which contains key for search and respective values
+   * @param query Object which will be updated
+   * @param constraintsMap constraints for key and values
+   * @return BoolQueryBuilder
+   */
+  @SuppressWarnings("unchecked")
+  private static BoolQueryBuilder createNestedFilterESOpperation(
+      Entry<String, Object> entry, BoolQueryBuilder query, Map<String, Float> constraintsMap) {
+    ProjectLogger.log(
+        "ElasticSearchHelper:createFilterESOpperation: method started ", LoggerEnum.INFO.name());
+    String key = entry.getKey();
+    Object val = entry.getValue();
+    String path = key.split("\\.")[0];
+    if (val instanceof List && CollectionUtils.isNotEmpty((List) val)) {
+      if (((List) val).get(0) instanceof String) {
+        ((List<String>) val).replaceAll(String::toLowerCase);
+        query.must(
+            QueryBuilders.nestedQuery(
+                path,
+                createTermsQuery(key + RAW_APPEND, (List<String>) val, constraintsMap.get(key)),
+                ScoreMode.None));
+      } else {
+        query.must(
+            QueryBuilders.nestedQuery(
+                path, createTermsQuery(key, (List) val, constraintsMap.get(key)), ScoreMode.None));
+      }
+    } else if (val instanceof Map) {
+      query = getNestedTermQueryFromMap(val, key, path, query, constraintsMap);
+    } else if (val instanceof String) {
+      query.must(
+          QueryBuilders.nestedQuery(
+              path,
+              createTermQuery(
+                  key + RAW_APPEND, ((String) val).toLowerCase(), constraintsMap.get(key)),
+              ScoreMode.None));
+    } else {
+      query.must(
+          QueryBuilders.nestedQuery(
+              path,
+              createTermQuery(key + RAW_APPEND, val, constraintsMap.get(key)),
+              ScoreMode.None));
     }
     ProjectLogger.log(
         "ElasticSearchHelper:createFilterESOpperation: method end ", LoggerEnum.INFO.name());
@@ -270,15 +325,65 @@ public class ElasticSearchHelper {
     return query;
   }
 
-    private static BoolQueryBuilder createEsORFilterQuery(Map<String,Object>orFilters) {
-        BoolQueryBuilder query=new BoolQueryBuilder();
+  private static BoolQueryBuilder createEsORFilterQuery(Map<String, Object> orFilters) {
+    BoolQueryBuilder query = new BoolQueryBuilder();
     ProjectLogger.log(
-            "ElasticSearchHelper:createEsORFilterQuery:method started ", LoggerEnum.INFO.name());
-    for (Map.Entry<String,Object>mp:orFilters.entrySet()){
-      query.should(QueryBuilders.termQuery(mp.getKey()+RAW_APPEND , ((String)mp.getValue()).toLowerCase()));
+        "ElasticSearchHelper:createEsORFilterQuery:method started ", LoggerEnum.INFO.name());
+    for (Map.Entry<String, Object> mp : orFilters.entrySet()) {
+      query.should(
+          QueryBuilders.termQuery(
+              mp.getKey() + RAW_APPEND, ((String) mp.getValue()).toLowerCase()));
+    }
+    ProjectLogger.log(
+        "ElasticSearchHelper:createEsORFilterQuery:method end ", LoggerEnum.INFO.name());
+    return query;
+  }
+
+  /**
+   * This method returns termQuery if any present in map provided
+   *
+   * @param key for search in termquery
+   * @param val value of the key to be searched
+   * @param query which will be updated according to key , value and constraints
+   * @param constraintsMap for setting any constraints on values for the specified key
+   * @return BoolQueryBuilder
+   */
+  private static BoolQueryBuilder getNestedTermQueryFromMap(
+      Object val,
+      String key,
+      String path,
+      BoolQueryBuilder query,
+      Map<String, Float> constraintsMap) {
+    ProjectLogger.log(
+        "ElasticSearchHelper:getTermQueryFromMap: method started ", LoggerEnum.INFO.name());
+    Map<String, Object> value = (Map<String, Object>) val;
+    Map<String, Object> rangeOperation = new HashMap<>();
+    Map<String, Object> lexicalOperation = new HashMap<>();
+    for (Map.Entry<String, Object> it : value.entrySet()) {
+      String operation = it.getKey();
+      if (operation.startsWith(LT) || operation.startsWith(GT)) {
+        rangeOperation.put(operation, it.getValue());
+      } else if (operation.startsWith(STARTS_WITH) || operation.startsWith(ENDS_WITH)) {
+        lexicalOperation.put(operation, it.getValue());
       }
+    }
+    if (!(rangeOperation.isEmpty())) {
+      query.must(
+          QueryBuilders.nestedQuery(
+              path,
+              createRangeQuery(key, rangeOperation, constraintsMap.get(key)),
+              ScoreMode.None));
+    }
+    if (!(lexicalOperation.isEmpty())) {
+      query.must(
+          QueryBuilders.nestedQuery(
+              path,
+              createLexicalQuery(key, lexicalOperation, constraintsMap.get(key)),
+              ScoreMode.None));
+    }
     ProjectLogger.log(
-            "ElasticSearchHelper:createEsORFilterQuery:method end ", LoggerEnum.INFO.name());
+        "ElasticSearchHelper:getTermQueryFromMap: method end ", LoggerEnum.INFO.name());
+
     return query;
   }
 

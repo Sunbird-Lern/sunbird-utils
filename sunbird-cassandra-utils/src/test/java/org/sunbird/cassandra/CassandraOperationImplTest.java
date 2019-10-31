@@ -15,7 +15,6 @@ import java.util.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
@@ -24,6 +23,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.sunbird.cassandra.CassandraOperation;
 import org.sunbird.cassandraimpl.CassandraOperationImpl;
 import org.sunbird.common.CassandraUtil;
 import org.sunbird.common.Constants;
@@ -63,7 +63,6 @@ import org.sunbird.helper.ServiceFactory;
   Delete.Selection.class
 })
 @PowerMockIgnore("javax.management.*")
-@Ignore
 public class CassandraOperationImplTest {
 
   private static Cluster cluster;
@@ -272,12 +271,8 @@ public class CassandraOperationImplTest {
 
   @Test
   public void testGetAllRecordsSuccess() throws Exception {
-
-    List<Row> rows = new ArrayList<>();
-    Row row = Mockito.mock(Row.class);
-    rows.add(row);
-    when(resultSet.all()).thenReturn(rows);
-
+    Iterator<Row> rowItr = Mockito.mock(Iterator.class);
+    Mockito.when(resultSet.iterator()).thenReturn(rowItr);
     PowerMockito.whenNew(BoundStatement.class)
         .withArguments(Mockito.any(PreparedStatement.class))
         .thenReturn(boundStatement);
@@ -318,12 +313,8 @@ public class CassandraOperationImplTest {
 
   @Test
   public void testGetPropertiesValueSuccessById() throws Exception {
-
-    List<Row> rows = new ArrayList<>();
-    Row row = Mockito.mock(Row.class);
-    rows.add(row);
-    when(resultSet.all()).thenReturn(rows);
-
+    Iterator<Row> rowItr = Mockito.mock(Iterator.class);
+    Mockito.when(resultSet.iterator()).thenReturn(rowItr);
     when(session.execute(boundStatement.bind("123"))).thenReturn(resultSet);
     PowerMockito.whenNew(BoundStatement.class)
         .withArguments(Mockito.any(PreparedStatement.class))
@@ -359,12 +350,8 @@ public class CassandraOperationImplTest {
 
   @Test
   public void testGetRecordSuccessById() {
-
-    List<Row> rows = new ArrayList<>();
-    Row row = Mockito.mock(Row.class);
-    rows.add(row);
-    when(resultSet.all()).thenReturn(rows);
-
+    Iterator<Row> rowItr = Mockito.mock(Iterator.class);
+    Mockito.when(resultSet.iterator()).thenReturn(rowItr);
     when(session.execute(boundStatement.bind("123"))).thenReturn(resultSet);
     when(session.execute(where)).thenReturn(resultSet);
     when(selectBuilder.from(Mockito.anyString(), Mockito.anyString())).thenReturn(selectQuery);
@@ -404,10 +391,8 @@ public class CassandraOperationImplTest {
     map.put(JsonKey.ADD_TYPE, "addrType");
 
     when(session.execute(boundStatement.bind("123"))).thenReturn(resultSet);
-    List<Row> rows = new ArrayList<>();
-    Row row = Mockito.mock(Row.class);
-    rows.add(row);
-    when(resultSet.all()).thenReturn(rows);
+    Iterator<Row> rowItr = Mockito.mock(Iterator.class);
+    Mockito.when(resultSet.iterator()).thenReturn(rowItr);
 
     Response response = operation.getRecordsByProperties(cassandraKeySpace, "address", map);
     assertTrue(response.getResult().size() > 0);
@@ -451,11 +436,8 @@ public class CassandraOperationImplTest {
     list.add("321");
 
     when(session.execute(boundStatement.bind("123"))).thenReturn(resultSet);
-    List<Row> rows = new ArrayList<>();
-    Row row = Mockito.mock(Row.class);
-    rows.add(row);
-    when(resultSet.all()).thenReturn(rows);
-
+    Iterator<Row> rowItr = Mockito.mock(Iterator.class);
+    Mockito.when(resultSet.iterator()).thenReturn(rowItr);
     Response response =
         operation.getRecordsByProperty(cassandraKeySpace, "address", JsonKey.ID, list);
     assertTrue(response.getResult().size() > 0);
@@ -498,7 +480,8 @@ public class CassandraOperationImplTest {
     Row row = Mockito.mock(Row.class);
     rows.add(row);
     when(resultSet.all()).thenReturn(rows);
-
+    Iterator<Row> rowItr = Mockito.mock(Iterator.class);
+    Mockito.when(resultSet.iterator()).thenReturn(rowItr);
     when(session.execute(boundStatement.bind("123"))).thenReturn(resultSet);
     Response response =
         operation.getRecordsByProperty(cassandraKeySpace, "address", JsonKey.ADD_TYPE, "addrType");
@@ -533,11 +516,8 @@ public class CassandraOperationImplTest {
 
   @Test
   public void testGetRecordsSuccessById() {
-
-    List<Row> rows = new ArrayList<>();
-    Row row = Mockito.mock(Row.class);
-    rows.add(row);
-    when(resultSet.all()).thenReturn(rows);
+    Iterator<Row> rowItr = Mockito.mock(Iterator.class);
+    Mockito.when(resultSet.iterator()).thenReturn(rowItr);
     when(session.execute(where)).thenReturn(resultSet);
     when(selectSelection.all()).thenReturn(selectBuilder);
 

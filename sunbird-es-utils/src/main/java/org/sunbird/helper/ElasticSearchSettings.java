@@ -14,15 +14,7 @@ public class ElasticSearchSettings {
    * @return String
    */
   public static String createSettingsForIndex() {
-    String settings = // "{\"index\": \"COMPOSITE_SEARCH_INDEX\",\"type\":
-        // \"COMPOSITE_SEARCH_INDEX_TYPE\",\"analysis\": { \"analyzer\": {
-        // \"cs_index_analyzer\": { \"type\": \"custom\", \"tokenizer\": \"standard\",
-        // \"filter\": [ \"lowercase\",\"mynGram\"]},\"cs_search_analyzer\": {\"type\":
-        // \"custom\",\"tokenizer\": \"standard\",\"filter\":
-        // [\"standard\",\"lowercase\"]},\"keylower\": {\"tokenizer\":
-        // \"keyword\",\"filter\": \"lowercase\"}},\"filter\": {\"mynGram\": {\"type\":
-        // \"nGram\",\"min_gram\": 1,\"max_gram\": 20,\"token_chars\":
-        // [\"letter\",\"digit\",\"whitespace\",\"punctuation\",\"symbol\"]}}}}";
+    String settings = 
         "{\"analysis\": {\"analyzer\": {\"cs_index_analyzer\": {\"type\": \"custom\",\"tokenizer\": \"standard\",\"filter\": [\"lowercase\",\"mynGram\"]},\"cs_search_analyzer\": {\"type\": \"custom\",\"tokenizer\": \"standard\",\"filter\": [\"lowercase\",\"standard\"]},\"keylower\": {\"type\": \"custom\",\"tokenizer\": \"keyword\",\"filter\": \"lowercase\"}},\"filter\": {\"mynGram\": {\"type\": \"ngram\",\"min_gram\": 1,\"max_gram\": 20,\"token_chars\": [\"letter\", \"digit\",\"whitespace\",\"punctuation\",\"symbol\"]} }}}";
     return settings;
   }
