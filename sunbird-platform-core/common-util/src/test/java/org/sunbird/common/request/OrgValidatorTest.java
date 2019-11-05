@@ -3,7 +3,6 @@ package org.sunbird.common.request;
 
 import static org.junit.Assert.assertEquals;
 
-import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Assert;
@@ -157,7 +156,7 @@ public class OrgValidatorTest {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
     requestObj.put(JsonKey.ORG_NAME, "test");
-    requestObj.put(JsonKey.STATUS, new BigInteger("2"));
+    requestObj.put(JsonKey.STATUS, 2);
     requestObj.put(JsonKey.ORGANISATION_ID, "test-12334");
     request.setRequest(requestObj);
     try {
