@@ -622,17 +622,7 @@ public class ElasticSearchHelper {
   private static SearchDTO getSoftConstraints(
       SearchDTO search, Map<String, Object> searchQueryMap) {
     if (searchQueryMap.containsKey(JsonKey.SOFT_CONSTRAINTS)) {
-      // Play is converting int value to bigInt so need to convert back those data to int
-      // SearchDto soft constraints expect Map<String, Integer>
-      Map<String, Integer> constraintsMap = new HashMap<>();
-      Set<Entry<String, BigInteger>> entrySet =
-          ((Map<String, BigInteger>) searchQueryMap.get(JsonKey.SOFT_CONSTRAINTS)).entrySet();
-      Iterator<Entry<String, BigInteger>> itr = entrySet.iterator();
-      while (itr.hasNext()) {
-        Entry<String, BigInteger> entry = itr.next();
-        constraintsMap.put(entry.getKey(), entry.getValue().intValue());
-      }
-      search.setSoftConstraints(constraintsMap);
+      search.setSoftConstraints((Map<String, Integer>) searchQueryMap.get(JsonKey.SOFT_CONSTRAINTS));
     }
     return search;
   }
