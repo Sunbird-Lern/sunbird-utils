@@ -8,6 +8,7 @@ node() {
 
         ansiColor('xterm') {
             stage('Checkout') {
+                checkout scm
                 cleanWs()
                 if(params.github_release_tag == ""){
                     checkout scm
@@ -28,7 +29,7 @@ node() {
 
         stage('Build') {
             sh """
-            cd cassandra-trigger
+            cd sunbird-cassandra-migration/cassandra-trigger
             mvn clean compile assembly:single
             """
         }
@@ -37,7 +38,7 @@ node() {
         stage('Archive artifacts'){
             sh """
                         mkdir cassandra_artifacts
-                        cp cassandra-trigger/target/cassandra-trigger-*.jar cassandra_artifacts
+                        cp sunbird-cassandra-migration/cassandra-trigger/target/cassandra-trigger-*.jar cassandra_artifacts
                         zip -j cassandra_artifacts.zip:${artifact_version} cassandra_artifacts/*
                     """
             archiveArtifacts artifacts: "cassandra_artifacts.zip:${artifact_version}", fingerprint: true, onlyIfSuccessful: true
