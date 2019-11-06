@@ -53,7 +53,7 @@ public class Organisation implements Serializable {
   private String updatedBy;
   private String updatedDate;
   private List<String> locationIds;
-  private Boolean isSsoEnabled;
+  private Boolean isSSOEnabled;
 
   public String getId() {
     return id;
@@ -346,12 +346,12 @@ public class Organisation implements Serializable {
     this.isRootOrg = isRootOrg;
   }
 
-  @JsonProperty(value = "isSsoEnabled")
-  public Boolean isSsoEnabled() {
-    return isSsoEnabled;
+  @JsonProperty(value = "isSSOEnabled")
+  public Boolean isSSOEnabled() {
+    return isSSOEnabled;
   }
 
-  public void setSsoEnabled(Boolean isSsoEnabled) {
-    this.isSsoEnabled = isSsoEnabled;
+  public void setSSOEnabled(Boolean isSsoEnabled) {
+    this.isSSOEnabled = isSsoEnabled;
   }
 }

@@ -67,7 +67,7 @@ public class OrgRequestValidator extends BaseOrgRequestValidator {
           ERROR_CODE);
     }
 
-    if (!(request.getRequest().get(JsonKey.STATUS) instanceof BigInteger)) {
+    if (!(request.getRequest().get(JsonKey.STATUS) instanceof Integer)) {
       throw new ProjectCommonException(
           ResponseCode.invalidRequestData.getErrorCode(),
           ResponseCode.invalidRequestData.getErrorMessage(),
