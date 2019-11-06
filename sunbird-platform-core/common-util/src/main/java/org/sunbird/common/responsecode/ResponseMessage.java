@@ -456,6 +456,8 @@ public interface ResponseMessage {
     String ERROR_NO_DIALCODES_LINKED = "No dialcodes are linked to any courses created by user(s)";
     String EVENTS_DATA_MISSING = "Events array is mandatory";
     String ACCOUNT_NOT_FOUND = "Account not found.";
+    String INVALID_EXT_USER_ID="provided ext user id {0} is incorrect";
+    String USER_MIGRATION_FAILED="user is failed to migrate";
   }
 
   interface Key {
@@ -843,5 +845,7 @@ public interface ResponseMessage {
     String ERROR_NO_DIALCODES_LINKED = "ERROR_NO_DIALCODES_LINKED";
     String EVENTS_DATA_MISSING = "EVENTS_DATA_MISSING";
     String ACCOUNT_NOT_FOUND = "ACCOUNT_NOT_FOUND";
+    String INVALID_EXT_USER_ID="INVALID_EXT_USER_ID";
+    String USER_MIGRATION_FAILED="USER_MIGRATION_FAILED";
   }
 }
