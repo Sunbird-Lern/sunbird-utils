@@ -1000,5 +1000,6 @@ public final class JsonKey {
   public static final String MAX_ATTEMPT="maxAttempt";
   public static final String REMAINING_ATTEMPT="remainingAttempt";
   public static final String IS_SSO_ROOTORG_ENABLED = "isSSOEnabled";
+  public static final String LICENSE = "license";
   private JsonKey() {}
 }
