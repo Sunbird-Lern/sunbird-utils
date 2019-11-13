@@ -23,6 +23,7 @@ public class OrgRequestValidator extends BaseOrgRequestValidator {
         ResponseCode.mandatoryParamsMissing,
         JsonKey.ORG_NAME);
     validateRootOrgChannel(orgRequest);
+    validateLicense(orgRequest);
 
     Map<String, Object> address =
         (Map<String, Object>) orgRequest.getRequest().get(JsonKey.ADDRESS);
@@ -32,7 +33,20 @@ public class OrgRequestValidator extends BaseOrgRequestValidator {
     validateLocationIdOrCode(orgRequest);
   }
 
-  public void validateUpdateOrgRequest(Request request) {
+	private void validateLicense(Request orgRequest) {
+		if (orgRequest.getRequest().containsKey(JsonKey.IS_ROOT_ORG)
+				&& (boolean) orgRequest.getRequest().get(JsonKey.IS_ROOT_ORG)
+				&& orgRequest.getRequest().containsKey(JsonKey.LICENSE)
+				&& StringUtils.isBlank((String) orgRequest.getRequest().get(JsonKey.LICENSE))) {
+			throw new ProjectCommonException(ResponseCode.invalidParameterValue.getErrorCode(),
+					MessageFormat.format(ResponseCode.invalidParameterValue.getErrorMessage(),
+							(String) orgRequest.getRequest().get(JsonKey.LICENSE), JsonKey.LICENSE),
+					ERROR_CODE);
+		}
+
+	}
+
+public void validateUpdateOrgRequest(Request request) {
     validateOrgReference(request);
     if (request.getRequest().containsKey(JsonKey.ROOT_ORG_ID)
         && StringUtils.isEmpty((String) request.getRequest().get(JsonKey.ROOT_ORG_ID))) {
