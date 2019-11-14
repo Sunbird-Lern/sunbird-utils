@@ -854,6 +854,16 @@ public class ProjectUtil {
         ResponseCode.SERVER_ERROR.getErrorMessage(),
         ResponseCode.SERVER_ERROR.getResponseCode());
   }
+  
+  /**
+   * This method will create and return server exception to caller.
+   * @param responseCode ResponseCode
+   * @return ProjectCommonException
+   */
+	public static ProjectCommonException createServerError(ResponseCode responseCode) {
+		return new ProjectCommonException(responseCode.getErrorCode(), responseCode.getErrorMessage(),
+				ResponseCode.SERVER_ERROR.getResponseCode());
+	}
 
   /**
    * This method will create ProjectCommonException of type invalidUserDate exception and throws it.
