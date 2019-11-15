@@ -1064,14 +1064,38 @@ public void applyOperationOnRecordsAsync(String keySpace, String table, Map<Stri
 	// TODO Auto-generated method stub
 	
 }
+
   @Override
   public Response searchValueInList(String keyspace, String tableName, String key, String value) {
+    return searchValueInList(keyspace, tableName,key, value,null);
+  }
+
+
+  @Override
+  public Response searchValueInList(String keyspace, String tableName, String key, String value,Map<String,Object>propertyMap) {
     Select selectQuery = QueryBuilder.select().all().from(keyspace, tableName);
     Clause clause = QueryBuilder.contains(key, value);
     selectQuery.where(clause);
+    if (MapUtils.isNotEmpty(propertyMap)) {
+      for (Entry<String, Object> entry : propertyMap.entrySet()) {
+        if (entry.getValue() instanceof List) {
+          List<Object> list = (List) entry.getValue();
+          if (null != list) {
+            Object[] propertyValues = list.toArray(new Object[list.size()]);
+            Clause clauseList = QueryBuilder.in(entry.getKey(), propertyValues);
+            selectQuery.where(clauseList);
+          }
+        } else {
+          Clause clauseMap = eq(entry.getKey(), entry.getValue());
+          selectQuery.where(clauseMap);
+        }
+      }
+    }
     ResultSet resultSet = connectionManager.getSession(keyspace).execute(selectQuery);
     Response response = CassandraUtil.createResponse(resultSet);
     return response;
   }
+
+
 }
 

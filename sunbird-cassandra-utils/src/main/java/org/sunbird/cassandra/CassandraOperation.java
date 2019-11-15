@@ -353,8 +353,8 @@ public interface CassandraOperation {
   /**
    * Apply callback on cassandra async read call.
    *
-   * @param keyspaceName Keyspace name
-   * @param tableName Table name
+   * @param keySpace Keyspace name
+   * @param table Table name
    * @param filters Column and value map for filtering
    * @param fields List of columns to be returned in each record
    * @param callback action callback to be applied on resultset when it is returned.
@@ -371,5 +371,26 @@ public interface CassandraOperation {
 
   public Response performBatchAction(
           String keyspaceName, String tableName, Map<String, Object> inputData);
+
+  /**
+   * this method will be used to do CONTAINS query in list
+   * @param keyspace
+   * @param tableName
+   * @param key
+   * @param Value
+   * @return
+   */
   Response searchValueInList(String keyspace,String tableName,String key,String Value);
+
+  /**
+   * this method will be used to do CONTAINS query in list with the AND operations
+   * @param keyspace
+   * @param tableName
+   * @param key
+   * @param Value
+   * @param propertyMap
+   * @return
+   */
+  Response searchValueInList(String keyspace,String tableName,String key,String Value,Map<String,Object>propertyMap);
+
 }
