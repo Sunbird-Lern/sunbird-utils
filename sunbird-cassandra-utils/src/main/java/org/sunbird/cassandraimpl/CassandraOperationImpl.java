@@ -1064,6 +1064,13 @@ public void applyOperationOnRecordsAsync(String keySpace, String table, Map<Stri
 	// TODO Auto-generated method stub
 	
 }
+
+  @Override
+  public Response searchValueInList(String keyspace, String tableName, String key, String value) {
+    return searchValueInList(keyspace, tableName,key, value,null);
+  }
+
+
   @Override
   public Response searchValueInList(String keyspace, String tableName, String key, String value,Map<String,Object>propertyMap) {
     Select selectQuery = QueryBuilder.select().all().from(keyspace, tableName);
@@ -1089,14 +1096,6 @@ public void applyOperationOnRecordsAsync(String keySpace, String table, Map<Stri
     return response;
   }
 
-  @Override
-  public Response searchValueInList(String keyspace, String tableName, String key, String value) {
-    Select selectQuery = QueryBuilder.select().all().from(keyspace, tableName);
-    Clause clause = QueryBuilder.contains(key, value);
-    selectQuery.where(clause);
-    ResultSet resultSet = connectionManager.getSession(keyspace).execute(selectQuery);
-    Response response = CassandraUtil.createResponse(resultSet);
-    return response;
-  }
+
 }
 
