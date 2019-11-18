@@ -463,7 +463,7 @@ public class ProjectUtilTest extends BaseHttpTest {
   }
   @Test
   public void testMigrateActionRejectValueFailure(){
-    Assert.assertNotEquals("no",ProjectUtil.MigrateAction.ACCEPT.getValue());
+    Assert.assertNotEquals("no",ProjectUtil.MigrateAction.REJECT.getValue());
   }
   @Test
   public void testMigrateActionAcceptValueSuccess(){
