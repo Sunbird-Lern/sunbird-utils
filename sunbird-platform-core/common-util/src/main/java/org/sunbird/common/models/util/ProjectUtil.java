@@ -1038,4 +1038,19 @@ public class ProjectUtil {
     }
     return firstNChars;
   }
+
+  public enum MigrateAction{
+
+    ACCEPT("accept"),
+    REJECT("reject");
+    private String value;
+
+    MigrateAction(String value) {
+      this.value = value;
+    }
+
+    public String getValue() {
+      return value;
+    }
+  }
 }
