@@ -458,6 +458,7 @@ public interface ResponseMessage {
     String ACCOUNT_NOT_FOUND = "Account not found.";
     String INVALID_EXT_USER_ID="provided ext user id {0} is incorrect";
     String USER_MIGRATION_FAILED="user is failed to migrate";
+    String INVALID_ELEMENT_IN_LIST = "Invalid value supplied for parameter {0}.Supported values are {1}";
   }
 
   interface Key {
@@ -847,5 +848,6 @@ public interface ResponseMessage {
     String ACCOUNT_NOT_FOUND = "ACCOUNT_NOT_FOUND";
     String INVALID_EXT_USER_ID="INVALID_EXT_USER_ID";
     String USER_MIGRATION_FAILED="USER_MIGRATION_FAILED";
+    String INVALID_ELEMENT_IN_LIST="INVALID_ELEMENT_IN_LIST";
   }
 }
