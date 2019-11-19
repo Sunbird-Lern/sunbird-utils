@@ -168,13 +168,6 @@ public class BaseRequestValidator {
     mandatoryParamsList
             .forEach(
                     key -> {
-                      if(!(data.get(key) instanceof String)){
-                        throw new ProjectCommonException(
-                                ResponseCode.dataTypeError.getErrorCode(),
-                                MessageFormat.format(
-                                        ResponseCode.dataTypeError.getErrorMessage(), key, "String"),
-                                ResponseCode.CLIENT_ERROR.getResponseCode());
-                      }
                       if (StringUtils.isEmpty((String) data.get(key))) {
                         throw new ProjectCommonException(
                                 ResponseCode.mandatoryParamsMissing.getErrorCode(),
@@ -182,6 +175,14 @@ public class BaseRequestValidator {
                                 ResponseCode.CLIENT_ERROR.getResponseCode(),
                                 key);
                       }
+                      if(!(data.get(key) instanceof String)){
+                        throw new ProjectCommonException(
+                                ResponseCode.dataTypeError.getErrorCode(),
+                                MessageFormat.format(
+                                        ResponseCode.dataTypeError.getErrorMessage(), key, "String"),
+                                ResponseCode.CLIENT_ERROR.getResponseCode());
+                      }
+
                     });
   }
 
