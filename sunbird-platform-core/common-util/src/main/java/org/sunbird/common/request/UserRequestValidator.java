@@ -37,7 +37,24 @@ public class UserRequestValidator extends BaseRequestValidator {
     jobProfileValidation(userRequest);
     validateWebPages(userRequest);
     validateLocationCodes(userRequest);
+    validatePassword((String)userRequest.getRequest().get(JsonKey.PASSWORD));
   }
+  
+  
+	private static void validatePassword(String password) {
+		if (StringUtils.isNotBlank(password)) {
+			boolean response = password.matches(ProjectUtil.getConfigValue(JsonKey.SUNBIRD_PASS_REGEX));
+			if (!response) {
+				throw new ProjectCommonException(ResponseCode.passwordValidation.getErrorCode(),
+						ResponseCode.passwordValidation.getErrorMessage(), ERROR_CODE);
+			}
+		}
+	} 
+	
+	
+	public static void main(String[] args) {
+		validatePassword("Ab3#$2148");
+	}
 
   private void validateLocationCodes(Request userRequest) {
     Object locationCodes = userRequest.getRequest().get(JsonKey.LOCATION_CODES);
