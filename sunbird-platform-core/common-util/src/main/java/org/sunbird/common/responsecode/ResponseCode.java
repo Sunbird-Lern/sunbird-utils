@@ -839,6 +839,8 @@ public enum ResponseCode {
   userMigrationFiled(ResponseMessage.Key.USER_MIGRATION_FAILED,ResponseMessage.Message.USER_MIGRATION_FAILED),
   invalidUserExternalId(ResponseMessage.Key.INVALID_EXT_USER_ID,ResponseMessage.Message.INVALID_EXT_USER_ID),
   invalidElementInList(ResponseMessage.Key.INVALID_ELEMENT_IN_LIST,ResponseMessage.Message.INVALID_ELEMENT_IN_LIST),
+  passwordValidation(
+	      ResponseMessage.Key.INVALID_PASSWORD, ResponseMessage.Message.INVALID_PASSWORD),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

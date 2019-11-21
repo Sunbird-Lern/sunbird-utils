@@ -459,6 +459,7 @@ public interface ResponseMessage {
     String INVALID_EXT_USER_ID="provided ext user id {0} is incorrect";
     String USER_MIGRATION_FAILED="user is failed to migrate";
     String INVALID_ELEMENT_IN_LIST = "Invalid value supplied for parameter {0}.Supported values are {1}";
+	String INVALID_PASSWORD = "The provided password not matched with policy.";
   }
 
   interface Key {
@@ -849,5 +850,6 @@ public interface ResponseMessage {
     String INVALID_EXT_USER_ID="INVALID_EXT_USER_ID";
     String USER_MIGRATION_FAILED="USER_MIGRATION_FAILED";
     String INVALID_ELEMENT_IN_LIST="INVALID_ELEMENT_IN_LIST";
+	String INVALID_PASSWORD = "INVALID_PASSWORD";
   }
 }
