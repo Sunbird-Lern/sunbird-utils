@@ -456,4 +456,24 @@ public class ProjectUtilTest extends BaseHttpTest {
                 + "1234567890");
     assertEquals("1234567890", userid);
   }
+
+  @Test
+  public void testMigrateActionAcceptValueFailure() {
+    Assert.assertNotEquals("ok", ProjectUtil.MigrateAction.ACCEPT.getValue());
+  }
+
+  @Test
+  public void testMigrateActionRejectValueFailure() {
+    Assert.assertNotEquals("no", ProjectUtil.MigrateAction.REJECT.getValue());
+  }
+
+  @Test
+  public void testMigrateActionAcceptValueSuccess() {
+    Assert.assertEquals("accept", ProjectUtil.MigrateAction.ACCEPT.getValue());
+  }
+
+  @Test
+  public void testMigrateActionRejectValueSuccess() {
+    Assert.assertEquals("reject", ProjectUtil.MigrateAction.REJECT.getValue());
+  }
 }

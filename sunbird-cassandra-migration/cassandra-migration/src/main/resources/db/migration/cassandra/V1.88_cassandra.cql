@@ -1,1 +1,2 @@
-ALTER TABLE sunbird_courses.course_batch ADD cert_templates map<text,frozen<map<text,text>>>;
+CREATE INDEX ON sunbird.shadow_user (userids);
+ALTER TABLE sunbird.shadow_user ADD attemptedCount int;

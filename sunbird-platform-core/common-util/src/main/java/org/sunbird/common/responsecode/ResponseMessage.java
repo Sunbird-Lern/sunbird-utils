@@ -441,7 +441,8 @@ public interface ResponseMessage {
     String ERROR_USER_UPDATE_PASSWORD = "User is created but password couldn't be updated.";
     String ERROR_BGMS_MISMATCH = "Mismatch in {0} at row - {1}";
     String ERROR_USER_MIGRATION_FAILED = "User migration failed.";
-    String EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS = "Contents should not be empty for batch status update.";
+    String EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS =
+        "Contents should not be empty for batch status update.";
     String IDENTIFIER_VALIDATION_FAILED =
         "Valid identifier is not present in List, Valid supported identifiers are ";
     String FROM_ACCOUNT_ID_MISSING = "From Account id is mandatory.";
@@ -456,8 +457,10 @@ public interface ResponseMessage {
     String ERROR_NO_DIALCODES_LINKED = "No dialcodes are linked to any courses created by user(s)";
     String EVENTS_DATA_MISSING = "Events array is mandatory";
     String ACCOUNT_NOT_FOUND = "Account not found.";
-    String INVALID_EXT_USER_ID="provided ext user id {0} is incorrect";
-    String USER_MIGRATION_FAILED="user is failed to migrate";
+    String INVALID_EXT_USER_ID = "provided ext user id {0} is incorrect";
+    String USER_MIGRATION_FAILED = "user is failed to migrate";
+    String INVALID_ELEMENT_IN_LIST =
+        "Invalid value supplied for parameter {0}.Supported values are {1}";
   }
 
   interface Key {
@@ -832,7 +835,7 @@ public interface ResponseMessage {
     String INVALID_REQUEST_TIMEOUT = "INVALID_REQUEST_TIMEOUT";
     String ERROR_BGMS_MISMATCH = "ERROR_BGMS_MISMATCH";
     String ERROR_USER_MIGRATION_FAILED = "ERROR_USER_MIGRATION_FAILED";
-    String VALID_IDENTIFIER_ABSENSE="IDENTIFIER IN LIST IS NOT SUPPORTED OR INCORRECT";
+    String VALID_IDENTIFIER_ABSENSE = "IDENTIFIER IN LIST IS NOT SUPPORTED OR INCORRECT";
     String FROM_ACCOUNT_ID_MISSING = "FROM_ACCOUNT_ID_MISSING";
     String TO_ACCOUNT_ID_MISSING = "TO_ACCOUNT_ID_MISSING";
     String FROM_ACCOUNT_ID_NOT_EXISTS = "FROM_ACCOUNT_ID_NOT_EXISTS";
@@ -845,7 +848,8 @@ public interface ResponseMessage {
     String ERROR_NO_DIALCODES_LINKED = "ERROR_NO_DIALCODES_LINKED";
     String EVENTS_DATA_MISSING = "EVENTS_DATA_MISSING";
     String ACCOUNT_NOT_FOUND = "ACCOUNT_NOT_FOUND";
-    String INVALID_EXT_USER_ID="INVALID_EXT_USER_ID";
-    String USER_MIGRATION_FAILED="USER_MIGRATION_FAILED";
+    String INVALID_EXT_USER_ID = "INVALID_EXT_USER_ID";
+    String USER_MIGRATION_FAILED = "USER_MIGRATION_FAILED";
+    String INVALID_ELEMENT_IN_LIST = "INVALID_ELEMENT_IN_LIST";
   }
 }

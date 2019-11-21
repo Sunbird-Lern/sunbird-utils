@@ -1,6 +1,5 @@
 package org.sunbird.common.models.util;
 
-
 /**
  * This class will contains all the key related to request and response.
  *
@@ -1002,6 +1001,10 @@ public final class JsonKey {
   public static final String USER_FEED = "userFeed";
   public static final String FEED_DATA = "feedData";
   public static final String FEED_ACTION = "feedAction";
+  public static final String REJECT = "reject";
+  public static final String FEED_ID = "feedId";
+  public static final String LICENSE = "license";
+  public static final String DEFAULT_LICENSE = "defaultLicense";
 
   private JsonKey() {}
 }
