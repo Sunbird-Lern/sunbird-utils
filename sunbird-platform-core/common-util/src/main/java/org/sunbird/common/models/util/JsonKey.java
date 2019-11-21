@@ -1005,6 +1005,7 @@ public final class JsonKey {
   public static final String FEED_ID = "feedId";
   public static final String LICENSE = "license";
   public static final String DEFAULT_LICENSE = "defaultLicense";
+  public static final String SUNBIRD_PASS_REGEX = "sunbird_pass_regex";
 
   private JsonKey() {}
 }

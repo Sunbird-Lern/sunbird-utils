@@ -461,6 +461,7 @@ public interface ResponseMessage {
     String USER_MIGRATION_FAILED = "user is failed to migrate";
     String INVALID_ELEMENT_IN_LIST =
         "Invalid value supplied for parameter {0}.Supported values are {1}";
+    String INVALID_PASSWORD = "The provided password not matched with policy.";
   }
 
   interface Key {
