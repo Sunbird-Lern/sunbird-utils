@@ -51,12 +51,8 @@ public class UserRequestValidator extends BaseRequestValidator {
 		}
 	} 
 	
-	
-	public static void main(String[] args) {
-		validatePassword("Ab3#$2148");
-	}
 
-  private void validateLocationCodes(Request userRequest) {
+	private void validateLocationCodes(Request userRequest) {
     Object locationCodes = userRequest.getRequest().get(JsonKey.LOCATION_CODES);
     if ((locationCodes != null) && !(locationCodes instanceof List)) {
       throw new ProjectCommonException(
