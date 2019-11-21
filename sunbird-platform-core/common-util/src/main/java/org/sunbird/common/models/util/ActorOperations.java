@@ -169,7 +169,9 @@ public enum ActorOperations {
   GET_SIGN_URL("getSignUrl"),
   MERGE_USER_CERTIFICATE("mergeUserCertificate"),
   MIGRATE_USER("migrateUser"),
-  REJECT_MIGRATION("rejectMigration");
+  REJECT_MIGRATION("rejectMigration"),
+  GET_USER_FEED_BY_ID("getUserFeedById"),
+  ;
   private String value;
 
   /**

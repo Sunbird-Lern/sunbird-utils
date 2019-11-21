@@ -187,8 +187,7 @@ public class ProjectUtil {
     }
   }
 
-
-  public enum Action{
+  public enum Action {
     YES(1),
     NO(0);
 
@@ -395,7 +394,8 @@ public class ProjectUtil {
     announcementType("announcementtype"),
     announcement("announcement"),
     metrics("metrics"),
-    cbatchstats("cbatchstats");
+    cbatchstats("cbatchstats"),
+    userfeed("userfeed");
     private String typeName;
 
     private EsType(String name) {
@@ -621,7 +621,6 @@ public class ProjectUtil {
     return map;
   }
 
-  
   private static String getFromEmail(Map<String, Object> map) {
     String fromEmail = (String) getValue(map, JsonKey.EMAIL_SERVER_FROM);
     if (StringUtils.isBlank(fromEmail)) {
