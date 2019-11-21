@@ -187,7 +187,7 @@ public interface ResponseMessage {
     String EMPTY_CSV_FILE = "CSV file is Empty.";
     String INVALID_ROOT_ORG_DATA =
         "Root org doesn't exist for this Organization Id and channel {0}";
-    String NO_DATA = "No sufficient data for fetching the results";
+    String NO_DATA = "You have uploaded an empty file. Fill mandatory details and upload the file";
     String INVALID_CHANNEL = "Channel value is invalid.";
     String INVALID_PROCESS_ID = "Invalid Process Id.";
     String EMAIL_SUBJECT_ERROR = "Email Subject is mandatory.";
