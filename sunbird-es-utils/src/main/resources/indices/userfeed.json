@@ -263,35 +263,11 @@
                     "search_analyzer": "cs_search_analyzer",
                     "fielddata": true
                 },
-                "channel": {
-                    "type": "text",
-                    "fields": {
-                        "raw": {
-                            "type": "text",
-                            "analyzer": "keylower",
-                            "fielddata": true
-                        }
-                    },
-                    "copy_to": [
-                        "all_fields"
-                    ],
-                    "analyzer": "cs_index_analyzer",
-                    "search_analyzer": "cs_search_analyzer",
-                    "fielddata": true
-                },
                 "priority": {
                     "type": "long",
                     "fields": {
                         "raw": {
                             "type": "long"
-                        }
-                    }
-                },
-                "closeable": {
-                    "type": "boolean",
-                    "fields": {
-                        "raw": {
-                            "type": "boolean"
                         }
                     }
                 },
@@ -343,7 +319,7 @@
                     "search_analyzer": "cs_search_analyzer",
                     "fielddata": true
                 },
-                "feedAction": {
+                "status": {
                     "type": "text",
                     "fields": {
                         "raw": {
@@ -391,7 +367,7 @@
                     "search_analyzer": "cs_search_analyzer",
                     "fielddata": true
                 },
-                "feedData": {
+                "data": {
                     "type": "object"
                 }
             }
