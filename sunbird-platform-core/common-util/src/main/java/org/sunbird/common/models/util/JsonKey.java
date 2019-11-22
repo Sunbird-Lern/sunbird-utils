@@ -999,13 +999,14 @@ public final class JsonKey {
   public static final String IS_SSO_ROOTORG_ENABLED = "isSSOEnabled";
   public static final String USER_FEED_DB = "user_feed";
   public static final String USER_FEED = "userFeed";
-  public static final String FEED_DATA = "feedData";
+  public static final String FEED_DATA = "data";
   public static final String FEED_ACTION = "feedAction";
   public static final String REJECT = "reject";
   public static final String FEED_ID = "feedId";
   public static final String LICENSE = "license";
   public static final String DEFAULT_LICENSE = "defaultLicense";
   public static final String SUNBIRD_PASS_REGEX = "sunbird_pass_regex";
+  public static final String PROSPECTS_CHANNELS = "prospectChannels";
 
   private JsonKey() {}
 }
