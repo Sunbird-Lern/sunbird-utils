@@ -10,11 +10,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
@@ -191,6 +189,9 @@ public class ElasticSearchHelper {
       }
     } else if (JsonKey.EXISTS.equalsIgnoreCase(key) || JsonKey.NOT_EXISTS.equalsIgnoreCase(key)) {
       query = createESOpperation(entry, query, constraintsMap);
+    } else if (JsonKey.NESTED_EXISTS.equalsIgnoreCase(key)
+        || JsonKey.NESTED_NOT_EXISTS.equalsIgnoreCase(key)) {
+      query = createNestedESOpperation(entry, query, constraintsMap);
     } else if (JsonKey.NESTED_KEY_FILTER.equalsIgnoreCase(key)) {
       Map<String, Object> nestedFilters = (Map<String, Object>) entry.getValue();
       for (Map.Entry<String, Object> en : nestedFilters.entrySet()) {
@@ -223,12 +224,11 @@ public class ElasticSearchHelper {
     if (val instanceof List && val != null) {
       query = getTermQueryFromList(val, key, query, constraintsMap);
     } else if (val instanceof Map) {
-       if(key.equalsIgnoreCase(JsonKey.ES_OR_OPERATION)){
-         query.must(createEsORFilterQuery((Map<String,Object>)val));
-       }
-       else {
-         query = getTermQueryFromMap(val, key, query, constraintsMap);
-       }
+      if (key.equalsIgnoreCase(JsonKey.ES_OR_OPERATION)) {
+        query.must(createEsORFilterQuery((Map<String, Object>) val));
+      } else {
+        query = getTermQueryFromMap(val, key, query, constraintsMap);
+      }
     } else if (val instanceof String) {
       query.must(
           createTermQuery(key + RAW_APPEND, ((String) val).toLowerCase(), constraintsMap.get(key)));
@@ -437,6 +437,42 @@ public class ElasticSearchHelper {
     return query;
   }
 
+  /** Method to create EXISTS and NOT EXIST FILTER QUERY . */
+  /**
+   * @param entry contains operations and keys for filter
+   * @param query do get updated with provided operations
+   * @param constraintsMap to set ant constraints on keys for filter
+   * @return
+   */
+  @SuppressWarnings("unchecked")
+  private static BoolQueryBuilder createNestedESOpperation(
+      Entry<String, Object> entry, BoolQueryBuilder query, Map<String, Float> constraintsMap) {
+
+    String operation = entry.getKey();
+    if (entry.getValue() != null && entry.getValue() instanceof Map) {
+      Map<String, String> existsMap = (Map<String, String>) entry.getValue();
+
+      if (JsonKey.NESTED_EXISTS.equalsIgnoreCase(operation)) {
+        for (Map.Entry<String, String> nameByPath : existsMap.entrySet()) {
+          query.must(
+              QueryBuilders.nestedQuery(
+                  nameByPath.getValue(),
+                  createExistQuery(nameByPath.getKey(), constraintsMap.get(nameByPath.getKey())),
+                  ScoreMode.None));
+        }
+      } else if (JsonKey.NESTED_NOT_EXISTS.equalsIgnoreCase(operation)) {
+        for (Map.Entry<String, String> nameByPath : existsMap.entrySet()) {
+          query.mustNot(
+              QueryBuilders.nestedQuery(
+                  nameByPath.getValue(),
+                  createExistQuery(nameByPath.getKey(), constraintsMap.get(nameByPath.getKey())),
+                  ScoreMode.None));
+        }
+      }
+    }
+    return query;
+  }
+
   /** Method to return the sorting order on basis of string param . */
   public static SortOrder getSortOrder(String value) {
     return ASC_ORDER.equalsIgnoreCase(value) ? SortOrder.ASC : SortOrder.DESC;
@@ -622,7 +658,8 @@ public class ElasticSearchHelper {
   private static SearchDTO getSoftConstraints(
       SearchDTO search, Map<String, Object> searchQueryMap) {
     if (searchQueryMap.containsKey(JsonKey.SOFT_CONSTRAINTS)) {
-      search.setSoftConstraints((Map<String, Integer>) searchQueryMap.get(JsonKey.SOFT_CONSTRAINTS));
+      search.setSoftConstraints(
+          (Map<String, Integer>) searchQueryMap.get(JsonKey.SOFT_CONSTRAINTS));
     }
     return search;
   }

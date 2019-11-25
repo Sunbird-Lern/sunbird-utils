@@ -49,6 +49,11 @@
                                     </excludes>
                                 </filter>
                             </filters>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>com.google.guava:guava</exclude>
+                                </excludes>
+                            </artifactSet>
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
