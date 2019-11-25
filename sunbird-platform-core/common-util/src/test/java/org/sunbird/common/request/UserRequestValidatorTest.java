@@ -4,6 +4,7 @@ package org.sunbird.common.request;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1116,5 +1117,117 @@ public class UserRequestValidatorTest {
       assertEquals(ResponseCode.loginIdRequired.getErrorCode(), e.getCode());
     }
     Assert.assertFalse(response);
+  }
+
+  @Test
+  public void testValidateMandatoryFrameworkFieldsSuccess() {
+    Request request = initailizeRequest();
+    request.getRequest().put(JsonKey.FRAMEWORK, createFrameWork());
+    List<String> frameworkMandatoryFields = new ArrayList<String>(1);
+    boolean response = false;
+    try {
+      new UserRequestValidator()
+          .validateMandatoryFrameworkFields(
+              request.getRequest(), getSupportedFileds(), frameworkMandatoryFields);
+      response = true;
+    } catch (Exception e) {
+      Assert.assertTrue(response);
+    }
+    Assert.assertTrue(response);
+  }
+
+  @Test
+  public void testValidateMandatoryFrameworkFiledValueAsString() {
+    Request request = initailizeRequest();
+    Map<String, Object> frameworkMap = createFrameWork();
+    frameworkMap.put("medium", "hindi");
+    request.getRequest().put(JsonKey.FRAMEWORK, frameworkMap);
+    List<String> frameworkMandatoryFields = new ArrayList<String>(1);
+    boolean response = false;
+    try {
+      new UserRequestValidator()
+          .validateMandatoryFrameworkFields(
+              request.getRequest(), getSupportedFileds(), frameworkMandatoryFields);
+      response = true;
+    } catch (ProjectCommonException e) {
+      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+      assertEquals(ResponseCode.dataTypeError.getErrorCode(), e.getCode());
+    }
+    Assert.assertFalse(response);
+  }
+
+  @Test
+  public void testValidateFrameworkUnknownField() {
+    Request request = initailizeRequest();
+    Map<String, Object> frameworkMap = createFrameWork();
+    frameworkMap.put("school", Arrays.asList("school1"));
+    request.getRequest().put(JsonKey.FRAMEWORK, frameworkMap);
+    List<String> frameworkMandatoryFields = new ArrayList<String>(1);
+    boolean response = false;
+    try {
+      new UserRequestValidator()
+          .validateMandatoryFrameworkFields(
+              request.getRequest(), getSupportedFileds(), frameworkMandatoryFields);
+      response = true;
+    } catch (ProjectCommonException e) {
+      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+      assertEquals(ResponseCode.errorUnsupportedField.getErrorCode(), e.getCode());
+    }
+    Assert.assertFalse(response);
+  }
+
+  @Test
+  public void testValidateFrameworkWithEmptyValue() {
+    Request request = initailizeRequest();
+    Map<String, Object> frameworkMap = createFrameWork();
+    frameworkMap.put("medium", Arrays.asList());
+    request.getRequest().put(JsonKey.FRAMEWORK, frameworkMap);
+    List<String> frameworkMandatoryFields = new ArrayList<String>(1);
+    boolean response = false;
+    try {
+      new UserRequestValidator()
+          .validateMandatoryFrameworkFields(
+              request.getRequest(), getSupportedFileds(), frameworkMandatoryFields);
+      response = true;
+    } catch (Exception e) {
+      Assert.assertTrue(response);
+    }
+    Assert.assertTrue(response);
+  }
+
+  @Test
+  public void testValidateFrameworkWithNullValue() {
+    Request request = initailizeRequest();
+    Map<String, Object> frameworkMap = createFrameWork();
+    frameworkMap.put("medium", null);
+    request.getRequest().put(JsonKey.FRAMEWORK, frameworkMap);
+    List<String> frameworkMandatoryFields = new ArrayList<String>(1);
+    boolean response = false;
+    try {
+      new UserRequestValidator()
+          .validateMandatoryFrameworkFields(
+              request.getRequest(), getSupportedFileds(), frameworkMandatoryFields);
+      response = true;
+    } catch (Exception e) {
+      Assert.assertTrue(response);
+    }
+    Assert.assertTrue(response);
+  }
+
+  private static Map<String, Object> createFrameWork() {
+    Map<String, Object> frameworkMap = new HashMap<String, Object>();
+    frameworkMap.put("gradeLevel", Arrays.asList("Kindergarten"));
+    frameworkMap.put("subject", Arrays.asList("English"));
+    return frameworkMap;
+  }
+
+  private static List<String> getSupportedFileds() {
+    List<String> frameworkSupportedFields = new ArrayList<String>();
+    frameworkSupportedFields.add("id");
+    frameworkSupportedFields.add("gradeLevel");
+    frameworkSupportedFields.add("subject");
+    frameworkSupportedFields.add("board");
+    frameworkSupportedFields.add("medium");
+    return frameworkSupportedFields;
   }
 }
