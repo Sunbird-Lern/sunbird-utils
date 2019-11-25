@@ -1123,12 +1123,11 @@ public class UserRequestValidatorTest {
   public void testValidateMandatoryFrameworkFieldsSuccess() {
     Request request = initailizeRequest();
     request.getRequest().put(JsonKey.FRAMEWORK, createFrameWork());
-    List<String> frameworkMandatoryFields = new ArrayList<String>(1);
     boolean response = false;
     try {
       new UserRequestValidator()
           .validateMandatoryFrameworkFields(
-              request.getRequest(), getSupportedFileds(), frameworkMandatoryFields);
+              request.getRequest(), getSupportedFileds(), getMandatoryFields());
       response = true;
     } catch (Exception e) {
       Assert.assertTrue(response);
@@ -1142,12 +1141,11 @@ public class UserRequestValidatorTest {
     Map<String, Object> frameworkMap = createFrameWork();
     frameworkMap.put("medium", "hindi");
     request.getRequest().put(JsonKey.FRAMEWORK, frameworkMap);
-    List<String> frameworkMandatoryFields = new ArrayList<String>(1);
     boolean response = false;
     try {
       new UserRequestValidator()
           .validateMandatoryFrameworkFields(
-              request.getRequest(), getSupportedFileds(), frameworkMandatoryFields);
+              request.getRequest(), getSupportedFileds(), getMandatoryFields());
       response = true;
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
@@ -1162,12 +1160,11 @@ public class UserRequestValidatorTest {
     Map<String, Object> frameworkMap = createFrameWork();
     frameworkMap.put("school", Arrays.asList("school1"));
     request.getRequest().put(JsonKey.FRAMEWORK, frameworkMap);
-    List<String> frameworkMandatoryFields = new ArrayList<String>(1);
     boolean response = false;
     try {
       new UserRequestValidator()
           .validateMandatoryFrameworkFields(
-              request.getRequest(), getSupportedFileds(), frameworkMandatoryFields);
+              request.getRequest(), getSupportedFileds(), getMandatoryFields());
       response = true;
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
@@ -1182,12 +1179,11 @@ public class UserRequestValidatorTest {
     Map<String, Object> frameworkMap = createFrameWork();
     frameworkMap.put("medium", Arrays.asList());
     request.getRequest().put(JsonKey.FRAMEWORK, frameworkMap);
-    List<String> frameworkMandatoryFields = new ArrayList<String>(1);
     boolean response = false;
     try {
       new UserRequestValidator()
           .validateMandatoryFrameworkFields(
-              request.getRequest(), getSupportedFileds(), frameworkMandatoryFields);
+              request.getRequest(), getSupportedFileds(), getMandatoryFields());
       response = true;
     } catch (Exception e) {
       Assert.assertTrue(response);
@@ -1201,12 +1197,12 @@ public class UserRequestValidatorTest {
     Map<String, Object> frameworkMap = createFrameWork();
     frameworkMap.put("medium", null);
     request.getRequest().put(JsonKey.FRAMEWORK, frameworkMap);
-    List<String> frameworkMandatoryFields = new ArrayList<String>(1);
+
     boolean response = false;
     try {
       new UserRequestValidator()
           .validateMandatoryFrameworkFields(
-              request.getRequest(), getSupportedFileds(), frameworkMandatoryFields);
+              request.getRequest(), getSupportedFileds(), getMandatoryFields());
       response = true;
     } catch (Exception e) {
       Assert.assertTrue(response);
@@ -1218,6 +1214,7 @@ public class UserRequestValidatorTest {
     Map<String, Object> frameworkMap = new HashMap<String, Object>();
     frameworkMap.put("gradeLevel", Arrays.asList("Kindergarten"));
     frameworkMap.put("subject", Arrays.asList("English"));
+    frameworkMap.put("id", Arrays.asList("NCF"));
     return frameworkMap;
   }
 
@@ -1229,5 +1226,11 @@ public class UserRequestValidatorTest {
     frameworkSupportedFields.add("board");
     frameworkSupportedFields.add("medium");
     return frameworkSupportedFields;
+  }
+
+  private static List<String> getMandatoryFields() {
+    List<String> frameworkMandatoryFields = new ArrayList<String>(1);
+    frameworkMandatoryFields.add("id");
+    return frameworkMandatoryFields;
   }
 }
