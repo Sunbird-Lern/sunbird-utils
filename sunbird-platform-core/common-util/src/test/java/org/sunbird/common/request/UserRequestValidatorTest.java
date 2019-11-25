@@ -1136,7 +1136,7 @@ public class UserRequestValidatorTest {
   }
 
   @Test
-  public void testValidateMandatoryFrameworkFiledValueAsString() {
+  public void testValidateMandatoryFrameworkFieldValueAsString() {
     Request request = initailizeRequest();
     Map<String, Object> frameworkMap = createFrameWork();
     frameworkMap.put("medium", "hindi");
