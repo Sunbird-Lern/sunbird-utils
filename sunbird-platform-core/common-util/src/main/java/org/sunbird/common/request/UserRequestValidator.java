@@ -894,7 +894,8 @@ public class UserRequestValidator extends BaseRequestValidator {
     if (userMap.containsKey(JsonKey.FRAMEWORK)) {
       Map<String, Object> frameworkRequest = (Map<String, Object>) userMap.get(JsonKey.FRAMEWORK);
       for (String field : frameworkFields) {
-        if (frameworkMandatoryFields.contains(field)) {
+        if (CollectionUtils.isNotEmpty(frameworkMandatoryFields)
+            && frameworkMandatoryFields.contains(field)) {
           if (!frameworkRequest.containsKey(field)) {
             validateParam(null, ResponseCode.mandatoryParamsMissing, field);
           }
@@ -909,6 +910,7 @@ public class UserRequestValidator extends BaseRequestValidator {
           }
         } else {
           if (frameworkRequest.containsKey(field)
+              && frameworkRequest.get(field) != null
               && !(frameworkRequest.get(field) instanceof List)) {
             throw new ProjectCommonException(
                 ResponseCode.dataTypeError.getErrorCode(),
@@ -941,8 +943,7 @@ public class UserRequestValidator extends BaseRequestValidator {
     for (Map.Entry<String, List<String>> fwRequestFieldEntry : fwRequest.entrySet()) {
       if (!fwRequestFieldEntry.getValue().isEmpty()) {
         List<String> allowedFieldValues =
-            frameworkMap
-                .get(fwRequestFieldEntry.getKey())
+            getKeyValueFromFrameWork(fwRequestFieldEntry.getKey(), frameworkMap)
                 .stream()
                 .map(fieldMap -> fieldMap.get(JsonKey.NAME))
                 .collect(Collectors.toList());
@@ -961,6 +962,19 @@ public class UserRequestValidator extends BaseRequestValidator {
         }
       }
     }
+  }
+
+  private List<Map<String, String>> getKeyValueFromFrameWork(
+      String key, Map<String, List<Map<String, String>>> frameworkMap) {
+    if (frameworkMap.get(key) == null) {
+      throw new ProjectCommonException(
+          ResponseCode.errorUnsupportedField.getErrorCode(),
+          MessageFormat.format(
+              ResponseCode.errorUnsupportedField.getErrorMessage(),
+              key + " in " + JsonKey.FRAMEWORK),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    return frameworkMap.get(key);
   }
 
   private void validateUserType(Request userRequest) {
