@@ -998,6 +998,9 @@ public final class JsonKey {
   public static final String MAX_ATTEMPT = "maxAttempt";
   public static final String REMAINING_ATTEMPT = "remainingAttempt";
   public static final String IS_SSO_ROOTORG_ENABLED = "isSSOEnabled";
+  public static final String USER_FEED_DB = "user_feed";
+  public static final String USER_FEED = "userFeed";
+  public static final String FEED_DATA = "data";
   public static final String REJECT = "reject";
   public static final String FEED_ID = "feedId";
   public static final String LICENSE = "license";
@@ -1005,6 +1008,8 @@ public final class JsonKey {
   public static final String SUNBIRD_PASS_REGEX = "sunbird_pass_regex";
   public static final String NESTED_EXISTS = "nested_exists";
   public static final String NESTED_NOT_EXISTS = "nested_not_exists";
+  public static final String PROSPECT_CHANNELS = "prospectChannels";
+  public static final String CATEGORY = "category";
 
   private JsonKey() {}
 }

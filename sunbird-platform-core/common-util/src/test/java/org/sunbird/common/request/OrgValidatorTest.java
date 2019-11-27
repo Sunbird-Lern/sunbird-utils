@@ -6,7 +6,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
@@ -26,7 +25,7 @@ public class OrgValidatorTest {
     request.setRequest(requestObj);
     try {
       // this method will either throw projectCommonException or it return void
-       new OrgRequestValidator().validateCreateOrgRequest(request);
+      new OrgRequestValidator().validateCreateOrgRequest(request);
       requestObj.put("ext", "success");
     } catch (ProjectCommonException e) {
       Assert.assertNull(e);
@@ -45,15 +44,14 @@ public class OrgValidatorTest {
     request.setRequest(requestObj);
     try {
       // this method will either throw projectCommonException or it return void
-       new OrgRequestValidator().validateCreateOrgRequest(request);
+      new OrgRequestValidator().validateCreateOrgRequest(request);
       requestObj.put("ext", "success");
     } catch (ProjectCommonException e) {
       Assert.assertNull(e);
     }
     assertEquals("success", requestObj.get("ext"));
   }
-  
-  
+
   @Test
   public void validateCreateRootOrgWithEmptyLicenseFailure() {
     Request request = new Request();
@@ -65,15 +63,14 @@ public class OrgValidatorTest {
     request.setRequest(requestObj);
     try {
       // this method will either throw projectCommonException or it return void
-       new OrgRequestValidator().validateCreateOrgRequest(request);
+      new OrgRequestValidator().validateCreateOrgRequest(request);
       requestObj.put("ext", "success");
     } catch (ProjectCommonException e) {
       Assert.assertNotNull(e);
     }
-    assertEquals(requestObj.get("ext"),null);
+    assertEquals(requestObj.get("ext"), null);
   }
-  
-  
+
   @Test
   public void validateCreateOrgWithOutName() {
     Request request = new Request();
@@ -83,7 +80,7 @@ public class OrgValidatorTest {
     request.setRequest(requestObj);
     try {
       // this method will either throw projectCommonException or it return void
-       new OrgRequestValidator().validateCreateOrgRequest(request);
+      new OrgRequestValidator().validateCreateOrgRequest(request);
       requestObj.put("ext", "success");
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.mandatoryParamsMissing.getErrorCode(), e.getCode());
@@ -102,7 +99,7 @@ public class OrgValidatorTest {
     request.setRequest(requestObj);
     try {
       // this method will either throw projectCommonException or it return void
-       new OrgRequestValidator().validateCreateOrgRequest(request);
+      new OrgRequestValidator().validateCreateOrgRequest(request);
       requestObj.put("ext", "success");
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.dependentParamsMissing.getErrorCode(), e.getCode());
@@ -122,7 +119,7 @@ public class OrgValidatorTest {
     request.setRequest(requestObj);
     try {
       // this method will either throw projectCommonException or it return void
-       new OrgRequestValidator().validateUpdateOrgRequest(request);
+      new OrgRequestValidator().validateUpdateOrgRequest(request);
       requestObj.put("ext", "success");
     } catch (ProjectCommonException e) {
       Assert.assertNull(e);
@@ -142,7 +139,7 @@ public class OrgValidatorTest {
     request.setRequest(requestObj);
     try {
       // this method will either throw projectCommonException or it return void
-       new OrgRequestValidator().validateUpdateOrgRequest(request);
+      new OrgRequestValidator().validateUpdateOrgRequest(request);
       requestObj.put("ext", "success");
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.invalidRootOrganisationId.getErrorCode(), e.getCode());
@@ -163,7 +160,7 @@ public class OrgValidatorTest {
     request.setRequest(requestObj);
     try {
       // this method will either throw projectCommonException or it return void
-       new OrgRequestValidator().validateUpdateOrgRequest(request);
+      new OrgRequestValidator().validateUpdateOrgRequest(request);
       requestObj.put("ext", "success");
     } catch (ProjectCommonException e) {
       assertEquals(ResponseCode.invalidRequestParameter.getErrorCode(), e.getCode());
@@ -202,7 +199,7 @@ public class OrgValidatorTest {
     request.setRequest(requestObj);
     try {
       // this method will either throw projectCommonException or it return void
-       new OrgRequestValidator().validateUpdateOrgStatusRequest(request);
+      new OrgRequestValidator().validateUpdateOrgStatusRequest(request);
       requestObj.put("ext", "success");
     } catch (ProjectCommonException e) {
       Assert.assertNull(e);

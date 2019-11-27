@@ -458,19 +458,22 @@ public class ProjectUtilTest extends BaseHttpTest {
   }
 
   @Test
-  public void testMigrateActionAcceptValueFailure(){
-    Assert.assertNotEquals("ok",ProjectUtil.MigrateAction.ACCEPT.getValue());
+  public void testMigrateActionAcceptValueFailure() {
+    Assert.assertNotEquals("ok", ProjectUtil.MigrateAction.ACCEPT.getValue());
   }
+
   @Test
-  public void testMigrateActionRejectValueFailure(){
-    Assert.assertNotEquals("no",ProjectUtil.MigrateAction.REJECT.getValue());
+  public void testMigrateActionRejectValueFailure() {
+    Assert.assertNotEquals("no", ProjectUtil.MigrateAction.REJECT.getValue());
   }
+
   @Test
-  public void testMigrateActionAcceptValueSuccess(){
-    Assert.assertEquals("accept",ProjectUtil.MigrateAction.ACCEPT.getValue());
+  public void testMigrateActionAcceptValueSuccess() {
+    Assert.assertEquals("accept", ProjectUtil.MigrateAction.ACCEPT.getValue());
   }
+
   @Test
-  public void testMigrateActionRejectValueSuccess(){
-    Assert.assertEquals("reject",ProjectUtil.MigrateAction.REJECT.getValue());
+  public void testMigrateActionRejectValueSuccess() {
+    Assert.assertEquals("reject", ProjectUtil.MigrateAction.REJECT.getValue());
   }
 }
