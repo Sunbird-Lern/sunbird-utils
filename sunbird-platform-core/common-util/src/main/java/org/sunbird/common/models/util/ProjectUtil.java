@@ -187,8 +187,7 @@ public class ProjectUtil {
     }
   }
 
-
-  public enum Action{
+  public enum Action {
     YES(1),
     NO(0);
 
@@ -395,7 +394,8 @@ public class ProjectUtil {
     announcementType("announcementtype"),
     announcement("announcement"),
     metrics("metrics"),
-    cbatchstats("cbatchstats");
+    cbatchstats("cbatchstats"),
+    userfeed("userfeed");
     private String typeName;
 
     private EsType(String name) {
@@ -621,7 +621,6 @@ public class ProjectUtil {
     return map;
   }
 
-  
   private static String getFromEmail(Map<String, Object> map) {
     String fromEmail = (String) getValue(map, JsonKey.EMAIL_SERVER_FROM);
     if (StringUtils.isBlank(fromEmail)) {
@@ -854,16 +853,19 @@ public class ProjectUtil {
         ResponseCode.SERVER_ERROR.getErrorMessage(),
         ResponseCode.SERVER_ERROR.getResponseCode());
   }
-  
+
   /**
    * This method will create and return server exception to caller.
+   *
    * @param responseCode ResponseCode
    * @return ProjectCommonException
    */
-	public static ProjectCommonException createServerError(ResponseCode responseCode) {
-		return new ProjectCommonException(responseCode.getErrorCode(), responseCode.getErrorMessage(),
-				ResponseCode.SERVER_ERROR.getResponseCode());
-	}
+  public static ProjectCommonException createServerError(ResponseCode responseCode) {
+    return new ProjectCommonException(
+        responseCode.getErrorCode(),
+        responseCode.getErrorMessage(),
+        ResponseCode.SERVER_ERROR.getResponseCode());
+  }
 
   /**
    * This method will create ProjectCommonException of type invalidUserDate exception and throws it.
@@ -1039,8 +1041,7 @@ public class ProjectUtil {
     return firstNChars;
   }
 
-  public enum MigrateAction{
-
+  public enum MigrateAction {
     ACCEPT("accept"),
     REJECT("reject");
     private String value;

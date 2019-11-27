@@ -366,24 +366,31 @@ public interface CassandraOperation {
       List<String> fields,
       FutureCallback<ResultSet> callback);
 
-
-  public Response getRecordByObjectType(String keyspace,String tableName,String columnName,String key,int value,String objectType);
+  public Response getRecordByObjectType(
+      String keyspace,
+      String tableName,
+      String columnName,
+      String key,
+      int value,
+      String objectType);
 
   public Response performBatchAction(
-          String keyspaceName, String tableName, Map<String, Object> inputData);
+      String keyspaceName, String tableName, Map<String, Object> inputData);
 
   /**
    * this method will be used to do CONTAINS query in list
+   *
    * @param keyspace
    * @param tableName
    * @param key
    * @param Value
    * @return
    */
-  Response searchValueInList(String keyspace,String tableName,String key,String Value);
+  Response searchValueInList(String keyspace, String tableName, String key, String Value);
 
   /**
    * this method will be used to do CONTAINS query in list with the AND operations
+   *
    * @param keyspace
    * @param tableName
    * @param key
@@ -391,6 +398,6 @@ public interface CassandraOperation {
    * @param propertyMap
    * @return
    */
-  Response searchValueInList(String keyspace,String tableName,String key,String Value,Map<String,Object>propertyMap);
-
+  Response searchValueInList(
+      String keyspace, String tableName, String key, String Value, Map<String, Object> propertyMap);
 }

@@ -2,7 +2,6 @@ package org.sunbird.common.responsecode;
 
 import static org.junit.Assert.assertEquals;
 
-import org.jboss.logging.Message;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -44,9 +43,11 @@ public class ResponseCodeTest {
     String respMsg = ResponseCode.getResponseMessage("");
     assertEquals("", respMsg);
   }
+
   @Test
-  public void testInvalidElementValueSuccess(){
-    ResponseCode respCode = ResponseCode.getResponse(ResponseCode.invalidElementInList.getErrorCode());
+  public void testInvalidElementValueSuccess() {
+    ResponseCode respCode =
+        ResponseCode.getResponse(ResponseCode.invalidElementInList.getErrorCode());
     assertEquals(ResponseCode.invalidElementInList, respCode);
   }
 }
