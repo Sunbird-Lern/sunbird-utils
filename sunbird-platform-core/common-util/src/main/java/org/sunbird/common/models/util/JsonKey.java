@@ -19,6 +19,7 @@ public final class JsonKey {
   public static final String SIGNED_URL = "signedUrl";
   public static final String REPORTS = "reports";
   public static final String PROGRESS_REPORT_SIGNED_URL = "courseProgressReportUrl";
+  public static final String ASSESSMENT_REPORT_BLOB_URL = "reportUrl";
   public static final String ASSESSMENT_REPORT_SIGNED_URL = "assessmentReportUrl";
   public static final String BULK_UPLOAD_STATUS = "Status";
   public static final String BULK_UPLOAD_ERROR = "Remarks";
@@ -1005,6 +1006,8 @@ public final class JsonKey {
   public static final String LICENSE = "license";
   public static final String DEFAULT_LICENSE = "defaultLicense";
   public static final String SUNBIRD_PASS_REGEX = "sunbird_pass_regex";
+  public static final String NESTED_EXISTS = "nested_exists";
+  public static final String NESTED_NOT_EXISTS = "nested_not_exists";
   public static final String PROSPECT_CHANNELS = "prospectChannels";
   public static final String CATEGORY = "category";
 
