@@ -400,4 +400,32 @@ public interface CassandraOperation {
    */
   Response searchValueInList(
       String keyspace, String tableName, String key, String Value, Map<String, Object> propertyMap);
+
+  /**
+   * @param keySpace
+   * @param table
+   * @param primaryKey
+   * @param column
+   * @param key
+   * @param value
+   * @return
+   */
+  public Response updateAddMapRecord(
+      String keySpace,
+      String table,
+      Map<String, Object> primaryKey,
+      String column,
+      String key,
+      Object value);
+
+  /**
+   * @param keySpace
+   * @param table
+   * @param primaryKey
+   * @param column
+   * @param key
+   * @return
+   */
+  public Response updateRemoveMapRecord(
+      String keySpace, String table, Map<String, Object> primaryKey, String column, String key);
 }
