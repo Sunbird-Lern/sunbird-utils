@@ -742,7 +742,7 @@ public final class JsonKey {
   public static final String COURSE_INVITATION = "Course Invitation";
   public static final String BATCH_LEARNER_UNENROL = "batchLearnerUnenrol";
   public static final String BATCH_MENTOR_UNENROL = "batchMentorUnenrol";
-  public static final String UNENROLL_FROM_COURSE_BATCH = "Unenrolled from Course";
+  public static final String UNENROLL_FROM_COURSE_BATCH = "Unenrolled from Training";
   public static final String OPEN_BATCH_LEARNER_UNENROL = "openBatchLearnerUnenrol";
 
   public static final String MENTOR = "mentor";
