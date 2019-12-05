@@ -188,15 +188,6 @@ public class ProjectUtilTest extends BaseHttpTest {
   }
 
   @Test
-  public void testGetSMSBodySuccess() {
-    Map<String, String> map = new HashMap<>();
-    map.put("instanceName", "Diksha");
-    map.put("link", "www.sunbird.org");
-    String msg = ProjectUtil.getSMSBody(map);
-    assertTrue(msg.contains("sunbird.org"));
-  }
-
-  @Test
   public void testIsDateValidFormatSuccess() {
     boolean bool = ProjectUtil.isDateValidFormat("yyyy-MM-dd", "2017-12-18");
     assertTrue(bool);
@@ -247,21 +238,6 @@ public class ProjectUtilTest extends BaseHttpTest {
     assertEquals(4, ProjectUtil.ReportTrackingStatus.SENDING_MAIL.getValue());
     assertEquals(5, ProjectUtil.ReportTrackingStatus.SENDING_MAIL_SUCCESS.getValue());
     assertEquals(9, ProjectUtil.ReportTrackingStatus.FAILED.getValue());
-  }
-
-  @Test
-  public void testGetTemplateSuccess() {
-    Map<String, Object> map = new HashMap<>();
-    String template = ProjectUtil.getTemplate(map);
-    assertEquals("/emailtemplate.vm", template);
-  }
-
-  @Test
-  public void testGetTemplateSuccessWithEmailTemplateType() {
-    Map<String, Object> map = new HashMap<>();
-    map.put(JsonKey.EMAIL_TEMPLATE_TYPE, "/test.vm");
-    String template = ProjectUtil.getTemplate(map);
-    assertEquals("/emailtemplate.vm", template);
   }
 
   @Test
