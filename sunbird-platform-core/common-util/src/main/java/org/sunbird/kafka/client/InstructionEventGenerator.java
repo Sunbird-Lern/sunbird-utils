@@ -31,7 +31,7 @@ public class InstructionEventGenerator {
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
     if (StringUtils.isNotBlank(topic)) {
-     // KafkaClient.send(beJobRequestEvent, topic);
+      KafkaClient.send(beJobRequestEvent, topic);
     } else {
       throw new ProjectCommonException(
           "BE_JOB_REQUEST_EXCEPTION",
