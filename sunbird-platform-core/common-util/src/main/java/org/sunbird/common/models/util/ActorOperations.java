@@ -171,7 +171,7 @@ public enum ActorOperations {
   MIGRATE_USER("migrateUser"),
   REJECT_MIGRATION("rejectMigration"),
   GET_USER_FEED_BY_ID("getUserFeedById"),
-  ;
+  CREATE_USER_V3("createUserV3");
   private String value;
 
   /**
