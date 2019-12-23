@@ -1,4 +1,3 @@
-DROP TABLE sunbird.shadow_user;
 CREATE TABLE IF NOT EXISTS sunbird.shadow_user(processId text,name text,email text,phone text,channel text,orgExtId text, userExtId text,userStatus int,claimStatus int,userId text,createdOn timestamp,updatedOn timestamp,claimedOn timestamp,PRIMARY KEY (channel,userExtId) );
 CREATE INDEX inx_shausr_userextId ON sunbird.shadow_user(userExtId);
 CREATE INDEX inx_shausr_orgextId ON sunbird.shadow_user(orgExtId);
