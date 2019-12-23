@@ -1,0 +1,1 @@
+insert into sunbird.email_template(name,template) values ('otpMobileReset', 'OTP to reset your password on $installationName is $otp. This is valid for $otpExpiryInMinutes minutes only.') ;
