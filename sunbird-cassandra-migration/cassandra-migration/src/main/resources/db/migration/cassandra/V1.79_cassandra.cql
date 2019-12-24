@@ -1,1 +1,1 @@
-ALTER TABLE bulk_upload_process ADD telemetrycontext map<text,text>;
+SELECT * FROM sunbird.system_settings LIMIT 1;
