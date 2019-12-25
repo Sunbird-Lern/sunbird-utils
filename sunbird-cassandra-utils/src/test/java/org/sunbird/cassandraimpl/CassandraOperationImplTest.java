@@ -1,4 +1,4 @@
-package org.sunbird.cassandra;
+package org.sunbird.cassandraimpl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

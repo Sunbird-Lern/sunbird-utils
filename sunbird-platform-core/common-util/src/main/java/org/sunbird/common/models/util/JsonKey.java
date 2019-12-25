@@ -1010,6 +1010,7 @@ public final class JsonKey {
   public static final String NESTED_NOT_EXISTS = "nested_not_exists";
   public static final String PROSPECT_CHANNELS = "prospectChannels";
   public static final String CATEGORY = "category";
+  public static final String VERSION_3 = "v3";
 
   private JsonKey() {}
 }

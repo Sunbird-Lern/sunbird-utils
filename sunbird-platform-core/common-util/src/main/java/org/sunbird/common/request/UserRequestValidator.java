@@ -74,6 +74,20 @@ public class UserRequestValidator extends BaseRequestValidator {
         JsonKey.USERNAME);
   }
 
+  public void validateUserCreateV3(Request userRequest) {
+    validateParam(
+        (String) userRequest.getRequest().get(JsonKey.FIRST_NAME),
+        ResponseCode.mandatoryParamsMissing,
+        JsonKey.FIRST_NAME);
+    if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.EMAIL))
+        && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PHONE))) {
+      ProjectCommonException.throwClientErrorException(ResponseCode.emailorPhoneRequired);
+    }
+    phoneVerifiedValidation(userRequest);
+    emailVerifiedValidation(userRequest);
+    validatePassword((String) userRequest.getRequest().get(JsonKey.PASSWORD));
+  }
+
   public void validateCreateUserV3Request(Request userRequest) {
     validateCreateUserRequest(userRequest);
   }
