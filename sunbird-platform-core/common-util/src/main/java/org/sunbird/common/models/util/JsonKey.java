@@ -396,7 +396,9 @@ public final class JsonKey {
   public static final String OrgConsumption = "orgConsumption";
   public static final String OrgCreation = "orgCreation";
   public static final String OTP = "otp";
-  public static final String OTP_RESET_PASSWORD_TEMPLATE = "otpResetPasswordTemplate";
+  public static final String OTP_EMAIL_RESET_PASSWORD_TEMPLATE = "otpEmailResetPasswordTemplate";
+  public static final String OTP_PHONE_RESET_PASSWORD_TEMPLATE = "otpPhoneResetPasswordTemplate";
+  public static final String VERIFY_PHONE_OTP_TEMPLATE = "verifyPhoneOtpTemplate";
   public static final String PAGE = "page";
   public static final String PAGE_ID = "pageId";
   public static final String PAGE_MGMT_DB = "page_mgmt_db";
@@ -1011,7 +1013,8 @@ public final class JsonKey {
   public static final String NESTED_NOT_EXISTS = "nested_not_exists";
   public static final String PROSPECT_CHANNELS = "prospectChannels";
   public static final String CATEGORY = "category";
-  public static final String TEMPLATEID = "templateId";
+  public static final String TEMPLATE_ID = "templateId";
+  public static final String TEMPLATE_ID_VALUE = "resetPasswordWithOtp";
 
   private JsonKey() {}
 }
