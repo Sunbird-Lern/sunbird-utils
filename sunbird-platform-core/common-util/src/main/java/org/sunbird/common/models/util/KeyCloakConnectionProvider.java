@@ -48,6 +48,7 @@ public class KeyCloakConnectionProvider {
             .resteasyClient(
                 new ResteasyClientBuilder()
                     .connectionPoolSize(Integer.parseInt(cache.getProperty(JsonKey.SSO_POOL_SIZE)))
+                    .property("Connection", "Keep-Alive")
                     .build());
     if (cache.getProperty(JsonKey.SSO_CLIENT_SECRET) != null
         && !(cache.getProperty(JsonKey.SSO_CLIENT_SECRET).equals(JsonKey.SSO_CLIENT_SECRET))) {
