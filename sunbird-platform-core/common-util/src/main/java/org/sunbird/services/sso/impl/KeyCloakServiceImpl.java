@@ -4,14 +4,21 @@ import static java.util.Arrays.asList;
 import static org.sunbird.common.models.util.ProjectUtil.isNotNull;
 import static org.sunbird.common.models.util.ProjectUtil.isNull;
 
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.async.Callback;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.CompletableFuture;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -33,6 +40,7 @@ import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.common.util.KeycloakRequiredActionLinkUtil;
 import org.sunbird.services.sso.SSOManager;
+import scala.concurrent.Future;
 
 /**
  * Single sign out service implementation with Key Cloak.
@@ -62,7 +70,7 @@ public class KeyCloakServiceImpl implements SSOManager {
 
   @Override
   public String verifyToken(String accessToken) {
-	return  verifyToken(accessToken, null);
+    return verifyToken(accessToken, null);
   }
 
   /**
@@ -85,6 +93,7 @@ public class KeyCloakServiceImpl implements SSOManager {
   @Override
   public boolean updatePassword(String userId, String password) {
     try {
+      ProjectLogger.log("KeyCloakServiceImpl:updatePassword: call start  ", LoggerEnum.INFO.name());
       String fedUserId = getFederatedUserId(userId);
       UserResource ur = keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(fedUserId);
       CredentialRepresentation cr = new CredentialRepresentation();
@@ -94,7 +103,8 @@ public class KeyCloakServiceImpl implements SSOManager {
       return true;
     } catch (Exception e) {
       ProjectLogger.log(
-          "KeyCloakServiceImpl:updatePassword: Exception occurred with error message = ", e);
+          "KeyCloakServiceImpl:updatePassword: Exception occurred with error message = " + e,
+          LoggerEnum.ERROR.name());
     }
     return false;
   }
@@ -597,8 +607,8 @@ public class KeyCloakServiceImpl implements SSOManager {
     return "";
   }
 
-@Override
-public String verifyToken(String accessToken, String url) {
+  @Override
+  public String verifyToken(String accessToken, String url) {
 
     try {
       PublicKey publicKey = getPublicKey();
@@ -609,14 +619,12 @@ public String verifyToken(String accessToken, String url) {
         publicKey = toPublicKey(System.getenv(JsonKey.SSO_PUBLIC_KEY));
       }
       if (publicKey != null) {
-    	 String ssoUrl = (url!=null? url:KeyCloakConnectionProvider.SSO_URL);
+        String ssoUrl = (url != null ? url : KeyCloakConnectionProvider.SSO_URL);
         AccessToken token =
             RSATokenVerifier.verifyToken(
                 accessToken,
                 publicKey,
-                ssoUrl
-                    + "realms/"
-                    + KeyCloakConnectionProvider.SSO_REALM,
+                ssoUrl + "realms/" + KeyCloakConnectionProvider.SSO_REALM,
                 true,
                 true);
         ProjectLogger.log(
@@ -657,6 +665,90 @@ public String verifyToken(String accessToken, String url) {
           ResponseCode.unAuthorized.getErrorMessage(),
           ResponseCode.UNAUTHORIZED.getResponseCode());
     }
-  
-}
+  }
+
+  private static Map<String, Map<Long, String>> adminTokenMap =
+      new HashMap<String, Map<Long, String>>();
+
+  private String getAdminToken() throws Exception {
+    String adminToken = "";
+    Map<Long, String> tokenMap = adminTokenMap.get(JsonKey.TOKEN);
+    if (MapUtils.isEmpty(tokenMap)) {
+      String token = KeycloakRequiredActionLinkUtil.getAdminAccessToken();
+      long time = System.currentTimeMillis() + (4 * 60 * 60 * 1000);
+      tokenMap = new HashMap<Long, String>();
+      tokenMap.put(time, token);
+      adminTokenMap.put(JsonKey.TOKEN, tokenMap);
+      adminToken = token;
+    } else {
+      Iterator<Entry<Long, String>> itr = tokenMap.entrySet().iterator();
+      if (itr.hasNext()) {
+        Entry<Long, String> entry = itr.next();
+        long value = entry.getKey();
+        if (value - System.currentTimeMillis() <= 0) {
+          String token = KeycloakRequiredActionLinkUtil.getAdminAccessToken();
+          long time = System.currentTimeMillis() + (4 * 60 * 60 * 1000);
+          tokenMap.put(time, token);
+          adminTokenMap.put(JsonKey.TOKEN, tokenMap);
+          adminToken = token;
+        } else {
+          adminToken = entry.getValue();
+        }
+      }
+    }
+    return adminToken;
+  }
+
+  @Override
+  public Future<Boolean> updatePasswordAsync(String userId, String password) {
+    CompletableFuture<Boolean> fut = new CompletableFuture<Boolean>();
+    try {
+      String fedUserId = getFederatedUserId(userId);
+      Unirest.put(
+              KeyCloakConnectionProvider.SSO_URL
+                  + "admin/realms/"
+                  + KeyCloakConnectionProvider.SSO_REALM
+                  + "/users/"
+                  + fedUserId
+                  + "/reset-password")
+          .header("Content-Type", "application/json")
+          .header("Authorization", "Bearer " + getAdminToken())
+          .body("{\n    \"type\": \"password\",\n    \"value\": \"" + password + "\" \n}")
+          .asStringAsync(
+              new Callback<String>() {
+
+                @Override
+                public void failed(UnirestException e) {
+                  ProjectLogger.log(
+                      "updatePasswordAsync update password failed response =" + e.getMessage(),
+                      LoggerEnum.INFO.name());
+                  fut.complete(false);
+                }
+
+                @Override
+                public void completed(HttpResponse<String> response) {
+                  ProjectLogger.log(
+                      "Update password response =" + response.getStatus(), LoggerEnum.INFO.name());
+                  if (response.getStatus() == 204) {
+                    fut.complete(true);
+                  } else {
+                    fut.complete(false);
+                  }
+                }
+
+                @Override
+                public void cancelled() {
+                  ProjectLogger.log(
+                      "updatePasswordAsync update password Call cancedded ",
+                      LoggerEnum.INFO.name());
+                  fut.complete(false);
+                }
+              });
+
+    } catch (Exception e) {
+      fut.complete(false);
+    }
+
+    return scala.compat.java8.FutureConverters.toScala(fut);
+  }
 }

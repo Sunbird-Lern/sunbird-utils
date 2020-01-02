@@ -2,6 +2,7 @@
 package org.sunbird.services.sso;
 
 import java.util.Map;
+import scala.concurrent.Future;
 
 /** @author Manzarul This interface will handle all call related to single sign out. */
 public interface SSOManager {
@@ -18,6 +19,7 @@ public interface SSOManager {
   /** Update password in SSO server (keycloak). */
   boolean updatePassword(String userId, String password);
 
+  Future<Boolean> updatePasswordAsync(String userId, String password);
   /**
    * Method to update user account in keycloak on basis of userId.
    *
@@ -136,6 +138,5 @@ public interface SSOManager {
    * @param url token will be validated against this url
    * @return String
    */
-  String verifyToken(String token,String url);
-
+  String verifyToken(String token, String url);
 }
