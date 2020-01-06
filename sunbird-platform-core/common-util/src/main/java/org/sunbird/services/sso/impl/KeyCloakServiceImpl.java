@@ -85,7 +85,6 @@ public class KeyCloakServiceImpl implements SSOManager {
   @Override
   public boolean updatePassword(String userId, String password) {
     try {
-      ProjectLogger.log("KeyCloakServiceImpl:updatePassword: call start  ", LoggerEnum.INFO.name());
       String fedUserId = getFederatedUserId(userId);
       UserResource ur = keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(fedUserId);
       CredentialRepresentation cr = new CredentialRepresentation();
