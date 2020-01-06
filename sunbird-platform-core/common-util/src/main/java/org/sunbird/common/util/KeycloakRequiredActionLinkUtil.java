@@ -112,7 +112,7 @@ public class KeycloakRequiredActionLinkUtil {
     return response.getBody().getObject().getString(LINK);
   }
 
-  public static String getAdminAccessToken() throws Exception {
+  private static String getAdminAccessToken() throws Exception {
     Map<String, String> headers = new HashMap<>();
     headers.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED);
     BaseRequest request =
