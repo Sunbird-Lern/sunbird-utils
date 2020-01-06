@@ -136,6 +136,5 @@ public interface SSOManager {
    * @param url token will be validated against this url
    * @return String
    */
-  String verifyToken(String token,String url);
-
+  String verifyToken(String token, String url);
 }

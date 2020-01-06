@@ -62,7 +62,7 @@ public class KeyCloakServiceImpl implements SSOManager {
 
   @Override
   public String verifyToken(String accessToken) {
-	return  verifyToken(accessToken, null);
+    return verifyToken(accessToken, null);
   }
 
   /**
@@ -94,7 +94,8 @@ public class KeyCloakServiceImpl implements SSOManager {
       return true;
     } catch (Exception e) {
       ProjectLogger.log(
-          "KeyCloakServiceImpl:updatePassword: Exception occurred with error message = ", e);
+          "KeyCloakServiceImpl:updatePassword: Exception occurred with error message = " + e,
+          LoggerEnum.ERROR.name());
     }
     return false;
   }
@@ -597,8 +598,8 @@ public class KeyCloakServiceImpl implements SSOManager {
     return "";
   }
 
-@Override
-public String verifyToken(String accessToken, String url) {
+  @Override
+  public String verifyToken(String accessToken, String url) {
 
     try {
       PublicKey publicKey = getPublicKey();
@@ -609,14 +610,12 @@ public String verifyToken(String accessToken, String url) {
         publicKey = toPublicKey(System.getenv(JsonKey.SSO_PUBLIC_KEY));
       }
       if (publicKey != null) {
-    	 String ssoUrl = (url!=null? url:KeyCloakConnectionProvider.SSO_URL);
+        String ssoUrl = (url != null ? url : KeyCloakConnectionProvider.SSO_URL);
         AccessToken token =
             RSATokenVerifier.verifyToken(
                 accessToken,
                 publicKey,
-                ssoUrl
-                    + "realms/"
-                    + KeyCloakConnectionProvider.SSO_REALM,
+                ssoUrl + "realms/" + KeyCloakConnectionProvider.SSO_REALM,
                 true,
                 true);
         ProjectLogger.log(
@@ -657,6 +656,5 @@ public String verifyToken(String accessToken, String url) {
           ResponseCode.unAuthorized.getErrorMessage(),
           ResponseCode.UNAUTHORIZED.getResponseCode());
     }
-  
-}
+  }
 }
