@@ -1015,6 +1015,7 @@ public final class JsonKey {
   public static final String CATEGORY = "category";
   public static final String TEMPLATE_ID = "templateId";
   public static final String TEMPLATE_ID_VALUE = "resetPasswordWithOtp";
+  public static final String VERSION_3 = "v3";
 
   private JsonKey() {}
 }
