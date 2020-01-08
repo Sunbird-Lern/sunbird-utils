@@ -1220,6 +1220,7 @@ public class UserRequestValidatorTest {
       request.getRequest().put(JsonKey.EMAIL_VERIFIED, true);
       request.getRequest().put(JsonKey.PHONE, "9663890445");
       request.getRequest().put(JsonKey.PHONE_VERIFIED, true);
+      new UserRequestValidator().validateUserCreateV3(request);
     } catch (Exception e) {
       response = false;
     }
