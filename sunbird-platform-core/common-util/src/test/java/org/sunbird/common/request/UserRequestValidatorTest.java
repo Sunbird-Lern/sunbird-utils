@@ -20,6 +20,169 @@ public class UserRequestValidatorTest {
   private static final UserRequestValidator userRequestValidator = new UserRequestValidator();
 
   @Test
+  public void testValidatePasswordFailure() {
+    Request request = initailizeRequest();
+    Map<String, Object> requestObj = request.getRequest();
+    requestObj.put(JsonKey.PASSWORD, "password");
+    request.setRequest(requestObj);
+    try {
+      userRequestValidator.validateCreateUserRequest(request);
+    } catch (ProjectCommonException e) {
+      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+      assertEquals(ResponseCode.passwordValidation.getErrorCode(), e.getCode());
+    }
+  }
+
+  @Test
+  public void testValidateCreateUserBasicValidationFailure() {
+    Request request = initailizeRequest();
+    Map<String, Object> requestObj = request.getRequest();
+    requestObj.put(JsonKey.ROLES, "admin");
+    request.setRequest(requestObj);
+    try {
+      userRequestValidator.createUserBasicValidation(request);
+    } catch (ProjectCommonException e) {
+      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+      assertEquals(ResponseCode.dataTypeError.getErrorCode(), e.getCode());
+    }
+  }
+
+  @Test
+  public void testValidateFieldsNotAllowedFailure() {
+    Request request = initailizeRequest();
+    Map<String, Object> requestObj = request.getRequest();
+    requestObj.put(JsonKey.PROVIDER, "AP");
+    request.setRequest(requestObj);
+    try {
+      userRequestValidator.fieldsNotAllowed(
+          Arrays.asList(
+              JsonKey.REGISTERED_ORG_ID,
+              JsonKey.ROOT_ORG_ID,
+              JsonKey.PROVIDER,
+              JsonKey.EXTERNAL_ID,
+              JsonKey.EXTERNAL_ID_PROVIDER,
+              JsonKey.EXTERNAL_ID_TYPE,
+              JsonKey.ID_TYPE),
+          request);
+    } catch (ProjectCommonException e) {
+      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+      assertEquals(ResponseCode.invalidRequestParameter.getErrorCode(), e.getCode());
+    }
+  }
+
+  @Test
+  public void testValidateValidateCreateUserV3RequestSuccess() {
+    boolean response = false;
+    Request request = initailizeRequest();
+    Map<String, Object> requestObj = request.getRequest();
+    requestObj.put(JsonKey.PASSWORD, "Password@1");
+    request.setRequest(requestObj);
+    try {
+      userRequestValidator.validateCreateUserV3Request(request);
+      response = true;
+    } catch (ProjectCommonException e) {
+      Assert.assertNull(e);
+    }
+    assertEquals(true, response);
+  }
+
+  @Test
+  public void testValidatePasswordSuccess() {
+    boolean response = false;
+    Request request = initailizeRequest();
+    Map<String, Object> requestObj = request.getRequest();
+    requestObj.put(JsonKey.PASSWORD, "Password@1");
+    request.setRequest(requestObj);
+    try {
+      userRequestValidator.validateCreateUserRequest(request);
+      response = true;
+    } catch (ProjectCommonException e) {
+      Assert.assertNull(e);
+    }
+    assertEquals(true, response);
+  }
+
+  @Test
+  public void testValidateUserCreateV3Success() {
+    boolean response = false;
+    Request request = initailizeRequest();
+    Map<String, Object> requestObj = request.getRequest();
+    requestObj.put(JsonKey.PASSWORD, "Password@1");
+    request.setRequest(requestObj);
+    try {
+      userRequestValidator.validateUserCreateV3(request);
+      response = true;
+    } catch (ProjectCommonException e) {
+      Assert.assertNull(e);
+    }
+    assertEquals(true, response);
+  }
+
+  @Test
+  public void testValidateUserCreateV3Failure() {
+    Request request = initailizeRequest();
+    Map<String, Object> requestObj = request.getRequest();
+    requestObj.put(JsonKey.FIRST_NAME, "");
+    request.setRequest(requestObj);
+    try {
+      userRequestValidator.validateUserCreateV3(request);
+    } catch (ProjectCommonException e) {
+      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+      assertEquals(ResponseCode.mandatoryParamsMissing.getErrorCode(), e.getCode());
+    }
+  }
+
+  @Test
+  public void testValidateUserNameFailure() {
+    Request request = initailizeRequest();
+    Map<String, Object> requestObj = request.getRequest();
+    requestObj.put(JsonKey.USERNAME, "");
+    request.setRequest(requestObj);
+    try {
+      userRequestValidator.validateCreateUserV1Request(request);
+    } catch (ProjectCommonException e) {
+      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+      assertEquals(ResponseCode.mandatoryParamsMissing.getErrorCode(), e.getCode());
+    }
+  }
+
+  @Test
+  public void testValidateLocationCodesSuccess() {
+    boolean response = false;
+    Request request = initailizeRequest();
+    Map<String, Object> requestObj = request.getRequest();
+    List<String> location = new ArrayList<>();
+    location.add("KA");
+    location.add("AP");
+    requestObj.put(JsonKey.LOCATION_CODES, location);
+    request.setRequest(requestObj);
+    try {
+      userRequestValidator.validateCreateUserRequest(request);
+      response = true;
+    } catch (ProjectCommonException e) {
+      Assert.assertNull(e);
+      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+      assertEquals(ResponseCode.dataTypeError.getErrorCode(), e.getCode());
+    }
+    assertEquals(true, response);
+  }
+
+  @Test
+  public void testValidateLocationCodesFailure() {
+    Request request = initailizeRequest();
+    Map<String, Object> requestObj = request.getRequest();
+
+    requestObj.put(JsonKey.LOCATION_CODES, "AP");
+    request.setRequest(requestObj);
+    try {
+      userRequestValidator.validateCreateUserRequest(request);
+    } catch (ProjectCommonException e) {
+      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+      assertEquals(ResponseCode.dataTypeError.getErrorCode(), e.getCode());
+    }
+  }
+
+  @Test
   public void testValidateForgotPasswordSuccess() {
     Request request = new Request();
     boolean response = false;
