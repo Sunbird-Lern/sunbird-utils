@@ -86,6 +86,12 @@ public class UserRequestValidator extends BaseRequestValidator {
     phoneVerifiedValidation(userRequest);
     emailVerifiedValidation(userRequest);
     validatePassword((String) userRequest.getRequest().get(JsonKey.PASSWORD));
+    if (StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
+      validateEmail((String) userRequest.getRequest().get(JsonKey.EMAIL));
+    }
+    if (StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.PHONE))) {
+      validatePhone((String) userRequest.getRequest().get(JsonKey.PHONE));
+    }
   }
 
   public void validateCreateUserV3Request(Request userRequest) {
