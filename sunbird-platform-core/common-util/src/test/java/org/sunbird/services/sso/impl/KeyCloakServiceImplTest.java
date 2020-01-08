@@ -1,8 +1,6 @@
 package org.sunbird.services.sso.impl;
 
-import static org.powermock.api.mockito.PowerMockito.doNothing;
-import static org.powermock.api.mockito.PowerMockito.doReturn;
-import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -102,6 +100,7 @@ public class KeyCloakServiceImplTest extends BaseHttpTest {
       Map<String, Object> map = new HashMap<>();
       map.put(JsonKey.LAST_LOGIN_TIME, Arrays.asList(String.valueOf(System.currentTimeMillis())));
       doReturn(map).when(userRep).getAttributes();
+      when(userRep.getUsername()).thenReturn("userName");
     } catch (Exception e) {
       e.printStackTrace();
       Assert.fail(
@@ -121,6 +120,12 @@ public class KeyCloakServiceImplTest extends BaseHttpTest {
       exp = e;
     }
     Assert.assertNull(exp);
+  }
+
+  @Test
+  public void testGetUsernameById() {
+    String result = keyCloakService.getUsernameById("1234-567-890");
+    Assert.assertNotNull(result);
   }
 
   @Test
