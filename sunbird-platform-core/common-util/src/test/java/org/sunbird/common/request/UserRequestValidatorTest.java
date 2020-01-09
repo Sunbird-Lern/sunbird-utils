@@ -1254,6 +1254,23 @@ public class UserRequestValidatorTest {
     Assert.assertFalse(response);
   }
 
+  @Test
+  public void validateUserCreateV3Sussess() {
+    boolean response = true;
+    try {
+      Request request = new Request();
+      request.getRequest().put(JsonKey.FIRST_NAME, "test name");
+      request.getRequest().put(JsonKey.EMAIL, "test@test.com");
+      request.getRequest().put(JsonKey.EMAIL_VERIFIED, true);
+      request.getRequest().put(JsonKey.PHONE, "9663890445");
+      request.getRequest().put(JsonKey.PHONE_VERIFIED, true);
+      new UserRequestValidator().validateUserCreateV3(request);
+    } catch (Exception e) {
+      response = false;
+    }
+    Assert.assertTrue(response);
+  }
+
   private Request initailizeRequest() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
