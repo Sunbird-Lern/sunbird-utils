@@ -52,6 +52,9 @@ public class KeyCloakConnectionProvider {
     if (cache.getProperty(JsonKey.SSO_CLIENT_SECRET) != null
         && !(cache.getProperty(JsonKey.SSO_CLIENT_SECRET).equals(JsonKey.SSO_CLIENT_SECRET))) {
       keycloakBuilder.clientSecret(cache.getProperty(JsonKey.SSO_CLIENT_SECRET));
+      ProjectLogger.log(
+          "KeyCloakConnectionProvider:initialiseConnection client sceret is provided.",
+          LoggerEnum.INFO.name());
     }
     SSO_URL = cache.getProperty(JsonKey.SSO_URL);
     SSO_REALM = cache.getProperty(JsonKey.SSO_REALM);
@@ -73,7 +76,7 @@ public class KeyCloakConnectionProvider {
     String username = System.getenv(JsonKey.SUNBIRD_SSO_USERNAME);
     String password = System.getenv(JsonKey.SUNBIRD_SSO_PASSWORD);
     String cleintId = System.getenv(JsonKey.SUNBIRD_SSO_CLIENT_ID);
-    String cleintSecret = System.getenv(JsonKey.SUNBIRD_SSO_CLIENT_SECRET);
+    String clientSecret = System.getenv(JsonKey.SUNBIRD_SSO_CLIENT_SECRET);
     String relam = System.getenv(JsonKey.SUNBIRD_SSO_RELAM);
     if (StringUtils.isBlank(url)
         || StringUtils.isBlank(username)
@@ -100,8 +103,11 @@ public class KeyCloakConnectionProvider {
                     .connectionPoolSize(Integer.parseInt(cache.getProperty(JsonKey.SSO_POOL_SIZE)))
                     .build());
 
-    if (!StringUtils.isBlank(cleintSecret)) {
+    if (StringUtils.isNotBlank(clientSecret)) {
       keycloakBuilder.clientSecret(cache.getProperty(JsonKey.SSO_CLIENT_SECRET));
+      ProjectLogger.log(
+          "KeyCloakConnectionProvider:initialiseEnvConnection client sceret is provided.",
+          LoggerEnum.INFO.name());
     }
     keycloak = keycloakBuilder.build();
     ProjectLogger.log(
