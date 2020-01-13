@@ -463,6 +463,7 @@ public interface ResponseMessage {
         "Invalid value supplied for parameter {0}.Supported values are {1}";
     String INVALID_PASSWORD =
         "Password must contain a minimum of 8 characters including numerals, lower and upper case alphabets and special characters";
+    String OTP_VERIFICATION_FAILED = "OTP verification failed. Remaining attempt count is {0}.";
   }
 
   interface Key {
@@ -854,5 +855,6 @@ public interface ResponseMessage {
     String USER_MIGRATION_FAILED = "USER_MIGRATION_FAILED";
     String INVALID_ELEMENT_IN_LIST = "INVALID_ELEMENT_IN_LIST";
     String INVALID_PASSWORD = "INVALID_PASSWORD";
+    String OTP_VERIFICATION_FAILED = "OTP_VERIFICATION_FAILED";
   }
 }

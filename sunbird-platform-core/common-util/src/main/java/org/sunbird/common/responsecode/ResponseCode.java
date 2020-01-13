@@ -845,6 +845,8 @@ public enum ResponseCode {
       ResponseMessage.Key.INVALID_ELEMENT_IN_LIST, ResponseMessage.Message.INVALID_ELEMENT_IN_LIST),
   passwordValidation(
       ResponseMessage.Key.INVALID_PASSWORD, ResponseMessage.Message.INVALID_PASSWORD),
+  otpVerificationFailed(
+      ResponseMessage.Key.OTP_VERIFICATION_FAILED, ResponseMessage.Message.OTP_VERIFICATION_FAILED),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
