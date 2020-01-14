@@ -104,7 +104,7 @@ public class KeyCloakConnectionProvider {
                     .build());
 
     if (StringUtils.isNotBlank(clientSecret)) {
-      keycloakBuilder.clientSecret(cache.getProperty(JsonKey.SSO_CLIENT_SECRET));
+      keycloakBuilder.clientSecret(clientSecret);
       ProjectLogger.log(
           "KeyCloakConnectionProvider:initialiseEnvConnection client sceret is provided.",
           LoggerEnum.INFO.name());
