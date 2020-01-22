@@ -107,11 +107,6 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
         } else {
           cluster = createCluster(ip, port, poolingOptions);
         }
-        QueryLogger queryLogger =
-            QueryLogger.builder()
-                .withConstantThreshold(
-                    Integer.parseInt(cache.getProperty(Constants.QUERY_LOGGER_THRESHOLD)))
-                .build();
         cassandraSession = cluster.connect(keyspace);
 
         if (null != cassandraSession) {
