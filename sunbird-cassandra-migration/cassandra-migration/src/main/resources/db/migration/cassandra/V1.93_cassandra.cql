@@ -1,0 +1,1 @@
+ALTER TABLE sunbird.otp ADD attemptedCount int;

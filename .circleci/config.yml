@@ -13,7 +13,7 @@ jobs:
       - run:
           name: Analyze on SonarCloud
           command: mvn verify sonar:sonar -Dsonar.projectKey=project-sunbird_sunbird-utils -Dsonar.organization=project-sunbird -Dsonar.host.url=https://sonarcloud.io -Dsonar.coverage.jacoco.xmlReportPaths=/home/circleci/project/notification-sdk/target/site/jacoco/jacoco.xml,/home/circleci/project/sunbird-platform-core/common-util/target/site/jacoco/jacoco.xml,/home/circleci/project/sunbird-es-utils/target/site/jacoco/jacoco.xml,/home/circleci/project/sunbird-notification/target/site/jacoco/jacoco.xml,/home/circleci/project/sunbird-cassandra-utils/target/site/jacoco/jacoco.xml
-      
+#dummy line
 workflows:
   version: 2.1
   workflow:

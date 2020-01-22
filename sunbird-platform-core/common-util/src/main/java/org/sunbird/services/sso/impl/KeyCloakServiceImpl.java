@@ -330,6 +330,7 @@ public class KeyCloakServiceImpl implements SSOManager {
   private void makeUserActiveOrInactive(String userId, boolean status) {
     try {
       String fedUserId = getFederatedUserId(userId);
+      ProjectLogger.log("KeyCloakServiceImpl:makeUserActiveOrInactive: fedration id formed: "+fedUserId,LoggerEnum.INFO.name());
       validateUserId(fedUserId);
       Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
       UserResource resource =
@@ -340,7 +341,7 @@ public class KeyCloakServiceImpl implements SSOManager {
         resource.update(ur);
       }
     } catch (Exception e) {
-      ProjectLogger.log(e.getMessage(), e);
+      ProjectLogger.log("KeyCloakServiceImpl:makeUserActiveOrInactive:error occurred while blocking user: "+e,LoggerEnum.ERROR.name());
       ProjectUtil.createAndThrowInvalidUserDataException();
     }
   }
