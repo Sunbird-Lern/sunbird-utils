@@ -112,8 +112,6 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
                 .withConstantThreshold(
                     Integer.parseInt(cache.getProperty(Constants.QUERY_LOGGER_THRESHOLD)))
                 .build();
-
-        cluster.register(queryLogger);
         cassandraSession = cluster.connect(keyspace);
 
         if (null != cassandraSession) {
