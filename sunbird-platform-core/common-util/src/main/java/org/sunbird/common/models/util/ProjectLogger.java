@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.request.ExecutionContext;
 import org.sunbird.common.request.Request;
@@ -26,8 +26,7 @@ public class ProjectLogger {
   private static String pVersion = "1.0";
   private static String dataId = "Sunbird";
   private static ObjectMapper mapper = new ObjectMapper();
-  private static Logger rootLogger = (Logger) LogManager.getLogger("defaultLogger");
-  //	private static TelemetryLmaxWriter lmaxWriter = TelemetryLmaxWriter.getInstance();
+  private static Logger rootLogger = (Logger) LogManager.getLogger(ProjectLogger.class);
 
   /** To log only message. */
   public static void log(String message) {
