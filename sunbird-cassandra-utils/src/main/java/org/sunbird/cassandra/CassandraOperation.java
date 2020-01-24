@@ -245,6 +245,23 @@ public interface CassandraOperation {
       String keyspaceName, String tableName, Map<String, Object> key, List<String> fields);
 
   /**
+   * Method to get record by primary key consisting of only specified fields (return all if null).
+   *
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param key Primary key
+   * @param ttlFields List of columns to be returned in each record with ttl
+   * @param fields List of columns to be returned in each record
+   * @return Response consisting of matched record
+   */
+  Response getRecordWithTTLById(
+      String keyspaceName,
+      String tableName,
+      Map<String, Object> key,
+      List<String> ttlFields,
+      List<String> fields);
+
+  /**
    * Method to perform batch insert operation.
    *
    * @param keyspaceName Keyspace name
@@ -317,12 +334,28 @@ public interface CassandraOperation {
       String keyspaceName, String tableName, Map<String, Object> request, int ttl);
 
   /**
+   * Update record with TTL expiration
+   *
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param request Map consisting of column name and value
+   * @param ttl Time to live after which inserted record will be auto deleted
+   * @param compositeKey Column map for composite primary key
+   * @return Response indicating status of operation
+   */
+  public Response updateRecordWithTTL(
+      String keyspaceName,
+      String tableName,
+      Map<String, Object> request,
+      Map<String, Object> compositeKey,
+      int ttl);
+  /**
    * Fetch records with specified columns that match given partition / primary key. Multiple records
    * would be fetched in case partition key is specified.
    *
    * @param keyspaceName Keyspace name
    * @param tableName Table name
-   * @param primaryKey Column and value map for partition / primary key
+   * @param primaryKeys Column and value map for partition / primary key
    * @param properties List of columns to be returned in each record
    * @param ttlPropertiesWithAlias Map containing TTL column as key and alias as value.
    * @return Response consisting of fetched records

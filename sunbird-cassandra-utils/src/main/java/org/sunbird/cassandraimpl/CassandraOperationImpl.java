@@ -11,15 +11,10 @@ import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.exceptions.NoHostAvailableException;
 import com.datastax.driver.core.exceptions.QueryExecutionException;
 import com.datastax.driver.core.exceptions.QueryValidationException;
-import com.datastax.driver.core.querybuilder.Clause;
-import com.datastax.driver.core.querybuilder.Delete;
-import com.datastax.driver.core.querybuilder.Insert;
-import com.datastax.driver.core.querybuilder.QueryBuilder;
-import com.datastax.driver.core.querybuilder.Select;
+import com.datastax.driver.core.querybuilder.*;
 import com.datastax.driver.core.querybuilder.Select.Builder;
 import com.datastax.driver.core.querybuilder.Select.Selection;
 import com.datastax.driver.core.querybuilder.Select.Where;
-import com.datastax.driver.core.querybuilder.Update;
 import com.datastax.driver.core.querybuilder.Update.Assignments;
 import com.google.common.util.concurrent.FutureCallback;
 import java.text.MessageFormat;
@@ -444,7 +439,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
       Session session = connectionManager.getSession(keyspaceName);
       Builder selectBuilder;
       if (CollectionUtils.isNotEmpty(fields)) {
-        selectBuilder = QueryBuilder.select((String[]) fields.toArray());
+        selectBuilder = QueryBuilder.select(fields.toArray(new String[fields.size()]));
       } else {
         selectBuilder = QueryBuilder.select().all();
       }
@@ -495,6 +490,57 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
   public Response getRecordById(
       String keyspaceName, String tableName, Map<String, Object> key, List<String> fields) {
     return getRecordByIdentifier(keyspaceName, tableName, key, fields);
+  }
+
+  @Override
+  public Response getRecordWithTTLById(
+      String keyspaceName,
+      String tableName,
+      Map<String, Object> key,
+      List<String> ttlFields,
+      List<String> fields) {
+    return getRecordWithTTLByIdentifier(keyspaceName, tableName, key, ttlFields, fields);
+  }
+
+  public Response getRecordWithTTLByIdentifier(
+      String keyspaceName,
+      String tableName,
+      Map<String, Object> key,
+      List<String> ttlFields,
+      List<String> fields) {
+    long startTime = System.currentTimeMillis();
+    ProjectLogger.log(
+        "Cassandra Service getRecordBy key method started at ==" + startTime,
+        LoggerEnum.INFO.name());
+    Response response = new Response();
+    try {
+      Session session = connectionManager.getSession(keyspaceName);
+      Selection select = QueryBuilder.select();
+      for (String field : fields) {
+        select.column(field);
+      }
+      for (String field : ttlFields) {
+        select.ttl(field).as(field + "_ttl");
+      }
+      Select.Where selectWhere = select.from(keyspaceName, tableName).where();
+      key.entrySet()
+          .stream()
+          .forEach(
+              x -> {
+                selectWhere.and(QueryBuilder.eq(x.getKey(), x.getValue()));
+              });
+
+      ResultSet results = session.execute(selectWhere);
+      response = CassandraUtil.createResponse(results);
+    } catch (Exception e) {
+      ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName + " : " + e.getMessage(), e);
+      throw new ProjectCommonException(
+          ResponseCode.SERVER_ERROR.getErrorCode(),
+          ResponseCode.SERVER_ERROR.getErrorMessage(),
+          ResponseCode.SERVER_ERROR.getResponseCode());
+    }
+    logQueryElapseTime("getRecordByIdentifier", startTime);
+    return response;
   }
 
   @Override
@@ -926,6 +972,42 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
     ResultSet results = connectionManager.getSession(keyspaceName).execute(insert);
     Response response = CassandraUtil.createResponse(results);
     logQueryElapseTime("insertRecordWithTTL", startTime);
+    return response;
+  }
+
+  @Override
+  public Response updateRecordWithTTL(
+      String keyspaceName,
+      String tableName,
+      Map<String, Object> request,
+      Map<String, Object> compositeKey,
+      int ttl) {
+    long startTime = System.currentTimeMillis();
+    Session session = connectionManager.getSession(keyspaceName);
+    Update update = QueryBuilder.update(keyspaceName, tableName);
+    Assignments assignments = update.with();
+    Update.Where where = update.where();
+    request
+        .entrySet()
+        .stream()
+        .forEach(
+            x -> {
+              assignments.and(QueryBuilder.set(x.getKey(), x.getValue()));
+            });
+    compositeKey
+        .entrySet()
+        .stream()
+        .forEach(
+            x -> {
+              where.and(eq(x.getKey(), x.getValue()));
+            });
+    update.using(QueryBuilder.ttl(ttl));
+    ProjectLogger.log(
+        "CassandraOperationImpl:updateRecordWithTTL: query = " + update.getQueryString(),
+        LoggerEnum.INFO.name());
+    ResultSet results = session.execute(update);
+    Response response = CassandraUtil.createResponse(results);
+    logQueryElapseTime("updateRecordWithTTL", startTime);
     return response;
   }
 
