@@ -1,14 +1,11 @@
 package org.sunbird.cassandraimpl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.reset;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 import com.datastax.driver.core.*;
-import com.datastax.driver.core.querybuilder.Delete;
-import com.datastax.driver.core.querybuilder.QueryBuilder;
-import com.datastax.driver.core.querybuilder.Select;
+import com.datastax.driver.core.querybuilder.*;
 import com.google.common.util.concurrent.Uninterruptibles;
 import java.text.MessageFormat;
 import java.util.*;
@@ -59,12 +56,22 @@ import org.sunbird.helper.ServiceFactory;
   QueryBuilder.class,
   Select.Selection.class,
   Delete.Where.class,
-  Delete.Selection.class
+  Delete.Selection.class,
+  Update.class,
+  Update.Assignments.class,
+  Update.Where.class,
+  Using.class,
+  Iterator.class,
+  Row.class,
+  Select.SelectionOrAlias.class
 })
 @PowerMockIgnore("javax.management.*")
 public class CassandraOperationImplTest {
 
+  private static Iterator iterator;
+  private static Row row;
   private static Cluster cluster;
+  private static Update update;
   private static Session session = PowerMockito.mock(Session.class);
   private static PreparedStatement statement;
   private static ResultSet resultSet;
@@ -85,7 +92,9 @@ public class CassandraOperationImplTest {
   private static Select.Selection selectSelection;
   private static Delete.Selection deleteSelection;
   private static Delete delete;
+
   private static KeyspaceMetadata keyspaceMetadata;
+  private static Map<String, Object> otp = null;
   private static CassandraConnectionManagerImpl connectionManager =
       (CassandraConnectionManagerImpl)
           CassandraConnectionMngrFactory.getObject(
@@ -93,9 +102,14 @@ public class CassandraOperationImplTest {
 
   @BeforeClass
   public static void init() {
-
+    PowerMockito.mockStatic(Select.SelectionOrAlias.class);
+    PowerMockito.mockStatic(Using.class);
     PowerMockito.mockStatic(Cluster.class);
+    PowerMockito.mockStatic(Update.Assignments.class);
+    PowerMockito.mockStatic(Update.Where.class);
+    iterator = PowerMockito.mock(Iterator.class);
     cluster = PowerMockito.mock(Cluster.class);
+    update = PowerMockito.mock(Update.class);
     when(cluster.connect(Mockito.anyString())).thenReturn(session);
     metadata = PowerMockito.mock(Metadata.class);
     when(cluster.getMetadata()).thenReturn(metadata);
@@ -119,6 +133,12 @@ public class CassandraOperationImplTest {
     address.put(JsonKey.ADDRESS_LINE1, "Line 1");
     address.put(JsonKey.USER_ID, "USR1");
 
+    otp = new HashMap<>();
+    otp.put(JsonKey.TYPE, "email");
+    otp.put(JsonKey.KEY, "amit@example.com");
+    otp.put(JsonKey.OTP, "987456");
+    otp.put(JsonKey.CREATED_ON, System.currentTimeMillis());
+
     dummyAddress = new HashMap<>();
     dummyAddress.put(JsonKey.ID, "12345");
     dummyAddress.put(JsonKey.ADDRESS_LINE1, "Line 111");
@@ -137,7 +157,12 @@ public class CassandraOperationImplTest {
     operation = ServiceFactory.getInstance();
     resultSet = PowerMockito.mock(ResultSet.class);
     keyspaceMetadata = PowerMockito.mock(KeyspaceMetadata.class);
+    Update.Assignments assignments = PowerMockito.mock(Update.Assignments.class);
     when(QueryBuilder.select()).thenReturn(selectSelection);
+    Update.Where where2 = PowerMockito.mock(Update.Where.class);
+    when(update.where()).thenReturn(where2);
+    when(QueryBuilder.update(cassandraKeySpace, "otp")).thenReturn(update);
+    when(update.with()).thenReturn(assignments);
     when(deleteSelection.from(Mockito.anyString(), Mockito.anyString())).thenReturn(delete);
     when(delete.where(QueryBuilder.eq(Constants.IDENTIFIER, "123"))).thenReturn(deleteWhere);
     when(selectQuery.where()).thenReturn(where);
@@ -218,6 +243,18 @@ public class CassandraOperationImplTest {
     when(session.execute(boundStatement)).thenReturn(resultSet);
     Response response = operation.updateRecord(cassandraKeySpace, "address", address);
     assertEquals(ResponseCode.success.getErrorCode(), response.get("response"));
+  }
+
+  @Test
+  public void testUpdateRecordWithTTLSuccess() {
+    when(resultSet.iterator()).thenReturn(iterator);
+    Map<String, Object> compositeKey = new HashMap<>();
+    compositeKey.put(JsonKey.TYPE, JsonKey.EMAIL);
+    compositeKey.put(JsonKey.KEY, "amit@example.com");
+    when(session.execute(update)).thenReturn(resultSet);
+    Response response =
+        operation.updateRecordWithTTL(cassandraKeySpace, "otp", otp, compositeKey, 120);
+    assertNotNull(response.get("response"));
   }
 
   @Test
@@ -357,6 +394,34 @@ public class CassandraOperationImplTest {
     when(selectSelection.all()).thenReturn(selectBuilder);
 
     Response response = operation.getRecordById(cassandraKeySpace, "address", "123");
+    assertTrue(response.getResult().size() > 0);
+  }
+
+  @Test
+  public void testGetRecordWithTTLById() {
+    Select.SelectionOrAlias alias = PowerMockito.mock(Select.SelectionOrAlias.class);
+    Select select = PowerMockito.mock(Select.class);
+    when(selectSelection.from("sunbird", "otp")).thenReturn(select);
+    when(select.where()).thenReturn(where);
+    when(selectSelection.ttl("otp")).thenReturn(alias);
+    when(alias.as("otp_ttl")).thenReturn(selectSelection);
+    Iterator<Row> rowItr = Mockito.mock(Iterator.class);
+    Mockito.when(resultSet.iterator()).thenReturn(rowItr);
+    when(session.execute(where)).thenReturn(resultSet);
+    when(selectBuilder.from(Mockito.anyString(), Mockito.anyString())).thenReturn(selectQuery);
+    when(selectSelection.all()).thenReturn(selectBuilder);
+    Map<String, Object> key = new HashMap<>();
+    key.put(JsonKey.TYPE, JsonKey.EMAIL);
+    key.put(JsonKey.KEY, "amit@example.com");
+    List<String> ttlFields = new ArrayList<>();
+    ttlFields.add(JsonKey.OTP);
+    List<String> fields = new ArrayList<>();
+    fields.add(JsonKey.CREATED_ON);
+    fields.add(JsonKey.TYPE);
+    fields.add(JsonKey.OTP);
+    fields.add(JsonKey.KEY);
+    Response response =
+        operation.getRecordWithTTLById(cassandraKeySpace, "otp", key, ttlFields, fields);
     assertTrue(response.getResult().size() > 0);
   }
 
