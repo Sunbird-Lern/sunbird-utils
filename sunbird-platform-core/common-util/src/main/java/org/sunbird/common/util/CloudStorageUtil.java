@@ -53,10 +53,9 @@ public class CloudStorageUtil {
         filePath,
         objectKey,
         Option.apply(false),
-        Option.apply(false),
-        Option.empty(),
+        Option.apply(1),
         Option.apply(STORAGE_SERVICE_API_RETRY_COUNT),
-        1);
+        Option.apply(1));
   }
 
   public static String getSignedUrl(
