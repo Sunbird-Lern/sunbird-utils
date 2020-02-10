@@ -231,22 +231,6 @@ public class KeyCloakServiceImplTest extends BaseHttpTest {
     }
   }
 
-  @Ignore
-  public void testLoginSuccess() {
-    mockHttpUrlResponse(
-        "realms/sunbird/protocol/openid-connect/token", "{\"access_token\":\"_your_token\"}");
-    String authKey = keyCloakService.login(userName, "password");
-    Assert.assertNotEquals("", authKey);
-  }
-
-  @Test
-  public void testLoginFailureWithInvalidPassword() {
-    mockHttpUrlResponse(
-        "realms/sunbird/protocol/openid-connect/token", null, true, "&password=password123&");
-    String authKey = keyCloakService.login(userName, "password123");
-    Assert.assertEquals("", authKey);
-  }
-
   @Test
   public void testIsEmailVerifiedSuccess() {
     boolean response = keyCloakService.isEmailVerified(userId.get(JsonKey.USER_ID));

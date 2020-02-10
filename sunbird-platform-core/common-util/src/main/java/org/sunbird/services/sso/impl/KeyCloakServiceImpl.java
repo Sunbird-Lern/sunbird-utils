@@ -431,39 +431,6 @@ public class KeyCloakServiceImpl implements SSOManager {
     return response;
   }
 
-  /**
-   * This method will call keycloak service to user login. after successfull login it will provide
-   * access token.
-   *
-   * @param userName String
-   * @param password String
-   * @return String access token
-   */
-  @Override
-  public String login(String userName, String password) {
-    String accessTokenId = "";
-    StringBuilder builder = new StringBuilder();
-    builder.append(
-        "client_id="
-            + KeyCloakConnectionProvider.CLIENT_ID
-            + "&username="
-            + userName
-            + "&password="
-            + password
-            + "&grant_type=password");
-    Map<String, String> headerMap = new HashMap<>();
-    headerMap.put("Content-Type", "application/x-www-form-urlencoded");
-    try {
-      String response = HttpUtil.sendPostRequest(URL, builder.toString(), headerMap);
-      if (!StringUtils.isBlank(response)) {
-        JSONObject object = new JSONObject(response);
-        accessTokenId = object.getString(JsonKey.ACCESS_TOKEN);
-      }
-    } catch (Exception e) {
-      ProjectLogger.log(e.getMessage(), e);
-    }
-    return accessTokenId;
-  }
 
   @Override
   public String getLastLoginTime(String userId) {
