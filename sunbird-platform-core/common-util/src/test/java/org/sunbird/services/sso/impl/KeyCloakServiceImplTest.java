@@ -355,4 +355,12 @@ public class KeyCloakServiceImplTest extends BaseHttpTest {
     boolean updated = keyCloakService.updatePassword(userId.get(JsonKey.USER_ID), "password");
     Assert.assertTrue(updated);
   }
+
+  @Test
+  public void testLoginFailureWithInvalidPassword() {
+    mockHttpUrlResponse(
+        "realms/sunbird/protocol/openid-connect/token", null, true, "&password=password123&");
+    String authKey = keyCloakService.login(userId.get(JsonKey.USER_ID));
+    Assert.assertEquals("", authKey);
+  }
 }
