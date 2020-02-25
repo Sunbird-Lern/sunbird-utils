@@ -107,13 +107,6 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
         } else {
           cluster = createCluster(ip, port, poolingOptions);
         }
-        QueryLogger queryLogger =
-            QueryLogger.builder()
-                .withConstantThreshold(
-                    Integer.parseInt(cache.getProperty(Constants.QUERY_LOGGER_THRESHOLD)))
-                .build();
-
-        cluster.register(queryLogger);
         cassandraSession = cluster.connect(keyspace);
 
         if (null != cassandraSession) {
@@ -134,7 +127,7 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
         }
       }
     } catch (Exception e) {
-      ProjectLogger.log("Error occured while creating connection :", e);
+      ProjectLogger.log("Error occurred while creating connection :", e);
       throw new ProjectCommonException(
           ResponseCode.internalError.getErrorCode(),
           e.getMessage(),

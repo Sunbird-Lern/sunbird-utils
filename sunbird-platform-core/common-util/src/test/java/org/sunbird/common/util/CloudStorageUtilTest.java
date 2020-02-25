@@ -43,9 +43,8 @@ public class CloudStorageUtilTest {
               Mockito.any(Option.class),
               Mockito.any(Option.class),
               Mockito.any(Option.class),
-              Mockito.any(Option.class),
-              Mockito.anyInt()))
-          .thenReturn(UPLOAD_URL);
+              Mockito.any(Option.class)))
+              .thenReturn(UPLOAD_URL);
 
       when(service.getSignedURL(
               Mockito.anyString(),
