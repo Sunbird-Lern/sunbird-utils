@@ -15,7 +15,6 @@ import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONObject;
 import org.keycloak.RSATokenVerifier;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UserResource;
@@ -23,7 +22,6 @@ import org.keycloak.representations.AccessToken;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.sunbird.common.exception.ProjectCommonException;
-import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.KeyCloakConnectionProvider;
 import org.sunbird.common.models.util.LoggerEnum;
@@ -627,36 +625,5 @@ public class KeyCloakServiceImpl implements SSOManager {
           ResponseCode.unAuthorized.getErrorMessage(),
           ResponseCode.UNAUTHORIZED.getResponseCode());
     }
-  }
-
-  /**
-   * This method will call keycloak service to user login. after successfull login it will provide
-   * access token.
-   *
-   * @param clientSecret String
-   * @return String access token
-   */
-  @Override
-  public String login(String clientSecret) {
-    String accessTokenId = "";
-    StringBuilder builder = new StringBuilder();
-    builder.append(
-        "client_id="
-            + KeyCloakConnectionProvider.CLIENT_ID
-            + "&client_secret="
-            + clientSecret
-            + "&grant_type=client_credentials");
-    Map<String, String> headerMap = new HashMap<>();
-    headerMap.put("Content-Type", "application/x-www-form-urlencoded");
-    try {
-      String response = HttpUtil.sendPostRequest(URL, builder.toString(), headerMap);
-      if (!StringUtils.isBlank(response)) {
-        JSONObject object = new JSONObject(response);
-        accessTokenId = object.getString(JsonKey.ACCESS_TOKEN);
-      }
-    } catch (Exception e) {
-      ProjectLogger.log(e.getMessage(), e);
-    }
-    return accessTokenId;
   }
 }

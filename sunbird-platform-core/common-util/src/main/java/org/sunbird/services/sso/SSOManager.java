@@ -128,6 +128,4 @@ public interface SSOManager {
    * @return String
    */
   String verifyToken(String token, String url);
-
-  String login(String clientSecret);
 }
