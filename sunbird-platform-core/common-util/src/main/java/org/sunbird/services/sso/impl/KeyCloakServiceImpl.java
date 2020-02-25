@@ -330,7 +330,9 @@ public class KeyCloakServiceImpl implements SSOManager {
   private void makeUserActiveOrInactive(String userId, boolean status) {
     try {
       String fedUserId = getFederatedUserId(userId);
-      ProjectLogger.log("KeyCloakServiceImpl:makeUserActiveOrInactive: fedration id formed: "+fedUserId,LoggerEnum.INFO.name());
+      ProjectLogger.log(
+          "KeyCloakServiceImpl:makeUserActiveOrInactive: fedration id formed: " + fedUserId,
+          LoggerEnum.INFO.name());
       validateUserId(fedUserId);
       Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
       UserResource resource =
@@ -341,7 +343,9 @@ public class KeyCloakServiceImpl implements SSOManager {
         resource.update(ur);
       }
     } catch (Exception e) {
-      ProjectLogger.log("KeyCloakServiceImpl:makeUserActiveOrInactive:error occurred while blocking user: "+e,LoggerEnum.ERROR.name());
+      ProjectLogger.log(
+          "KeyCloakServiceImpl:makeUserActiveOrInactive:error occurred while blocking user: " + e,
+          LoggerEnum.ERROR.name());
       ProjectUtil.createAndThrowInvalidUserDataException();
     }
   }
@@ -430,7 +434,6 @@ public class KeyCloakServiceImpl implements SSOManager {
     }
     return response;
   }
-
 
   @Override
   public String getLastLoginTime(String userId) {
@@ -624,5 +627,36 @@ public class KeyCloakServiceImpl implements SSOManager {
           ResponseCode.unAuthorized.getErrorMessage(),
           ResponseCode.UNAUTHORIZED.getResponseCode());
     }
+  }
+
+  /**
+   * This method will call keycloak service to user login. after successfull login it will provide
+   * access token.
+   *
+   * @param clientSecret String
+   * @return String access token
+   */
+  @Override
+  public String login(String clientSecret) {
+    String accessTokenId = "";
+    StringBuilder builder = new StringBuilder();
+    builder.append(
+        "client_id="
+            + KeyCloakConnectionProvider.CLIENT_ID
+            + "&client_secret="
+            + clientSecret
+            + "&grant_type=client_credentials");
+    Map<String, String> headerMap = new HashMap<>();
+    headerMap.put("Content-Type", "application/x-www-form-urlencoded");
+    try {
+      String response = HttpUtil.sendPostRequest(URL, builder.toString(), headerMap);
+      if (!StringUtils.isBlank(response)) {
+        JSONObject object = new JSONObject(response);
+        accessTokenId = object.getString(JsonKey.ACCESS_TOKEN);
+      }
+    } catch (Exception e) {
+      ProjectLogger.log(e.getMessage(), e);
+    }
+    return accessTokenId;
   }
 }
