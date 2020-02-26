@@ -15,7 +15,6 @@ import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONObject;
 import org.keycloak.RSATokenVerifier;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UserResource;
@@ -23,7 +22,6 @@ import org.keycloak.representations.AccessToken;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.sunbird.common.exception.ProjectCommonException;
-import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.KeyCloakConnectionProvider;
 import org.sunbird.common.models.util.LoggerEnum;
@@ -330,7 +328,9 @@ public class KeyCloakServiceImpl implements SSOManager {
   private void makeUserActiveOrInactive(String userId, boolean status) {
     try {
       String fedUserId = getFederatedUserId(userId);
-      ProjectLogger.log("KeyCloakServiceImpl:makeUserActiveOrInactive: fedration id formed: "+fedUserId,LoggerEnum.INFO.name());
+      ProjectLogger.log(
+          "KeyCloakServiceImpl:makeUserActiveOrInactive: fedration id formed: " + fedUserId,
+          LoggerEnum.INFO.name());
       validateUserId(fedUserId);
       Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
       UserResource resource =
@@ -341,7 +341,9 @@ public class KeyCloakServiceImpl implements SSOManager {
         resource.update(ur);
       }
     } catch (Exception e) {
-      ProjectLogger.log("KeyCloakServiceImpl:makeUserActiveOrInactive:error occurred while blocking user: "+e,LoggerEnum.ERROR.name());
+      ProjectLogger.log(
+          "KeyCloakServiceImpl:makeUserActiveOrInactive:error occurred while blocking user: " + e,
+          LoggerEnum.ERROR.name());
       ProjectUtil.createAndThrowInvalidUserDataException();
     }
   }
@@ -430,7 +432,6 @@ public class KeyCloakServiceImpl implements SSOManager {
     }
     return response;
   }
-
 
   @Override
   public String getLastLoginTime(String userId) {
