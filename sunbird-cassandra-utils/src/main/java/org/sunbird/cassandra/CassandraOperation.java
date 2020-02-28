@@ -245,6 +245,23 @@ public interface CassandraOperation {
       String keyspaceName, String tableName, Map<String, Object> key, List<String> fields);
 
   /**
+   * Method to get record by primary key consisting of only specified fields (return all if null).
+   *
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param key Primary key
+   * @param ttlFields List of columns to be returned in each record with ttl
+   * @param fields List of columns to be returned in each record
+   * @return Response consisting of matched record
+   */
+  Response getRecordWithTTLById(
+      String keyspaceName,
+      String tableName,
+      Map<String, Object> key,
+      List<String> ttlFields,
+      List<String> fields);
+
+  /**
    * Method to perform batch insert operation.
    *
    * @param keyspaceName Keyspace name
@@ -317,12 +334,28 @@ public interface CassandraOperation {
       String keyspaceName, String tableName, Map<String, Object> request, int ttl);
 
   /**
+   * Update record with TTL expiration
+   *
+   * @param keyspaceName Keyspace name
+   * @param tableName Table name
+   * @param request Map consisting of column name and value
+   * @param ttl Time to live after which inserted record will be auto deleted
+   * @param compositeKey Column map for composite primary key
+   * @return Response indicating status of operation
+   */
+  public Response updateRecordWithTTL(
+      String keyspaceName,
+      String tableName,
+      Map<String, Object> request,
+      Map<String, Object> compositeKey,
+      int ttl);
+  /**
    * Fetch records with specified columns that match given partition / primary key. Multiple records
    * would be fetched in case partition key is specified.
    *
    * @param keyspaceName Keyspace name
    * @param tableName Table name
-   * @param primaryKey Column and value map for partition / primary key
+   * @param primaryKeys Column and value map for partition / primary key
    * @param properties List of columns to be returned in each record
    * @param ttlPropertiesWithAlias Map containing TTL column as key and alias as value.
    * @return Response consisting of fetched records
@@ -353,6 +386,8 @@ public interface CassandraOperation {
   /**
    * Apply callback on cassandra async read call.
    *
+   * @param keySpace Keyspace name
+   * @param table Table name
    * @param filters Column and value map for filtering
    * @param fields List of columns to be returned in each record
    * @param callback action callback to be applied on resultset when it is returned.
@@ -364,6 +399,66 @@ public interface CassandraOperation {
       List<String> fields,
       FutureCallback<ResultSet> callback);
 
+  public Response getRecordByObjectType(
+      String keyspace,
+      String tableName,
+      String columnName,
+      String key,
+      int value,
+      String objectType);
 
-  public Response getRecordByObjectType(String keyspace,String tableName,String columnName,String key,int value,String objectType);
+  public Response performBatchAction(
+      String keyspaceName, String tableName, Map<String, Object> inputData);
+
+  /**
+   * this method will be used to do CONTAINS query in list
+   *
+   * @param keyspace
+   * @param tableName
+   * @param key
+   * @param Value
+   * @return
+   */
+  Response searchValueInList(String keyspace, String tableName, String key, String Value);
+
+  /**
+   * this method will be used to do CONTAINS query in list with the AND operations
+   *
+   * @param keyspace
+   * @param tableName
+   * @param key
+   * @param Value
+   * @param propertyMap
+   * @return
+   */
+  Response searchValueInList(
+      String keyspace, String tableName, String key, String Value, Map<String, Object> propertyMap);
+
+  /**
+   * @param keySpace
+   * @param table
+   * @param primaryKey
+   * @param column
+   * @param key
+   * @param value
+   * @return
+   */
+  public Response updateAddMapRecord(
+      String keySpace,
+      String table,
+      Map<String, Object> primaryKey,
+      String column,
+      String key,
+      Object value);
+
+  /**
+   * @param keySpace
+   * @param table
+   * @param primaryKey
+   * @param column
+   * @param key
+   * @return
+   */
+  public Response updateRemoveMapRecord(
+      String keySpace, String table, Map<String, Object> primaryKey, String column, String key);
 }

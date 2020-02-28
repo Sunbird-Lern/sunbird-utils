@@ -1,8 +1,6 @@
 package org.sunbird.services.sso.impl;
 
-import static org.powermock.api.mockito.PowerMockito.doNothing;
-import static org.powermock.api.mockito.PowerMockito.doReturn;
-import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -102,6 +100,7 @@ public class KeyCloakServiceImplTest extends BaseHttpTest {
       Map<String, Object> map = new HashMap<>();
       map.put(JsonKey.LAST_LOGIN_TIME, Arrays.asList(String.valueOf(System.currentTimeMillis())));
       doReturn(map).when(userRep).getAttributes();
+      when(userRep.getUsername()).thenReturn("userName");
     } catch (Exception e) {
       e.printStackTrace();
       Assert.fail(
@@ -121,6 +120,12 @@ public class KeyCloakServiceImplTest extends BaseHttpTest {
       exp = e;
     }
     Assert.assertNull(exp);
+  }
+
+  @Test
+  public void testGetUsernameById() {
+    String result = keyCloakService.getUsernameById("1234-567-890");
+    Assert.assertNotNull(result);
   }
 
   @Test
@@ -224,22 +229,6 @@ public class KeyCloakServiceImplTest extends BaseHttpTest {
       Assert.assertEquals(ResponseCode.invalidUsrData.getErrorMessage(), e.getMessage());
       Assert.assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
     }
-  }
-
-  @Ignore
-  public void testLoginSuccess() {
-    mockHttpUrlResponse(
-        "realms/sunbird/protocol/openid-connect/token", "{\"access_token\":\"_your_token\"}");
-    String authKey = keyCloakService.login(userName, "password");
-    Assert.assertNotEquals("", authKey);
-  }
-
-  @Test
-  public void testLoginFailureWithInvalidPassword() {
-    mockHttpUrlResponse(
-        "realms/sunbird/protocol/openid-connect/token", null, true, "&password=password123&");
-    String authKey = keyCloakService.login(userName, "password123");
-    Assert.assertEquals("", authKey);
   }
 
   @Test

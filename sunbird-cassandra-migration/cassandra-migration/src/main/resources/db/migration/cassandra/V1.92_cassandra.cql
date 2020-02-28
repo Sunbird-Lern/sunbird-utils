@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS sunbird.cert_registry (id text ,accesscode text ,createdat timestamp ,createdby text,data text, isrevoked boolean,jsonurl text,pdfurl text, reason text,recipient text,related text,updatedat timestamp,updatedby text,PRIMARY KEY (id));

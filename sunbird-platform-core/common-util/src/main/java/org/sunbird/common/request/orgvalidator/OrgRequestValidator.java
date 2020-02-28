@@ -1,6 +1,5 @@
 package org.sunbird.common.request.orgvalidator;
 
-import java.math.BigInteger;
 import java.text.MessageFormat;
 import java.util.Map;
 import org.apache.commons.collections.MapUtils;
@@ -23,6 +22,7 @@ public class OrgRequestValidator extends BaseOrgRequestValidator {
         ResponseCode.mandatoryParamsMissing,
         JsonKey.ORG_NAME);
     validateRootOrgChannel(orgRequest);
+    validateLicense(orgRequest);
 
     Map<String, Object> address =
         (Map<String, Object>) orgRequest.getRequest().get(JsonKey.ADDRESS);
@@ -30,6 +30,21 @@ public class OrgRequestValidator extends BaseOrgRequestValidator {
       new AddressRequestValidator().validateAddress(address, JsonKey.ORGANISATION);
     }
     validateLocationIdOrCode(orgRequest);
+  }
+
+  private void validateLicense(Request orgRequest) {
+    if (orgRequest.getRequest().containsKey(JsonKey.IS_ROOT_ORG)
+        && (boolean) orgRequest.getRequest().get(JsonKey.IS_ROOT_ORG)
+        && orgRequest.getRequest().containsKey(JsonKey.LICENSE)
+        && StringUtils.isBlank((String) orgRequest.getRequest().get(JsonKey.LICENSE))) {
+      throw new ProjectCommonException(
+          ResponseCode.invalidParameterValue.getErrorCode(),
+          MessageFormat.format(
+              ResponseCode.invalidParameterValue.getErrorMessage(),
+              (String) orgRequest.getRequest().get(JsonKey.LICENSE),
+              JsonKey.LICENSE),
+          ERROR_CODE);
+    }
   }
 
   public void validateUpdateOrgRequest(Request request) {
@@ -67,7 +82,7 @@ public class OrgRequestValidator extends BaseOrgRequestValidator {
           ERROR_CODE);
     }
 
-    if (!(request.getRequest().get(JsonKey.STATUS) instanceof BigInteger)) {
+    if (!(request.getRequest().get(JsonKey.STATUS) instanceof Integer)) {
       throw new ProjectCommonException(
           ResponseCode.invalidRequestData.getErrorCode(),
           ResponseCode.invalidRequestData.getErrorMessage(),

@@ -152,37 +152,36 @@ public class BaseRequestValidator {
             });
   }
   /**
-   * Method to check whether given mandatory fields is in given map or not.
-   * also check the instance of request attributes
+   * Method to check whether given mandatory fields is in given map or not. also check the instance
+   * of request attributes
    *
    * @param data Map contains the key value,
    * @param mandatoryParamsList List of string represents the mandatory fields.
    */
-  public void checkMandatoryFieldsPresent(Map<String, Object> data, List<String>mandatoryParamsList) {
+  public void checkMandatoryFieldsPresent(
+      Map<String, Object> data, List<String> mandatoryParamsList) {
     if (MapUtils.isEmpty(data)) {
       throw new ProjectCommonException(
-              ResponseCode.invalidRequestData.getErrorCode(),
-              ResponseCode.invalidRequestData.getErrorMessage(),
-              ResponseCode.CLIENT_ERROR.getResponseCode());
+          ResponseCode.invalidRequestData.getErrorCode(),
+          ResponseCode.invalidRequestData.getErrorMessage(),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
     }
-    mandatoryParamsList
-            .forEach(
-                    key -> {
-                      if(!(data.get(key) instanceof String)){
-                        throw new ProjectCommonException(
-                                ResponseCode.dataTypeError.getErrorCode(),
-                                MessageFormat.format(
-                                        ResponseCode.dataTypeError.getErrorMessage(), key, "String"),
-                                ResponseCode.CLIENT_ERROR.getResponseCode());
-                      }
-                      if (StringUtils.isEmpty((String) data.get(key))) {
-                        throw new ProjectCommonException(
-                                ResponseCode.mandatoryParamsMissing.getErrorCode(),
-                                ResponseCode.mandatoryParamsMissing.getErrorMessage(),
-                                ResponseCode.CLIENT_ERROR.getResponseCode(),
-                                key);
-                      }
-                    });
+    mandatoryParamsList.forEach(
+        key -> {
+          if (StringUtils.isEmpty((String) data.get(key))) {
+            throw new ProjectCommonException(
+                ResponseCode.mandatoryParamsMissing.getErrorCode(),
+                ResponseCode.mandatoryParamsMissing.getErrorMessage(),
+                ResponseCode.CLIENT_ERROR.getResponseCode(),
+                key);
+          }
+          if (!(data.get(key) instanceof String)) {
+            throw new ProjectCommonException(
+                ResponseCode.dataTypeError.getErrorCode(),
+                MessageFormat.format(ResponseCode.dataTypeError.getErrorMessage(), key, "String"),
+                ResponseCode.CLIENT_ERROR.getResponseCode());
+          }
+        });
   }
 
   /**
@@ -213,7 +212,6 @@ public class BaseRequestValidator {
               }
             });
   }
-
 
   /**
    * Method to check whether given fields is in given map or not .If it is there throw exception.

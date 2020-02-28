@@ -187,7 +187,7 @@ public interface ResponseMessage {
     String EMPTY_CSV_FILE = "CSV file is Empty.";
     String INVALID_ROOT_ORG_DATA =
         "Root org doesn't exist for this Organization Id and channel {0}";
-    String NO_DATA = "No sufficient data for fetching the results";
+    String NO_DATA = "You have uploaded an empty file. Fill mandatory details and upload the file.";
     String INVALID_CHANNEL = "Channel value is invalid.";
     String INVALID_PROCESS_ID = "Invalid Process Id.";
     String EMAIL_SUBJECT_ERROR = "Email Subject is mandatory.";
@@ -393,8 +393,9 @@ public interface ResponseMessage {
     String ERROR_CONFLICTING_ROOT_ORG_ID =
         "Root organisation ID of API user is conflicting with that of specified organisation ID.";
     String ERROR_UPDATE_SETTING_NOT_ALLOWED = "Update of system setting {0} is not allowed.";
-    String ERROR_CREATING_FILE = "Eroor Reading File";
+    String ERROR_CREATING_FILE = "Error Reading File";
     String ERROR_PROCESSING_REQUEST = "Something went wrong while Processing Request";
+    String ERROR_UNAVAILABLE_CERTIFICATE = "Certificate is unavailable";
     String INVALID_TEXTBOOK = "Invalid Textbook. Please Provide Valid Textbook Identifier.";
     String CSV_ROWS_EXCEEDS = "Number of rows in csv file is more than ";
     String INVALID_TEXTBOOK_NAME =
@@ -440,6 +441,8 @@ public interface ResponseMessage {
     String ERROR_USER_UPDATE_PASSWORD = "User is created but password couldn't be updated.";
     String ERROR_BGMS_MISMATCH = "Mismatch in {0} at row - {1}";
     String ERROR_USER_MIGRATION_FAILED = "User migration failed.";
+    String EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS =
+        "Contents should not be empty for batch status update.";
     String IDENTIFIER_VALIDATION_FAILED =
         "Valid identifier is not present in List, Valid supported identifiers are ";
     String FROM_ACCOUNT_ID_MISSING = "From Account id is mandatory.";
@@ -448,14 +451,19 @@ public interface ResponseMessage {
     String PARAM_NOT_MATCH = "%s-NOT-MATCH";
     String MANDATORY_HEADER_PARAMETER_MISSING = "Mandatory header parameter {0} is missing.";
     String RECOVERY_PARAM_MATCH_EXCEPTION = "{0} could not be same as {1}";
-    String EMPTY_CONTENTS_FOR_UPDATE_BATCH_STATUS =
-        "Contents should not be empty for batch status update.";
     String ERROR_USER_HAS_NOT_CREATED_ANY_COURSE =
         "User hasn't created any course, or may not have a creator role";
     String ERROR_UPLOAD_QRCODE_CSV_FAILED = "Uploading the html file to cloud storage has failed.";
     String ERROR_NO_DIALCODES_LINKED = "No dialcodes are linked to any courses created by user(s)";
     String EVENTS_DATA_MISSING = "Events array is mandatory";
     String ACCOUNT_NOT_FOUND = "Account not found.";
+    String INVALID_EXT_USER_ID = "provided ext user id {0} is incorrect";
+    String USER_MIGRATION_FAILED = "user is failed to migrate";
+    String INVALID_ELEMENT_IN_LIST =
+        "Invalid value supplied for parameter {0}.Supported values are {1}";
+    String INVALID_PASSWORD =
+        "Password must contain a minimum of 8 characters including numerals, lower and upper case alphabets and special characters";
+    String OTP_VERIFICATION_FAILED = "OTP verification failed. Remaining attempt count is {0}.";
   }
 
   interface Key {
@@ -794,6 +802,7 @@ public interface ResponseMessage {
     String ERROR_UPDATE_SETTING_NOT_ALLOWED = "ERROR_UPDATE_SETTING_NOT_ALLOWED";
     String ERROR_CREATING_FILE = "ERROR_CREATING_FILE";
     String ERROR_PROCESSING_REQUEST = "ERROR_PROCESSING_REQUEST";
+    String ERROR_UNAVAILABLE_CERTIFICATE = "ERROR_UNAVAILABLE_CERTIFICATE";
     String INVALID_TEXTBOOK = "INVALID_TEXTBOOK";
     String CSV_ROWS_EXCEEDS = "CSV_ROWS_EXCEEDS";
     String INVALID_TEXTBOOK_NAME = "INVALID_TEXTBOOK_NAME";
@@ -842,5 +851,10 @@ public interface ResponseMessage {
     String ERROR_NO_DIALCODES_LINKED = "ERROR_NO_DIALCODES_LINKED";
     String EVENTS_DATA_MISSING = "EVENTS_DATA_MISSING";
     String ACCOUNT_NOT_FOUND = "ACCOUNT_NOT_FOUND";
+    String INVALID_EXT_USER_ID = "INVALID_EXT_USER_ID";
+    String USER_MIGRATION_FAILED = "USER_MIGRATION_FAILED";
+    String INVALID_ELEMENT_IN_LIST = "INVALID_ELEMENT_IN_LIST";
+    String INVALID_PASSWORD = "INVALID_PASSWORD";
+    String OTP_VERIFICATION_FAILED = "OTP_VERIFICATION_FAILED";
   }
 }

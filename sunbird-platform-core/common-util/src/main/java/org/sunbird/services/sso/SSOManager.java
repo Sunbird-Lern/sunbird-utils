@@ -75,15 +75,6 @@ public interface SSOManager {
   boolean addUserLoginTime(String userId);
 
   /**
-   * this method will do the user login with key cloak. after login it will provide access token.
-   *
-   * @param userName String
-   * @param password String
-   * @return String
-   */
-  String login(String userName, String password);
-
-  /**
    * this method will set emailVerified flag of keycloak as false.
    *
    * @param userId
@@ -136,6 +127,5 @@ public interface SSOManager {
    * @param url token will be validated against this url
    * @return String
    */
-  String verifyToken(String token,String url);
-
+  String verifyToken(String token, String url);
 }
