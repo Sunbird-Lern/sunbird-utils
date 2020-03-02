@@ -54,7 +54,7 @@ public class CloudStorageUtil {
         objectKey,
         Option.apply(false),
         Option.apply(1),
-        Option.apply(STORAGE_SERVICE_API_RETRY_COUNT),
+        Option.empty(),
         Option.apply(1));
   }
 
