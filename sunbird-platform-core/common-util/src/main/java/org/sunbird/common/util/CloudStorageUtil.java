@@ -49,13 +49,13 @@ public class CloudStorageUtil {
     IStorageService storageService = getStorageService(storageType);
 
     return storageService.upload(
-        container,
-        filePath,
-        objectKey,
-        Option.apply(false),
-        Option.apply(1),
-        Option.apply(STORAGE_SERVICE_API_RETRY_COUNT),
-        Option.apply(1));
+            container,
+            filePath,
+            objectKey,
+            Option.apply(false),
+            Option.apply(1),
+            Option.apply(STORAGE_SERVICE_API_RETRY_COUNT),
+            Option.empty());
   }
 
   public static String getSignedUrl(
