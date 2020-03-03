@@ -51,7 +51,7 @@ public class SystemSettingClientImpl implements SystemSettingClient {
         for (int i = 0; i < numKeys - 1; i++) {
           valueMap = objectMapper.convertValue(valueMap.get(keys[i]), Map.class);
         }
-        return objectMapper.convertValue(valueMap.get(keys[numKeys - 1]), typeReference);
+        return (T)objectMapper.convertValue(valueMap.get(keys[numKeys - 1]), typeReference);
       } catch (Exception e) {
         ProjectLogger.log(
             "SystemSettingClientImpl:getSystemSettingByFieldAndKey: Exception occurred with error message = "
