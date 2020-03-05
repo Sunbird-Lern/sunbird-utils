@@ -15,7 +15,6 @@ import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONObject;
 import org.keycloak.RSATokenVerifier;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UserResource;
@@ -23,7 +22,6 @@ import org.keycloak.representations.AccessToken;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.sunbird.common.exception.ProjectCommonException;
-import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.KeyCloakConnectionProvider;
 import org.sunbird.common.models.util.LoggerEnum;
@@ -62,7 +60,7 @@ public class KeyCloakServiceImpl implements SSOManager {
 
   @Override
   public String verifyToken(String accessToken) {
-	return  verifyToken(accessToken, null);
+    return verifyToken(accessToken, null);
   }
 
   /**
@@ -94,7 +92,8 @@ public class KeyCloakServiceImpl implements SSOManager {
       return true;
     } catch (Exception e) {
       ProjectLogger.log(
-          "KeyCloakServiceImpl:updatePassword: Exception occurred with error message = ", e);
+          "KeyCloakServiceImpl:updatePassword: Exception occurred with error message = " + e,
+          LoggerEnum.ERROR.name());
     }
     return false;
   }
@@ -329,6 +328,9 @@ public class KeyCloakServiceImpl implements SSOManager {
   private void makeUserActiveOrInactive(String userId, boolean status) {
     try {
       String fedUserId = getFederatedUserId(userId);
+      ProjectLogger.log(
+          "KeyCloakServiceImpl:makeUserActiveOrInactive: fedration id formed: " + fedUserId,
+          LoggerEnum.INFO.name());
       validateUserId(fedUserId);
       Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
       UserResource resource =
@@ -339,7 +341,9 @@ public class KeyCloakServiceImpl implements SSOManager {
         resource.update(ur);
       }
     } catch (Exception e) {
-      ProjectLogger.log(e.getMessage(), e);
+      ProjectLogger.log(
+          "KeyCloakServiceImpl:makeUserActiveOrInactive:error occurred while blocking user: " + e,
+          LoggerEnum.ERROR.name());
       ProjectUtil.createAndThrowInvalidUserDataException();
     }
   }
@@ -427,40 +431,6 @@ public class KeyCloakServiceImpl implements SSOManager {
       ProjectLogger.log(ex.getMessage(), ex);
     }
     return response;
-  }
-
-  /**
-   * This method will call keycloak service to user login. after successfull login it will provide
-   * access token.
-   *
-   * @param userName String
-   * @param password String
-   * @return String access token
-   */
-  @Override
-  public String login(String userName, String password) {
-    String accessTokenId = "";
-    StringBuilder builder = new StringBuilder();
-    builder.append(
-        "client_id="
-            + KeyCloakConnectionProvider.CLIENT_ID
-            + "&username="
-            + userName
-            + "&password="
-            + password
-            + "&grant_type=password");
-    Map<String, String> headerMap = new HashMap<>();
-    headerMap.put("Content-Type", "application/x-www-form-urlencoded");
-    try {
-      String response = HttpUtil.sendPostRequest(URL, builder.toString(), headerMap);
-      if (!StringUtils.isBlank(response)) {
-        JSONObject object = new JSONObject(response);
-        accessTokenId = object.getString(JsonKey.ACCESS_TOKEN);
-      }
-    } catch (Exception e) {
-      ProjectLogger.log(e.getMessage(), e);
-    }
-    return accessTokenId;
   }
 
   @Override
@@ -597,8 +567,8 @@ public class KeyCloakServiceImpl implements SSOManager {
     return "";
   }
 
-@Override
-public String verifyToken(String accessToken, String url) {
+  @Override
+  public String verifyToken(String accessToken, String url) {
 
     try {
       PublicKey publicKey = getPublicKey();
@@ -609,14 +579,12 @@ public String verifyToken(String accessToken, String url) {
         publicKey = toPublicKey(System.getenv(JsonKey.SSO_PUBLIC_KEY));
       }
       if (publicKey != null) {
-    	 String ssoUrl = (url!=null? url:KeyCloakConnectionProvider.SSO_URL);
+        String ssoUrl = (url != null ? url : KeyCloakConnectionProvider.SSO_URL);
         AccessToken token =
             RSATokenVerifier.verifyToken(
                 accessToken,
                 publicKey,
-                ssoUrl
-                    + "realms/"
-                    + KeyCloakConnectionProvider.SSO_REALM,
+                ssoUrl + "realms/" + KeyCloakConnectionProvider.SSO_REALM,
                 true,
                 true);
         ProjectLogger.log(
@@ -657,6 +625,5 @@ public String verifyToken(String accessToken, String url) {
           ResponseCode.unAuthorized.getErrorMessage(),
           ResponseCode.UNAUTHORIZED.getResponseCode());
     }
-  
-}
+  }
 }

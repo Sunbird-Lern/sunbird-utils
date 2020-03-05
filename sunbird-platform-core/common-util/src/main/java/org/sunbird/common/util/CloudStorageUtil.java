@@ -1,5 +1,7 @@
 package org.sunbird.common.util;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.sunbird.cloud.storage.IStorageService;
 import org.sunbird.cloud.storage.factory.StorageConfig;
 import org.sunbird.cloud.storage.factory.StorageServiceFactory;
@@ -13,6 +15,8 @@ import scala.Some;
 
 public class CloudStorageUtil {
   private static final int STORAGE_SERVICE_API_RETRY_COUNT = 3;
+
+  private static final Map<String, IStorageService> storageServiceMap = new HashMap<>();
 
   public enum CloudStorageType {
     AZURE("azure");
@@ -45,14 +49,13 @@ public class CloudStorageUtil {
     IStorageService storageService = getStorageService(storageType);
 
     return storageService.upload(
-        container,
-        filePath,
-        objectKey,
-        Option.apply(false),
-        Option.apply(false),
-        Option.empty(),
-        Option.apply(STORAGE_SERVICE_API_RETRY_COUNT),
-        1);
+            container,
+            filePath,
+            objectKey,
+            Option.apply(false),
+            Option.apply(1),
+            Option.apply(STORAGE_SERVICE_API_RETRY_COUNT),
+            Option.empty());
   }
 
   public static String getSignedUrl(
@@ -91,10 +94,17 @@ public class CloudStorageUtil {
 
   private static IStorageService getStorageService(
       CloudStorageType storageType, String storageKey, String storageSecret) {
-    StorageConfig storageConfig =
-        new StorageConfig(storageType.getType(), storageKey, storageSecret);
-    IStorageService storageService = StorageServiceFactory.getStorageService(storageConfig);
-    return storageService;
+    String compositeKey = storageType.getType() + "-" + storageKey;
+    if (storageServiceMap.containsKey(compositeKey)) {
+      return storageServiceMap.get(compositeKey);
+    }
+    synchronized (CloudStorageUtil.class) {
+      StorageConfig storageConfig =
+          new StorageConfig(storageType.getType(), storageKey, storageSecret);
+      IStorageService storageService = StorageServiceFactory.getStorageService(storageConfig);
+      storageServiceMap.put(compositeKey, storageService);
+    }
+    return storageServiceMap.get(compositeKey);
   }
 
   private static int getTimeoutInSeconds() {

@@ -43,4 +43,11 @@ public class ResponseCodeTest {
     String respMsg = ResponseCode.getResponseMessage("");
     assertEquals("", respMsg);
   }
+
+  @Test
+  public void testInvalidElementValueSuccess() {
+    ResponseCode respCode =
+        ResponseCode.getResponse(ResponseCode.invalidElementInList.getErrorCode());
+    assertEquals(ResponseCode.invalidElementInList, respCode);
+  }
 }

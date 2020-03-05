@@ -4,6 +4,7 @@ package org.sunbird.common.request;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,169 @@ import org.sunbird.common.responsecode.ResponseCode;
 public class UserRequestValidatorTest {
 
   private static final UserRequestValidator userRequestValidator = new UserRequestValidator();
+
+  @Test
+  public void testValidatePasswordFailure() {
+    Request request = initailizeRequest();
+    Map<String, Object> requestObj = request.getRequest();
+    requestObj.put(JsonKey.PASSWORD, "password");
+    request.setRequest(requestObj);
+    try {
+      userRequestValidator.validateCreateUserRequest(request);
+    } catch (ProjectCommonException e) {
+      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+      assertEquals(ResponseCode.passwordValidation.getErrorCode(), e.getCode());
+    }
+  }
+
+  @Test
+  public void testValidateCreateUserBasicValidationFailure() {
+    Request request = initailizeRequest();
+    Map<String, Object> requestObj = request.getRequest();
+    requestObj.put(JsonKey.ROLES, "admin");
+    request.setRequest(requestObj);
+    try {
+      userRequestValidator.createUserBasicValidation(request);
+    } catch (ProjectCommonException e) {
+      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+      assertEquals(ResponseCode.dataTypeError.getErrorCode(), e.getCode());
+    }
+  }
+
+  @Test
+  public void testValidateFieldsNotAllowedFailure() {
+    Request request = initailizeRequest();
+    Map<String, Object> requestObj = request.getRequest();
+    requestObj.put(JsonKey.PROVIDER, "AP");
+    request.setRequest(requestObj);
+    try {
+      userRequestValidator.fieldsNotAllowed(
+          Arrays.asList(
+              JsonKey.REGISTERED_ORG_ID,
+              JsonKey.ROOT_ORG_ID,
+              JsonKey.PROVIDER,
+              JsonKey.EXTERNAL_ID,
+              JsonKey.EXTERNAL_ID_PROVIDER,
+              JsonKey.EXTERNAL_ID_TYPE,
+              JsonKey.ID_TYPE),
+          request);
+    } catch (ProjectCommonException e) {
+      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+      assertEquals(ResponseCode.invalidRequestParameter.getErrorCode(), e.getCode());
+    }
+  }
+
+  @Test
+  public void testValidateValidateCreateUserV3RequestSuccess() {
+    boolean response = false;
+    Request request = initailizeRequest();
+    Map<String, Object> requestObj = request.getRequest();
+    requestObj.put(JsonKey.PASSWORD, "Password@1");
+    request.setRequest(requestObj);
+    try {
+      userRequestValidator.validateCreateUserV3Request(request);
+      response = true;
+    } catch (ProjectCommonException e) {
+      Assert.assertNull(e);
+    }
+    assertEquals(true, response);
+  }
+
+  @Test
+  public void testValidatePasswordSuccess() {
+    boolean response = false;
+    Request request = initailizeRequest();
+    Map<String, Object> requestObj = request.getRequest();
+    requestObj.put(JsonKey.PASSWORD, "Password@1");
+    request.setRequest(requestObj);
+    try {
+      userRequestValidator.validateCreateUserRequest(request);
+      response = true;
+    } catch (ProjectCommonException e) {
+      Assert.assertNull(e);
+    }
+    assertEquals(true, response);
+  }
+
+  @Test
+  public void testValidateUserCreateV3Success() {
+    boolean response = false;
+    Request request = initailizeRequest();
+    Map<String, Object> requestObj = request.getRequest();
+    requestObj.put(JsonKey.PASSWORD, "Password@1");
+    request.setRequest(requestObj);
+    try {
+      userRequestValidator.validateUserCreateV3(request);
+      response = true;
+    } catch (ProjectCommonException e) {
+      Assert.assertNull(e);
+    }
+    assertEquals(true, response);
+  }
+
+  @Test
+  public void testValidateUserCreateV3Failure() {
+    Request request = initailizeRequest();
+    Map<String, Object> requestObj = request.getRequest();
+    requestObj.put(JsonKey.FIRST_NAME, "");
+    request.setRequest(requestObj);
+    try {
+      userRequestValidator.validateUserCreateV3(request);
+    } catch (ProjectCommonException e) {
+      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+      assertEquals(ResponseCode.mandatoryParamsMissing.getErrorCode(), e.getCode());
+    }
+  }
+
+  @Test
+  public void testValidateUserNameFailure() {
+    Request request = initailizeRequest();
+    Map<String, Object> requestObj = request.getRequest();
+    requestObj.put(JsonKey.USERNAME, "");
+    request.setRequest(requestObj);
+    try {
+      userRequestValidator.validateCreateUserV1Request(request);
+    } catch (ProjectCommonException e) {
+      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+      assertEquals(ResponseCode.mandatoryParamsMissing.getErrorCode(), e.getCode());
+    }
+  }
+
+  @Test
+  public void testValidateLocationCodesSuccess() {
+    boolean response = false;
+    Request request = initailizeRequest();
+    Map<String, Object> requestObj = request.getRequest();
+    List<String> location = new ArrayList<>();
+    location.add("KA");
+    location.add("AP");
+    requestObj.put(JsonKey.LOCATION_CODES, location);
+    request.setRequest(requestObj);
+    try {
+      userRequestValidator.validateCreateUserRequest(request);
+      response = true;
+    } catch (ProjectCommonException e) {
+      Assert.assertNull(e);
+      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+      assertEquals(ResponseCode.dataTypeError.getErrorCode(), e.getCode());
+    }
+    assertEquals(true, response);
+  }
+
+  @Test
+  public void testValidateLocationCodesFailure() {
+    Request request = initailizeRequest();
+    Map<String, Object> requestObj = request.getRequest();
+
+    requestObj.put(JsonKey.LOCATION_CODES, "AP");
+    request.setRequest(requestObj);
+    try {
+      userRequestValidator.validateCreateUserRequest(request);
+    } catch (ProjectCommonException e) {
+      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+      assertEquals(ResponseCode.dataTypeError.getErrorCode(), e.getCode());
+    }
+  }
 
   @Test
   public void testValidateForgotPasswordSuccess() {
@@ -1090,6 +1254,23 @@ public class UserRequestValidatorTest {
     Assert.assertFalse(response);
   }
 
+  @Test
+  public void validateUserCreateV3Sussess() {
+    boolean response = true;
+    try {
+      Request request = new Request();
+      request.getRequest().put(JsonKey.FIRST_NAME, "test name");
+      request.getRequest().put(JsonKey.EMAIL, "test@test.com");
+      request.getRequest().put(JsonKey.EMAIL_VERIFIED, true);
+      request.getRequest().put(JsonKey.PHONE, "9663890445");
+      request.getRequest().put(JsonKey.PHONE_VERIFIED, true);
+      new UserRequestValidator().validateUserCreateV3(request);
+    } catch (Exception e) {
+      response = false;
+    }
+    Assert.assertTrue(response);
+  }
+
   private Request initailizeRequest() {
     Request request = new Request();
     Map<String, Object> requestObj = new HashMap<>();
@@ -1116,5 +1297,120 @@ public class UserRequestValidatorTest {
       assertEquals(ResponseCode.loginIdRequired.getErrorCode(), e.getCode());
     }
     Assert.assertFalse(response);
+  }
+
+  @Test
+  public void testValidateMandatoryFrameworkFieldsSuccess() {
+    Request request = initailizeRequest();
+    request.getRequest().put(JsonKey.FRAMEWORK, createFrameWork());
+    boolean response = false;
+    try {
+      new UserRequestValidator()
+          .validateMandatoryFrameworkFields(
+              request.getRequest(), getSupportedFileds(), getMandatoryFields());
+      response = true;
+    } catch (Exception e) {
+      Assert.assertTrue(response);
+    }
+    Assert.assertTrue(response);
+  }
+
+  @Test
+  public void testValidateMandatoryFrameworkFieldValueAsString() {
+    Request request = initailizeRequest();
+    Map<String, Object> frameworkMap = createFrameWork();
+    frameworkMap.put("medium", "hindi");
+    request.getRequest().put(JsonKey.FRAMEWORK, frameworkMap);
+    boolean response = false;
+    try {
+      new UserRequestValidator()
+          .validateMandatoryFrameworkFields(
+              request.getRequest(), getSupportedFileds(), getMandatoryFields());
+      response = true;
+    } catch (ProjectCommonException e) {
+      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+      assertEquals(ResponseCode.dataTypeError.getErrorCode(), e.getCode());
+    }
+    Assert.assertFalse(response);
+  }
+
+  @Test
+  public void testValidateFrameworkUnknownField() {
+    Request request = initailizeRequest();
+    Map<String, Object> frameworkMap = createFrameWork();
+    frameworkMap.put("school", Arrays.asList("school1"));
+    request.getRequest().put(JsonKey.FRAMEWORK, frameworkMap);
+    boolean response = false;
+    try {
+      new UserRequestValidator()
+          .validateMandatoryFrameworkFields(
+              request.getRequest(), getSupportedFileds(), getMandatoryFields());
+      response = true;
+    } catch (ProjectCommonException e) {
+      assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
+      assertEquals(ResponseCode.errorUnsupportedField.getErrorCode(), e.getCode());
+    }
+    Assert.assertFalse(response);
+  }
+
+  @Test
+  public void testValidateFrameworkWithEmptyValue() {
+    Request request = initailizeRequest();
+    Map<String, Object> frameworkMap = createFrameWork();
+    frameworkMap.put("medium", Arrays.asList());
+    request.getRequest().put(JsonKey.FRAMEWORK, frameworkMap);
+    boolean response = false;
+    try {
+      new UserRequestValidator()
+          .validateMandatoryFrameworkFields(
+              request.getRequest(), getSupportedFileds(), getMandatoryFields());
+      response = true;
+    } catch (Exception e) {
+      Assert.assertTrue(response);
+    }
+    Assert.assertTrue(response);
+  }
+
+  @Test
+  public void testValidateFrameworkWithNullValue() {
+    Request request = initailizeRequest();
+    Map<String, Object> frameworkMap = createFrameWork();
+    frameworkMap.put("medium", null);
+    request.getRequest().put(JsonKey.FRAMEWORK, frameworkMap);
+
+    boolean response = false;
+    try {
+      new UserRequestValidator()
+          .validateMandatoryFrameworkFields(
+              request.getRequest(), getSupportedFileds(), getMandatoryFields());
+      response = true;
+    } catch (Exception e) {
+      Assert.assertTrue(response);
+    }
+    Assert.assertTrue(response);
+  }
+
+  private static Map<String, Object> createFrameWork() {
+    Map<String, Object> frameworkMap = new HashMap<String, Object>();
+    frameworkMap.put("gradeLevel", Arrays.asList("Kindergarten"));
+    frameworkMap.put("subject", Arrays.asList("English"));
+    frameworkMap.put("id", Arrays.asList("NCF"));
+    return frameworkMap;
+  }
+
+  private static List<String> getSupportedFileds() {
+    List<String> frameworkSupportedFields = new ArrayList<String>();
+    frameworkSupportedFields.add("id");
+    frameworkSupportedFields.add("gradeLevel");
+    frameworkSupportedFields.add("subject");
+    frameworkSupportedFields.add("board");
+    frameworkSupportedFields.add("medium");
+    return frameworkSupportedFields;
+  }
+
+  private static List<String> getMandatoryFields() {
+    List<String> frameworkMandatoryFields = new ArrayList<String>(1);
+    frameworkMandatoryFields.add("id");
+    return frameworkMandatoryFields;
   }
 }

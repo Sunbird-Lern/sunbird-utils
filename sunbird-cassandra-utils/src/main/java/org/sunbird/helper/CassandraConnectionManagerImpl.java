@@ -1,21 +1,5 @@
 package org.sunbird.helper;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
-import org.sunbird.common.Constants;
-import org.sunbird.common.exception.ProjectCommonException;
-import org.sunbird.common.models.util.JsonKey;
-import org.sunbird.common.models.util.LoggerEnum;
-import org.sunbird.common.models.util.ProjectLogger;
-import org.sunbird.common.models.util.ProjectUtil;
-import org.sunbird.common.models.util.PropertiesCache;
-import org.sunbird.common.responsecode.ResponseCode;
-
 import com.datastax.driver.core.AtomicMonotonicTimestampGenerator;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.ConsistencyLevel;
@@ -29,6 +13,20 @@ import com.datastax.driver.core.QueryOptions;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.TableMetadata;
 import com.datastax.driver.core.policies.DefaultRetryPolicy;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
+import org.sunbird.common.Constants;
+import org.sunbird.common.exception.ProjectCommonException;
+import org.sunbird.common.models.util.JsonKey;
+import org.sunbird.common.models.util.LoggerEnum;
+import org.sunbird.common.models.util.ProjectLogger;
+import org.sunbird.common.models.util.ProjectUtil;
+import org.sunbird.common.models.util.PropertiesCache;
+import org.sunbird.common.responsecode.ResponseCode;
 
 /**
  * @author Amit Kumar
@@ -62,7 +60,7 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
   @Override
   public boolean createConnection(
       String ip, String port, String userName, String password, String keyspace) {
-      return createStandaloneConnection(ip, port, userName, password, keyspace);
+    return createStandaloneConnection(ip, port, userName, password, keyspace);
   }
 
   /**
@@ -109,13 +107,6 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
         } else {
           cluster = createCluster(ip, port, poolingOptions);
         }
-        QueryLogger queryLogger =
-            QueryLogger.builder()
-                .withConstantThreshold(
-                    Integer.parseInt(cache.getProperty(Constants.QUERY_LOGGER_THRESHOLD)))
-                .build();
-
-        cluster.register(queryLogger);
         cassandraSession = cluster.connect(keyspace);
 
         if (null != cassandraSession) {
@@ -217,7 +208,6 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
   private static Cluster createCluster(String ip, String port, PoolingOptions poolingOptions) {
     return createCluster(ip, port, null, null, poolingOptions);
   }
-
 
   @Override
   public Session getSession(String keyspaceName) {

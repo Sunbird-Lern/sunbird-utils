@@ -73,7 +73,7 @@ public class KeyCloakConnectionProvider {
     String username = System.getenv(JsonKey.SUNBIRD_SSO_USERNAME);
     String password = System.getenv(JsonKey.SUNBIRD_SSO_PASSWORD);
     String cleintId = System.getenv(JsonKey.SUNBIRD_SSO_CLIENT_ID);
-    String cleintSecret = System.getenv(JsonKey.SUNBIRD_SSO_CLIENT_SECRET);
+    String clientSecret = System.getenv(JsonKey.SUNBIRD_SSO_CLIENT_SECRET);
     String relam = System.getenv(JsonKey.SUNBIRD_SSO_RELAM);
     if (StringUtils.isBlank(url)
         || StringUtils.isBlank(username)
@@ -100,9 +100,13 @@ public class KeyCloakConnectionProvider {
                     .connectionPoolSize(Integer.parseInt(cache.getProperty(JsonKey.SSO_POOL_SIZE)))
                     .build());
 
-    if (!StringUtils.isBlank(cleintSecret)) {
-      keycloakBuilder.clientSecret(cache.getProperty(JsonKey.SSO_CLIENT_SECRET));
+    if (StringUtils.isNotBlank(clientSecret)) {
+      keycloakBuilder.clientSecret(clientSecret);
+      ProjectLogger.log(
+          "KeyCloakConnectionProvider:initialiseEnvConnection client sceret is provided.",
+          LoggerEnum.INFO.name());
     }
+    keycloakBuilder.grantType("client_credentials");
     keycloak = keycloakBuilder.build();
     ProjectLogger.log(
         "key cloak instance is created from Environment variable settings .",

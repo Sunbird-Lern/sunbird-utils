@@ -46,7 +46,6 @@ public class ProjectUtil {
   public static final long BACKGROUND_ACTOR_WAIT_TIME = 30;
   public static final String ELASTIC_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
   public static final String YEAR_MONTH_DATE_FORMAT = "yyyy-MM-dd";
-  private static Map<String, String> templateMap = new HashMap<>();
   private static final int randomPasswordLength = 9;
 
   protected static final String FILE_NAME[] = {
@@ -83,7 +82,6 @@ public class ProjectUtil {
 
   static {
     pattern = Pattern.compile(EMAIL_PATTERN);
-    initializeMailTemplateMap();
     propertiesCache = PropertiesCache.getInstance();
   }
 
@@ -187,6 +185,21 @@ public class ProjectUtil {
     }
   }
 
+  public enum Action {
+    YES(1),
+    NO(0);
+
+    private int value;
+
+    Action(int value) {
+      this.value = value;
+    }
+
+    public int getValue() {
+      return value;
+    }
+  }
+
   /** @author Amit Kumar */
   public enum CourseMgmtStatus {
     DRAFT("draft"),
@@ -270,17 +283,6 @@ public class ProjectUtil {
     if (null != date) return getDateFormatter().format(date);
     else return null;
   }
-
-  private static void initializeMailTemplateMap() {
-    templateMap.put("contentFlagged", "/contentFlaggedMailTemplate.vm");
-    templateMap.put("acceptFlag", "/acceptFlagMailTemplate.vm");
-    templateMap.put("rejectFlag", "/rejectFlagMailTemplate.vm");
-    templateMap.put("publishContent", "/publishContentMailTemplate.vm");
-    templateMap.put("rejectContent", "/rejectContentMailTemplate.vm");
-    templateMap.put("welcome", "/welcomeMailTemplate.vm");
-    templateMap.put("unlistedPublishContent", "/unlistedPublishContentMailTemplate.vm");
-  }
-
   /**
    * Validate email with regular expression
    *
@@ -379,7 +381,10 @@ public class ProjectUtil {
     announcementType("announcementtype"),
     announcement("announcement"),
     metrics("metrics"),
-    cbatchstats("cbatchstats");
+    cbatchstats("cbatchstats"),
+    cbatchassessment("cbatch-assessment"),
+    userfeed("userfeed");
+
     private String typeName;
 
     private EsType(String name) {
@@ -620,13 +625,6 @@ public class ProjectUtil {
     return value;
   }
 
-  public static String getTemplate(Map<String, Object> map) {
-    if (StringUtils.isBlank(templateMap.get(map.get(JsonKey.EMAIL_TEMPLATE_TYPE)))) {
-      return "/emailtemplate.vm";
-    }
-    return templateMap.get(map.get(JsonKey.EMAIL_TEMPLATE_TYPE));
-  }
-
   /** @author Arvind */
   public enum ReportTrackingStatus {
     NEW(0),
@@ -839,6 +837,19 @@ public class ProjectUtil {
   }
 
   /**
+   * This method will create and return server exception to caller.
+   *
+   * @param responseCode ResponseCode
+   * @return ProjectCommonException
+   */
+  public static ProjectCommonException createServerError(ResponseCode responseCode) {
+    return new ProjectCommonException(
+        responseCode.getErrorCode(),
+        responseCode.getErrorMessage(),
+        ResponseCode.SERVER_ERROR.getResponseCode());
+  }
+
+  /**
    * This method will create ProjectCommonException of type invalidUserDate exception and throws it.
    */
   public static void createAndThrowInvalidUserDataException() {
@@ -979,7 +990,7 @@ public class ProjectUtil {
    * This method will be used to create ProjectCommonException for all kind of client error for the
    * given response code(enum).
    *
-   * @param ResponseCode: An enum of all the api responses.
+   * @param : An enum of all the api responses.
    * @return ProjectCommonException
    */
   public static ProjectCommonException createClientException(ResponseCode responseCode) {
@@ -1010,5 +1021,19 @@ public class ProjectUtil {
       firstNChars = originalText;
     }
     return firstNChars;
+  }
+
+  public enum MigrateAction {
+    ACCEPT("accept"),
+    REJECT("reject");
+    private String value;
+
+    MigrateAction(String value) {
+      this.value = value;
+    }
+
+    public String getValue() {
+      return value;
+    }
   }
 }
