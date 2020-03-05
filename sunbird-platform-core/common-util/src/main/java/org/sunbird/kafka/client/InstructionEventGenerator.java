@@ -59,13 +59,6 @@ public class InstructionEventGenerator {
     pdata.put("id", pdataId);
     pdata.put("ver", pdataVersion);
     context.put("pdata", pdata);
-
-    // TODO: Set env to context
-    /* if (Platform.config.hasPath("cloud_storage.env")) {
-        String env = Platform.config.getString("cloud_storage.env");
-        context.put("env", env);
-    }*/
-
     if (MapUtils.isNotEmpty((Map) data.get("object"))) object.putAll((Map) data.get("object"));
 
     if (MapUtils.isNotEmpty((Map) data.get("edata"))) edata.putAll((Map) data.get("edata"));

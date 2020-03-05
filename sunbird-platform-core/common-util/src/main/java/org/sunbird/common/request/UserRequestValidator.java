@@ -37,6 +37,19 @@ public class UserRequestValidator extends BaseRequestValidator {
     jobProfileValidation(userRequest);
     validateWebPages(userRequest);
     validateLocationCodes(userRequest);
+    validatePassword((String) userRequest.getRequest().get(JsonKey.PASSWORD));
+  }
+
+  private static void validatePassword(String password) {
+    if (StringUtils.isNotBlank(password)) {
+      boolean response = password.matches(ProjectUtil.getConfigValue(JsonKey.SUNBIRD_PASS_REGEX));
+      if (!response) {
+        throw new ProjectCommonException(
+            ResponseCode.passwordValidation.getErrorCode(),
+            ResponseCode.passwordValidation.getErrorMessage(),
+            ERROR_CODE);
+      }
+    }
   }
 
   private void validateLocationCodes(Request userRequest) {
@@ -59,6 +72,26 @@ public class UserRequestValidator extends BaseRequestValidator {
         (String) userRequest.getRequest().get(JsonKey.USERNAME),
         ResponseCode.mandatoryParamsMissing,
         JsonKey.USERNAME);
+  }
+
+  public void validateUserCreateV3(Request userRequest) {
+    validateParam(
+        (String) userRequest.getRequest().get(JsonKey.FIRST_NAME),
+        ResponseCode.mandatoryParamsMissing,
+        JsonKey.FIRST_NAME);
+    if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.EMAIL))
+        && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PHONE))) {
+      ProjectCommonException.throwClientErrorException(ResponseCode.emailorPhoneRequired);
+    }
+    phoneVerifiedValidation(userRequest);
+    emailVerifiedValidation(userRequest);
+    validatePassword((String) userRequest.getRequest().get(JsonKey.PASSWORD));
+    if (StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
+      validateEmail((String) userRequest.getRequest().get(JsonKey.EMAIL));
+    }
+    if (StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.PHONE))) {
+      validatePhone((String) userRequest.getRequest().get(JsonKey.PHONE));
+    }
   }
 
   public void validateCreateUserV3Request(Request userRequest) {
@@ -881,7 +914,8 @@ public class UserRequestValidator extends BaseRequestValidator {
     if (userMap.containsKey(JsonKey.FRAMEWORK)) {
       Map<String, Object> frameworkRequest = (Map<String, Object>) userMap.get(JsonKey.FRAMEWORK);
       for (String field : frameworkFields) {
-        if (frameworkMandatoryFields.contains(field)) {
+        if (CollectionUtils.isNotEmpty(frameworkMandatoryFields)
+            && frameworkMandatoryFields.contains(field)) {
           if (!frameworkRequest.containsKey(field)) {
             validateParam(null, ResponseCode.mandatoryParamsMissing, field);
           }
@@ -896,6 +930,7 @@ public class UserRequestValidator extends BaseRequestValidator {
           }
         } else {
           if (frameworkRequest.containsKey(field)
+              && frameworkRequest.get(field) != null
               && !(frameworkRequest.get(field) instanceof List)) {
             throw new ProjectCommonException(
                 ResponseCode.dataTypeError.getErrorCode(),
@@ -928,8 +963,7 @@ public class UserRequestValidator extends BaseRequestValidator {
     for (Map.Entry<String, List<String>> fwRequestFieldEntry : fwRequest.entrySet()) {
       if (!fwRequestFieldEntry.getValue().isEmpty()) {
         List<String> allowedFieldValues =
-            frameworkMap
-                .get(fwRequestFieldEntry.getKey())
+            getKeyValueFromFrameWork(fwRequestFieldEntry.getKey(), frameworkMap)
                 .stream()
                 .map(fieldMap -> fieldMap.get(JsonKey.NAME))
                 .collect(Collectors.toList());
@@ -948,6 +982,19 @@ public class UserRequestValidator extends BaseRequestValidator {
         }
       }
     }
+  }
+
+  private List<Map<String, String>> getKeyValueFromFrameWork(
+      String key, Map<String, List<Map<String, String>>> frameworkMap) {
+    if (frameworkMap.get(key) == null) {
+      throw new ProjectCommonException(
+          ResponseCode.errorUnsupportedField.getErrorCode(),
+          MessageFormat.format(
+              ResponseCode.errorUnsupportedField.getErrorMessage(),
+              key + " in " + JsonKey.FRAMEWORK),
+          ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+    return frameworkMap.get(key);
   }
 
   private void validateUserType(Request userRequest) {
@@ -984,6 +1031,11 @@ public class UserRequestValidator extends BaseRequestValidator {
       createClientError(
           ResponseCode.mandatoryHeaderParamsMissing, JsonKey.X_AUTHENTICATED_USER_TOKEN);
     }
+
+    if (StringUtils.isBlank(authUserToken)) {
+      createClientError(
+          ResponseCode.mandatoryHeaderParamsMissing, JsonKey.X_AUTHENTICATED_USER_TOKEN);
+    }
     if (StringUtils.isBlank(sourceUserToken)) {
       createClientError(ResponseCode.mandatoryHeaderParamsMissing, JsonKey.X_SOURCE_USER_TOKEN);
     }
@@ -993,7 +1045,6 @@ public class UserRequestValidator extends BaseRequestValidator {
     if (StringUtils.isBlank((String) request.getRequest().get(JsonKey.CERT_ID))) {
       createClientError(ResponseCode.mandatoryParamsMissing, JsonKey.CERT_ID);
     }
-
     if (StringUtils.isBlank((String) request.getRequest().get(JsonKey.ACCESS_CODE))) {
       createClientError(ResponseCode.mandatoryParamsMissing, JsonKey.ACCESS_CODE);
     }
@@ -1007,10 +1058,10 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   private void validateRecoveryEmailOrPhone(Request userRequest) {
-    if (StringUtils.isNotBlank((String)userRequest.get(JsonKey.RECOVERY_EMAIL))) {
+    if (StringUtils.isNotBlank((String) userRequest.get(JsonKey.RECOVERY_EMAIL))) {
       validateEmail((String) userRequest.get(JsonKey.RECOVERY_EMAIL));
     }
-    if (StringUtils.isNotBlank((String)userRequest.get(JsonKey.RECOVERY_PHONE))) {
+    if (StringUtils.isNotBlank((String) userRequest.get(JsonKey.RECOVERY_PHONE))) {
       validatePhone((String) userRequest.get(JsonKey.RECOVERY_PHONE));
     }
   }

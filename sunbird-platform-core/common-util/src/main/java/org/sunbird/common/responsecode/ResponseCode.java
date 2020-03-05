@@ -730,6 +730,9 @@ public enum ResponseCode {
   errorProcessingRequest(
       ResponseMessage.Key.ERROR_PROCESSING_REQUEST,
       ResponseMessage.Message.ERROR_PROCESSING_REQUEST),
+  errorUnavailableCertificate(
+      ResponseMessage.Key.ERROR_UNAVAILABLE_CERTIFICATE,
+      ResponseMessage.Message.ERROR_UNAVAILABLE_CERTIFICATE),
   invalidTextbook(ResponseMessage.Key.INVALID_TEXTBOOK, ResponseMessage.Message.INVALID_TEXTBOOK),
   csvRowsExceeds(ResponseMessage.Key.CSV_ROWS_EXCEEDS, ResponseMessage.Message.CSV_ROWS_EXCEEDS),
   invalidTextbookName(
@@ -834,6 +837,16 @@ public enum ResponseCode {
   eventsRequired(
       ResponseMessage.Key.EVENTS_DATA_MISSING, ResponseMessage.Message.EVENTS_DATA_MISSING),
   accountNotFound(ResponseMessage.Key.ACCOUNT_NOT_FOUND, ResponseMessage.Message.ACCOUNT_NOT_FOUND),
+  userMigrationFiled(
+      ResponseMessage.Key.USER_MIGRATION_FAILED, ResponseMessage.Message.USER_MIGRATION_FAILED),
+  invalidUserExternalId(
+      ResponseMessage.Key.INVALID_EXT_USER_ID, ResponseMessage.Message.INVALID_EXT_USER_ID),
+  invalidElementInList(
+      ResponseMessage.Key.INVALID_ELEMENT_IN_LIST, ResponseMessage.Message.INVALID_ELEMENT_IN_LIST),
+  passwordValidation(
+      ResponseMessage.Key.INVALID_PASSWORD, ResponseMessage.Message.INVALID_PASSWORD),
+  otpVerificationFailed(
+      ResponseMessage.Key.OTP_VERIFICATION_FAILED, ResponseMessage.Message.OTP_VERIFICATION_FAILED),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

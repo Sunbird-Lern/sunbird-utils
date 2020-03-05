@@ -24,9 +24,6 @@ public class SystemSettingClientImpl implements SystemSettingClient {
   private static InterServiceCommunication interServiceCommunication =
       InterServiceCommunicationFactory.getInstance();
   private static SystemSettingClient systemSettingClient = null;
-  private static Map<String, SystemSetting> systemSettingsMap =
-      new ConcurrentHashMap<String, SystemSetting>();
-
   public static SystemSettingClient getInstance() {
     if (null == systemSettingClient) {
       systemSettingClient = new SystemSettingClientImpl();
@@ -36,25 +33,8 @@ public class SystemSettingClientImpl implements SystemSettingClient {
 
   @Override
   public SystemSetting getSystemSettingByField(ActorRef actorRef, String field) {
-    ProjectLogger.log(
-        "SystemSettingClientImpl:getSystemSettingByField: actorRef is " + actorRef,
-        LoggerEnum.INFO.name());
-    ProjectLogger.log(
-        "SystemSettingClientImpl:getSystemSettingByField: field is " + field,
-        LoggerEnum.INFO.name());
-    ProjectLogger.log(
-        "SystemSettingClientImpl:getSystemSettingByField: systemSettingsMap is "
-            + systemSettingsMap,
-        LoggerEnum.INFO.name());
-    if (systemSettingsMap.containsKey(field)) {
-      return systemSettingsMap.get(field);
-    }
+    ProjectLogger.log("SystemSettingClientImpl:getSystemSettingByField: field is " + field, LoggerEnum.INFO.name());
     SystemSetting systemSetting = getSystemSetting(actorRef, JsonKey.FIELD, field);
-    systemSettingsMap.put(field, systemSetting);
-    ProjectLogger.log(
-        "SystemSettingClientImpl:getSystemSettingByField: systemSettingsMap after fetch is "
-            + systemSettingsMap,
-        LoggerEnum.INFO.name());
     return systemSetting;
   }
 
@@ -71,7 +51,7 @@ public class SystemSettingClientImpl implements SystemSettingClient {
         for (int i = 0; i < numKeys - 1; i++) {
           valueMap = objectMapper.convertValue(valueMap.get(keys[i]), Map.class);
         }
-        return objectMapper.convertValue(valueMap.get(keys[numKeys - 1]), typeReference);
+        return (T)objectMapper.convertValue(valueMap.get(keys[numKeys - 1]), typeReference);
       } catch (Exception e) {
         ProjectLogger.log(
             "SystemSettingClientImpl:getSystemSettingByFieldAndKey: Exception occurred with error message = "
@@ -84,7 +64,6 @@ public class SystemSettingClientImpl implements SystemSettingClient {
 
   private SystemSetting getSystemSetting(ActorRef actorRef, String param, Object value) {
     ProjectLogger.log("SystemSettingClientImpl: getSystemSetting called", LoggerEnum.DEBUG);
-
     Request request = new Request();
     Map<String, Object> map = new HashMap<>();
     map.put(param, value);
