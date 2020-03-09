@@ -1,6 +1,7 @@
 package org.sunbird.notification.sms.providerimpl;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -205,7 +206,7 @@ public class Msg91SmsProvider implements ISmsProvider {
                 smsRoute,
                 tempMobileNumber,
                 authKey,
-                getDoubleEncodedSMS(smsText));
+                URLEncoder.encode(getDoubleEncodedSMS(smsText), "UTF-8"));
 
         logger.debug("Msg91SmsProvider -Executing request - " + path);
 
