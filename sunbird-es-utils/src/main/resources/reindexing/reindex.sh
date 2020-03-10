@@ -165,12 +165,8 @@ curl -s --location --request GET 'http://'$es_ip':9200/'$old_index'/_search?size
 
 
 data_count=$( curl -s --location --request GET 'http://'$es_ip':9200/'$old_index'/_count' --header 'Content-Type: application/json' --header 'Accept: text' | jq ."count" )
-read -p "Are you sure you want to continue reindexing of $data_count records (y/n)?" choice
-case "$choice" in
-  y|Y ) perform_reindexing;;
-  n|N ) echo "no";;
-  * ) echo "invalid";;
-esac
+"continue reindexing of $data_count records"
+perform_reindexing
 
 
 
