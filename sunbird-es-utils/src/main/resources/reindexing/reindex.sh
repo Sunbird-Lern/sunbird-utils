@@ -4,7 +4,7 @@ perform_reindexing(){
 echo ">>STEP1: mapping $alias_name with $old_index index"
 
 
-alias_old_index_status=$( curl --write-out %{http_code} --silent --output  --location --request POST 'http://'$es_ip':9200/_aliases?pretty' \
+alias_old_index_status=$( curl -s --write-out %{http_code} --silent --output  --location --request POST 'http://'$es_ip':9200/_aliases?pretty' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "actions" : [
@@ -23,7 +23,7 @@ fi
 
 echo ">>STEP2: creating '$new_index' index"
 
-index_status_code=$( curl --write-out %{http_code} --silent --output --location --request PUT 'http://'$es_ip':9200/'$new_index'' \
+index_status_code=$( curl -s --write-out %{http_code} --silent --output --location --request PUT 'http://'$es_ip':9200/'$new_index'' \
 --header 'Content-Type: application/json' \
 -d @$index_req_filepath)
 
@@ -36,7 +36,7 @@ fi
 
 echo ">>STEP3: creating mapping of '$new_index' index\n"
 
-mapping_status_code=$( curl --write-out %{http_code} --silent --output --location --request PUT 'http://'$es_ip':9200/'$new_index'/_doc/_mapping' \
+mapping_status_code=$( curl -s --write-out %{http_code} --silent --output --location --request PUT 'http://'$es_ip':9200/'$new_index'/_doc/_mapping' \
 --header 'Content-Type: application/json' \
 -d @$mapping_req_filepath)
 
@@ -50,7 +50,7 @@ fi
 echo ">>STEP4: copying $data_count certificates from '$old_index' index to '$new_index' index\n"
 
 
-status_code=$( curl --write-out %{http_code} --silent --output --location --request POST 'http://'$es_ip':9200/_reindex' \
+status_code=$( curl -s --write-out %{http_code} --silent --output --location --request POST 'http://'$es_ip':9200/_reindex' \
 --header 'Content-Type: application/json' \
 --data-raw '{
   "source": {
@@ -71,7 +71,7 @@ fi
 
 echo ">>STEP5: deleting $alias_name with $old_index index and mapping alias with $new_index"
 
-alias_new_index_status=$( curl --write-out %{http_code} --silent --output  --location --request POST 'http://'$es_ip':9200/_aliases' \
+alias_new_index_status=$( curl -s --write-out %{http_code} --silent --output  --location --request POST 'http://'$es_ip':9200/_aliases' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "actions" : [
@@ -89,7 +89,7 @@ fi
 
 echo ">>STEP6: deleting previous $old_index index\n"
 
-index_delete_status_code=$( curl  --write-out %{http_code} --silent --output --location --request DELETE 'http://'$es_ip':9200/'$old_index'' \
+index_delete_status_code=$( curl -s  --write-out %{http_code} --silent --output --location --request DELETE 'http://'$es_ip':9200/'$old_index'' \
 --header 'Content-Type: application/json' )
 
 
@@ -139,7 +139,7 @@ echo "NOTE: IF ANY STEP FAILED PLEASE MANUALLY DELETE THE NEW INDEX from Elastic
 
 
 
-eshealth_status_code=$( curl  --write-out %{http_code} --silent --output --location --request GET 'http://'$es_ip':9200' \
+eshealth_status_code=$( curl -s  --write-out %{http_code} --silent --output --location --request GET 'http://'$es_ip':9200' \
 --header 'Content-Type: application/json' )
 
 if [[ $eshealth_status_code == 200 ]] ; then
@@ -153,7 +153,7 @@ DATE=`date "+%Y%m%d-%H%M%S"`
 backup_file_name=certregBackup$DATE.txt
 echo "PERFORMING '$old_index' BACKUP, can be found in file $backup_file_name"
 
-curl --location --request GET 'http://'$es_ip':9200/'$old_index'/_search?size=10000' --header 'Content-Type: application/json' --data-raw '{
+curl -s --location --request GET 'http://'$es_ip':9200/'$old_index'/_search?size=10000' --header 'Content-Type: application/json' --data-raw '{
    "query":{
    
    "match_all":{}
@@ -164,7 +164,7 @@ curl --location --request GET 'http://'$es_ip':9200/'$old_index'/_search?size=10
 ' | jq '.' > $backup_file_name
 
 
-data_count=$( curl --location --request GET 'http://'$es_ip':9200/'$old_index'/_count' --header 'Content-Type: application/json' --header 'Accept: text' | jq ."count" )
+data_count=$( curl -s --location --request GET 'http://'$es_ip':9200/'$old_index'/_count' --header 'Content-Type: application/json' --header 'Accept: text' | jq ."count" )
 read -p "Are you sure you want to continue reindexing of $data_count records (y/n)?" choice
 case "$choice" in
   y|Y ) perform_reindexing;;
