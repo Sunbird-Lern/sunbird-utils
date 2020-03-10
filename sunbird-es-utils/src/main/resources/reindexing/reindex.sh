@@ -19,7 +19,7 @@ if [[ $alias_old_index_status == 200 ]] ; then
   echo "'$old_index' index successfully map to alias $alias_name with status code 200"
 else
   echo "STEP1 FAILED:$old_index index is unable to map with alias $alias_name with status code $alias_old_index_status hence exiting program....."
-  exit 0
+  exit 1
 fi
 
 
@@ -33,7 +33,7 @@ if [[ $index_status_code == 200 ]] ; then
   echo "'$new_index' index successfully created with status code 200"
 else
   echo "STEP2 FAILED:'$new_index' index is unable to create with status code $index_status_code hence exiting program....."
-  exit 0
+  exit 1
 fi
 
 echo ">>STEP3: creating mapping of '$new_index' index\n"
@@ -46,7 +46,7 @@ if [[ $mapping_status_code == 200 ]] ; then
   echo "'$new_index' index mappings successfully created with status code 200"
 else
   echo "STEP3 FAILED:'$new_index' index is unable to create mappings with status code $mapping_status_code hence exiting program......"
-  exit 0
+  exit 1
 fi
 
 echo ">>STEP4: copying $data_count certificates from '$old_index' index to '$new_index' index\n"
@@ -67,7 +67,7 @@ if [[ $status_code == 200 ]] ; then
   echo "$data_count certificates copied from '$old_index' to '$new_index' index with status code 200"
 else
   echo "STEP4 FAILED:to copy certificates with status code $status_code, please manually delete the temp index. exiting the program......"
-  exit 0
+  exit 1
 fi
 
 
@@ -86,7 +86,7 @@ if [[ $alias_new_index_status == 200 ]] ; then
   echo "$alias_name successfully mapped to $new_index"
 else
   echo "$alias_name failed to  map with $new_indexES with status code $alias_new_index_status, exiting....."
-  exit 0
+  exit 1
 fi
 
 echo ">>STEP6: deleting previous $old_index index\n"
@@ -99,7 +99,7 @@ if [[ $index_delete_status_code == 200 ]] ; then
   echo "$old_index index deleted with status code 200"
 else
   echo "STEP6 FAILED:to delete $old_index index with status code $index_delete_status_code exiting the program......"
-  exit 0
+  exit 1
 fi
 
 }
