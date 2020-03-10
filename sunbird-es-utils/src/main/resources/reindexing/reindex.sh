@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+set -eu -o pipefail
+
 perform_reindexing(){
 
 echo ">>STEP1: mapping $alias_name with $old_index index"
