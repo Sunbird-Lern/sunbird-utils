@@ -165,7 +165,7 @@ curl -s --location --request GET 'http://'$es_ip':9200/'$old_index'/_search?size
 
 
 data_count=$( curl -s --location --request GET 'http://'$es_ip':9200/'$old_index'/_count' --header 'Content-Type: application/json' --header 'Accept: text' | jq ."count" )
-"continue reindexing of $data_count records"
+echo "continue reindexing of $data_count records"
 perform_reindexing
 
 
