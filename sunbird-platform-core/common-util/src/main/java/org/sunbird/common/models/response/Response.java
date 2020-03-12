@@ -13,12 +13,12 @@ import org.sunbird.common.responsecode.ResponseCode;
 public class Response implements Serializable, Cloneable {
 
   private static final long serialVersionUID = -3773253896160786443L;
-  private String id;
-  private String ver;
-  private String ts;
-  private ResponseParams params;
-  private ResponseCode responseCode = ResponseCode.OK;
-  private Map<String, Object> result = new HashMap<>();
+  protected String id;
+  protected String ver;
+  protected String ts;
+  protected ResponseParams params;
+  protected ResponseCode responseCode = ResponseCode.OK;
+  protected Map<String, Object> result = new HashMap<>();
 
   /**
    * This will provide request unique id.
