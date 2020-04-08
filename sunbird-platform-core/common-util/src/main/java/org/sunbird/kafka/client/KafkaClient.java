@@ -29,7 +29,7 @@ import org.sunbird.common.responsecode.ResponseCode;
 public class KafkaClient {
 
   private static final String BOOTSTRAP_SERVERS = ProjectUtil.getConfigValue("kafka_urls");
-  private static Producer<Long, String> producer;
+  private static Producer<String, String> producer;
   private static Consumer<Long, String> consumer;
   private static volatile Map<String, List<PartitionInfo>> topics;
 
@@ -46,7 +46,7 @@ public class KafkaClient {
     props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, LongSerializer.class.getName());
     props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
     props.put(ProducerConfig.LINGER_MS_CONFIG, ProjectUtil.getConfigValue("kafka_linger_ms"));
-    producer = new KafkaProducer<Long, String>(props);
+    producer = new KafkaProducer<String, String>(props);
   }
 
   private static void loadTopics() {
@@ -67,7 +67,7 @@ public class KafkaClient {
     consumer = new KafkaConsumer<>(props);
   }
 
-  public static Producer<Long, String> getProducer() {
+  public static Producer<String, String> getProducer() {
     return producer;
   }
 
@@ -77,8 +77,22 @@ public class KafkaClient {
 
   public static void send(String event, String topic) throws Exception {
     if (validate(topic)) {
-      final Producer<Long, String> producer = getProducer();
-      ProducerRecord<Long, String> record = new ProducerRecord<Long, String>(topic, event);
+      final Producer<String, String> producer = getProducer();
+      ProducerRecord<String, String> record = new ProducerRecord<String, String>(topic, event);
+      producer.send(record);
+    } else {
+      ProjectLogger.log("Topic id: " + topic + ", does not exists.", LoggerEnum.ERROR);
+      throw new ProjectCommonException(
+              "TOPIC_NOT_EXISTS_EXCEPTION",
+              "Topic id: " + topic + ", does not exists.",
+              ResponseCode.CLIENT_ERROR.getResponseCode());
+    }
+  }
+
+  public static void send(String key, String event, String topic) throws Exception {
+    if (validate(topic)) {
+      final Producer<String, String> producer = getProducer();
+      ProducerRecord<String, String> record = new ProducerRecord<String, String>(topic, key, event);
       producer.send(record);
     } else {
       ProjectLogger.log("Topic id: " + topic + ", does not exists.", LoggerEnum.ERROR);
