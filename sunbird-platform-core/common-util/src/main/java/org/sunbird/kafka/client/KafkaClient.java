@@ -28,7 +28,7 @@ public class KafkaClient {
 
   private static final String BOOTSTRAP_SERVERS = ProjectUtil.getConfigValue("kafka_urls");
   private static Producer<String, String> producer;
-  private static Consumer<Long, String> consumer;
+  private static Consumer<String, String> consumer;
   private static volatile Map<String, List<PartitionInfo>> topics;
 
   static {
