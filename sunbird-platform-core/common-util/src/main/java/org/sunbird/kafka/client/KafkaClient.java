@@ -11,8 +11,6 @@ import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.PartitionInfo;
-import org.apache.kafka.common.serialization.LongDeserializer;
-import org.apache.kafka.common.serialization.LongSerializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.sunbird.common.exception.ProjectCommonException;
@@ -43,7 +41,7 @@ public class KafkaClient {
     Properties props = new Properties();
     props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
     props.put(ProducerConfig.CLIENT_ID_CONFIG, "KafkaClientProducer");
-    props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, LongSerializer.class.getName());
+    props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
     props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
     props.put(ProducerConfig.LINGER_MS_CONFIG, ProjectUtil.getConfigValue("kafka_linger_ms"));
     producer = new KafkaProducer<String, String>(props);
@@ -55,14 +53,14 @@ public class KafkaClient {
     }
     topics = consumer.listTopics();
     ProjectLogger.log(
-            "KafkaClient:loadTopics Kafka topic infos =>" + topics, LoggerEnum.INFO.name());
+        "KafkaClient:loadTopics Kafka topic infos =>" + topics, LoggerEnum.INFO.name());
   }
 
   private static void loadConsumerProperties() {
     Properties props = new Properties();
     props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
     props.put(ConsumerConfig.CLIENT_ID_CONFIG, "KafkaClientConsumer");
-    props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, LongDeserializer.class.getName());
+    props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
     props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
     consumer = new KafkaConsumer<>(props);
   }
@@ -83,9 +81,9 @@ public class KafkaClient {
     } else {
       ProjectLogger.log("Topic id: " + topic + ", does not exists.", LoggerEnum.ERROR);
       throw new ProjectCommonException(
-              "TOPIC_NOT_EXISTS_EXCEPTION",
-              "Topic id: " + topic + ", does not exists.",
-              ResponseCode.CLIENT_ERROR.getResponseCode());
+          "TOPIC_NOT_EXISTS_EXCEPTION",
+          "Topic id: " + topic + ", does not exists.",
+          ResponseCode.CLIENT_ERROR.getResponseCode());
     }
   }
 
@@ -97,9 +95,9 @@ public class KafkaClient {
     } else {
       ProjectLogger.log("Topic id: " + topic + ", does not exists.", LoggerEnum.ERROR);
       throw new ProjectCommonException(
-              "TOPIC_NOT_EXISTS_EXCEPTION",
-              "Topic id: " + topic + ", does not exists.",
-              ResponseCode.CLIENT_ERROR.getResponseCode());
+          "TOPIC_NOT_EXISTS_EXCEPTION",
+          "Topic id: " + topic + ", does not exists.",
+          ResponseCode.CLIENT_ERROR.getResponseCode());
     }
   }
 
