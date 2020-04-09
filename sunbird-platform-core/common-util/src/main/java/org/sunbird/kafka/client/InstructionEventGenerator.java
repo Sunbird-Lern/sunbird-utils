@@ -23,6 +23,11 @@ public class InstructionEventGenerator {
   private static String pdataVersion = "1.0";
 
   public static void pushInstructionEvent(String topic, Map<String, Object> data) throws Exception {
+    pushInstructionEvent("", topic, data);
+  }
+
+  public static void pushInstructionEvent(String key, String topic, Map<String, Object> data)
+      throws Exception {
     String beJobRequestEvent = generateInstructionEventMetadata(data);
     if (StringUtils.isBlank(beJobRequestEvent)) {
       throw new ProjectCommonException(
@@ -31,7 +36,8 @@ public class InstructionEventGenerator {
           ResponseCode.CLIENT_ERROR.getResponseCode());
     }
     if (StringUtils.isNotBlank(topic)) {
-      KafkaClient.send(beJobRequestEvent, topic);
+      if (StringUtils.isNotBlank(key)) KafkaClient.send(key, beJobRequestEvent, topic);
+      else KafkaClient.send(beJobRequestEvent, topic);
     } else {
       throw new ProjectCommonException(
           "BE_JOB_REQUEST_EXCEPTION",
