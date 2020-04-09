@@ -69,7 +69,7 @@ public class KafkaClient {
     return producer;
   }
 
-  public static Consumer<Long, String> getConsumer() {
+  public static Consumer<String, String> getConsumer() {
     return consumer;
   }
 
