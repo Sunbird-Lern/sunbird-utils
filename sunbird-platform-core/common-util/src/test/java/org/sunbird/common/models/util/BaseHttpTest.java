@@ -20,6 +20,7 @@ import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.sunbird.common.util.KeycloakRequiredActionLinkUtil;
 import org.sunbird.services.sso.impl.KeyCloakServiceImpl;
 
 @RunWith(PowerMockRunner.class)
@@ -31,7 +32,7 @@ import org.sunbird.services.sso.impl.KeyCloakServiceImpl;
   HttpUtil.class,
   HttpClients.class,
   KeyCloakConnectionProvider.class,
-  KeyCloakServiceImpl.class
+  KeyCloakServiceImpl.class, KeycloakRequiredActionLinkUtil.class
 })
 public abstract class BaseHttpTest {
 

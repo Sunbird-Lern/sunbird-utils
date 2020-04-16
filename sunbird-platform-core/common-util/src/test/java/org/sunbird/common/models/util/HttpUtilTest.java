@@ -1,6 +1,7 @@
 package org.sunbird.common.models.util;
 
 import static org.junit.Assert.assertTrue;
+import static org.powermock.api.mockito.PowerMockito.when;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import org.apache.http.message.BasicStatusLine;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
+import org.sunbird.common.util.KeycloakRequiredActionLinkUtil;
 
 public class HttpUtilTest extends BaseHttpTest {
   public static final String JSON_STRING_DATA = "asdasasfasfsdfdsfdsfgsd";
@@ -98,5 +100,33 @@ public class HttpUtilTest extends BaseHttpTest {
     } catch (Exception e) {
       ProjectLogger.log(e.getMessage());
     }
+  }
+
+  @Test
+  public void testGetHeaderWithInput() throws Exception {
+    PowerMockito.mockStatic(KeycloakRequiredActionLinkUtil.class);
+    when(KeycloakRequiredActionLinkUtil.getAdminAccessToken()).thenReturn("testAuthToken");
+    Map<String, String> input = new HashMap<String, String>(){{
+      put("x-channel-id", "test-channel");
+      put("x-device-id", "test-device");
+    }};
+    Map<String, String> headers = HttpUtil.getHeader(input);
+    assertTrue(!headers.isEmpty());
+    assertTrue(headers.size()==4);
+    assertTrue(headers.containsKey("x-authenticated-user-token"));
+    assertTrue(headers.containsKey("Content-Type"));
+    assertTrue(headers.containsKey("x-channel-id"));
+    assertTrue(headers.containsKey("x-device-id"));
+  }
+
+  @Test
+  public void testGetHeaderWithoutInput() throws Exception {
+    PowerMockito.mockStatic(KeycloakRequiredActionLinkUtil.class);
+    when(KeycloakRequiredActionLinkUtil.getAdminAccessToken()).thenReturn("testAuthToken");
+    Map<String, String> headers = HttpUtil.getHeader(null);
+    assertTrue(!headers.isEmpty());
+    assertTrue(headers.size()==2);
+    assertTrue(headers.containsKey("x-authenticated-user-token"));
+    assertTrue(headers.containsKey("Content-Type"));
   }
 }
