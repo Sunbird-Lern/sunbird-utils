@@ -1,0 +1,2 @@
+INSERT INTO sunbird.role(id, name, rolegroupid, status) VALUES('REPORT_ADMIN', 'Report Admin', ['REPORT_ADMIN'], 1);
+INSERT INTO sunbird.role_group(id, name, url_action_ids) VALUES('REPORT_ADMIN', 'Report Admin', ['reportAdmin']);

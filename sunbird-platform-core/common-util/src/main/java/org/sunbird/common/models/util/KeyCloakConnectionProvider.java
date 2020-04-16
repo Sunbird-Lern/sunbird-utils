@@ -106,6 +106,7 @@ public class KeyCloakConnectionProvider {
           "KeyCloakConnectionProvider:initialiseEnvConnection client sceret is provided.",
           LoggerEnum.INFO.name());
     }
+    keycloakBuilder.grantType("client_credentials");
     keycloak = keycloakBuilder.build();
     ProjectLogger.log(
         "key cloak instance is created from Environment variable settings .",

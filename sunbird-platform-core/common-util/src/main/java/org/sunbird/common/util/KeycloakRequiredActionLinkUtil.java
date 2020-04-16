@@ -109,7 +109,7 @@ public class KeycloakRequiredActionLinkUtil {
     return response.getBody().getObject().getString(LINK);
   }
 
-  private static String getAdminAccessToken() throws Exception {
+  public static String getAdminAccessToken() throws Exception {
     Map<String, String> headers = new HashMap<>();
     headers.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED);
     BaseRequest request =
@@ -120,7 +120,8 @@ public class KeycloakRequiredActionLinkUtil {
                     + "/protocol/openid-connect/token")
             .headers(headers)
             .field("client_id", ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_CLIENT_ID))
-            .field("client_secret", ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_CLIENT_SECRET));
+            .field("client_secret", ProjectUtil.getConfigValue(JsonKey.SUNBIRD_SSO_CLIENT_SECRET))
+            .field("grant_type", "client_credentials");
 
     HttpResponse<JsonNode> response = request.asJson();
     ProjectLogger.log(
