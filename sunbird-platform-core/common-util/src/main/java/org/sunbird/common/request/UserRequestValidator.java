@@ -40,9 +40,13 @@ public class UserRequestValidator extends BaseRequestValidator {
     validatePassword((String) userRequest.getRequest().get(JsonKey.PASSWORD));
   }
 
+  public static boolean isGoodPassword(String password) {
+    return password.matches(ProjectUtil.getConfigValue(JsonKey.SUNBIRD_PASS_REGEX));
+  }
+
   private static void validatePassword(String password) {
     if (StringUtils.isNotBlank(password)) {
-      boolean response = password.matches(ProjectUtil.getConfigValue(JsonKey.SUNBIRD_PASS_REGEX));
+      boolean response = isGoodPassword(password);
       if (!response) {
         throw new ProjectCommonException(
             ResponseCode.passwordValidation.getErrorCode(),
