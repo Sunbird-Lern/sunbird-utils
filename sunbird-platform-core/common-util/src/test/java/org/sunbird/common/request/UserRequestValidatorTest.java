@@ -45,6 +45,7 @@ public class UserRequestValidatorTest {
         put("hello#$%&'", false); // no uppercase/numeral
         put("sho!1", false); // too short, not 8 char
         put("B1!\"#$%&'()*+,-./:;<=>?@[]^_`{|}~", false); // no lowercase
+        put("Test @1234", false); // contains space
 
         // Good ones.
         put("Test123!", true); // good
