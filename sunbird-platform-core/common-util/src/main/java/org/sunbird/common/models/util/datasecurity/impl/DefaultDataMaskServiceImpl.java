@@ -45,21 +45,4 @@ public class DefaultDataMaskServiceImpl implements DataMaskingService {
     }
     return builder.toString();
   }
-
-  @Override
-  public String maskData(String data) {
-    if (StringUtils.isBlank(data) || data.length() <= 3) {
-      return data;
-    }
-    int lenght = data.length() - 4;
-    StringBuilder builder = new StringBuilder();
-    for (int i = 0; i < data.length(); i++) {
-      if (i < lenght) {
-        builder.append(JsonKey.REPLACE_WITH_ASTERISK);
-      } else {
-        builder.append(data.charAt(i));
-      }
-    }
-    return builder.toString();
-  }
 }
