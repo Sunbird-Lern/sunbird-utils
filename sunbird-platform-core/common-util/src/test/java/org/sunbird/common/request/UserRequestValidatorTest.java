@@ -55,7 +55,7 @@ public class UserRequestValidatorTest {
     };
 
     passwordExpectations.forEach((pwd, expectedResult) -> {
-        assertEquals(UserRequestValidator.isGoodPassword(pwd), expectedResult);
+        assertEquals(expectedResult, UserRequestValidator.isGoodPassword(pwd));
     });
   }
 
