@@ -9,7 +9,6 @@ import org.sunbird.decryptionUtil.constants.EnvConstants;
 
 public class StatusTracker {
 
-
   private static Logger logger = LoggerFactory.getLoggerInstance(StatusTracker.class.getName());
   static FileWriter fw;
 

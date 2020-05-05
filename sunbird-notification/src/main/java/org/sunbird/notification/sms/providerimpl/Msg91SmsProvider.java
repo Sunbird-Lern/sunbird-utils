@@ -2,6 +2,7 @@ package org.sunbird.notification.sms.providerimpl;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -78,7 +79,6 @@ public class Msg91SmsProvider implements ISmsProvider {
    * This method will send SMS using Post method
    *
    * @param mobileNumber String
-   * @param countryCode String
    * @param smsText String
    * @return boolean
    */
@@ -130,20 +130,22 @@ public class Msg91SmsProvider implements ISmsProvider {
         mobileNumbers.add(tempMobileNumber);
 
         // create sms
-        Sms sms = new Sms(URLEncoder.encode(smsText, "UTF-8"), mobileNumbers);
+        Sms sms = new Sms(getDoubleEncodedSMS(smsText), mobileNumbers);
 
         List<Sms> smsList = new ArrayList<>();
         smsList.add(sms);
 
         // create body
-        ProviderDetails providerDetails = new ProviderDetails(sender, smsRoute, country, smsList);
+        ProviderDetails providerDetails =
+            new ProviderDetails(sender, smsRoute, country, 1, smsList);
 
         String providerDetailsString = JsonUtil.toJson(providerDetails);
 
         if (!JsonUtil.isStringNullOREmpty(providerDetailsString)) {
           logger.debug("Msg91SmsProvider - Body - " + providerDetailsString);
 
-          HttpEntity entity = new ByteArrayEntity(providerDetailsString.getBytes("UTF-8"));
+          HttpEntity entity =
+              new ByteArrayEntity(providerDetailsString.getBytes(StandardCharsets.UTF_8));
           httpPost.setEntity(entity);
 
           CloseableHttpResponse response = httpClient.execute(httpPost);
@@ -204,7 +206,7 @@ public class Msg91SmsProvider implements ISmsProvider {
                 smsRoute,
                 tempMobileNumber,
                 authKey,
-                URLEncoder.encode(smsText, "UTF-8"));
+                URLEncoder.encode(getDoubleEncodedSMS(smsText), "UTF-8"));
 
         logger.debug("Msg91SmsProvider -Executing request - " + path);
 
@@ -272,7 +274,7 @@ public class Msg91SmsProvider implements ISmsProvider {
     StringBuilder builder = new StringBuilder();
     builder.append(gateWayUrl).append("sender=").append(sender).append("&route=").append(smsRoute);
     builder.append("&mobiles=").append(mobileNumber).append("&authkey=").append(authKey);
-    builder.append("&message=").append(smsText);
+    builder.append("&message=").append(getDoubleEncodedSMS(smsText));
     return builder.toString();
   }
 
@@ -372,20 +374,21 @@ public class Msg91SmsProvider implements ISmsProvider {
       // add authkey header
       httpPost.setHeader("authkey", authKey);
       // create sms
-      Sms sms = new Sms(URLEncoder.encode(smsText, "UTF-8"), phoneNumberList);
+      Sms sms = new Sms(getDoubleEncodedSMS(smsText), phoneNumberList);
 
       List<Sms> smsList = new ArrayList<>();
       smsList.add(sms);
 
       // create body
-      ProviderDetails providerDetails = new ProviderDetails(sender, smsRoute, country, smsList);
+      ProviderDetails providerDetails = new ProviderDetails(sender, smsRoute, country, 1, smsList);
 
       String providerDetailsString = JsonUtil.toJson(providerDetails);
 
       if (!JsonUtil.isStringNullOREmpty(providerDetailsString)) {
         logger.debug("Msg91SmsProvider - Body - " + providerDetailsString);
 
-        HttpEntity entity = new ByteArrayEntity(providerDetailsString.getBytes("UTF-8"));
+        HttpEntity entity =
+            new ByteArrayEntity(providerDetailsString.getBytes(StandardCharsets.UTF_8));
         httpPost.setEntity(entity);
 
         CloseableHttpResponse response = httpClient.execute(httpPost);
@@ -434,5 +437,11 @@ public class Msg91SmsProvider implements ISmsProvider {
       }
     }
     return phones;
+  }
+
+  private String getDoubleEncodedSMS(String smsText) {
+    String smsUtf8 = new String(smsText.getBytes(), StandardCharsets.UTF_8);
+    String doubleEncodedSMS = new String(smsUtf8.getBytes(), StandardCharsets.UTF_8);
+    return doubleEncodedSMS;
   }
 }

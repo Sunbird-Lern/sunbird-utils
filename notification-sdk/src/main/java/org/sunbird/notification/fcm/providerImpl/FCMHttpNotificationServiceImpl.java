@@ -59,12 +59,12 @@ public class FCMHttpNotificationServiceImpl implements IFCMNotificationService {
       String topic, Map<String, String> data, boolean isDryRun) {
     return sendTopicNotification(topic, data, FCM_URL, isDryRun);
   }
-  
+
   public static void setAccountKey(String key) {
     FCM_ACCOUNT_KEY = key;
     headerMap.put(NotificationConstant.AUTHORIZATION, FCM_ACCOUNT_KEY);
   }
-  
+
   /**
    * This method will send notification to FCM.
    *

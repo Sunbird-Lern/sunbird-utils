@@ -32,6 +32,7 @@ public enum ActorOperations {
   GET_PAGE_SETTINGS("getPageSettings"),
   GET_PAGE_SETTING("getPageSetting"),
   GET_PAGE_DATA("getPageData"),
+  GET_DIAL_PAGE_DATA("getDialPageData"),
   CREATE_SECTION("createSection"),
   UPDATE_SECTION("updateSection"),
   GET_ALL_SECTION("getAllSection"),

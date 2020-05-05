@@ -18,7 +18,7 @@ import org.sunbird.decryptionUtil.constants.EnvConstants;
 public class RecordTracker {
 
   private static Logger logger = LoggerFactory.getLoggerInstance(RecordTracker.class.getName());
-  
+
   public static List<String> getPreProcessedRecordsAsList() throws IOException {
     List<String> successfullRecordsList = new ArrayList<>();
     File file = new File(EnvConstants.PRE_PROCESSED_RECORDS_FILE);
