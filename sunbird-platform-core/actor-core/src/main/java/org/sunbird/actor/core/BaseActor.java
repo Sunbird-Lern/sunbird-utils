@@ -51,6 +51,7 @@ public abstract class BaseActor extends UntypedAbstractActor {
       try {
         onReceive(request);
       } catch (Exception e) {
+        ProjectLogger.log("BaseActor: FAILED onReceive called for operation: " + operation, LoggerEnum.INFO);
         onReceiveException(operation, e);
       }
     } else {

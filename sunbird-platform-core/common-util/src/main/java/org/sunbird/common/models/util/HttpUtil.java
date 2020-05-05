@@ -19,6 +19,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -39,6 +41,7 @@ import org.sunbird.common.models.response.HttpUtilResponse;
 import org.sunbird.common.request.ExecutionContext;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
+import org.sunbird.common.util.KeycloakRequiredActionLinkUtil;
 import org.sunbird.telemetry.util.TelemetryEvents;
 
 /**
@@ -862,6 +865,15 @@ public class HttpUtil {
       ProjectLogger.log("Exception occurred while calling sendDeleteRequest method.", ex);
       throw ex;
     }
+  }
+
+  public static Map<String, String> getHeader(Map<String, String> input) throws Exception {
+    return new HashMap<String, String>() {{
+      put("Content-Type", "application/json");
+      put(JsonKey.X_AUTHENTICATED_USER_TOKEN, KeycloakRequiredActionLinkUtil.getAdminAccessToken());
+      if(MapUtils.isNotEmpty(input))
+        putAll(input);
+    }};
   }
 }
 
