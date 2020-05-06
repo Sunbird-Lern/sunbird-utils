@@ -217,7 +217,6 @@ public class ElasticSearchHelper {
   @SuppressWarnings("unchecked")
   private static BoolQueryBuilder createFilterESOpperation(
       Entry<String, Object> entry, BoolQueryBuilder query, Map<String, Float> constraintsMap) {
-    ProjectLogger.log("ElasticSearchHelper:createFilterESOpperation: method started ");
     String key = entry.getKey();
     Object val = entry.getValue();
     if (val instanceof List && val != null) {
@@ -234,7 +233,6 @@ public class ElasticSearchHelper {
     } else {
       query.must(createTermQuery(key + RAW_APPEND, val, constraintsMap.get(key)));
     }
-    ProjectLogger.log("ElasticSearchHelper:createFilterESOpperation: method end ");
     return query;
   }
 
@@ -249,8 +247,6 @@ public class ElasticSearchHelper {
   @SuppressWarnings("unchecked")
   private static BoolQueryBuilder createNestedFilterESOpperation(
       Entry<String, Object> entry, BoolQueryBuilder query, Map<String, Float> constraintsMap) {
-    ProjectLogger.log(
-        "ElasticSearchHelper:createFilterESOpperation: method started ", LoggerEnum.INFO.name());
     String key = entry.getKey();
     Object val = entry.getValue();
     String path = key.split("\\.")[0];
@@ -283,8 +279,6 @@ public class ElasticSearchHelper {
               createTermQuery(key + RAW_APPEND, val, constraintsMap.get(key)),
               ScoreMode.None));
     }
-    ProjectLogger.log(
-        "ElasticSearchHelper:createFilterESOpperation: method end ", LoggerEnum.INFO.name());
     return query;
   }
 
@@ -299,8 +293,6 @@ public class ElasticSearchHelper {
    */
   private static BoolQueryBuilder getTermQueryFromMap(
       Object val, String key, BoolQueryBuilder query, Map<String, Float> constraintsMap) {
-    ProjectLogger.log(
-        "ElasticSearchHelper:getTermQueryFromMap: method started ", LoggerEnum.INFO.name());
     Map<String, Object> value = (Map<String, Object>) val;
     Map<String, Object> rangeOperation = new HashMap<>();
     Map<String, Object> lexicalOperation = new HashMap<>();
@@ -318,23 +310,17 @@ public class ElasticSearchHelper {
     if (!(lexicalOperation.isEmpty())) {
       query.must(createLexicalQuery(key, lexicalOperation, constraintsMap.get(key)));
     }
-    ProjectLogger.log(
-        "ElasticSearchHelper:getTermQueryFromMap: method end ", LoggerEnum.INFO.name());
 
     return query;
   }
 
   private static BoolQueryBuilder createEsORFilterQuery(Map<String, Object> orFilters) {
     BoolQueryBuilder query = new BoolQueryBuilder();
-    ProjectLogger.log(
-        "ElasticSearchHelper:createEsORFilterQuery:method started ", LoggerEnum.INFO.name());
     for (Map.Entry<String, Object> mp : orFilters.entrySet()) {
       query.should(
           QueryBuilders.termQuery(
               mp.getKey() + RAW_APPEND, ((String) mp.getValue()).toLowerCase()));
     }
-    ProjectLogger.log(
-        "ElasticSearchHelper:createEsORFilterQuery:method end ", LoggerEnum.INFO.name());
     return query;
   }
 
@@ -353,8 +339,6 @@ public class ElasticSearchHelper {
       String path,
       BoolQueryBuilder query,
       Map<String, Float> constraintsMap) {
-    ProjectLogger.log(
-        "ElasticSearchHelper:getTermQueryFromMap: method started ", LoggerEnum.INFO.name());
     Map<String, Object> value = (Map<String, Object>) val;
     Map<String, Object> rangeOperation = new HashMap<>();
     Map<String, Object> lexicalOperation = new HashMap<>();
@@ -380,8 +364,6 @@ public class ElasticSearchHelper {
               createLexicalQuery(key, lexicalOperation, constraintsMap.get(key)),
               ScoreMode.None));
     }
-    ProjectLogger.log(
-        "ElasticSearchHelper:getTermQueryFromMap: method end ", LoggerEnum.INFO.name());
     return query;
   }
 
@@ -772,9 +754,6 @@ public class ElasticSearchHelper {
   private static List getFinalFacetList(
       SearchResponse response, SearchDTO searchDTO, List finalFacetList) {
     if (null != searchDTO.getFacets() && !searchDTO.getFacets().isEmpty()) {
-      ProjectLogger.log(
-          "ElasticSearchHelper:getFinalFacetList: " + "method start with facets not null",
-          LoggerEnum.INFO);
       Map<String, String> m1 = searchDTO.getFacets().get(0);
       for (Map.Entry<String, String> entry : m1.entrySet()) {
         String field = entry.getKey();
@@ -805,7 +784,6 @@ public class ElasticSearchHelper {
         facetMap.put(JsonKey.NAME, field);
         finalFacetList.add(facetMap);
       }
-      ProjectLogger.log("ElasticSearchHelper:getFinalFacetList: " + "method end ", LoggerEnum.INFO);
     }
     return finalFacetList;
   }
