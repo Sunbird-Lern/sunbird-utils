@@ -89,7 +89,7 @@ public class ElasticSearchHelper {
       return result;
     } catch (Exception e) {
       ProjectLogger.log(
-          "ElasticSearchHelper:getResponseFromFuture: error occured " + e, LoggerEnum.INFO.name());
+          "ElasticSearchHelper:getResponseFromFuture: error occured " + e, LoggerEnum.ERROR.name());
     }
     return null;
   }
@@ -217,8 +217,7 @@ public class ElasticSearchHelper {
   @SuppressWarnings("unchecked")
   private static BoolQueryBuilder createFilterESOpperation(
       Entry<String, Object> entry, BoolQueryBuilder query, Map<String, Float> constraintsMap) {
-    ProjectLogger.log(
-        "ElasticSearchHelper:createFilterESOpperation: method started ", LoggerEnum.INFO.name());
+    ProjectLogger.log("ElasticSearchHelper:createFilterESOpperation: method started ");
     String key = entry.getKey();
     Object val = entry.getValue();
     if (val instanceof List && val != null) {
@@ -235,8 +234,7 @@ public class ElasticSearchHelper {
     } else {
       query.must(createTermQuery(key + RAW_APPEND, val, constraintsMap.get(key)));
     }
-    ProjectLogger.log(
-        "ElasticSearchHelper:createFilterESOpperation: method end ", LoggerEnum.INFO.name());
+    ProjectLogger.log("ElasticSearchHelper:createFilterESOpperation: method end ");
     return query;
   }
 
