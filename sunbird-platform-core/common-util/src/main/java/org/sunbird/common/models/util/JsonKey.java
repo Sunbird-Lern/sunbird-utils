@@ -1019,6 +1019,7 @@ public final class JsonKey {
   public static final String LEARNING_SERVICE_BASE_URL = "learning_service_base_url";
   public static final String CREATOR_DETAILS_FIELDS = "sunbird_user_search_cretordetails_fields";
   public static final String USER_SEARCH_BASE_URL = "sunbird_user_service_api_base_url";
+  public static final String SUNBIRD_BATCH_CONTENT_TYPES = "sunbird_batch_content_types";
 
   private JsonKey() {}
 }
