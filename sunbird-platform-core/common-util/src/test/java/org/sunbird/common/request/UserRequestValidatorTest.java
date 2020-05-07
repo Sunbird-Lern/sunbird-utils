@@ -1,19 +1,20 @@
 /** */
 package org.sunbird.common.request;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.responsecode.ResponseCode;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 public class UserRequestValidatorTest {
 
@@ -31,6 +32,30 @@ public class UserRequestValidatorTest {
       assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), e.getResponseCode());
       assertEquals(ResponseCode.passwordValidation.getErrorCode(), e.getCode());
     }
+  }
+
+  @Test
+  public void testIsGoodPassword() {
+    HashMap<String, Boolean> passwordExpectations = new HashMap<String, Boolean>(){
+      {
+        // Bad ones.
+        put("Test 1234", false); // space is not a valid char
+        put("hello1234", false); // no uppercase
+        put("helloABCD", false); // no numeral
+        put("hello#$%&'", false); // no uppercase/numeral
+        put("sho!1", false); // too short, not 8 char
+        put("B1!\"#$%&'()*+,-./:;<=>?@[]^_`{|}~", false); // no lowercase
+
+        // Good ones.
+        put("Test123!", true); // good
+        put("ALongPassword@123", true); // more than 8 char
+        put("Abc1!\"#$%&'()*+,-./:;<=>?@[]^_`{|}~", true); // with all spl char, PASS
+      }
+    };
+
+    passwordExpectations.forEach((pwd, expectedResult) -> {
+        assertEquals(UserRequestValidator.isGoodPassword(pwd), expectedResult);
+    });
   }
 
   @Test
