@@ -55,7 +55,7 @@ public class TelemetryLmaxWriter {
     WriteEventFactory factory = new WriteEventFactory();
 
     if (ringBufferSize == 0) {
-      ringBufferSize = 1024;
+      ringBufferSize = 65536;
     }
 
     // ring buffer size always has to be the power of 2.

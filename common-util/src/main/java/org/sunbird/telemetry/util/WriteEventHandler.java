@@ -26,17 +26,21 @@ public class WriteEventHandler implements EventHandler<Request> {
 
   @Override
   public void onEvent(Request request, long l, boolean b) throws Exception {
-    String eventType = (String) request.getRequest().get(JsonKey.TELEMETRY_EVENT_TYPE);
-
-    if (TelemetryEvents.AUDIT.getName().equalsIgnoreCase(eventType)) {
-      processAuditEvent(request);
-    } else if (TelemetryEvents.SEARCH.getName().equalsIgnoreCase(eventType)) {
-      processSearchEvent(request);
-    } else if (TelemetryEvents.ERROR.getName().equalsIgnoreCase(eventType)) {
-      processErrorEvent(request);
-    } else if (TelemetryEvents.LOG.getName().equalsIgnoreCase(eventType)) {
-      processLogEvent(request);
+    try {
+      String eventType = (String) request.getRequest().get(JsonKey.TELEMETRY_EVENT_TYPE);
+      if (TelemetryEvents.AUDIT.getName().equalsIgnoreCase(eventType)) {
+        processAuditEvent(request);
+      } else if (TelemetryEvents.SEARCH.getName().equalsIgnoreCase(eventType)) {
+        processSearchEvent(request);
+      } else if (TelemetryEvents.ERROR.getName().equalsIgnoreCase(eventType)) {
+        processErrorEvent(request);
+      } else if (TelemetryEvents.LOG.getName().equalsIgnoreCase(eventType)) {
+        processLogEvent(request);
+      }
+    } catch (Exception e) {
+      ProjectLogger.log("WriteEventHandler:onEvent: Exception in disruptor consumer - index: " + l + " exception = " + e, LoggerEnum.ERROR.name());
     }
+
   }
 
   private boolean processLogEvent(Request request) {
