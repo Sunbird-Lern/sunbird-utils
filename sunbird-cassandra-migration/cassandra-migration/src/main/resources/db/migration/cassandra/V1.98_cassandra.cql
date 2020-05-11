@@ -1,0 +1,1 @@
+ALTER TABLE sunbird.page_section ADD dynamicFilters text;
