@@ -179,9 +179,13 @@ public class TelemetryGenerator {
     String event = "";
     try {
       event = mapper.writeValueAsString(telemetry);
-      ProjectLogger.log("TelemetryGenerator:getTelemetry = Telemetry Event : " + event, LoggerEnum.DEBUG.name());
+      ProjectLogger.log(
+          "TelemetryGenerator:getTelemetry = Telemetry Event : " + event, LoggerEnum.DEBUG.name());
     } catch (Exception e) {
-      ProjectLogger.log("TelemetryGenerator:getTelemetry = Telemetry Event: failed to generate audit events:" +e, LoggerEnum.ERROR.name());    }
+      ProjectLogger.log(
+          "TelemetryGenerator:getTelemetry = Telemetry Event: failed to generate audit events:" + e,
+          LoggerEnum.ERROR.name());
+    }
     return event;
   }
 
@@ -224,7 +228,7 @@ public class TelemetryGenerator {
     String query = (String) params.get(JsonKey.QUERY);
     Map filters = (Map) params.get(JsonKey.FILTERS);
     Map sort = (Map) params.get(JsonKey.SORT);
-    Long size = (Long) params.get(JsonKey.SIZE);
+    // Long size = (Long) ;
     List<Map> topn = (List<Map>) params.get(JsonKey.TOPN);
 
     edata.put(JsonKey.TYPE, StringUtils.capitalize(type));
@@ -234,7 +238,7 @@ public class TelemetryGenerator {
     edata.put(JsonKey.QUERY, query);
     edata.put(JsonKey.FILTERS, filters);
     edata.put(JsonKey.SORT, sort);
-    edata.put(JsonKey.SIZE, size);
+    edata.put(JsonKey.SIZE, params.get(JsonKey.SIZE));
     edata.put(JsonKey.TOPN, topn);
     return edata;
   }
