@@ -150,6 +150,6 @@ public final class TelemetryUtil {
     request
         .getContext()
         .put(JsonKey.TELEMETRY_CONTEXT, ExecutionContext.getCurrent().getRequestContext());
-    TelemetryLmaxWriter.getInstance().submitMessage(request);
+    TelemetryWriter.write(request);
   }
 }
