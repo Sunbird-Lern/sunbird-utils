@@ -51,7 +51,7 @@ public class TelemetryWriter {
       telemetryEventLogger.info(telemetry);
     } else {
       ProjectLogger.log(
-          "WriteEventHandler:processLogEvent: Audit Telemetry validation failed: ",
+          "TelemetryWriter:processLogEvent: Audit Telemetry validation failed: ",
           telemetry,
           LoggerEnum.ERROR.name());
     }
@@ -65,7 +65,7 @@ public class TelemetryWriter {
       telemetryEventLogger.info(telemetry);
     } else {
       ProjectLogger.log(
-          "WriteEventHandler:processLogEvent: Error Telemetry validation failed: ",
+          "TelemetryWriter:processLogEvent: Error Telemetry validation failed: ",
           telemetry,
           LoggerEnum.ERROR.name());
     }
@@ -79,7 +79,7 @@ public class TelemetryWriter {
       telemetryEventLogger.info(telemetry);
     } else {
       ProjectLogger.log(
-          "WriteEventHandler:processLogEvent: Search Telemetry validation failed: ",
+          "TelemetryWriter:processLogEvent: Search Telemetry validation failed: ",
           telemetry,
           LoggerEnum.ERROR.name());
     }
@@ -98,7 +98,7 @@ public class TelemetryWriter {
       telemetryEventLogger.info(telemetry);
     } else {
       ProjectLogger.log(
-          "WriteEventHandler:processLogEvent: Audit Telemetry validation failed: ",
+          "TelemetryWriter:processLogEvent: Audit Telemetry validation failed: ",
           telemetry,
           LoggerEnum.ERROR.name());
     }
