@@ -29,6 +29,10 @@ import org.sunbird.models.organisation.Organisation;
 import scala.concurrent.Future;
 
 public class OrganisationClientImpl implements OrganisationClient {
+  
+  public static OrganisationClient getInstance() {
+    return new OrganisationClientImpl();
+  }
 
   private static InterServiceCommunication interServiceCommunication =
       InterServiceCommunicationFactory.getInstance();
