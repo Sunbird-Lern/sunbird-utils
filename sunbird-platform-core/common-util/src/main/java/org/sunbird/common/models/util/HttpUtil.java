@@ -19,7 +19,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
@@ -39,10 +38,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.sunbird.common.models.response.HttpUtilResponse;
 import org.sunbird.common.request.ExecutionContext;
-import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.common.util.KeycloakRequiredActionLinkUtil;
-import org.sunbird.telemetry.util.TelemetryEvents;
 
 /**
  * This utility method will handle external http call
@@ -519,10 +516,6 @@ public class HttpUtil {
     Map<String, Object> logInfo = request;
     long endTime = System.currentTimeMillis();
     logInfo.put(JsonKey.END_TIME, endTime);
-    Request req = new Request();
-    req.setRequest(generateTelemetryRequest(TelemetryEvents.LOG.getName(), logInfo));
-    //        lmaxWriter.submitMessage(req);
-
   }
 
   private static Map<String, Object> generateTelemetryRequest(
@@ -868,12 +861,15 @@ public class HttpUtil {
   }
 
   public static Map<String, String> getHeader(Map<String, String> input) throws Exception {
-    return new HashMap<String, String>() {{
-      put("Content-Type", "application/json");
-      put(JsonKey.X_AUTHENTICATED_USER_TOKEN, KeycloakRequiredActionLinkUtil.getAdminAccessToken());
-      if(MapUtils.isNotEmpty(input))
-        putAll(input);
-    }};
+    return new HashMap<String, String>() {
+      {
+        put("Content-Type", "application/json");
+        put(
+            JsonKey.X_AUTHENTICATED_USER_TOKEN,
+            KeycloakRequiredActionLinkUtil.getAdminAccessToken());
+        if (MapUtils.isNotEmpty(input)) putAll(input);
+      }
+    };
   }
 }
 

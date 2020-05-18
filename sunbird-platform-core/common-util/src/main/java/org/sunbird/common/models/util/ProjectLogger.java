@@ -13,7 +13,6 @@ import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.request.ExecutionContext;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
-import org.sunbird.telemetry.util.TelemetryEvents;
 
 /**
  * This class will used to log the project message in any level.
@@ -56,7 +55,6 @@ public class ProjectLogger {
               ResponseCode.SERVER_ERROR.getResponseCode());
     }
     Request request = new Request();
-    telemetryInfo.put(JsonKey.TELEMETRY_EVENT_TYPE, TelemetryEvents.ERROR.getName());
 
     Map<String, Object> params = (Map<String, Object>) telemetryInfo.get(JsonKey.PARAMS);
     params.put(JsonKey.ERROR, projectCommonException.getCode());
