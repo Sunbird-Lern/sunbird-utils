@@ -30,6 +30,19 @@ import scala.concurrent.Future;
 
 public class OrganisationClientImpl implements OrganisationClient {
 
+  public static OrganisationClient organisationClient = null;
+
+  public static OrganisationClient getInstance() {
+    if (organisationClient == null) {
+      synchronized (OrganisationClientImpl.class) {
+        if (organisationClient == null) {
+          organisationClient = new OrganisationClientImpl();
+        }
+      }
+    }
+    return organisationClient;
+  }
+
   private static InterServiceCommunication interServiceCommunication =
       InterServiceCommunicationFactory.getInstance();
   ObjectMapper objectMapper = new ObjectMapper();
