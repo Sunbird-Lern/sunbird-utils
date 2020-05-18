@@ -465,7 +465,7 @@ public interface ResponseMessage {
         "Password must contain a minimum of 8 characters including numerals, lower and upper case alphabets and special characters";
     String OTP_VERIFICATION_FAILED = "OTP verification failed. Remaining attempt count is {0}.";
     String SERVICE_UNAVAILABLE = "SERVICE UNAVAILABLE";
-    String MISSING_MESSAGE = "Required fields for create course are missing";
+    String MISSING_MESSAGE = "Required fields for create course are missing. {0}";
   }
 
   interface Key {
