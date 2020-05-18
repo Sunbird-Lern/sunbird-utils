@@ -230,6 +230,9 @@ public interface ResponseMessage {
     String INVALID_ORG_TYPE_ERROR = "Please provide valid orgType.";
     String TABLE_OR_DOC_NAME_ERROR = "Please provide valid table or documentName.";
     String EMAIL_OR_PHONE_MISSING = "Please provide either email or phone.";
+    //No need to indicate managedby is missing to user.
+    String EMAIL_OR_PHONE_OR_MANAGEDBY_MISSING = "Please provide either email or phone.";
+    String ONLY_EMAIL_OR_PHONE_OR_MANAGEDBY_REQUIRED = "Please provide only email or phone or managed by";
     String PHONE_ALREADY_IN_USE = "Phone already in use. Please provide different phone number.";
     String INVALID_CLIENT_NAME = "Please provide unique valid client name";
     String INVALID_CLIENT_ID = "Please provide valid client id";
@@ -679,6 +682,8 @@ public interface ResponseMessage {
     String INVALID_ORG_TYPE_ERROR = "INVALID_ORG_TYPE_ERROR";
     String TABLE_OR_DOC_NAME_ERROR = "TABLE_OR_DOC_NAME_ERROR";
     String EMAIL_OR_PHONE_MISSING = "EMAIL_OR_PHONE_MISSING";
+    String EMAIL_OR_PHONE_OR_MANAGEDBY_MISSING = "EMAIL_OR_PHONE_OR_MANAGEDBY_MISSING";
+    String ONLY_EMAIL_OR_PHONE_OR_MANAGEDBY_REQUIRED = "ONLY_EMAIL_OR_PHONE_OR_MANAGEDBY_REQUIRED";
     String PHONE_ALREADY_IN_USE = "PHONE_ALREADY_IN_USE";
     String INVALID_CLIENT_NAME = "INVALID_CLIENT_NAME";
     String INVALID_CLIENT_ID = "INVALID_CLIENT_ID";
