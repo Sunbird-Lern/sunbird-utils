@@ -1023,6 +1023,14 @@ public final class JsonKey {
   public static final String WARD_LOGIN_OTP_TEMPLATE_ID = "wardLoginOTP";
   public static final String OTP_PHONE_WARD_LOGIN_TEMPLATE = "verifyPhoneOtpTemplateWard";
   public static final String OTP_EMAIL_WARD_LOGIN_TEMPLATE = "verifyEmailOtpTemplateWard";
+  public static final String COPY_SCHEME = "copyScheme";
+  public static final String TEXT_BOOK_TO_COURSE = "TextBookToCourse";
+  public static final String COURSE_TYPE = "courseType";
+  public static final String CURRICULUM_COURSE = "CurriculumCourse";
+  public static final String TRAINING_COURSE = "TrainingCourse";
+  public static final String COURSEID = "course_id";
+  public static final String NODE_ID = "node_id";
+  public static final String SUNBIRD_CONTENT_COURSE_TYPES = "sunbird_content_course_types";
 
   private JsonKey() {}
 }
