@@ -469,7 +469,7 @@ public interface ResponseMessage {
     String OTP_VERIFICATION_FAILED = "OTP verification failed. Remaining attempt count is {0}.";
     String SERVICE_UNAVAILABLE = "SERVICE UNAVAILABLE";
     String MISSING_MESSAGE = "Required fields for create course are missing. {0}";
-    String MANAGED_BY_NOT_ALLOWED = "managedBy not allowed to update.";
+    String MANAGED_BY_NOT_ALLOWED = "managedBy cannot be updated.";
   }
 
   interface Key {
