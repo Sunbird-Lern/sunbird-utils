@@ -855,6 +855,8 @@ public enum ResponseCode {
       ResponseMessage.Key.SERVICE_UNAVAILABLE, ResponseMessage.Message.SERVICE_UNAVAILABLE),
   missingData(
           ResponseMessage.Key.MISSING_CODE, ResponseMessage.Message.MISSING_MESSAGE),
+  managedByNotAllowed(
+    ResponseMessage.Key.MANAGED_BY_NOT_ALLOWED, ResponseMessage.Message.MANAGED_BY_NOT_ALLOWED),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

@@ -413,7 +413,7 @@ public class UserRequestValidator extends BaseRequestValidator {
    */
   public void validateUpdateUserRequest(Request userRequest) {
     if (userRequest.getRequest().containsKey(JsonKey.MANAGED_BY)) {
-      ProjectCommonException.throwClientErrorException(ResponseCode.invalidData);
+      ProjectCommonException.throwClientErrorException(ResponseCode.managedByNotAllowed);
     }
     externalIdsValidation(userRequest, JsonKey.UPDATE);
     phoneValidation(userRequest);
