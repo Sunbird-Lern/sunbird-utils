@@ -787,6 +787,17 @@ public class ProjectUtil {
     }
   }
 
+  public static boolean validateUUID(String uuid) {
+    String pattern = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}";
+    try {
+      Pattern patt = Pattern.compile(pattern);
+      Matcher matcher = patt.matcher(uuid);
+      return matcher.matches();
+    } catch (RuntimeException e) {
+      return false;
+    }
+  }
+
   public static String getSMSBody(Map<String, String> smsTemplate) {
     try {
       Properties props = new Properties();

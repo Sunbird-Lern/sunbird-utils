@@ -452,4 +452,16 @@ public class ProjectUtilTest extends BaseHttpTest {
   public void testMigrateActionRejectValueSuccess() {
     Assert.assertEquals("reject", ProjectUtil.MigrateAction.REJECT.getValue());
   }
+
+  @Test
+  public void testvalidateCountryCode() {
+    boolean bool = ProjectUtil.validateCountryCode("+91");
+    assertTrue(bool);
+  }
+
+  @Test
+  public void testvalidateUUID() {
+    boolean bool = ProjectUtil.validateUUID("1df03f56-ceba-4f2d-892c-2b1609e7b05f");
+    assertTrue(bool);
+  }
 }
