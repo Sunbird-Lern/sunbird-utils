@@ -407,6 +407,10 @@ public enum ResponseCode {
       ResponseMessage.Key.TABLE_OR_DOC_NAME_ERROR, ResponseMessage.Message.TABLE_OR_DOC_NAME_ERROR),
   emailorPhoneRequired(
       ResponseMessage.Key.EMAIL_OR_PHONE_MISSING, ResponseMessage.Message.EMAIL_OR_PHONE_MISSING),
+  emailorPhoneorManagedByRequired(
+          ResponseMessage.Key.EMAIL_OR_PHONE_OR_MANAGEDBY_MISSING, ResponseMessage.Message.EMAIL_OR_PHONE_OR_MANAGEDBY_MISSING),
+  OnlyEmailorPhoneorManagedByRequired(
+          ResponseMessage.Key.ONLY_EMAIL_OR_PHONE_OR_MANAGEDBY_REQUIRED, ResponseMessage.Message.ONLY_EMAIL_OR_PHONE_OR_MANAGEDBY_REQUIRED),
   PhoneNumberInUse(
       ResponseMessage.Key.PHONE_ALREADY_IN_USE, ResponseMessage.Message.PHONE_ALREADY_IN_USE),
   invalidClientName(
