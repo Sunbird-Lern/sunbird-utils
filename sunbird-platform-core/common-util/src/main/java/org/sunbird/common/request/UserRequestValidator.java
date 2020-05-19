@@ -388,6 +388,9 @@ public class UserRequestValidator extends BaseRequestValidator {
    * @param userRequest Request
    */
   public void validateUpdateUserRequest(Request userRequest) {
+    if (userRequest.getRequest().containsKey(JsonKey.MANAGED_BY)) {
+      ProjectCommonException.throwClientErrorException(ResponseCode.invalidData);
+    }
     externalIdsValidation(userRequest, JsonKey.UPDATE);
     phoneValidation(userRequest);
     updateUserBasicValidation(userRequest);
