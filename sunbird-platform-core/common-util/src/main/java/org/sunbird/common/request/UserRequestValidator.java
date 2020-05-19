@@ -84,8 +84,20 @@ public class UserRequestValidator extends BaseRequestValidator {
         ResponseCode.mandatoryParamsMissing,
         JsonKey.FIRST_NAME);
     if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.EMAIL))
-        && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PHONE))) {
-      ProjectCommonException.throwClientErrorException(ResponseCode.emailorPhoneRequired);
+        && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PHONE))
+            && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.MANAGED_BY))) {
+      ProjectCommonException.throwClientErrorException(ResponseCode.emailorPhoneorManagedByRequired);
+    }
+
+    if ((StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.EMAIL))
+            || StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.PHONE)))
+            && StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.MANAGED_BY))) {
+      ProjectCommonException.throwClientErrorException(ResponseCode.OnlyEmailorPhoneorManagedByRequired);
+    }
+
+    if (StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.MANAGED_BY))){
+      userRequest.getRequest().put(JsonKey.EMAIL_VERIFIED,null);
+      userRequest.getRequest().put(JsonKey.PHONE_VERIFIED,null);
     }
     phoneVerifiedValidation(userRequest);
     emailVerifiedValidation(userRequest);
@@ -192,8 +204,20 @@ public class UserRequestValidator extends BaseRequestValidator {
         ResponseCode.mandatoryParamsMissing,
         JsonKey.FIRST_NAME);
     if (StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.EMAIL))
-        && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PHONE))) {
-      ProjectCommonException.throwClientErrorException(ResponseCode.emailorPhoneRequired);
+            && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.PHONE))
+            && StringUtils.isBlank((String) userRequest.getRequest().get(JsonKey.MANAGED_BY))) {
+      ProjectCommonException.throwClientErrorException(ResponseCode.emailorPhoneorManagedByRequired);
+    }
+
+    if ((StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.EMAIL))
+            || StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.PHONE)))
+            && StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.MANAGED_BY))) {
+      ProjectCommonException.throwClientErrorException(ResponseCode.OnlyEmailorPhoneorManagedByRequired);
+    }
+
+    if (StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.MANAGED_BY))){
+      userRequest.getRequest().put(JsonKey.EMAIL_VERIFIED,null);
+      userRequest.getRequest().put(JsonKey.PHONE_VERIFIED,null);
     }
 
     if (null != userRequest.getRequest().get(JsonKey.DOB)) {
