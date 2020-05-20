@@ -228,7 +228,6 @@ public class TelemetryGenerator {
     String query = (String) params.get(JsonKey.QUERY);
     Map filters = (Map) params.get(JsonKey.FILTERS);
     Map sort = (Map) params.get(JsonKey.SORT);
-    // Long size = (Long) ;
     List<Map> topn = (List<Map>) params.get(JsonKey.TOPN);
 
     edata.put(JsonKey.TYPE, StringUtils.capitalize(type));
