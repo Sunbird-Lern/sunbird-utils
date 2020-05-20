@@ -787,6 +787,15 @@ public class ProjectUtil {
     }
   }
 
+  public static boolean validateUUID(String uuidStr) {
+    try {
+      UUID.fromString(uuidStr);
+      return true;
+    } catch (Exception ex) {
+      return false;
+    }
+  }
+
   public static String getSMSBody(Map<String, String> smsTemplate) {
     try {
       Properties props = new Properties();
