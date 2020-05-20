@@ -787,13 +787,11 @@ public class ProjectUtil {
     }
   }
 
-  public static boolean validateUUID(String uuid) {
-    String pattern = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}";
+  public static boolean validateUUID(String uuidStr) {
     try {
-      Pattern patt = Pattern.compile(pattern);
-      Matcher matcher = patt.matcher(uuid);
-      return matcher.matches();
-    } catch (RuntimeException e) {
+      UUID.fromString(uuidStr);
+      return true;
+    } catch (Exception ex) {
       return false;
     }
   }
