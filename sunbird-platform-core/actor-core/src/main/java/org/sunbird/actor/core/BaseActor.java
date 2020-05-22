@@ -18,13 +18,8 @@ import org.sunbird.actor.router.RequestRouter;
 import org.sunbird.actor.service.BaseMWService;
 import org.sunbird.actor.service.SunbirdMWService;
 import org.sunbird.common.exception.ProjectCommonException;
-import org.sunbird.common.models.response.Response;
-import org.sunbird.common.models.response.ResponseParams;
-import org.sunbird.common.models.response.ResponseParams.StatusType;
-import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.StringFormatter;
-import org.sunbird.common.request.ExecutionContext;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 import scala.concurrent.duration.Duration;
@@ -37,9 +32,9 @@ public abstract class BaseActor extends UntypedAbstractActor {
   private static final String EVENT_SYNC = "eventSync";
   private static final String DEFAULT = "default";
   public static final int AKKA_WAIT_TIME = 30;
-  public static Timeout timeout = new Timeout(AKKA_WAIT_TIME, TimeUnit.SECONDS);
   private static Config config = ConfigFactory.parseResources(eventSyncConfFile);
   private static Map<String, String> eventSyncProperties = new HashMap<>();
+  protected static Timeout timeout = new Timeout(AKKA_WAIT_TIME, TimeUnit.SECONDS);
 
   @Override
   public void onReceive(Object message) throws Throwable {
@@ -53,15 +48,10 @@ public abstract class BaseActor extends UntypedAbstractActor {
         ProjectLogger.log("BaseActor: FAILED onReceive called for operation: " + operation);
         onReceiveException(operation, e);
       }
-    } else {
-      // Do nothing !
     }
   }
 
   public void tellToAnother(Request request) {
-    request
-        .getContext()
-        .put(JsonKey.TELEMETRY_CONTEXT, ExecutionContext.getCurrent().getRequestContext());
     SunbirdMWService.tellToBGRouter(request, self());
   }
 
@@ -97,24 +87,6 @@ public abstract class BaseActor extends UntypedAbstractActor {
             + exception.getMessage(),
         exception);
     sender().tell(exception, self());
-  }
-
-  protected Response getErrorResponse(Exception e) {
-    Response response = new Response();
-    ResponseParams resStatus = new ResponseParams();
-    String message = e.getMessage();
-    resStatus.setErrmsg(message);
-    resStatus.setStatus(StatusType.FAILED.name());
-    if (e instanceof ProjectCommonException) {
-      ProjectCommonException me = (ProjectCommonException) e;
-      resStatus.setErr(me.getCode());
-      response.setResponseCode(ResponseCode.SERVER_ERROR);
-    } else {
-      resStatus.setErr(e.getMessage());
-      response.setResponseCode(ResponseCode.SERVER_ERROR);
-    }
-    response.setParams(resStatus);
-    return response;
   }
 
   protected ActorRef getActorRef(String operation) {
