@@ -66,6 +66,7 @@ public class TelemetryGenerator {
 
     Telemetry telemetry =
         new Telemetry(TelemetryEvents.AUDIT.getName(), actor, eventContext, edata, targetObject);
+    telemetry.setMid(reqId);
     return getTelemetry(telemetry);
   }
 
@@ -207,7 +208,6 @@ public class TelemetryGenerator {
 
     Context eventContext = getContext(context);
 
-    // assign request id into context cdata ...
     String reqId = (String) context.get(JsonKey.REQUEST_ID);
     if (!StringUtils.isBlank(reqId)) {
       Map<String, Object> map = new HashMap<>();
@@ -218,6 +218,7 @@ public class TelemetryGenerator {
     Map<String, Object> edata = generateSearchEdata(params);
     Telemetry telemetry =
         new Telemetry(TelemetryEvents.SEARCH.getName(), actor, eventContext, edata);
+    telemetry.setMid(reqId);
     return getTelemetry(telemetry);
   }
 
@@ -271,6 +272,7 @@ public class TelemetryGenerator {
 
     Map<String, Object> edata = generateLogEdata(params);
     Telemetry telemetry = new Telemetry(TelemetryEvents.LOG.getName(), actor, eventContext, edata);
+    telemetry.setMid(reqId);
     return getTelemetry(telemetry);
   }
 
@@ -336,6 +338,7 @@ public class TelemetryGenerator {
     Map<String, Object> edata = generateErrorEdata(params);
     Telemetry telemetry =
         new Telemetry(TelemetryEvents.ERROR.getName(), actor, eventContext, edata);
+    telemetry.setMid(reqId);
     return getTelemetry(telemetry);
   }
 
