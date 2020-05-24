@@ -28,7 +28,11 @@ public class EsClientFactory {
 
   private static ElasticSearchService getRestClient() {
     if (restClient == null) {
-      restClient = new ElasticSearchRestHighImpl();
+      synchronized (EsClientFactory.class) {
+        if (restClient == null) {
+          restClient = new ElasticSearchRestHighImpl();
+        }
+      }
     }
     return restClient;
   }
