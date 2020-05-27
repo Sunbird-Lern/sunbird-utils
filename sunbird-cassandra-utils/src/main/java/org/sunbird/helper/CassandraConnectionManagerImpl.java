@@ -147,12 +147,16 @@ public class CassandraConnectionManagerImpl implements CassandraConnectionManage
   static class ResourceCleanUp extends Thread {
     @Override
     public void run() {
-      ProjectLogger.log("started resource cleanup Cassandra.");
-      for (Map.Entry<String, Session> entry : cassandraSessionMap.entrySet()) {
-        cassandraSessionMap.get(entry.getKey()).close();
+      try {
+        ProjectLogger.log("started resource cleanup Cassandra.");
+        for (Map.Entry<String, Session> entry : cassandraSessionMap.entrySet()) {
+          cassandraSessionMap.get(entry.getKey()).close();
+        }
+        cluster.close();
+        ProjectLogger.log("completed resource cleanup Cassandra.");
+      } catch (Exception ex) {
+        ProjectLogger.log("Error :", ex);
       }
-      cluster.close();
-      ProjectLogger.log("completed resource cleanup Cassandra.");
     }
   }
 }
