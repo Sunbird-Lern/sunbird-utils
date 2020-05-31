@@ -16,7 +16,7 @@ lastupdatedon,
 originalexternalid,
 originalidtype,
 originalprovider,
-userid) to usr_external_identity.csv’ with header=true and numprocesses=8 and maxattempts=10;
+userid) to 'usr_external_identity.csv' with header=true and numprocesses=8 and maxattempts=10;
 
 echo Data copied to usr_external_identity.csv
 
@@ -60,6 +60,6 @@ lastupdatedon,
 originalexternalid,
 originalidtype,
 originalprovider,
-userid) from usr_external_identity.csv’ with header=true and ingestrate=20000;
+userid) from 'usr_external_identity.csv' with header=true and ingestrate=20000 and numprocesses=8;
 
 echo Cassandra Altering table USR_EXTERNAL_IDENTIFIER ended
