@@ -90,6 +90,7 @@ public enum ActorOperations {
   ORG_CREATION_METRICS_REPORT("orgCreationMetricsReport"),
   ORG_CONSUMPTION_METRICS_REPORT("orgConsumptionMetricsReport"),
   EMAIL_SERVICE("emailService"),
+  V2_NOTIFICATION("v2Notification"),
   FILE_STORAGE_SERVICE("fileStorageService"),
   ADD_USER_BADGE_BKG("addUserBadgebackground"),
   FILE_GENERATION_AND_UPLOAD("fileGenerationAndUpload"),

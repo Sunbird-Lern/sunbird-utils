@@ -849,6 +849,9 @@ public enum ResponseCode {
       ResponseMessage.Key.OTP_VERIFICATION_FAILED, ResponseMessage.Message.OTP_VERIFICATION_FAILED),
   serviceUnAvailable(
       ResponseMessage.Key.SERVICE_UNAVAILABLE, ResponseMessage.Message.SERVICE_UNAVAILABLE),
+  notificationNotSent(
+      ResponseMessage.Key.NO_EMAIL_PHONE_ASSOCIATED,
+      ResponseMessage.Message.NO_EMAIL_PHONE_ASSOCIATED),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),
