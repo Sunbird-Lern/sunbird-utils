@@ -1023,6 +1023,6 @@ public final class JsonKey {
   public static final String WARD_LOGIN_OTP_TEMPLATE_ID = "wardLoginOTP";
   public static final String OTP_PHONE_WARD_LOGIN_TEMPLATE = "verifyPhoneOtpTemplateWard";
   public static final String OTP_EMAIL_WARD_LOGIN_TEMPLATE = "verifyEmailOtpTemplateWard";
-
+  public static final String SUNBIRD_QRCODE_COURSES_LIMIT ="sunbird_user_qrcode_courses_limit";
   private JsonKey() {}
 }
