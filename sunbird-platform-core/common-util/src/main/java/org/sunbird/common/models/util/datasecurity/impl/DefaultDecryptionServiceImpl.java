@@ -2,6 +2,7 @@ package org.sunbird.common.models.util.datasecurity.impl;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -97,7 +98,7 @@ public class DefaultDecryptionServiceImpl implements DecryptionService {
       String dValue = null;
       String valueToDecrypt = value.trim();
       for (int i = 0; i < ITERATIONS; i++) {
-        byte[] decordedValue = new sun.misc.BASE64Decoder().decodeBuffer(valueToDecrypt);
+        byte[] decordedValue = Base64.getDecoder().decode(valueToDecrypt);
         byte[] decValue = c.doFinal(decordedValue);
         dValue =
             new String(decValue, StandardCharsets.UTF_8).substring(sunbird_encryption.length());

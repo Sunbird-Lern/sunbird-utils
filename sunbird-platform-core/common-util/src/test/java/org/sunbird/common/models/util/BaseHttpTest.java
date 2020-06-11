@@ -24,7 +24,12 @@ import org.sunbird.common.util.KeycloakRequiredActionLinkUtil;
 import org.sunbird.services.sso.impl.KeyCloakServiceImpl;
 
 @RunWith(PowerMockRunner.class)
-@PowerMockIgnore({"javax.management.*", "javax.net.ssl.*", "javax.security.*"})
+@PowerMockIgnore({
+  "jdk.internal.reflect.*",
+  "javax.management.*",
+  "javax.net.ssl.*",
+  "javax.security.*"
+})
 @PrepareForTest({
   OutputStreamWriter.class,
   URL.class,
@@ -32,7 +37,8 @@ import org.sunbird.services.sso.impl.KeyCloakServiceImpl;
   HttpUtil.class,
   HttpClients.class,
   KeyCloakConnectionProvider.class,
-  KeyCloakServiceImpl.class, KeycloakRequiredActionLinkUtil.class
+  KeyCloakServiceImpl.class,
+  KeycloakRequiredActionLinkUtil.class
 })
 public abstract class BaseHttpTest {
 

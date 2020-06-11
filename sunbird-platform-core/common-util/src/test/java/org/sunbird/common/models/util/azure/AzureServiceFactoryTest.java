@@ -37,6 +37,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
   ListBlobItem.class
 })
 @PowerMockIgnore({
+  "jdk.internal.reflect.*",
   "javax.management.*",
   "javax.net.ssl.*",
   "javax.security.*",

@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -124,7 +125,7 @@ public class DefaultEncryptionServivceImpl implements EncryptionService {
     for (int i = 0; i < ITERATIONS; i++) {
       valueToEnc = encryption_key + eValue;
       byte[] encValue = c.doFinal(valueToEnc.getBytes(StandardCharsets.UTF_8));
-      eValue = new sun.misc.BASE64Encoder().encode(encValue);
+      eValue = Base64.getEncoder().encodeToString(encValue);
     }
     return eValue;
   }
