@@ -30,7 +30,12 @@ import org.sunbird.notification.utils.PropertiesCache;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(PowerMockRunner.class)
-@PowerMockIgnore({"javax.management.*", "javax.net.ssl.*", "javax.security.*"})
+@PowerMockIgnore({
+  "jdk.internal.reflect.*",
+  "javax.management.*",
+  "javax.net.ssl.*",
+  "javax.security.*"
+})
 @PrepareForTest({HttpClients.class, PropertiesCache.class, Unirest.class, GetRequest.class})
 public abstract class BaseMessageTest {
 

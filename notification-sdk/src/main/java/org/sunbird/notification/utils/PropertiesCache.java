@@ -10,6 +10,7 @@ public class PropertiesCache {
   private static Logger logger = LogManager.getLogger(PropertiesCache.class);
   private final String fileName = "configuration.properties";
   private final Properties configProp = new Properties();
+  private static PropertiesCache propertiesCache = null;
 
   /** private default constructor */
   private PropertiesCache() {
@@ -21,12 +22,11 @@ public class PropertiesCache {
     }
   }
 
-  private static class LazyHolder {
-    private static final PropertiesCache INSTANCE = new PropertiesCache();
-  }
-
   public static PropertiesCache getInstance() {
-    return LazyHolder.INSTANCE;
+    if (null == propertiesCache) {
+      propertiesCache = new PropertiesCache();
+    }
+    return propertiesCache;
   }
 
   /**
