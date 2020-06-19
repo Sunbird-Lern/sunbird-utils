@@ -407,6 +407,10 @@ public enum ResponseCode {
       ResponseMessage.Key.TABLE_OR_DOC_NAME_ERROR, ResponseMessage.Message.TABLE_OR_DOC_NAME_ERROR),
   emailorPhoneRequired(
       ResponseMessage.Key.EMAIL_OR_PHONE_MISSING, ResponseMessage.Message.EMAIL_OR_PHONE_MISSING),
+  emailorPhoneorManagedByRequired(
+          ResponseMessage.Key.EMAIL_OR_PHONE_OR_MANAGEDBY_MISSING, ResponseMessage.Message.EMAIL_OR_PHONE_OR_MANAGEDBY_MISSING),
+  OnlyEmailorPhoneorManagedByRequired(
+          ResponseMessage.Key.ONLY_EMAIL_OR_PHONE_OR_MANAGEDBY_REQUIRED, ResponseMessage.Message.ONLY_EMAIL_OR_PHONE_OR_MANAGEDBY_REQUIRED),
   PhoneNumberInUse(
       ResponseMessage.Key.PHONE_ALREADY_IN_USE, ResponseMessage.Message.PHONE_ALREADY_IN_USE),
   invalidClientName(
@@ -849,6 +853,10 @@ public enum ResponseCode {
       ResponseMessage.Key.OTP_VERIFICATION_FAILED, ResponseMessage.Message.OTP_VERIFICATION_FAILED),
   serviceUnAvailable(
       ResponseMessage.Key.SERVICE_UNAVAILABLE, ResponseMessage.Message.SERVICE_UNAVAILABLE),
+  missingData(
+          ResponseMessage.Key.MISSING_CODE, ResponseMessage.Message.MISSING_MESSAGE),
+  managedByNotAllowed(
+    ResponseMessage.Key.MANAGED_BY_NOT_ALLOWED, ResponseMessage.Message.MANAGED_BY_NOT_ALLOWED),
   OK(200),
   CLIENT_ERROR(400),
   SERVER_ERROR(500),

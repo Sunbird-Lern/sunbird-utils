@@ -230,6 +230,9 @@ public interface ResponseMessage {
     String INVALID_ORG_TYPE_ERROR = "Please provide valid orgType.";
     String TABLE_OR_DOC_NAME_ERROR = "Please provide valid table or documentName.";
     String EMAIL_OR_PHONE_MISSING = "Please provide either email or phone.";
+    //No need to indicate managedby is missing to user.
+    String EMAIL_OR_PHONE_OR_MANAGEDBY_MISSING = "Please provide either email or phone.";
+    String ONLY_EMAIL_OR_PHONE_OR_MANAGEDBY_REQUIRED = "Please provide only email or phone or managed by";
     String PHONE_ALREADY_IN_USE = "Phone already in use. Please provide different phone number.";
     String INVALID_CLIENT_NAME = "Please provide unique valid client name";
     String INVALID_CLIENT_ID = "Please provide valid client id";
@@ -465,6 +468,8 @@ public interface ResponseMessage {
         "Password must contain a minimum of 8 characters including numerals, lower and upper case alphabets and special characters";
     String OTP_VERIFICATION_FAILED = "OTP verification failed. Remaining attempt count is {0}.";
     String SERVICE_UNAVAILABLE = "SERVICE UNAVAILABLE";
+    String MISSING_MESSAGE = "Required fields for create course are missing. {0}";
+    String MANAGED_BY_NOT_ALLOWED = "managedBy cannot be updated.";
   }
 
   interface Key {
@@ -678,6 +683,8 @@ public interface ResponseMessage {
     String INVALID_ORG_TYPE_ERROR = "INVALID_ORG_TYPE_ERROR";
     String TABLE_OR_DOC_NAME_ERROR = "TABLE_OR_DOC_NAME_ERROR";
     String EMAIL_OR_PHONE_MISSING = "EMAIL_OR_PHONE_MISSING";
+    String EMAIL_OR_PHONE_OR_MANAGEDBY_MISSING = "EMAIL_OR_PHONE_OR_MANAGEDBY_MISSING";
+    String ONLY_EMAIL_OR_PHONE_OR_MANAGEDBY_REQUIRED = "ONLY_EMAIL_OR_PHONE_OR_MANAGEDBY_REQUIRED";
     String PHONE_ALREADY_IN_USE = "PHONE_ALREADY_IN_USE";
     String INVALID_CLIENT_NAME = "INVALID_CLIENT_NAME";
     String INVALID_CLIENT_ID = "INVALID_CLIENT_ID";
@@ -858,5 +865,7 @@ public interface ResponseMessage {
     String INVALID_PASSWORD = "INVALID_PASSWORD";
     String OTP_VERIFICATION_FAILED = "OTP_VERIFICATION_FAILED";
     String SERVICE_UNAVAILABLE = "SERVICE_UNAVAILABLE";
+    String MISSING_CODE = "ERR_COURSE_CREATE_FIELDS_MISSING";
+    String MANAGED_BY_NOT_ALLOWED = "MANAGED_BY_NOT_ALLOWED";
   }
 }

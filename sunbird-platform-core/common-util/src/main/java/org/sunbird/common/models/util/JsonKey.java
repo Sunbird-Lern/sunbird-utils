@@ -766,6 +766,7 @@ public final class JsonKey {
   public static final String COMPLETED_ON = "completedOn";
   public static final String CALLER_ID = "callerId";
   public static final String USER_TYPE = "userType";
+  public static final String MANAGED_BY = "managedBy";
 
   public static final String COURSE_BATCH_URL = "courseBatchUrl";
   public static final String SUNBIRD_COURSE_BATCH_NOTIFICATION_SIGNATURE =
@@ -1019,6 +1020,9 @@ public final class JsonKey {
   public static final String LEARNING_SERVICE_BASE_URL = "learning_service_base_url";
   public static final String CREATOR_DETAILS_FIELDS = "sunbird_user_search_cretordetails_fields";
   public static final String USER_SEARCH_BASE_URL = "sunbird_user_service_api_base_url";
-
+  public static final String WARD_LOGIN_OTP_TEMPLATE_ID = "wardLoginOTP";
+  public static final String OTP_PHONE_WARD_LOGIN_TEMPLATE = "verifyPhoneOtpTemplateWard";
+  public static final String OTP_EMAIL_WARD_LOGIN_TEMPLATE = "verifyEmailOtpTemplateWard";
+  public static final String SUNBIRD_QRCODE_COURSES_LIMIT ="sunbird_user_qrcode_courses_limit";
   private JsonKey() {}
 }
