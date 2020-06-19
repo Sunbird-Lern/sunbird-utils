@@ -28,33 +28,23 @@ public class ManagedTokenValidator {
             String body = tokenElements[1];
             String signature = tokenElements[2];
             String payLoad = header + JsonKey.DOT_SEPARATOR + body;
-            Map<Object, Object> headerData = mapper.readValue(new String(decodeFromBase64(header)) , Map.class);
+            Map<Object, Object> headerData = mapper.readValue(new String(decodeFromBase64(header)), Map.class);
             String keyId = headerData.get("kid").toString();
-            ProjectLogger.log("ManagedTokenValidator:verify: keyId: "+keyId,
-              LoggerEnum.INFO.name());
-            Map<String, String> tokenBody = mapper.readValue(new String(decodeFromBase64(body)) , Map.class);
+            ProjectLogger.log("ManagedTokenValidator:verify: keyId: " + keyId,
+                    LoggerEnum.INFO.name());
+            Map<String, String> tokenBody = mapper.readValue(new String(decodeFromBase64(body)), Map.class);
             String parentId = tokenBody.get(JsonKey.PARENT_ID);
             String muaId = tokenBody.get(JsonKey.SUB);
-            ProjectLogger.log("ManagedTokenValidator: parent uuid: " + parentId +
-              " managedBy uuid: " + muaId + " requestedByUserID: "+ requestedByUserId, LoggerEnum.INFO.name());
-            ProjectLogger.log("ManagedTokenValidator: key modified value: " + keyId, LoggerEnum.INFO.name());
-            System.out.println("KeyManager.getPublicKey(keyId) : " + KeyManager.getPublicKey(keyId));
-            System.out.println("KeyManager.getPublicKey(keyId).getPublicKey() : " + KeyManager.getPublicKey(keyId).getPublicKey());
+            ProjectLogger.log("ManagedTokenValidator:verify : X-Authenticated-For validation starts.");
             isValid = CryptoUtil.verifyRSASign(payLoad, decodeFromBase64(signature), KeyManager.getPublicKey(keyId).getPublicKey(), JsonKey.SHA_256_WITH_RSA);
-            isValid &=  parentId.equalsIgnoreCase(requestedByUserId);
-            System.out.println("ManagedTokenValidator:verify : requestedByUserId : " + requestedByUserId + "parentId : " + parentId + "isValid : " + isValid);
-            if(isValid) {
-                System.out.println("ManagedTokenValidator:verify : childId : " + muaId);
+            ProjectLogger.log("ManagedTokenValidator:verify : X-Authenticated-For validation done and isValid = " + isValid);
+            isValid &= parentId.equalsIgnoreCase(requestedByUserId);
+            ProjectLogger.log("ManagedTokenValidator:verify : ParentId and RequestedBy userId validation done and isValid = " + isValid);
+            if (isValid) {
                 managedFor = muaId;
-            } else {
-                System.out.println("Exception in ManagedTokenValidator: verify , Unauthorized user");
-                throw new ProjectCommonException(
-                        ResponseCode.unAuthorized.getErrorCode(),
-                        ResponseCode.unAuthorized.getErrorMessage(),
-                        ResponseCode.CLIENT_ERROR.getResponseCode());
             }
         } catch (Exception ex) {
-            ProjectLogger.log("Exception in ManagedTokenValidator: verify ",LoggerEnum.ERROR);
+            ProjectLogger.log("Exception in ManagedTokenValidator: verify ", LoggerEnum.ERROR);
             ex.printStackTrace();
         }
         return managedFor;
@@ -63,4 +53,5 @@ public class ManagedTokenValidator {
     private static byte[] decodeFromBase64(String data) {
         return Base64Util.decode(data, 11);
     }
+    
 }
