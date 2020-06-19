@@ -38,8 +38,10 @@ public class ManagedTokenValidator {
             ProjectLogger.log("ManagedTokenValidator: parent uuid: " + parentId +
               " managedBy uuid: " + muaId + " requestedByUserID: "+ requestedByUserId, LoggerEnum.INFO.name());
             ProjectLogger.log("ManagedTokenValidator: key modified value: " + keyId, LoggerEnum.INFO.name());
+            System.out.println("KeyManager.getPublicKey(keyId) : " + KeyManager.getPublicKey(keyId));
+            System.out.println("KeyManager.getPublicKey(keyId).getPublicKey() : " + KeyManager.getPublicKey(keyId).getPublicKey());
             isValid = CryptoUtil.verifyRSASign(payLoad, decodeFromBase64(signature), KeyManager.getPublicKey(keyId).getPublicKey(), JsonKey.SHA_256_WITH_RSA);
-            isValid &=  parentId.equalsIgnoreCase(requestedByUserId) && muaId.equalsIgnoreCase(parentId);
+            isValid &=  parentId.equalsIgnoreCase(requestedByUserId);
             System.out.println("ManagedTokenValidator:verify : requestedByUserId : " + requestedByUserId + "parentId : " + parentId + "isValid : " + isValid);
             if(isValid) {
                 System.out.println("ManagedTokenValidator:verify : childId : " + muaId);
