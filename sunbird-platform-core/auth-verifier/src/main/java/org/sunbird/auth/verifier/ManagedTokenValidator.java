@@ -35,11 +35,11 @@ public class ManagedTokenValidator {
             Map<String, String> tokenBody = mapper.readValue(new String(decodeFromBase64(body)), Map.class);
             String parentId = tokenBody.get(JsonKey.PARENT_ID);
             String muaId = tokenBody.get(JsonKey.SUB);
-            ProjectLogger.log("ManagedTokenValidator:verify : X-Authenticated-For validation starts.");
+            ProjectLogger.log("ManagedTokenValidator:verify : X-Authenticated-For validation starts.", LoggerEnum.INFO.name());
             isValid = CryptoUtil.verifyRSASign(payLoad, decodeFromBase64(signature), KeyManager.getPublicKey(keyId).getPublicKey(), JsonKey.SHA_256_WITH_RSA);
-            ProjectLogger.log("ManagedTokenValidator:verify : X-Authenticated-For validation done and isValid = " + isValid);
+            ProjectLogger.log("ManagedTokenValidator:verify : X-Authenticated-For validation done and isValid = " + isValid, LoggerEnum.INFO.name());
             isValid &= parentId.equalsIgnoreCase(requestedByUserId);
-            ProjectLogger.log("ManagedTokenValidator:verify : ParentId and RequestedBy userId validation done and isValid = " + isValid);
+            ProjectLogger.log("ManagedTokenValidator:verify : ParentId and RequestedBy userId validation done and isValid = " + isValid, LoggerEnum.INFO.name());
             if (isValid) {
                 managedFor = muaId;
             }
