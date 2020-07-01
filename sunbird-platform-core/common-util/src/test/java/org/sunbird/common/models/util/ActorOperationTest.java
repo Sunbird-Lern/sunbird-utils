@@ -96,8 +96,6 @@ public class ActorOperationTest {
         "orgConsumptionMetrics", ActorOperations.ORG_CONSUMPTION_METRICS.getValue());
     Assert.assertEquals(
         "orgCreationMetricsData", ActorOperations.ORG_CREATION_METRICS_DATA.getValue());
-    Assert.assertEquals(
-        "courseConsumptionMetrics", ActorOperations.COURSE_CREATION_METRICS.getValue());
     Assert.assertEquals("userCreationMetrics", ActorOperations.USER_CREATION_METRICS.getValue());
     Assert.assertEquals(
         "userConsumptionMetrics", ActorOperations.USER_CONSUMPTION_METRICS.getValue());
