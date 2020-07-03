@@ -60,7 +60,12 @@ public class KeyCloakServiceImpl implements SSOManager {
 
   @Override
   public String verifyToken(String accessToken) {
-    return verifyToken(accessToken, null);
+    return verifyToken(accessToken, null, true);
+  }
+
+  @Override
+  public String verifyToken(String accessToken, boolean checkActive) {
+    return verifyToken(accessToken, null, checkActive);
   }
 
   /**
@@ -568,7 +573,7 @@ public class KeyCloakServiceImpl implements SSOManager {
   }
 
   @Override
-  public String verifyToken(String accessToken, String url) {
+  public String verifyToken(String accessToken, String url, boolean checkActive) {
 
     try {
       PublicKey publicKey = getPublicKey();
@@ -585,7 +590,7 @@ public class KeyCloakServiceImpl implements SSOManager {
                 accessToken,
                 publicKey,
                 ssoUrl + "realms/" + KeyCloakConnectionProvider.SSO_REALM,
-                true,
+                    checkActive,
                 true);
         ProjectLogger.log(
             token.getId()

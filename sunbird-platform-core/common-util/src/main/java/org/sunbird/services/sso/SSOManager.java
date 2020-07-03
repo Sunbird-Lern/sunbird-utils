@@ -13,6 +13,8 @@ public interface SSOManager {
    * @param token String JWT access token
    * @return String
    */
+  String verifyToken(String token, boolean checkActive);
+
   String verifyToken(String token);
 
   /** Update password in SSO server (keycloak). */
@@ -127,5 +129,5 @@ public interface SSOManager {
    * @param url token will be validated against this url
    * @return String
    */
-  String verifyToken(String token, String url);
+  String verifyToken(String token, String url, boolean checkActive);
 }
