@@ -15,6 +15,7 @@ import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jclouds.packet.domain.Project;
 import org.keycloak.RSATokenVerifier;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UserResource;
@@ -50,10 +51,8 @@ public class KeyCloakServiceImpl implements SSOManager {
 
   public PublicKey getPublicKey() {
     if (null == SSO_PUBLIC_KEY) {
-      SSO_PUBLIC_KEY =
-          new KeyCloakRsaKeyFetcher()
-              .getPublicKeyFromKeyCloak(
-                  KeyCloakConnectionProvider.SSO_URL, KeyCloakConnectionProvider.SSO_REALM);
+      ProjectLogger.log("KeyCloakService - Empty Key. So, generating public key from Env.");
+      SSO_PUBLIC_KEY = toPublicKey(System.getenv(JsonKey.SSO_PUBLIC_KEY));
     }
     return SSO_PUBLIC_KEY;
   }
@@ -69,7 +68,7 @@ public class KeyCloakServiceImpl implements SSOManager {
   }
 
   /**
-   * This method will generate Public key form keycloak realm publickey String
+   * This method will generate Public key form Environment Configuration.
    *
    * @param publicKeyString String
    * @return PublicKey
@@ -577,12 +576,6 @@ public class KeyCloakServiceImpl implements SSOManager {
 
     try {
       PublicKey publicKey = getPublicKey();
-      if (publicKey == null) {
-        ProjectLogger.log(
-            "KeyCloakServiceImpl: SSO_PUBLIC_KEY is NULL. Keycloak server may need to be started. Read value from environment variable.",
-            LoggerEnum.INFO);
-        publicKey = toPublicKey(System.getenv(JsonKey.SSO_PUBLIC_KEY));
-      }
       if (publicKey != null) {
         String ssoUrl = (url != null ? url : KeyCloakConnectionProvider.SSO_URL);
         AccessToken token =
