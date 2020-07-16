@@ -2,6 +2,7 @@ package org.sunbird.helper;
 
 import org.sunbird.cassandra.CassandraOperation;
 import org.sunbird.cassandraimpl.CassandraDACImpl;
+import org.sunbird.common.request.RequestContext;
 
 /**
  * This class will provide cassandraOperationImpl instance.
@@ -27,6 +28,10 @@ public class ServiceFactory {
       }
     }
     return operation;
+  }
+
+  public static CassandraOperation getInstance(RequestContext context) {
+    return new CassandraDACImpl(context);
   }
 
   public CassandraOperation readResolve() {
