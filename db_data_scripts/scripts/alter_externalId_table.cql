@@ -26,6 +26,8 @@ originalIdType text,
 originalProvider text,
 PRIMARY KEY(userId, idType, provider));
 
+CREATE INDEX inx_ext_externalId ON sunbird.usr_external_identity(externalId);
+
 copy sunbird.usr_external_identity(provider,
 idtype,
 externalid,
