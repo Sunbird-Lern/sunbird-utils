@@ -199,7 +199,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
       }
       Statement selectStatement =
           selectBuilder.from(keyspaceName, tableName).where(eq(propertyName, propertyValue));
-      logQueryData(selectStatement.toString());
+      if (null != selectStatement) logQueryData(selectStatement.toString());
       ResultSet results = session.execute(selectStatement);
       response = CassandraUtil.createResponse(results);
     } catch (Exception e) {
@@ -240,7 +240,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
           selectBuilder
               .from(keyspaceName, tableName)
               .where(QueryBuilder.in(propertyName, propertyValueList));
-      logQueryData(selectStatement.toString());
+      if (null != selectStatement) logQueryData(selectStatement.toString());
       ResultSet results = connectionManager.getSession(keyspaceName).execute(selectStatement);
       response = CassandraUtil.createResponse(results);
     } catch (Exception e) {
@@ -294,7 +294,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
         }
       }
       selectQuery = selectQuery.allowFiltering();
-      logQueryData(selectQuery.getQueryString());
+      if (null != selectQuery) logQueryData(selectQuery.getQueryString());
       ResultSet results = connectionManager.getSession(keyspaceName).execute(selectQuery);
       response = CassandraUtil.createResponse(results);
     } catch (Exception e) {
