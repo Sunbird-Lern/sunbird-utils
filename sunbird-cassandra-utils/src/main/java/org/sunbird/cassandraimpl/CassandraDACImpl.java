@@ -19,9 +19,18 @@ import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
+import org.sunbird.common.request.RequestContext;
 import org.sunbird.common.responsecode.ResponseCode;
 
 public class CassandraDACImpl extends CassandraOperationImpl {
+
+  public CassandraDACImpl() {
+    super();
+  }
+
+  public CassandraDACImpl(RequestContext context) {
+    super(context);
+  }
 
   public Response getRecords(
       String keySpace, String table, Map<String, Object> filters, List<String> fields) {
@@ -47,6 +56,7 @@ public class CassandraDACImpl extends CassandraOperationImpl {
         }
       }
 
+      logQueryData(select.getQueryString());
       ResultSet results = null;
       results = session.execute(select);
       response = CassandraUtil.createResponse(results);
@@ -86,6 +96,7 @@ public class CassandraDACImpl extends CassandraOperationImpl {
           }
         }
       }
+      logQueryData(select.getQueryString());
       ResultSetFuture future = session.executeAsync(select);
       Futures.addCallback(future, callback, Executors.newFixedThreadPool(1));
     } catch (Exception e) {

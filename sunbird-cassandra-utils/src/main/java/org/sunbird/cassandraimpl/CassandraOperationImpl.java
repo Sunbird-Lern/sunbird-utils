@@ -18,6 +18,7 @@ import com.datastax.driver.core.querybuilder.Select.Where;
 import com.datastax.driver.core.querybuilder.Update.Assignments;
 import com.google.common.util.concurrent.FutureCallback;
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,7 @@ import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.PropertiesCache;
+import org.sunbird.common.request.RequestContext;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.helper.CassandraConnectionManager;
 import org.sunbird.helper.CassandraConnectionMngrFactory;
@@ -45,11 +47,19 @@ import org.sunbird.helper.CassandraConnectionMngrFactory;
 public abstract class CassandraOperationImpl implements CassandraOperation {
 
   protected CassandraConnectionManager connectionManager;
+  protected RequestContext context;
 
   public CassandraOperationImpl() {
     PropertiesCache propertiesCache = PropertiesCache.getInstance();
     String cassandraMode = propertiesCache.getProperty(JsonKey.SUNBIRD_CASSANDRA_MODE);
     connectionManager = CassandraConnectionMngrFactory.getObject(cassandraMode);
+  }
+
+  public CassandraOperationImpl(RequestContext context) {
+    PropertiesCache propertiesCache = PropertiesCache.getInstance();
+    String cassandraMode = propertiesCache.getProperty(JsonKey.SUNBIRD_CASSANDRA_MODE);
+    connectionManager = CassandraConnectionMngrFactory.getObject(cassandraMode);
+    this.context = context;
   }
 
   @Override
@@ -189,8 +199,8 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
       }
       Statement selectStatement =
           selectBuilder.from(keyspaceName, tableName).where(eq(propertyName, propertyValue));
-      ResultSet results = null;
-      results = session.execute(selectStatement);
+      logQueryData(selectStatement.toString());
+      ResultSet results = session.execute(selectStatement);
       response = CassandraUtil.createResponse(results);
     } catch (Exception e) {
       ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName + " : " + e.getMessage(), e);
@@ -230,6 +240,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
           selectBuilder
               .from(keyspaceName, tableName)
               .where(QueryBuilder.in(propertyName, propertyValueList));
+      logQueryData(selectStatement.toString());
       ResultSet results = connectionManager.getSession(keyspaceName).execute(selectStatement);
       response = CassandraUtil.createResponse(results);
     } catch (Exception e) {
@@ -282,8 +293,9 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
           }
         }
       }
-      ResultSet results =
-          connectionManager.getSession(keyspaceName).execute(selectQuery.allowFiltering());
+      selectQuery = selectQuery.allowFiltering();
+      logQueryData(selectQuery.getQueryString());
+      ResultSet results = connectionManager.getSession(keyspaceName).execute(selectQuery);
       response = CassandraUtil.createResponse(results);
     } catch (Exception e) {
       ProjectLogger.log(Constants.EXCEPTION_MSG_FETCH + tableName + " : " + e.getMessage(), e);
@@ -307,6 +319,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
     try {
       String selectQuery = CassandraUtil.getSelectStatement(keyspaceName, tableName, properties);
       PreparedStatement statement = connectionManager.getSession(keyspaceName).prepare(selectQuery);
+      logQueryData(statement.getQueryString());
       BoundStatement boundStatement = new BoundStatement(statement);
       ResultSet results =
           connectionManager.getSession(keyspaceName).execute(boundStatement.bind(id));
@@ -330,6 +343,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
     Response response = new Response();
     try {
       Select selectQuery = QueryBuilder.select().all().from(keyspaceName, tableName);
+      logQueryData(selectQuery.getQueryString());
       ResultSet results = connectionManager.getSession(keyspaceName).execute(selectQuery);
       response = CassandraUtil.createResponse(results);
     } catch (Exception e) {
@@ -457,6 +471,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
                   CassandraUtil.createQuery(x.getKey(), x.getValue(), selectWhere);
                 });
       }
+      logQueryData(selectWhere.getQueryString());
       ResultSet results = session.execute(selectWhere);
       response = CassandraUtil.createResponse(results);
     } catch (Exception e) {
@@ -760,6 +775,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
     try {
       Select selectQuery = QueryBuilder.select().all().from(keyspaceName, tableName);
       selectQuery.where().and(eq(propertyName, propertyValue));
+      logQueryData(selectQuery.getQueryString());
       ResultSet results =
           connectionManager.getSession(keyspaceName).execute(selectQuery.allowFiltering());
       response = CassandraUtil.createResponse(results);
@@ -859,6 +875,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
         Clause clause = eq(entry.getKey(), entry.getValue());
         selectWhere.and(clause);
       }
+      logQueryData(selectQuery.getQueryString());
       ResultSet results = connectionManager.getSession(keyspaceName).execute(selectQuery);
       response = CassandraUtil.createResponse(results);
     } catch (Exception e) {
@@ -921,6 +938,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
     }
 
     selectWhere.and(clause);
+    logQueryData(selectQuery.getQueryString());
     ResultSet results = connectionManager.getSession(keyspaceName).execute(selectQuery);
     response = CassandraUtil.createResponse(results);
     return response;
@@ -1062,6 +1080,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
                 select.where().and(eq(primaryKey.getKey(), primaryKey.getValue()));
               });
       ProjectLogger.log("Query =" + select.getQueryString(), LoggerEnum.INFO);
+      logQueryData(select.getQueryString());
       ResultSet results = connectionManager.getSession(keyspaceName).execute(select);
       response = CassandraUtil.createResponse(results);
     } catch (Exception e) {
@@ -1148,6 +1167,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
     Clause clause = QueryBuilder.lt(key, value);
     selectQuery.where(eq(JsonKey.OBJECT_TYPE, objectType)).and(clause);
     selectQuery.allowFiltering();
+    logQueryData(selectQuery.getQueryString());
     ResultSet resultSet = connectionManager.getSession(keyspace).execute(selectQuery);
     Response response = CassandraUtil.createResponse(resultSet);
     return response;
@@ -1201,8 +1221,18 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
         }
       }
     }
+    logQueryData(selectQuery.getQueryString());
     ResultSet resultSet = connectionManager.getSession(keyspace).execute(selectQuery);
     Response response = CassandraUtil.createResponse(resultSet);
     return response;
+  }
+
+  protected void logQueryData(String query) {
+    Map<String, Object> event = new HashMap<>();
+    // event.put("trace_id", context.getTraceId());
+    // event.put("actorOperation", context.getActorOperation());
+    event.put("pid", "lms-service");
+    event.put("query", query);
+    ProjectLogger.logQuery(event);
   }
 }
