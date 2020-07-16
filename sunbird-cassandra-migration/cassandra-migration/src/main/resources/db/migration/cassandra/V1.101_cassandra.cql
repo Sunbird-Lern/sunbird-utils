@@ -6,6 +6,6 @@ CREATE TABLE IF NOT EXISTS sunbird.group_member(groupId text, role text, userId 
 
 ALTER TABLE sunbird.usr_external_identity ADD status text;
 
-CREATE INDEX IF NOT EXISTS idx_group_status ON group (status);
+CREATE INDEX IF NOT EXISTS idx_group_status ON sunbird.group (status);
 
-CREATE INDEX IF NOT EXISTS idx_group_member_status ON group_member  (status);
+CREATE INDEX IF NOT EXISTS idx_group_member_status ON sunbird.group_member  (status);
