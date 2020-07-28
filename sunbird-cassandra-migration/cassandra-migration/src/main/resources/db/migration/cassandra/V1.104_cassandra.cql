@@ -1,0 +1,1 @@
+INSERT INTO sunbird.system_settings (id,field,value) VALUES ( 'selfdeclaredmandatoryfields','selfdeclaredmandatoryfields','{"csv":{"supportedColumns":["School Name","School UDISE ID","Email ID","Diksha Sub-Org ID"],"mandatoryFields":["Diksha UUID","Status","State provided ext. ID","Channel"]}}');
