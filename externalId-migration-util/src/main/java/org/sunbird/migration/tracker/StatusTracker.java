@@ -31,19 +31,19 @@ public class StatusTracker {
     logger.info(String.format("the insert query generated %s ", query));
   }
 
-  public static void logFailedRecord(String userId, String orgId, String persona) {
+  public static void logFailedRecord(String userId, String provider) {
     logger.info(
         String.format(
-            "Record Failed with userId:%s orgId:%s and persona:%s",
-           userId,orgId,persona));
+            "Record Failed with userId:%s provider:%s",
+           userId,provider));
   }
 
-  public static void logSuccessRecord(String userId, String orgId, String persona) {
+  public static void logSuccessRecord(String userId, String provider) {
     logger.info(
         String.format(
-            "Record updation success with externalId:%s orgId:%s and persona:%s",
-                userId, orgId, persona));
-    writeSuccessRecordToFile(userId, orgId, persona);
+            "Record updation success with userId:%s provider:%s",
+                userId, provider));
+    writeSuccessRecordToFile(userId, provider);
   }
 
   public static void logDeletedRecord(Map<String, String> compositeKeysMap) {
@@ -55,11 +55,11 @@ public class StatusTracker {
             compositeKeysMap.get(DbColumnConstants.idType)));
   }
 
-  public static void logInsertedRecord(String externalId, String provider, String idType) {
+  public static void logInsertedRecord(String userId, String orgId, String persona) {
     logger.info(
         String.format(
-            "Record insertion success with externalId:%s provider:%s and idType:%s",
-            externalId, provider, idType));
+            "Record insertion success with userId:%s orgId:%s and persona:%s",
+                userId, orgId, persona));
   }
 
   public static void logFailedDeletedRecord(Map<String, String> compositeKeysMap) {
@@ -105,15 +105,14 @@ public class StatusTracker {
             orignalExternalId));
   }
 
-  public static void writeSuccessRecordToFile(String provider, String idType, String externalId) {
+  public static void writeSuccessRecordToFile(String userId, String provider) {
     try {
-      if (fw != null) {
-        fw.write(String.format("%s:%s:%s", provider, idType, externalId));
-        fw.write("\n");
-        fw.flush();
-      } else {
+      if (fw == null) {
         fw = new FileWriter(EnvConstants.PRE_PROCESSED_RECORDS_FILE);
       }
+        fw.write(String.format("%s:%s",userId, provider));
+        fw.write("\n");
+        fw.flush();
     } catch (Exception e) {
       logger.error(
           String.format(

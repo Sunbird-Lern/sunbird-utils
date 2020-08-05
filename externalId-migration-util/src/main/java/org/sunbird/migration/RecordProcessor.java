@@ -90,23 +90,30 @@ public class RecordProcessor extends StatusTracker {
 
         List<UserDeclareEntity> userSelfDeclareLists = new ArrayList<>();
         getUserSelfDeclareLists(userIdExternalIdMap, userSelfDeclareLists);
+        logger.info("total user records to be processed: "+userSelfDeclareLists.size());
+        int count[] = new int[1];
         userSelfDeclareLists
                 .stream()
                 .forEach(
                         userSelfDeclareObject->{
                             try{
                                 startTracingRecord(userSelfDeclareObject.getUserId());
-                                performSequentialOperationOnRecord(userSelfDeclareObject,orgIdProviderMap);
+                                boolean isSuccess =performSequentialOperationOnRecord(userSelfDeclareObject,orgIdProviderMap);
+                                if(isSuccess){
+                                    count[0] +=1;
+                                }
                             }catch (Exception ex){
                                 logExceptionOnProcessingRecord(userSelfDeclareObject.getUserId(),userSelfDeclareObject.getProvider(),
                                         userSelfDeclareObject.getPersona());
                             }finally {
                                 endTracingRecord(userSelfDeclareObject.getUserId());
+
                             }
-                 });
+
+                        });
         connection.closeConnection();
         closeWriterConnection();
-
+        logger.info("Total Records: "+ userSelfDeclareLists.size()+ " Successfully Migrated: "+count[0]+ " Total Failed:" + (userSelfDeclareLists.size()-count[0]));
     }
 
     private void getUserSelfDeclareLists(Map<String, List<User>> userIdExternalIdMap, List<UserDeclareEntity> userSelfDeclareLists) {
@@ -130,7 +137,7 @@ public class RecordProcessor extends StatusTracker {
             Map<String,Object> userInfo = new HashMap<>();
             for (User user: users){
                 if(user.getOriginalIdType().contains("declared-")) {
-                    userInfo.put(user.getOriginalExternalId(),user.getOriginalExternalId());
+                    userInfo.put(user.getOriginalIdType(),user.getOriginalExternalId());
                 }
             }
             userDeclareEntity.setUserInfo(userInfo);
@@ -168,14 +175,14 @@ public class RecordProcessor extends StatusTracker {
 
 
     /**
-     * this method will perform sequential operation of db records - generate insert query - decrypt
-     * the externalIds and originalExternalIds - insert record - insert Record passes will then delete
-     * the record...
+     * this method will perform sequential operation of db records - generate insert query - insert record -
+     * insert Record passes will then delete record
+     *
      *
      * @param userDeclareEntity
      * @param orgProviderMap
      */
-    private void performSequentialOperationOnRecord(
+    private boolean performSequentialOperationOnRecord(
             UserDeclareEntity userDeclareEntity, Map<String,String> orgProviderMap) {
 
         try {
@@ -194,7 +201,7 @@ public class RecordProcessor extends StatusTracker {
                 Map<String, String> keys = new HashMap<>();
                 keys.put(DbColumnConstants.userId, userDeclareEntity.getUserId());
                 keys.put(DbColumnConstants.idType, map.getKey());
-                keys.put(DbColumnConstants.provider,userDeclareEntity.getOrgId());
+                keys.put(DbColumnConstants.provider,userDeclareEntity.getProvider());
                 boolean isRecordDeleted = connection.deleteRecord(keys);
                 if (!isRecordDeleted) {
                     isUpdateOperation = false;
@@ -204,19 +211,18 @@ public class RecordProcessor extends StatusTracker {
                 }
             }
             if(isUpdateOperation) {
-                logSuccessRecord(userDeclareEntity.getUserId(),userDeclareEntity.getOrgId(),userDeclareEntity.getPersona());
+                logSuccessRecord(userDeclareEntity.getUserId(),userDeclareEntity.getProvider());
+                return true;
             }else {
-                logFailedRecord(userDeclareEntity.getUserId(),userDeclareEntity.getOrgId(),userDeclareEntity.getPersona());
+                logFailedRecord(userDeclareEntity.getUserId(),userDeclareEntity.getProvider());
+                return false;
             }
         }catch (Exception ex) {
-           logFailedRecord(userDeclareEntity.getUserId(),userDeclareEntity.getOrgId(),userDeclareEntity.getPersona());
+           logFailedRecord(userDeclareEntity.getUserId(), userDeclareEntity.getProvider());
+           return  false;
         }
     }
 
-
-    private String getFormattedCompositeKeys(User user) {
-        return String.format("%s:%s:%s", user.getProvider(), user.getIdType(), user.getExternalId());
-    }
 
     /**
      * this methods
@@ -227,7 +233,7 @@ public class RecordProcessor extends StatusTracker {
      */
     private List<User> removePreProcessedRecordFromList(
             List<String> preProcessedRecords, List<User> totalRecords) {
-        totalRecords.removeIf(user -> (preProcessedRecords.contains(getFormattedCompositeKeys(user))));
+        totalRecords.removeIf(user -> (preProcessedRecords.contains(String.format("%s:%s",user.getUserId(),user.getProvider()))));
         logTotalRecords(totalRecords.size());
         return totalRecords;
     }

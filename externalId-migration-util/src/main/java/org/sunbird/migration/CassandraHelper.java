@@ -85,15 +85,15 @@ public class CassandraHelper {
      * @param date
      * @return long
      */
-    public static long getTimeStampFromDate(Date date) {
+    public static Timestamp getTimeStampFromDate(Date date) {
         return date != null
-                ? new Timestamp(date.getTime()).getTime()
-                : new Timestamp(Calendar.getInstance().getTime().getTime()).getTime();
+                ? new Timestamp(date.getTime())
+                : new Timestamp(Calendar.getInstance().getTime().getTime());
     }
 
     public static String getPreparedStatement() {
         StringBuilder query = new StringBuilder();
-        query.append("INSERT INTO sunbird.user_declarations (userid, orgid, persona, status, errortype, userinfo, createdby, createdon, updatedby, updatedon) values(?,?,?,?,?,?,?,?,?)");
+        query.append("INSERT INTO sunbird.user_declarations (userid, orgid, persona, status, errortype, userinfo, createdby, createdon, updatedby, updatedon) values(?,?,?,?,?,?,?,?,?,?)");
         return query.toString();
     }
 }

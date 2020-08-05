@@ -4,6 +4,8 @@ import org.apache.log4j.Logger;
 import org.sunbird.migration.connection.factory.CassandraConnectionFactory;
 import org.sunbird.migration.connection.factory.ConnectionFactory;
 import org.sunbird.migration.constants.EnvConstants;
+import org.sunbird.migration.connection.Connection;
+
 
 public class ExternalIdMigrations {
     static Logger logger = LoggerFactory.getLoggerInstance(ExternalIdMigrations.class.getName());
@@ -16,12 +18,12 @@ public class ExternalIdMigrations {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-
         RequestParams requestParams = prepareRequestParams();
         RequestParamValidator.getInstance(requestParams).validate();
         ConnectionFactory connectionFactory = new CassandraConnectionFactory();
         RecordProcessor recordProcessor = RecordProcessor.getInstance(connectionFactory, requestParams);
         recordProcessor.startProcessingExternalIds();
+        System.exit(0);
     }
 
     /**
@@ -41,5 +43,6 @@ public class ExternalIdMigrations {
                         className, "prepareRequestParams", requestParams.toString()));
         return requestParams;
     }
+    
 }
 
