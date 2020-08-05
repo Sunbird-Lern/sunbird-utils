@@ -124,6 +124,7 @@ public class RecordProcessor extends StatusTracker {
             userDeclareEntity.setUserId(userId);
             userDeclareEntity.setProvider(users.get(0).getOriginalProvider());
             userDeclareEntity.setPersona(Constants.TEACHER);
+            userDeclareEntity.setStatus("PENDING");
             userDeclareEntity.setCreatedBy(users.get(0).getCreatedBy());
             if(null != users.get(0).getCreatedOn()) {
                 userDeclareEntity.setCreatedOn(new Timestamp(users.get(0).getCreatedOn().getTime()));
