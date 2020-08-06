@@ -23,7 +23,6 @@ public class ExternalIdMigrations {
         ConnectionFactory connectionFactory = new CassandraConnectionFactory();
         RecordProcessor recordProcessor = RecordProcessor.getInstance(connectionFactory, requestParams);
         recordProcessor.startProcessingExternalIds();
-        System.exit(0);
     }
 
     /**
@@ -43,6 +42,6 @@ public class ExternalIdMigrations {
                         className, "prepareRequestParams", requestParams.toString()));
         return requestParams;
     }
-    
+
 }
 

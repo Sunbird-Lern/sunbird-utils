@@ -90,7 +90,6 @@ public class RecordProcessor extends StatusTracker {
 
         List<UserDeclareEntity> userSelfDeclareLists = new ArrayList<>();
         getUserSelfDeclareLists(userIdExternalIdMap, userSelfDeclareLists);
-        logger.info("total user records to be processed: "+userSelfDeclareLists.size());
         int count[] = new int[1];
         userSelfDeclareLists
                 .stream()
@@ -111,9 +110,12 @@ public class RecordProcessor extends StatusTracker {
                             }
 
                         });
+
+        List<User> stateUsersList = getUserDataFromDbAsList();
         connection.closeConnection();
         closeWriterConnection();
-        logger.info("Total Records: "+ userSelfDeclareLists.size()+ " Successfully Migrated: "+count[0]+ " Total Failed:" + (userSelfDeclareLists.size()-count[0]));
+        logger.info("Total Records: "+ userSelfDeclareLists.size()+ " Successfully Migrated: "+count[0]+ " Total  Failed:" + (userSelfDeclareLists.size()-count[0]));
+        logger.info("Total state users after migration:"+stateUsersList.size());
     }
 
     private void getUserSelfDeclareLists(Map<String, List<User>> userIdExternalIdMap, List<UserDeclareEntity> userSelfDeclareLists) {
@@ -122,6 +124,7 @@ public class RecordProcessor extends StatusTracker {
             List<User> users = userEntry.getValue();
             UserDeclareEntity userDeclareEntity = new UserDeclareEntity();
             userDeclareEntity.setUserId(userId);
+            //Get the details from orginial provider as provider contains info in  lower case
             userDeclareEntity.setProvider(users.get(0).getOriginalProvider());
             userDeclareEntity.setPersona(Constants.TEACHER);
             userDeclareEntity.setStatus("PENDING");
@@ -136,6 +139,7 @@ public class RecordProcessor extends StatusTracker {
                 userDeclareEntity.setUpdatedOn(new Timestamp(lastUpdatedRecords.getLastUpdatedOn().getTime()));
             }
             Map<String,Object> userInfo = new HashMap<>();
+            //Get the details from orginialidType, originalExternalId as idType and externalId contains info in  lower case
             for (User user: users){
                 if(user.getOriginalIdType().contains("declared-")) {
                     userInfo.put(user.getOriginalIdType(),user.getOriginalExternalId());
