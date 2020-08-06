@@ -110,7 +110,6 @@ public class RecordProcessor extends StatusTracker {
                             }
 
                         });
-
         List<User> stateUsersList = getUserDataFromDbAsList();
         connection.closeConnection();
         closeWriterConnection();
