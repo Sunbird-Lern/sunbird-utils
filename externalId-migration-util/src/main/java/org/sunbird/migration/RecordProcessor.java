@@ -241,6 +241,7 @@ public class RecordProcessor extends StatusTracker {
       countUser += 1;
       logger.info("Count:" + countUser);
     }
+
     logger.info("Total User Count:" + countUser);
   }
 
