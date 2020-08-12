@@ -19,9 +19,9 @@ public class RecordTracker {
 
   private static Logger logger = LoggerFactory.getLoggerInstance(RecordTracker.class.getName());
 
-  public static List<String> getPreProcessedRecordsAsList() throws IOException {
+  public static List<String> getSelfDeclaredPreProcessedRecordsAsList() throws IOException {
     List<String> successfullRecordsList = new ArrayList<>();
-    File file = new File(EnvConstants.PRE_PROCESSED_RECORDS_FILE);
+    File file = new File(EnvConstants.PRE_PROCESSED_RECORDS_FILE_SELF_DECLARED);
     printFilelastModified(file);
     if (file.exists()) {
       successfullRecordsList = readFileGetList(file);
@@ -30,6 +30,20 @@ public class RecordTracker {
     }
     return successfullRecordsList;
   }
+
+
+  public static List<String> getStateUserPreProcessedRecordsAsList() throws IOException {
+    List<String> successfullRecordsList = new ArrayList<>();
+    File file = new File(EnvConstants.PRE_PROCESSED_RECORDS_FILE_STATE_USERS);
+    printFilelastModified(file);
+    if (file.exists()) {
+      successfullRecordsList = readFileGetList(file);
+    } else {
+      file.createNewFile();
+    }
+    return successfullRecordsList;
+  }
+
 
   /**
    * this method will remove the last index value from the list since it may be possible that the
@@ -50,7 +64,7 @@ public class RecordTracker {
       logger.error(
           String.format(
               "no file found named %s creating it again....",
-              EnvConstants.PRE_PROCESSED_RECORDS_FILE));
+                  file.getName()));
     }
     if(preProcessedRecords.size()>=1) {
       preProcessedRecords.remove(preProcessedRecords.size() - 1);
@@ -64,6 +78,6 @@ public class RecordTracker {
     logger.info(
         String.format(
             "%s last modified at %s",
-            EnvConstants.PRE_PROCESSED_RECORDS_FILE, sdf.format(file.lastModified())));
+            file.getName(), sdf.format(file.lastModified())));
   }
 }

@@ -96,4 +96,31 @@ public class CassandraHelper {
         query.append("INSERT INTO sunbird.user_declarations (userid, orgid, persona, status, errortype, userinfo, createdby, createdon, updatedby, updatedon) values(?,?,?,?,?,?,?,?,?,?)");
         return query.toString();
     }
+
+
+    public static String getInsertRecordQueryForUser(User user,Map<String,String> orgProviderMap) {
+        return String.format(
+                "INSERT INTO sunbird.usr_external_identity (provider, idtype, externalid, createdby, createdon, lastupdatedby, lastupdatedon, originalexternalid, originalidtype, originalprovider, userid) VALUES('%s','%s', '%s', '%s', %s,'%s',%s,'%s','%s','%s','%s');",
+                orgProviderMap.get(user.getOriginalProvider()),
+                orgProviderMap.get(user.getOriginalIdType()),
+                user.getExternalId(),
+                user.getCreatedBy(),
+                getTimeStampFromDate(user.getCreatedOn()).getTime(),
+                user.getLastUpdatedBy(),
+                getLastUpdatedOn(),
+                user.getOriginalExternalId(),
+                orgProviderMap.get(user.getOriginalIdType()),
+                orgProviderMap.get(user.getOriginalProvider()),
+                user.getUserId());
+    }
+
+    /**
+     * this method will give the today date timestamp and the field lastUpdatedOn will be updated by
+     * today's date time...
+     *
+     * @return long
+     */
+    private static long getLastUpdatedOn() {
+        return new Timestamp(Calendar.getInstance().getTime().getTime()).getTime();
+    }
 }
