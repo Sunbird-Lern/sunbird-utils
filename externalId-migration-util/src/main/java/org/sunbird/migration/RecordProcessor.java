@@ -237,7 +237,9 @@ public class RecordProcessor extends StatusTracker {
         }
       }
       userDeclareEntity.setUserInfo(userInfo);
-      userSelfDeclareLists.add(userDeclareEntity);
+      if (!userInfo.isEmpty()) {
+        userSelfDeclareLists.add(userDeclareEntity);
+      }
       countUser += 1;
       logger.info("Count:" + countUser);
     }
@@ -249,7 +251,9 @@ public class RecordProcessor extends StatusTracker {
     User latestRecordsToBeUpdated = null;
     Date lastUpdatedDate = new Date(Long.MIN_VALUE);
     for (User user : users) {
-      if (lastUpdatedDate.compareTo(user.getLastUpdatedOn()) < 0) {
+
+      if (null != user.getLastUpdatedOn()
+          && lastUpdatedDate.compareTo(user.getLastUpdatedOn()) < 0) {
         lastUpdatedDate = user.getLastUpdatedOn();
         latestRecordsToBeUpdated = user;
       }
