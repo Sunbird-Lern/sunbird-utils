@@ -240,7 +240,8 @@ public class RecordProcessor extends StatusTracker {
       }
       userDeclareEntity.setUserInfo(userInfo);
       userSelfDeclareLists.add(userDeclareEntity);
-      logger.info("Count:" + (++countUser));
+      countUser += 1;
+      logger.info("Count:" + countUser);
     }
     logger.info("Total User Count:" + countUser);
   }
