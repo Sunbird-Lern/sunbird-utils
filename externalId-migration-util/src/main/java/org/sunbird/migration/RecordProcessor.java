@@ -207,41 +207,45 @@ public class RecordProcessor extends StatusTracker {
       Map<String, List<User>> userIdExternalIdMap, List<UserDeclareEntity> userSelfDeclareLists) {
     int countUser = 0;
     for (Map.Entry<String, List<User>> userEntry : userIdExternalIdMap.entrySet()) {
-      String userId = userEntry.getKey();
-      logger.info("Creating Self Declared Object for user:" + userId);
+      try {
+        String userId = userEntry.getKey();
+        logger.info("Creating Self Declared Object for user:" + userId);
 
-      List<User> users = userEntry.getValue();
-      UserDeclareEntity userDeclareEntity = new UserDeclareEntity();
-      userDeclareEntity.setUserId(userId);
-      // Get the details from orginial provider as provider contains info in  lower case
-      userDeclareEntity.setProvider(users.get(0).getOriginalProvider());
-      userDeclareEntity.setPersona(Constants.TEACHER);
-      userDeclareEntity.setStatus("PENDING");
-      userDeclareEntity.setCreatedBy(users.get(0).getCreatedBy());
-      if (null != users.get(0).getCreatedOn()) {
-        userDeclareEntity.setCreatedOn(new Timestamp(users.get(0).getCreatedOn().getTime()));
-      }
-      // Get the last updated external Info of userID
-      User lastUpdatedRecords = getLastUpdatedRecord(users);
-      if (null != lastUpdatedRecords) {
-        userDeclareEntity.setUpdatedBy(lastUpdatedRecords.getLastUpdatedBy());
-        userDeclareEntity.setUpdatedOn(
-            new Timestamp(lastUpdatedRecords.getLastUpdatedOn().getTime()));
-      }
-      Map<String, Object> userInfo = new HashMap<>();
-      // Get the details from orginialidType, originalExternalId as idType and externalId contains
-      // info in  lower case
-      for (User user : users) {
-        if (user.getOriginalIdType().contains("declared-")) {
-          userInfo.put(user.getOriginalIdType(), user.getOriginalExternalId());
+        List<User> users = userEntry.getValue();
+        UserDeclareEntity userDeclareEntity = new UserDeclareEntity();
+        userDeclareEntity.setUserId(userId);
+        // Get the details from orginial provider as provider contains info in  lower case
+        userDeclareEntity.setProvider(users.get(0).getOriginalProvider());
+        userDeclareEntity.setPersona(Constants.TEACHER);
+        userDeclareEntity.setStatus("PENDING");
+        userDeclareEntity.setCreatedBy(users.get(0).getCreatedBy());
+        if (null != users.get(0).getCreatedOn()) {
+          userDeclareEntity.setCreatedOn(new Timestamp(users.get(0).getCreatedOn().getTime()));
         }
+        // Get the last updated external Info of userID
+        User lastUpdatedRecords = getLastUpdatedRecord(users);
+        if (null != lastUpdatedRecords) {
+          userDeclareEntity.setUpdatedBy(lastUpdatedRecords.getLastUpdatedBy());
+          userDeclareEntity.setUpdatedOn(
+              new Timestamp(lastUpdatedRecords.getLastUpdatedOn().getTime()));
+        }
+        Map<String, Object> userInfo = new HashMap<>();
+        // Get the details from orginialidType, originalExternalId as idType and externalId contains
+        // info in  lower case
+        for (User user : users) {
+          if (user.getOriginalIdType().contains("declared-")) {
+            userInfo.put(user.getOriginalIdType(), user.getOriginalExternalId());
+          }
+        }
+        userDeclareEntity.setUserInfo(userInfo);
+        if (!userInfo.isEmpty()) {
+          userSelfDeclareLists.add(userDeclareEntity);
+        }
+        countUser += 1;
+        logger.info("Count:" + countUser);
+      } catch (Exception ex) {
+        logger.error("Error creating object for userId:" + userEntry.getKey());
       }
-      userDeclareEntity.setUserInfo(userInfo);
-      if (!userInfo.isEmpty()) {
-        userSelfDeclareLists.add(userDeclareEntity);
-      }
-      countUser += 1;
-      logger.info("Count:" + countUser);
     }
 
     logger.info("Total User Count:" + countUser);
