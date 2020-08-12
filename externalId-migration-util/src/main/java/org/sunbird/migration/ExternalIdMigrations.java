@@ -1,5 +1,6 @@
 package org.sunbird.migration;
 
+import com.datastax.driver.core.Session;
 import org.apache.log4j.Logger;
 import org.sunbird.migration.connection.factory.CassandraConnectionFactory;
 import org.sunbird.migration.connection.factory.ConnectionFactory;
@@ -22,8 +23,11 @@ public class ExternalIdMigrations {
         RequestParamValidator.getInstance(requestParams).validate();
         ConnectionFactory connectionFactory = new CassandraConnectionFactory();
         RecordProcessor recordProcessor = RecordProcessor.getInstance(connectionFactory, requestParams);
+        generateRecords(recordProcessor);
         recordProcessor.startProcessingExternalIds();
     }
+
+
 
     /**
      * this method will prepare RequestParams object while reading constants from env
