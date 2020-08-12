@@ -94,7 +94,6 @@ public class RecordProcessor extends StatusTracker {
     int count[] = new int[1];
     logger.info(
         "==================Starting Processing Self Declared Users=======================================");
-
     userSelfDeclareLists
         .stream()
         .forEach(
@@ -121,7 +120,6 @@ public class RecordProcessor extends StatusTracker {
     // Close self declare file writer
     closeFw1WriterConnection();
     List<User> stateUsersList = getUserDataFromDbAsList();
-
     // check for state user preprocessed records
     logger.info("Checking state users preprocessed data");
     List<String> preProcessedRecords = RecordTracker.getStateUserPreProcessedRecordsAsList();
