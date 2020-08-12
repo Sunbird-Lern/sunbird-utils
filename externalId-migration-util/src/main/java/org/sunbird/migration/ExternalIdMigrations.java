@@ -15,12 +15,17 @@ public class ExternalIdMigrations {
    * @param args
    * @throws Exception
    */
-  public static void main(String[] args) throws Exception {
-    RequestParams requestParams = prepareRequestParams();
-    RequestParamValidator.getInstance(requestParams).validate();
-    ConnectionFactory connectionFactory = new CassandraConnectionFactory();
-    RecordProcessor recordProcessor = RecordProcessor.getInstance(connectionFactory, requestParams);
-    recordProcessor.startProcessingExternalIds();
+  public static void main(String[] args) {
+    try {
+      RequestParams requestParams = prepareRequestParams();
+      RequestParamValidator.getInstance(requestParams).validate();
+      ConnectionFactory connectionFactory = new CassandraConnectionFactory();
+      RecordProcessor recordProcessor =
+          RecordProcessor.getInstance(connectionFactory, requestParams);
+      recordProcessor.startProcessingExternalIds();
+    } catch (Exception ex) {
+      logger.error("Error :" + ex.getMessage());
+    }
   }
 
   /**
