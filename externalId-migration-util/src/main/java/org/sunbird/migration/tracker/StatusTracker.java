@@ -10,8 +10,12 @@ import org.sunbird.migration.constants.EnvConstants;
 public class StatusTracker {
 
   private static Logger logger = LoggerFactory.getLoggerInstance(StatusTracker.class.getName());
-  static FileWriter fw1;
-  static FileWriter fw2;
+  static FileWriter fwSelfDeclaredSuccess;
+  static FileWriter fwSelfDeclaredFailure;
+  static FileWriter fwStateUserSuccess;
+  static FileWriter fwStateUserFailure;
+  static FileWriter fwInvalidRecords;
+  static FileWriter fwDeleteFailedRecords;
 
   public static void startTracingRecord(String id) {
     logger.info(
@@ -28,46 +32,114 @@ public class StatusTracker {
     logger.info("UserId: " + id + " started...");
   }
 
-  public static void logQuery(String query) {
-    logger.info(String.format("the insert query generated %s ", query));
+  public static void logSelfDeclaredInsertQuery(String query) {
+    logger.info(String.format("the insert query generated for user_declarations %s ", query));
   }
 
-  public static void logFailedRecord(String userId, String provider) {
-    logger.info(
-        String.format(
-            "Record Failed with userId:%s provider:%s",
-           userId,provider));
+  public static void logStateUserInsertQuery(String query) {
+    logger.info(String.format("the insert query generated for usr_external_identity %s ", query));
+  }
+
+  public static void logSelfDeclaredFailedRecord(String userId, String provider) {
+    logger.info(String.format("Record Failed with userId:%s provider:%s", userId, provider));
+    writeSelfDeclaredFailedRecordToFile(userId, provider);
+  }
+
+  private static void writeSelfDeclaredFailedRecordToFile(String userId, String provider) {
+    try {
+      if (fwSelfDeclaredFailure == null) {
+        fwSelfDeclaredFailure = new FileWriter(EnvConstants.FAILED_SELF_DECLARED_MIGRATION_RECORDS);
+      }
+      fwSelfDeclaredFailure.write(String.format("%s:%s", userId, provider));
+      fwSelfDeclaredFailure.write("\n");
+      fwSelfDeclaredFailure.flush();
+    } catch (Exception e) {
+      logger.error(
+          String.format(
+              "%s:%s:error occurred while writing preProcessed records to file with message %s",
+              StatusTracker.class.getSimpleName(),
+              "writeSelfDeclaredFailedRecordToFile",
+              e.getMessage()));
+      System.exit(0);
+    }
+  }
+
+  private static void writeDeleteFailedRecordToFile(String userId, String idType, String provider) {
+    try {
+      if (fwDeleteFailedRecords == null) {
+        fwDeleteFailedRecords = new FileWriter(EnvConstants.DELETE_FAILED_RECORDS);
+      }
+      fwDeleteFailedRecords.write(String.format("%s:%s", userId, provider));
+      fwDeleteFailedRecords.write("\n");
+      fwDeleteFailedRecords.flush();
+    } catch (Exception e) {
+      logger.error(
+          String.format(
+              "%s:%s:error occurred while writing preProcessed records to file with message %s",
+              StatusTracker.class.getSimpleName(),
+              "writeSelfDeclaredFailedRecordToFile",
+              e.getMessage()));
+      System.exit(0);
+    }
+  }
+
+  public static void logStateUserFailedRecord(String userId, String provider) {
+    logger.info(String.format("Record Failed with userId:%s provider:%s", userId, provider));
+    writeStateUserFailedRecordToFile(userId, provider);
+  }
+
+  private static void writeStateUserFailedRecordToFile(String userId, String provider) {
+    try {
+      if (fwStateUserFailure == null) {
+        fwStateUserFailure = new FileWriter(EnvConstants.FAILED_STATE_MIGRATION_RECORDS);
+      }
+      fwStateUserFailure.write(String.format("%s:%s", userId, provider));
+      fwStateUserFailure.write("\n");
+      fwStateUserFailure.flush();
+    } catch (Exception e) {
+      logger.error(
+          String.format(
+              "%s:%s:error occurred while writing preProcessed records to file with message %s",
+              StatusTracker.class.getSimpleName(),
+              "writeStateUserFailedRecordToFile",
+              e.getMessage()));
+      System.exit(0);
+    }
   }
 
   public static void logSelfDeclaredSuccessRecord(String userId, String provider) {
     logger.info(
-        String.format(
-            "Record updation success with userId:%s provider:%s",
-                userId, provider));
+        String.format("Record updation success with userId:%s provider:%s", userId, provider));
     writeSelfDeclaredSuccessRecordToFile(userId, provider);
   }
+
   public static void logStateUserSuccessRecord(String userId, String provider) {
     logger.info(
-            String.format(
-                    "Record updation success with userId:%s provider:%s",
-                    userId, provider));
+        String.format("Record updation success with userId:%s provider:%s", userId, provider));
     writeStateUserSuccessRecordToFile(userId, provider);
   }
 
   public static void logDeletedRecord(Map<String, String> compositeKeysMap) {
     logger.info(
         String.format(
-            "Record deleted with externalId:%s provider:%s and idType:%s",
+            "Record deleted with userId:%s provider:%s and idType:%s",
             compositeKeysMap.get(DbColumnConstants.userId),
             compositeKeysMap.get(DbColumnConstants.provider),
             compositeKeysMap.get(DbColumnConstants.idType)));
   }
 
-  public static void logInsertedRecord(String userId, String orgId, String persona) {
+  public static void logSelfDeclaredInsertedRecord(String userId, String orgId, String persona) {
     logger.info(
         String.format(
             "Record insertion success with userId:%s orgId:%s and persona:%s",
-                userId, orgId, persona));
+            userId, orgId, persona));
+  }
+
+  public static void logStateUsersInsertedRecord(String userId, String idType, String provider) {
+    logger.info(
+        String.format(
+            "Record insertion success with userId:%s idType:%s and provider:%s",
+            userId, idType, provider));
   }
 
   public static void logFailedDeletedRecord(Map<String, String> compositeKeysMap) {
@@ -77,13 +149,18 @@ public class StatusTracker {
             compositeKeysMap.get(DbColumnConstants.userId),
             compositeKeysMap.get(DbColumnConstants.provider),
             compositeKeysMap.get(DbColumnConstants.idType)));
+    writeDeleteFailedRecordToFile(
+        compositeKeysMap.get(DbColumnConstants.userId),
+        compositeKeysMap.get(DbColumnConstants.idType),
+        compositeKeysMap.get(DbColumnConstants.provider));
   }
 
-  public static void logExceptionOnProcessingRecord(String userId,String provider, String persona) {
+  public static void logExceptionOnProcessingRecord(
+      String userId, String provider, String persona) {
     logger.error(
         String.format(
             "Error occurred in  decrypting  record with userId:%s provider:%s persona:%s",
-          userId,provider,persona));
+            userId, provider, persona));
   }
 
   public static void logTotalRecords(long count) {
@@ -102,55 +179,76 @@ public class StatusTracker {
             compositeKeysMap.get(DbColumnConstants.idType)));
   }
 
-  public static void logCorruptedRecord(
-      Map<String, String> compositeKeysMap, String orignalExternalId) {
+  public static void logCorruptedRecord(String userId, String idType, String provider) {
     logger.info(
         String.format(
-            "SKIPPING the record because corrupted Record found with provider='%s' AND idtype='%s' AND externalid='%s' AND orignalexternalid='%s'",
-            compositeKeysMap.get(DbColumnConstants.provider),
-            compositeKeysMap.get(DbColumnConstants.idType),
-            compositeKeysMap.get(DbColumnConstants.externalId),
-            orignalExternalId));
+            "SKIPPING the record because corrupted Record found with userid='%s' AND idType= '%s' AND provider='%s'",
+            userId, idType, provider));
+    writeInvalidRecordToFile(userId, idType, provider);
   }
 
   public static void writeSelfDeclaredSuccessRecordToFile(String userId, String provider) {
     try {
-      if (fw1 == null) {
-        fw1 = new FileWriter(EnvConstants.PRE_PROCESSED_RECORDS_FILE_SELF_DECLARED);
+      if (fwSelfDeclaredSuccess == null) {
+        fwSelfDeclaredSuccess =
+            new FileWriter(EnvConstants.PRE_PROCESSED_RECORDS_FILE_SELF_DECLARED);
       }
-        fw1.write(String.format("%s:%s",userId, provider));
-        fw1.write("\n");
-        fw1.flush();
+      fwSelfDeclaredSuccess.write(String.format("%s:%s", userId, provider));
+      fwSelfDeclaredSuccess.write("\n");
+      fwSelfDeclaredSuccess.flush();
     } catch (Exception e) {
       logger.error(
           String.format(
               "%s:%s:error occurred while writing preProcessed records to file with message %s",
-              StatusTracker.class.getSimpleName(), "writeSelfDeclaredSuccessRecordToFile", e.getMessage()));
+              StatusTracker.class.getSimpleName(),
+              "writeSelfDeclaredSuccessRecordToFile",
+              e.getMessage()));
       System.exit(0);
     }
   }
 
   public static void writeStateUserSuccessRecordToFile(String userId, String provider) {
     try {
-      if (fw2 == null) {
-        fw2 = new FileWriter(EnvConstants.PRE_PROCESSED_RECORDS_FILE_STATE_USERS);
+      if (fwStateUserSuccess == null) {
+        fwStateUserSuccess = new FileWriter(EnvConstants.PRE_PROCESSED_RECORDS_FILE_STATE_USERS);
       }
-      fw2.write(String.format("%s:%s",userId, provider));
-      fw2.write("\n");
-      fw2.flush();
+      fwStateUserSuccess.write(String.format("%s:%s", userId, provider));
+      fwStateUserSuccess.write("\n");
+      fwStateUserSuccess.flush();
     } catch (Exception e) {
       logger.error(
-              String.format(
-                      "%s:%s:error occurred while writing preProcessed records to file with message %s",
-                      StatusTracker.class.getSimpleName(), "writeStateUserSuccessRecordToFile", e.getMessage()));
+          String.format(
+              "%s:%s:error occurred while writing preProcessed records to file with message %s",
+              StatusTracker.class.getSimpleName(),
+              "writeStateUserSuccessRecordToFile",
+              e.getMessage()));
       System.exit(0);
     }
   }
 
-  public static void closeFw1WriterConnection() {
+  public static void writeInvalidRecordToFile(String userId, String idType, String provider) {
     try {
-      if (fw1 != null) {
-        fw1.close();
+      if (fwInvalidRecords == null) {
+        fwInvalidRecords = new FileWriter(EnvConstants.INVALID_RECORDS);
+      }
+      fwInvalidRecords.write(String.format("%s:%s:%s", userId, provider, idType));
+      fwInvalidRecords.write("\n");
+      fwInvalidRecords.flush();
+    } catch (Exception e) {
+      logger.error(
+          String.format(
+              "%s:%s:error occurred while writing preProcessed records to file with message %s",
+              StatusTracker.class.getSimpleName(),
+              "writeInvalidUserSuccessRecordToFile",
+              e.getMessage()));
+      System.exit(0);
+    }
+  }
+
+  public static void closeFwSelfDeclaredSuccessWriterConnection() {
+    try {
+      if (fwSelfDeclaredSuccess != null) {
+        fwSelfDeclaredSuccess.close();
       }
     } catch (Exception e) {
       logger.error(
@@ -160,16 +258,68 @@ public class StatusTracker {
     }
   }
 
-  public static void closeFw2WriterConnection() {
+  public static void closeFwStateUserSuccessWriterConnection() {
     try {
-      if (fw2 != null) {
-        fw2.close();
+      if (fwStateUserSuccess != null) {
+        fwStateUserSuccess.close();
       }
     } catch (Exception e) {
       logger.error(
-              String.format(
-                      "%s error occurred while closing connection to file %s and error is %s",
-                      "writeSuccessRecordToFile Pre-Processed File", e.getMessage()));
+          String.format(
+              "%s error occurred while closing connection to file %s and error is %s",
+              "writeSuccessRecordToFile Pre-Processed File", e.getMessage()));
+    }
+  }
+
+  public static void closeFwInvalidUserWriterConnection() {
+    try {
+      if (fwInvalidRecords != null) {
+        fwInvalidRecords.close();
+      }
+    } catch (Exception e) {
+      logger.error(
+          String.format(
+              "%s error occurred while closing connection to file %s and error is %s",
+              "writeInvalidRecordToFile Pre-Processed File", e.getMessage()));
+    }
+  }
+
+  public static void closeFwStateUserFailureWriterConnection() {
+    try {
+      if (fwStateUserFailure != null) {
+        fwStateUserFailure.close();
+      }
+    } catch (Exception e) {
+      logger.error(
+          String.format(
+              "%s error occurred while closing connection to file %s and error is %s",
+              "writeFailureRecordToFile Pre-Processed File", e.getMessage()));
+    }
+  }
+
+  public static void closeFwSelfDeclaredFailureWriterConnection() {
+    try {
+      if (fwSelfDeclaredFailure != null) {
+        fwSelfDeclaredFailure.close();
+      }
+    } catch (Exception e) {
+      logger.error(
+          String.format(
+              "%s error occurred while closing connection to file %s and error is %s",
+              "writeFailureRecordToFile Pre-Processed File", e.getMessage()));
+    }
+  }
+
+  public static void closeFwDeleteFailureWriterConnection() {
+    try {
+      if (fwDeleteFailedRecords != null) {
+        fwDeleteFailedRecords.close();
+      }
+    } catch (Exception e) {
+      logger.error(
+          String.format(
+              "%s error occurred while closing connection to file %s and error is %s",
+              "writeDeleteFailureRecordToFile Pre-Processed File", e.getMessage()));
     }
   }
 }
