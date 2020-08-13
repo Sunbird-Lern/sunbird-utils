@@ -18,7 +18,6 @@ public class CassandraHelper {
 
   /** this variable is initialized so that list can easily handle the size of user.. */
   public static final int initialCapacity = 50000;
-
   /**
    * these methods will be used to convert resultSet into List of User entity Object.
    *
