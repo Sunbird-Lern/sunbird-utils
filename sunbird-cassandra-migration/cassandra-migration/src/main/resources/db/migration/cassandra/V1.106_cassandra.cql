@@ -1,1 +1,0 @@
-ALTER TABLE cert_registry ADD qrCodeUrl text;
