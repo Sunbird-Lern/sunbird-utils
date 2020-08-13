@@ -178,19 +178,19 @@ public class RecordProcessor extends StatusTracker {
     logQuery(query);
     Map<String, String> compositeKeysMap = new HashMap<>();
     compositeKeysMap.put(DbColumnConstants.userId, stateUser.getUserId());
-    compositeKeysMap.put(DbColumnConstants.idType, stateUser.getOriginalIdType());
-    compositeKeysMap.put(DbColumnConstants.provider, stateUser.getOriginalProvider());
+    compositeKeysMap.put(DbColumnConstants.idType, stateUser.getIdType());
+    compositeKeysMap.put(DbColumnConstants.provider, stateUser.getProvider());
 
     boolean isRecordInserted = connection.insertRecord(query);
     if (isRecordInserted) {
       logInsertedRecord(
           stateUser.getUserId(),
-          orgIdProviderMap.get(stateUser.getProvider()),
+          orgIdProviderMap.get(stateUser.getOriginalProvider()),
           orgIdProviderMap.get(stateUser.getIdType()));
       boolean isRecordDeleted = connection.deleteRecord(compositeKeysMap);
       if (isRecordDeleted) {
         logDeletedRecord(compositeKeysMap);
-        logStateUserSuccessRecord(stateUser.getUserId(), stateUser.getOriginalProvider());
+        logStateUserSuccessRecord(stateUser.getUserId(), stateUser.getProvider());
         return true;
       } else {
         logFailedDeletedRecord(compositeKeysMap);
@@ -318,7 +318,7 @@ public class RecordProcessor extends StatusTracker {
         Map<String, String> keys = new HashMap<>();
         keys.put(DbColumnConstants.userId, userDeclareEntity.getUserId());
         keys.put(DbColumnConstants.idType, map.getKey());
-        keys.put(DbColumnConstants.provider, userDeclareEntity.getProvider());
+        keys.put(DbColumnConstants.provider, userDeclareEntity.getProvider().toLowerCase());
         boolean isRecordDeleted = connection.deleteRecord(keys);
         if (!isRecordDeleted) {
           isUpdateOperation = false;

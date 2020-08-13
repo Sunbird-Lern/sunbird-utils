@@ -33,31 +33,25 @@ public class StatusTracker {
   }
 
   public static void logFailedRecord(String userId, String provider) {
-    logger.info(
-        String.format(
-            "Record Failed with userId:%s provider:%s",
-           userId,provider));
+    logger.info(String.format("Record Failed with userId:%s provider:%s", userId, provider));
   }
 
   public static void logSelfDeclaredSuccessRecord(String userId, String provider) {
     logger.info(
-        String.format(
-            "Record updation success with userId:%s provider:%s",
-                userId, provider));
+        String.format("Record updation success with userId:%s provider:%s", userId, provider));
     writeSelfDeclaredSuccessRecordToFile(userId, provider);
   }
+
   public static void logStateUserSuccessRecord(String userId, String provider) {
     logger.info(
-            String.format(
-                    "Record updation success with userId:%s provider:%s",
-                    userId, provider));
+        String.format("Record updation success with userId:%s provider:%s", userId, provider));
     writeStateUserSuccessRecordToFile(userId, provider);
   }
 
   public static void logDeletedRecord(Map<String, String> compositeKeysMap) {
     logger.info(
         String.format(
-            "Record deleted with externalId:%s provider:%s and idType:%s",
+            "Record deleted with userId:%s provider:%s and idType:%s",
             compositeKeysMap.get(DbColumnConstants.userId),
             compositeKeysMap.get(DbColumnConstants.provider),
             compositeKeysMap.get(DbColumnConstants.idType)));
@@ -67,7 +61,7 @@ public class StatusTracker {
     logger.info(
         String.format(
             "Record insertion success with userId:%s orgId:%s and persona:%s",
-                userId, orgId, persona));
+            userId, orgId, persona));
   }
 
   public static void logFailedDeletedRecord(Map<String, String> compositeKeysMap) {
@@ -79,11 +73,12 @@ public class StatusTracker {
             compositeKeysMap.get(DbColumnConstants.idType)));
   }
 
-  public static void logExceptionOnProcessingRecord(String userId,String provider, String persona) {
+  public static void logExceptionOnProcessingRecord(
+      String userId, String provider, String persona) {
     logger.error(
         String.format(
             "Error occurred in  decrypting  record with userId:%s provider:%s persona:%s",
-          userId,provider,persona));
+            userId, provider, persona));
   }
 
   public static void logTotalRecords(long count) {
@@ -118,14 +113,16 @@ public class StatusTracker {
       if (fw1 == null) {
         fw1 = new FileWriter(EnvConstants.PRE_PROCESSED_RECORDS_FILE_SELF_DECLARED);
       }
-        fw1.write(String.format("%s:%s",userId, provider));
-        fw1.write("\n");
-        fw1.flush();
+      fw1.write(String.format("%s:%s", userId, provider));
+      fw1.write("\n");
+      fw1.flush();
     } catch (Exception e) {
       logger.error(
           String.format(
               "%s:%s:error occurred while writing preProcessed records to file with message %s",
-              StatusTracker.class.getSimpleName(), "writeSelfDeclaredSuccessRecordToFile", e.getMessage()));
+              StatusTracker.class.getSimpleName(),
+              "writeSelfDeclaredSuccessRecordToFile",
+              e.getMessage()));
       System.exit(0);
     }
   }
@@ -135,14 +132,16 @@ public class StatusTracker {
       if (fw2 == null) {
         fw2 = new FileWriter(EnvConstants.PRE_PROCESSED_RECORDS_FILE_STATE_USERS);
       }
-      fw2.write(String.format("%s:%s",userId, provider));
+      fw2.write(String.format("%s:%s", userId, provider));
       fw2.write("\n");
       fw2.flush();
     } catch (Exception e) {
       logger.error(
-              String.format(
-                      "%s:%s:error occurred while writing preProcessed records to file with message %s",
-                      StatusTracker.class.getSimpleName(), "writeStateUserSuccessRecordToFile", e.getMessage()));
+          String.format(
+              "%s:%s:error occurred while writing preProcessed records to file with message %s",
+              StatusTracker.class.getSimpleName(),
+              "writeStateUserSuccessRecordToFile",
+              e.getMessage()));
       System.exit(0);
     }
   }
@@ -167,9 +166,9 @@ public class StatusTracker {
       }
     } catch (Exception e) {
       logger.error(
-              String.format(
-                      "%s error occurred while closing connection to file %s and error is %s",
-                      "writeSuccessRecordToFile Pre-Processed File", e.getMessage()));
+          String.format(
+              "%s error occurred while closing connection to file %s and error is %s",
+              "writeSuccessRecordToFile Pre-Processed File", e.getMessage()));
     }
   }
 }
