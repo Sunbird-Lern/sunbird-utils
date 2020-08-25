@@ -259,11 +259,11 @@ public class RecordProcessor extends StatusTracker {
         // info in  lower case
         String provider = null;
         for (User user : users) {
-          provider = user.getOriginalProvider();
-          if (null == provider) {
-            break;
-          }
           if (null != user.getOriginalIdType() && user.getOriginalIdType().contains("declared-")) {
+            provider = user.getOriginalProvider();
+            if (null == provider) {
+              break;
+            }
             userInfo.put(user.getOriginalIdType(), user.getOriginalExternalId());
           }
         }
