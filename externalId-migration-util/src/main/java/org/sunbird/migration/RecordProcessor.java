@@ -198,6 +198,7 @@ public class RecordProcessor extends StatusTracker {
     try {
       String provider = orgIdProviderMap.get(stateUser.getOriginalProvider());
       if (null == provider) {
+        logger.info(String.format("Checking channel: %s with lower case in state users", provider));
         provider = orgIdProviderMap.get(stateUser.getOriginalProvider().toLowerCase());
       }
       if (null != provider) {
@@ -332,6 +333,8 @@ public class RecordProcessor extends StatusTracker {
     try {
       String provider = orgProviderMap.get(userDeclareEntity.getProvider());
       if (null == provider) {
+        logger.info(
+            String.format("Checking channel: %s with lower case in self declared", provider));
         provider = orgProviderMap.get(userDeclareEntity.getProvider().toLowerCase());
       }
       // Skip records which contains orgId which no longer exists in the system.
