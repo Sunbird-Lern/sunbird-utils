@@ -87,6 +87,9 @@ public class RecordProcessor extends StatusTracker {
     Map<String, String> orgIdProviderMap = getOrgDataFromDbAsList();
     logger.info("Org Details loaded, size:" + orgIdProviderMap.size());
     Map<String, List<User>> userIdExternalIdMap = createExternalInfoMapGroupbyUserId(usersList);
+    // create a case insensitive map
+    Map<String, String> orgProviderIgnoreCaseMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    orgProviderIgnoreCaseMap.putAll(orgIdProviderMap);
 
     List<UserDeclareEntity> userSelfDeclareLists = new ArrayList<>();
     logger.info("Generate SelfDeclare Lists");
@@ -101,7 +104,8 @@ public class RecordProcessor extends StatusTracker {
               try {
                 startTracingRecord(userSelfDeclareObject.getUserId());
                 boolean isSuccess =
-                    performSequentialOperationOnRecord(userSelfDeclareObject, orgIdProviderMap);
+                    performSequentialOperationOnRecord(
+                        userSelfDeclareObject, orgIdProviderMap, orgProviderIgnoreCaseMap);
                 if (isSuccess) {
                   count[0] += 1;
                 }
@@ -141,7 +145,8 @@ public class RecordProcessor extends StatusTracker {
               try {
                 startTracingRecord(stateUser.getUserId());
                 boolean isSuccess =
-                    performSequentialUpdateOperationOnRecord(stateUser, orgIdProviderMap);
+                    performSequentialUpdateOperationOnRecord(
+                        stateUser, orgIdProviderMap, orgProviderIgnoreCaseMap);
                 if (isSuccess) {
                   countUpdateUser[0] += 1;
                 }
@@ -195,36 +200,46 @@ public class RecordProcessor extends StatusTracker {
   }
 
   private boolean performSequentialUpdateOperationOnRecord(
-      User stateUser, Map<String, String> orgIdProviderMap) {
+      User stateUser,
+      Map<String, String> orgIdProviderMap,
+      Map<String, String> orgProviderIgnoreCaseMap) {
+    try {
+      String provider = orgIdProviderMap.get(stateUser.getOriginalProvider());
+      if (null == provider) {
+        provider = orgProviderIgnoreCaseMap.get(stateUser.getOriginalProvider());
+      }
+      if (null != provider) {
+        String query = CassandraHelper.getInsertRecordQueryForUser(stateUser, provider);
+        logStateUserInsertQuery(query);
+        Map<String, String> compositeKeysMap = new HashMap<>();
+        compositeKeysMap.put(DbColumnConstants.userId, stateUser.getUserId());
+        compositeKeysMap.put(DbColumnConstants.idType, stateUser.getIdType());
+        compositeKeysMap.put(DbColumnConstants.provider, stateUser.getProvider());
 
-    if (null != orgIdProviderMap.get(stateUser.getOriginalProvider())) {
-      String query = CassandraHelper.getInsertRecordQueryForUser(stateUser, orgIdProviderMap);
-      logStateUserInsertQuery(query);
-      Map<String, String> compositeKeysMap = new HashMap<>();
-      compositeKeysMap.put(DbColumnConstants.userId, stateUser.getUserId());
-      compositeKeysMap.put(DbColumnConstants.idType, stateUser.getIdType());
-      compositeKeysMap.put(DbColumnConstants.provider, stateUser.getProvider());
-
-      boolean isRecordInserted = connection.insertRecord(query);
-      if (isRecordInserted) {
-        logStateUsersInsertedRecord(
-            stateUser.getUserId(), stateUser.getProvider(), stateUser.getIdType());
-        boolean isRecordDeleted = connection.deleteRecord(compositeKeysMap);
-        if (isRecordDeleted) {
-          logDeletedRecord(compositeKeysMap);
-          logStateUserSuccessRecord(stateUser.getUserId(), stateUser.getProvider());
-          return true;
+        boolean isRecordInserted = connection.insertRecord(query);
+        if (isRecordInserted) {
+          logStateUsersInsertedRecord(
+              stateUser.getUserId(), stateUser.getProvider(), stateUser.getIdType());
+          boolean isRecordDeleted = connection.deleteRecord(compositeKeysMap);
+          if (isRecordDeleted) {
+            logDeletedRecord(compositeKeysMap);
+            logStateUserSuccessRecord(stateUser.getUserId(), stateUser.getProvider());
+            return true;
+          } else {
+            logFailedDeletedRecord(compositeKeysMap);
+            logStateUserFailedRecord(stateUser.getUserId(), stateUser.getProvider());
+            return false;
+          }
         } else {
-          logFailedDeletedRecord(compositeKeysMap);
           logStateUserFailedRecord(stateUser.getUserId(), stateUser.getProvider());
           return false;
         }
       } else {
-        logStateUserFailedRecord(stateUser.getUserId(), stateUser.getProvider());
+        logCorruptedRecord(stateUser.getUserId(), stateUser.getIdType(), stateUser.getProvider());
         return false;
       }
-    } else {
-      logCorruptedRecord(stateUser.getUserId(), stateUser.getIdType(), stateUser.getProvider());
+    } catch (Exception ex) {
+      logger.error("Error creating object for userId:" + stateUser.getUserId());
       return false;
     }
   }
@@ -320,17 +335,23 @@ public class RecordProcessor extends StatusTracker {
    * @param orgProviderMap
    */
   private boolean performSequentialOperationOnRecord(
-      UserDeclareEntity userDeclareEntity, Map<String, String> orgProviderMap) {
+      UserDeclareEntity userDeclareEntity,
+      Map<String, String> orgProviderMap,
+      Map<String, String> orgProviderIgnoreCaseMap) {
 
     try {
+      String provider = orgProviderMap.get(userDeclareEntity.getProvider());
+      if (null == provider) {
+        provider = orgProviderIgnoreCaseMap.get(userDeclareEntity.getProvider());
+      }
       // Skip records which contains orgId which no longer exists in the system.
-      if (null != orgProviderMap.get(userDeclareEntity.getProvider())) {
+      if (null != provider) {
         String query = CassandraHelper.getInsertRecordQuery(userDeclareEntity);
         PreparedStatement preparedStatement = connection.getSession().prepare(query);
         BoundStatement bs =
             preparedStatement.bind(
                 userDeclareEntity.getUserId(),
-                orgProviderMap.get(userDeclareEntity.getProvider()),
+                provider,
                 userDeclareEntity.getPersona(),
                 userDeclareEntity.getStatus(),
                 userDeclareEntity.getErrorType(),
@@ -343,9 +364,7 @@ public class RecordProcessor extends StatusTracker {
         logSelfDeclaredInsertQuery(query);
         connection.getSession().execute(bs);
         logSelfDeclaredInsertedRecord(
-            userDeclareEntity.getUserId(),
-            orgProviderMap.get(userDeclareEntity.getProvider()),
-            userDeclareEntity.getPersona());
+            userDeclareEntity.getUserId(), provider, userDeclareEntity.getPersona());
         boolean isUpdateOperation = true;
         for (Map.Entry<String, Object> map : userDeclareEntity.getUserInfo().entrySet()) {
           Map<String, String> keys = new HashMap<>();
