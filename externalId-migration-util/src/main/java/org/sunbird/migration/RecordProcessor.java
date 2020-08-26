@@ -87,10 +87,6 @@ public class RecordProcessor extends StatusTracker {
     Map<String, String> orgIdProviderMap = getOrgDataFromDbAsList();
     logger.info("Org Details loaded, size:" + orgIdProviderMap.size());
     Map<String, List<User>> userIdExternalIdMap = createExternalInfoMapGroupbyUserId(usersList);
-    // create a case insensitive map
-    Map<String, String> orgProviderIgnoreCaseMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-    orgProviderIgnoreCaseMap.putAll(orgIdProviderMap);
-
     List<UserDeclareEntity> userSelfDeclareLists = new ArrayList<>();
     logger.info("Generate SelfDeclare Lists");
     getUserSelfDeclareLists(userIdExternalIdMap, userSelfDeclareLists);
@@ -104,8 +100,7 @@ public class RecordProcessor extends StatusTracker {
               try {
                 startTracingRecord(userSelfDeclareObject.getUserId());
                 boolean isSuccess =
-                    performSequentialOperationOnRecord(
-                        userSelfDeclareObject, orgIdProviderMap, orgProviderIgnoreCaseMap);
+                    performSequentialOperationOnRecord(userSelfDeclareObject, orgIdProviderMap);
                 if (isSuccess) {
                   count[0] += 1;
                 }
@@ -145,8 +140,7 @@ public class RecordProcessor extends StatusTracker {
               try {
                 startTracingRecord(stateUser.getUserId());
                 boolean isSuccess =
-                    performSequentialUpdateOperationOnRecord(
-                        stateUser, orgIdProviderMap, orgProviderIgnoreCaseMap);
+                    performSequentialUpdateOperationOnRecord(stateUser, orgIdProviderMap);
                 if (isSuccess) {
                   countUpdateUser[0] += 1;
                 }
@@ -200,13 +194,11 @@ public class RecordProcessor extends StatusTracker {
   }
 
   private boolean performSequentialUpdateOperationOnRecord(
-      User stateUser,
-      Map<String, String> orgIdProviderMap,
-      Map<String, String> orgProviderIgnoreCaseMap) {
+      User stateUser, Map<String, String> orgIdProviderMap) {
     try {
       String provider = orgIdProviderMap.get(stateUser.getOriginalProvider());
       if (null == provider) {
-        provider = orgProviderIgnoreCaseMap.get(stateUser.getOriginalProvider());
+        provider = orgIdProviderMap.get(stateUser.getOriginalProvider().toLowerCase());
       }
       if (null != provider) {
         String query = CassandraHelper.getInsertRecordQueryForUser(stateUser, provider);
@@ -335,14 +327,12 @@ public class RecordProcessor extends StatusTracker {
    * @param orgProviderMap
    */
   private boolean performSequentialOperationOnRecord(
-      UserDeclareEntity userDeclareEntity,
-      Map<String, String> orgProviderMap,
-      Map<String, String> orgProviderIgnoreCaseMap) {
+      UserDeclareEntity userDeclareEntity, Map<String, String> orgProviderMap) {
 
     try {
       String provider = orgProviderMap.get(userDeclareEntity.getProvider());
       if (null == provider) {
-        provider = orgProviderIgnoreCaseMap.get(userDeclareEntity.getProvider());
+        provider = orgProviderMap.get(userDeclareEntity.getProvider().toLowerCase());
       }
       // Skip records which contains orgId which no longer exists in the system.
       if (null != provider) {
