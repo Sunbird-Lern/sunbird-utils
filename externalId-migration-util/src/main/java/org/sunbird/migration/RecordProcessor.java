@@ -198,8 +198,9 @@ public class RecordProcessor extends StatusTracker {
     try {
       String provider = orgIdProviderMap.get(stateUser.getOriginalProvider());
       if (null == provider) {
-        logger.info(String.format("Checking channel: %s with lower case in state users", provider));
-        provider = orgIdProviderMap.get(stateUser.getOriginalProvider().toLowerCase());
+        logger.info(
+            String.format("Checking channel: %s with uppper case in state users", provider));
+        provider = orgIdProviderMap.get(stateUser.getOriginalProvider().toUpperCase());
       }
       if (null != provider) {
         String query = CassandraHelper.getInsertRecordQueryForUser(stateUser, provider);
@@ -334,8 +335,8 @@ public class RecordProcessor extends StatusTracker {
       String provider = orgProviderMap.get(userDeclareEntity.getProvider());
       if (null == provider) {
         logger.info(
-            String.format("Checking channel: %s with lower case in self declared", provider));
-        provider = orgProviderMap.get(userDeclareEntity.getProvider().toLowerCase());
+            String.format("Checking channel: %s with uppper case in self declared", provider));
+        provider = orgProviderMap.get(userDeclareEntity.getProvider().toUpperCase());
       }
       // Skip records which contains orgId which no longer exists in the system.
       if (null != provider) {
