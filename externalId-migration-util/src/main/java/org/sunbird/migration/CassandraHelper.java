@@ -95,19 +95,19 @@ public class CassandraHelper {
     return query.toString();
   }
 
-  public static String getInsertRecordQueryForUser(User user, Map<String, String> orgProviderMap) {
+  public static String getInsertRecordQueryForUser(User user, String provider) {
     return String.format(
         "INSERT INTO sunbird.usr_external_identity (provider, idtype, externalid, createdby, createdon, lastupdatedby, lastupdatedon, originalexternalid, originalidtype, originalprovider, userid) VALUES('%s','%s', '%s', '%s', %s,'%s',%s,'%s','%s','%s','%s');",
-        orgProviderMap.get(user.getOriginalProvider()),
-        orgProviderMap.get(user.getOriginalIdType()),
+        provider,
+        provider,
         user.getExternalId(),
         user.getCreatedBy(),
         getTimeStampFromDate(user.getCreatedOn()).getTime(),
         user.getLastUpdatedBy(),
         getLastUpdatedOn(),
         user.getOriginalExternalId(),
-        orgProviderMap.get(user.getOriginalIdType()),
-        orgProviderMap.get(user.getOriginalProvider()),
+        provider,
+        provider,
         user.getUserId());
   }
 
