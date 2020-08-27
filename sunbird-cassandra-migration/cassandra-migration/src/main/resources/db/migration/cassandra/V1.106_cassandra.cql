@@ -1,0 +1,1 @@
+CREATE TABLE sunbird.user_organisation (userid text,organisationid text,addedby text,addedbyname text,approvaldate text,approvedby text,hashtagid text,id text,isapproved boolean,isdeleted boolean,isrejected boolean,orgjoindate text,orgleftdate text,position text,roles list<text>,updatedby text,updateddate text,PRIMARY KEY (userid, organisationid));

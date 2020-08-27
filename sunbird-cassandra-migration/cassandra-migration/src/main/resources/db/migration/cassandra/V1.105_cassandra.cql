@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS sunbird.tenant_preference_v2 (data text,key text, orgid text, createdon timestamp, createdby text, updatedon timestamp,updatedby text, PRIMARY KEY (orgid, key));
