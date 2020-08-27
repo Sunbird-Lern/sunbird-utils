@@ -1,3 +1,6 @@
+
+CREATE KEYSPACE IF NOT EXISTS sunbird_groups WITH replication = {'class':'SimpleStrategy','replication_factor':3};
+
 CREATE TABLE IF NOT EXISTS sunbird_groups.group (id text, name text, description text, activities list<frozen <map<text,text>>>, status text, membershipType text, createdBy text, createdOn timestamp, updatedBy text, updatedOn timestamp, PRIMARY KEY (id));
 
 CREATE TABLE IF NOT EXISTS sunbird_groups.user_group(userId text, groupId set<text>, PRIMARY KEY(userId));
