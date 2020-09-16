@@ -28,7 +28,7 @@ node() {
 
         stage('Build') {
             sh """
-            cd externalId-migration-util
+            cd user-declaration-util
             mvn clean compile assembly:single
             """
         }
@@ -37,7 +37,7 @@ node() {
         stage('Archive artifacts'){
             sh """
                         mkdir cassandra_artifacts
-                        cp externalId-migration-util/target/externalId-migration-util-1.0-SNAPSHOT-jar-with-dependencies.jar cassandra_artifacts
+                        cp user-declaration-util/target/user-declaration-util-1.0-SNAPSHOT-jar-with-dependencies.jar cassandra_artifacts
                         zip -j cassandra_artifacts.zip:${artifact_version} cassandra_artifacts/*
                     """
             archiveArtifacts artifacts: "cassandra_artifacts.zip:${artifact_version}", fingerprint: true, onlyIfSuccessful: true
