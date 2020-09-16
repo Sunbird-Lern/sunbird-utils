@@ -67,8 +67,10 @@ public class RecordProcessor extends StatusTracker {
    */
   public void startProcessingUserDeclarations() throws IOException {
     List<UserDeclareEntity> userSelfDeclareLists = getRecordsToBeProcessed();
+    int size = userSelfDeclareLists.size();
     logger.info("Update SelfDeclare Lists");
-    updateUserSelfDeclareLists(userSelfDeclareLists);
+    Map<String, Integer> characterCount = new HashMap<>();
+    updateUserSelfDeclareLists(userSelfDeclareLists, characterCount);
     int count[] = new int[1];
     logger.info(
         "==================Starting Processing Self Declared Users=======================================");
@@ -100,15 +102,22 @@ public class RecordProcessor extends StatusTracker {
 
     connection.closeConnection();
     logger.info(
-        "Total Records: "
+        "Total records: "
+            + size
+            + " Total Records to be corrected: "
             + userSelfDeclareLists.size()
             + " Successfully Self Declared Users Migrated: "
             + count[0]
             + " Total Self Declared Users Migration Failed:"
             + (userSelfDeclareLists.size() - count[0]));
+
+    for (Map.Entry<String, Integer> character : characterCount.entrySet()) {
+      logger.info(character.getKey() + ": " + character.getValue());
+    }
   }
 
-  private void updateUserSelfDeclareLists(List<UserDeclareEntity> userSelfDeclareLists) {
+  private void updateUserSelfDeclareLists(
+      List<UserDeclareEntity> userSelfDeclareLists, Map<String, Integer> characterCount) {
 
     Iterator<UserDeclareEntity> itr = userSelfDeclareLists.iterator();
     while (itr.hasNext()) {
@@ -120,6 +129,9 @@ public class RecordProcessor extends StatusTracker {
           for (Map.Entry<String, Object> userEntry : userInfo.entrySet()) {
             String key = userEntry.getKey();
             String value = (String) userEntry.getValue();
+
+            //  filtering out all declarations which are intact - i.e., those that don't contain CSV
+            // offending characters and status is empty
             if ("declared-ext-id".equals(key)
                 || "declared-school-name".equals(key)
                 || "declared-school-udise-code".equals(key)) {
@@ -127,6 +139,31 @@ public class RecordProcessor extends StatusTracker {
                   || value.contains(" ")
                   || value.contains(",")
                   || value.contains("'")) {
+
+                if (value.contains("\"")) {
+                  characterCount.put(
+                      "DOUBLE_QUOTE",
+                      characterCount.get("DOUBLE_QUOTE") == null
+                          ? 1
+                          : characterCount.get("DOUBLE_QUOTE") + 1);
+                }
+                if (value.contains("'")) {
+                  characterCount.put(
+                      "SINGLE_QUOTE",
+                      characterCount.get("SINGLE_QUOTE") == null
+                          ? 1
+                          : characterCount.get("SINGLE_QUOTE") + 1);
+                }
+                if (value.contains(",")) {
+                  characterCount.put(
+                      "COMMA",
+                      characterCount.get("COMMA") == null ? 1 : characterCount.get("COMMA") + 1);
+                }
+                if (value.contains(" ")) {
+                  characterCount.put(
+                      "SPACE",
+                      characterCount.get("SPACE") == null ? 1 : characterCount.get("SPACE") + 1);
+                }
                 value = value.replaceAll("[\"' ,]", "");
                 removeFlag = false;
               }
