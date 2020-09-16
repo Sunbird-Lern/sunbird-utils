@@ -112,7 +112,7 @@ public class RecordProcessor extends StatusTracker {
             + (userSelfDeclareLists.size() - count[0]));
 
     for (Map.Entry<String, Integer> character : characterCount.entrySet()) {
-      logger.info(character.getKey() + ": " + character.getValue());
+      logger.info("Count " + character.getKey() + ": " + character.getValue());
     }
   }
 
