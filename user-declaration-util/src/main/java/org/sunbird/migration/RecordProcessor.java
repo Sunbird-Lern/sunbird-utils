@@ -173,6 +173,9 @@ public class RecordProcessor extends StatusTracker {
           }
           if (userDeclareEntity.getStatus() == null || userDeclareEntity.getStatus().isEmpty()) {
             userDeclareEntity.setStatus("PENDING");
+            characterCount.put(
+                "PENDING",
+                characterCount.get("PENDING") == null ? 1 : characterCount.get("PENDING") + 1);
             removeFlag = false;
           }
           if (removeFlag) {
