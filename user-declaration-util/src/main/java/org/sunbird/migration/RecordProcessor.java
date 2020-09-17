@@ -159,12 +159,8 @@ public class RecordProcessor extends StatusTracker {
                       "COMMA",
                       characterCount.get("COMMA") == null ? 1 : characterCount.get("COMMA") + 1);
                 }
-                if (value.contains(" ")) {
-                  characterCount.put(
-                      "SPACE",
-                      characterCount.get("SPACE") == null ? 1 : characterCount.get("SPACE") + 1);
-                }
-                value = value.replaceAll("[\"' ,]", "");
+
+                value = value.replaceAll("[\"',]", "");
                 removeFlag = false;
               }
             }
