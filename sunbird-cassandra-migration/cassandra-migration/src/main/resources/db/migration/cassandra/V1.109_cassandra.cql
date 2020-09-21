@@ -1,3 +1,5 @@
+
+ALTER TABLE sunbird_courses.course_batch ADD tandc boolean;
 CREATE TABLE IF NOT EXISTS sunbird.user_consent (
     id text,
     user_id text,
