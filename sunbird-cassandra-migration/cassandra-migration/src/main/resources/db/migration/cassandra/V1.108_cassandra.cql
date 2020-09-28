@@ -1,0 +1,1 @@
+ALTER TABLE sunbird_courses.user_enrolments ADD issued_certificates list<frozen <map<text,text>>>;
