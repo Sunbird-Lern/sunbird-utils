@@ -96,10 +96,6 @@ public class ActorOperationTest {
         "orgConsumptionMetrics", ActorOperations.ORG_CONSUMPTION_METRICS.getValue());
     Assert.assertEquals(
         "orgCreationMetricsData", ActorOperations.ORG_CREATION_METRICS_DATA.getValue());
-    Assert.assertEquals(
-        "courseProgressMetrics", ActorOperations.COURSE_PROGRESS_METRICS.getValue());
-    Assert.assertEquals(
-        "courseConsumptionMetrics", ActorOperations.COURSE_CREATION_METRICS.getValue());
     Assert.assertEquals("userCreationMetrics", ActorOperations.USER_CREATION_METRICS.getValue());
     Assert.assertEquals(
         "userConsumptionMetrics", ActorOperations.USER_CONSUMPTION_METRICS.getValue());
@@ -115,8 +111,6 @@ public class ActorOperationTest {
         "updateUserCoursesInfoToElastic",
         ActorOperations.UPDATE_USR_COURSES_INFO_ELASTIC.getValue());
     Assert.assertEquals("scheduleBulkUpload", ActorOperations.SCHEDULE_BULK_UPLOAD.getValue());
-    Assert.assertEquals(
-        "courseProgressMetricsReport", ActorOperations.COURSE_PROGRESS_METRICS_REPORT.getValue());
     Assert.assertEquals(
         "courseConsumptionMetricsReport",
         ActorOperations.COURSE_CREATION_METRICS_REPORT.getValue());
