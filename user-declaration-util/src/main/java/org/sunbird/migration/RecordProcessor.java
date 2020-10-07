@@ -168,10 +168,18 @@ public class RecordProcessor extends StatusTracker {
             userInfo.put(key, value);
           }
           if (userDeclareEntity.getStatus() == null || userDeclareEntity.getStatus().isEmpty()) {
-            userDeclareEntity.setStatus("PENDING");
+            userDeclareEntity.setStatus("SUBMITTED");
             characterCount.put(
-                "PENDING",
-                characterCount.get("PENDING") == null ? 1 : characterCount.get("PENDING") + 1);
+                "SUBMITTED",
+                characterCount.get("SUBMITTED") == null ? 1 : characterCount.get("SUBMITTED") + 1);
+            removeFlag = false;
+          }
+          if (userDeclareEntity.getStatus() != null
+              && "PENDING".equals(userDeclareEntity.getStatus())) {
+            userDeclareEntity.setStatus("SUBMITTED");
+            characterCount.put(
+                "SUBMITTED",
+                characterCount.get("SUBMITTED") == null ? 1 : characterCount.get("SUBMITTED") + 1);
             removeFlag = false;
           }
           if (removeFlag) {
