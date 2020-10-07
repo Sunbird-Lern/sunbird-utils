@@ -177,9 +177,6 @@ public class RecordProcessor extends StatusTracker {
           if (userDeclareEntity.getStatus() != null
               && "PENDING".equals(userDeclareEntity.getStatus())) {
             userDeclareEntity.setStatus("SUBMITTED");
-            characterCount.put(
-                "SUBMITTED",
-                characterCount.get("SUBMITTED") == null ? 1 : characterCount.get("SUBMITTED") + 1);
             removeFlag = false;
           }
           if (removeFlag) {
