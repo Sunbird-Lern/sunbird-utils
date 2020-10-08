@@ -135,10 +135,7 @@ public class RecordProcessor extends StatusTracker {
             if ("declared-ext-id".equals(key)
                 || "declared-school-name".equals(key)
                 || "declared-school-udise-code".equals(key)) {
-              if (value.contains("\"")
-                  || value.contains(" ")
-                  || value.contains(",")
-                  || value.contains("'")) {
+              if (value.contains("\"") || value.contains(",") || value.contains("'")) {
 
                 if (value.contains("\"")) {
                   characterCount.put(
@@ -170,13 +167,21 @@ public class RecordProcessor extends StatusTracker {
           if (userDeclareEntity.getStatus() == null || userDeclareEntity.getStatus().isEmpty()) {
             userDeclareEntity.setStatus("SUBMITTED");
             characterCount.put(
-                "SUBMITTED",
-                characterCount.get("SUBMITTED") == null ? 1 : characterCount.get("SUBMITTED") + 1);
+                "NULL_STATUS",
+                characterCount.get("NULL_STATUS") == null
+                    ? 1
+                    : characterCount.get("NULL_STATUS") + 1);
             removeFlag = false;
           }
+          // changing PENDING State to SUBMITTED as per new requirement
           if (userDeclareEntity.getStatus() != null
               && "PENDING".equals(userDeclareEntity.getStatus())) {
             userDeclareEntity.setStatus("SUBMITTED");
+            characterCount.put(
+                "PENDING_STATUS",
+                characterCount.get("PENDING_STATUS") == null
+                    ? 1
+                    : characterCount.get("PENDING_STATUS") + 1);
             removeFlag = false;
           }
           if (removeFlag) {
