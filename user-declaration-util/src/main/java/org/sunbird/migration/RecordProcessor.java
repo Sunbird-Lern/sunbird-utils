@@ -182,6 +182,7 @@ public class RecordProcessor extends StatusTracker {
                 characterCount.get("PENDING_STATUS") == null
                     ? 1
                     : characterCount.get("PENDING_STATUS") + 1);
+
             removeFlag = false;
           }
           if (removeFlag) {
