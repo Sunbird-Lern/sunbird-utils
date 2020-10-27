@@ -3,6 +3,7 @@ package org.sunbird.migration;
 import org.apache.log4j.Logger;
 import org.sunbird.migration.connection.factory.CassandraConnectionFactory;
 import org.sunbird.migration.connection.factory.ConnectionFactory;
+import org.sunbird.migration.constants.EnvConstants;
 
 public class GroupServiceUtil {
   static Logger logger = LoggerFactory.getLoggerInstance(GroupServiceUtil.class.getName());
@@ -34,9 +35,10 @@ public class GroupServiceUtil {
    */
   private static RequestParams prepareRequestParams() {
     RequestParams requestParams = new RequestParams();
-    requestParams.setCassandraHost("127.0.0.1");
-    requestParams.setCassandraKeyspaceName("sunbird");
-    requestParams.setCassandraPort("9042");
+    requestParams.setCassandraHost(System.getenv(EnvConstants.SUNBIRD_CASSANDRA_HOST));
+    requestParams.setCassandraKeyspaceName(
+        System.getenv(EnvConstants.SUNBIRD_CASSANDRA_GROUPS_KEYSPACENAME));
+    requestParams.setCassandraPort(System.getenv(EnvConstants.SUNBIRD_CASSANDRA_PORT));
     logger.info(
         String.format(
             "%s:%s:env variable got %s",

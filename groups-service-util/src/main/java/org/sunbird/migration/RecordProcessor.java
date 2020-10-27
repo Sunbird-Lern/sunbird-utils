@@ -152,7 +152,7 @@ public class RecordProcessor extends StatusTracker {
     while (itr.hasNext()) {
       boolean remove = true;
       GroupMember groupMember = (GroupMember) itr.next();
-      if (groupsMap.get(groupMember.getGroupId()).equals("inactive")) {
+      if ("inactive".equals(groupsMap.get(groupMember.getGroupId()))) {
         remove = false;
       }
       if (remove) {
@@ -259,8 +259,6 @@ public class RecordProcessor extends StatusTracker {
       UserGroup userGroup, Map<String, String> groupMap) {
     try {
 
-      String query = CassandraHelper.getUpdateQuery();
-      PreparedStatement preparedStatement = connection.getSession().prepare(query);
       Iterator itr = userGroup.getGroupIds().iterator();
       while (itr.hasNext()) {
         String groupId = (String) itr.next();
@@ -268,7 +266,20 @@ public class RecordProcessor extends StatusTracker {
           itr.remove();
         }
       }
-      BoundStatement bs = preparedStatement.bind(userGroup.getGroupIds(), userGroup.getUserId());
+      String query = "";
+      if (userGroup.getGroupIds().size() < 1) {
+        query = CassandraHelper.getDeleteUserGroupQuery();
+      } else {
+        query = CassandraHelper.getUpdateQuery();
+      }
+
+      PreparedStatement preparedStatement = connection.getSession().prepare(query);
+      BoundStatement bs = null;
+      if (userGroup.getGroupIds().size() < 1) {
+        bs = preparedStatement.bind(userGroup.getUserId());
+      } else {
+        bs = preparedStatement.bind(userGroup.getGroupIds(), userGroup.getUserId());
+      }
 
       logUserGroupQuery(query);
       connection.getSession().execute(bs);

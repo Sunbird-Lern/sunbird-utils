@@ -7,7 +7,8 @@ package org.sunbird.migration.constants;
  */
 public class EnvConstants {
   public static final String SUNBIRD_CASSANDRA_HOST = "sunbird_cassandra_host";
-  public static final String SUNBIRD_CASSANDRA_KEYSPACENAME = "sunbird_cassandra_keyspace";
+  public static final String SUNBIRD_CASSANDRA_GROUPS_KEYSPACENAME =
+      "sunbird_cassandra_groups_keyspace";
   public static final String SUNBIRD_CASSANDRA_PORT = "sunbird_cassandra_port";
   public static final String PRE_PROCESSED_RECORDS_FILE_DELETED_GROUPS =
       "preProcessedRecords_groups_deleted.txt";

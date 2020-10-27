@@ -6,8 +6,7 @@ import org.sunbird.migration.constants.EnvConstants;
 
 public class RequestParamValidator {
 
-  private static Logger logger =
-      LoggerFactory.getLoggerInstance(UserDeclarationMigrations.class.getName());
+  private static Logger logger = LoggerFactory.getLoggerInstance(GroupServiceUtil.class.getName());
   private RequestParams requestParams;
 
   private RequestParamValidator(RequestParams requestParams) {

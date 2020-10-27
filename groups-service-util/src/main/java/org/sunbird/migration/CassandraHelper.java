@@ -75,7 +75,7 @@ public class CassandraHelper {
 
   public static String getPreparedStatement() {
     StringBuilder query = new StringBuilder();
-    query.append("DELETE * from sunbird_groups.group where id= ?");
+    query.append("DELETE  from sunbird_groups.group where id= ?");
     return query.toString();
   }
 
@@ -96,13 +96,19 @@ public class CassandraHelper {
   }
 
   public static String getDeleteGroupQuery() {
-    String query = getUpdatePreparedStatement();
+    String query = getDeleteGroupPreparedStatement();
     return query;
   }
 
   public static String getDeleteGroupPreparedStatement() {
     StringBuilder query = new StringBuilder();
-    query.append("DELETE * FROM sunbird_groups.member_group WHERE groupid = ? and userid= ?");
+    query.append("DELETE  FROM sunbird_groups.group_member WHERE groupid = ? and userid= ?");
+    return query.toString();
+  }
+
+  public static String getDeleteUserGroupQuery() {
+    StringBuilder query = new StringBuilder();
+    query.append("DELETE FROM sunbird_groups.user_group WHERE userid= ?");
     return query.toString();
   }
 }
