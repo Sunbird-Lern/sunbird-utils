@@ -28,7 +28,12 @@ node() {
 
         stage('Build') {
             sh """
-            cd user-declaration-util
+            if(params.cassandra_jar_name == "user-declaration-util-1.0-SNAPSHOT-jar-with-dependencies.jar"){
+               cd user-declaration-util
+            }else{
+               cd groups-service-util
+            }
+
             mvn clean compile assembly:single
             """
         }
@@ -37,7 +42,12 @@ node() {
         stage('Archive artifacts'){
             sh """
                         mkdir cassandra_artifacts
-                        cp user-declaration-util/target/user-declaration-util-1.0-SNAPSHOT-jar-with-dependencies.jar cassandra_artifacts
+                        if(params.cassandra_jar_name == "user-declaration-util-1.0-SNAPSHOT-jar-with-dependencies.jar"){
+                            cp user-declaration-util/target/user-declaration-util-1.0-SNAPSHOT-jar-with-dependencies.jar cassandra_artifacts
+                        }else{
+                            cp groups-service-util/target/groups-service-util-1.0-SNAPSHOT-jar-with-dependencies.jar cassandra_artifacts
+                        }
+
                         zip -j cassandra_artifacts.zip:${artifact_version} cassandra_artifacts/*
                     """
             archiveArtifacts artifacts: "cassandra_artifacts.zip:${artifact_version}", fingerprint: true, onlyIfSuccessful: true
