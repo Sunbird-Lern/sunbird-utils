@@ -96,6 +96,8 @@ public class RecordProcessor extends StatusTracker {
     int count1[] = new int[1];
 
     /** List of user groups */
+    logger.info("Total Group Records: " + groups.size());
+
     List<UserGroup> userGroups = getUserGroupLists();
     logger.info("Total User Group Records: " + userGroups.size());
 
@@ -113,9 +115,11 @@ public class RecordProcessor extends StatusTracker {
     while (itr.hasNext()) {
       boolean remove = true;
       UserGroup userGroup = (UserGroup) itr.next();
-      for (String groupId : userGroup.getGroupIds()) {
-        if (groupsMap.get(groupId).equals("inactive")) {
-          remove = false;
+      if (userGroup.getGroupIds() != null) {
+        for (String groupId : userGroup.getGroupIds()) {
+          if ("inactive".equals(groupsMap.get(groupId))) {
+            remove = false;
+          }
         }
       }
       if (remove) {
@@ -152,8 +156,10 @@ public class RecordProcessor extends StatusTracker {
     while (itr.hasNext()) {
       boolean remove = true;
       GroupMember groupMember = (GroupMember) itr.next();
-      if ("inactive".equals(groupsMap.get(groupMember.getGroupId()))) {
-        remove = false;
+      if (groupMember != null) {
+        if ("inactive".equals(groupsMap.get(groupMember.getGroupId()))) {
+          remove = false;
+        }
       }
       if (remove) {
         itr.remove();
