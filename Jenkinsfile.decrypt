@@ -5,7 +5,6 @@ node() {
         String ANSI_BOLD = "\u001B[1m"
         String ANSI_RED = "\u001B[31m"
         String ANSI_YELLOW = "\u001B[33m"
-
         ansiColor('xterm') {
             stage('Checkout') {
                 cleanWs()
@@ -15,8 +14,7 @@ node() {
                     branch_name = sh(script: 'git name-rev --name-only HEAD | rev | cut -d "/" -f1| rev', returnStdout: true).trim()
                     artifact_version = branch_name + "_" + commit_hash
                     println(ANSI_BOLD + ANSI_YELLOW + "github_release_tag not specified, using the latest commit hash: " + commit_hash + ANSI_NORMAL)
-                }
-                else {
+                } else {
                     def scmVars = checkout scm
                     checkout scm: [$class: 'GitSCM', branches: [[name: "refs/tags/${params.github_release_tag}"]],  userRemoteConfigs: [[url: scmVars.GIT_URL]]]
                     artifact_version = params.github_release_tag
@@ -25,41 +23,36 @@ node() {
                 echo "artifact_version: "+ artifact_version
             }
         }
-
         stage('Build') {
-            sh """
             if(params.cassandra_jar_name == "user-declaration-util-1.0-SNAPSHOT-jar-with-dependencies.jar"){
-               cd user-declaration-util
-            }else{
-               cd groups-service-util
+               sh "cd user-declaration-util"
+            } else {
+               sh "cd groups-service-util"
             }
-
+            sh """
             mvn clean compile assembly:single
             """
         }
-
-
         stage('Archive artifacts'){
             sh """
                         mkdir cassandra_artifacts
+            """
                         if(params.cassandra_jar_name == "user-declaration-util-1.0-SNAPSHOT-jar-with-dependencies.jar"){
                             cp user-declaration-util/target/user-declaration-util-1.0-SNAPSHOT-jar-with-dependencies.jar cassandra_artifacts
-                        }else{
+                        } else {
                             cp groups-service-util/target/groups-service-util-1.0-SNAPSHOT-jar-with-dependencies.jar cassandra_artifacts
                         }
-
+            sh """
                         zip -j cassandra_artifacts.zip:${artifact_version} cassandra_artifacts/*
-                    """
+            """
             archiveArtifacts artifacts: "cassandra_artifacts.zip:${artifact_version}", fingerprint: true, onlyIfSuccessful: true
             sh """echo {\\"artifact_name\\" : \\"cassandra_artifacts.zip\\", \\"artifact_version\\" : \\"${artifact_version}\\", \\"node_name\\" : \\"${env.NODE_NAME}\\"} > metadata.json"""
             archiveArtifacts artifacts: 'metadata.json', onlyIfSuccessful: true
             currentBuild.description = "${artifact_version}"
         }
     }
-
     catch (err) {
         currentBuild.result = "FAILURE"
         throw err
     }
-
 }
