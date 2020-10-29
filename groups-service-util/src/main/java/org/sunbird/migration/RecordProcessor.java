@@ -8,7 +8,6 @@ import java.util.*;
 import org.apache.log4j.Logger;
 import org.sunbird.migration.connection.Connection;
 import org.sunbird.migration.connection.factory.ConnectionFactory;
-import org.sunbird.migration.tracker.RecordTracker;
 import org.sunbird.migration.tracker.StatusTracker;
 
 public class RecordProcessor extends StatusTracker {
@@ -371,10 +370,11 @@ public class RecordProcessor extends StatusTracker {
    */
   private List<Group> getRecordsToBeProcessed() throws IOException {
     List<Group> groupsList = getGroupLists();
-    logger.info("total records in db is " + groupsList.size());
+    /*  logger.info("total records in db is " + groupsList.size());
     List<String> preProcessedRecords = RecordTracker.getGroupPreProcessedRecordsAsList();
     logger.info("total records found preprocessed is " + preProcessedRecords.size());
-    return removePreProcessedRecordFromList(preProcessedRecords, groupsList);
+    return removePreProcessedRecordFromList(preProcessedRecords, groupsList);*/
+    return groupsList;
   }
 
   private List<UserGroup> getUserGroupRecords() throws IOException {
