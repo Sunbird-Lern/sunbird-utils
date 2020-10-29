@@ -22,6 +22,21 @@ public class StatusTracker {
             + " started===========================================");
   }
 
+  public static void endTracingUserRecord(String id) {
+    logger.info(
+        "================================ UserId: "
+            + id
+            + " ended ===========================================\n");
+    logger.info("UserId: " + id + " started...");
+  }
+
+  public static void startTracingUserRecord(String id) {
+    logger.info(
+        "================================ UserId: "
+            + id
+            + " started===========================================");
+  }
+
   public static void endTracingRecord(String id) {
     logger.info(
         "================================ GroupId: "

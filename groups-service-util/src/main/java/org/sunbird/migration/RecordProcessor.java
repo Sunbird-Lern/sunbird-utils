@@ -134,7 +134,7 @@ public class RecordProcessor extends StatusTracker {
         .forEach(
             userGroup -> {
               try {
-                startTracingRecord(userGroup.getUserId());
+                startTracingUserRecord(userGroup.getUserId());
                 boolean isSuccess =
                     performSequentialOperationOnUserGroupRecord(userGroup, groupsMap);
                 if (isSuccess) {
@@ -143,7 +143,7 @@ public class RecordProcessor extends StatusTracker {
               } catch (Exception ex) {
                 logUpdateFailedRecord(userGroup.getUserId());
               } finally {
-                endTracingRecord(userGroup.getUserId());
+                endTracingUserRecord(userGroup.getUserId());
               }
             });
     logger.info(
@@ -278,7 +278,7 @@ public class RecordProcessor extends StatusTracker {
       } else {
         query = CassandraHelper.getUpdateQuery();
       }
-
+      logUserGroupQuery(query);
       PreparedStatement preparedStatement = connection.getSession().prepare(query);
       BoundStatement bs = null;
       if (userGroup.getGroupIds().size() < 1) {
@@ -287,11 +287,11 @@ public class RecordProcessor extends StatusTracker {
         bs = preparedStatement.bind(userGroup.getGroupIds(), userGroup.getUserId());
       }
 
-      logUserGroupQuery(query);
       connection.getSession().execute(bs);
       logUserGroupUpdateSuccessQuery(userGroup.getUserId());
 
     } catch (Exception ex) {
+      logger.error(ex.getMessage());
       logDeleteFailedRecord(userGroup.getUserId());
       return false;
     }
@@ -307,15 +307,16 @@ public class RecordProcessor extends StatusTracker {
     try {
 
       String query = CassandraHelper.getDeleteGroupQuery();
+      logUserGroupQuery(query);
       PreparedStatement preparedStatement = connection.getSession().prepare(query);
 
       BoundStatement bs = preparedStatement.bind(groupMember.getGroupId(), groupMember.getUserId());
 
-      logUserGroupQuery(query);
       connection.getSession().execute(bs);
       logUserGroupUpdateSuccessQuery(groupMember.getUserId());
 
     } catch (Exception ex) {
+      logger.error(ex.getMessage());
       logDeleteFailedRecord(groupMember.getUserId());
       return false;
     }
@@ -332,14 +333,14 @@ public class RecordProcessor extends StatusTracker {
     try {
 
       String query = CassandraHelper.getDeleteQuery();
+      logDeletedGroupQuery(query);
       PreparedStatement preparedStatement = connection.getSession().prepare(query);
       BoundStatement bs = preparedStatement.bind(group.getId());
-
-      logDeletedGroupQuery(query);
       connection.getSession().execute(bs);
       logSuccessfulDeleteRecord(group.getId());
 
     } catch (Exception ex) {
+      logger.error(ex.getMessage());
       logDeleteFailedRecord(group.getId());
       return false;
     }
