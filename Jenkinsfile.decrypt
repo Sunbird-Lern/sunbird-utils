@@ -25,26 +25,22 @@ node() {
         }
         stage('Build') {
             if(params.cassandra_jar_name == "user-declaration-util-1.0-SNAPSHOT-jar-with-dependencies.jar"){
-               sh "cd user-declaration-util"
+               sh "cd user-declaration-util && mvn clean compile assembly:single"
             } else {
-               sh "cd groups-service-util"
+               sh "cd groups-service-util && mvn clean compile assembly:single"
             }
-            sh """
-            mvn clean compile assembly:single
-            """
         }
         stage('Archive artifacts'){
-            sh """
-                        mkdir cassandra_artifacts
-            """
+            sh 'mkdir cassandra_artifacts'
                         if(params.cassandra_jar_name == "user-declaration-util-1.0-SNAPSHOT-jar-with-dependencies.jar"){
-                            cp user-declaration-util/target/user-declaration-util-1.0-SNAPSHOT-jar-with-dependencies.jar cassandra_artifacts
+                            sh """cp user-declaration-util/target/user-declaration-util-1.0-SNAPSHOT-jar-with-dependencies.jar cassandra_artifacts
+                                zip -j cassandra_artifacts.zip:${artifact_version} cassandra_artifacts/*
+                                """
                         } else {
-                            cp groups-service-util/target/groups-service-util-1.0-SNAPSHOT-jar-with-dependencies.jar cassandra_artifacts
+                            sh """cp groups-service-util/target/groups-service-util-1.0-SNAPSHOT-jar-with-dependencies.jar cassandra_artifacts
+                                zip -j cassandra_artifacts.zip:${artifact_version} cassandra_artifacts/*
+                                """
                         }
-            sh """
-                        zip -j cassandra_artifacts.zip:${artifact_version} cassandra_artifacts/*
-            """
             archiveArtifacts artifacts: "cassandra_artifacts.zip:${artifact_version}", fingerprint: true, onlyIfSuccessful: true
             sh """echo {\\"artifact_name\\" : \\"cassandra_artifacts.zip\\", \\"artifact_version\\" : \\"${artifact_version}\\", \\"node_name\\" : \\"${env.NODE_NAME}\\"} > metadata.json"""
             archiveArtifacts artifacts: 'metadata.json', onlyIfSuccessful: true
