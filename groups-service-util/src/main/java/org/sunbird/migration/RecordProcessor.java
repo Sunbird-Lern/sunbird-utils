@@ -116,7 +116,7 @@ public class RecordProcessor extends StatusTracker {
       UserGroup userGroup = (UserGroup) itr.next();
       if (userGroup.getGroupIds() != null) {
         for (String groupId : userGroup.getGroupIds()) {
-          if ("inactive".equals(groupsMap.get(groupId))) {
+          if ("inactive".equals(groupsMap.get(groupId)) || groupsMap.get(groupId) == null) {
             remove = false;
           }
         }
@@ -156,7 +156,8 @@ public class RecordProcessor extends StatusTracker {
       boolean remove = true;
       GroupMember groupMember = (GroupMember) itr.next();
       if (groupMember != null) {
-        if ("inactive".equals(groupsMap.get(groupMember.getGroupId()))) {
+        if ("inactive".equals(groupsMap.get(groupMember.getGroupId()))
+            || groupsMap.get(groupMember.getGroupId()) == null) {
           remove = false;
         }
       }
@@ -267,7 +268,7 @@ public class RecordProcessor extends StatusTracker {
       Iterator itr = userGroup.getGroupIds().iterator();
       while (itr.hasNext()) {
         String groupId = (String) itr.next();
-        if (groupMap.get(groupId).equals("inactive")) {
+        if ("inactive".equals(groupMap.get(groupId)) || groupMap.get(groupId) == null) {
           itr.remove();
         }
       }
