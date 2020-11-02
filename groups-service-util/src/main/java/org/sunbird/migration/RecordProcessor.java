@@ -8,7 +8,6 @@ import java.util.*;
 import org.apache.log4j.Logger;
 import org.sunbird.migration.connection.Connection;
 import org.sunbird.migration.connection.factory.ConnectionFactory;
-import org.sunbird.migration.tracker.RecordTracker;
 import org.sunbird.migration.tracker.StatusTracker;
 
 public class RecordProcessor extends StatusTracker {
@@ -96,6 +95,8 @@ public class RecordProcessor extends StatusTracker {
     int count1[] = new int[1];
 
     /** List of user groups */
+    logger.info("Total Group Records: " + groups.size());
+
     List<UserGroup> userGroups = getUserGroupLists();
     logger.info("Total User Group Records: " + userGroups.size());
 
@@ -113,9 +114,11 @@ public class RecordProcessor extends StatusTracker {
     while (itr.hasNext()) {
       boolean remove = true;
       UserGroup userGroup = (UserGroup) itr.next();
-      for (String groupId : userGroup.getGroupIds()) {
-        if (groupsMap.get(groupId).equals("inactive")) {
-          remove = false;
+      if (userGroup.getGroupIds() != null) {
+        for (String groupId : userGroup.getGroupIds()) {
+          if ("inactive".equals(groupsMap.get(groupId)) || groupsMap.get(groupId) == null) {
+            remove = false;
+          }
         }
       }
       if (remove) {
@@ -130,7 +133,7 @@ public class RecordProcessor extends StatusTracker {
         .forEach(
             userGroup -> {
               try {
-                startTracingRecord(userGroup.getUserId());
+                startTracingUserRecord(userGroup.getUserId());
                 boolean isSuccess =
                     performSequentialOperationOnUserGroupRecord(userGroup, groupsMap);
                 if (isSuccess) {
@@ -139,7 +142,7 @@ public class RecordProcessor extends StatusTracker {
               } catch (Exception ex) {
                 logUpdateFailedRecord(userGroup.getUserId());
               } finally {
-                endTracingRecord(userGroup.getUserId());
+                endTracingUserRecord(userGroup.getUserId());
               }
             });
     logger.info(
@@ -152,8 +155,11 @@ public class RecordProcessor extends StatusTracker {
     while (itr.hasNext()) {
       boolean remove = true;
       GroupMember groupMember = (GroupMember) itr.next();
-      if ("inactive".equals(groupsMap.get(groupMember.getGroupId()))) {
-        remove = false;
+      if (groupMember != null) {
+        if ("inactive".equals(groupsMap.get(groupMember.getGroupId()))
+            || groupsMap.get(groupMember.getGroupId()) == null) {
+          remove = false;
+        }
       }
       if (remove) {
         itr.remove();
@@ -262,7 +268,7 @@ public class RecordProcessor extends StatusTracker {
       Iterator itr = userGroup.getGroupIds().iterator();
       while (itr.hasNext()) {
         String groupId = (String) itr.next();
-        if (groupMap.get(groupId).equals("inactive")) {
+        if ("inactive".equals(groupMap.get(groupId)) || groupMap.get(groupId) == null) {
           itr.remove();
         }
       }
@@ -272,7 +278,7 @@ public class RecordProcessor extends StatusTracker {
       } else {
         query = CassandraHelper.getUpdateQuery();
       }
-
+      logUserGroupQuery(query);
       PreparedStatement preparedStatement = connection.getSession().prepare(query);
       BoundStatement bs = null;
       if (userGroup.getGroupIds().size() < 1) {
@@ -281,11 +287,11 @@ public class RecordProcessor extends StatusTracker {
         bs = preparedStatement.bind(userGroup.getGroupIds(), userGroup.getUserId());
       }
 
-      logUserGroupQuery(query);
       connection.getSession().execute(bs);
       logUserGroupUpdateSuccessQuery(userGroup.getUserId());
 
     } catch (Exception ex) {
+      logger.error(ex.getMessage());
       logDeleteFailedRecord(userGroup.getUserId());
       return false;
     }
@@ -301,15 +307,16 @@ public class RecordProcessor extends StatusTracker {
     try {
 
       String query = CassandraHelper.getDeleteGroupQuery();
+      logUserGroupQuery(query);
       PreparedStatement preparedStatement = connection.getSession().prepare(query);
 
       BoundStatement bs = preparedStatement.bind(groupMember.getGroupId(), groupMember.getUserId());
 
-      logUserGroupQuery(query);
       connection.getSession().execute(bs);
       logUserGroupUpdateSuccessQuery(groupMember.getUserId());
 
     } catch (Exception ex) {
+      logger.error(ex.getMessage());
       logDeleteFailedRecord(groupMember.getUserId());
       return false;
     }
@@ -326,14 +333,14 @@ public class RecordProcessor extends StatusTracker {
     try {
 
       String query = CassandraHelper.getDeleteQuery();
+      logDeletedGroupQuery(query);
       PreparedStatement preparedStatement = connection.getSession().prepare(query);
       BoundStatement bs = preparedStatement.bind(group.getId());
-
-      logDeletedGroupQuery(query);
       connection.getSession().execute(bs);
       logSuccessfulDeleteRecord(group.getId());
 
     } catch (Exception ex) {
+      logger.error(ex.getMessage());
       logDeleteFailedRecord(group.getId());
       return false;
     }
@@ -364,10 +371,11 @@ public class RecordProcessor extends StatusTracker {
    */
   private List<Group> getRecordsToBeProcessed() throws IOException {
     List<Group> groupsList = getGroupLists();
-    logger.info("total records in db is " + groupsList.size());
+    /*  logger.info("total records in db is " + groupsList.size());
     List<String> preProcessedRecords = RecordTracker.getGroupPreProcessedRecordsAsList();
     logger.info("total records found preprocessed is " + preProcessedRecords.size());
-    return removePreProcessedRecordFromList(preProcessedRecords, groupsList);
+    return removePreProcessedRecordFromList(preProcessedRecords, groupsList);*/
+    return groupsList;
   }
 
   private List<UserGroup> getUserGroupRecords() throws IOException {

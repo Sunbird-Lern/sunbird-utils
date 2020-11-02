@@ -54,7 +54,8 @@ public class RequestParamValidator {
     }
     if (isInvalidEnv(requestParams.getCassandraKeyspaceName())) {
       throw new IllegalArgumentException(
-          String.format("Valid %s is required", EnvConstants.SUNBIRD_CASSANDRA_KEYSPACENAME));
+          String.format(
+              "Valid %s is required", EnvConstants.SUNBIRD_CASSANDRA_GROUPS_KEYSPACENAME));
     }
     if (isInvalidEnv(requestParams.getCassandraPort())) {
       throw new IllegalArgumentException(
