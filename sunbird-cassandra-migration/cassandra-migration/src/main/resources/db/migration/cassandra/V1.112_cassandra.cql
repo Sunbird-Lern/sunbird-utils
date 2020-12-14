@@ -1,1 +1,1 @@
-ALTER TABLE sunbird.user ADD usersubtype text;
+ALTER TABLE sunbird_courses.user_enrolments ADD certstatus int;
