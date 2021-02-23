@@ -36,7 +36,7 @@ public class Message91Test extends BaseMessageTest {
 		Assert.assertTrue(response);
 	}
 
-	@Test
+	//@Test
 	public void testSendFailureWithFormattedPhone() {
 		ISmsProvider object = SMSFactory.getInstance("91SMS");
 		boolean response = object.send("(966) 3890-445", "test sms 122");
@@ -78,7 +78,7 @@ public class Message91Test extends BaseMessageTest {
 		Assert.assertFalse(response);
 	}
 
-	@Test
+	//@Test
 	public void testSendFailureWithInvalidPhone() {
 		ISmsProvider object = SMSFactory.getInstance("91SMS");
 		boolean response = object.send("981se12345", "some message");
@@ -91,6 +91,7 @@ public class Message91Test extends BaseMessageTest {
 		boolean response = object.send("1111111111", "some message");
 		Assert.assertTrue(response);
 	}
+
 
 	@Test
 	public void testSendSuccessWithCountryCode() {
