@@ -4,3 +4,6 @@ ALTER TABLE sunbird.organisation DROP parentorgid;
 ALTER TABLE sunbird.organisation DROP orgtypeid;
 DROP TABLE IF EXISTS sunbird.org_type;
 DROP TABLE IF EXISTS sunbird.org_mapping;
+ALTER TABLE sunbird.organisation DROP isrootorg;
+ALTER TABLE sunbird.organisation DROP orgtype;
+ALTER TABLE sunbird.organisation ADD organisationType int;
