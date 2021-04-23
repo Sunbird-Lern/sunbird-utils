@@ -1,1 +1,1 @@
-ALTER TABLE sunbird.user_organisation ADD association_type int;
+ALTER TABLE sunbird.user_organisation ADD associationtype int;
