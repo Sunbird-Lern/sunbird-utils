@@ -1,0 +1,1 @@
+ALTER TABLE sunbird.user_organisation ADD associationtype int;
