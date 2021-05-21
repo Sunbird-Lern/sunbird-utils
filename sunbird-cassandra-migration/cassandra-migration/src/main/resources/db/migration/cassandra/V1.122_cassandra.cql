@@ -1,5 +1,5 @@
 CREATE TABLE sunbird.user_roles(
-	userid	text,
+	userid text,
 	role text,
 	scope text,
 	createdDate text,
