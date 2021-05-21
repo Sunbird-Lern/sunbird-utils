@@ -7,4 +7,4 @@ CREATE TABLE sunbird.user_roles(
 	updatedDate text,
 	updatedBy text,
  PRIMARY KEY (userid, role)
- );
+  );
