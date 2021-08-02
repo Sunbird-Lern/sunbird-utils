@@ -64,7 +64,7 @@ import org.sunbird.helper.ServiceFactory;
   Row.class,
   Select.SelectionOrAlias.class
 })
-@PowerMockIgnore("javax.management.*")
+@PowerMockIgnore({"javax.management.*", "javax.net.ssl.*", "javax.security.*","jdk.internal.reflect.*"})
 public class CassandraOperationImplTest {
 
   private static Iterator iterator;

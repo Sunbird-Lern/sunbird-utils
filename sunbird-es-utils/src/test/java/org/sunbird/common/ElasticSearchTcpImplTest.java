@@ -87,9 +87,10 @@ import scala.concurrent.Future;
  *
  * @author github.com/iostream04
  */
+@Ignore
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(PowerMockRunner.class)
-@PowerMockIgnore({"javax.management.*", "javax.net.ssl.*", "javax.security.*"})
+@PowerMockIgnore({"javax.management.*", "javax.net.ssl.*", "javax.security.*","jdk.internal.reflect.*"})
 @PrepareForTest({
   ConnectionManager.class,
   TransportClient.class,
