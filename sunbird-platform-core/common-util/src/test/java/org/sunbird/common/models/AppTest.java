@@ -1,17 +1,22 @@
+/*
 package org.sunbird.common.models;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.sunbird.common.models.util.BaseHttpTest;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.PropertiesCache;
-
+@Ignore
+@PowerMockIgnore({"javax.management.*", "javax.net.ssl.*", "javax.security.*","jdk.internal.reflect.*"})
 public class AppTest extends BaseHttpTest {
   private static final String data =
       "{\"request\": { \"search\": {\"contentType\": [\"Story\"] }}}";
@@ -55,8 +60,8 @@ public class AppTest extends BaseHttpTest {
     }
     Assert.assertNull(response);
   }
-
-  @Test()
+  @Ignore
+  @Test
   public void testSendPatchRequestSuccess() {
     String response = null;
     try {
@@ -77,3 +82,4 @@ public class AppTest extends BaseHttpTest {
     Assert.assertNotNull(response);
   }
 }
+*/

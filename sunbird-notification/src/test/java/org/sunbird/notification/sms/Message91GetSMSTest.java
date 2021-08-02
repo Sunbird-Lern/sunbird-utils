@@ -2,6 +2,7 @@ package org.sunbird.notification.sms;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.sunbird.notification.sms.providerimpl.Msg91SmsProvider;
 
 public class Message91GetSMSTest extends BaseMessageTest {

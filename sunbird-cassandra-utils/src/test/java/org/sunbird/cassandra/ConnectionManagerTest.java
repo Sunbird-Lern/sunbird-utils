@@ -26,7 +26,7 @@ import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.responsecode.ResponseCode;
 import org.sunbird.helper.CassandraConnectionManagerImpl;
 import org.sunbird.helper.CassandraConnectionMngrFactory;
-
+@Ignore
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 /** @author kirti. Junit test cases */
 @RunWith(PowerMockRunner.class)
@@ -37,7 +37,7 @@ import org.sunbird.helper.CassandraConnectionMngrFactory;
   CassandraUtil.class,
   CassandraConnectionMngrFactory.class,
 })
-@PowerMockIgnore("javax.management.*")
+@PowerMockIgnore({"javax.management.*", "javax.net.ssl.*", "javax.security.*","jdk.internal.reflect.*"})
 public class ConnectionManagerTest {
 
   private static PropertiesCache cach = PropertiesCache.getInstance();
