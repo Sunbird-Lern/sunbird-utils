@@ -19,10 +19,11 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
-
+@PowerMockIgnore({"javax.management.*", "javax.net.ssl.*", "javax.security.*","jdk.internal.reflect.*"})
 /** Created by arvind on 6/10/17. */
 public class ProjectUtilTest extends BaseHttpTest {
 
