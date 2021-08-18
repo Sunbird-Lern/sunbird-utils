@@ -31,3 +31,5 @@ action text,
 type text,
 templateId text,
 PRIMARY KEY(action));
+
+CREATE INDEX IF NOT EXISTS idx_notification_userid ON sunbird_notifications.notification_feed (userid);
