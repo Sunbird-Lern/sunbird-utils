@@ -1,6 +1,5 @@
 package org.sunbird.notification.sms;
 
-import static org.powermock.api.mockito.PowerMockito.doCallRealMethod;
 import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.spy;
@@ -13,9 +12,9 @@ import org.apache.http.impl.client.HttpClients;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
-import org.mockito.AdditionalMatchers;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
@@ -25,7 +24,7 @@ import org.sunbird.notification.utils.PropertiesCache;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(PowerMockRunner.class)
-@PowerMockIgnore({ "javax.management.*", "javax.net.ssl.*", "javax.security.*" })
+@PowerMockIgnore({"javax.management.*", "javax.net.ssl.*", "javax.security.*","jdk.internal.reflect.*"})
 @PrepareForTest({ HttpClients.class, PropertiesCache.class })
 public abstract class BaseMessageTest {
 

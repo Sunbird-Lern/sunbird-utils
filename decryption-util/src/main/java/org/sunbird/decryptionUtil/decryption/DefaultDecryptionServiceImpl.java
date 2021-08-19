@@ -38,7 +38,7 @@ public class DefaultDecryptionServiceImpl implements DecryptionService {
       String dValue = null;
       String valueToDecrypt = value.trim();
       for (int i = 0; i < ITERATIONS; i++) {
-        byte[] decodedValue = new sun.misc.BASE64Decoder().decodeBuffer(valueToDecrypt);
+        byte[] decodedValue = new BASE64Decoder().decodeBuffer(valueToDecrypt);
         byte[] decValue = c.doFinal(decodedValue);
         dValue = new String(decValue, StandardCharsets.UTF_8).substring(encryptionKey.length());
         valueToDecrypt = dValue;

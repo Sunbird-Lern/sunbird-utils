@@ -16,6 +16,7 @@ import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.PropertiesCache;
 import org.sunbird.common.models.util.datasecurity.DecryptionService;
 import org.sunbird.common.responsecode.ResponseCode;
+import org.sunbird.common.models.util.datasecurity.impl.BASE64Decoder;
 
 public class DefaultDecryptionServiceImpl implements DecryptionService {
   private static String sunbird_encryption = "";
@@ -97,7 +98,7 @@ public class DefaultDecryptionServiceImpl implements DecryptionService {
       String dValue = null;
       String valueToDecrypt = value.trim();
       for (int i = 0; i < ITERATIONS; i++) {
-        byte[] decordedValue = new sun.misc.BASE64Decoder().decodeBuffer(valueToDecrypt);
+        byte[] decordedValue = new BASE64Decoder().decodeBuffer(valueToDecrypt);
         byte[] decValue = c.doFinal(decordedValue);
         dValue =
             new String(decValue, StandardCharsets.UTF_8).substring(sunbird_encryption.length());
