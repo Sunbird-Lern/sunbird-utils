@@ -1,2 +1,2 @@
 insert into sunbird.role (id,name,rolegroupid,status) values ('PROGRAM_DESIGNER','Program Designer',['PROGRAM_DESIGNER'],1);
-insert into sunbird.role_group (id,name) values ('PROGRAM_DESIGNER','Program Designer')
+insert into sunbird.role_group (id,name) values ('PROGRAM_DESIGNER','Program Designer');
