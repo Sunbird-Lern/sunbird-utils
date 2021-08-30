@@ -13,3 +13,15 @@ insert into sunbird_notifications.notification_template(templateId, type, ver, d
 insert into sunbird_notifications.notification_template(templateId, type, ver, data, template_schema) values ('e436883c-9e93-4901-b907-985e6c5b12a1','JSON','4.3.0','{"title": "${param1} has been assigned to ${param2} by ${param3}"}', '{"$schema":"#/definition/params","title":"params context","description":"properties Data","type":"object","properties":{"param1":{"description":"property 1 value","type":"string"},"param2":{"description":"property 2 value","type":"string"},"param3":{"description":"property 3 value","type":"string"}},"required":["param1","param2","param3   ] }');
 
 insert into sunbird_notifications.notification_template(templateId, type, ver, data, template_schema) values ('21fa4269-f2ba-4bdd-b6cc-c96502ea1174','JSON','4.3.0','{"title": "${param1} has been unassigned to ${param2} by ${param3}"}', '{"$schema":"#/definition/params","title":"params context","description":"properties Data","type":"object","properties":{"param1":{"description":"property 1 value","type":"string"},"param2":{"description":"property 2 value","type":"string"},"param3":{"description":"property 3 value","type":"string"}},"required":["param1","param2","param3   ] }');
+
+insert into sunbird_notifictions.action_template(action, templateId, type) values('member-added','0b6a2b38-d602-422d-b78c-12a3cdc13089', 'feed');
+
+insert into sunbird_notifictions.action_template(action, templateId, type) values('member-removed','e28899b7-ccd6-49da-af5c-b9cadd4abd8a', 'feed');
+
+insert into sunbird_notifictions.action_template(action, templateId, type) values('member-exit','22d0972e-a865-4bd5-9a1a-5cefda00906a', 'feed');
+
+insert into sunbird_notifictions.action_template(action, templateId, type) values('group-deleted','7aacc02f-5ac6-48d5-8da1-5a0f6614880a', 'feed');
+
+insert into sunbird_notifictions.action_template(action, templateId, type) values('group-activity-added','e436883c-9e93-4901-b907-985e6c5b12a1', 'feed');
+
+insert into sunbird_notifictions.action_template(action, templateId, type) values('group-activity-removed','21fa4269-f2ba-4bdd-b6cc-c96502ea1174', 'feed');
