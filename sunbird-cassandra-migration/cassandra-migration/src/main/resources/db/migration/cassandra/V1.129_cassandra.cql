@@ -1,0 +1,4 @@
+update sunbird_notifications.notification_template  set template_schema='{"$schema":"#/definition/params","title":"params context","description":"properties Data","type":"object","properties":{"param1":{"description":"property 1 value","type":"string"},"param2":{"description":"property 2 value","type":"string"},"param3":{"description":"property 3 value","type":"string"}},"required":["param1","param2","param3"] }' where templateId='context-unassigned';
+
+
+update sunbird_notifications.notification_template  set template_schema='{"$schema":"#/definition/params","title":"params context","description":"properties Data","type":"object","properties":{"param1":{"description":"property 1 value","type":"string"},"param2":{"description":"property 2 value","type":"string"},"param3":{"description":"property 3 value","type":"string"}},"required":["param1","param2","param3"] }' where templateId='context-assigned';
