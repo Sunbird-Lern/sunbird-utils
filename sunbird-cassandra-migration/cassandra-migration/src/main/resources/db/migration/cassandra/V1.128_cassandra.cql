@@ -14,14 +14,14 @@ insert into sunbird_notifications.notification_template(templateId, type, ver, d
 
 insert into sunbird_notifications.notification_template(templateId, type, ver, data, template_schema) values ('context-unassigned','JSON','4.3.0','{"title": "${param1} has been unassigned to ${param2} by ${param3}"}', '{"$schema":"#/definition/params","title":"params context","description":"properties Data","type":"object","properties":{"param1":{"description":"property 1 value","type":"string"},"param2":{"description":"property 2 value","type":"string"},"param3":{"description":"property 3 value","type":"string"}},"required":["param1","param2","param3   ] }');
 
-insert into sunbird_notifictions.action_template(action, templateId, type) values('member-added','user-added-to', 'feed');
+insert into sunbird_notifications.action_template(action, templateId, type) values('member-added','user-added-to', 'feed');
 
-insert into sunbird_notifictions.action_template(action, templateId, type) values('member-removed','user-removed', 'feed');
+insert into sunbird_notifications.action_template(action, templateId, type) values('member-removed','user-removed', 'feed');
 
-insert into sunbird_notifictions.action_template(action, templateId, type) values('member-exit','user-exit', 'feed');
+insert into sunbird_notifications.action_template(action, templateId, type) values('member-exit','user-exit', 'feed');
 
-insert into sunbird_notifictions.action_template(action, templateId, type) values('group-deleted','context-deleted', 'feed');
+insert into sunbird_notifications.action_template(action, templateId, type) values('group-deleted','context-deleted', 'feed');
 
-insert into sunbird_notifictions.action_template(action, templateId, type) values('group-activity-added','context-assigned', 'feed');
+insert into sunbird_notifications.action_template(action, templateId, type) values('group-activity-added','context-assigned', 'feed');
 
-insert into sunbird_notifictions.action_template(action, templateId, type) values('group-activity-removed','context-unassigned', 'feed');
+insert into sunbird_notifications.action_template(action, templateId, type) values('group-activity-removed','context-unassigned', 'feed');
