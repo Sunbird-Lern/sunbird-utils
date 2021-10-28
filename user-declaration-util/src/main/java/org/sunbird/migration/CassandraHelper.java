@@ -54,7 +54,7 @@ public class CassandraHelper {
   public static String getPreparedStatement() {
     StringBuilder query = new StringBuilder();
     query.append(
-        "UPDATE  sunbird.user_declarations set userinfo = ? , status= ? where userid= ? AND orgid = ? AND persona =?");
+            "INSERT INTO sunbird.user_feed (id, category,createdby, createdon, data, expireon, priority, priority,status,updatedby, updatedon, userid) values(?,?,?,?,?,?,?,?,?,?,?)");
     return query.toString();
   }
 }

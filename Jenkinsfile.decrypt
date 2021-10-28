@@ -26,7 +26,9 @@ node() {
         stage('Build') {
             if(params.cassandra_jar_name == "user-declaration-util-1.0-SNAPSHOT-jar-with-dependencies.jar"){
                sh "cd user-declaration-util && mvn clean compile assembly:single"
-            } else {
+            } else if (params.cassandra_jar_name == "user-feed-migration-util-1.0-SNAPSHOT-jar-with-dependencies.jar"){
+               sh "cd user-feed-migration-util && mvn clean compile assembly:single"
+            }else{
                sh "cd groups-service-util && mvn clean compile assembly:single"
             }
         }
@@ -36,7 +38,11 @@ node() {
                             sh """cp user-declaration-util/target/user-declaration-util-1.0-SNAPSHOT-jar-with-dependencies.jar cassandra_artifacts
                                 zip -j cassandra_artifacts.zip:${artifact_version} cassandra_artifacts/*
                                 """
-                        } else {
+                        } else if(params.cassandra_jar_name == "user-feed-migration-util-1.0-SNAPSHOT-jar-with-dependencies.jar"){
+                            sh """cp user-feed-migration-util/target/user-feed-migration-util-1.0-SNAPSHOT-jar-with-dependencies.jar cassandra_artifacts
+                                zip -j cassandra_artifacts.zip:${artifact_version} cassandra_artifacts/*
+                                """
+                        }else{
                             sh """cp groups-service-util/target/groups-service-util-1.0-SNAPSHOT-jar-with-dependencies.jar cassandra_artifacts
                                 zip -j cassandra_artifacts.zip:${artifact_version} cassandra_artifacts/*
                                 """
