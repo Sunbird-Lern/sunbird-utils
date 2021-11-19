@@ -1,6 +1,6 @@
-DROP INDEX idx_notification_userid;
+DROP INDEX sunbird_notifications.idx_notification_userid IF EXISTS;;
 
-DROP TABLE sunbird_notifications.notification_feed;
+DROP TABLE sunbird_notifications.notification_feed IF EXISTS;;
 
 
 CREATE TABLE sunbird_notifications.notification_feed (
