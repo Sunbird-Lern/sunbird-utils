@@ -1,0 +1,1 @@
+ALTER TABLE sunbird_courses.user_activity_agg ADD aggregates map<text, double>;
