@@ -1,0 +1,1 @@
+ALTER TABLE sunbird_courses.user_enrolments ADD lastcontentaccesstime timestamp;
