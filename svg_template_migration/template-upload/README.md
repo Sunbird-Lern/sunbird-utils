@@ -8,4 +8,4 @@
 
 **Example:**
 
-java -jar sunbird-java-tool.jar "dev.sunbirded.org" "0" "250" "sunbirddev" "QYNH9YV5yjGogM" "/home/test/amit/sunbird/sunbird-java-tool/newFiles"
+java -jar sunbird-java-tool.jar "dev.sunbirded.org" "0" "250" "account" "QYNH9YV5yjGogM" "/home/test/amit/sunbird/sunbird-java-tool/newFiles"
