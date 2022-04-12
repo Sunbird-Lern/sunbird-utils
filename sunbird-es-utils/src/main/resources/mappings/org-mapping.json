@@ -822,6 +822,22 @@
             "analyzer": "cs_index_analyzer",
             "search_analyzer": "cs_search_analyzer",
             "fielddata": true
+        },
+        "isTenant" : {
+	        "type" : "boolean",
+	        "fields" : {
+	            "raw" : {
+	                "type" : "boolean"
+	            }
+	        }
+	    },
+        "isCbp" : {
+                "type" : "boolean",
+                "fields" : {
+                    "raw" : {
+                        "type" : "boolean"
+                    }
+                }
         }
     }
 }
