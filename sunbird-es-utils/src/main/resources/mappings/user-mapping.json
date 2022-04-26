@@ -2944,13 +2944,13 @@
             "search_analyzer": "cs_search_analyzer",
             "fielddata": true
         },
-        "roles" : {
-            "type" : "text",
-            "fields" : {
-                "raw" : {
-                  "type" : "text",
-                  "analyzer" : "keylower",
-                  "fielddata" : true
+        "roles": {
+            "type": "text",
+            "fields": {
+                "raw": {
+                    "type": "text",
+                    "analyzer": "keylower",
+                    "fielddata": true
                 }
             },
             "copy_to": [
@@ -2958,7 +2958,7 @@
             ],
             "analyzer": "cs_index_analyzer",
             "search_analyzer": "cs_search_analyzer",
-            "fielddata": true            
+            "fielddata": true
         },
         "rootOrgId": {
             "type": "text",
