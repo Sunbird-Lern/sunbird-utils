@@ -1,0 +1,2 @@
+ALTER TABLE sunbird_courses.user_content_consumption ADD completionpercentage float;
+ALTER TABLE sunbird_courses.user_content_consumption ADD progressdetails text;
