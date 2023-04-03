@@ -1,16 +1,5 @@
 CREATE KEYSPACE IF NOT EXISTS sunbird WITH replication = {'class':'SimpleStrategy','replication_factor':1};
 
-//to change cluster name
-//UPDATE system.local SET cluster_name = 'sunbird' where key='local';
-//ALTER USER cassandra WITH PASSWORD 'password';
-USE sunbird;
-
-/*
-creation of id= one way hash of (userId##courseId) here courseId is identifier of course mgmt table
-toc url we have to generate through json of content id from ekStep
-here status is (default(0),inProgress(1),completed(2))
-progress is no of content completed
-*/
 CREATE TABLE IF NOT EXISTS sunbird.course_enrollment(id text, courseId text, courseName text,userId text,enrolledDate text,
 description text,tocUrl text,status int,active boolean,delta text,grade text,progress int,lastReadContentId text,
 lastReadContentStatus int,addedBy text,courseLogoUrl text,dateTime timestamp,contentId text,PRIMARY KEY (id));
@@ -126,7 +115,6 @@ CREATE INDEX inx_uei_userid ON sunbird.user_external_identity (userId);
 CREATE INDEX inx_uei_externalId ON sunbird.user_external_identity (externalId);
 CREATE INDEX inx_uei_source ON sunbird.user_external_identity (source);
 
-//Address Type values(permanent, current, office, home)
 CREATE TABLE IF NOT EXISTS sunbird.address(id text, userId text, country text,state text,city text,zipCode text,addType text,createdDate text,createdBy text,updatedDate text,updatedBy text, PRIMARY KEY (id));
 CREATE INDEX inx_add_userid ON sunbird.address (userId);
 CREATE INDEX inx_add_addType ON sunbird.address (addType);
@@ -266,7 +254,7 @@ update sunbird.url_action set url=['/v1/user/create'] where id='createUser';
 update sunbird.url_action set url=['/v1/course/publish'] where id='publishCourse';
 update sunbird.url_action set url=['/v1/organisation/update'] where id='updateOrg';
 
-drop index inx_uorg_orgid;
+drop index sunbird.inx_uorg_orgid;
 ALTER TABLE sunbird.user_org DROP orgid;
 ALTER TABLE sunbird.user_org ADD organisationid text;
 ALTER TABLE sunbird.user_org ADD addedby text;
@@ -290,7 +278,7 @@ CREATE INDEX inx_ucs_batchId ON sunbird.user_courses (batchId);
 CREATE INDEX inx_ucs_course_name ON sunbird.user_courses (courseName);
 CREATE INDEX inx_ucs_status ON sunbird.user_courses (status);
 
-DROP INDEX IF EXISTS inx_uei_source;
+DROP INDEX IF EXISTS sunbird.inx_uei_source;
 ALTER TABLE sunbird.user_external_identity DROP source;
 ALTER TABLE sunbird.user_external_identity ADD provider text;
 ALTER TABLE sunbird.user_external_identity ADD externalIdValue text;
@@ -300,11 +288,6 @@ CREATE INDEX inx_uei_provider ON sunbird.user_external_identity (provider);
 ALTER TABLE sunbird.organisation ADD rootOrgID text;
 ALTER TABLE sunbird.org_mapping ADD rootOrgID text;
 CREATE TABLE IF NOT EXISTS sunbird.org_type(id text, name text, PRIMARY KEY (id));
-DROP INDEX sunbird.inx_org_status;
-ALTER TABLE sunbird.organisation DROP status ;
-ALTER TABLE sunbird.organisation ADD status text;
-
-CREATE INDEX inx_org_status ON sunbird.organisation (status);
 
 CREATE INDEX inx_u_loginId ON sunbird.user(loginId);
 
@@ -327,20 +310,13 @@ ALTER TABLE sunbird.user_org ADD roles list<text>;
 
 //to export data from csv to cassandra table run below command(for page_section and page_management table)
 // change the path of csv file
-//COPY sunbird.page_management(id, appmap,createdby ,createddate ,name ,organisationid ,portalmap ,updatedby ,updateddate ) FROM '/tmp/cql/pageMgmt.csv';
 
-//COPY sunbird.page_section(id, alt,createdby ,createddate ,description ,display ,imgurl ,name,searchquery , sectiondatatype ,status , updatedby ,updateddate) FROM '/tmp/cql/pageSection.csv';
 
 // insert default root organisation -- July 15,2017
 ALTER TABLE sunbird.organisation ADD isDefault boolean;
 
 ALTER TABLE sunbird.user_courses ADD leafNodesCount int;
 // change organisation status field from text to int -- July 19,2017
-drop index inx_org_status;
-ALTER TABLE sunbird.organisation DROP status ;
-ALTER TABLE sunbird.organisation ADD status int;
-CREATE INDEX inx_org_status ON sunbird.organisation (status);
-
 
 // add isdeleted field to user table -- July 31,2017
 ALTER TABLE sunbird.user ADD isDeleted boolean;
@@ -407,7 +383,6 @@ update sunbird.role_group set url_action_ids=['flagReview'] where id='FLAG_REVIE
 ALTER TABLE sunbird.organisation DROP contactdetails;
 ALTER TABLE sunbird.organisation ADD contactdetail text;
 
-//update course_batch set countdecrementstatus=false ,countincrementstatus=false where id in ('01231295903433523233', '01231300152093900880', '01231362610791219226', '012311485318971392184', '012311507396763648187', '01231446621414195215', '012311399697334272167', '012310182931898368117', '01231437156529766411', '0123143731552501769', '012315729890295808125', '01231515693522124824', '012315105801404416176', '012315113121030144181', '0123156336446914560', '0123152537517178880', '012311452395159552176', '012310182079651840116', '01231365904918118428', '012315115229880320201', '01231297804052070441', '01231295967369625632', '01231437649992908813', '01231298538289561658', '01231290682958643227', '012310176900218880115', '012311394333097984166', '012311400451145728168', '01231513667683942421', '012315115088601088183', '0123153123053158404', '01231363201368064027', '01231290412171264026', '0123151248760258560', '01231514986607411223', '012311580166266880203', '01231217800957952058', '01231304911540224098', '0123152769465384961', '012310190924496896119', '01231569596413542494', '01231299360593510461', '01231437480674099212', '012310195742662656126', '012311489586135040185', '01231298390404300857', '012311415973486592169', '01231298670022656060', '01231569429976678493', '01231294824787148831', '012310173385113600114', '01231385960518451255', '012315785629794304137', '01231296418316288037', '012310193544601600118', '012311447751262208177', '012311507213688832188', '01231437595463680010', '0123156778024960005', '012311505273479168186', '01231300602153369682', '01231298422152396859', '0123152820520222722', '012311511755972608189', '012315179912159232103', '012315751464787968136', '012315736241045504130', '01231288911727001615', '01231514371529113622', '01231366031184691229', '01231383864920473645', '012315107363119104182', '012311574182944768202', '01231516784369664088', '01231443633637785614', '01231300661683814481' );
 insert into sunbird.role_group (id,name) values ('COURSE_ADMIN','Course Admin');
 update sunbird.role_group set url_action_ids=['courseAdmin'] where id='COURSE_ADMIN';
 insert into sunbird.role (id,name,rolegroupid,status) values ('COURSE_ADMIN','Course Admin',['COURSE_ADMIN'],1);
@@ -502,7 +477,7 @@ update sunbird.role_group set url_action_ids=['Announcement Sender'] where id='A
 insert into sunbird.role (id,name,rolegroupid,status) values ('ANNOUNCEMENT_SENDER','Announcement Sender',['ANNOUNCEMENT_SENDER'],1);
 
 //mongodb import , env var is taken from group_vars
-//COPY sunbird.user_notes(id, userid,courseid,contentid,title,note,tags,createddate,updateddate,isdeleted) FROM '/tmp/notes-{{env}}.csv';
+
 //2nd Nov
 CREATE TABLE IF NOT EXISTS sunbird.tenant_preference(id text,tenantName text,orgId text,role text, data text, PRIMARY KEY (id));
 CREATE INDEX inx_tp_userId ON sunbird.tenant_preference(orgId);

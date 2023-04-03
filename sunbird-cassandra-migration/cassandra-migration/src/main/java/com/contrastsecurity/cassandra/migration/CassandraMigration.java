@@ -14,11 +14,7 @@ import com.contrastsecurity.cassandra.migration.logging.LogFactory;
 import com.contrastsecurity.cassandra.migration.resolver.CompositeMigrationResolver;
 import com.contrastsecurity.cassandra.migration.resolver.MigrationResolver;
 import com.contrastsecurity.cassandra.migration.utils.VersionPrinter;
-import com.datastax.driver.core.Host;
-import com.datastax.driver.core.KeyspaceMetadata;
-import com.datastax.driver.core.Metadata;
-import com.datastax.driver.core.ProtocolVersion;
-import com.datastax.driver.core.Session;
+import com.datastax.driver.core.*;
 import com.datastax.driver.core.policies.DefaultRetryPolicy;
 import java.util.List;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -195,9 +191,15 @@ public class CassandraMigration {
         if (keyspaceMetadata.getName().equalsIgnoreCase(keyspace.getName())) keyspaceExists = true;
       }
       if (keyspaceExists) session.execute("USE " + keyspace.getName());
-      else
-        throw new CassandraMigrationException(
-            "Keyspace: " + keyspace.getName() + " does not exist.");
+      else {
+//        throw new CassandraMigrationException(
+//                "Keyspace: " + keyspace.getName() + " does not exist.");
+        Statement statement = new SimpleStatement("CREATE KEYSPACE "
+                                + keyspace.getName()
+                                + "  WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };");
+        session.execute(statement);
+        session.execute("USE " + keyspace.getName());
+      }
       result = action.execute(session);
     } finally {
       if (null != session && !session.isClosed())
