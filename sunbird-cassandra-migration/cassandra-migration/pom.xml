@@ -90,8 +90,8 @@
                 <directory>${project.basedir}/src/main/resources</directory>
                 <includes>
                     <include>version.txt</include>
-                    <include>db/migration/*.cql</include>
-                    <include>db/migration/cassandra/*.cql</include>
+<!--                    <include>db/migration/*.cql</include>-->
+<!--                    <include>db/migration/cassandra/*.cql</include>-->
                 </includes>
                 <filtering>true</filtering>
             </resource>

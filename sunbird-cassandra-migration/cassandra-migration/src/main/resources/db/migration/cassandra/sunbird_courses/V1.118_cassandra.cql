@@ -1,0 +1,1 @@
+DROP INDEX IF EXISTS sunbird_courses.inx_cou_bat_status;
