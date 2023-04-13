@@ -8,5 +8,6 @@
   <name>Sunbird Utils</name>
   <modules>
     <module>sunbird-es-utils</module>
+    <module>sunbird-platform-core</module>
   </modules>
 </project>
