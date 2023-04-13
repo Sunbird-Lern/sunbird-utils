@@ -25,6 +25,7 @@ Run below command,
 ```shell
 mvn clean install -DskipTests
 ``` 
+## One should execute only one of the commands listed below.
 ### Command 1:
 ```shell
 java -jar \
