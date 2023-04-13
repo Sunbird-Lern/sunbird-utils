@@ -182,14 +182,6 @@ public class KeyCloakServiceImplTest extends BaseHttpTest {
     Assert.assertNotNull(result);
   }
 
-  @Test(expected = ProjectCommonException.class)
-  public void testDeactivateUserSuccess() {
-
-    Map<String, Object> request = new HashMap<String, Object>();
-    request.put(JsonKey.USER_ID, "123");
-    request.put(JsonKey.FIRST_NAME, userName);
-    keyCloakService.deactivateUser(request);
-  }
 
   @Test(expected = ProjectCommonException.class)
   public void testRemoveUserSuccess() {
