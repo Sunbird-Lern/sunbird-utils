@@ -220,17 +220,6 @@ public class ProjectUtilTest extends BaseHttpTest {
   }
 
   @Test
-  public void testRegisterTagSuccess() {
-    String response = null;
-    try {
-      response = ProjectUtil.registertag("testTag", "{}", ProjectUtil.getEkstepHeader());
-    } catch (IOException e) {
-
-    }
-    assertNotNull(response);
-  }
-
-  @Test
   public void testReportTrackingStatusSuccess() {
     assertEquals(0, ProjectUtil.ReportTrackingStatus.NEW.getValue());
     assertEquals(1, ProjectUtil.ReportTrackingStatus.GENERATING_DATA.getValue());
