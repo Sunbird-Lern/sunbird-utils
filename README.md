@@ -29,12 +29,27 @@ mvn clean install -DskipTests
 ### Command 1:
 ```shell
 java -jar \
--Dcassandra.migration.scripts.locations=filesystem:<absolute or relative path>/db/migration/cassandra \
+-Dcassandra.migration.scripts.locations=filesystem:<absolute or relative path>/db/migration/cassandra/<keyspace_name> \
 -Dcassandra.migration.cluster.contactpoints=localhost \
 -Dcassandra.migration.cluster.port=9042 \
 -Dcassandra.migration.cluster.username=username \
 -Dcassandra.migration.cluster.password=password \
 -Dcassandra.migration.keyspace.name=keyspace_name \
+target/*-jar-with-dependencies.jar migrate
+``` 
+cluster.port - specify the port number where cassandra is running
+cluster.username - specify username of your cassandra cluster
+cluster.password - specify password of your cassandra cluster
+keyspace.name - specify keyspace for which you have to perform migration
+#### Sample Command:
+```shell
+java -jar \
+-Dcassandra.migration.scripts.locations=filesystem:src/main/resources/db/migration/cassandra/sunbird_groups \
+-Dcassandra.migration.cluster.contactpoints=localhost \
+-Dcassandra.migration.cluster.port=9042 \
+-Dcassandra.migration.cluster.username=cassandra \
+-Dcassandra.migration.cluster.password=cassandra \
+-Dcassandra.migration.keyspace.name=sunbird_groups \
 target/*-jar-with-dependencies.jar migrate
 ``` 
 ### Command 2:
