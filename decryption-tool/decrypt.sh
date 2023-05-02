@@ -6,7 +6,7 @@ pip3 install -r ./src/requirements.txt
 #sh decrypt.sh
 # shellcheck disable=SC2039
 # shellcheck disable=SC2162
-read -p 'Decryption leve 3 or 4: ' level
+read -p 'Decryption level 3 or 4: ' level
 # shellcheck disable=SC2039
 if [ "$level" == 3 ]
 then
