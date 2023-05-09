@@ -1,15 +1,24 @@
+# decryption-tool
+This tool is used to decrypt the file encrypted by sunbird.
+
+### Supported OS 
+* Mac
+* Ubuntu
+* Windows
+### System Requirements:
+### Prerequisites:
+* Python 3
+
 # How to run
 ## Let us assume that B received files from A.
 ```
-   sh decrypt.sh
-   # Decryption level 3 or 4: Enter the level used to encrypt the file (3 or 4).
+   bash decrypt.sh
+   # File to decrypt: path of the encrypted csv file that received. Tool will detect whether file is encryptes using security level L3 or L4. Based on that it will promt the further steps to decrypt the file. 
    
-   # If selected level as 3
-   # File to decrypt: path of the encrypted csv file that received.
+   # If security level is 3
    # AES key: AES key, that used to encrypt the csv file.
    
-   # If selected level as 4
-   # File to decrypt: path of the encrypted csv file that received.
+   # If seccurity level is 4
    # Private key path: Path od the private.pem file.
    # Private key passphrase: Passphrase which is used to generate public private key pair
 ```

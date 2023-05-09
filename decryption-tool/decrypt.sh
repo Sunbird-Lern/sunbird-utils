@@ -1,5 +1,6 @@
 #!/bin/sh
 # To install the dependencies
+python3 -m pip install --upgrade pip
 pip3 install -r ./src/requirements.txt
 
 # Sample command to run the script
@@ -11,14 +12,14 @@ read -p 'File to decrypt: ' filename
 level=$(head -1 "${filename}")
 # echo "securityLevel=$level"
 # shellcheck disable=SC2039
-if [ "$level" == 3 ]; then
+if [ "$level" -eq 3 ]; then
   echo "securityLevel=$level"
   # shellcheck disable=SC2162
   # shellcheck disable=SC2039
   read -sp 'AES key: ' aesKey
   echo
   python3 ./src/decrypt-l3.py "${filename}" "${aesKey}"
-elif [ "$level" == 4 ]; then
+elif [ "$level" -eq 4 ]; then
   echo "securityLevel=$level"
   # shellcheck disable=SC2039
   # shellcheck disable=SC2162
