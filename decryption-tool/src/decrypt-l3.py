@@ -22,6 +22,9 @@ with open(filename, 'rb') as fIn:
 
 # Uncomment the uncompressFile invocation if you want to retrieve the contents of the zip.
 # I have left this commented as it will override the input file.
-uncompressFile(filename + 'retrieved.zip')
+try:
+    uncompressFile(filename + 'retrieved.zip')
+except Exception:
+    print("Error while unzipping the file.")
 remove(filename + '.crypt')
 remove(filename + 'retrieved.zip')

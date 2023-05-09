@@ -59,5 +59,4 @@ def decryptFileWithAESKey(filename, fIn, fOut, password):
         pyAesCrypt.decryptStream(fIn, fOut, password, bufferSize, encFileSize)
     except ValueError:
         # remove output file on error
-        print("Error while decryptFileWithAESKey")
-        remove("m1.txt")
+        print("Error while decrypt the file.")
