@@ -9,6 +9,9 @@ privateKeyPassphrase = sys.argv[3]
 
 # Read the encrypted file (fIn) 
 with open(filename, 'rb') as fIn:
+    # Read the first line of the file that contains the security level
+    securityLevel = fIn.readline().decode('UTF-8')
+
     # Read the first line of the file that contains the password encrypted using the 
     # equivalent public key and decrypt to retrieve the password
     cipherText = fIn.readline().decode('UTF-8')

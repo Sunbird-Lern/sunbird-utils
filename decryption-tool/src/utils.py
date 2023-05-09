@@ -1,11 +1,10 @@
-import pyAesCrypt
-import zipfile
 import ast
 import os
-
-from os import stat, remove
-from Crypto.PublicKey import RSA
+import pyAesCrypt
+import zipfile
 from Crypto.Cipher import PKCS1_OAEP
+from Crypto.PublicKey import RSA
+from os import stat, remove
 
 
 # This function takes a file and generates a zip with name as filename.zip

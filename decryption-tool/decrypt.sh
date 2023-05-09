@@ -4,36 +4,30 @@ pip3 install -r ./src/requirements.txt
 
 # Sample command to run the script
 #sh decrypt.sh
+# File to decrypt: sample.csv.dat
 # shellcheck disable=SC2039
 # shellcheck disable=SC2162
-read -p 'Decryption level 3 or 4: ' level
+read -p 'File to decrypt: ' filename
+level=$(head -1 "${filename}")
+# echo "securityLevel=$level"
 # shellcheck disable=SC2039
-if [ "$level" == 3 ]
-then
-   #File to decrypt: sample.csv.dat
-   #Private key path: private.pem
-   #Private key passphrase:
-
-   # shellcheck disable=SC2039
-   # shellcheck disable=SC2162
-   read -p 'File to decrypt: ' filename
-   # shellcheck disable=SC2162
-   # shellcheck disable=SC2039
-   read -sp 'AES key: ' aesKey
-   echo
-   python3 ./src/decrypt-l3.py "${filename}" "${aesKey}"
+if [ "$level" == 3 ]; then
+  echo "securityLevel=$level"
+  # shellcheck disable=SC2162
+  # shellcheck disable=SC2039
+  read -sp 'AES key: ' aesKey
+  echo
+  python3 ./src/decrypt-l3.py "${filename}" "${aesKey}"
+elif [ "$level" == 4 ]; then
+  echo "securityLevel=$level"
+  # shellcheck disable=SC2039
+  # shellcheck disable=SC2162
+  read -p 'Private key path: ' privateKeyPath
+  # shellcheck disable=SC2039
+  # shellcheck disable=SC2162
+  read -sp 'Private key passphrase: ' privateKeyPassphrase
+  echo
+  python3 ./src/decrypt-l4.py "${filename}" "${privateKeyPath}" "${privateKeyPassphrase}"
 else
-   #File to decrypt: sample.csv.dat
-   #Private key path: private.pem
-   #Private key passphrase:
-
-   # shellcheck disable=SC2039
-   # shellcheck disable=SC2162
-   read -p 'File to decrypt: ' filename
-   # shellcheck disable=SC2039
-   read -p 'Private key path: ' privateKeyPath
-   # shellcheck disable=SC2039
-   read -sp 'Private key passphrase: ' privateKeyPassphrase
-   echo
-   python3 ./src/decrypt.py "${filename}" "${privateKeyPath}" "${privateKeyPassphrase}"
+  echo "Not a valid file. Please provide the valid encrypted file."
 fi
