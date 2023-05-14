@@ -11,7 +11,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
+import org.sunbird.cloud.storage.BaseStorageService;
 import org.sunbird.util.HttpClientUtil;
+import org.sunbird.cloud.storage.factory.StorageConfig;
+import org.sunbird.cloud.storage.factory.StorageServiceFactory;
+import scala.Option;
+import scala.Some;
 
 public class FileUploader {
    private static AzureConnectionManager connectionManager = null;
@@ -23,10 +28,19 @@ public class FileUploader {
       String accountName = args[3];
       String accountKey = args[4];
       String svgLocation = args[5];
-      connectionManager = new AzureConnectionManager(accountName, accountKey);
+      String cloudStorageType = "azure";
+      String endpoint = "";
+      String region = "";
+      if (args.length > 6) {
+         cloudStorageType = args[6];
+         endpoint = args[7];
+         region = args[8];
+      }
+
       List<File> fileList = listAllFiles(svgLocation);
       Map<String, File> doidFileMap = new HashMap();
       Iterator var10 = fileList.iterator();
+      BaseStorageService storeService = StorageServiceFactory.getStorageService(new StorageConfig(cloudStorageType, accountName, accountKey, new Some<String>(endpoint), new Some<String>(region)));
 
       String url;
       while(var10.hasNext()) {
@@ -59,13 +73,15 @@ public class FileUploader {
          String[] container = url.split("/");
          StringBuilder containerPath = new StringBuilder();
 
-         for(int i = 3; i < container.length - 1; ++i) {
+         containerPath.append(container[4]);
+         for(int i = 5; i < container.length - 1; ++i) {
             containerPath.append("/").append(container[i]);
          }
-
-         connectionManager.uploadFile(containerPath.append("/").toString(), file);
+         String uploadedUrl = storeService.upload(container[3], file.getAbsolutePath(), containerPath + file.getName(), Option.apply(false), Option.apply(1), Option.apply(5), Option.empty());
+         System.out.println(uploadedUrl);
       }
-
+      System.out.println("Execution finished");
+      System.exit(0);
    }
 
    public static List<Map<String, String>> getContentSearchResponse(String domain, String offset, String limit) {
