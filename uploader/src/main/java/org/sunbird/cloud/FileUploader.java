@@ -19,8 +19,6 @@ import scala.Option;
 import scala.Some;
 
 public class FileUploader {
-   private static AzureConnectionManager connectionManager = null;
-
    public static void main(String[] args) {
       String domain = args[0];
       String offset = args[1];
