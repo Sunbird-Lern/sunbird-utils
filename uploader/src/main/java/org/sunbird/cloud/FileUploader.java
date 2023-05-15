@@ -79,6 +79,7 @@ public class FileUploader {
          for(int i = 5; i < container.length - 1; ++i) {
             containerPath.append("/").append(container[i]);
          }
+         containerPath.append("/");
          String uploadedUrl = storeService.upload(container[3], file.getAbsolutePath(), containerPath + file.getName(), Option.apply(false), Option.apply(1), Option.apply(5), Option.empty());
          System.out.println(uploadedUrl);
       }
