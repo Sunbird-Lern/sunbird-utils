@@ -31,7 +31,11 @@ public class FileUploader {
       String region = "";
       if (args.length > 6) {
          cloudStorageType = args[6];
+      }
+      if (args.length > 7) {
          endpoint = args[7];
+      }
+      if (args.length > 8) {
          region = args[8];
       }
 
