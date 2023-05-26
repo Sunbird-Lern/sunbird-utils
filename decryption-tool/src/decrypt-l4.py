@@ -1,5 +1,7 @@
+import base64
 import shutil
 import sys
+from os import remove
 
 from utils import *
 
@@ -12,25 +14,19 @@ with open(filename, 'rb') as fIn:
     # Read the first line of the file that contains the security level
     securityLevel = fIn.readline().decode('UTF-8')
 
-    # Read the first line of the file that contains the password encrypted using the 
+    # Read the second line of the file that contains the password encrypted using the
     # equivalent public key and decrypt to retrieve the password
     cipherText = fIn.readline().decode('UTF-8')
-    password = decryptDataUsingPrivateKey(cipherText, privateKeyPath, privateKeyPassphrase)
+    password = decryptDataUsingPrivateKey(base64.b64decode(cipherText), privateKeyPath, privateKeyPassphrase)
+    print("password-" + str(password))
 
     # Write the remaining content of the encrypted file to an intermediate file
-    with open(filename + '.crypt', 'wb') as cipherOut:
+    with open(filename + '.cryptout', 'wb') as cipherOut:
         shutil.copyfileobj(fIn, cipherOut)
 
     # Read the encrypted zip, decrypt it and write to a filename called retrieved.zip 
-    with open(filename + '.crypt', 'rb') as cipherIn:
-        with open(filename + 'retrieved.zip', "wb") as fOut:
-            decryptFileWithAESKey(filename + '.crypt', cipherIn, fOut, password)
+    with open(filename + '.cryptout', 'rb') as cipherIn:
+        with open(filename, "wb") as fOut:
+            decryptFileContentsWithAESKey(cipherIn, fOut, password)
 
-# Uncomment the uncompressFile invocation if you want to retrieve the contents of the zip.
-# I have left this commented as it will override the input file.
-try:
-    uncompressFile(filename + 'retrieved.zip')
-except Exception:
-    print("Error while unzipping the file.")
-remove(filename + '.crypt')
-remove(filename + 'retrieved.zip')
+remove(filename + '.cryptout')

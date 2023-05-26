@@ -12,14 +12,14 @@ read -p 'File to decrypt: ' filename
 level=$(head -1 "${filename}")
 # echo "securityLevel=$level"
 # shellcheck disable=SC2039
-if [ "$level" -eq 3 ]; then
+if [ "$level" = "TEXT_KEY_ENCRYPTED_DATASET" ]; then
   echo "securityLevel=$level"
   # shellcheck disable=SC2162
   # shellcheck disable=SC2039
   read -sp 'AES key: ' aesKey
   echo
   python3 ./src/decrypt-l3.py "${filename}" "${aesKey}"
-elif [ "$level" -eq 4 ]; then
+elif [ "$level" = "PUBLIC_KEY_ENCRYPTED_DATASET" ]; then
   echo "securityLevel=$level"
   # shellcheck disable=SC2039
   # shellcheck disable=SC2162
