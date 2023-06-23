@@ -1,1 +1,21 @@
-CREATE TABLE sunbird_courses.report_user_enrolments ( userid text, courseid text, batchid text, active boolean, addedby text, certificates list<frozen<map<text, text>>>, certstatus int, completedon timestamp, completionpercentage int, contentstatus map<text, int>, datetime timestamp, enrolled_date timestamp, enrolleddate text, issued_certificates list<frozen<map<text, text>>>, lastreadcontentid text, lastreadcontentstatus int, progress int, status int, PRIMARY KEY (userid, courseid, batchid));
+CREATE TABLE IF NOT EXISTS sunbird_courses.report_user_enrolments(
+      batchid text,
+      courseid text,
+      userid text,
+      active boolean,
+      addedby text,
+      certificates frozen < list <frozen < map < text, text > > >>,
+      certstatus int,
+      completedon timestamp,
+      completionpercentage int,
+      contentstatus frozen < map < text, int >>,
+      datetime timestamp,
+      enrolled_date timestamp,
+      enrolleddate text,
+      issued_certificates frozen < list < frozen < map <text, text > > > >,
+      lastreadcontentid text,
+      lastreadcontentstatus int,
+      progress int,
+      status int,
+      PRIMARY KEY (batchid, courseid, userid))
+      WITH COMPACTION = {'class':'SizeTieredCompactionStrategy', 'enabled': 'false'};
