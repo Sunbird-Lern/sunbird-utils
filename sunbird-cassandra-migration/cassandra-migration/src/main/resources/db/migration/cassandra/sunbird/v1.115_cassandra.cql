@@ -1,3 +1,4 @@
+CONSISTENCY ALL
 DROP TABLE IF EXISTS sunbird.assessment_eval;
 DROP TABLE IF EXISTS sunbird.assessment_item;
 DROP TABLE IF EXISTS sunbird.badge;
