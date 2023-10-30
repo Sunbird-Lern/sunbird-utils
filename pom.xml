@@ -7,11 +7,7 @@
   <packaging>pom</packaging>
   <name>Sunbird Utils</name>
   <modules>
-    <module>sunbird-cassandra-utils</module>
     <module>sunbird-es-utils</module>
-	<module>sunbird-platform-core</module>
-    <module>sunbird-notification</module>
-    <module>sunbird-cache-utils</module>
-    <module>notification-sdk</module>
+    <module>sunbird-platform-core</module>
   </modules>
 </project>

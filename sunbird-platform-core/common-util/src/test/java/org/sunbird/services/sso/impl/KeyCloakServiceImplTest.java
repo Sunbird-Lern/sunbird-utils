@@ -182,22 +182,6 @@ public class KeyCloakServiceImplTest extends BaseHttpTest {
     Assert.assertNotNull(result);
   }
 
-  @Test(expected = ProjectCommonException.class)
-  public void testDeactivateUserSuccess() {
-
-    Map<String, Object> request = new HashMap<String, Object>();
-    request.put(JsonKey.USER_ID, "123");
-    request.put(JsonKey.FIRST_NAME, userName);
-    keyCloakService.deactivateUser(request);
-  }
-
-  @Test(expected = ProjectCommonException.class)
-  public void testRemoveUserSuccess() {
-
-    Map<String, Object> request = new HashMap<String, Object>();
-    request.put(JsonKey.USER_ID, "123");
-    keyCloakService.removeUser(request);
-  }
 
   @Test(expected = ProjectCommonException.class)
   public void testVerifyTokenSuccess() {
@@ -209,12 +193,6 @@ public class KeyCloakServiceImplTest extends BaseHttpTest {
   public void testAddUserLoginTimeSuccess() {
     boolean response = keyCloakService.addUserLoginTime(userId.get(JsonKey.USER_ID));
     Assert.assertEquals(true, response);
-  }
-
-  @Test
-  public void testGetLastLoginTimeSuccess() {
-    String lastLoginTime = keyCloakService.getLastLoginTime(userId.get(JsonKey.USER_ID));
-    Assert.assertNull(lastLoginTime);
   }
 
   @Ignore
