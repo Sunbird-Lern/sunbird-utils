@@ -1,4 +1,4 @@
-CREATE TABLE test1 (
+CREATE TABLE IF NOT EXISTS test1 (
   space text,
   key text,
   value text,

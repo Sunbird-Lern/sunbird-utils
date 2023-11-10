@@ -1,11 +1,11 @@
-CREATE TABLE contents (
+CREATE TABLE IF NOT EXISTS contents (
   id bigint PRIMARY KEY,
   title text,
   message text,
   created timestamp
 );
 
-CREATE TABLE messages (
+CREATE TABLE IF NOT EXISTS messages (
   id bigint PRIMARY KEY,
   contents_id bigint,
   type int,
