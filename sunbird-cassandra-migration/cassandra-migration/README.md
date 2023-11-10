@@ -46,7 +46,7 @@ cassandra@cqlsh:cassandra_migration_test> select * from cassandra_migration_vers
 ### .cql files
 Example:
 ```
-CREATE TABLE test1 (
+CREATE TABLE IF NOT EXISTS test1 (
   space text,
   key text,
   value text,
