@@ -1,4 +1,4 @@
-CREATE TABLE sunbird.user_roles(
+CREATE TABLE IF NOT EXISTS sunbird.user_roles(
 	userid text,
 	role text,
 	scope text,

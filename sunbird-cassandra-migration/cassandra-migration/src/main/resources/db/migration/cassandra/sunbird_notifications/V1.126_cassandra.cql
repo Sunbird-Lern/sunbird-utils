@@ -12,7 +12,7 @@ createdBy text,
 lastUpdatedBy text,
 PRIMARY KEY(templateId));
 
-CREATE TABLE sunbird_notifications.notification_feed (
+CREATE TABLE IF NOT EXISTS sunbird_notifications.notification_feed (
     id text PRIMARY KEY,
     category text,
     createdby text,
