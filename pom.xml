@@ -6,8 +6,4 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Sunbird Utils</name>
-  <modules>
-    <module>sunbird-es-utils</module>
-    <module>sunbird-platform-core</module>
-  </modules>
 </project>

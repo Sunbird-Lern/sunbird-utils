@@ -12,13 +12,7 @@ Fork the below projects and clone it from git,
 ```shell
 git clone https://github.com/Sunbird-Lern/sunbird-utils/<latest-branch>
 ```
-Open a new Terminal In the path,
-#### (Project base path)/sunbird-utils
-Run the below command,
-```shell
-mvn clean install -DskipTests
-``` 
-Make sure the build is success and then,
+
 open a new Terminal In the path,
 #### (Project base path)/sunbird-utils/sunbird-cassandra-migration/cassandra-migration,
 Run below command,
@@ -29,7 +23,7 @@ mvn clean install -DskipTests
 ### Command 1:
 ```shell
 java -jar \
--Dcassandra.migration.scripts.locations=filesystem:<absolute or relative path>/db/migration/cassandra/<keyspace_name> \
+-Dcassandra.migration.scripts.locations=filesystem:<absolute or relative path>/db_migration/cassandra/<keyspace_name> \
 -Dcassandra.migration.cluster.contactpoints=localhost \
 -Dcassandra.migration.cluster.port=9042 \
 -Dcassandra.migration.cluster.username=username \
@@ -44,7 +38,7 @@ keyspace.name - specify keyspace for which you have to perform migration
 #### Sample Command:
 ```shell
 java -jar \
--Dcassandra.migration.scripts.locations=filesystem:src/main/resources/db/migration/cassandra/sunbird_groups \
+-Dcassandra.migration.scripts.locations=filesystem:src/main/resources/db_migration/cassandra/sunbird_groups \
 -Dcassandra.migration.cluster.contactpoints=localhost \
 -Dcassandra.migration.cluster.port=9042 \
 -Dcassandra.migration.cluster.username=cassandra \
@@ -60,5 +54,5 @@ The system environment listed below is required for command 2.
 ### System Env
 ```shell
 sunbird_cassandra_keyspace=<keyspace_name>
-sunbird_cassandra_migration_location="filesystem:<absolute or relative path>/db/migration/cassandra"
+sunbird_cassandra_migration_location="filesystem:<absolute or relative path>/db_migration/cassandra"
 ``` 
