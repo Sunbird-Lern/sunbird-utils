@@ -1,6 +1,6 @@
 package org.sunbird.actorutil;
 
-import akka.actor.ActorRef;
+import org.apache.pekko.actor.ActorRef;
 import org.sunbird.common.request.Request;
 import scala.concurrent.Future;
 

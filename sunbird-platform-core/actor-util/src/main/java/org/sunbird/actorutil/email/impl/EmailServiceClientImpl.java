@@ -1,6 +1,6 @@
 package org.sunbird.actorutil.email.impl;
 
-import akka.actor.ActorRef;
+import org.apache.pekko.actor.ActorRef;
 import java.util.HashMap;
 import java.util.Map;
 import org.sunbird.actorutil.InterServiceCommunication;

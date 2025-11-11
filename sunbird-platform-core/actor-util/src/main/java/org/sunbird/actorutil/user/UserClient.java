@@ -1,6 +1,6 @@
 package org.sunbird.actorutil.user;
 
-import akka.actor.ActorRef;
+import org.apache.pekko.actor.ActorRef;
 import java.util.Map;
 
 public interface UserClient {

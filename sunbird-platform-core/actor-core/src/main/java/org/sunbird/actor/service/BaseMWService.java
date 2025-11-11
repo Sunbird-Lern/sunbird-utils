@@ -1,10 +1,10 @@
 package org.sunbird.actor.service;
 
-import akka.actor.ActorRef;
-import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
-import akka.actor.Props;
-import akka.routing.FromConfig;
+import org.apache.pekko.actor.ActorRef;
+import org.apache.pekko.actor.ActorSelection;
+import org.apache.pekko.actor.ActorSystem;
+import org.apache.pekko.actor.Props;
+import org.apache.pekko.routing.FromConfig;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import java.util.ArrayList;
@@ -83,10 +83,9 @@ public class BaseMWService {
 
   protected static Config getRemoteConfig(String host, String port) {
     List<String> details = new ArrayList<String>();
-    details.add("akka.actor.provider=akka.remote.RemoteActorRefProvider");
-    details.add("akka.remote.enabled-transports = [\"akka.remote.netty.tcp\"]");
-    if (StringUtils.isNotBlank(host)) details.add("akka.remote.netty.tcp.hostname=" + host);
-    if (StringUtils.isNotBlank(port)) details.add("akka.remote.netty.tcp.port=" + port);
+    details.add("pekko.actor.provider=org.apache.pekko.remote.RemoteActorRefProvider");
+    details.add("pekko.remote.artery.canonical.hostname=" + (StringUtils.isNotBlank(host) ? host : "127.0.0.1"));
+    details.add("pekko.remote.artery.canonical.port=" + (StringUtils.isNotBlank(port) ? port : "25520"));
 
     return ConfigFactory.parseString(StringUtils.join(details, ","));
   }

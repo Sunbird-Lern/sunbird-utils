@@ -19,7 +19,11 @@ public class CloudStorageUtil {
   private static final Map<String, IStorageService> storageServiceMap = new HashMap<>();
 
   public enum CloudStorageType {
-    AZURE("azure");
+    AZURE("azure"),
+    AWS("aws"), 
+    GCP("gcp"),
+    S3("s3");
+    
     private String type;
 
     private CloudStorageType(String type) {
@@ -33,6 +37,12 @@ public class CloudStorageUtil {
     public static CloudStorageType getByName(String type) {
       if (AZURE.type.equals(type)) {
         return CloudStorageType.AZURE;
+      } else if (AWS.type.equals(type)) {
+        return CloudStorageType.AWS;
+      } else if (GCP.type.equals(type)) {
+        return CloudStorageType.GCP;
+      } else if (S3.type.equals(type)) {
+        return CloudStorageType.S3;
       } else {
         ProjectCommonException.throwClientErrorException(
             ResponseCode.errorUnsupportedCloudStorage,
@@ -100,7 +110,8 @@ public class CloudStorageUtil {
     }
     synchronized (CloudStorageUtil.class) {
       StorageConfig storageConfig =
-          new StorageConfig(storageType.getType(), storageKey, storageSecret);
+          new StorageConfig(storageType.getType(), storageKey, storageSecret, 
+                          Option.empty(), Option.empty());
       IStorageService storageService = StorageServiceFactory.getStorageService(storageConfig);
       storageServiceMap.put(compositeKey, storageService);
     }

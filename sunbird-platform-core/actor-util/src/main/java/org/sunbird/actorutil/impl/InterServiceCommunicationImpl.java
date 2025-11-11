@@ -1,8 +1,8 @@
 package org.sunbird.actorutil.impl;
 
-import akka.actor.ActorRef;
-import akka.pattern.Patterns;
-import akka.util.Timeout;
+import org.apache.pekko.actor.ActorRef;
+import org.apache.pekko.pattern.Patterns;
+import org.apache.pekko.util.Timeout;
 import java.util.concurrent.TimeUnit;
 import org.sunbird.actorutil.InterServiceCommunication;
 import org.sunbird.common.exception.ProjectCommonException;

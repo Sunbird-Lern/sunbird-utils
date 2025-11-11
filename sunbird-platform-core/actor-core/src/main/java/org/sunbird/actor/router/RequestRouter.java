@@ -1,9 +1,9 @@
 package org.sunbird.actor.router;
 
-import akka.actor.ActorRef;
-import akka.dispatch.OnComplete;
-import akka.pattern.Patterns;
-import akka.util.Timeout;
+import org.apache.pekko.actor.ActorRef;
+import org.apache.pekko.dispatch.OnComplete;
+import org.apache.pekko.pattern.Patterns;
+import org.apache.pekko.util.Timeout;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -96,7 +96,7 @@ public class RequestRouter extends BaseRouter {
               ProjectLogger.log(failure.getMessage(), failure);
               if (failure instanceof ProjectCommonException) {
                 parent.tell(failure, self());
-              } else if (failure instanceof akka.pattern.AskTimeoutException) {
+              } else if (failure instanceof org.apache.pekko.pattern.AskTimeoutException) {
                 ProjectCommonException exception =
                     new ProjectCommonException(
                         ResponseCode.operationTimeout.getErrorCode(),

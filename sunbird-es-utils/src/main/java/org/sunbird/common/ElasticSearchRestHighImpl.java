@@ -1,6 +1,6 @@
 package org.sunbird.common;
 
-import akka.dispatch.Futures;
+import org.apache.pekko.dispatch.Futures;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;

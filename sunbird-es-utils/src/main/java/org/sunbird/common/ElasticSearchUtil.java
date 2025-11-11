@@ -2,7 +2,7 @@ package org.sunbird.common;
 
 import static org.sunbird.common.models.util.ProjectUtil.isNotNull;
 
-import akka.dispatch.Futures;
+import org.apache.pekko.dispatch.Futures;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.typesafe.config.Config;
 import java.io.IOException;

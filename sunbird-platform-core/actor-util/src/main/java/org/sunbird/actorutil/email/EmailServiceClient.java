@@ -1,6 +1,6 @@
 package org.sunbird.actorutil.email;
 
-import akka.actor.ActorRef;
+import org.apache.pekko.actor.ActorRef;
 import java.util.Map;
 import org.sunbird.common.models.response.Response;
 

@@ -1,6 +1,6 @@
 package org.sunbird.actorutil.systemsettings;
 
-import akka.actor.ActorRef;
+import org.apache.pekko.actor.ActorRef;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.sunbird.models.systemsetting.SystemSetting;
 

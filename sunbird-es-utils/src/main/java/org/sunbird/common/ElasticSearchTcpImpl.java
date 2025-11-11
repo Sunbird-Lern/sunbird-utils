@@ -1,7 +1,7 @@
 package org.sunbird.common;
 
-import akka.dispatch.Futures;
-import akka.util.Timeout;
+import org.apache.pekko.dispatch.Futures;
+import org.apache.pekko.util.Timeout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;

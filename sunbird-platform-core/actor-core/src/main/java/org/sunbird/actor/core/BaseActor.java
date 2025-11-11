@@ -1,9 +1,9 @@
 package org.sunbird.actor.core;
 
-import akka.actor.ActorRef;
-import akka.actor.ActorSelection;
-import akka.actor.UntypedAbstractActor;
-import akka.util.Timeout;
+import org.apache.pekko.actor.ActorRef;
+import org.apache.pekko.actor.ActorSelection;
+import org.apache.pekko.actor.UntypedAbstractActor;
+import org.apache.pekko.util.Timeout;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigValue;

@@ -2,7 +2,7 @@ package org.sunbird.common;
 
 import static org.sunbird.common.models.util.ProjectUtil.isNotNull;
 
-import akka.util.Timeout;
+import org.apache.pekko.util.Timeout;
 import com.typesafe.config.Config;
 import java.math.BigInteger;
 import java.util.ArrayList;

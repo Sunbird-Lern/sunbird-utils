@@ -1,6 +1,6 @@
 package org.sunbird.actorutil.user.impl;
 
-import akka.actor.ActorRef;
+import org.apache.pekko.actor.ActorRef;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;

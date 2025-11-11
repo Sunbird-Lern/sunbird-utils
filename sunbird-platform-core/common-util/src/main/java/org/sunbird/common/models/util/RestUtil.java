@@ -1,6 +1,6 @@
 package org.sunbird.common.models.util;
 
-import akka.dispatch.Futures;
+import org.apache.pekko.dispatch.Futures;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;

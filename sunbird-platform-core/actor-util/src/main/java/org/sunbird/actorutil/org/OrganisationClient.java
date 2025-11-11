@@ -1,6 +1,6 @@
 package org.sunbird.actorutil.org;
 
-import akka.actor.ActorRef;
+import org.apache.pekko.actor.ActorRef;
 import java.util.List;
 import java.util.Map;
 import org.sunbird.models.organisation.Organisation;
