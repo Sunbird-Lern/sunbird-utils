@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS sunbird_courses.assessment_aggregator;
+CREATE TABLE IF NOT EXISTS sunbird_courses.assessment_aggregator (user_id text, course_id text, batch_id text, content_id text, attempt_id text, created_on timestamp, grand_total text, last_attempted_on timestamp, question list<frozen<question>>, total_max_score double, total_score double, updated_on timestamp, PRIMARY KEY ((user_id, course_id), batch_id, content_id, attempt_id));
+CREATE INDEX assessment_aggregator_last_attempted_on_idx ON sunbird_courses.assessment_aggregator (last_attempted_on);
